@@ -1,7 +1,6 @@
 require'lspconfig'.dartls.setup {
     cmd = {
-        "dart",
-        '/home/biserstoilov/sdk/dart-sdk/bin/snapshots/analysis_server.dart.snapshot',
+        "dart", '~/sdk/dart-sdk/bin/snapshots/analysis_server.dart.snapshot',
         "--lsp"
     },
     on_attach = require'lsp.global'.common_on_attach,
