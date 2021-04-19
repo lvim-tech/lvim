@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+JAR="$HOME/sdk/jdtls/plugins/org.eclipse.equinox.launcher_*.jar"
+GRADLE_HOME=$HOME/gradle /usr/lib64/jvm/java-14-openjdk-14/bin/java \
+  -Declipse.application=org.eclipse.jdt.ls.core.id1 \
+  -Dosgi.bundles.defaultStartLevel=4 \
+  -Declipse.product=org.eclipse.jdt.ls.core.product \
+  -Dlog.protocol=true \
+  -Dlog.level=ALL \
+  -Xms1g \
+  -Xmx2G \
+  -jar $(echo "$JAR") \
+  -configuration "$HOME/sdk/jdtls/config_linux" \
+  -data "${1:-$HOME/workspace}" \
+  --add-modules=ALL-SYSTEM \
+  --add-opens java.base/java.util=ALL-UNNAMED \
+  --add-opens java.base/java.lang=ALL-UNNAMED
