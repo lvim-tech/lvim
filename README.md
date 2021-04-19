@@ -8,8 +8,23 @@ LVIM is a modular Neovim configuration written in LUA. It manages collections of
 layers, which help to collect related packages together to provide IDE-like
 features.
 
-LVIM requires [neovim nightly
-(>=0.5.0)](https://github.com/neovim/neovim/wiki/Installing-Neovim).
+## Requirements
+
+[neovim nightly(>=0.5.0)](https://github.com/neovim/neovim/wiki/Installing-Neovim)
+
+[neovim nightly(>=0.5.0)](https://github.com/neovim/neovim/wiki/Installing-Neovim)
+
+[pynvim](https://github.com/neovim/pynvim)
+
+[neovim-remote](https://github.com/mhinz/neovim-remote)
+
+[ripgrep](https://github.com/BurntSushi/ripgrep)
+
+[ranger](https://github.com/ranger/ranger)
+
+[ueberzug](https://github.com/seebye/ueberzug)
+
+[bpytop](https://github.com/aristocratos/bpytop)
 
 ## Plugins
 
@@ -53,7 +68,11 @@ LVIM requires [neovim nightly
 
     [vim-doge](https://github.com/kkoomen/vim-doge)
 
-    [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) (requires [plenary.nvim](https://github.com/nvim-lua/plenary.nvim))
+    [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)
+
+    [vim-fugitive](https://github.com/tpope/vim-fugitive)
+
+    [git-blame.nvim](https://github.com/f-person/git-blame.nvim)
 
     [neogit](https://github.com/TimUntersberger/neogit)
 
@@ -140,7 +159,6 @@ LVIM requires [neovim nightly
 {'<A-p>', ':LspGoToPrev<CR>'}, -- Lsp go to prev
 {'<A-t>', ':LspToggleLineDiagnostics<CR>'} -- Lsp toggle line diagnostics
 ```
-
 
 * Visual
 
