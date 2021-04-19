@@ -41,7 +41,7 @@ LVIM requires [neovim nightly
 
 ## Keymaps
 
-- Normal
+* Normal
 
 ```lua
 {'<C-n>', ':e %:h/filename<CR>'}, -- Create new file in current directory
@@ -88,7 +88,7 @@ LVIM requires [neovim nightly
 ```
 
 
-- Visual
+* Visual
 
 ```lua
 {'<', '<gv'}, -- Tab left
