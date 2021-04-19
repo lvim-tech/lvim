@@ -8,12 +8,6 @@ LVIM is a modular Neovim configuration written in LUA. It manages collections of
 layers, which help to collect related packages together to provide IDE-like
 features.
 
-## Install
-
-```bash
-git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
-```
-
 ## Requirements
 
 * [neovim nightly(>=0.5.0)](https://github.com/neovim/neovim/wiki/Installing-Neovim)
@@ -31,6 +25,12 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 * [ueberzug](https://github.com/seebye/ueberzug)
 
 * [bpytop](https://github.com/aristocratos/bpytop)
+
+## Install
+
+```bash
+git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
+```
 
 ## Plugins
 
