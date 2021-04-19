@@ -13,7 +13,7 @@ LVIM requires [neovim nightly
 
 ## Plugins
 
-* *UI
+* UI
 
     [lvim-colorscheme](https://github.com/lvim-tech/lvim-colorscheme)
 
