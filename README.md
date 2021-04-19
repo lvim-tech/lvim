@@ -220,13 +220,36 @@ modules['kevinhwang91/rnvimr'] = false
 
 -- Rewrite plugin settings from modules.global.init
 modules['kevinhwang91/rnvimr'] = {
---    your code
+--   your code
 }
 
 -- Add new plugin
 modules['sheerun/vim-polyglot'] = {
---    your code
+--   your code
 }
 
 return modules
+```
+
+* Configuration
+
+```lua
+-- configs.custom.init.lua
+
+local configs = {}
+
+-- Remove function events from configs.global.init
+configs['events'] = false
+
+-- Rewrite function events from configs.global.init
+configs['events'] = function()
+--   your code
+end
+
+-- Add new function
+configs['my_func'] = function()
+--   your code
+end
+
+return configs
 ```
