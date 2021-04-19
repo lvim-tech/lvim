@@ -205,3 +205,28 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 * svelte
 * html
 * css, less, scss
+
+## Customization
+
+* Modules (plugins)
+
+```lua
+-- modules.custom.init.lua
+
+local modules = {}
+
+-- Remove plugin from modules.global.init
+modules['kevinhwang91/rnvimr'] = false
+
+-- Rewrite plugin settings from modules.global.init
+modules['kevinhwang91/rnvimr'] = {
+--    your code
+}
+
+-- Add new plugin
+modules['sheerun/vim-polyglot'] = {
+--    your code
+}
+
+return modules
+```
