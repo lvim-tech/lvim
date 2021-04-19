@@ -18,6 +18,8 @@ features.
 
 * [neovim-remote](https://github.com/mhinz/neovim-remote)
 
+* [ctags](https://github.com/universal-ctags/ctags)
+
 * [ripgrep](https://github.com/BurntSushi/ripgrep)
 
 * [ranger](https://github.com/ranger/ranger)
@@ -177,3 +179,24 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 {'J', ':move \'>+1<CR>gv-gv'}, -- Move down
 {'<A-/>', ':CommentToggle<CR>'} -- Comment toggle
 ```
+
+## Supported languages (LSP)
+
+* cpp
+* java
+* rust
+* go
+* python
+* ruby
+* lua
+* php
+* dart
+* sh
+* javascript, javascriptreact, typescript, typescriptreact
+* docker
+* json
+* latex
+* yaml
+* svelte
+* html
+* css, less, scss
