@@ -4,9 +4,9 @@
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/lvim-tech/lvim/blob/main/LICENSE)
 
 ## About
-LVIM is a modular Neovim configuration written in LUA. It manages collections of plugins in
-layers, which help to collect related packages together to provide IDE-like
-features.
+LVIM is a modular Neovim configuration written in LUA.
+Full customization:
+* add or remove plugins, rewrite settings of all plugins
 
 ## Requirements
 
