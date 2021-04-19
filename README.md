@@ -16,8 +16,6 @@ LVIM is a modular Neovim configuration written in LUA with full customization:
 
 * [neovim nightly(>=0.5.0)](https://github.com/neovim/neovim/wiki/Installing-Neovim)
 
-* [neovim nightly(>=0.5.0)](https://github.com/neovim/neovim/wiki/Installing-Neovim)
-
 * [pynvim](https://github.com/neovim/pynvim)
 
 * [neovim-remote](https://github.com/mhinz/neovim-remote)
