@@ -10,21 +10,21 @@ features.
 
 ## Requirements
 
-[neovim nightly(>=0.5.0)](https://github.com/neovim/neovim/wiki/Installing-Neovim)
+* [neovim nightly(>=0.5.0)](https://github.com/neovim/neovim/wiki/Installing-Neovim)
 
-[neovim nightly(>=0.5.0)](https://github.com/neovim/neovim/wiki/Installing-Neovim)
+* [neovim nightly(>=0.5.0)](https://github.com/neovim/neovim/wiki/Installing-Neovim)
 
-[pynvim](https://github.com/neovim/pynvim)
+* [pynvim](https://github.com/neovim/pynvim)
 
-[neovim-remote](https://github.com/mhinz/neovim-remote)
+* [neovim-remote](https://github.com/mhinz/neovim-remote)
 
-[ripgrep](https://github.com/BurntSushi/ripgrep)
+* [ripgrep](https://github.com/BurntSushi/ripgrep)
 
-[ranger](https://github.com/ranger/ranger)
+* [ranger](https://github.com/ranger/ranger)
 
-[ueberzug](https://github.com/seebye/ueberzug)
+* [ueberzug](https://github.com/seebye/ueberzug)
 
-[bpytop](https://github.com/aristocratos/bpytop)
+* [bpytop](https://github.com/aristocratos/bpytop)
 
 ## Plugins
 
