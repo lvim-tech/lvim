@@ -53,7 +53,7 @@ LVIM requires [neovim nightly
 
     [vim-doge](https://github.com/kkoomen/vim-doge)
 
-    [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)
+    [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) (requires [plenary.nvim](https://github.com/nvim-lua/plenary.nvim))
 
     [neogit](https://github.com/TimUntersberger/neogit)
 
