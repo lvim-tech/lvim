@@ -13,31 +13,31 @@ LVIM requires [neovim nightly
 
 ## Plugins
 
-* UI
+* *UI
 
-[lvim-colorscheme](https://github.com/lvim-tech/lvim-colorscheme)
+    [lvim-colorscheme](https://github.com/lvim-tech/lvim-colorscheme)
 
-[telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) (requires [popup.nvim](https://github.com/nvim-lua/popup.nvim) | [plenary.nvim](https://github.com/nvim-lua/plenary.nvim) | [telescope-fzy-native.nvim](https://github.com/nvim-telescope/telescope-fzy-native.nvim) | [telescope-media-files.nvim](https://github.com/nvim-telescope/nvim-telescope/telescope-media-files.nvim))
+    [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) (requires [popup.nvim](https://github.com/nvim-lua/popup.nvim) | [plenary.nvim](https://github.com/nvim-lua/plenary.nvim) | [telescope-fzy-native.nvim](https://github.com/nvim-telescope/telescope-fzy-native.nvim) | [telescope-media-files.nvim](https://github.com/nvim-telescope/nvim-telescope/telescope-media-files.nvim))
 
-[dashboard-nvim](https://github.com/glepnir/dashboard-nvim)
+    [dashboard-nvim](https://github.com/glepnir/dashboard-nvim)
 
-[galaxyline.nvim](https://github.com/glepnir/galaxyline.nvim)
+    [galaxyline.nvim](https://github.com/glepnir/galaxyline.nvim)
 
-[barbar.nvim](https://github.com/romgrk/barbar.nvim) (requires [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons))
+    [barbar.nvim](https://github.com/romgrk/barbar.nvim) (requires [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons))
 
-[indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
+    [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
 
-[nvim-tree.lua](https://github.com/kyazdani42/nvim-tree.lua)
+    [nvim-tree.lua](https://github.com/kyazdani42/nvim-tree.lua)
 
-[rnvimr](https://github.com/kevinhwang91/rnvimr)
+    [rnvimr](https://github.com/kevinhwang91/rnvimr)
 
-[nvim-colorizer.lua](https://github.com/norcalli/nvim-colorizer.lua)
+    [nvim-colorizer.lua](https://github.com/norcalli/nvim-colorizer.lua)
 
-[goyo.vim](https://github.com/junegunn/goyo.vim)
+    [goyo.vim](https://github.com/junegunn/goyo.vim)
 
-[limelight.vim](https://github.com/junegunn/limelight.vim)
+    [limelight.vim](https://github.com/junegunn/limelight.vim)
 
-[vim-floaterm](https://github.com/voldikss/vim-floaterm)
+    [vim-floaterm](https://github.com/voldikss/vim-floaterm)
 
 ## Keymaps
 
