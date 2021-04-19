@@ -6,7 +6,8 @@
 ## About
 LVIM is a modular Neovim configuration written in LUA.
 Full customization:
-* add or remove plugins, rewrite settings of all plugins
+* Add or remove or rewrite of all nvim settings
+* Add or remove plugins, rewrite settings of all plugins
 
 ## Requirements
 
