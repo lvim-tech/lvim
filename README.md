@@ -39,6 +39,60 @@ LVIM requires [neovim nightly
 
     [vim-floaterm](https://github.com/voldikss/vim-floaterm)
 
+* Editor
+
+    [nvim-comment](https://github.com/terrortylor/nvim-comment)
+
+    [formatter.nvim](https://github.com/mhartington/formatter.nvim)
+
+    [nvim-autopairs](https://github.com/windwp/nvim-autopairs)
+
+    [vim-bookmarks](https://github.com/MattesGroeger/vim-bookmarks)
+
+    [undotree](https://github.com/mbbill/undotree)
+
+    [vim-doge](https://github.com/kkoomen/vim-doge)
+
+    [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)
+
+    [neogit](https://github.com/TimUntersberger/neogit)
+
+* Languages
+
+    [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
+
+    [nvim-lspinstall](https://github.com/kabouzeid/nvim-lspinstall)
+
+    [nvim-jdtls](https://github.com/mfussenegger/nvim-jdtls)
+
+    [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) (requires [playground](https://github.com/nvim-treesitter/playground))
+
+    [nvim-dap](https://github.com/mfussenegger/nvim-dap)
+
+    [vimspector](https://github.com/puremourning/vimspector)
+
+* Completion
+
+    [nvim-compe](https://github.com/hrsh7th/nvim-compe)
+
+    [vim-vsnip](https://github.com/hrsh7th/vim-vsnip)
+
+    [friendly-snippets](https://github.com/rafamadriz/friendly-snippets)
+
+    [emmet-vim](https://github.com/mattn/emmet-vim)
+
+* Tools
+
+    [vista](https://github.com/liuchengxu/vista.vim)
+
+    [vim-dadbod](https://github.com/tpope/vim-dadbod) (requires [vim-dadbod-ui](https://github.com/kristijanhusak/vim-dadbod-ui) | [vim-dadbod-completion](https://github.com/kristijanhusak/vim-dadbod-completion))
+
+    [nvim-whichkey-setup.lua](https://github.com/AckslD/nvim-whichkey-setup.lua) (requires [vim-which-key](https://github.com/liuchengxu/vim-which-key))
+
+    [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim)
+
+    [vim-rooter](https://github.com/airblade/vim-rooter)
+
 ## Keymaps
 
 * Normal
