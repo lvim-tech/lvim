@@ -18,7 +18,7 @@ features.
 
 * [neovim-remote](https://github.com/mhinz/neovim-remote)
 
-* [ctags](https://github.com/universal-ctags/ctags)
+* [universal-ctags](https://github.com/universal-ctags/ctags)
 
 * [ripgrep](https://github.com/BurntSushi/ripgrep)
 
