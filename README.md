@@ -225,6 +225,10 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 * html
 * css, less, scss
 
+```lua
+:LspInstall <name-of-server>
+```
+
 ## Customization
 
 * Modules (plugins)
