@@ -47,7 +47,7 @@ LVIM is a modular Neovim configuration written in LUA with full customization:
 
 * [prettier](https://github.com/prettier/prettier)
 
-* [prettier](https://github.com/prettier/prettier)
+* [plugin-php](https://github.com/prettier/plugin-php)
 
 * [plugin-ruby](https://github.com/prettier/plugin-ruby)
 
