@@ -17,6 +17,8 @@ LVIM is a modular Neovim configuration written in LUA with full customization:
 
 ## Requirements
 
+### Mandatory
+
 * [neovim nightly(>=0.5.0)](https://github.com/neovim/neovim/wiki/Installing-Neovim)
 
 * [pynvim](https://github.com/neovim/pynvim)
@@ -27,11 +29,22 @@ LVIM is a modular Neovim configuration written in LUA with full customization:
 
 * [ripgrep](https://github.com/BurntSushi/ripgrep)
 
+### External apps
+
 * [ranger](https://github.com/ranger/ranger)
 
 * [ueberzug](https://github.com/seebye/ueberzug)
 
 * [bpytop](https://github.com/aristocratos/bpytop)
+
+### For formatting
+
+* [prettier](https://github.com/prettier/prettier)
+
+* [prettier](https://github.com/prettier/prettier)
+
+* [plugin-ruby](https://github.com/prettier/plugin-ruby)
+
 
 ## Install
 
