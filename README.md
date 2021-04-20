@@ -29,6 +29,8 @@ LVIM is a modular Neovim configuration written in LUA with full customization:
 
 * [ripgrep](https://github.com/BurntSushi/ripgrep)
 
+* [fzf](https://github.com/junegunn/fzf)
+
 ### External apps
 
 * [ranger](https://github.com/ranger/ranger)
