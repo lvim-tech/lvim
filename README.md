@@ -37,6 +37,10 @@ LVIM is a modular Neovim configuration written in LUA with full customization:
 
 * [bpytop](https://github.com/aristocratos/bpytop)
 
+* [lazygit](https://github.com/jesseduffield/lazygit)
+
+* [lazydocker](https://github.com/jesseduffield/lazydocker)
+
 ### For formatting
 
 * [prettier](https://github.com/prettier/prettier)
