@@ -4,53 +4,53 @@
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/lvim-tech/lvim/blob/main/LICENSE)
 
 ## About
+
 LVIM is a modular Neovim configuration written in LUA with full customization:
-* Add or remove or rewrite of all nvim settings
-* Add or remove plugins, rewrite settings of all plugins
-* Dynamic LSP activation
-* Debugging - Dap, Vimspector
-* By default - 45 plugins
-* Loading time - ~~180.513~~ 060.381 ms
+
+- Add or remove or rewrite of all nvim settings
+- Add or remove plugins, rewrite settings of all plugins
+- Dynamic LSP activation
+- Debugging - Dap, Vimspector
+- By default - 45 plugins
+- Loading time - ~~180.513~~ 060.381 ms
 
 ![Screenshot from 2021-04-19 23-29-26](https://user-images.githubusercontent.com/82431193/115300366-9269a580-a168-11eb-8bd6-209ae946d679.png)
-
 
 ## Requirements
 
 ### Mandatory
 
-* [neovim nightly(>=0.5.0)](https://github.com/neovim/neovim/wiki/Installing-Neovim)
+- [neovim nightly(>=0.5.0)](https://github.com/neovim/neovim/wiki/Installing-Neovim)
 
-* [pynvim](https://github.com/neovim/pynvim)
+- [pynvim](https://github.com/neovim/pynvim)
 
-* [neovim-remote](https://github.com/mhinz/neovim-remote)
+- [neovim-remote](https://github.com/mhinz/neovim-remote)
 
-* [universal-ctags](https://github.com/universal-ctags/ctags)
+- [universal-ctags](https://github.com/universal-ctags/ctags)
 
-* [ripgrep](https://github.com/BurntSushi/ripgrep)
+- [ripgrep](https://github.com/BurntSushi/ripgrep)
 
-* [fzf](https://github.com/junegunn/fzf)
+- [fzf](https://github.com/junegunn/fzf)
 
 ### External apps
 
-* [ranger](https://github.com/ranger/ranger)
+- [ranger](https://github.com/ranger/ranger)
 
-* [ueberzug](https://github.com/seebye/ueberzug)
+- [ueberzug](https://github.com/seebye/ueberzug)
 
-* [bpytop](https://github.com/aristocratos/bpytop)
+- [bpytop](https://github.com/aristocratos/bpytop)
 
-* [lazygit](https://github.com/jesseduffield/lazygit)
+- [lazygit](https://github.com/jesseduffield/lazygit)
 
-* [lazydocker](https://github.com/jesseduffield/lazydocker)
+- [lazydocker](https://github.com/jesseduffield/lazydocker)
 
 ### For formatting
 
-* [prettier](https://github.com/prettier/prettier)
+- [prettier](https://github.com/prettier/prettier)
 
-* [plugin-php](https://github.com/prettier/plugin-php)
+- [plugin-php](https://github.com/prettier/plugin-php)
 
-* [plugin-ruby](https://github.com/prettier/plugin-ruby)
-
+- [plugin-ruby](https://github.com/prettier/plugin-ruby)
 
 ## Install
 
@@ -60,93 +60,91 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 
 ## Plugins
 
-* UI
+- UI
 
-    [lvim-colorscheme](https://github.com/lvim-tech/lvim-colorscheme)
+  [lvim-colorscheme](https://github.com/lvim-tech/lvim-colorscheme)
 
-    [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) (requires [popup.nvim](https://github.com/nvim-lua/popup.nvim) | [plenary.nvim](https://github.com/nvim-lua/plenary.nvim) | [telescope-fzy-native.nvim](https://github.com/nvim-telescope/telescope-fzy-native.nvim) | [telescope-media-files.nvim](https://github.com/nvim-telescope/nvim-telescope/telescope-media-files.nvim))
+  [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) (requires [popup.nvim](https://github.com/nvim-lua/popup.nvim) | [plenary.nvim](https://github.com/nvim-lua/plenary.nvim) | [telescope-fzy-native.nvim](https://github.com/nvim-telescope/telescope-fzy-native.nvim) | [telescope-media-files.nvim](https://github.com/nvim-telescope/nvim-telescope/telescope-media-files.nvim))
 
-    [dashboard-nvim](https://github.com/glepnir/dashboard-nvim)
+  [dashboard-nvim](https://github.com/glepnir/dashboard-nvim)
 
-    [galaxyline.nvim](https://github.com/glepnir/galaxyline.nvim)
+  [galaxyline.nvim](https://github.com/glepnir/galaxyline.nvim)
 
-    [barbar.nvim](https://github.com/romgrk/barbar.nvim) (requires [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons))
+  [barbar.nvim](https://github.com/romgrk/barbar.nvim) (requires [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons))
 
-    [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
+  [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
 
-    [nvim-tree.lua](https://github.com/kyazdani42/nvim-tree.lua)
+  [nvim-tree.lua](https://github.com/kyazdani42/nvim-tree.lua)
 
-    [rnvimr](https://github.com/kevinhwang91/rnvimr)
+  [rnvimr](https://github.com/kevinhwang91/rnvimr)
 
-    [nvim-colorizer.lua](https://github.com/norcalli/nvim-colorizer.lua)
+  [nvim-colorizer.lua](https://github.com/norcalli/nvim-colorizer.lua)
 
-    [goyo.vim](https://github.com/junegunn/goyo.vim)
+  [goyo.vim](https://github.com/junegunn/goyo.vim)
 
-    [limelight.vim](https://github.com/junegunn/limelight.vim)
+  [limelight.vim](https://github.com/junegunn/limelight.vim)
 
-    [vim-floaterm](https://github.com/voldikss/vim-floaterm)
+  [vim-floaterm](https://github.com/voldikss/vim-floaterm)
 
-* Editor
+- Editor
 
-    [nvim-comment](https://github.com/terrortylor/nvim-comment)
+  [nvim-comment](https://github.com/terrortylor/nvim-comment)
 
-    [formatter.nvim](https://github.com/mhartington/formatter.nvim)
+  [formatter.nvim](https://github.com/mhartington/formatter.nvim)
 
-    [nvim-autopairs](https://github.com/windwp/nvim-autopairs)
+  [nvim-autopairs](https://github.com/windwp/nvim-autopairs)
 
-    [vim-bookmarks](https://github.com/MattesGroeger/vim-bookmarks)
+  [vim-bookmarks](https://github.com/MattesGroeger/vim-bookmarks)
 
-    [undotree](https://github.com/mbbill/undotree)
+  [undotree](https://github.com/mbbill/undotree)
 
-    [vim-doge](https://github.com/kkoomen/vim-doge)
+  [vim-doge](https://github.com/kkoomen/vim-doge)
 
-    [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)
+  [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)
 
-    [vim-fugitive](https://github.com/tpope/vim-fugitive)
+  [vim-fugitive](https://github.com/tpope/vim-fugitive)
 
-    [git-blame.nvim](https://github.com/f-person/git-blame.nvim)
+  [git-blame.nvim](https://github.com/f-person/git-blame.nvim)
 
-    [neogit](https://github.com/TimUntersberger/neogit)
+  [neogit](https://github.com/TimUntersberger/neogit)
 
-* Languages
+- Languages
 
-    [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
+  [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
 
-    [nvim-lspinstall](https://github.com/kabouzeid/nvim-lspinstall)
+  [nvim-lspinstall](https://github.com/kabouzeid/nvim-lspinstall)
 
-    [nvim-jdtls](https://github.com/mfussenegger/nvim-jdtls)
+  [nvim-jdtls](https://github.com/mfussenegger/nvim-jdtls)
 
-    [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) (requires [playground](https://github.com/nvim-treesitter/playground))
+  [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) (requires [playground](https://github.com/nvim-treesitter/playground))
 
-    [nvim-dap](https://github.com/mfussenegger/nvim-dap)
+  [nvim-dap](https://github.com/mfussenegger/nvim-dap)
 
-    [vimspector](https://github.com/puremourning/vimspector)
+- Completion
 
-* Completion
+  [nvim-compe](https://github.com/hrsh7th/nvim-compe)
 
-    [nvim-compe](https://github.com/hrsh7th/nvim-compe)
+  [vim-vsnip](https://github.com/hrsh7th/vim-vsnip)
 
-    [vim-vsnip](https://github.com/hrsh7th/vim-vsnip)
+  [friendly-snippets](https://github.com/rafamadriz/friendly-snippets)
 
-    [friendly-snippets](https://github.com/rafamadriz/friendly-snippets)
+  [emmet-vim](https://github.com/mattn/emmet-vim)
 
-    [emmet-vim](https://github.com/mattn/emmet-vim)
+- Tools
 
-* Tools
+  [vista](https://github.com/liuchengxu/vista.vim)
 
-    [vista](https://github.com/liuchengxu/vista.vim)
+  [vim-dadbod](https://github.com/tpope/vim-dadbod) (requires [vim-dadbod-ui](https://github.com/kristijanhusak/vim-dadbod-ui) | [vim-dadbod-completion](https://github.com/kristijanhusak/vim-dadbod-completion))
 
-    [vim-dadbod](https://github.com/tpope/vim-dadbod) (requires [vim-dadbod-ui](https://github.com/kristijanhusak/vim-dadbod-ui) | [vim-dadbod-completion](https://github.com/kristijanhusak/vim-dadbod-completion))
+  [nvim-whichkey-setup.lua](https://github.com/AckslD/nvim-whichkey-setup.lua) (requires [vim-which-key](https://github.com/liuchengxu/vim-which-key))
 
-    [nvim-whichkey-setup.lua](https://github.com/AckslD/nvim-whichkey-setup.lua) (requires [vim-which-key](https://github.com/liuchengxu/vim-which-key))
+  [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim)
 
-    [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim)
-
-    [vim-rooter](https://github.com/airblade/vim-rooter)
+  [vim-rooter](https://github.com/airblade/vim-rooter)
 
 ## Keymaps
 
-* Normal
+- Normal
 
 ```lua
 {'<C-n>', ':e %:h/filename<CR>'}, -- Create new file in current directory
@@ -192,7 +190,7 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 {'<A-t>', ':LspToggleLineDiagnostics<CR>'} -- Lsp toggle line diagnostics
 ```
 
-* Visual
+- Visual
 
 ```lua
 {'<', '<gv'}, -- Tab left
@@ -206,24 +204,24 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 
 ## Supported languages (LSP)
 
-* cpp
-* java
-* rust
-* go
-* python
-* ruby
-* lua
-* php
-* dart
-* sh
-* javascript, javascriptreact, typescript, typescriptreact
-* docker
-* json
-* latex
-* yaml
-* svelte
-* html
-* css, less, scss
+- cpp
+- java
+- rust
+- go
+- python
+- ruby
+- lua
+- php
+- dart
+- sh
+- javascript, javascriptreact, typescript, typescriptreact
+- docker
+- json
+- latex
+- yaml
+- svelte
+- html
+- css, less, scss
 
 ```lua
 :LspInstall <name-of-server>
@@ -231,7 +229,7 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 
 ## Customization
 
-* Modules (plugins)
+- Modules (plugins)
 
 ```lua
 -- modules.custom.init.lua
@@ -254,7 +252,7 @@ modules['sheerun/vim-polyglot'] = {
 return modules
 ```
 
-* Configuration
+- Configuration
 
 ```lua
 -- configs.custom.init.lua
