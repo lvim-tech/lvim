@@ -36,7 +36,7 @@ function config.dashboard()
             command = ':e ~/.config/nvim/lua/configs/global/keymaps.lua'
         },
         f = {
-            description = {'漣 Settings            '},
+            description = {'  Settings           '},
             command = ':e ~/.config/nvim/lua/configs/global/lvim.lua'
         },
         g = {
