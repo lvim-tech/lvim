@@ -12,11 +12,12 @@ modules['lvim-tech/lvim-colorscheme'] = {
 
 modules['nvim-telescope/telescope.nvim'] =
     {
+        cmd = 'Telescope',
         config = ui_config.telescope,
         requires = {
-            {'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'},
-            {'nvim-telescope/telescope-fzy-native.nvim'},
-            {'nvim-telescope/telescope-media-files.nvim'}
+            {'nvim-lua/popup.nvim', opt = true},
+            {'nvim-lua/plenary.nvim', opt = true},
+            {'nvim-telescope/telescope-fzy-native.nvim', opt = true}
         }
     }
 
@@ -31,7 +32,7 @@ modules['glepnir/galaxyline.nvim'] = {
 modules['romgrk/barbar.nvim'] = {requires = 'kyazdani42/nvim-web-devicons'}
 
 modules['lukas-reineke/indent-blankline.nvim'] =
-    {branch = 'lua', config = ui_config.indent_blankline}
+    {event = 'BufRead', branch = 'lua', config = ui_config.indent_blankline}
 
 modules['kyazdani42/nvim-tree.lua'] = {
     config = ui_config.tree,
@@ -43,8 +44,8 @@ modules['kevinhwang91/rnvimr'] = {config = ui_config.ranger}
 modules['norcalli/nvim-colorizer.lua'] = {config = ui_config.colorize}
 
 modules['junegunn/goyo.vim'] = {
-    config = ui_config.goyo,
-    requires = 'junegunn/limelight.vim'
+    requires = 'junegunn/limelight.vim',
+    config = ui_config.goyo
 }
 
 modules['voldikss/vim-floaterm'] = {config = ui_config.floaterm}
@@ -71,15 +72,20 @@ modules['kkoomen/vim-doge'] = {
 }
 
 modules['lewis6991/gitsigns.nvim'] = {
-    requires = {'nvim-lua/plenary.nvim'},
-    config = editor_config.gitsigns
+    event = {'BufRead', 'BufNewFile'},
+    config = editor_config.gitsigns,
+    requires = {'nvim-lua/plenary.nvim', opt = true}
 }
 
 modules['tpope/vim-fugitive'] = {}
 
 modules['f-person/git-blame.nvim'] = {config = editor_config.blame}
 
-modules['TimUntersberger/neogit'] = {config = editor_config.neogit}
+modules['TimUntersberger/neogit'] = {
+    event = {'BufRead', 'BufNewFile'},
+    config = editor_config.neogit,
+    requires = {'nvim-lua/plenary.nvim', opt = true}
+}
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Languages ----------------------------------------------------
@@ -95,14 +101,14 @@ modules['mfussenegger/nvim-jdtls'] = {}
 
 modules['nvim-treesitter/nvim-treesitter'] =
     {
+        event = 'BufRead',
+        after = 'telescope.nvim',
         config = languages_config.treesitter,
-        requires = 'nvim-treesitter/playground',
+        requires = {{'nvim-treesitter/playground', opt = true}},
         run = ':TSUpdate'
     }
 
 modules['mfussenegger/nvim-dap'] = {}
-
-modules['puremourning/vimspector'] = {}
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Completion ---------------------------------------------------
@@ -110,13 +116,20 @@ modules['puremourning/vimspector'] = {}
 
 local completion_config = require('modules.global.configs.completion')
 
-modules['hrsh7th/nvim-compe'] = {config = completion_config.compe}
-
-modules['hrsh7th/vim-vsnip'] = {}
+modules['hrsh7th/nvim-compe'] = {
+    event = 'InsertEnter',
+    config = completion_config.compe
+}
 
 modules['rafamadriz/friendly-snippets'] = {}
+modules['hrsh7th/vim-vsnip'] = {}
 
-modules['mattn/emmet-vim'] = {config = completion_config.emmet}
+modules['onsails/lspkind-nvim'] = {config = completion_config.lspkind}
+
+modules['mattn/emmet-vim'] = {
+    event = 'InsertEnter',
+    config = completion_config.emmet
+}
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Tools --------------------------------------------------------
@@ -126,15 +139,21 @@ local tools_config = require('modules.global.configs.tools')
 
 modules['liuchengxu/vista.vim'] = {}
 
-modules['tpope/vim-dadbod'] = {
-    config = tools_config.dadbod,
-    requires = {
-        'kristijanhusak/vim-dadbod-ui', 'kristijanhusak/vim-dadbod-completion'
+modules['kristijanhusak/vim-dadbod-ui'] =
+    {
+        cmd = {
+            'DBUIToggle', 'DBUIAddConnection', 'DBUI', 'DBUIFindBuffer',
+            'DBUIRenameBuffer'
+        },
+        config = tools_config.vim_dadbod_ui,
+        requires = {
+            {'tpope/vim-dadbod', opt = true},
+            {'kristijanhusak/vim-dadbod-completion', opt = true}
+        }
     }
-}
 
 modules['AckslD/nvim-whichkey-setup.lua'] =
-    {config = tools_config.whichkey, requires = 'liuchengxu/vim-which-key'}
+    {requires = 'liuchengxu/vim-which-key', config = tools_config.whichkey}
 
 modules['iamcco/markdown-preview.nvim'] = {run = 'cd app && yarn install'}
 

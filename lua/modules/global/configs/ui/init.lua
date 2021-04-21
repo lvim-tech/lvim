@@ -267,20 +267,24 @@ function config.galaxyline()
 end
 
 function config.indent_blankline()
-    vim.g.indent_blankline_buftype_exclude = {'terminal'}
-    vim.g.indent_blankline_filetype_exclude =
-        {'help', 'startify', 'dashboard', 'packer', 'neogitstatus'}
     vim.g.indent_blankline_char = '▏'
+    vim.g.indent_blankline_show_first_indent_level = true
+    vim.g.indent_blankline_filetype_exclude =
+        {
+            "startify", "dashboard", "dotooagenda", "log", "fugitive",
+            "gitcommit", "packer", "vimwiki", "markdown", "json", "txt",
+            "vista", "help", "todoist", "NvimTree", "peekaboo", "git",
+            "TelescopePrompt", "undotree", "flutterToolsOutline", ""
+        }
+    vim.g.indent_blankline_buftype_exclude = {"terminal", "nofile"}
     vim.g.indent_blankline_show_trailing_blankline_indent = false
     vim.g.indent_blankline_show_current_context = true
     vim.g.indent_blankline_context_patterns =
         {
-            'class', 'return', 'function', 'method', '^if', '^while',
-            'jsx_element', '^for', '^object', '^table', 'block', 'arguments',
-            'if_statement', 'else_clause', 'jsx_element',
-            'jsx_self_closing_element', 'try_statement', 'catch_clause',
-            'import_statement', 'operation_type'
+            "class", "function", "method", "block", "list_literal", "selector",
+            "^if", "^table", "if_statement", "while", "for"
         }
+    vim.cmd('autocmd CursorMoved * IndentBlanklineRefresh')
 end
 
 function config.tree()
@@ -382,14 +386,11 @@ function config.goyo()
 end
 
 function config.telescope()
-    -- if not packer_plugins['plenary.nvim'].loaded then
-    --     vim.cmd [[packadd plenary.nvim]]
-    --     vim.cmd [[packadd popup.nvim]]
-    --     vim.cmd [[packadd telescope-fzy-native.nvim]]
-    --     vim.cmd [[packadd telescope-media-files]]
-    -- end
-    require('telescope').load_extension('fzy_native')
-    require('telescope').load_extension('media_files')
+    if not packer_plugins['plenary.nvim'].loaded then
+        vim.cmd [[packadd plenary.nvim]]
+        vim.cmd [[packadd popup.nvim]]
+        vim.cmd [[packadd telescope-fzy-native.nvim]]
+    end
     require('telescope').setup {
         defaults = {
             vimgrep_arguments = {
@@ -435,13 +436,10 @@ function config.telescope()
             fzy_native = {
                 override_generic_sorter = false,
                 override_file_sorter = true
-            },
-            media_files = {
-                filetypes = {"png", "webp", "jpg", "jpeg"},
-                find_cmd = "rg"
             }
         }
     }
+    require('telescope').load_extension('fzy_native')
 end
 
 function config.floaterm()

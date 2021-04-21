@@ -109,6 +109,9 @@ function config.formatter()
 end
 
 function config.autopairs()
+    if not packer_plugins['nvim-treesitter'].loaded then
+        vim.cmd [[packadd nvim-treesitter]]
+    end
     require('nvim-autopairs').setup()
     local npairs = require('nvim-autopairs')
 
@@ -195,6 +198,9 @@ end
 function config.doge() vim.g.doge_mapping = '<Leader>*' end
 
 function config.gitsigns()
+    if not packer_plugins['plenary.nvim'].loaded then
+        vim.cmd [[packadd plenary.nvim]]
+    end
     require('gitsigns').setup {
         signs = {
             add = {
@@ -245,6 +251,11 @@ end
 
 function config.blame() vim.g.gitblame_enabled = 0 end
 
-function config.neogit() require('neogit').setup {} end
+function config.neogit()
+    if not packer_plugins['plenary.nvim'].loaded then
+        vim.cmd [[packadd plenary.nvim]]
+    end
+    require('neogit').setup {}
+end
 
 return config

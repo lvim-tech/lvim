@@ -1,7 +1,7 @@
 local global = require('core.global')
 require'lspconfig'.html.setup {
     cmd = {
-        "node", global.data_dir ..
+        "node", global.lsp_path ..
             "lspinstall/html/vscode-html/html-language-features/server/dist/node/htmlServerMain.js",
         "--stdio"
     },

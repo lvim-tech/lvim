@@ -15,7 +15,14 @@ function config.vista()
     }
 end
 
-function config.dadbod()
+function config.vim_dadbod_ui()
+    if packer_plugins['vim-dadbod'] and not packer_plugins['vim-dadbod'].loaded then
+        vim.cmd [[packadd vim-dadbod]]
+    end
+    vim.g.db_ui_show_help = 0
+    vim.g.db_ui_win_position = 'left'
+    vim.g.db_ui_use_nerd_fonts = 1
+    vim.g.db_ui_winwidth = 35
     vim.api.nvim_set_keymap("n", "<leader>Du", ":DBUIToggle<CR>",
                             {noremap = true, silent = true})
     vim.api.nvim_set_keymap("n", "<leader>Df", ":DBUIFindBuffer<CR>",
@@ -70,34 +77,16 @@ function config.whichkey()
         },
         ['d'] = {
             name = '+debug',
-            ['d'] = {
-                name = '+dap',
-                ['b'] = {'<Cmd>DapToggleBreakpoint<CR>', 'toggle breakpoint'},
-                ['s'] = {'<Cmd>DapStart<CR>', 'start / continue'},
-                ['f'] = {'<Cmd>DapStop<CR>', 'stop'},
-                ['r'] = {'<Cmd>DapRestart<CR>', 'restart'},
-                ['p'] = {'<Cmd>DapPause<CR>', 'pause'},
-                ['o'] = {'<Cmd>DapStepOver<CR>', 'step over'},
-                ['i'] = {'<Cmd>DapStepInto<CR>', 'step into'},
-                ['O'] = {'<Cmd>DapStepOut<CR>', 'step into'},
-                ['R'] = {'<Cmd>DapToggleRepl<CR>', 'togle repl'},
-                ['S'] = {'<Cmd>DapGetSession<CR>', 'get session'}
-            },
-            ['v'] = {
-                name = '+vimspector',
-                ['b'] = {
-                    '<Plug>VimspectorToggleBreakpoint', 'toggle breakpoint'
-                },
-                ['s'] = {'<Plug>VimspectorContinue<CR>', 'start / continue'},
-                ['f'] = {'<Plug>VimspectorStop<CR>', 'stop'},
-                ['r'] = {'<Cmd>VimspectorReset<CR>', 'reset'},
-                ['R'] = {'<Plug>VimspectorRestart<CR>', 'restart'},
-                ['p'] = {'<Plug>VimspectorPause<CR>', 'pause'},
-                ['o'] = {'<Plug>VimspectorStepOver<CR>', 'step over'},
-                ['i'] = {'<Plug>VimspectorStepInto<CR>', 'step into'},
-                ['O'] = {'<Plug>VimspectorStepOut<CR>', 'step out'},
-                ['c'] = {'<Plug>VimspectorRunToCursor<CR>', 'run to cursor'}
-            }
+            ['b'] = {'<Cmd>DapToggleBreakpoint<CR>', 'toggle breakpoint'},
+            ['s'] = {'<Cmd>DapStart<CR>', 'start / continue'},
+            ['f'] = {'<Cmd>DapStop<CR>', 'stop'},
+            ['r'] = {'<Cmd>DapRestart<CR>', 'restart'},
+            ['p'] = {'<Cmd>DapPause<CR>', 'pause'},
+            ['o'] = {'<Cmd>DapStepOver<CR>', 'step over'},
+            ['i'] = {'<Cmd>DapStepInto<CR>', 'step into'},
+            ['O'] = {'<Cmd>DapStepOut<CR>', 'step into'},
+            ['R'] = {'<Cmd>DapToggleRepl<CR>', 'togle repl'},
+            ['S'] = {'<Cmd>DapGetSession<CR>', 'get session'}
         },
         ['D'] = {
             name = '+database',

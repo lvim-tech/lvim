@@ -76,9 +76,7 @@ function plugins.convert_compile_file()
     if fn.isdirectory(data_path .. 'lua') ~= 1 then
         os.execute('mkdir -p ' .. data_path .. 'lua')
     end
-    if fn.filereadable(compile_to_lua) == 1 then
-        os.remove(compile_to_lua)
-    end
+    if fn.filereadable(compile_to_lua) == 1 then os.remove(compile_to_lua) end
     local file = io.open(compile_to_lua, "w")
     for _, line in ipairs(lines) do file:write(line) end
     file:close()

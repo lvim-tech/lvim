@@ -26,10 +26,8 @@ local pack = require('core.pack')
 local load_ide = function()
     createdir()
     leader_map()
-    vim.cmd 'autocmd BufWritePost pack.lua PackerCompile'
     pack.ensure_plugins()
     funcs.configs()
-    require('core.pack')
     pack.load_compile()
 end
 

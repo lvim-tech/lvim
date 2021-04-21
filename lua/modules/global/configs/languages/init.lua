@@ -1,12 +1,13 @@
 local config = {}
 
 function config.treesitter()
+    if not packer_plugins['playground'].loaded then
+        vim.cmd [[packadd playground]]
+    end
     require'nvim-treesitter.configs'.setup {
         ensure_installed = "all",
         ignore_install = {"haskell"},
-        highlight = {
-            enable = true
-        },
+        highlight = {enable = true},
         indent = {enable = {"javascriptreact"}},
         playground = {
             enable = true,

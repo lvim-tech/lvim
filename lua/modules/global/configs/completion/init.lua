@@ -19,8 +19,8 @@ function config.compe()
             path = {kind = "  "},
             buffer = {kind = "  "},
             calc = {kind = "  "},
-            vsnip = {kind = "  "},
-            nvim_lsp = {kind = "  "},
+            vsnip = {kind = "  "},
+            nvim_lsp = {kind = "  "},
             -- nvim_lua = {kind = "  "},
             nvim_lua = false,
             spell = {kind = "  "},
@@ -28,7 +28,7 @@ function config.compe()
             vim_dadbod_completion = true,
             -- snippets_nvim = {kind = "  "},
             -- ultisnips = {kind = "  "},
-            -- treesitter = {kind = "  "},
+            treesitter = {kind = " 侮 "},
             emoji = {kind = " ﲃ ", filetypes = {"markdown"}}
             -- for emoji press : (idk if that in compe tho)
         }
@@ -77,6 +77,34 @@ function config.emmet()
     vim.g.user_emmet_install_global = 0
     vim.g.user_emmet_install_command = 0
     vim.g.user_emmet_mode = 'i'
+end
+
+function config.lspkind()
+    require('lspkind').init({
+        with_text = true,
+        symbol_map = {
+            Text = '',
+            Method = 'ƒ',
+            Function = '',
+            Constructor = '',
+            Variable = '',
+            Class = '',
+            Interface = 'ﰮ',
+            Module = '',
+            Property = '',
+            Unit = '',
+            Value = '',
+            Enum = '了',
+            Keyword = '',
+            Snippet = '﬌',
+            Color = '',
+            File = '',
+            Folder = '',
+            EnumMember = '',
+            Constant = '',
+            Struct = ''
+        }
+    })
 end
 
 return config
