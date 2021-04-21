@@ -9,8 +9,8 @@ LVIM is a modular Neovim configuration written in LUA with full customization:
 * Add or remove plugins, rewrite settings of all plugins
 * Dynamic LSP activation
 * Debugging - Dap, Vimspector
-* By default - 46 plugins
-* Loading time - 180.513 ms
+* By default - 45 plugins
+* Loading time - ~~180.513~~ 060.381 ms
 
 ![Screenshot from 2021-04-19 23-29-26](https://user-images.githubusercontent.com/82431193/115300366-9269a580-a168-11eb-8bd6-209ae946d679.png)
 
