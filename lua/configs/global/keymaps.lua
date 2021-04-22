@@ -29,7 +29,7 @@ keymaps['normal'] = {
     {'<S-m>', ':MarkdownPreviewToggle<CR>'}, -- Markdown preview toggle
     {'<S-o>', ':Format<CR>'}, -- Format code
     {'<S-t>', ':FloatermNew --wintype=normal --height=10<CR>'}, -- Terminal
-    {'<S-v>', ':Vista<CR>'}, -- Vista
+    {'<A-v>', ':Vista<CR>'}, -- Vista
     {'<A-[>', ':foldopen<CR>'}, -- Fold open
     {'<A-]>', ':foldclose<CR>'}, -- Fold close
     {'<A-.>', ':BookmarkToggle<CR>'}, -- Bookmark toggle
