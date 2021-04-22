@@ -12,5 +12,14 @@ require'lspconfig'.jdtls.setup {
     on_attach = on_attach,
     cmd = {JAVA_LS_EXECUTABLE},
     root_dir = require('jdtls.setup').find_root(
-        {'build.gradle', 'pom.xml', '.git'})
+        {'build.gradle', 'pom.xml', '.git'}),
+    handlers = {
+        ["textDocument/publishDiagnostics"] = vim.lsp.with(
+            vim.lsp.diagnostic.on_publish_diagnostics, {
+                virtual_text = false,
+                signs = true,
+                underline = false,
+                update_in_insert = true
+            })
+    }
 }

@@ -17,7 +17,14 @@ lspconfig.tailwindls.setup {
         ["tailwindcss/getConfiguration"] = function(_, _, params, _, bufnr, _)
             vim.lsp.buf_notify(bufnr, "tailwindcss/getConfigurationResponse",
                                {_id = params._id})
-        end
+        end,
+        ["textDocument/publishDiagnostics"] = vim.lsp.with(
+            vim.lsp.diagnostic.on_publish_diagnostics, {
+                virtual_text = false,
+                signs = true,
+                underline = false,
+                update_in_insert = true
+            })
     },
     on_attach = require'lsp.global'.common_on_attach
 }
