@@ -43,7 +43,8 @@ keymaps['normal'] = {
     {'<A-r>', ':LspRename<CR>'}, -- Lsp rename
     {'<A-n>', ':LspGoToNext<CR>'}, -- Lsp go to next
     {'<A-p>', ':LspGoToPrev<CR>'}, -- Lsp go to prev
-    {'<A-t>', ':LspToggleLineDiagnostics<CR>'} -- Lsp toggle line diagnostics
+    {'<A-t>', ':LspToggleLineDiagnostics<CR>'}, -- Lsp toggle line diagnostics
+    {'<A-e>', ':LspTroubleToggle<CR>'} -- Lsp trouble toggle
 }
 
 keymaps['visual'] = {

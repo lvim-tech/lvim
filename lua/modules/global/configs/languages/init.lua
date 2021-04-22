@@ -42,4 +42,8 @@ function config.jump()
     vim.g.any_jump_list_numbers = 1
 end
 
+function config.trouble()
+    require("trouble").setup {height = 12, use_lsp_diagnostic_signs = true}
+end
+
 return config

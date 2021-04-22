@@ -113,6 +113,12 @@ modules['pechorin/any-jump.vim'] = {
     config = languages_config.jump
 }
 
+modules['folke/lsp-trouble.nvim'] = {
+    event = 'BufRead',
+    requires = "kyazdani42/nvim-web-devicons",
+    config = languages_config.trouble
+}
+
 modules['mfussenegger/nvim-dap'] = {}
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

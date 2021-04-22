@@ -9,7 +9,7 @@ local modules = {}
 -- }
 
 -- Add new plugin
--- modules['pechorin/any-jump.vim'] = {
+-- modules['sheerun/vim-polyglot'] = {
 --     your code
 -- }
 
