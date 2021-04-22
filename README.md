@@ -118,6 +118,10 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 
   [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) (requires [playground](https://github.com/nvim-treesitter/playground))
 
+  [any-jump.vim](https://github.com/pechorin/any-jump.vim)
+
+  [lsp-trouble.nvim](https://github.com/folke/lsp-trouble.nvim) (requires [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons))
+
   [nvim-dap](https://github.com/mfussenegger/nvim-dap)
 
 - Completion
