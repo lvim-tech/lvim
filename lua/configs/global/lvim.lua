@@ -3,8 +3,8 @@ local funcs = require "core.funcs"
 
 local M = {}
 
-M.global_local = function()
-    local global_local_set = {
+M.global = function()
+    local global = {
         background = "dark",
         termguicolors = true,
         mouse = "nv",
@@ -89,11 +89,11 @@ M.global_local = function()
         pumblend = 10,
         winblend = 10
     }
-    funcs.options_global(global_local_set)
+    funcs.options_global(global)
 end
 
-M.bw_local = function()
-    local bw_local_set = {
+M.set = function()
+    local set = {
         cmdheight = 1,
         synmaxcol = 2500,
         formatoptions = "1jcroql",
@@ -111,7 +111,7 @@ M.bw_local = function()
         conceallevel = 2,
         concealcursor = "niv"
     }
-    funcs.options_set(bw_local_set)
+    funcs.options_set(set)
 end
 
 return M

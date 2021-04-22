@@ -4,8 +4,8 @@ local lvim = require "configs.global.lvim"
 local keymaps = require "configs.global.keymaps"
 
 configs['options'] = function()
-    lvim.global_local()
-    lvim.bw_local()
+    lvim.global()
+    lvim.set()
 end
 
 configs['events'] = function()
