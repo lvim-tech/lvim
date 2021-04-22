@@ -9,7 +9,7 @@ keymaps['normal'] = {
     {'<C-n>', ':e %:h/filename<CR>'}, -- Create new file in current directory
     {'<C-s>', ':w<CR>'}, -- Save buffer
     {'<C-a>', ':wa<CR>'}, -- Save all buffers
-    {'<C-q>', ':q!<CR>'}, -- Close buffer
+    {'<C-q>', ':q!<CR>'}, -- Close window, save buffer
     {'<C-e>', ':qa!<CR>'}, -- Exit nvim
     {'<C-h>', '<C-w>h'}, {'<C-l>', '<C-w>l'}, -- Smart way to move between windows horizontal
     {'<C-j>', '<C-w>j'}, {'<C-k>', '<C-w>k'}, -- Smart way to move between windows vertical
