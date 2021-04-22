@@ -108,6 +108,11 @@ modules['nvim-treesitter/nvim-treesitter'] =
         run = ':TSUpdate'
     }
 
+modules['pechorin/any-jump.vim'] = {
+    event = 'BufRead',
+    config = languages_config.jump
+}
+
 modules['mfussenegger/nvim-dap'] = {}
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

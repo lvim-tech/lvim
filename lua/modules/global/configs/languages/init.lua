@@ -36,4 +36,10 @@ function config.treesitter()
     }
 end
 
+function config.jump()
+    vim.cmd([[unmap <leader>j]])
+    vim.g.any_jump_disable_default_keybindings = 1
+    vim.g.any_jump_list_numbers = 1
+end
+
 return config

@@ -29,6 +29,7 @@ keymaps['normal'] = {
     {'<S-m>', ':MarkdownPreviewToggle<CR>'}, -- Markdown preview toggle
     {'<S-o>', ':Format<CR>'}, -- Format code
     {'<S-t>', ':FloatermNew --wintype=normal --height=10<CR>'}, -- Terminal
+    {'<S-j>', ':AnyJump<CR>'}, -- Any jump
     {'<A-v>', ':Vista<CR>'}, -- Vista
     {'<A-[>', ':foldopen<CR>'}, -- Fold open
     {'<A-]>', ':foldclose<CR>'}, -- Fold close
@@ -58,7 +59,8 @@ keymaps['visual'] = {
     }, -- Visual search ?
     {'K', ':move \'<-2<CR>gv-gv'}, -- Move up
     {'J', ':move \'>+1<CR>gv-gv'}, -- Move down
-    {'<A-/>', ':CommentToggle<CR>'} -- Comment toggle
+    {'<S-j>', ':AnyJumpVisual<CR>'}, -- Any jump visual
+    {'<A-/>', ':Format<CR>'} -- Comment toggle
 }
 
 return keymaps
