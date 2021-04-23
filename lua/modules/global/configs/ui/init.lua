@@ -137,7 +137,7 @@ function config.galaxyline()
             provider = 'DiffModified',
             condition = condition.hide_in_width,
             icon = '   ',
-            highlight = {colors.blue, colors.bg}
+            highlight = {colors.orange, colors.bg}
         }
     }
     gls.left[6] = {
@@ -166,7 +166,7 @@ function config.galaxyline()
         DiagnosticHint = {
             provider = 'DiagnosticHint',
             icon = '  ',
-            highlight = {colors.blue, colors.bg}
+            highlight = {colors.orange, colors.bg}
         }
     }
     gls.right[4] = {
@@ -185,7 +185,7 @@ function config.galaxyline()
                 return true
             end,
             icon = '   ',
-            highlight = {colors.grey, colors.bg}
+            highlight = {colors.purple, colors.bg}
         }
     }
     gls.right[6] = {
