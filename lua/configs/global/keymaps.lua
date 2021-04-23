@@ -2,35 +2,28 @@ local keymaps = {}
 
 keymaps["normal"] = {
     {"<Esc>", "<Esc>:noh<CR>"}, -- Remove highlight after search
-    {"<Tab>", ":BufferNext<CR>"},
-    {"<S-Tab>", ":BufferPrevious<CR>"}, -- Tab navigation / Barbar
+    {"<Tab>", ":BufferNext<CR>"}, {"<S-Tab>", ":BufferPrevious<CR>"}, -- Tab navigation / Barbar
     {"<F5>", ":UndotreeToggle<CR>"}, -- UndoTree toggle
-    {"[j", "<C-o>"},
-    {"]j", "<C-i>"}, -- Jump list
-    {"[d", "<PageUp>"},
-    {"]d", "<PageDown>"}, -- Page down/up
+    {"[j", "<C-o>"}, {"]j", "<C-i>"}, -- Jump list
+    {"[d", "<PageUp>"}, {"]d", "<PageDown>"}, -- Page down/up
     {"<C-n>", ":e %:h/filename<CR>"}, -- Create new file in current directory
     {"<C-s>", ":w<CR>"}, -- Save buffer
     {"<C-a>", ":wa<CR>"}, -- Save all buffers
     {"<C-q>", ":q!<CR>"}, -- Close window, save buffer
     {"<C-e>", ":qa!<CR>"}, -- Exit nvim
-    {"<C-h>", "<C-w>h"},
-    {"<C-l>", "<C-w>l"}, -- Smart way to move between windows horizontal
-    {"<C-j>", "<C-w>j"},
-    {"<C-k>", "<C-w>k"}, -- Smart way to move between windows vertical
-    {"<C-Up>", ":resize +2<CR>"},
-    {"<C-Down>", ":resize -2<CR>"}, -- Resize
+    {"<C-h>", "<C-w>h"}, {"<C-l>", "<C-w>l"}, -- Smart way to move between windows horizontal
+    {"<C-j>", "<C-w>j"}, {"<C-k>", "<C-w>k"}, -- Smart way to move between windows vertical
+    {"<C-Up>", ":resize +2<CR>"}, {"<C-Down>", ":resize -2<CR>"}, -- Resize
     {"<C-Left>", ":vertical resize +2<CR>"},
     {"<C-Right>", ":vertical resize -2<CR>"}, -- Resize
     {"<S-h>", "<C-W>v"}, -- Split horizontal
     {"<S-b>", "<C-W>s"}, -- Split vertical
     {"<S-x>", ":BufferClose<CR>"}, -- Buffer Close
     {"<S-d>", ":bdelete<CR>"}, -- BDelete
-    {"<S-p>", ":Telescope project<CR>"}, -- Telescope project
     {"<S-e>", ":NvimTreeToggle<CR>"}, -- NvimTree explorer
     {"<S-r>", ":RnvimrToggle<CR>"}, -- Ranger explorer
     {"<S-f>", ":Telescope find_files<CR>"}, -- File search
-    {"<S-g>", ":Telescope live_grep<CR>"}, -- Text search
+    {"<S-p>", ":Telescope live_grep<CR>"}, -- Text search
     {"<S-l>", ":FloatermNew lazygit<CR>"}, -- GIT
     {"<S-m>", ":MarkdownPreviewToggle<CR>"}, -- Markdown preview toggle
     {"<S-t>", ":FloatermNew --wintype=normal --height=10<CR>"}, -- Terminal
