@@ -4,7 +4,7 @@ local funcs = require "core.funcs"
 local M = {}
 
 M.global = function()
-    local global = {
+    local global_opt = {
         background = "dark",
         termguicolors = true,
         mouse = "nv",
@@ -89,11 +89,11 @@ M.global = function()
         pumblend = 10,
         winblend = 10
     }
-    funcs.options_global(global)
+    funcs.options_global(global_opt)
 end
 
 M.set = function()
-    local set = {
+    local set_opt = {
         cmdheight = 1,
         synmaxcol = 2500,
         formatoptions = "1jcroql",
@@ -111,7 +111,7 @@ M.set = function()
         conceallevel = 2,
         concealcursor = "niv"
     }
-    funcs.options_set(set)
+    funcs.options_set(set_opt)
 end
 
 return M
