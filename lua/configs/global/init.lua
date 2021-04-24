@@ -96,7 +96,9 @@ configs['commands'] = function()
     vim.cmd(
         'command! LspShowLineDiagnostics lua require("configs.global.utils").show_line_diagnostics()')
     vim.cmd(
-        'command! LspToggleVirtualText lua require("configs.global.utils").toggle_virtual_text()')
+        'command! LspVirtualTextShow lua require("configs.global.utils").virtual_text_show()')
+    vim.cmd(
+        'command! LspVirtualTextHide lua require("configs.global.utils").virtual_text_hide()')
     -- DAP
     vim.cmd('command! DapToggleBreakpoint lua require"dap".toggle_breakpoint()')
     vim.cmd('command! DapStart lua require"dap".continue()')

@@ -95,6 +95,11 @@ function config.whichkey()
             ['r'] = {'<Cmd>DBUIRenameBuffer<CR>', 'db rename buffer'},
             ['l'] = {'<Cmd>DBUILastQueryInfo<CR>', 'db last query'}
         },
+        ['.'] = {
+            name = '+virtualtext',
+            ['s'] = {'<Cmd>LspVirtualTextShow<CR>', 'virtual text show'},
+            ['h'] = {'<Cmd>LspVirtualTextHide<CR>', 'virtual text hide'}
+        },
         ['l'] = {
             name = '+lsp',
             ['r'] = {'<Cmd>LspRename<CR>', 'rename'},

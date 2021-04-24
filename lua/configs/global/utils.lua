@@ -40,8 +40,11 @@ function utils.goto_next() vim.lsp.diagnostic.goto_next() end
 function utils.goto_prev() vim.lsp.diagnostic.goto_prev() end
 function utils.show_line_diagnostics() vim.lsp.diagnostic
     .show_line_diagnostics() end
-function utils.toggle_virtual_text()
-    require("lsp.global.languages.virtualtext").toggle()
+function utils.virtual_text_show()
+    require("lsp.global.languages.virtualtext").show()
+end
+function utils.virtual_text_hide()
+    require("lsp.global.languages.virtualtext").hide()
 end
 -- GIT signs
 function utils.preview_hunk() require('gitsigns').preview_hunk() end
