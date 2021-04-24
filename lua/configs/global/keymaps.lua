@@ -28,7 +28,7 @@ keymaps["normal"] = {
     {"<S-m>", ":MarkdownPreviewToggle<CR>"}, -- Markdown preview toggle
     {"<S-t>", ":FloatermNew --wintype=normal --height=10<CR>"}, -- Terminal
     {"<A-j>", ":AnyJump<CR>"}, -- Any jump
-    {"<A-v>", ":Vista<CR>"}, -- Vista
+    {"<A-v>", ":SymbolsOutline<CR>"}, -- Symbols outline
     {"<A-[>", ":foldopen<CR>"}, -- Fold open
     {"<A-]>", ":foldclose<CR>"}, -- Fold close
     {"<A-.>", ":BookmarkToggle<CR>"}, -- Bookmark toggle
@@ -42,7 +42,7 @@ keymaps["normal"] = {
     {"<A-r>", ":LspRename<CR>"}, -- Lsp rename
     {"<A-n>", ":LspGoToNext<CR>"}, -- Lsp go to next
     {"<A-p>", ":LspGoToPrev<CR>"}, -- Lsp go to prev
-    {"<A-t>", ":LspToggleLineDiagnostics<CR>"}, -- Lsp toggle line diagnostics
+    {"<A-t>", ":LspToggleVirtualText<CR>"}, -- Lsp show line diagnostics
     {"<A-e>", ":LspTroubleToggle<CR>"} -- Lsp trouble toggle
 }
 

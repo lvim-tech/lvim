@@ -94,7 +94,9 @@ configs['commands'] = function()
     vim.cmd(
         'command! LspGoToPrev lua require("configs.global.utils").goto_prev()')
     vim.cmd(
-        'command! LspToggleLineDiagnostics lua require("lsp.global.languages.virtualtext").toggle()')
+        'command! LspShowLineDiagnostics lua require("configs.global.utils").show_line_diagnostics()')
+    vim.cmd(
+        'command! LspToggleVirtualText lua require("configs.global.utils").toggle_virtual_text()')
     -- DAP
     vim.cmd('command! DapToggleBreakpoint lua require"dap".toggle_breakpoint()')
     vim.cmd('command! DapStart lua require"dap".continue()')
@@ -124,6 +126,9 @@ configs['commands'] = function()
         'command! GitSignsResetBuffer lua require("configs.global.utils").reset_buffer()')
     vim.cmd(
         'command! GitSignsBlameLine lua require("configs.global.utils").blame_line()')
+    -- Symbols outline
+    vim.cmd(
+        'command! SymbolsOutline lua require("symbols-outline").toggle_outline()')
 end
 
 configs['keymaps'] = function()

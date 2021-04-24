@@ -46,4 +46,11 @@ function config.trouble()
     require("trouble").setup {height = 12, use_lsp_diagnostic_signs = true}
 end
 
+function config.symbols()
+    require('symbols-outline').setup {
+        highlight_hovered_item = true,
+        show_guides = true
+    }
+end
+
 return config

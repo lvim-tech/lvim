@@ -119,6 +119,9 @@ modules['folke/lsp-trouble.nvim'] = {
     config = languages_config.trouble
 }
 
+modules['simrat39/symbols-outline.nvim'] =
+    {event = 'BufRead', config = languages_config.symbols}
+
 modules['mfussenegger/nvim-dap'] = {}
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -147,8 +150,6 @@ modules['mattn/emmet-vim'] = {
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 local tools_config = require('modules.global.configs.tools')
-
-modules['liuchengxu/vista.vim'] = {}
 
 modules['kristijanhusak/vim-dadbod-ui'] =
     {

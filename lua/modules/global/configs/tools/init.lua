@@ -59,8 +59,8 @@ function config.whichkey()
         ['e'] = {'<Cmd>NvimTreeToggle<CR>', 'explorer'},
         ['r'] = {'<Cmd>RnvimrToggle<CR>', 'ranger'},
         ['F'] = {'<Cmd>Format<CR>', 'formal'},
-        -- ['m'] = {'<Cmd>MarkdownPreviewToggle<CR>', 'markdown preview toggle'},
-        ['V'] = {'<Cmd>Vista<CR>', 'vista'},
+        ['M'] = {'<Cmd>MarkdownPreviewToggle<CR>', 'markdown preview toggle'},
+        ['s'] = {'<Cmd>SymbolsOutline<CR>', 'symbols outline'},
         ['b'] = {
             name = '+buffer',
             ['>'] = {'<Cmd>BufferMoveNext<CR>', 'move next'},

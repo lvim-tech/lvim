@@ -122,6 +122,8 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 
   [lsp-trouble.nvim](https://github.com/folke/lsp-trouble.nvim) (requires [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons))
 
+  [symbols-outline.nvim](https://github.com/simrat39/symbols-outline.nvim)
+
   [nvim-dap](https://github.com/mfussenegger/nvim-dap)
 
 - Completion
@@ -135,8 +137,6 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
   [emmet-vim](https://github.com/mattn/emmet-vim)
 
 - Tools
-
-  [vista](https://github.com/liuchengxu/vista.vim)
 
   [vim-dadbod](https://github.com/tpope/vim-dadbod) (requires [vim-dadbod-ui](https://github.com/kristijanhusak/vim-dadbod-ui) | [vim-dadbod-completion](https://github.com/kristijanhusak/vim-dadbod-completion))
 
