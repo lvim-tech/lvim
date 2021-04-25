@@ -44,7 +44,6 @@ function config.dashboard()
             command = ':e ~/.config/nvim/README.md'
         }
     }
-    vim.g.dashboard_custom_footer = {'I Love You, LUA'}
 end
 
 function config.galaxyline()
