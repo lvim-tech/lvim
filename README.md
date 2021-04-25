@@ -14,7 +14,9 @@ LVIM is a modular Neovim configuration written in LUA with full customization:
 - By default - 45 plugins
 - Loading time - ~~180.513~~ 060.381 ms
 
-![Screenshot from 2021-04-19 23-29-26](https://user-images.githubusercontent.com/82431193/115300366-9269a580-a168-11eb-8bd6-209ae946d679.png)
+![Screenshot from 2021-04-25 15-07-07](https://user-images.githubusercontent.com/82431193/115992744-f0b6de00-a5d7-11eb-8ff0-04d767812245.png)
+![Screenshot from 2021-04-25 15-04-39](https://user-images.githubusercontent.com/82431193/115992725-d11fb580-a5d7-11eb-93af-b1a52d77aca8.png)
+
 
 ## Requirements
 
