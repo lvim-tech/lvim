@@ -23,6 +23,7 @@ function global:load_variables()
     self.home = home
     self.data_path = string.format('%s/site/', vim.fn.stdpath('data'))
     self.lsp_path = string.format('%s/', vim.fn.stdpath('data'))
+    print(home)
 end
 
 global:load_variables()
