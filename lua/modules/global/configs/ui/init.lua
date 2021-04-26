@@ -51,21 +51,21 @@ function config.galaxyline()
     gl.short_line_list = {'NvimTree', 'vista', 'dbui', 'packer'}
     local colors = {
         bg = "#222222",
-        fg = "#bdae93",
+        fg = "#E7BC74",
         line_bg = "#222222",
         lbg = "#222222",
         fg_green = "#458588",
         yellow = "#E6B673",
-        cyan = "#83a598",
+        cyan = "#39A291",
         darkblue = "#458588",
         green = "#689d6a",
-        orange = "#E6B673",
+        orange = "#F2994B",
         purple = "#008080",
         magenta = "#ea6962",
-        gray = "#bdae93",
+        gray = "#E7BC74",
         blue = "#83a598",
-        red = "#F2594B",
-        error_red = '#F2594B'
+        red = "#F24949",
+        error_red = '#F24949'
     }
     local condition = require('galaxyline.condition')
     local gls = gl.section
@@ -75,11 +75,11 @@ function config.galaxyline()
             provider = function()
                 -- auto change color according the vim mode
                 local mode_color = {
-                    n = colors.blue,
-                    i = colors.green,
-                    v = colors.purple,
+                    n = colors.gray,
+                    i = colors.red,
+                    v = colors.cyan,
                     [''] = colors.purple,
-                    V = colors.purple,
+                    V = colors.cyan,
                     c = colors.magenta,
                     no = colors.blue,
                     s = colors.orange,
