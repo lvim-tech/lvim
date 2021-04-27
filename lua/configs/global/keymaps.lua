@@ -11,6 +11,8 @@ keymaps["normal"] = {
     {"<C-a>", ":wa<CR>"}, -- Save all buffers
     {"<C-q>", ":q!<CR>"}, -- Close window, save buffer
     {"<C-e>", ":qa!<CR>"}, -- Exit nvim
+    {"<C-x>", ":BufferClose<CR>"}, -- Buffer Close
+    {"<C-d>", ":bdelete<CR>"}, -- BDelete
     {"<C-h>", "<C-w>h"}, {"<C-l>", "<C-w>l"}, -- Smart way to move between windows horizontal
     {"<C-j>", "<C-w>j"}, {"<C-k>", "<C-w>k"}, -- Smart way to move between windows vertical
     {"<C-Up>", ":resize +2<CR>"}, {"<C-Down>", ":resize -2<CR>"}, -- Resize
@@ -18,8 +20,6 @@ keymaps["normal"] = {
     {"<C-Right>", ":vertical resize -2<CR>"}, -- Resize
     {"<S-h>", "<C-W>v"}, -- Split horizontal
     {"<S-b>", "<C-W>s"}, -- Split vertical
-    {"<S-x>", ":BufferClose<CR>"}, -- Buffer Close
-    {"<S-d>", ":bdelete<CR>"}, -- BDelete
     {"<S-e>", ":NvimTreeToggle<CR>"}, -- NvimTree explorer
     {"<S-r>", ":RnvimrToggle<CR>"}, -- Ranger explorer
     {"<S-f>", ":Telescope find_files<CR>"}, -- File search
@@ -59,7 +59,7 @@ keymaps["visual"] = {
     {"K", ":move '<-2<CR>gv-gv"}, -- Move up
     {"J", ":move '>+1<CR>gv-gv"}, -- Move down
     {"<A-j>", ":AnyJumpVisual<CR>"}, -- Any jump visual
-    {"<A-/>", ":Format<CR>"} -- Comment toggle
+    {"<A-/>", ":CommentToggle<CR>"} -- Comment toggle
 }
 
 return keymaps
