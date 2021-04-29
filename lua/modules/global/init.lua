@@ -84,6 +84,7 @@ local languages_config = require('modules.global.configs.languages')
 
 modules['nvim-telescope/telescope.nvim'] =
     {
+        cmd = 'Telescope',
         config = languages_config.telescope,
         requires = {
             {'nvim-lua/popup.nvim', opt = true},
