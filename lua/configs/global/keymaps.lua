@@ -23,7 +23,8 @@ keymaps["normal"] = {
     {"<S-e>", ":NvimTreeToggle<CR>"}, -- NvimTree explorer
     {"<S-r>", ":RnvimrToggle<CR>"}, -- Ranger explorer
     {"<S-f>", ":Telescope find_files<CR>"}, -- File search
-    {"<S-p>", ":Telescope live_grep<CR>"}, -- Text search
+    {"<S-w>", ":Telescope live_grep<CR>"}, -- Text search
+    {"<S-p>", ":Telescope project<CR>"}, -- Text search
     {"<S-l>", ":FloatermNew lazygit<CR>"}, -- GIT
     {"<S-m>", ":MarkdownPreviewToggle<CR>"}, -- Markdown preview toggle
     {"<S-t>", ":FloatermNew --wintype=normal --height=10<CR>"}, -- Terminal

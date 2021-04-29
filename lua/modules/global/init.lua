@@ -10,17 +10,6 @@ modules['lvim-tech/lvim-colorscheme'] = {
     config = [[vim.cmd('colorscheme lvim')]]
 }
 
-modules['nvim-telescope/telescope.nvim'] =
-    {
-        cmd = 'Telescope',
-        config = ui_config.telescope,
-        requires = {
-            {'nvim-lua/popup.nvim', opt = true},
-            {'nvim-lua/plenary.nvim', opt = true},
-            {'nvim-telescope/telescope-fzy-native.nvim', opt = true}
-        }
-    }
-
 modules['glepnir/dashboard-nvim'] = {config = ui_config.dashboard}
 
 modules['glepnir/galaxyline.nvim'] = {
@@ -92,6 +81,17 @@ modules['TimUntersberger/neogit'] = {
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 local languages_config = require('modules.global.configs.languages')
+
+modules['nvim-telescope/telescope.nvim'] =
+    {
+        config = languages_config.telescope,
+        requires = {
+            {'nvim-lua/popup.nvim', opt = true},
+            {'nvim-lua/plenary.nvim', opt = true},
+            {'nvim-telescope/telescope-fzy-native.nvim', opt = true},
+            {'nvim-telescope/telescope-project.nvim', opt = true}
+        }
+    }
 
 modules['neovim/nvim-lspconfig'] = {}
 

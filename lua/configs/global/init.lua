@@ -17,13 +17,12 @@ configs['events'] = function()
             }, {
                 'BufWinEnter', '*',
                 'setlocal formatoptions-=c formatoptions-=r formatoptions-=o'
-            },
-            {
+            }, {
                 'BufRead', '*',
-                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o'
+                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o signcolumn=yes number relativenumber'
             }, {
                 'BufNewFile', '*',
-                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o '
+                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o number relativenumber'
             }
         },
         _lsp = {
@@ -37,7 +36,22 @@ configs['events'] = function()
                 'FileType', 'dashboard',
                 'set showtabline=0 | autocmd BufLeave <buffer> set showtabline=2'
             }
-        }
+        },
+        _floaterm = {
+            {
+                'FileType', 'floaterm',
+                'setlocal nocursorline noswapfile synmaxcol& signcolumn=no norelativenumber nocursorcolumn nospell  nolist  nonumber bufhidden=wipe colorcolumn= foldcolumn=0 matchpairs= '
+            }
+        },
+
+        Floaterm
+        -- TermOpen = {
+        --     ['*'] = {
+        --         -- automatically enter insert mode on new terminals
+        --         'startinsert'
+        --     }
+        -- }
+
     })
 end
 

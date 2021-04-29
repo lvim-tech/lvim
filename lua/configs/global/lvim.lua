@@ -94,22 +94,22 @@ end
 
 M.set = function()
     local set_opt = {
-        cmdheight = 1,
-        synmaxcol = 2500,
-        formatoptions = "1jcroql",
-        textwidth = 80,
-        expandtab = true,
-        autoindent = true,
-        signcolumn = "yes",
-        tabstop = 4,
-        shiftwidth = 4,
-        softtabstop = -1,
-        breakindentopt = "shift:2,min:20",
-        linebreak = true,
-        colorcolumn = "80",
-        foldenable = true,
-        conceallevel = 2,
-        concealcursor = "niv"
+        -- cmdheight = 1,
+        -- synmaxcol = 2500,
+        -- formatoptions = "1jcroql",
+        -- textwidth = 80,
+        -- expandtab = true,
+        -- autoindent = true,
+        -- signcolumn = "yes",
+        -- tabstop = 4,
+        -- shiftwidth = 4,
+        -- softtabstop = -1,
+        -- breakindentopt = "shift:2,min:20",
+        -- linebreak = true,
+        -- colorcolumn = "80",
+        -- foldenable = true,
+        -- conceallevel = 2,
+        -- concealcursor = "niv"
     }
     funcs.options_set(set_opt)
 end

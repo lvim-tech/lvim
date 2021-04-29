@@ -35,6 +35,7 @@ M.init = function()
         return false
     end
     search_extensions(vim.bo.filetype)
+
 end
 
 return M

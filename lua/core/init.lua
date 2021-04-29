@@ -26,8 +26,8 @@ local pack = require('core.pack')
 local load_ide = function()
     createdir()
     leader_map()
-    pack.ensure_plugins()
     funcs.configs()
+    pack.ensure_plugins()
     pack.load_compile()
 end
 

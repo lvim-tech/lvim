@@ -82,9 +82,9 @@ function config.whichkey()
             ['f'] = {'<Cmd>DapStop<CR>', 'stop'},
             ['r'] = {'<Cmd>DapRestart<CR>', 'restart'},
             ['p'] = {'<Cmd>DapPause<CR>', 'pause'},
-            ['o'] = {'<Cmd>DapStepOver<CR>', 'step over'},
             ['i'] = {'<Cmd>DapStepInto<CR>', 'step into'},
-            ['O'] = {'<Cmd>DapStepOut<CR>', 'step into'},
+            ['o'] = {'<Cmd>DapStepOut<CR>', 'step out'},
+            ['O'] = {'<Cmd>DapStepOver<CR>', 'step over'},
             ['R'] = {'<Cmd>DapToggleRepl<CR>', 'togle repl'},
             ['S'] = {'<Cmd>DapGetSession<CR>', 'get session'}
         },
