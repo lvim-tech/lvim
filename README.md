@@ -188,16 +188,16 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 
 - Visual mode
 
-| Key      | Action                                                                                                 | Description     |
-| -------- | ------------------------------------------------------------------------------------------------------ | --------------- |
-| `<`      | `<gv`                                                                                                  | Tab left        |
-| `>`      | `>gv`                                                                                                  | Tab right       |
-| `*`      | `:<C-u>`<br/>`lua require("core.funcs.search").visual_selection("/")`<br/>`<br/><CR>/<C-r>=@/<CR><CR>` | Visual search / |
-| `#`      | `:<C-u>`<br/>`lua require("core.funcs.search").visual_selection("?")`<br/>`<CR>?<C-r>=@/<CR><CR>`      | Visual search ? |
-| `K`      | `:move \'<-2<CR>gv-gv`                                                                                 | Move up         |
-| `J`      | `:move \'>+1<CR>gv-gv`                                                                                 | Move down       |
-| `<A-j> ` | `:AnyJumpVisual<CR>`                                                                                   | Any jump visual |
-| `<A-/>`  | `:CommentToggle<CR>`                                                                                   | Comment toggle  |
+| Key     | Action                                                                                               | Description     |
+| ------- | ---------------------------------------------------------------------------------------------------- | --------------- |
+| `<`     | `<gv`                                                                                                | Tab left        |
+| `>`     | `>gv`                                                                                                | Tab right       |
+| `*`     | `:<C-u>`<br>`lua require("core.funcs.search").visual_selection("/")`<br>`<br/><CR>/<C-r>=@/<CR><CR>` | Visual search / |
+| `#`     | `:<C-u>`<br>`lua require("core.funcs.search").visual_selection("?")`<br>`<CR>?<C-r>=@/<CR><CR>`      | Visual search ? |
+| `K`     | `:move \'<-2<CR>gv-gv`                                                                               | Move up         |
+| `J`     | `:move \'>+1<CR>gv-gv`                                                                               | Move down       |
+| `<A-j>` | `:AnyJumpVisual<CR>`                                                                                 | Any jump visual |
+| `<A-/>` | `:CommentToggle<CR>`                                                                                 | Comment toggle  |
 
 ## LSP support
 
@@ -306,4 +306,72 @@ configs['any-name'] = function()
 end
 
 return modules
+```
+
+## Customize LSP
+
+- Global
+
+1. Modify `configs['events']` from this [file](https://github.com/lvim-tech/lvim/blob/main/lua/configs/custom/init.lua)
+
+```lua
+configs['events'] = function()
+    funcs.augroups({
+        _general_settings = {
+            {
+                'TextYankPost', '*',
+                'lua require(\'vim.highlight\').on_yank({higroup = \'Search\', timeout = 200})'
+            }, {
+                'BufWinEnter', '*',
+                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o number relativenumber cursorcolumn cursorline '
+            }, {
+                'BufRead', '*',
+                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o number relativenumber cursorcolumn cursorline '
+            }, {
+                'BufNewFile', '*',
+                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o number relativenumber cursorcolumn cursorline '
+            }
+        },
+        _lsp = {
+            {'FileType', '*', 'lua require("configs.custom.filetypes").init()'}
+        },
+        _dashboard = {
+            {
+                'FileType', 'dashboard',
+                'setlocal nocursorline noswapfile synmaxcol& signcolumn=no norelativenumber nocursorcolumn nospell  nolist  nonumber bufhidden=wipe colorcolumn= foldcolumn=0 matchpairs= '
+            }, {
+                'FileType', 'dashboard',
+                'set showtabline=0 | autocmd BufLeave <buffer> set showtabline=2'
+            }
+        },
+        _floaterm = {
+            {
+                'FileType', 'floaterm',
+                'setlocal nocursorline noswapfile synmaxcol& signcolumn=no norelativenumber nocursorcolumn nospell  nolist  nonumber bufhidden=wipe colorcolumn= foldcolumn=0 matchpairs= '
+            }
+        }
+    })
+end
+```
+
+2. Add your LSP settings in this [folder](https://github.com/lvim-tech/lvim/tree/main/lua/lsp/custom)
+
+- For project
+
+1. Create folder `.lvim` in root directory of your project
+2. Create in this folder file with name of current language (for example `python.lua`)
+3. Add your settings in this file
+
+Example:
+
+```lua
+local M = {}
+
+local path_sep = package.config:sub(1, 1)
+
+M.lsp_config = 'lsp.custom.languages.python'
+
+M.lsp_command = ':LspStart pyright'
+
+return M
 ```
