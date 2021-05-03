@@ -6,7 +6,7 @@
 
 ## About
 
-LVIM is a modular Neovim configuration written in LUA with full customization:
+### LVIM is a modular Neovim configuration written in LUA with full customization:
 
 - Add or remove plugins, rewrite all plugins
 - Add or remove settings, rewrite all settings
@@ -46,7 +46,7 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 
 ## Plugins
 
-- UI
+### UI
 
 [lvim-colorscheme](https://github.com/lvim-tech/lvim-colorscheme)
 
@@ -68,7 +68,7 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 
 [vim-floaterm](https://github.com/voldikss/vim-floaterm)
 
-- Editor
+### Editor
 
 [nvim-comment](https://github.com/terrortylor/nvim-comment)
 
@@ -90,7 +90,7 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 
 [neogit](https://github.com/TimUntersberger/neogit) (requires [plenary.nvim](https://github.com/nvim-lua/plenary.nvim))
 
-- Languages
+### Languages
 
 [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) (requires [popup.nvim](https://github.com/nvim-lua/popup.nvim) \| [plenary.nvim](https://github.com/nvim-lua/plenary.nvim) \| [telescope-fzy-native.nvim](https://github.com/nvim-telescope/telescope-fzy-native.nvim) \| [telescope-media-files.nvim](https://github.com/nvim-telescope/nvim-telescope/telescope-media-files.nvim))
 
@@ -112,7 +112,7 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 
 [nvim-dap](https://github.com/mfussenegger/nvim-dap)
 
-- Completion
+### Completion
 
 [nvim-compe](https://github.com/hrsh7th/nvim-compe)
 
@@ -124,7 +124,7 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 
 [emmet-vim](https://github.com/mattn/emmet-vim)
 
-- Tools
+### Tools
 
 [vim-dadbod-ui](https://github.com/kristijanhusak/vim-dadbod-ui) (requires [vim-dadbod-ui](https://github.com/kristijanhusak/vim-dadbod-ui) \| [vim-dadbod-completion](https://github.com/kristijanhusak/vim-dadbod-completion))
 
@@ -136,7 +136,7 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 
 ## Keymaps
 
-- Normal mode
+### Normal mode
 
 | Key         | Action                                          | Description                          |
 | ----------- | ----------------------------------------------- | ------------------------------------ |
@@ -186,7 +186,7 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 | `<A-p>`     | `:LspGoToPrev<CR>`                              | Lsp go to prev                       |
 | `<A-e>`     | `:LspTroubleToggle<CR>`                         | Lsp trouble toggle                   |
 
-- Visual mode
+### Visual mode
 
 | Key     | Action                                                                                               | Description     |
 | ------- | ---------------------------------------------------------------------------------------------------- | --------------- |
@@ -226,13 +226,13 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 
 ## Customize plugins
 
-- Modules (plugins)
+### Modules (plugins)
 
 All included plugins are in this [file](https://github.com/lvim-tech/lvim/blob/main/lua/modules/global/init.lua) by default
 
 You can modify plugins from this [file](https://github.com/lvim-tech/lvim/blob/main/lua/modules/custom/init.lua)
 
-- Remove an existing plugin(s)
+### Remove an existing plugin(s)
 
 ```lua
 local modules = {}
@@ -242,7 +242,7 @@ modules['kevinhwang91/rnvimr'] = false
 return modules
 ```
 
-- Customize the settings of existing plugin(s)
+### Customize the settings of existing plugin(s)
 
 ```lua
 local modules = {}
@@ -254,7 +254,7 @@ modules['kevinhwang91/rnvimr'] = {
 return modules
 ```
 
-- Add a plugin(s)
+### Add a plugin(s)
 
 ```lua
 local modules = {}
@@ -270,13 +270,13 @@ return modules
 
 ## Customize settings
 
-- Configs (settings)
+### Configs (settings)
 
 All settings are in this [file](https://github.com/lvim-tech/lvim/blob/main/lua/configs/global/init.lua)
 
 You can modify settings from this [file](https://github.com/lvim-tech/lvim/blob/main/lua/configs/custom/init.lua)
 
-- Remove an existing setting(s)
+### Remove an existing setting(s)
 
 ```lua
 local modules = {}
@@ -286,7 +286,7 @@ configs['events'] = false
 return modules
 ```
 
-- Customize an existing setting(s)
+### Customize an existing setting(s)
 
 ```lua
 local modules = {}
@@ -298,7 +298,7 @@ end
 return modules
 ```
 
-- Add a setting(s)
+### Add a setting(s)
 
 ```lua
 local modules = {}
@@ -314,7 +314,7 @@ return modules
 
 ## Customize LSP
 
-- Global
+### Global
 
 1. Modify `configs['events']` from this [file](https://github.com/lvim-tech/lvim/blob/main/lua/configs/custom/init.lua)
 
@@ -362,7 +362,7 @@ end
 
 2. Add your LSP settings in this [folder](https://github.com/lvim-tech/lvim/tree/main/lua/lsp/custom)
 
-- For project
+### For project
 
 1. Create folder `.lvim` in root directory of your project
 2. Create in this folder file with name of current language (for example `python.lua`)
