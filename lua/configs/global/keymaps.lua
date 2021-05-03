@@ -16,10 +16,10 @@ keymaps['normal'] = {
     {'<C-l>', '<C-w>l'}, -- Move to window left
     {'<C-j>', '<C-w>j'}, -- Move to window down
     {'<C-k>', '<C-w>k'}, -- Move to window up
-    {'<C-Left>', ':vertical resize +2<CR>'}, -- Resize width +
-    {'<C-Right>', ':vertical resize -2<CR>'}, -- Resize width -
-    {'<C-Up>', ':resize +2<CR>'}, -- Resize height +
-    {'<C-Down>', ':resize -2<CR>'}, -- Resize height -
+    {'<C-Left>', ':vertical resize -2<CR>'}, -- Resize width -
+    {'<C-Right>', ':vertical resize +2<CR>'}, -- Resize width +
+    {'<C-Up>', ':resize -2<CR>'}, -- Resize height -
+    {'<C-Down>', ':resize +2<CR>'}, -- Resize height +
     {'<S-r>', '<C-W>v'}, -- Split right
     {'<S-b>', '<C-W>s'}, -- Split bottom
     {'<S-e>', ':NvimTreeToggle<CR>'}, -- NvimTree explorer toggle
