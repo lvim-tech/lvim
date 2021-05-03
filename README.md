@@ -254,7 +254,7 @@ modules['kevinhwang91/rnvimr'] = {
 return modules
 ```
 
-- Adding plugin(s)
+- Add a plugin(s)
 
 ```lua
 local modules = {}
@@ -262,6 +262,48 @@ local modules = {}
 modules['sheerun/vim-polyglot'] = {
     -- your code
 }
+
+return modules
+```
+
+## Customize settings
+
+- Configs (settings)
+
+All settings are in this [file](https://github.com/lvim-tech/lvim/blob/main/lua/configs/global/init.lua)
+
+You can modify settings from this [file](https://github.com/lvim-tech/lvim/blob/main/lua/configs/custom/init.lua)
+
+- Remove an existing setting(s)
+
+```lua
+local modules = {}
+
+configs['events'] = false
+
+return modules
+```
+
+- Customize an existing setting(s)
+
+```lua
+local modules = {}
+
+configs['events'] = function()
+    -- your code
+end
+
+return modules
+```
+
+- Add a setting(s)
+
+```lua
+local modules = {}
+
+configs['any-name'] = function()
+    -- your code
+end
 
 return modules
 ```
