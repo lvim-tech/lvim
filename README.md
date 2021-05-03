@@ -229,6 +229,7 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 - Modules (plugins)
 
 All included plugins are in this [file](https://github.com/lvim-tech/lvim/blob/main/lua/modules/global/init.lua) by default
+
 You can modify plugins from this [file](https://github.com/lvim-tech/lvim/blob/main/lua/modules/custom/init.lua)
 
 - Remove an existing plugin(s)
