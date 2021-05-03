@@ -266,6 +266,8 @@ modules['sheerun/vim-polyglot'] = {
 return modules
 ```
 
+> **IMPORTANT:**  After any changes run `:PackerSync` and restart nvim
+
 ## Customize settings
 
 - Configs (settings)
@@ -307,6 +309,8 @@ end
 
 return modules
 ```
+
+> **IMPORTANT:**  After any changes run `:PackerSync` and restart nvim
 
 ## Customize LSP
 
@@ -353,6 +357,8 @@ configs['events'] = function()
     })
 end
 ```
+
+> **IMPORTANT:**  After this change run `:PackerSync` and restart nvim
 
 2. Add your LSP settings in this [folder](https://github.com/lvim-tech/lvim/tree/main/lua/lsp/custom)
 
