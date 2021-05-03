@@ -9,9 +9,9 @@ function config.formatter()
             html = {
                 function()
                     return {
-                        exe = "prettier",
+                        exe = 'prettier',
                         args = {
-                            "--stdin-filepath", vim.api.nvim_buf_get_name(0),
+                            '--stdin-filepath', vim.api.nvim_buf_get_name(0),
                             '--single-quote'
                         },
                         stdin = true
@@ -21,9 +21,9 @@ function config.formatter()
             php = {
                 function()
                     return {
-                        exe = "prettier",
+                        exe = 'prettier',
                         args = {
-                            "--stdin-filepath", vim.api.nvim_buf_get_name(0),
+                            '--stdin-filepath', vim.api.nvim_buf_get_name(0),
                             '--single-quote'
                         },
                         stdin = true
@@ -33,9 +33,9 @@ function config.formatter()
             javascriptreact = {
                 function()
                     return {
-                        exe = "prettier",
+                        exe = 'prettier',
                         args = {
-                            "--stdin-filepath", vim.api.nvim_buf_get_name(0),
+                            '--stdin-filepath', vim.api.nvim_buf_get_name(0),
                             '--single-quote'
                         },
                         stdin = true
@@ -45,9 +45,9 @@ function config.formatter()
             javascript = {
                 function()
                     return {
-                        exe = "prettier",
+                        exe = 'prettier',
                         args = {
-                            "--stdin-filepath", vim.api.nvim_buf_get_name(0),
+                            '--stdin-filepath', vim.api.nvim_buf_get_name(0),
                             '--single-quote'
                         },
                         stdin = true
@@ -57,9 +57,9 @@ function config.formatter()
             typescriptreact = {
                 function()
                     return {
-                        exe = "prettier",
+                        exe = 'prettier',
                         args = {
-                            "--stdin-filepath", vim.api.nvim_buf_get_name(0),
+                            '--stdin-filepath', vim.api.nvim_buf_get_name(0),
                             '--single-quote'
                         },
                         stdin = true
@@ -69,10 +69,10 @@ function config.formatter()
             typescript = {
                 function()
                     return {
-                        exe = "prettier",
+                        exe = 'prettier',
                         args = {
-                            "--stdin-filepath", vim.api.nvim_buf_get_name(0),
-                            '--single-quote'
+                            '--stdin-filepath', vim.api.nvim_buf_get_name(0),
+                            '--single-quote', '--tab-width 4'
                         },
                         stdin = true
                     }
@@ -81,24 +81,36 @@ function config.formatter()
             rust = {
                 function()
                     return {
-                        exe = "rustfmt",
-                        args = {"--emit=stdout", "--edition 2018"},
+                        exe = 'rustfmt',
+                        args = {'--emit=stdout', '--edition 2018'},
                         stdin = true
                     }
                 end
             },
             lua = {
                 function()
-                    return {exe = "luafmt", args = {"--stdin"}, stdin = true}
+                    return {exe = 'luafmt', args = {'--stdin'}, stdin = true}
                 end
             },
             ruby = {
                 function()
                     return {
-                        exe = "prettier",
+                        exe = 'prettier',
                         args = {
-                            "--stdin-filepath", vim.api.nvim_buf_get_name(0),
+                            '--stdin-filepath', vim.api.nvim_buf_get_name(0),
                             '--single-quote'
+                        },
+                        stdin = true
+                    }
+                end
+            },
+            json = {
+                function()
+                    return {
+                        exe = 'prettier',
+                        args = {
+                            '--stdin-filepath', vim.api.nvim_buf_get_name(0),
+                            '--single-quote', '--tab-width 4'
                         },
                         stdin = true
                     }
@@ -123,18 +135,18 @@ function config.autopairs()
 
     _G.MUtils = {}
 
-    vim.g.completion_confirm_key = ""
+    vim.g.completion_confirm_key = ''
     MUtils.completion_confirm = function()
         if vim.fn.pumvisible() ~= 0 then
-            if vim.fn.complete_info()["selected"] ~= -1 then
-                vim.fn["compe#confirm"]()
-                -- return npairs.esc("<c-y>")
-                return npairs.esc("")
+            if vim.fn.complete_info()['selected'] ~= -1 then
+                vim.fn['compe#confirm']()
+                -- return npairs.esc('<c-y>')
+                return npairs.esc('')
             else
                 vim.defer_fn(function()
-                    vim.fn["compe#confirm"]("<cr>")
+                    vim.fn['compe#confirm']('<cr>')
                 end, 20)
-                return npairs.esc("<c-n>")
+                return npairs.esc('<c-n>')
             end
         else
             return npairs.check_break_line_char()
@@ -143,13 +155,13 @@ function config.autopairs()
 
     MUtils.completion_confirm = function()
         if vim.fn.pumvisible() ~= 0 then
-            if vim.fn.complete_info()["selected"] ~= -1 then
-                vim.fn["compe#confirm"]()
-                return npairs.esc("")
+            if vim.fn.complete_info()['selected'] ~= -1 then
+                vim.fn['compe#confirm']()
+                return npairs.esc('')
             else
                 vim.api.nvim_select_popupmenu_item(0, false, false, {})
-                vim.fn["compe#confirm"]()
-                return npairs.esc("<c-n>")
+                vim.fn['compe#confirm']()
+                return npairs.esc('<c-n>')
             end
         else
             return npairs.check_break_line_char()
@@ -158,36 +170,36 @@ function config.autopairs()
 
     MUtils.tab = function()
         if vim.fn.pumvisible() ~= 0 then
-            return npairs.esc("<C-n>")
+            return npairs.esc('<C-n>')
         else
-            if vim.fn["vsnip#available"](1) ~= 0 then
+            if vim.fn['vsnip#available'](1) ~= 0 then
                 vim.fn.feedkeys(string.format('%c%c%c(vsnip-expand-or-jump)',
                                               0x80, 253, 83))
-                return npairs.esc("")
+                return npairs.esc('')
             else
-                return npairs.esc("<Tab>")
+                return npairs.esc('<Tab>')
             end
         end
     end
 
     MUtils.s_tab = function()
         if vim.fn.pumvisible() ~= 0 then
-            return npairs.esc("<C-p>")
+            return npairs.esc('<C-p>')
         else
-            if vim.fn["vsnip#jumpable"](-1) ~= 0 then
+            if vim.fn['vsnip#jumpable'](-1) ~= 0 then
                 vim.fn.feedkeys(string.format('%c%c%c(vsnip-jump-prev)', 0x80,
                                               253, 83))
-                return npairs.esc("")
+                return npairs.esc('')
             else
-                return npairs.esc("<C-h>")
+                return npairs.esc('<C-h>')
             end
         end
     end
 
     vim.api.nvim_set_keymap('i', '<CR>', 'v:lua.MUtils.completion_confirm()',
                             {expr = true, noremap = true})
-    imap("<Tab>", "v:lua.MUtils.tab()", {expr = true, noremap = true})
-    imap("<S-Tab>", "v:lua.MUtils.s_tab()", {expr = true, noremap = true})
+    imap('<Tab>', 'v:lua.MUtils.tab()', {expr = true, noremap = true})
+    imap('<S-Tab>', 'v:lua.MUtils.s_tab()', {expr = true, noremap = true})
 end
 
 function config.bookmarks()

@@ -1,7 +1,7 @@
 local configs = {}
-local funcs = require "core.funcs"
-local lvim = require "configs.global.lvim"
-local keymaps = require "configs.global.keymaps"
+local funcs = require 'core.funcs'
+local lvim = require 'configs.global.lvim'
+local keymaps = require 'configs.global.keymaps'
 
 configs['options'] = function()
     lvim.global()
@@ -16,13 +16,13 @@ configs['events'] = function()
                 'lua require(\'vim.highlight\').on_yank({higroup = \'Search\', timeout = 200})'
             }, {
                 'BufWinEnter', '*',
-                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o'
+                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o number relativenumber cursorcolumn cursorline '
             }, {
                 'BufRead', '*',
-                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o signcolumn=yes number relativenumber'
+                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o number relativenumber cursorcolumn cursorline '
             }, {
                 'BufNewFile', '*',
-                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o number relativenumber'
+                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o number relativenumber cursorcolumn cursorline '
             }
         },
         _lsp = {
@@ -42,16 +42,7 @@ configs['events'] = function()
                 'FileType', 'floaterm',
                 'setlocal nocursorline noswapfile synmaxcol& signcolumn=no norelativenumber nocursorcolumn nospell  nolist  nonumber bufhidden=wipe colorcolumn= foldcolumn=0 matchpairs= '
             }
-        },
-
-        Floaterm
-        -- TermOpen = {
-        --     ['*'] = {
-        --         -- automatically enter insert mode on new terminals
-        --         'startinsert'
-        --     }
-        -- }
-
+        }
     })
 end
 
@@ -145,6 +136,16 @@ configs['commands'] = function()
     -- Symbols outline
     vim.cmd(
         'command! SymbolsOutline lua require("symbols-outline").toggle_outline()')
+    -- Set path
+    vim.cmd(
+        'command! SetGlobalPath lua require("configs.global.utils").set_global_path()')
+    vim.cmd(
+        'command! SetWindowPath lua require("configs.global.utils").set_window_path()')
+    -- Init vimspector
+    vim.cmd(
+        'command! VimspectorInit lua require("configs.global.debugers").init_vimspector()')
+    -- Init Dap
+    vim.cmd('command! DapInit lua require("configs.global.debugers").init_dap()')
 end
 
 configs['keymaps'] = function()

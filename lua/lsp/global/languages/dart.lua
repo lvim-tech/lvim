@@ -1,14 +1,14 @@
 local global = require('core.global')
 require'lspconfig'.dartls.setup {
     cmd = {
-        "dart",
+        'dart',
         global.home ..
-            '/sdk/dart-sdk/bin/snapshots/analysis_server.dart.snapshot', "--lsp"
+            '/sdk/dart-sdk/bin/snapshots/analysis_server.dart.snapshot', '--lsp'
     },
     on_attach = require'lsp.global'.common_on_attach,
-    root_dir = require('lspconfig/util').root_pattern("."),
+    root_dir = require('lspconfig/util').root_pattern('.'),
     handlers = {
-        ["textDocument/publishDiagnostics"] = vim.lsp.with(
+        ['textDocument/publishDiagnostics'] = vim.lsp.with(
             vim.lsp.diagnostic.on_publish_diagnostics, {
                 virtual_text = false,
                 signs = true,

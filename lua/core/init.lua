@@ -9,15 +9,15 @@ local createdir = function()
         global.cache_path .. 'undo'
     }
     if vim.fn.isdirectory(global.cache_dir) == 0 then
-        os.execute("mkdir -p " .. global.cache_path)
+        os.execute('mkdir -p ' .. global.cache_path)
     end
     for _, v in pairs(data_path) do
-        if vim.fn.isdirectory(v) == 0 then os.execute("mkdir -p " .. v) end
+        if vim.fn.isdirectory(v) == 0 then os.execute('mkdir -p ' .. v) end
     end
 end
 
 local leader_map = function()
-    vim.g.mapleader = " "
+    vim.g.mapleader = ' '
     vim.api.nvim_set_keymap('n', ' ', '', {noremap = true})
     vim.api.nvim_set_keymap('x', ' ', '', {noremap = true})
 end

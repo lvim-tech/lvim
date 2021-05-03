@@ -1,4 +1,5 @@
 local M = {}
+local global = require 'core.global'
 
 -- TODO update when api supports
 M.augroups = function(definitions)
@@ -65,18 +66,23 @@ M.configs = function()
     for _, func in pairs(configs) do if func ~= false then func() end end
 end
 
--- M.file_exist = function(file) return io.open(file_name, "r") end
-
 M.file_exists = function(name)
-    local f = io.open(name, "r")
+    local f = io.open(name, 'r')
     return f ~= nil and io.close(f)
 end
 
--- M.read_file = function(path)
---     local file = io.open(path, "rb")
---     if not file then return nil end
---     file:close()
---     return true
--- end
+M.change_path = function()
+    return vim.fn.input('Path: ', vim.fn.getcwd() .. global.path_sep, 'file')
+end
+
+M.set_global_path = function()
+    local path = M.change_path()
+    vim.api.nvim_command('silent :cd ' .. path)
+end
+
+M.set_window_path = function()
+    local path = M.change_path()
+    vim.api.nvim_command('silent :lcd ' .. path)
+end
 
 return M

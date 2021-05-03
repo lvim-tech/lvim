@@ -123,7 +123,9 @@ modules['folke/lsp-trouble.nvim'] = {
 modules['simrat39/symbols-outline.nvim'] =
     {event = 'BufRead', config = languages_config.symbols}
 
-modules['mfussenegger/nvim-dap'] = {}
+modules['puremourning/vimspector'] = {opt = true}
+
+modules['mfussenegger/nvim-dap'] = {opt = true}
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Completion ---------------------------------------------------
@@ -136,8 +138,9 @@ modules['hrsh7th/nvim-compe'] = {
     config = completion_config.compe
 }
 
-modules['rafamadriz/friendly-snippets'] = {}
 modules['hrsh7th/vim-vsnip'] = {}
+
+modules['rafamadriz/friendly-snippets'] = {}
 
 modules['onsails/lspkind-nvim'] = {config = completion_config.lspkind}
 

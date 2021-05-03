@@ -1,6 +1,7 @@
 local global = {}
-local home = os.getenv("HOME")
-local path_sep = global.is_windows and '\\' or '/'
+local home = os.getenv('HOME')
+-- local path_sep = global.is_windows and '\\' or '/'
+local path_sep = package.config:sub(1, 1)
 local os_name = vim.loop.os_uname().sysname
 
 function global:load_variables()
@@ -21,8 +22,9 @@ function global:load_variables()
             'languages' .. path_sep
     self.path_sep = path_sep
     self.home = home
-    self.data_path = string.format('%s/site/', vim.fn.stdpath('data'))
-    self.lsp_path = string.format('%s/', vim.fn.stdpath('data'))
+    self.data_path = string.format('%s' .. path_sep .. 'site' .. path_sep,
+                                   vim.fn.stdpath('data'))
+    self.lsp_path = string.format('%s' .. path_sep, vim.fn.stdpath('data'))
     print(home)
 end
 

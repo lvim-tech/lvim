@@ -2,13 +2,13 @@ local global = require('core.global')
 require'lspconfig'.tsserver.setup {
     cmd = {
         global.lsp_path ..
-            "lspinstall/typescript/node_modules/.bin/typescript-language-server",
-        "--stdio"
+            'lspinstall/typescript/node_modules/.bin/typescript-language-server',
+        '--stdio'
     },
     on_attach = require'lsp.global'.tsserver_on_attach,
-    root_dir = require('lspconfig/util').root_pattern("."),
+    root_dir = require('lspconfig/util').root_pattern('.'),
     handlers = {
-        ["textDocument/publishDiagnostics"] = vim.lsp.with(
+        ['textDocument/publishDiagnostics'] = vim.lsp.with(
             vim.lsp.diagnostic.on_publish_diagnostics, {
                 virtual_text = false,
                 signs = true,

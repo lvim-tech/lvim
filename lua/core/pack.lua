@@ -2,8 +2,8 @@ local fn, uv, api = vim.fn, vim.loop, vim.api
 local global = require 'core.global'
 local data_path = global.data_path
 local packer_compiled = data_path .. 'packer_compiled.vim'
-local compile_to_lua = data_path .. 'lua/_compiled.lua'
-local funcs = require "core.funcs"
+local compile_to_lua = data_path .. 'lua' .. global.path_sep .. '_compiled.lua'
+local funcs = require 'core.funcs'
 local packer = nil
 
 local Packer = {}
@@ -34,19 +34,21 @@ function Packer:load_packer()
     packer.reset()
     local use = packer.use
     self:load_plugins()
-    use {"wbthomason/packer.nvim", opt = true}
+    use {'wbthomason/packer.nvim', opt = true}
     for _, repo in ipairs(self.repos) do use(repo) end
 end
 
 function Packer:init_ensure_plugins()
-    local packer_dir = data_path .. 'pack/packer/opt/packer.nvim'
+    local packer_dir = data_path .. 'pack' .. global.path_sep .. 'packer' ..
+                           global.path_sep .. 'opt' .. global.path_sep ..
+                           'packer.nvim'
     local state = uv.fs_stat(packer_dir)
     if not state then
-        local cmd = "!git clone https://github.com/wbthomason/packer.nvim " ..
+        local cmd = '!git clone https://github.com/wbthomason/packer.nvim ' ..
                         packer_dir
         api.nvim_command(cmd)
         uv.fs_mkdir(data_path .. 'lua', 511,
-                    function() assert("make compile path dir failed") end)
+                    function() assert('make compile path dir failed') end)
         self:load_packer()
         packer.install()
     end
@@ -77,7 +79,7 @@ function plugins.convert_compile_file()
         os.execute('mkdir -p ' .. data_path .. 'lua')
     end
     if fn.filereadable(compile_to_lua) == 1 then os.remove(compile_to_lua) end
-    local file = io.open(compile_to_lua, "w")
+    local file = io.open(compile_to_lua, 'w')
     for _, line in ipairs(lines) do file:write(line) end
     file:close()
 

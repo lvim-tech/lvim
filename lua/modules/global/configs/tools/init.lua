@@ -1,4 +1,5 @@
 local config = {}
+local funcs = require "core.funcs"
 
 function config.vista()
     vim.g['vista#renderer#enable_icon'] = 1
@@ -70,10 +71,10 @@ function config.whichkey()
             ['p'] = {'<Cmd>bprevious<CR>', 'prev buffer'},
             ['a'] = {'<Cmd>Telescope buffers<CR>', 'all buffers'}
         },
-        ['c'] = {
-            name = '+cwd',
-            ['d'] = {':cd %:p:h<CR>:pwd<CR>', 'cd to current'},
-            ['l'] = {':lcd %:p:h<CR>:pwd<CR>', 'lcd to current'}
+        ['p'] = {
+            name = '+path',
+            ['g'] = {'<Cmd>SetGlobalPath<CR>', 'set global path'},
+            ['w'] = {'<Cmd>SetWindowPath<CR>', 'set window path'}
         },
         ['d'] = {
             name = '+debug',

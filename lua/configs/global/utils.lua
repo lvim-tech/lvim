@@ -55,5 +55,8 @@ function utils.undo_stage_hunk() require('gitsigns').undo_stage_hunk() end
 function utils.reset_hunk() require('gitsigns').reset_hunk() end
 function utils.reset_buffer() require('gitsigns').reset_buffer() end
 function utils.blame_line() require('gitsigns').blame_line() end
+-- Set path
+function utils.set_global_path() require('core.funcs').set_global_path() end
+function utils.set_window_path() require('core.funcs').set_window_path() end
 
 return utils
