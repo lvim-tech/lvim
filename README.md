@@ -46,7 +46,7 @@
 git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 ```
 
-2. Export path to [bin](https://github.com/lvim-tech/lvim/nvim/bin) folder in your shell (`.bashrc`, `.zshrc` etc)
+2. Export path to [bin](https://github.com/lvim-tech/lvim/tree/main/bin) folder in your shell (`.bashrc`, `.zshrc` etc)
 
 ```
 export PATH="$HOME/.config/nvim/bin:$PATH"
@@ -300,7 +300,7 @@ cd eclipse.jdt.ls
 
 \-\-\- OR \-\-\-
 
-Install `eclipse.jdt.ls` with script from [bin](https://github.com/lvim-tech/lvim/bin) folder
+Install `eclipse.jdt.ls` with script from [bin](https://github.com/lvim-tech/lvim/tree/main/bin) folder
 
 ```
 install_jdtls
