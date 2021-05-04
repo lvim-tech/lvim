@@ -520,10 +520,14 @@ configs['events'] = function()
             }, {
                 'BufNewFile', '*',
                 'setlocal formatoptions-=c formatoptions-=r formatoptions-=o number relativenumber cursorcolumn cursorline '
-            }
+            }, {'BufWinEnter', '*.ex', 'set filetype=elixir'},
+            {'BufWinEnter', '*.exs', 'set filetype=elixir'},
+            {'BufNewFile', '*.ex', 'set filetype=elixir'},
+            {'BufNewFile', '*.exs', 'set filetype=elixir'},
+            {'BufWinEnter', '*.graphql', 'set filetype=graphql'}
         },
         _lsp = {
-            {'FileType', '*', 'lua require("configs.custom.filetypes").init()'}
+            {'FileType', '*', 'lua require("configs.global.filetypes").init()'}
         },
         _dashboard = {
             {
