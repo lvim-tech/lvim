@@ -528,7 +528,7 @@ configs['events'] = function()
             {'BufWinEnter', '*.graphql', 'set filetype=graphql'}
         },
         _lsp = {
-            {'FileType', '*', 'lua require("configs.global.filetypes").init()'}
+            {'FileType', '*', 'lua require("configs.custom.filetypes").init()'}
         },
         _dashboard = {
             {
