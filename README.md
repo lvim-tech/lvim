@@ -40,8 +40,16 @@
 
 ## Install
 
+1. Clone repository
+
 ```bash
 git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
+```
+
+2. Export path to [bin](https://github.com/lvim-tech/lvim/bin) folder in your shell (`.bashrc`, `.zshrc` etc)
+
+```
+export PATH="$HOME/.config/bin:$PATH"
 ```
 
 ## Plugins
@@ -151,8 +159,8 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 | `<C-x>`     | `:BufferClose<CR>`                              | Close                                |
 | `<C-q>`     | `:BufferClose!<CR>`                             | Close whitout saving                 |
 | `<C-d>`     | `:bdelete<CR>`                                  | Bdelete                              |
-| `<C-h>`     | `<C-w>h`                                        | Move to window right                 |
-| `<C-l>`     | `<C-w>l`                                        | Move to window left                  |
+| `<C-h>`     | `<C-w>h`                                        | Move to window left                  |
+| `<C-l>`     | `<C-w>l`                                        | Move to window right                 |
 | `<C-j>`     | `<C-w>j`                                        | Move to window down                  |
 | `<C-k>`     | `<C-w>k`                                        | Move to window up                    |
 | `<C-Left>`  | `:vertical resize -2<CR>`                       | Resize width -                       |
@@ -201,27 +209,205 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 
 ## LSP support
 
-- cpp
-- java
-- rust
-- go
-- python
-- ruby
-- lua
-- php
-- dart
-- sh
-- javascript, javascriptreact, typescript, typescriptreact
-- docker
-- json
-- latex
-- yaml
-- svelte
-- html
-- css, less, scss
+> **IMPORTANT:**  All external programs are in the **sdk** home folder (`~/sdk`)
 
-```lua
-:LspInstall <name-of-server>
+### Bash
+
+```
+:LspInstall bash
+```
+
+### CPP
+
+```
+:LspInstall cpp
+```
+
+### CSS
+
+```
+:LspInstall css
+```
+
+### Dart
+
+1. Download Dart from [here](https://dart.dev/tools/sdk/archive)
+2. Copy folder `dart-sdk` to `~/sdk`
+3. Export path to `dart-sdk` folder in your shell (`.bashrc`, `.zshrc` etc)
+
+```
+export PATH="$PATH:$HOME/sdk/dart-sdk/bin"
+```
+
+### Docker
+
+```
+:LspInstall dockerfile
+```
+
+### Elixir
+
+```
+:LspInstall elixir
+```
+
+### Go
+
+```
+:LspInstall go
+```
+
+Export path to `go` in your shell (`.bashrc`, `.zshrc` etc)
+
+```
+export GOROOT=/usr/lib64/go/1.16
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOROOT/bin
+export PATH=$PATH:$GOPATH/bin
+GO111MODULE=auto
+```
+
+> **IMPORTANT:**  In your operating system, the path and version may be different
+
+### Graphql
+
+```
+:LspInstall graphql
+```
+
+### HTML
+
+```
+:LspInstall html
+```
+
+### Java
+
+1. Clone repository (eclipse.jdt.ls.git)
+
+```
+git clone https://github.com/eclipse/eclipse.jdt.ls.git
+```
+
+2. Install
+
+```
+cd eclipse.jdt.ls
+./mvnw clean install -DskipTests
+```
+
+3. Move folder `eclipse.jdt.ls` to `~/sdk/eclipse`
+
+\-\-\- OR \-\-\-
+
+Install `eclipse.jdt.ls` with script from [bin](https://github.com/lvim-tech/lvim/bin) folder
+
+```
+install_jdtls
+```
+
+Export path to `Java` in your shell (`.bashrc`, `.zshrc` etc)
+
+```
+export JAVA_HOME=/usr/lib64/jvm/java-16-openjdk
+export PATH=$JAVA_HOME/bin:$PATH
+```
+
+> **IMPORTANT:**  In your operating system, the path and version may be different
+
+### JavaScript
+
+```
+:LspInstall typescript
+```
+
+### JSON
+
+```
+:LspInstall latex
+```
+
+### LaTeX
+
+```
+:LspInstall json
+```
+
+### Lua
+
+```
+:LspInstall lua
+```
+
+### PHP
+
+```
+:LspInstall php
+```
+
+### Python
+
+```
+:LspInstall python
+```
+
+### Ruby
+
+```
+:LspInstall ruby
+```
+
+Install `solargraph` with `gem`
+
+```
+gem install solargraph
+```
+
+### Rust
+
+```
+:LspInstall rust
+```
+
+Install Rust with Rustup
+
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+### Svelte
+
+```
+:LspInstall svelte
+```
+
+### VIM
+
+```
+:LspInstall vim
+```
+
+### YAML
+
+```
+:LspInstall yaml
+```
+
+### C#
+
+```
+LspInstall csharp
+```
+
+1. Download `.NET 5.0 SDK` from this [link](https://dotnet.microsoft.com/download/dotnet/5.0)
+2. Move `dotnet` folder to your home directory (`~/`)
+3. Install [Mono](https://www.mono-project.com/)
+
+Export path to `dotnet` in your shell (`.bashrc`, `.zshrc` etc)
+
+```
+export DOTNET_ROOT=$HOME/dotnet
+export PATH=$PATH:$HOME/dotnet
 ```
 
 ## Customize plugins

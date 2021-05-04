@@ -12,8 +12,8 @@ keymaps['normal'] = {
     {'<C-x>', ':BufferClose<CR>'}, -- Buffer close
     {'<C-q>', ':BufferClose!<CR>'}, -- Buffer Close whitout saving
     {'<C-d>', ':bdelete<CR>'}, -- BDelete
-    {'<C-h>', '<C-w>h'}, -- Move to window right
-    {'<C-l>', '<C-w>l'}, -- Move to window left
+    {'<C-h>', '<C-w>h'}, -- Move to window left
+    {'<C-l>', '<C-w>l'}, -- Move to window right
     {'<C-j>', '<C-w>j'}, -- Move to window down
     {'<C-k>', '<C-w>k'}, -- Move to window up
     {'<C-Left>', ':vertical resize -2<CR>'}, -- Resize width -

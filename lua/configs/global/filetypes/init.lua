@@ -4,6 +4,7 @@ local funcs = require 'core.funcs'
 M.init = function()
     local filetypes = {
         ['cpp'] = {'c', 'cpp'},
+        ['omnisharp'] = {'cs', 'vb'},
         ['java'] = {'java'},
         ['rust'] = {'rust'},
         ['go'] = {'go'},
@@ -12,11 +13,13 @@ M.init = function()
         ['lua'] = {'lua'},
         ['php'] = {'php'},
         ['dart'] = {'dart'},
+        ['elixir'] = {'elixir'},
         ['bash'] = {'sh'},
         ['vim'] = {'vim'},
         ['js-ts'] = {
             'javascript', 'javascriptreact', 'typescript', 'typescriptreact'
         },
+        ['graphql'] = {'graphql'},
         ['docker'] = {'dockerfile'},
         ['json'] = {'json'},
         ['latex'] = {'tex'},
