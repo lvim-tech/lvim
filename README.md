@@ -567,3 +567,54 @@ M.lsp_command = ':LspStart pyright'
 
 return M
 ```
+
+## Debuggers
+
+You can use `Vimpector` or `DAP (Debug Adapter Protocol)`
+
+### Vimspector
+
+> **IMPORTANT:**  Before using Vimspector, you need to activate it
+
+```
+:VimspectorInit
+```
+
+#### Keymaps
+
+| Key       | Action                                        | Description                   |
+| --------- | --------------------------------------------- | ----------------------------- |
+| `<S-F1>`  | `<Plug>VimspectorToggleBreakpoint`            | Toggle breakpoint             |
+| `<S-F2>`  | `<Plug>VimspectorContinue`                    | Start / continue              |
+| `<S-F3>`  | `<Plug>VimspectorStop`                        | Stop                          |
+| `<S-F4>`  | `<Plug>VimpectorRestart`                      | Restart                       |
+| `<S-F5>`  | `<Plug>VimspectorStepOver`                    | Step over                     |
+| `<S-F6>`  | `<Plug>VimspectorStepInto`                    | Step into                     |
+| `<S-F7>`  | `<Plug>VimspectorStepOut`                     | Step out                      |
+| `<S-F8>`  | `<Plug>VimspectorAddFunctionBreakpoint`       | Function breakpoint           |
+| `<S-F9>`  | `<Plug>VimspectorRunToCursor`                 | Run to cursor                 |
+| `<S-F10>` | `<Plug>VimspectorToggleConditionalBreakpoint` | Toggle conditional breakpoint |
+| `<S-F12>` | `:VimspectorReset<CR>`                        | Reset                         |
+
+### DAP (Debug Adapter Protocol)
+
+> **IMPORTANT:**  Before using DAP, you need to activate it
+
+```
+:DapInit
+```
+
+#### Keymaps
+
+| Key       | Action                         | Description       |
+| --------- | ------------------------------ | ----------------- |
+| `<A-F1>`  | `<Cmd>DapToggleBreakpoint<CR>` | Toggle breakpoint |
+| `<A-F2>`  | `<Cmd>DapStart<CR>`            | Start / continue  |
+| `<A-F3>`  | `<Cmd>DapStop<CR>`             | Stop              |
+| `<A-F4>`  | `<Cmd>DapRestart<CR>`          | Restart           |
+| `<A-F5>`  | `<Cmd>DapStepOver<CR>`         | Step over         |
+| `<A-F6>`  | `<Cmd>DapStepInto<CR>`         | Step into         |
+| `<A-F7>`  | `<Cmd>DapStepOut<CR>`          | Step out          |
+| `<A-F8>`  | `<Cmd>DapPause<CR>`            | Pause             |
+| `<A-F9>`  | `<Cmd>DapToggleRepl<CR>`       | Toggle repl       |
+| `<A-F10>` | `<Cmd>DapGetSession<CR>`       | Get session       |

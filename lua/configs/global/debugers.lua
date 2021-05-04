@@ -8,7 +8,6 @@ M.init_vimspector = function()
     end
     local vimspector_keymaps = {
         {'<S-F1>', '<Plug>VimspectorToggleBreakpoint'}, -- Toggle breakpoint
-        {'<A-F1>', '<Plug>VimspectorToggleConditionalBreakpoint'}, -- Toggle conditional breakpoint
         {'<S-F2>', '<Plug>VimspectorContinue'}, -- Start / continue
         {'<S-F3>', '<Plug>VimspectorStop'}, -- Stop
         {'<S-F4>', '<Plug>VimpectorRestart'}, -- Restart
@@ -17,6 +16,7 @@ M.init_vimspector = function()
         {'<S-F7>', '<Plug>VimspectorStepOut'}, -- Step out
         {'<S-F8>', '<Plug>VimspectorAddFunctionBreakpoint'}, -- Function breakpoint
         {'<S-F9>', '<Plug>VimspectorRunToCursor'}, -- Run to cursor
+        {'<S-F10>', '<Plug>VimspectorToggleConditionalBreakpoint'}, -- Toggle conditional breakpoint
         {'<S-F12>', ':VimspectorReset<CR>'} -- Reset
     }
     funcs.keymaps('n', {noremap = false, silent = true}, vimspector_keymaps)
