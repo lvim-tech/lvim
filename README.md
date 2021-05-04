@@ -520,7 +520,8 @@ configs['events'] = function()
             }, {
                 'BufNewFile', '*',
                 'setlocal formatoptions-=c formatoptions-=r formatoptions-=o number relativenumber cursorcolumn cursorline '
-            }, {'BufWinEnter', '*.ex', 'set filetype=elixir'},
+            },
+            {'BufWinEnter', '*.ex', 'set filetype=elixir'},
             {'BufWinEnter', '*.exs', 'set filetype=elixir'},
             {'BufNewFile', '*.ex', 'set filetype=elixir'},
             {'BufNewFile', '*.exs', 'set filetype=elixir'},
@@ -548,9 +549,9 @@ configs['events'] = function()
 end
 ```
 
-> **IMPORTANT:**  After this change run `:PackerSync` and restart nvim
-
 2. Add your LSP settings in this [folder](https://github.com/lvim-tech/lvim/tree/main/lua/lsp/custom)
+
+> **IMPORTANT:**  After this change run `:PackerSync` and restart nvim
 
 ### For project
 
@@ -571,6 +572,8 @@ M.lsp_command = ':LspStart pyright'
 
 return M
 ```
+
+> **IMPORTANT:**  After this change run `:PackerSync` and restart nvim
 
 ## Debuggers
 
