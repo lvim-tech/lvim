@@ -100,7 +100,7 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 
 ### Languages
 
-[telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) (requires [popup.nvim](https://github.com/nvim-lua/popup.nvim) \| [plenary.nvim](https://github.com/nvim-lua/plenary.nvim) \| [telescope-fzy-native.nvim](https://github.com/nvim-telescope/telescope-fzy-native.nvim) \| [telescope-media-files.nvim](https://github.com/nvim-telescope/nvim-telescope/telescope-media-files.nvim))
+[telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) (requires [popup.nvim](https://github.com/nvim-lua/popup.nvim) \| [plenary.nvim](https://github.com/nvim-lua/plenary.nvim) \| [telescope-fzy-native.nvim](https://github.com/nvim-telescope/telescope-fzy-native.nvim) \| [telescope-project.nvim](https://github.com/nvim-telescope/nvim-telescope/telescope-project.nvim)
 
 [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
 
@@ -223,6 +223,23 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 :LspInstall cpp
 ```
 
+### C#
+
+```
+LspInstall csharp
+```
+
+1. Download `.NET 5.0 SDK` from this [link](https://dotnet.microsoft.com/download/dotnet/5.0)
+2. Move `dotnet` folder to your home directory (`~/`)
+3. Install [Mono](https://www.mono-project.com/)
+
+Export path to `dotnet` in your shell (`.bashrc`, `.zshrc` etc)
+
+```
+export DOTNET_ROOT=$HOME/dotnet
+export PATH=$PATH:$HOME/dotnet
+```
+
 ### CSS
 
 ```
@@ -324,13 +341,13 @@ export PATH=$JAVA_HOME/bin:$PATH
 ### JSON
 
 ```
-:LspInstall latex
+:LspInstall jason
 ```
 
 ### LaTeX
 
 ```
-:LspInstall json
+:LspInstall latex
 ```
 
 ### Lua
@@ -391,23 +408,6 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 ```
 :LspInstall yaml
-```
-
-### C#
-
-```
-LspInstall csharp
-```
-
-1. Download `.NET 5.0 SDK` from this [link](https://dotnet.microsoft.com/download/dotnet/5.0)
-2. Move `dotnet` folder to your home directory (`~/`)
-3. Install [Mono](https://www.mono-project.com/)
-
-Export path to `dotnet` in your shell (`.bashrc`, `.zshrc` etc)
-
-```
-export DOTNET_ROOT=$HOME/dotnet
-export PATH=$PATH:$HOME/dotnet
 ```
 
 ## Customize plugins
@@ -587,6 +587,12 @@ You can use `Vimpector` or `DAP (Debug Adapter Protocol)`
 :VimspectorInit
 ```
 
+> **IMPORTANT:**  Before using Vimspector, install all gadgets
+
+```
+:VimspectorInstall --all
+```
+
 #### Keymaps
 
 | Key       | Action                                        | Description                   |
@@ -610,6 +616,32 @@ You can use `Vimpector` or `DAP (Debug Adapter Protocol)`
 ```
 :DapInit
 ```
+
+#### Requirements
+
+1. [vscode-lldb](https://github.com/vadimcn/vscode-lldb) (for `cpp` and `rust`)
+2. [delve](https://github.com/go-delve/delve/) (for `go`)
+3. [debugpy](https://github.com/microsoft/debugpy) (for `python`)
+4. [vscode-node-debug2](https://github.com/microsoft/vscode-node-debug2) (for `javascript` and `typescript`)
+
+> **IMPORTANT:**  vscode-node-debug2 must be installed in `sdk` folder (`~/sdk/vscode-node-debug2`)
+
+> **IMPORTANT:** Command `:VimspectorInstall --all` will install `vscode-lldb` and `debugpy`
+
+```
+:VimspectorInstall --all
+```
+
+> **IMPORTANT:** DAP configuration for `python` use `python` from [pyenv](https://github.com/pyenv/pyenv). You need to install a `pyenv` and use a `python` from `pyenv`. Path is: `~/.pyenv/shims/python`
+
+#### Supported languages
+
+- cpp
+- rust
+- go
+- python
+- java
+- javascript / typescript
 
 #### Keymaps
 

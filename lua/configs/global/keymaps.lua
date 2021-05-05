@@ -25,7 +25,7 @@ keymaps['normal'] = {
     {'<S-e>', ':NvimTreeToggle<CR>'}, -- NvimTree explorer toggle
     {'<S-h>', ':RnvimrToggle<CR>'}, -- Ranger explorer toggle
     {'<S-f>', ':Telescope find_files<CR>'}, -- File search
-    {'<S-g>', ':Telescope live_grep<CR>'}, -- Text search
+    {'<S-w>', ':Telescope live_grep<CR>'}, -- Text search
     {'<S-p>', ':Telescope project<CR>'}, -- Projects
     {'<S-l>', ':FloatermNew lazygit<CR>'}, -- Lazygit
     {'<S-m>', ':MarkdownPreviewToggle<CR>'}, -- Markdown preview toggle
