@@ -47,7 +47,7 @@ local editor_config = require('modules.global.configs.editor')
 
 modules['terrortylor/nvim-comment'] = {config = editor_config.comment}
 
-modules['mhartington/formatter.nvim'] = {config = editor_config.formatter}
+modules['sbdchd/neoformat'] = {cmd = 'Neoformat'}
 
 modules['windwp/nvim-autopairs'] = {config = editor_config.autopairs}
 

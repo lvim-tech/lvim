@@ -1,0 +1,15 @@
+{
+	"configurations": {
+		"Python: Launch": {
+			"adapter": "debugpy",
+			"configuration": {
+				"request": "launch",
+				"program": "${file}",
+				"cwd": "${workspaceRoot}",
+				// "python": "/path/to/python/interpreter/to/use",
+				"stopOnEntry": true,
+				"debugOptions": []
+			}
+		}
+	}
+}

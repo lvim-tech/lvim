@@ -70,34 +70,26 @@ M.init_dap = function()
             }
         }
 
-        dap.adapters.rust = {
+        dap.adapters.dart = {
             type = 'executable',
-            attach = {pidProperty = 'pid', pidSelect = 'ask'},
-            command = 'lldb-vscode',
-            env = {LLDB_LAUNCH_FLAG_LAUNCH_IN_TTY = 'YES'},
-            name = 'lldb'
+            command = 'node',
+            args = {
+                os.getenv('HOME') .. '/sdk/Dart-Code/out/dist/debug.js', 'dart'
+            }
         }
-        dap.configurations.rust = {
+        dap.configurations.dart = {
             {
-                type = 'rust',
+                type = 'dart',
+                name = 'Launch flutter',
                 request = 'launch',
-                name = 'Launch',
+                dartSdkPath = os.getenv('HOME') .. '/sdk/dart-sdk',
+                flutterSdkPath = os.getenv('HOME') .. '/sdk/flutter',
                 program = function()
                     return vim.fn.input('Path to executable: ',
                                         vim.fn.getcwd() .. global.path_sep,
                                         'file')
                 end,
-                args = {},
-                cwd = '${workspaceFolder}',
-                env = function()
-                    local variables = {}
-                    for k, v in pairs(vim.fn.environ()) do
-                        table.insert(variables, string.format('%s=%s', k, v))
-                    end
-                    return variables
-                end,
-                stopOnEntry = false,
-                args = {}
+                cwd = '${workspaceFolder}'
             }
         }
 
@@ -125,27 +117,6 @@ M.init_dap = function()
                     return vim.fn.input('Path to executable: ',
                                         vim.fn.getcwd() .. global.path_sep,
                                         'file')
-                end
-            }
-        }
-
-        dap.adapters.python = {
-            type = 'executable',
-            command = 'python',
-            args = {'-m', 'debugpy.adapter'}
-        }
-        dap.configurations.python = {
-            {
-                type = 'python',
-                request = 'launch',
-                name = 'Launch',
-                program = function()
-                    return vim.fn.input('Path to executable: ',
-                                        vim.fn.getcwd() .. global.path_sep,
-                                        'file')
-                end,
-                pythonPath = function()
-                    return global.home .. '/.pyenv/shims/python'
                 end
             }
         }
@@ -178,6 +149,58 @@ M.init_dap = function()
 
         dap.adapters.typescript = jsts_adapter
         dap.configurations.typescript = {jsts_configuration}
+
+        dap.adapters.python = {
+            type = 'executable',
+            command = 'python',
+            args = {'-m', 'debugpy.adapter'}
+        }
+        dap.configurations.python = {
+            {
+                type = 'python',
+                request = 'launch',
+                name = 'Launch',
+                program = function()
+                    return vim.fn.input('Path to executable: ',
+                                        vim.fn.getcwd() .. global.path_sep,
+                                        'file')
+                end,
+                pythonPath = function()
+                    return global.home .. '/.pyenv/shims/python'
+                end
+            }
+        }
+
+        dap.adapters.rust = {
+            type = 'executable',
+            attach = {pidProperty = 'pid', pidSelect = 'ask'},
+            command = 'lldb-vscode',
+            env = {LLDB_LAUNCH_FLAG_LAUNCH_IN_TTY = 'YES'},
+            name = 'lldb'
+        }
+        dap.configurations.rust = {
+            {
+                type = 'rust',
+                request = 'launch',
+                name = 'Launch',
+                program = function()
+                    return vim.fn.input('Path to executable: ',
+                                        vim.fn.getcwd() .. global.path_sep,
+                                        'file')
+                end,
+                args = {},
+                cwd = '${workspaceFolder}',
+                env = function()
+                    local variables = {}
+                    for k, v in pairs(vim.fn.environ()) do
+                        table.insert(variables, string.format('%s=%s', k, v))
+                    end
+                    return variables
+                end,
+                stopOnEntry = false,
+                args = {}
+            }
+        }
 
         require('dap.ext.vscode').load_launchjs()
     end

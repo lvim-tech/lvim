@@ -1,0 +1,42 @@
+{
+	"adapters": {
+		"dart": {
+			"variables": {
+				"root": "/home/biserstoilov/sdk/Dart-Code"
+			},
+			"type": "dart",
+			"command": ["node", "${root}/out/src/debug/debug_entry.js", "dart"]
+		},
+		"flutter": {
+			"variables": {
+				"root": "/home/biserstoilov/sdk/Dart-Code"
+			},
+			"type": "flutter",
+			"command": ["node", "${root}/out/src/debug/debug_entry.js", "flutter"]
+		}
+	},
+	"configurations": {
+		"Dart: Launch": {
+			"adapter": "dart",
+			"configuration": {
+				"request": "launch",
+				"type": "dart",
+				"flutterSdkPath": "/home/biserstoilov/sdk/flutter",
+				"dartSdkPath": "/home/biserstoilov/sdk/dart-sdk",
+				"program": "${workspaceRoot}/main.dart",
+				"cwd": "${workspaceRoot}"
+			}
+		},
+		"Flutter: Launch": {
+			"adapter": "flutter",
+			"configuration": {
+				"request": "launch",
+				"type": "dart",
+				"flutterSdkPath": "/home/biserstoilov/sdk/flutter",
+				"dartSdkPath": "/home/biserstoilov/sdk/dart-sdk",
+				"program": "${workspaceRoot}/main.dart",
+				"cwd": "${workspaceRoot}"
+			}
+		}
+	}
+}

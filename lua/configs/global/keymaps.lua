@@ -35,7 +35,7 @@ keymaps['normal'] = {
     {'<A-[>', ':foldopen<CR>'}, -- Fold open
     {'<A-]>', ':foldclose<CR>'}, -- Fold close
     {'<A-.>', ':BookmarkToggle<CR>'}, -- Bookmark toggle
-    {'<A-,>', ':Format<CR>'}, -- Format code
+    {'<A-,>', ':Neoformat<CR>'}, -- Format code
     {'<A-/>', ':CommentToggle<CR>'}, -- Comment toggle
     {'<A-f>', ':LspFormatting<CR>'}, -- Lsp format code
     {'<A-g>', ':LspReferences<CR>'}, -- Lsp references

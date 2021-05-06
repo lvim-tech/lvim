@@ -16,13 +16,13 @@ configs['events'] = function()
                 'lua require(\'vim.highlight\').on_yank({higroup = \'Search\', timeout = 200})'
             }, {
                 'BufWinEnter', '*',
-                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o number relativenumber cursorcolumn cursorline '
+                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o '
             }, {
                 'BufRead', '*',
-                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o number relativenumber cursorcolumn cursorline '
+                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o '
             }, {
                 'BufNewFile', '*',
-                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o number relativenumber cursorcolumn cursorline '
+                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o '
             }, {'BufWinEnter', '*.ex', 'set filetype=elixir'},
             {'BufWinEnter', '*.exs', 'set filetype=elixir'},
             {'BufNewFile', '*.ex', 'set filetype=elixir'},

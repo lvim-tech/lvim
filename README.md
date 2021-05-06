@@ -80,7 +80,7 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 
 [nvim-comment](https://github.com/terrortylor/nvim-comment)
 
-[formatter.nvim](https://github.com/mhartington/formatter.nvim)
+[neoformat](https://github.com/sbdchd/neoformat)
 
 [nvim-autopairs](https://github.com/windwp/nvim-autopairs)
 
@@ -182,7 +182,7 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 | `<A-[>`     | `:foldopen<CR>`                                 | Fold open                            |
 | `<A-]>`     | `:foldclose<CR>`                                | Fold close                           |
 | `<A-.>`     | `:BookmarkToggle<CR>`                           | Bookmark toggle                      |
-| `<A-,>`     | `:Format<CR>`                                   | Format code                          |
+| `<A-,>`     | `:Neoformat<CR>`                                | Format code                          |
 | `<A-/>`     | `:CommentToggle<CR>`                            | Comment toggle                       |
 | `<A-f>`     | `:LspFormatting<CR>`                            | Lsp format code                      |
 | `<A-g>`     | `:LspReferences<CR>`                            | Lsp references                       |
@@ -637,11 +637,12 @@ You can use `Vimpector` or `DAP (Debug Adapter Protocol)`
 #### Supported languages
 
 - cpp
-- rust
+- dart
 - go
-- python
 - java
 - javascript / typescript
+- python
+- rust
 
 #### Keymaps
 
@@ -657,3 +658,17 @@ You can use `Vimpector` or `DAP (Debug Adapter Protocol)`
 | `<A-F8>`  | `<Cmd>DapPause<CR>`            | Pause             |
 | `<A-F9>`  | `<Cmd>DapToggleRepl<CR>`       | Toggle repl       |
 | `<A-F10>` | `<Cmd>DapGetSession<CR>`       | Get session       |
+
+## Format
+
+> IMPORTANT: LVIM use Neoformat by default. For more info use this [link](https://github.com/sbdchd/neoformat)
+
+How use:
+
+```
+:Neoformar
+```
+
+\-\-\- OR \-\-\-
+
+Use keymap `<A-,>`

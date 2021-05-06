@@ -25,7 +25,6 @@ function global:load_variables()
     self.data_path = string.format('%s' .. path_sep .. 'site' .. path_sep,
                                    vim.fn.stdpath('data'))
     self.lsp_path = string.format('%s' .. path_sep, vim.fn.stdpath('data'))
-    print(home)
 end
 
 global:load_variables()
