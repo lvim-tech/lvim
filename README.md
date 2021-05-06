@@ -593,6 +593,11 @@ You can use `Vimpector` or `DAP (Debug Adapter Protocol)`
 :VimspectorInstall --all
 ```
 
+You can generate `.vimspector.json` file for your current project with script from [bin](https://github.com/lvim-tech/lvim/tree/main/bin) folder
+
+```
+vsconfig
+```
 #### Keymaps
 
 | Key       | Action                                        | Description                   |

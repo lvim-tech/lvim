@@ -1,24 +1,24 @@
 {
-	"adapters": {
-		"dart": {
-			"variables": {
-				"root": "/home/<your username>/sdk/Dart-Code"
-			},
-			"type": "dart",
-			"command": ["node", "${root}/out/src/debug/debug_entry.js", "dart"]
-		}
-	},
-	"configurations": {
-		"Dart: Launch": {
-			"adapter": "dart",
-			"configuration": {
-				"request": "launch",
-				"type": "dart",
-				"flutterSdkPath": "/home/<your username>/sdk/flutter",
-				"dartSdkPath": "/home/<your username>/sdk/dart-sdk",
-				"program": "${workspaceRoot}/main.dart",
-				"cwd": "${workspaceRoot}"
-			}
-		}
-	}
+  "adapters": {
+    "dart": {
+      "variables": {
+        "root": "/home/<your username>/sdk/Dart-Code"
+      },
+      "type": "dart",
+      "command": ["node", "${root}/out/src/debug/debug_entry.js", "dart"]
+    }
+  },
+  "configurations": {
+    "Dart: Launch": {
+      "adapter": "dart",
+      "configuration": {
+        "request": "launch",
+        "type": "dart",
+        "flutterSdkPath": "/home/<your username>/sdk/flutter",
+        "dartSdkPath": "/home/<your username>/sdk/dart-sdk",
+        "program": "${workspaceRoot}/<name-of-file>.dart",
+        "cwd": "${workspaceRoot}"
+      }
+    }
+  }
 }

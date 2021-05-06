@@ -1,15 +1,15 @@
 {
-	"configurations": {
-		"Rust: Launch": {
-			"adapter": "vscode-cpptools",
-			"configuration": {
-				"request": "launch",
-				"program": "${workspaceFolder}/target/debug/rust",
-				"args": [],
-				"cwd": "${workspaceRoot}",
-				"environment": [],
-				"MIMode": "gdb"
-			}
-		}
-	}
+  "configurations": {
+    "Rust: Launch": {
+      "adapter": "vscode-cpptools",
+      "configuration": {
+        "request": "launch",
+        "program": "${workspaceFolder}/target/debug/<name-of-program>",
+        "args": [],
+        "cwd": "${workspaceRoot}",
+        "environment": [],
+        "MIMode": "gdb"
+      }
+    }
+  }
 }
