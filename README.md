@@ -666,7 +666,7 @@ You can use `Vimpector` or `DAP (Debug Adapter Protocol)`
 How use:
 
 ```
-:Neoformar
+:Neoformat
 ```
 
 \-\-\- OR \-\-\-
