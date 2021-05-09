@@ -1,7 +1,8 @@
 local config = {}
 
 function config.telescope()
-    if not packer_plugins['plenary.nvim'].loaded then
+    if not packer_plugins['plenary.nvim'].loaded or
+        not packer_plugins['popup.nvim'].loaded then
         vim.cmd [[packadd plenary.nvim]]
         vim.cmd [[packadd popup.nvim]]
         vim.cmd [[packadd telescope-project.nvim]]
