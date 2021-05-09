@@ -26,6 +26,7 @@
 - [neovim nightly(>=0.5.0)](https://github.com/neovim/neovim/wiki/Installing-Neovim)
 - [pynvim](https://github.com/neovim/pynvim)
 - [neovim-remote](https://github.com/mhinz/neovim-remote)
+- [nodejs](https://nodejs.org/en/)
 - [universal-ctags](https://github.com/universal-ctags/ctags)
 - [ripgrep](https://github.com/BurntSushi/ripgrep)
 - [fzf](https://github.com/junegunn/fzf)
@@ -598,6 +599,7 @@ You can generate `.vimspector.json` file for your current project with script fr
 ```
 vsconfig
 ```
+
 #### Keymaps
 
 | Key       | Action                                        | Description                   |
