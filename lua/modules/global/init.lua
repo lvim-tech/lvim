@@ -47,6 +47,11 @@ modules['voldikss/vim-floaterm'] = {config = ui_config.floaterm}
 
 local editor_config = require('modules.global.configs.editor')
 
+modules['lambdalisue/suda.vim'] = {
+    event = {'BufRead', 'BufNewFile'},
+    config = editor_config.suda
+}
+
 modules['terrortylor/nvim-comment'] = {config = editor_config.comment}
 
 modules['sbdchd/neoformat'] = {cmd = 'Neoformat'}

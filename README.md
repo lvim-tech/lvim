@@ -12,7 +12,7 @@
 - Add or remove settings, rewrite all settings
 - Dynamic LSP activation
 - Dynamic debugging activation - Vimspector or Dap
-- By default - 51 plugins
+- By default - 52 plugins
 - Loading time - ~~180.513~~ 060.381 ms
 
 ![Screenshot from 2021-04-25 15-07-07](https://user-images.githubusercontent.com/82431193/115992744-f0b6de00-a5d7-11eb-8ff0-04d767812245.png)
@@ -81,6 +81,8 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 [vim-floaterm](https://github.com/voldikss/vim-floaterm)
 
 ### Editor
+
+[suda.vim](https://github.com/lambdalisue/suda.vim)
 
 [nvim-comment](https://github.com/terrortylor/nvim-comment)
 
@@ -683,3 +685,9 @@ How use:
 \-\-\- OR \-\-\-
 
 Use keymap `<A-,>`
+
+## Sudo write
+
+```
+:SudaWrite
+```

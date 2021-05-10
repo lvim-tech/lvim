@@ -1,5 +1,7 @@
 local config = {}
 
+function config.suda() vim.g.suda_smart_edit = 1 end
+
 function config.comment() require('nvim_comment').setup() end
 
 function config.autopairs()
