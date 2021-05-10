@@ -12,7 +12,7 @@
 - Add or remove settings, rewrite all settings
 - Dynamic LSP activation
 - Dynamic debugging activation - Vimspector or Dap
-- By default - 50 plugins
+- By default - 51 plugins
 - Loading time - ~~180.513~~ 060.381 ms
 
 ![Screenshot from 2021-04-25 15-07-07](https://user-images.githubusercontent.com/82431193/115992744-f0b6de00-a5d7-11eb-8ff0-04d767812245.png)
@@ -34,6 +34,7 @@
 ### External apps
 
 - [ranger](https://github.com/ranger/ranger)
+- [vifm](https://github.com/vifm/vifm)
 - [bpytop](https://github.com/aristocratos/bpytop)
 - [lazygit](https://github.com/jesseduffield/lazygit)
 - [lazynpm](https://github.com/jesseduffield/lazynpm)
@@ -70,6 +71,8 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 [nvim-tree.lua](https://github.com/kyazdani42/nvim-tree.lua) (requires [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons))
 
 [rnvimr](https://github.com/kevinhwang91/rnvimr)
+
+[vifm.vim](https://github.com/vifm/vifm.vim)
 
 [nvim-colorizer.lua](https://github.com/norcalli/nvim-colorizer.lua)
 
@@ -171,6 +174,7 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 | `<S-r>`     | `<C-W>v`                                        | Split right                          |
 | `<S-b>`     | `<C-W>s`                                        | Split bottom                         |
 | `<S-e>`     | `:NvimTreeToggle<CR>`                           | NvimTree explorer toggle             |
+| `<S-u>`     | `:Vifm<CR>`                                     | Vifm explorer                        |
 | `<S-h>`     | `:RnvimrToggle<CR>`                             | Ranger explorer toggle               |
 | `<S-f>`     | `:Telescope find_files<CR>`                     | File search                          |
 | `<S-w>`     | `:Telescope live_grep<CR>`                      | Text search                          |

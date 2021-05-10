@@ -58,6 +58,7 @@ function config.whichkey()
         ['*'] = {'<Cmd>DogeGenerate<CR>', 'documentation generator'},
         ['/'] = {'<Cmd>CommentToggle<CR>', 'comment'},
         ['e'] = {'<Cmd>NvimTreeToggle<CR>', 'explorer'},
+        ['u'] = {'<Cmd>Vifm<CR>', 'vifm'},
         ['r'] = {'<Cmd>RnvimrToggle<CR>', 'ranger'},
         ['F'] = {'<Cmd>Format<CR>', 'formal'},
         ['M'] = {'<Cmd>MarkdownPreviewToggle<CR>', 'markdown preview toggle'},

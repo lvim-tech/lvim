@@ -30,6 +30,8 @@ modules['kyazdani42/nvim-tree.lua'] = {
 
 modules['kevinhwang91/rnvimr'] = {config = ui_config.ranger}
 
+modules['vifm/vifm.vim'] = {cmd = 'Vifm'}
+
 modules['norcalli/nvim-colorizer.lua'] = {config = ui_config.colorize}
 
 modules['junegunn/goyo.vim'] = {
