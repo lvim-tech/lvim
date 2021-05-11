@@ -157,6 +157,11 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 | `<Esc>`     | `<Esc>:noh<CR>`                                 | Remove highlight after search        |
 | `<Tab>`     | `:BufferNext<CR>`                               | Barbar - Tab navigation next         |
 | `<S-Tab>`   | `:BufferNext<CR>`                               | Barbar - Tab navigation prev         |
+| `<F1>`      | `:FloatermToggle<CR>`                           | Floaterm toggle                      |
+| `<F2>`      | `:FloatermPrev<CR>`                             | Floaterm prev                        |
+| `<F3>`      | `:FloatermNext<CR>`                             | Floaterm next                        |
+| `<F4>`      | `:FloatermNew<CR>`                              | Floaterm new                         |
+| `<F12>`     | `:FloatermKill<CR>`                             | Floaterm kill                        |
 | `<F5>`      | `:UndotreeToggle<CR>`                           | UndoTree toggle                      |
 | `<C-n>`     | `:e %:h/filename<CR>`                           | Create new file in current directory |
 | `<C-s>`     | `:w<CR>`                                        | Save                                 |

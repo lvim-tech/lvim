@@ -30,7 +30,6 @@ keymaps['normal'] = {
     {'<S-p>', ':Telescope project<CR>'}, -- Projects
     {'<S-l>', ':FloatermNew lazygit<CR>'}, -- Lazygit
     {'<S-m>', ':MarkdownPreviewToggle<CR>'}, -- Markdown preview toggle
-    {'<S-t>', ':FloatermNew --wintype=normal --height=10<CR>'}, -- Floaterm bottom
     {'<A-j>', ':AnyJump<CR>'}, -- Any jump
     {'<A-v>', ':SymbolsOutline<CR>'}, -- Symbols outline
     {'<A-[>', ':foldopen<CR>'}, -- Fold open

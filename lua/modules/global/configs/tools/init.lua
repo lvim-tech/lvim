@@ -215,15 +215,9 @@ function config.whichkey()
         },
         ['t'] = {
             name = '+terminal',
-            ['t'] = {
-                '<Cmd>FloatermNew --wintype=normal --height=10<CR>', 'terminal'
-            },
-            ['f'] = {'<Cmd>FloatermNew fzf<CR>', 'fzf'},
             ['g'] = {'<Cmd>FloatermNew lazygit<CR>', 'git'},
             ['d'] = {'<Cmd>FloatermNew lazydocker<CR>', 'docker'},
-            ['m'] = {'<Cmd>FloatermNew lazynpm<CR>', 'npm'},
-            ['n'] = {'<Cmd>FloatermNew node<CR>', 'node'},
-            ['p'] = {'<Cmd>FloatermNew python<CR>', 'python'},
+            ['n'] = {'<Cmd>FloatermNew lazynpm<CR>', 'npm'},
             ['b'] = {'<Cmd>FloatermNew bpytop<CR>', 'bpytop'}
         }
     }

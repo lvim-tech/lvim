@@ -40,12 +40,6 @@ configs['events'] = function()
                 'FileType', 'dashboard',
                 'set showtabline=0 | autocmd BufLeave <buffer> set showtabline=2'
             }
-        },
-        _floaterm = {
-            {
-                'FileType', 'floaterm',
-                'setlocal nocursorline noswapfile synmaxcol& signcolumn=no norelativenumber nocursorcolumn nospell  nolist  nonumber bufhidden=wipe colorcolumn= foldcolumn=0 matchpairs= '
-            }
         }
     })
 end

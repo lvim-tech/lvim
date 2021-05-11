@@ -364,9 +364,8 @@ function config.floaterm()
     vim.g.floaterm_keymap_prev = '<F3>'
     vim.g.floaterm_keymap_new = '<F4>'
     vim.g.floaterm_keymap_kill = '<F12>'
-    vim.g.floaterm_title = ''
-    vim.g.floaterm_gitcommit = 'floaterm'
-    vim.g.floaterm_shell = 'zsh'
+    vim.g.floaterm_title = 'Floaterm ($1/$2)'
+    vim.g.floaterm_shell = vim.o.shell
     vim.g.floaterm_autoinsert = 1
     vim.g.floaterm_width = 0.8
     vim.g.floaterm_height = 0.8
