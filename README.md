@@ -156,7 +156,7 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 | ----------- | ----------------------------------------------- | ------------------------------------ |
 | `<Esc>`     | `<Esc>:noh<CR>`                                 | Remove highlight after search        |
 | `<Tab>`     | `:BufferNext<CR>`                               | Barbar - Tab navigation next         |
-| `<S-Tab>`   | `:BufferNext<CR>`                               | Barbar - Tab navigation prev         |
+| `<S-Tab>`   | `:BufferPrev<CR>`                               | Barbar - Tab navigation prev         |
 | `<F1>`      | `:FloatermToggle<CR>`                           | Floaterm toggle                      |
 | `<F2>`      | `:FloatermPrev<CR>`                             | Floaterm prev                        |
 | `<F3>`      | `:FloatermNext<CR>`                             | Floaterm next                        |
