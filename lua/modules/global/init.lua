@@ -12,23 +12,20 @@ modules['lvim-tech/lvim-colorscheme'] = {
 
 modules['glepnir/dashboard-nvim'] = {config = ui_config.dashboard}
 
-modules['glepnir/galaxyline.nvim'] = {
-    branch = 'main',
+-- modules['glepnir/galaxyline.nvim'] = {
+--     branch = 'main',
+--     config = ui_config.galaxyline,
+--     requires = 'kyazdani42/nvim-web-devicons'
+-- }
+
+modules['lvim-tech/galaxyline.nvim'] = {
+    branch = 'exclude_filetypes',
     config = ui_config.galaxyline,
     requires = 'kyazdani42/nvim-web-devicons'
 }
 
-modules['romgrk/barbar.nvim'] = {requires = 'kyazdani42/nvim-web-devicons'}
-
 modules['lukas-reineke/indent-blankline.nvim'] =
     {event = 'BufRead', branch = 'lua', config = ui_config.indent_blankline}
-
-modules['kyazdani42/nvim-tree.lua'] = {
-    config = ui_config.tree,
-    requires = 'kyazdani42/nvim-web-devicons'
-}
-
-modules['kevinhwang91/rnvimr'] = {config = ui_config.ranger}
 
 modules['vifm/vifm.vim'] = {cmd = 'Vifm'}
 
@@ -46,6 +43,8 @@ modules['voldikss/vim-floaterm'] = {config = ui_config.floaterm}
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 local editor_config = require('modules.global.configs.editor')
+
+modules['vim-ctrlspace/vim-ctrlspace'] = {cmd = 'CtrlSpace'}
 
 modules['lambdalisue/suda.vim'] = {
     event = {'BufRead', 'BufNewFile'},
@@ -89,18 +88,6 @@ modules['TimUntersberger/neogit'] = {
 
 local languages_config = require('modules.global.configs.languages')
 
-modules['nvim-telescope/telescope.nvim'] =
-    {
-        cmd = 'Telescope',
-        config = languages_config.telescope,
-        requires = {
-            {'nvim-lua/popup.nvim', opt = true},
-            {'nvim-lua/plenary.nvim', opt = true},
-            {'nvim-telescope/telescope-fzy-native.nvim', opt = true},
-            {'nvim-telescope/telescope-project.nvim', opt = true}
-        }
-    }
-
 modules['neovim/nvim-lspconfig'] = {}
 
 modules['kabouzeid/nvim-lspinstall'] = {}
@@ -110,7 +97,6 @@ modules['mfussenegger/nvim-jdtls'] = {}
 modules['nvim-treesitter/nvim-treesitter'] =
     {
         event = 'BufRead',
-        after = 'telescope.nvim',
         config = languages_config.treesitter,
         requires = {{'nvim-treesitter/playground', opt = true}},
         run = ':TSUpdate'

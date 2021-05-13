@@ -69,8 +69,7 @@ function config.whichkey()
             ['<'] = {'<Cmd>BufferMovePrevious<CR>', 'move prev'},
             ['b'] = {'<Cmd>BufferPick<CR>', 'pick buffer'},
             ['n'] = {'<Cmd>bnext<CR>', 'next buffer'},
-            ['p'] = {'<Cmd>bprevious<CR>', 'prev buffer'},
-            ['a'] = {'<Cmd>Telescope buffers<CR>', 'all buffers'}
+            ['p'] = {'<Cmd>bprevious<CR>', 'prev buffer'}
         },
         ['p'] = {
             name = '+path',
@@ -124,15 +123,7 @@ function config.whichkey()
             ['s'] = {
                 name = '+symbol',
                 ['D'] = {'<Cmd>LspDocumentSymbol<CR>', 'document symbol'},
-                ['W'] = {'<Cmd>LspWorkspaceSymbol<CR>', 'workspace symbol'},
-                ['d'] = {
-                    '<Cmd>Telescope lsp_document_symbols<CR>',
-                    'Telescope document symbols'
-                },
-                ['w'] = {
-                    '<Cmd>Telescope lsp_workspace_symbols<CR>',
-                    'Telescope workspace symbols'
-                }
+                ['W'] = {'<Cmd>LspWorkspaceSymbol<CR>', 'workspace symbol'}
             },
             ['R'] = {
                 name = '+references',
@@ -161,15 +152,7 @@ function config.whichkey()
                 ['n'] = {'<Cmd>LspGetNext<CR>', 'next'},
                 ['p'] = {'<Cmd>LspGoToNext<CR>', 'go to prev'},
                 ['N'] = {'<Cmd>LspGoToPrev<CR>', 'go to next'},
-                ['P'] = {'<Cmd>LspGetPrev<CR>', 'prev'},
-                ['d'] = {
-                    '<Cmd>Telescope lsp_document_diagnostics<CR>',
-                    'document diagnostics'
-                },
-                ['w'] = {
-                    '<Cmd>Telescope lsp_workspace_diagnostics<CR>',
-                    'workspace diagnostics'
-                }
+                ['P'] = {'<Cmd>LspGetPrev<CR>', 'prev'}
             }
         },
         ['f'] = {
@@ -217,8 +200,7 @@ function config.whichkey()
             name = '+terminal',
             ['g'] = {'<Cmd>FloatermNew lazygit<CR>', 'git'},
             ['d'] = {'<Cmd>FloatermNew lazydocker<CR>', 'docker'},
-            ['n'] = {'<Cmd>FloatermNew lazynpm<CR>', 'npm'},
-            ['b'] = {'<Cmd>FloatermNew bpytop<CR>', 'bpytop'}
+            ['n'] = {'<Cmd>FloatermNew lazynpm<CR>', 'npm'}
         }
     }
     wk.register_keymap('leader', keymap, {mode = 'n'})

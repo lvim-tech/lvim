@@ -16,13 +16,13 @@ configs['events'] = function()
                 'lua require(\'vim.highlight\').on_yank({higroup = \'Search\', timeout = 200})'
             }, {
                 'BufWinEnter', '*',
-                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o '
+                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o showtabline=0 '
             }, {
                 'BufRead', '*',
-                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o '
+                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o showtabline=0 '
             }, {
                 'BufNewFile', '*',
-                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o '
+                'setlocal formatoptions-=c formatoptions-=r formatoptions-=o showtabline=0 '
             }, {'BufWinEnter', '*.ex', 'set filetype=elixir'},
             {'BufWinEnter', '*.exs', 'set filetype=elixir'},
             {'BufNewFile', '*.ex', 'set filetype=elixir'},
@@ -151,6 +151,17 @@ configs['keymaps'] = function()
     funcs.keymaps('n', {noremap = true, silent = true}, keymaps.normal)
     -- visual
     funcs.keymaps('x', {noremap = true, silent = true}, keymaps.visual)
+end
+
+configs['ctrlspace'] = function()
+    vim.ctrlspace_use_tablineend = 1
+    vim.g.CtrlSpaceLoadLastWorkspaceOnStart = 1
+    vim.g.CtrlSpaceSaveWorkspaceOnSwitch = 1
+    vim.g.CtrlSpaceSaveWorkspaceOnExit = 1
+    vim.g.CtrlSpaceGlobCommand = 'rg --color=never --files'
+    vim.api.nvim_exec([[
+        let g:CtrlSpaceSymbols = { "CS": " ", "Sin": "", "All": "", "Vis": "★", "File": "", "Tabs": "ﱡ", "CTab": "ﱢ", "NTM": "⁺", "WLoad": "", "WSave": "", "Zoom": "", "SLeft": "", "SRight": "", "BM": "", "Help": "", "IV": "", "IA": "", "IM": " ", "Dots": "ﳁ"}
+    ]], false)
 end
 
 return configs

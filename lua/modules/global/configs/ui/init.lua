@@ -13,28 +13,27 @@ function config.dashboard()
     }
     vim.g.dashboard_preview_file_height = 12
     vim.g.dashboard_preview_file_width = 80
-    vim.g.dashboard_default_executive = 'telescope'
     vim.g.dashboard_custom_section = {
-        a = {
-            description = {'  Projects           '},
-            command = 'Telescope project'
-        },
-        b = {
-            description = {'  File Browser       '},
-            command = 'RnvimrToggle'
-        },
-        c = {
-            description = {'  Find File          '},
-            command = 'Telescope find_files'
-        },
-        d = {
-            description = {'  Recently Used Files'},
-            command = 'Telescope oldfiles'
-        },
-        e = {
-            description = {'  Find Word          '},
-            command = 'Telescope live_grep'
-        },
+        -- a = {
+        --     description = {'  Projects           '},
+        --     command = 'Telescope project'
+        -- },
+        -- b = {
+        --     description = {'  File Browser       '},
+        --     command = 'RnvimrToggle'
+        -- },
+        -- c = {
+        --     description = {'  Find File          '},
+        --     command = 'Telescope find_files'
+        -- },
+        -- d = {
+        --     description = {'  Recently Used Files'},
+        --     command = 'Telescope oldfiles'
+        -- },
+        -- e = {
+        --     description = {'  Find Word          '},
+        --     command = 'Telescope live_grep'
+        -- },
         f = {
             description = {'  Keywmaps           '},
             command = ':e ~/.config/nvim/lua/configs/global/keymaps.lua'
@@ -52,7 +51,7 @@ end
 
 function config.galaxyline()
     local gl = require('galaxyline')
-    gl.short_line_list = {'NvimTree', 'vista', 'dbui', 'packer'}
+    gl.exclude_filetypes = {'ctrlspace'}
     local colors = {
         bg = "#222222",
         fg = "#E7BC74",
@@ -72,44 +71,86 @@ function config.galaxyline()
         error_red = '#F24949'
     }
     local condition = require('galaxyline.condition')
+    local buffer_not_empty = function()
+        if vim.fn.empty(vim.fn.expand('%:t')) ~= 1 then return true end
+        return false
+    end
     local gls = gl.section
     gl.short_line_list = {'NvimTree', 'vista', 'dbui', 'packer'}
     gls.left[1] = {
         ViMode = {
             provider = function()
                 -- auto change color according the vim mode
+                local alias = {
+                    n = 'NORMAL',
+                    i = 'INSERT',
+                    c = 'COMMAND',
+                    V = 'VISUAL',
+                    [''] = 'VISUAL',
+                    v = 'VISUAL',
+                    c = 'COMMAND-LINE',
+                    ['r?'] = ':CONFIRM',
+                    rm = '--MORE',
+                    R = 'REPLACE',
+                    Rv = 'VIRTUAL',
+                    s = 'SELECT',
+                    S = 'SELECT',
+                    ['r'] = 'HIT-ENTER',
+                    [''] = 'SELECT',
+                    t = 'TERMINAL',
+                    ['!'] = 'SHELL'
+                }
                 local mode_color = {
-                    n = colors.gray,
-                    i = colors.red,
-                    v = colors.cyan,
-                    [''] = colors.purple,
-                    V = colors.cyan,
-                    c = colors.magenta,
-                    no = colors.blue,
+                    n = colors.green,
+                    i = colors.blue,
+                    v = colors.magenta,
+                    [''] = colors.blue,
+                    V = colors.blue,
+                    c = colors.red,
+                    no = colors.magenta,
                     s = colors.orange,
                     S = colors.orange,
                     [''] = colors.orange,
                     ic = colors.yellow,
-                    R = colors.red,
-                    Rv = colors.red,
-                    cv = colors.blue,
-                    ce = colors.blue,
+                    R = colors.purple,
+                    Rv = colors.purple,
+                    cv = colors.red,
+                    ce = colors.red,
                     r = colors.cyan,
                     rm = colors.cyan,
                     ['r?'] = colors.cyan,
-                    ['!'] = colors.blue,
-                    t = colors.blue
+                    ['!'] = colors.green,
+                    t = colors.green,
+                    c = colors.purple,
+                    ['r?'] = colors.red,
+                    ['r'] = colors.red,
+                    rm = colors.red,
+                    R = colors.yellow,
+                    Rv = colors.magenta
                 }
+                local vim_mode = vim.fn.mode()
                 vim.api.nvim_command('hi GalaxyViMode guifg=' ..
-                                         mode_color[vim.fn.mode()])
-                return '  LVIM   '
+                                         mode_color[vim_mode])
+                return alias[vim_mode] .. '   '
             end,
-            highlight = {colors.red, colors.bg}
+            highlight = {colors.red, colors.line_bg, 'bold'}
         }
     }
-    print(vim.fn.getbufvar(0, 'ts'))
-    vim.fn.getbufvar(0, 'ts')
     gls.left[2] = {
+        FileIcon = {
+            provider = 'FileIcon',
+            condition = buffer_not_empty,
+            highlight = {colors.cyan, colors.line_bg}
+        }
+    }
+    gls.left[3] = {
+        FileName = {
+            provider = {'FileName'},
+            condition = buffer_not_empty,
+            highlight = {colors.cyan, colors.line_bg, 'bold'}
+        }
+    }
+    gls.left[4] = {
         GitIcon = {
             provider = function() return '  ' end,
             condition = condition.check_git_workspace,
@@ -118,7 +159,7 @@ function config.galaxyline()
             highlight = {colors.orange, colors.bg}
         }
     }
-    gls.left[3] = {
+    gls.left[5] = {
         GitBranch = {
             provider = 'GitBranch',
             condition = condition.check_git_workspace,
@@ -127,7 +168,7 @@ function config.galaxyline()
             highlight = {colors.grey, colors.bg}
         }
     }
-    gls.left[4] = {
+    gls.left[6] = {
         DiffAdd = {
             provider = 'DiffAdd',
             condition = condition.hide_in_width,
@@ -135,7 +176,7 @@ function config.galaxyline()
             highlight = {colors.green, colors.bg}
         }
     }
-    gls.left[5] = {
+    gls.left[7] = {
         DiffModified = {
             provider = 'DiffModified',
             condition = condition.hide_in_width,
@@ -143,7 +184,7 @@ function config.galaxyline()
             highlight = {colors.orange, colors.bg}
         }
     }
-    gls.left[6] = {
+    gls.left[8] = {
         DiffRemove = {
             provider = 'DiffRemove',
             condition = condition.hide_in_width,
@@ -288,35 +329,6 @@ function config.indent_blankline()
             "^if", "^table", "if_statement", "while", "for"
         }
     vim.cmd('autocmd CursorMoved * IndentBlanklineRefresh')
-end
-
-function config.tree()
-    vim.g.nvim_tree_disable_netrw = 0
-    vim.g.nvim_tree_hide_dotfiles = 1
-    vim.g.nvim_tree_indent_markers = 1
-    vim.g.nvim_tree_follow = 1
-    vim.g.nvim_tree_lsp_diagnostics = 1
-    vim.g.nvim_tree_auto_close = true
-    vim.g.nvim_tree_auto_ignore_ft = 'startify'
-    vim.g.nvim_tree_icons = {
-        default = '',
-        symlink = '',
-        git = {
-            unstaged = "",
-            staged = "",
-            unmerged = "",
-            renamed = "➜",
-            untracked = "",
-            ignored = "◌"
-        },
-        folder = {
-            default = "",
-            open = "",
-            empty = "",
-            empty_open = "",
-            symlink = ""
-        }
-    }
 end
 
 function config.ranger()

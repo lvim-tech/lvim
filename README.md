@@ -33,9 +33,7 @@
 
 ### External apps
 
-- [ranger](https://github.com/ranger/ranger)
 - [vifm](https://github.com/vifm/vifm)
-- [bpytop](https://github.com/aristocratos/bpytop)
 - [lazygit](https://github.com/jesseduffield/lazygit)
 - [lazynpm](https://github.com/jesseduffield/lazynpm)
 - [lazydocker](https://github.com/jesseduffield/lazydocker)
@@ -64,13 +62,7 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 
 [galaxyline.nvim](https://github.com/glepnir/galaxyline.nvim) (requires [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons))
 
-[barbar.nvim](https://github.com/romgrk/barbar.nvim) (requires [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons))
-
 [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
-
-[nvim-tree.lua](https://github.com/kyazdani42/nvim-tree.lua) (requires [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons))
-
-[rnvimr](https://github.com/kevinhwang91/rnvimr)
 
 [vifm.vim](https://github.com/vifm/vifm.vim)
 
@@ -105,8 +97,6 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 [neogit](https://github.com/TimUntersberger/neogit) (requires [plenary.nvim](https://github.com/nvim-lua/plenary.nvim))
 
 ### Languages
-
-[telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) (requires [popup.nvim](https://github.com/nvim-lua/popup.nvim) \| [plenary.nvim](https://github.com/nvim-lua/plenary.nvim) \| [telescope-fzy-native.nvim](https://github.com/nvim-telescope/telescope-fzy-native.nvim) \| [telescope-project.nvim](https://github.com/nvim-telescope/nvim-telescope/telescope-project.nvim)
 
 [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
 
@@ -154,9 +144,8 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 
 | Key         | Action                                          | Description                          |
 | ----------- | ----------------------------------------------- | ------------------------------------ |
+| `<C-space>` | `:CtrlSpace<CR>`                                | CtrlSpace                            |
 | `<Esc>`     | `<Esc>:noh<CR>`                                 | Remove highlight after search        |
-| `<Tab>`     | `:BufferNext<CR>`                               | Barbar - Tab navigation next         |
-| `<S-Tab>`   | `:BufferPrev<CR>`                               | Barbar - Tab navigation prev         |
 | `<F1>`      | `:FloatermToggle<CR>`                           | Floaterm toggle                      |
 | `<F2>`      | `:FloatermPrev<CR>`                             | Floaterm prev                        |
 | `<F3>`      | `:FloatermNext<CR>`                             | Floaterm next                        |
@@ -180,12 +169,8 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 | `<C-Down>`  | `:resize +2<CR>`                                | Resize height +                      |
 | `<S-r>`     | `<C-W>v`                                        | Split right                          |
 | `<S-b>`     | `<C-W>s`                                        | Split bottom                         |
-| `<S-e>`     | `:NvimTreeToggle<CR>`                           | NvimTree explorer toggle             |
-| `<S-u>`     | `:Vifm<CR>`                                     | Vifm explorer                        |
+| `<S-e>`     | `:Vifm<CR>`                                     | Vifm explorer                        |
 | `<S-h>`     | `:RnvimrToggle<CR>`                             | Ranger explorer toggle               |
-| `<S-f>`     | `:Telescope find_files<CR>`                     | File search                          |
-| `<S-w>`     | `:Telescope live_grep<CR>`                      | Text search                          |
-| `<S-p>`     | `:Telescope project<CR>`                        | Projects                             |
 | `<S-l>`     | `:FloatermNew lazygit<CR>`                      | Lazygit                              |
 | `<S-m>`     | `:MarkdownPreviewToggle<CR>`                    | Markdown preview toggle              |
 | `<S-t>`     | `:FloatermNew --wintype=normal --height=10<CR>` | Floaterm bottom                      |

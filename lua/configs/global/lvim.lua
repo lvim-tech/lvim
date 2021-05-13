@@ -67,7 +67,7 @@ M.global = function()
         foldlevelstart = 99,
         ruler = true,
         list = true,
-        showtabline = 2,
+        showtabline = 0,
         winwidth = 30,
         winminwidth = 10,
         pumheight = 15,
@@ -95,6 +95,7 @@ end
 
 M.set = function()
     local set_opt = {
+        nocompatible = true,
         cmdheight = 1,
         synmaxcol = 2500,
         formatoptions = '1jcroql',
