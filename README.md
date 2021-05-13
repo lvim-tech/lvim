@@ -12,8 +12,8 @@
 - Add or remove settings, rewrite all settings
 - Dynamic LSP activation
 - Dynamic debugging activation - Vimspector or Dap
-- By default - 52 plugins
-- Loading time - ~~180.513~~ 060.381 ms
+- By default - 47 plugins
+- Loading time - 048.235
 
 ![Screenshot from 2021-04-25 15-07-07](https://user-images.githubusercontent.com/82431193/115992744-f0b6de00-a5d7-11eb-8ff0-04d767812245.png)
 
