@@ -82,6 +82,8 @@ modules['TimUntersberger/neogit'] = {
     requires = {'nvim-lua/plenary.nvim', opt = true}
 }
 
+modules['pierreglaser/folding-nvim'] = {event = {'BufRead', 'BufNewFile'}}
+
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Languages ----------------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

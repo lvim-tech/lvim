@@ -60,7 +60,7 @@ function config.whichkey()
         ['e'] = {'<Cmd>NvimTreeToggle<CR>', 'explorer'},
         ['u'] = {'<Cmd>Vifm<CR>', 'vifm'},
         ['r'] = {'<Cmd>RnvimrToggle<CR>', 'ranger'},
-        ['F'] = {'<Cmd>Format<CR>', 'formal'},
+        ['f'] = {'<Cmd>Format<CR>', 'formal'},
         ['M'] = {'<Cmd>MarkdownPreviewToggle<CR>', 'markdown preview toggle'},
         ['s'] = {'<Cmd>SymbolsOutline<CR>', 'symbols outline'},
         ['b'] = {
@@ -154,14 +154,6 @@ function config.whichkey()
                 ['N'] = {'<Cmd>LspGoToPrev<CR>', 'go to next'},
                 ['P'] = {'<Cmd>LspGetPrev<CR>', 'prev'}
             }
-        },
-        ['f'] = {
-            name = '+fold',
-            ['m'] = {'<Cmd>:set foldmethod manual<CR>', 'manual (default)'},
-            ['i'] = {'<Cmd>:set foldmethod indent<CR>', 'indent'},
-            ['e'] = {'<Cmd>:set foldmethod expr<CR>', 'expr'},
-            ['d'] = {'<Cmd>:set foldmethod diff<CR>', 'diff'},
-            ['M'] = {'<Cmd>:set foldmethod marker<CR>', 'marker'}
         },
         ['g'] = {
             name = '+git',

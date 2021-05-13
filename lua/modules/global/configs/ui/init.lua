@@ -2,56 +2,34 @@ local config = {}
 
 function config.dashboard()
     vim.g.dashboard_custom_header = {
-
-        '888     Y88b      / 888      e    e',
-        '888      Y88b    /  888     d8b  d8b',
-        '888       Y88b  /   888    d888bdY88b',
-        '888        Y888/    888   / Y88Y Y888b',
-        '888         Y8/     888  /   YY   Y888b',
-        '888____      Y      888 /          Y888b'
-
+        "888     Y88b      / 888      e    e",
+        "888      Y88b    /  888     d8b  d8b",
+        "888       Y88b  /   888    d888bdY88b",
+        "888        Y888/    888   / Y88Y Y888b",
+        "888         Y8/     888  /   YY   Y888b",
+        "888____      Y      888 /          Y888b"
     }
     vim.g.dashboard_preview_file_height = 12
     vim.g.dashboard_preview_file_width = 80
     vim.g.dashboard_custom_section = {
-        -- a = {
-        --     description = {'  Projects           '},
-        --     command = 'Telescope project'
-        -- },
-        -- b = {
-        --     description = {'  File Browser       '},
-        --     command = 'RnvimrToggle'
-        -- },
-        -- c = {
-        --     description = {'  Find File          '},
-        --     command = 'Telescope find_files'
-        -- },
-        -- d = {
-        --     description = {'  Recently Used Files'},
-        --     command = 'Telescope oldfiles'
-        -- },
-        -- e = {
-        --     description = {'  Find Word          '},
-        --     command = 'Telescope live_grep'
-        -- },
-        f = {
-            description = {'  Keywmaps           '},
-            command = ':e ~/.config/nvim/lua/configs/global/keymaps.lua'
+        a = {
+            description = {"  Keywmaps           "},
+            command = ":e ~/.config/nvim/lua/configs/global/keymaps.lua"
         },
-        g = {
-            description = {'  Settings           '},
-            command = ':e ~/.config/nvim/lua/configs/global/lvim.lua'
+        b = {
+            description = {"  Settings           "},
+            command = ":e ~/.config/nvim/lua/configs/global/lvim.lua"
         },
-        h = {
-            description = {'  Readme             '},
-            command = ':e ~/.config/nvim/README.md'
+        c = {
+            description = {"  Readme             "},
+            command = ":e ~/.config/nvim/README.md"
         }
     }
 end
 
 function config.galaxyline()
-    local gl = require('galaxyline')
-    gl.exclude_filetypes = {'ctrlspace'}
+    local gl = require("galaxyline")
+    gl.exclude_filetypes = {"ctrlspace"}
     local colors = {
         bg = "#222222",
         fg = "#E7BC74",
@@ -68,267 +46,279 @@ function config.galaxyline()
         gray = "#E7BC74",
         blue = "#83a598",
         red = "#F24949",
-        error_red = '#F24949'
+        error_red = "#F24949"
     }
-    local condition = require('galaxyline.condition')
+    local condition = require("galaxyline.condition")
     local buffer_not_empty = function()
-        if vim.fn.empty(vim.fn.expand('%:t')) ~= 1 then return true end
+        if vim.fn.empty(vim.fn.expand("%:t")) ~= 1 then
+            return true
+        end
         return false
     end
     local gls = gl.section
-    gl.short_line_list = {'NvimTree', 'vista', 'dbui', 'packer'}
+    gl.short_line_list = {"NvimTree", "vista", "dbui", "packer"}
     gls.left[1] = {
         ViMode = {
             provider = function()
                 -- auto change color according the vim mode
                 local alias = {
-                    n = 'NORMAL',
-                    i = 'INSERT',
-                    c = 'COMMAND',
-                    V = 'VISUAL',
-                    [''] = 'VISUAL',
-                    v = 'VISUAL',
-                    c = 'COMMAND-LINE',
-                    ['r?'] = ':CONFIRM',
-                    rm = '--MORE',
-                    R = 'REPLACE',
-                    Rv = 'VIRTUAL',
-                    s = 'SELECT',
-                    S = 'SELECT',
-                    ['r'] = 'HIT-ENTER',
-                    [''] = 'SELECT',
-                    t = 'TERMINAL',
-                    ['!'] = 'SHELL'
+                    n = "NORMAL",
+                    v = "VISUAL",
+                    V = "V-LINE",
+                    [""] = "V-BLOCK",
+                    s = "SELECT",
+                    S = "S-LINE",
+                    [""] = "S-BLOCK",
+                    i = "INSERT",
+                    R = "REPLACE",
+                    c = "COMMAND",
+                    r = "PROMPT",
+                    ["!"] = "EXTERNAL",
+                    t = "TERMINAL"
                 }
                 local mode_color = {
                     n = colors.green,
-                    i = colors.blue,
-                    v = colors.magenta,
-                    [''] = colors.blue,
-                    V = colors.blue,
-                    c = colors.red,
-                    no = colors.magenta,
+                    v = colors.cyan,
+                    V = colors.cyan,
+                    [""] = colors.cyan,
                     s = colors.orange,
                     S = colors.orange,
-                    [''] = colors.orange,
-                    ic = colors.yellow,
-                    R = colors.purple,
-                    Rv = colors.purple,
-                    cv = colors.red,
-                    ce = colors.red,
-                    r = colors.cyan,
-                    rm = colors.cyan,
-                    ['r?'] = colors.cyan,
-                    ['!'] = colors.green,
-                    t = colors.green,
-                    c = colors.purple,
-                    ['r?'] = colors.red,
-                    ['r'] = colors.red,
-                    rm = colors.red,
-                    R = colors.yellow,
-                    Rv = colors.magenta
+                    [""] = colors.orange,
+                    i = colors.yellow,
+                    R = colors.red,
+                    c = colors.blue,
+                    r = colors.brown,
+                    ["!"] = colors.purple,
+                    t = colors.purple
                 }
                 local vim_mode = vim.fn.mode()
-                vim.api.nvim_command('hi GalaxyViMode guifg=' ..
-                                         mode_color[vim_mode])
-                return alias[vim_mode] .. '   '
+                vim.api.nvim_command("hi GalaxyViMode guifg=" .. mode_color[vim_mode])
+                return alias[vim_mode] .. "   "
             end,
-            highlight = {colors.red, colors.line_bg, 'bold'}
+            highlight = {colors.red, colors.line_bg, "bold"}
         }
     }
     gls.left[2] = {
         FileIcon = {
-            provider = 'FileIcon',
+            provider = "FileIcon",
             condition = buffer_not_empty,
             highlight = {colors.cyan, colors.line_bg}
         }
     }
     gls.left[3] = {
         FileName = {
-            provider = {'FileName'},
+            provider = {"FileName"},
             condition = buffer_not_empty,
-            highlight = {colors.cyan, colors.line_bg, 'bold'}
+            highlight = {colors.cyan, colors.line_bg, "bold"}
         }
     }
     gls.left[4] = {
         GitIcon = {
-            provider = function() return '  ' end,
+            provider = function()
+                return "  "
+            end,
             condition = condition.check_git_workspace,
-            separator = ' ',
-            separator_highlight = {'NONE', colors.bg},
+            separator = " ",
+            separator_highlight = {"NONE", colors.bg},
             highlight = {colors.orange, colors.bg}
         }
     }
     gls.left[5] = {
         GitBranch = {
-            provider = 'GitBranch',
+            provider = "GitBranch",
             condition = condition.check_git_workspace,
-            separator = ' ',
-            separator_highlight = {'NONE', colors.bg},
+            separator = " ",
+            separator_highlight = {"NONE", colors.bg},
             highlight = {colors.grey, colors.bg}
         }
     }
     gls.left[6] = {
         DiffAdd = {
-            provider = 'DiffAdd',
+            provider = "DiffAdd",
             condition = condition.hide_in_width,
-            icon = '   ',
+            icon = "   ",
             highlight = {colors.green, colors.bg}
         }
     }
     gls.left[7] = {
         DiffModified = {
-            provider = 'DiffModified',
+            provider = "DiffModified",
             condition = condition.hide_in_width,
-            icon = '   ',
+            icon = "   ",
             highlight = {colors.orange, colors.bg}
         }
     }
     gls.left[8] = {
         DiffRemove = {
-            provider = 'DiffRemove',
+            provider = "DiffRemove",
             condition = condition.hide_in_width,
-            icon = '   ',
+            icon = "   ",
             highlight = {colors.red, colors.bg}
         }
     }
     gls.right[1] = {
         DiagnosticError = {
-            provider = 'DiagnosticError',
-            icon = '  ',
+            provider = "DiagnosticError",
+            icon = "  ",
             highlight = {colors.error_red, colors.bg}
         }
     }
     gls.right[2] = {
         DiagnosticWarn = {
-            provider = 'DiagnosticWarn',
-            icon = '  ',
+            provider = "DiagnosticWarn",
+            icon = "  ",
             highlight = {colors.orange, colors.bg}
         }
     }
     gls.right[3] = {
         DiagnosticHint = {
-            provider = 'DiagnosticHint',
-            icon = '  ',
+            provider = "DiagnosticHint",
+            icon = "  ",
             highlight = {colors.orange, colors.bg}
         }
     }
     gls.right[4] = {
         DiagnosticInfo = {
-            provider = 'DiagnosticInfo',
-            icon = '  ',
+            provider = "DiagnosticInfo",
+            icon = "  ",
             highlight = {colors.blue, colors.bg}
         }
     }
     gls.right[5] = {
         ShowLspClient = {
-            provider = 'GetLspClient',
+            provider = "GetLspClient",
             condition = function()
-                local tbl = {['dashboard'] = true, [' '] = true}
-                if tbl[vim.bo.filetype] then return false end
+                local tbl = {["dashboard"] = true, [" "] = true}
+                if tbl[vim.bo.filetype] then
+                    return false
+                end
                 return true
             end,
-            icon = '   ',
+            icon = "   ",
             highlight = {colors.purple, colors.bg}
         }
     }
     gls.right[6] = {
         LineInfo = {
-            provider = 'LineColumn',
-            separator = '  ',
-            separator_highlight = {'NONE', colors.bg},
+            provider = "LineColumn",
+            separator = "  ",
+            separator_highlight = {"NONE", colors.bg},
             highlight = {colors.grey, colors.bg}
         }
     }
     gls.right[7] = {
         PerCent = {
-            provider = 'LinePercent',
-            separator = ' ',
-            separator_highlight = {'NONE', colors.bg},
+            provider = "LinePercent",
+            separator = " ",
+            separator_highlight = {"NONE", colors.bg},
             highlight = {colors.grey, colors.bg}
         }
     }
     gls.right[8] = {
         Tabstop = {
             provider = function()
-                return
-                    "Spaces: " .. vim.api.nvim_buf_get_option(0, "tabstop") ..
-                        " "
+                return "Spaces: " .. vim.api.nvim_buf_get_option(0, "tabstop") .. " "
             end,
             condition = condition.hide_in_width,
-            separator = ' ',
-            separator_highlight = {'NONE', colors.bg},
+            separator = " ",
+            separator_highlight = {"NONE", colors.bg},
             highlight = {colors.grey, colors.bg}
         }
     }
     gls.right[9] = {
         BufferType = {
-            provider = 'FileTypeName',
+            provider = "FileTypeName",
             condition = condition.hide_in_width,
-            separator = ' ',
-            separator_highlight = {'NONE', colors.bg},
+            separator = " ",
+            separator_highlight = {"NONE", colors.bg},
             highlight = {colors.grey, colors.bg}
         }
     }
     gls.right[10] = {
         FileEncode = {
-            provider = 'FileEncode',
+            provider = "FileEncode",
             condition = condition.hide_in_width,
-            separator = ' ',
-            separator_highlight = {'NONE', colors.bg},
+            separator = " ",
+            separator_highlight = {"NONE", colors.bg},
             highlight = {colors.grey, colors.bg}
         }
     }
     gls.right[11] = {
         Space = {
-            provider = function() return ' ' end,
-            separator = ' ',
-            separator_highlight = {'NONE', colors.bg},
+            provider = function()
+                return " "
+            end,
+            separator = " ",
+            separator_highlight = {"NONE", colors.bg},
             highlight = {colors.orange, colors.bg}
         }
     }
     gls.short_line_left[1] = {
         BufferType = {
-            provider = 'FileTypeName',
-            separator = ' ',
-            separator_highlight = {'NONE', colors.bg},
+            provider = "FileTypeName",
+            separator = " ",
+            separator_highlight = {"NONE", colors.bg},
             highlight = {colors.grey, colors.bg}
         }
     }
     gls.short_line_left[2] = {
         SFileName = {
-            provider = 'SFileName',
+            provider = "SFileName",
             condition = condition.buffer_not_empty,
             highlight = {colors.grey, colors.bg}
         }
     }
     gls.short_line_right[1] = {
         BufferIcon = {
-            provider = 'BufferIcon',
+            provider = "BufferIcon",
             highlight = {colors.grey, colors.bg}
         }
     }
 end
 
 function config.indent_blankline()
-    vim.g.indent_blankline_char = '▏'
+    vim.g.indent_blankline_char = "▏"
     vim.g.indent_blankline_show_first_indent_level = true
-    vim.g.indent_blankline_filetype_exclude =
-        {
-            "startify", "dashboard", "dotooagenda", "log", "fugitive",
-            "gitcommit", "packer", "vimwiki", "markdown", "json", "txt",
-            "vista", "help", "todoist", "NvimTree", "peekaboo", "git",
-            "TelescopePrompt", "undotree", "flutterToolsOutline", ""
-        }
+    vim.g.indent_blankline_filetype_exclude = {
+        "startify",
+        "dashboard",
+        "dotooagenda",
+        "log",
+        "fugitive",
+        "gitcommit",
+        "packer",
+        "vimwiki",
+        "markdown",
+        "json",
+        "txt",
+        "vista",
+        "help",
+        "todoist",
+        "NvimTree",
+        "peekaboo",
+        "git",
+        "TelescopePrompt",
+        "undotree",
+        "flutterToolsOutline",
+        ""
+    }
     vim.g.indent_blankline_buftype_exclude = {"terminal", "nofile"}
     vim.g.indent_blankline_show_trailing_blankline_indent = false
     vim.g.indent_blankline_show_current_context = true
-    vim.g.indent_blankline_context_patterns =
-        {
-            "class", "function", "method", "block", "list_literal", "selector",
-            "^if", "^table", "if_statement", "while", "for"
-        }
-    vim.cmd('autocmd CursorMoved * IndentBlanklineRefresh')
+    vim.g.indent_blankline_context_patterns = {
+        "class",
+        "function",
+        "method",
+        "block",
+        "list_literal",
+        "selector",
+        "^if",
+        "^table",
+        "if_statement",
+        "while",
+        "for"
+    }
+    vim.cmd("autocmd CursorMoved * IndentBlanklineRefresh")
 end
 
 function config.ranger()
@@ -339,22 +329,26 @@ function config.ranger()
 end
 
 function config.colorize()
-    require'colorizer'.setup({'*'}, {
-        RGB = true,
-        RRGGBB = true,
-        RRGGBBAA = true,
-        rgb_fn = true,
-        hsl_fn = true,
-        css = true,
-        css_fn = true
-    })
+    require "colorizer".setup(
+        {"*"},
+        {
+            RGB = true,
+            RRGGBB = true,
+            RRGGBBAA = true,
+            rgb_fn = true,
+            hsl_fn = true,
+            css = true,
+            css_fn = true
+        }
+    )
 end
 
 function config.goyo()
     local opts = {silent = true, noremap = true}
-    vim.api.nvim_set_keymap('n', '<C-z>', ':Goyo<CR>', opts)
+    vim.api.nvim_set_keymap("n", "<C-z>", ":Goyo<CR>", opts)
     -- TODO handle this better
-    vim.api.nvim_exec([[
+    vim.api.nvim_exec(
+        [[
         function! Goyo_enter()
         set noshowcmd
         Limelight
@@ -367,16 +361,18 @@ function config.goyo()
 
         autocmd! User GoyoEnter nested call Goyo_enter()
         autocmd! User GoyoLeave nested call Goyo_leave()
-    ]], false)
+    ]],
+        false
+    )
 end
 
 function config.floaterm()
-    vim.g.floaterm_keymap_toggle = '<F1>'
-    vim.g.floaterm_keymap_next = '<F2>'
-    vim.g.floaterm_keymap_prev = '<F3>'
-    vim.g.floaterm_keymap_new = '<F4>'
-    vim.g.floaterm_keymap_kill = '<F12>'
-    vim.g.floaterm_title = 'Floaterm ($1/$2)'
+    vim.g.floaterm_keymap_toggle = "<F1>"
+    vim.g.floaterm_keymap_next = "<F2>"
+    vim.g.floaterm_keymap_prev = "<F3>"
+    vim.g.floaterm_keymap_new = "<F4>"
+    vim.g.floaterm_keymap_kill = "<F12>"
+    vim.g.floaterm_title = "Floaterm ($1/$2)"
     vim.g.floaterm_shell = vim.o.shell
     vim.g.floaterm_autoinsert = 1
     vim.g.floaterm_width = 0.8
