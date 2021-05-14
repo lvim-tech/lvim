@@ -164,4 +164,6 @@ function config.neogit()
     require('neogit').setup {}
 end
 
+function foldsigns() require('foldsigns').setup() end
+
 return config

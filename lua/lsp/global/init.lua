@@ -36,9 +36,6 @@ end
 
 local lsp_config = {}
 
-function lsp_config.common_on_attach(client)
-    documentHighlight(client)
-    require('folding').on_attach()
-end
+function lsp_config.common_on_attach(client) documentHighlight(client) end
 
 return lsp_config

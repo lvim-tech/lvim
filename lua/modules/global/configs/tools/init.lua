@@ -188,6 +188,14 @@ function config.whichkey()
             ['n'] = {'<Cmd>BookmarkNext<CR>', 'next bookmark'},
             ['p'] = {'<Cmd>BookmarkPrev<CR>', 'prev bookmark'}
         },
+        ['o'] = {
+            name = '+fold',
+            ['m'] = {'<Cmd>:set foldmethod manual<CR>', 'manual (default)'},
+            ['i'] = {'<Cmd>:set foldmethod indent<CR>', 'indent'},
+            ['e'] = {'<Cmd>:set foldmethod expr<CR>', 'expr'},
+            ['d'] = {'<Cmd>:set foldmethod diff<CR>', 'diff'},
+            ['M'] = {'<Cmd>:set foldmethod marker<CR>', 'marker'}
+        },
         ['t'] = {
             name = '+terminal',
             ['g'] = {'<Cmd>FloatermNew lazygit<CR>', 'git'},
