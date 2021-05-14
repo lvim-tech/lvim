@@ -1,5 +1,14 @@
 local config = {}
 
+function config.fzf()
+    vim.g.fzf_preview_window = {'right:50%', 'ctrl-/'}
+    vim.g.fzf_buffers_jump = 1
+    vim.g.fzf_commits_log_options =
+        '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
+    vim.g.fzf_tags_command = 'ctags -R'
+    vim.g.fzf_commands_expect = 'alt-enter,ctrl-x'
+end
+
 function config.suda() vim.g.suda_smart_edit = 1 end
 
 function config.comment() require('nvim_comment').setup() end

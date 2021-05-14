@@ -78,22 +78,22 @@ function config.galaxyline()
                 }
                 local mode_color = {
                     n = colors.green,
-                    v = colors.cyan,
-                    V = colors.cyan,
-                    [""] = colors.cyan,
+                    v = colors.orange,
+                    V = colors.orange,
+                    [""] = colors.orange,
                     s = colors.orange,
                     S = colors.orange,
                     [""] = colors.orange,
-                    i = colors.yellow,
+                    i = colors.red,
                     R = colors.red,
                     c = colors.blue,
-                    r = colors.brown,
-                    ["!"] = colors.purple,
-                    t = colors.purple
+                    r = colors.magenta,
+                    ["!"] = colors.darkblue,
+                    t = colors.darkblue
                 }
                 local vim_mode = vim.fn.mode()
                 vim.api.nvim_command("hi GalaxyViMode guifg=" .. mode_color[vim_mode])
-                return alias[vim_mode] .. "   "
+                return alias[vim_mode] .. "    "
             end,
             highlight = {colors.red, colors.line_bg, "bold"}
         }
@@ -102,14 +102,16 @@ function config.galaxyline()
         FileIcon = {
             provider = "FileIcon",
             condition = buffer_not_empty,
-            highlight = {colors.cyan, colors.line_bg}
+            highlight = {colors.magenta, colors.line_bg}
         }
     }
     gls.left[3] = {
         FileName = {
             provider = {"FileName"},
             condition = buffer_not_empty,
-            highlight = {colors.cyan, colors.line_bg, "bold"}
+            separator = " ",
+            separator_highlight = {"NONE", colors.bg},
+            highlight = {colors.magenta, colors.line_bg}
         }
     }
     gls.left[4] = {
@@ -118,7 +120,7 @@ function config.galaxyline()
                 return "  "
             end,
             condition = condition.check_git_workspace,
-            separator = " ",
+            -- separator = " ",
             separator_highlight = {"NONE", colors.bg},
             highlight = {colors.orange, colors.bg}
         }
