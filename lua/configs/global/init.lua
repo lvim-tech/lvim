@@ -144,6 +144,8 @@ configs['commands'] = function()
         'command! VimspectorInit lua require("configs.global.debugers").init_vimspector()')
     -- Init Dap
     vim.cmd('command! DapInit lua require("configs.global.debugers").init_dap()')
+    -- Spectre
+    vim.cmd('command! Spectre lua require("spectre").open()')
 end
 
 configs['keymaps'] = function()
@@ -158,9 +160,9 @@ configs['ctrlspace'] = function()
     vim.g.CtrlSpaceLoadLastWorkspaceOnStart = 1
     vim.g.CtrlSpaceSaveWorkspaceOnSwitch = 1
     vim.g.CtrlSpaceSaveWorkspaceOnExit = 1
-    vim.g.CtrlSpaceGlobCommand = 'rg --color=never --files'
     vim.api.nvim_exec([[
         let g:CtrlSpaceSymbols = { "CS": " ", "Sin": "", "All": "", "Vis": "★", "File": "", "Tabs": "ﱡ", "CTab": "ﱢ", "NTM": "⁺", "WLoad": "", "WSave": "", "Zoom": "", "SLeft": "", "SRight": "", "BM": "", "Help": "", "IV": "", "IA": "", "IM": " ", "Dots": "ﳁ"}
+        let g:CtrlSpaceProjectRootMarkers = []
     ]], false)
 end
 

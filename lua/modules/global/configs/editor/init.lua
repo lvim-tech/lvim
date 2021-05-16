@@ -1,12 +1,99 @@
 local config = {}
 
-function config.fzf()
-    vim.g.fzf_preview_window = {'right:50%', 'ctrl-/'}
-    vim.g.fzf_buffers_jump = 1
-    vim.g.fzf_commits_log_options =
-        '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
-    vim.g.fzf_tags_command = 'ctags -R'
-    vim.g.fzf_commands_expect = 'alt-enter,ctrl-x'
+function config.spectre()
+    if not packer_plugins['plenary.nvim'].loaded or
+        not packer_plugins['popup.nvim'].loaded then
+        vim.cmd [[packadd plenary.nvim]]
+        vim.cmd [[packadd popup.nvim]]
+    end
+    require('spectre').setup({
+        color_devicons = true,
+        line_sep_start = '-----------------------------------------',
+        result_padding = '|  ',
+        line_sep = '-----------------------------------------',
+        highlight = {
+            ui = "String",
+            search = "DiffChange",
+            replace = "DiffDelete"
+        },
+        mapping = {
+            ['delete_line'] = nil,
+            ['enter_file'] = nil,
+            ['send_to_qf'] = nil,
+            ['replace_cmd'] = nil,
+            ['show_option_menu'] = nil,
+            ['run_replace'] = nil,
+            ['change_view_mode'] = nil,
+            ['toggle_ignore_case'] = nil,
+            ['toggle_ignore_hidden'] = nil
+            -- you can put your mapping here it only use normal mode
+        },
+        find_engine = {
+            -- rg is map with finder_cmd
+            ['rg'] = {
+                cmd = "rg",
+                -- default args
+                args = {
+                    '--color=never', '--no-heading', '--with-filename',
+                    '--line-number', '--column'
+                },
+                options = {
+                    ['ignore-case'] = {
+                        value = "--ignore-case",
+                        icon = "[I]",
+                        desc = "ignore case"
+                    },
+                    ['hidden'] = {
+                        value = "--hidden",
+                        desc = "hidden file",
+                        icon = "[H]"
+                    }
+                    -- you can put any option you want here it can toggle with
+                    -- show_option function
+                }
+            },
+            ['ag'] = {
+                cmd = "ag",
+                args = {'--vimgrep', '-s'},
+                options = {
+                    ['ignore-case'] = {
+                        value = "-i",
+                        icon = "[I]",
+                        desc = "ignore case"
+                    },
+                    ['hidden'] = {
+                        value = "--hidden",
+                        desc = "hidden file",
+                        icon = "[H]"
+                    }
+                }
+            }
+        },
+        replace_engine = {
+            ['sed'] = {cmd = "sed", args = nil},
+            options = {
+                ['ignore-case'] = {
+                    value = "--ignore-case",
+                    icon = "[I]",
+                    desc = "ignore case"
+                }
+            }
+        },
+        default = {
+            find = {
+                -- pick one of item in find_engine
+                cmd = "rg",
+                options = {"ignore-case"}
+            },
+            replace = {
+                -- pick one of item in replace_engine
+                cmd = "sed"
+            }
+        },
+        replace_vim_cmd = "cfdo",
+        is_open_target_win = true, -- open file on opener window
+        is_insert_mode = false -- start open panel on is_insert_mode
+    })
 end
 
 function config.suda() vim.g.suda_smart_edit = 1 end

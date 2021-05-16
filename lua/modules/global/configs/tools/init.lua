@@ -59,7 +59,6 @@ function config.whichkey()
         ['/'] = {'<Cmd>CommentToggle<CR>', 'comment'},
         ['e'] = {'<Cmd>NvimTreeToggle<CR>', 'explorer'},
         ['u'] = {'<Cmd>Vifm<CR>', 'vifm'},
-        ['r'] = {'<Cmd>RnvimrToggle<CR>', 'ranger'},
         ['f'] = {'<Cmd>Format<CR>', 'formal'},
         ['M'] = {'<Cmd>MarkdownPreviewToggle<CR>', 'markdown preview toggle'},
         ['s'] = {'<Cmd>SymbolsOutline<CR>', 'symbols outline'},
@@ -195,6 +194,44 @@ function config.whichkey()
             ['e'] = {'<Cmd>:set foldmethod expr<CR>', 'expr'},
             ['d'] = {'<Cmd>:set foldmethod diff<CR>', 'diff'},
             ['M'] = {'<Cmd>:set foldmethod marker<CR>', 'marker'}
+        },
+        ['r'] = {
+            name = '+replace',
+            ['d'] = {
+                '<Cmd>lua require("spectre").delete()<CR>',
+                'toggle current item'
+            },
+            ['g'] = {
+                '<Cmd>lua require("spectre.actions").select_entry()<CR>',
+                'goto current file'
+            },
+            ['q'] = {
+                '<Cmd>lua require("spectre.actions").send_to_qf()<CR>',
+                'send all item to quickfix'
+            },
+            ['m'] = {
+                '<Cmd>lua require("spectre.actions").replace_cmd()<CR>',
+                'input replace vim command'
+            },
+            ['o'] = {
+                '<Cmd>lua require("spectre").show_options()<CR>', 'show option'
+            },
+            ['R'] = {
+                '<Cmd>lua require("spectre.actions").run_replace()<CR>',
+                'replace all'
+            },
+            ['v'] = {
+                '<Cmd>lua require("spectre").change_view()<CR>',
+                'change result view mode'
+            },
+            ['c'] = {
+                '<Cmd>lua require("spectre").change_options("ignore-case")<CR>',
+                'toggle ignore case'
+            },
+            ['h'] = {
+                '<Cmd>lua require("spectre").change_options("hidden")<CR>',
+                'toggle search hidden'
+            }
         },
         ['t'] = {
             name = '+terminal',

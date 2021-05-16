@@ -46,6 +46,14 @@ local editor_config = require('modules.global.configs.editor')
 
 modules['vim-ctrlspace/vim-ctrlspace'] = {cmd = 'CtrlSpace'}
 
+modules['windwp/nvim-spectre'] = {
+    config = editor_config.spectre,
+    requires = {
+        {'nvim-lua/popup.nvim', opt = true},
+        {'nvim-lua/plenary.nvim', opt = true}
+    }
+}
+
 modules['lambdalisue/suda.vim'] = {
     event = {'BufRead', 'BufNewFile'},
     config = editor_config.suda

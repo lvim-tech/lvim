@@ -12,7 +12,7 @@
 - Add or remove settings, rewrite all settings
 - Dynamic LSP activation
 - Dynamic debugging activation - Vimspector or Dap
-- By default - 47 plugins
+- By default - 48 plugins
 - Loading time - 048.235
 
 ![Screenshot from 2021-04-25 15-07-07](https://user-images.githubusercontent.com/82431193/115992744-f0b6de00-a5d7-11eb-8ff0-04d767812245.png)
@@ -73,6 +73,10 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 [vim-floaterm](https://github.com/voldikss/vim-floaterm)
 
 ### Editor
+
+[vim-ctrlspace](https://github.com/vim-ctrlspace/vim-ctrlspace)
+
+[nvim-spectre](https://github.com/windwp/nvim-spectre) (requires [vim-dadbod-ui](https://github.com/nvim-lua/popup.nvim) \| [vim-dadbod-completion](https://github.com/nvim-lua/plenary.nvim))
 
 [suda.vim](https://github.com/lambdalisue/suda.vim)
 
@@ -156,8 +160,7 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 | `<C-s>`     | `:w<CR>`                                        | Save                                 |
 | `<C-a>`     | `:wa<CR>`                                       | Save all                             |
 | `<C-e>`     | `:qa!<CR>`                                      | Close all, exit nvim                 |
-| `<C-x>`     | `:BufferClose<CR>`                              | Close                                |
-| `<C-q>`     | `:BufferClose!<CR>`                             | Close whitout saving                 |
+| `<C-x>`     | `<C-w>o`                                        | Close window                         |
 | `<C-d>`     | `:bdelete<CR>`                                  | Bdelete                              |
 | `<C-h>`     | `<C-w>h`                                        | Move to window left                  |
 | `<C-l>`     | `<C-w>l`                                        | Move to window right                 |
@@ -170,7 +173,6 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 | `<S-r>`     | `<C-W>v`                                        | Split right                          |
 | `<S-b>`     | `<C-W>s`                                        | Split bottom                         |
 | `<S-e>`     | `:Vifm<CR>`                                     | Vifm explorer                        |
-| `<S-h>`     | `:RnvimrToggle<CR>`                             | Ranger explorer toggle               |
 | `<S-l>`     | `:FloatermNew lazygit<CR>`                      | Lazygit                              |
 | `<S-m>`     | `:MarkdownPreviewToggle<CR>`                    | Markdown preview toggle              |
 | `<S-t>`     | `:FloatermNew --wintype=normal --height=10<CR>` | Floaterm bottom                      |
@@ -180,6 +182,7 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 | `<A-]>`     | `:foldclose<CR>`                                | Fold close                           |
 | `<A-.>`     | `:BookmarkToggle<CR>`                           | Bookmark toggle                      |
 | `<A-,>`     | `:Neoformat<CR>`                                | Format code                          |
+| `<A-s>`     | `:Spectre<CR>`                                  | Replace in multiple files            |
 | `<A-/>`     | `:CommentToggle<CR>`                            | Comment toggle                       |
 | `<A-f>`     | `:LspFormatting<CR>`                            | Lsp format code                      |
 | `<A-g>`     | `:LspReferences<CR>`                            | Lsp references                       |
@@ -661,6 +664,18 @@ vsconfig
 | `<A-F8>`  | `<Cmd>DapPause<CR>`            | Pause             |
 | `<A-F9>`  | `<Cmd>DapToggleRepl<CR>`       | Toggle repl       |
 | `<A-F10>` | `<Cmd>DapGetSession<CR>`       | Get session       |
+
+### Replace in multiple files
+
+How use:
+
+```
+:Spectre
+```
+
+\-\-\- OR \-\-\-
+
+Use keymap `<A-s>`
 
 ## Format
 
