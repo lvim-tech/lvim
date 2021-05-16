@@ -27,6 +27,11 @@ modules['lvim-tech/galaxyline.nvim'] = {
 modules['lukas-reineke/indent-blankline.nvim'] =
     {event = 'BufRead', branch = 'lua', config = ui_config.indent_blankline}
 
+modules['kyazdani42/nvim-tree.lua'] = {
+    config = ui_config.tree,
+    requires = 'kyazdani42/nvim-web-devicons'
+}
+
 modules['vifm/vifm.vim'] = {cmd = 'Vifm'}
 
 modules['norcalli/nvim-colorizer.lua'] = {config = ui_config.colorize}

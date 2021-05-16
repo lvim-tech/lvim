@@ -20,7 +20,8 @@ keymaps['normal'] = {
     {'<C-Down>', ':resize +2<CR>'}, -- Resize height +
     {'<S-r>', '<C-W>v'}, -- Split right
     {'<S-b>', '<C-W>s'}, -- Split bottom
-    {'<S-e>', ':Vifm<CR>'}, -- Vifm explorer
+    {'<S-e>', ':NvimTreeToggle<CR>'}, -- Nvim tree explorer
+    {'<S-u>', ':Vifm<CR>'}, -- Vifm explorer
     {'<S-l>', ':FloatermNew lazygit<CR>'}, -- Lazygit
     {'<S-m>', ':MarkdownPreviewToggle<CR>'}, -- Markdown preview toggle
     {'<A-j>', ':AnyJump<CR>'}, -- Any jump

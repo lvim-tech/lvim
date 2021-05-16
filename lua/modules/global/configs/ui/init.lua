@@ -50,9 +50,7 @@ function config.galaxyline()
     }
     local condition = require("galaxyline.condition")
     local buffer_not_empty = function()
-        if vim.fn.empty(vim.fn.expand("%:t")) ~= 1 then
-            return true
-        end
+        if vim.fn.empty(vim.fn.expand("%:t")) ~= 1 then return true end
         return false
     end
     local gls = gl.section
@@ -92,7 +90,8 @@ function config.galaxyline()
                     t = colors.darkblue
                 }
                 local vim_mode = vim.fn.mode()
-                vim.api.nvim_command("hi GalaxyViMode guifg=" .. mode_color[vim_mode])
+                vim.api.nvim_command("hi GalaxyViMode guifg=" ..
+                                         mode_color[vim_mode])
                 return alias[vim_mode] .. "    "
             end,
             highlight = {colors.red, colors.line_bg, "bold"}
@@ -116,9 +115,7 @@ function config.galaxyline()
     }
     gls.left[4] = {
         GitIcon = {
-            provider = function()
-                return "  "
-            end,
+            provider = function() return "  " end,
             condition = condition.check_git_workspace,
             -- separator = " ",
             separator_highlight = {"NONE", colors.bg},
@@ -191,9 +188,7 @@ function config.galaxyline()
             provider = "GetLspClient",
             condition = function()
                 local tbl = {["dashboard"] = true, [" "] = true}
-                if tbl[vim.bo.filetype] then
-                    return false
-                end
+                if tbl[vim.bo.filetype] then return false end
                 return true
             end,
             icon = "   ",
@@ -219,7 +214,9 @@ function config.galaxyline()
     gls.right[8] = {
         Tabstop = {
             provider = function()
-                return "Spaces: " .. vim.api.nvim_buf_get_option(0, "tabstop") .. " "
+                return
+                    "Spaces: " .. vim.api.nvim_buf_get_option(0, "tabstop") ..
+                        " "
             end,
             condition = condition.hide_in_width,
             separator = " ",
@@ -247,9 +244,7 @@ function config.galaxyline()
     }
     gls.right[11] = {
         Space = {
-            provider = function()
-                return " "
-            end,
+            provider = function() return " " end,
             separator = " ",
             separator_highlight = {"NONE", colors.bg},
             highlight = {colors.orange, colors.bg}
@@ -281,76 +276,70 @@ end
 function config.indent_blankline()
     vim.g.indent_blankline_char = "▏"
     vim.g.indent_blankline_show_first_indent_level = true
-    vim.g.indent_blankline_filetype_exclude = {
-        "startify",
-        "dashboard",
-        "dotooagenda",
-        "log",
-        "fugitive",
-        "gitcommit",
-        "packer",
-        "vimwiki",
-        "markdown",
-        "json",
-        "txt",
-        "vista",
-        "help",
-        "todoist",
-        "NvimTree",
-        "peekaboo",
-        "git",
-        "TelescopePrompt",
-        "undotree",
-        "flutterToolsOutline",
-        ""
-    }
+    vim.g.indent_blankline_filetype_exclude =
+        {
+            "startify", "dashboard", "dotooagenda", "log", "fugitive",
+            "gitcommit", "packer", "vimwiki", "markdown", "json", "txt",
+            "vista", "help", "todoist", "NvimTree", "peekaboo", "git",
+            "TelescopePrompt", "undotree", "flutterToolsOutline", ""
+        }
     vim.g.indent_blankline_buftype_exclude = {"terminal", "nofile"}
     vim.g.indent_blankline_show_trailing_blankline_indent = false
     vim.g.indent_blankline_show_current_context = true
-    vim.g.indent_blankline_context_patterns = {
-        "class",
-        "function",
-        "method",
-        "block",
-        "list_literal",
-        "selector",
-        "^if",
-        "^table",
-        "if_statement",
-        "while",
-        "for"
-    }
+    vim.g.indent_blankline_context_patterns =
+        {
+            "class", "function", "method", "block", "list_literal", "selector",
+            "^if", "^table", "if_statement", "while", "for"
+        }
     vim.cmd("autocmd CursorMoved * IndentBlanklineRefresh")
 end
 
-function config.ranger()
-    vim.g.rnvimr_ex_enable = 1
-    vim.g.rnvimr_draw_border = 1
-    vim.g.rnvimr_pick_enable = 1
-    vim.g.rnvimr_bw_enable = 1
+function config.tree()
+    vim.g.nvim_tree_disable_netrw = 0
+    vim.g.nvim_tree_hide_dotfiles = 1
+    vim.g.nvim_tree_indent_markers = 1
+    vim.g.nvim_tree_follow = 1
+    vim.g.nvim_tree_lsp_diagnostics = 1
+    vim.g.nvim_tree_auto_close = true
+    vim.g.nvim_tree_auto_ignore_ft = 'startify'
+    vim.g.nvim_tree_icons = {
+        default = '',
+        symlink = '',
+        git = {
+            unstaged = "",
+            staged = "",
+            unmerged = "",
+            renamed = "➜",
+            untracked = "",
+            ignored = "◌"
+        },
+        folder = {
+            default = "",
+            open = "",
+            empty = "",
+            empty_open = "",
+            symlink = ""
+        }
+    }
 end
 
 function config.colorize()
-    require "colorizer".setup(
-        {"*"},
-        {
-            RGB = true,
-            RRGGBB = true,
-            RRGGBBAA = true,
-            rgb_fn = true,
-            hsl_fn = true,
-            css = true,
-            css_fn = true
-        }
-    )
+    require"colorizer".setup({"*"}, {
+        RGB = true,
+        RRGGBB = true,
+        RRGGBBAA = true,
+        rgb_fn = true,
+        hsl_fn = true,
+        css = true,
+        css_fn = true
+    })
 end
 
 function config.goyo()
     local opts = {silent = true, noremap = true}
     vim.api.nvim_set_keymap("n", "<C-z>", ":Goyo<CR>", opts)
     -- TODO handle this better
-    vim.api.nvim_exec(
-        [[
+    vim.api.nvim_exec([[
         function! Goyo_enter()
         set noshowcmd
         Limelight
@@ -363,9 +352,7 @@ function config.goyo()
 
         autocmd! User GoyoEnter nested call Goyo_enter()
         autocmd! User GoyoLeave nested call Goyo_leave()
-    ]],
-        false
-    )
+    ]], false)
 end
 
 function config.floaterm()
