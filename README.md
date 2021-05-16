@@ -12,8 +12,8 @@
 - Add or remove settings, rewrite all settings
 - Dynamic LSP activation
 - Dynamic debugging activation - Vimspector or Dap
-- By default - 48 plugins
-- Loading time - 054.050
+- By default - 49 plugins
+- Loading time - 062.162
 
 ![Screenshot from 2021-04-25 15-07-07](https://user-images.githubusercontent.com/82431193/115992744-f0b6de00-a5d7-11eb-8ff0-04d767812245.png)
 
@@ -63,6 +63,8 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 [galaxyline.nvim](https://github.com/glepnir/galaxyline.nvim) (requires [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons))
 
 [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
+
+[nvim-tree.lua](https://github.com/kyazdani42/nvim-tree.lua) (requires [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons))
 
 [vifm.vim](https://github.com/vifm/vifm.vim)
 
