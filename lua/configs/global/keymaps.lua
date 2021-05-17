@@ -46,14 +46,8 @@ keymaps['normal'] = {
 keymaps['visual'] = {
     {'<', '<gv'}, -- Tab left
     {'>', '>gv'}, -- Tab right
-    {
-        '*',
-        ':<C-u>lua require("core.funcs.search").visual_selection("/")<CR>/<C-r>=@/<CR><CR>'
-    }, -- Visual search /
-    {
-        '#',
-        ':<C-u>lua require("core.funcs.search").visual_selection("?")<CR>?<C-r>=@/<CR><CR>'
-    }, -- Visual search ?
+    {'*', "<Esc>/\\%V"}, -- Visual search /
+    {'#', "<Esc>?\\%V"}, -- Visual search ?
     {'K', ":move '<-2<CR>gv-gv"}, -- Move up
     {'J', ":move '>+1<CR>gv-gv"}, -- Move down
     {'<A-j>', ':AnyJumpVisual<CR>'}, -- Any jump visual
