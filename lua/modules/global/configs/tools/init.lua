@@ -189,11 +189,11 @@ function config.whichkey()
         },
         ['o'] = {
             name = '+fold',
-            ['m'] = {'<Cmd>:set foldmethod manual<CR>', 'manual (default)'},
-            ['i'] = {'<Cmd>:set foldmethod indent<CR>', 'indent'},
-            ['e'] = {'<Cmd>:set foldmethod expr<CR>', 'expr'},
-            ['d'] = {'<Cmd>:set foldmethod diff<CR>', 'diff'},
-            ['M'] = {'<Cmd>:set foldmethod marker<CR>', 'marker'}
+            ['m'] = {'<Cmd>:set foldmethod=manual<CR>', 'manual (default)'},
+            ['i'] = {'<Cmd>:set foldmethod=indent<CR>', 'indent'},
+            ['e'] = {'<Cmd>:set foldmethod=expr<CR>', 'expr'},
+            ['d'] = {'<Cmd>:set foldmethod=diff<CR>', 'diff'},
+            ['M'] = {'<Cmd>:set foldmethod=marker<CR>', 'marker'}
         },
         ['r'] = {
             name = '+replace',
