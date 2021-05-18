@@ -198,16 +198,16 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 
 ### Visual mode
 
-| Key     | Action                                                                                               | Description     |
-| ------- | ---------------------------------------------------------------------------------------------------- | --------------- |
-| `<`     | `<gv`                                                                                                | Tab left        |
-| `>`     | `>gv`                                                                                                | Tab right       |
-| `*`     | `:<C-u>`<br>`lua require("core.funcs.search").visual_selection("/")`<br>`<br/><CR>/<C-r>=@/<CR><CR>` | Visual search / |
-| `#`     | `:<C-u>`<br>`lua require("core.funcs.search").visual_selection("?")`<br>`<CR>?<C-r>=@/<CR><CR>`      | Visual search ? |
-| `K`     | `:move \'<-2<CR>gv-gv`                                                                               | Move up         |
-| `J`     | `:move \'>+1<CR>gv-gv`                                                                               | Move down       |
-| `<A-j>` | `:AnyJumpVisual<CR>`                                                                                 | Any jump visual |
-| `<A-/>` | `:CommentToggle<CR>`                                                                                 | Comment toggle  |
+| Key     | Action                 | Description     |
+| ------- | ---------------------- | --------------- |
+| `<`     | `<gv`                  | Tab left        |
+| `>`     | `>gv`                  | Tab right       |
+| `*`     | `:<Esc>/\\%V`          | Visual search / |
+| `#`     | `:<Esc>?\\%V`          | Visual search ? |
+| `K`     | `:move \'<-2<CR>gv-gv` | Move up         |
+| `J`     | `:move \'>+1<CR>gv-gv` | Move down       |
+| `<A-j>` | `:AnyJumpVisual<CR>`   | Any jump visual |
+| `<A-/>` | `:CommentToggle<CR>`   | Comment toggle  |
 
 ## LSP support
 
