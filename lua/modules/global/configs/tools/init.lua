@@ -59,7 +59,7 @@ function config.whichkey()
         ['/'] = {'<Cmd>CommentToggle<CR>', 'comment'},
         ['e'] = {'<Cmd>NvimTreeToggle<CR>', 'explorer'},
         ['u'] = {'<Cmd>Vifm<CR>', 'vifm'},
-        ['f'] = {'<Cmd>Format<CR>', 'formal'},
+        ['f'] = {'<Cmd>Neoformat<CR>', 'neoformal'},
         ['M'] = {'<Cmd>MarkdownPreviewToggle<CR>', 'markdown preview toggle'},
         ['o'] = {'<Cmd>SymbolsOutline<CR>', 'symbols outline'},
         ['b'] = {
