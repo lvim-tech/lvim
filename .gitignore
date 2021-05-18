@@ -41,3 +41,5 @@ luac.out
 
 .git/cs_files
 .git/cs_workspaces
+cs_files
+cs_workspaces
