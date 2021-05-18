@@ -78,7 +78,7 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 
 [vim-ctrlspace](https://github.com/vim-ctrlspace/vim-ctrlspace)
 
-[nvim-spectre](https://github.com/windwp/nvim-spectre) (requires [vim-dadbod-ui](https://github.com/nvim-lua/popup.nvim) \| [vim-dadbod-completion](https://github.com/nvim-lua/plenary.nvim))
+[nvim-spectre](https://github.com/windwp/nvim-spectre) (requires [popup.nvim](https://github.com/nvim-lua/popup.nvim) \| [plenary.nvim](https://github.com/nvim-lua/plenary.nvim))
 
 [suda.vim](https://github.com/lambdalisue/suda.vim)
 
