@@ -61,7 +61,7 @@ function config.whichkey()
         ['u'] = {'<Cmd>Vifm<CR>', 'vifm'},
         ['f'] = {'<Cmd>Format<CR>', 'formal'},
         ['M'] = {'<Cmd>MarkdownPreviewToggle<CR>', 'markdown preview toggle'},
-        ['s'] = {'<Cmd>SymbolsOutline<CR>', 'symbols outline'},
+        ['o'] = {'<Cmd>SymbolsOutline<CR>', 'symbols outline'},
         ['b'] = {
             name = '+buffer',
             ['>'] = {'<Cmd>BufferMoveNext<CR>', 'move next'},
@@ -187,7 +187,7 @@ function config.whichkey()
             ['n'] = {'<Cmd>BookmarkNext<CR>', 'next bookmark'},
             ['p'] = {'<Cmd>BookmarkPrev<CR>', 'prev bookmark'}
         },
-        ['o'] = {
+        ['F'] = {
             name = '+fold',
             ['m'] = {'<Cmd>:set foldmethod=manual<CR>', 'manual (default)'},
             ['i'] = {'<Cmd>:set foldmethod=indent<CR>', 'indent'},
@@ -195,8 +195,8 @@ function config.whichkey()
             ['d'] = {'<Cmd>:set foldmethod=diff<CR>', 'diff'},
             ['M'] = {'<Cmd>:set foldmethod=marker<CR>', 'marker'}
         },
-        ['r'] = {
-            name = '+replace',
+        ['s'] = {
+            name = '+spectre',
             ['d'] = {
                 '<Cmd>lua require("spectre").delete()<CR>',
                 'toggle current item'
