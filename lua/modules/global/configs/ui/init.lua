@@ -31,10 +31,10 @@ function config.galaxyline()
     local gl = require("galaxyline")
     gl.exclude_filetypes = {"ctrlspace"}
     local colors = {
-        bg = "#222222",
+        bg = "#2A2F3A",
         fg = "#E7BC74",
-        line_bg = "#222222",
-        lbg = "#222222",
+        line_bg = "#2A2F3A",
+        lbg = "#2A2F3A",
         fg_green = "#458588",
         yellow = "#E6B673",
         cyan = "#39A291",
@@ -251,14 +251,6 @@ function config.galaxyline()
         }
     }
     gls.short_line_left[1] = {
-        BufferType = {
-            provider = "FileTypeName",
-            separator = " ",
-            separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.grey, colors.bg}
-        }
-    }
-    gls.short_line_left[2] = {
         SFileName = {
             provider = "SFileName",
             condition = condition.buffer_not_empty,

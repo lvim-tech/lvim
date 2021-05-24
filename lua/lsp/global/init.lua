@@ -22,9 +22,9 @@ vim.fn.sign_define('LspDiagnosticsSignInformation', {
 local function documentHighlight(client)
     if client.resolved_capabilities.document_highlight then
         vim.api.nvim_exec([[
-            hi LspReferenceRead cterm=bold ctermbg=red guibg=#121212
-            hi LspReferenceText cterm=bold ctermbg=red guibg=#121212
-            hi LspReferenceWrite cterm=bold ctermbg=red guibg=#121212
+            hi LspReferenceRead cterm=bold ctermbg=red guibg=#4C566A
+            hi LspReferenceText cterm=bold ctermbg=red guibg=#4C566A
+            hi LspReferenceWrite cterm=bold ctermbg=red guibg=#4C566A
             augroup lsp_document_highlight
             autocmd! * <buffer>
             autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()

@@ -179,6 +179,8 @@ modules['AckslD/nvim-whichkey-setup.lua'] =
 
 modules['iamcco/markdown-preview.nvim'] = {run = 'cd app && yarn install'}
 
-modules['airblade/vim-rooter'] = {config = tools_config.rooter}
+-- modules['airblade/vim-rooter'] = {config = tools_config.rooter}
+
+modules['ahmedkhalf/lsp-rooter.nvim'] = {}
 
 return modules
