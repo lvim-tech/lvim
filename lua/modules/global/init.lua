@@ -90,7 +90,7 @@ modules['tpope/vim-fugitive'] = {}
 modules['f-person/git-blame.nvim'] = {config = editor_config.blame}
 
 modules['TimUntersberger/neogit'] = {
-    event = {'BufRead', 'BufNewFile'},
+    cmd = 'Neogit',
     config = editor_config.neogit,
     requires = {'nvim-lua/plenary.nvim', opt = true}
 }
