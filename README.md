@@ -162,7 +162,8 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 | `<C-s>`     | `:w<CR>`                                        | Save                                 |
 | `<C-a>`     | `:wa<CR>`                                       | Save all                             |
 | `<C-e>`     | `:qa!<CR>`                                      | Close all, exit nvim                 |
-| `<C-x>`     | `<C-w>o`                                        | Close window                         |
+| `<C-x>`     | `<C-w>c`                                        | Close current window                 |
+| `<C-x>`     | `<C-w>o`                                        | Close other windows                  |
 | `<C-d>`     | `:bdelete<CR>`                                  | Bdelete                              |
 | `<C-h>`     | `<C-w>h`                                        | Move to window left                  |
 | `<C-l>`     | `<C-w>l`                                        | Move to window right                 |
