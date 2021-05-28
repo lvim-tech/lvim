@@ -26,7 +26,7 @@ modules['lvim-tech/galaxyline.nvim'] = {
     event = 'VimEnter',
     branch = 'exclude_filetypes',
     config = ui_config.galaxyline,
-    requires = 'kyazdani42/nvim-web-devicons'
+    requires = {{'kyazdani42/nvim-web-devicons', after = 'galaxyline.nvim'}}
 }
 
 modules['lukas-reineke/indent-blankline.nvim'] = {
@@ -38,7 +38,7 @@ modules['lukas-reineke/indent-blankline.nvim'] = {
 modules['kyazdani42/nvim-tree.lua'] = {
     cmd = 'NvimTreeToggle',
     config = ui_config.tree,
-    requires = 'kyazdani42/nvim-web-devicons'
+    requires = {{'kyazdani42/nvim-web-devicons', opt = true}}
 }
 
 modules['vifm/vifm.vim'] = {cmd = 'Vifm'}
@@ -50,7 +50,7 @@ modules['norcalli/nvim-colorizer.lua'] = {
 
 modules['junegunn/goyo.vim'] = {
     cmd = 'Goyo',
-    requires = 'junegunn/limelight.vim',
+    requires = {{'junegunn/limelight.vim', after = 'goyo.vim'}},
     config = ui_config.goyo
 }
 
@@ -144,7 +144,7 @@ modules['pechorin/any-jump.vim'] = {
 
 modules['folke/lsp-trouble.nvim'] = {
     event = 'BufRead',
-    requires = "kyazdani42/nvim-web-devicons",
+    requires = {{'kyazdani42/nvim-web-devicons', opt = true}}
     config = languages_config.trouble
 }
 
