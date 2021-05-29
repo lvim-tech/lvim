@@ -204,7 +204,7 @@ modules['AckslD/nvim-whichkey-setup.lua'] = {
 }
 
 modules['iamcco/markdown-preview.nvim'] = {
-    cmd = 'MarkdownPreviewToggle',
+    event = {"VimEnter", "BufReadPre"},
     run = 'cd app && yarn install'
 }
 
