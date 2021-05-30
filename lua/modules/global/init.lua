@@ -38,7 +38,7 @@ modules['lukas-reineke/indent-blankline.nvim'] = {
 modules['kyazdani42/nvim-tree.lua'] = {
     cmd = 'NvimTreeToggle',
     config = ui_config.tree,
-    requires = {{'kyazdani42/nvim-web-devicons', opt = true}}
+    requires = {{'kyazdani42/nvim-web-devicons', after = 'nvim-tree.lua'}}
 }
 
 modules['vifm/vifm.vim'] = {cmd = 'Vifm'}
@@ -144,8 +144,8 @@ modules['pechorin/any-jump.vim'] = {
 
 modules['folke/lsp-trouble.nvim'] = {
     event = 'BufRead',
-    requires = {{'kyazdani42/nvim-web-devicons', opt = true}}
-    config = languages_config.trouble
+    config = languages_config.trouble,
+    requires = {{'kyazdani42/nvim-web-devicons', after = 'lsp-trouble.nvim'}}
 }
 
 modules['simrat39/symbols-outline.nvim'] = {
