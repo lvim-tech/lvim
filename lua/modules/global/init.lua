@@ -23,7 +23,7 @@ modules['glepnir/dashboard-nvim'] = {
 -- }
 
 modules['lvim-tech/galaxyline.nvim'] = {
-    event = {'BufRead', 'BufNewFile'},
+    event = {'VimEnter', 'BufRead', 'BufNewFile'},
     branch = 'exclude_filetypes',
     config = ui_config.galaxyline,
     requires = 'kyazdani42/nvim-web-devicons'

@@ -13,15 +13,19 @@ function config.dashboard()
     vim.g.dashboard_preview_file_width = 80
     vim.g.dashboard_custom_section = {
         a = {
-            description = {"  Keywmaps           "},
-            command = ":e ~/.config/nvim/lua/configs/global/keymaps.lua"
+            description = {'  Projects           '},
+            command = 'CtrlSpace :b'
         },
         b = {
-            description = {"  Settings           "},
-            command = ":e ~/.config/nvim/lua/configs/global/lvim.lua"
+            description = {'  Keywmaps           '},
+            command = ":e ~/.config/nvim/lua/configs/global/keymaps.lua"
         },
         c = {
-            description = {"  Readme             "},
+            description = {'  Settings           '},
+            command = ":e ~/.config/nvim/lua/configs/global/lvim.lua"
+        },
+        d = {
+            description = {'  Readme             '},
             command = ":e ~/.config/nvim/README.md"
         }
     }
@@ -268,21 +272,19 @@ end
 function config.indent_blankline()
     vim.g.indent_blankline_char = "▏"
     vim.g.indent_blankline_show_first_indent_level = true
-    vim.g.indent_blankline_filetype_exclude =
-        {
-            "startify", "dashboard", "dotooagenda", "log", "fugitive",
-            "gitcommit", "packer", "vimwiki", "markdown", "json", "txt",
-            "vista", "help", "todoist", "NvimTree", "peekaboo", "git",
-            "TelescopePrompt", "undotree", "flutterToolsOutline", ""
-        }
+    vim.g.indent_blankline_filetype_exclude = {
+        "startify", "dashboard", "dotooagenda", "log", "fugitive", "gitcommit",
+        "packer", "vimwiki", "markdown", "json", "txt", "vista", "help",
+        "todoist", "NvimTree", "peekaboo", "git", "TelescopePrompt", "undotree",
+        "flutterToolsOutline", ""
+    }
     vim.g.indent_blankline_buftype_exclude = {"terminal", "nofile"}
     vim.g.indent_blankline_show_trailing_blankline_indent = false
     vim.g.indent_blankline_show_current_context = true
-    vim.g.indent_blankline_context_patterns =
-        {
-            "class", "function", "method", "block", "list_literal", "selector",
-            "^if", "^table", "if_statement", "while", "for"
-        }
+    vim.g.indent_blankline_context_patterns = {
+        "class", "function", "method", "block", "list_literal", "selector",
+        "^if", "^table", "if_statement", "while", "for"
+    }
     vim.cmd("autocmd CursorMoved * IndentBlanklineRefresh")
 end
 
