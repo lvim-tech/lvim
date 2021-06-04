@@ -1,20 +1,4 @@
 local config = {}
-local funcs = require "core.funcs"
-
-function config.vista()
-    vim.g['vista#renderer#enable_icon'] = 1
-    vim.g.vista_disable_statusline = 1
-    vim.g.vista_default_executive = 'ctags'
-    vim.g.vista_echo_cursor_strategy = 'floating_win'
-    vim.g.vista_vimwiki_executive = 'markdown'
-    vim.g.vista_executive_for = {
-        vimwiki = 'markdown',
-        pandoc = 'markdown',
-        markdown = 'toc',
-        typescript = 'nvim_lsp',
-        typescriptreact = 'nvim_lsp'
-    }
-end
 
 function config.vim_dadbod_ui()
     if packer_plugins['vim-dadbod'] and not packer_plugins['vim-dadbod'].loaded then
@@ -57,7 +41,7 @@ function config.whichkey()
         [';'] = {'<Cmd>Dashboard<CR>', 'home screen'},
         ['*'] = {'<Cmd>DogeGenerate<CR>', 'documentation generator'},
         ['/'] = {'<Cmd>CommentToggle<CR>', 'comment'},
-        ['e'] = {'<Cmd>NvimTreeToggle<CR>', 'explorer'},
+        ['e'] = {'<Cmd>CHADopen<CR>', 'explorer'},
         ['u'] = {'<Cmd>Vifm<CR>', 'vifm'},
         ['f'] = {'<Cmd>Neoformat<CR>', 'neoformal'},
         ['M'] = {'<Cmd>MarkdownPreviewToggle<CR>', 'markdown preview toggle'},
@@ -244,6 +228,6 @@ function config.whichkey()
 
 end
 
--- function config.rooter() vim.g.rooter_silent_chdir = 1 end
+function config.rooter() vim.g.rooter_silent_chdir = 1 end
 
 return config

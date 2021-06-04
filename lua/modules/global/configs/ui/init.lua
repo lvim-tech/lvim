@@ -14,17 +14,20 @@ function config.dashboard()
     vim.g.dashboard_custom_section = {
         a = {
             description = {'  Projects           '},
-            command = 'CtrlSpace :b'
+            command = 'CtrlSpace b'
         },
-        b = {
+        b = {description = {'  File explorer      '}, command = 'Vifm'},
+        c = {description = {'  Search file        '}, command = 'Clap files'},
+        d = {description = {'  Search in files    '}, command = 'Clap grep'},
+        e = {
             description = {'  Keywmaps           '},
             command = ":e ~/.config/nvim/lua/configs/global/keymaps.lua"
         },
-        c = {
+        f = {
             description = {'  Settings           '},
             command = ":e ~/.config/nvim/lua/configs/global/lvim.lua"
         },
-        d = {
+        g = {
             description = {'  Readme             '},
             command = ":e ~/.config/nvim/README.md"
         }
@@ -58,7 +61,7 @@ function config.galaxyline()
         return false
     end
     local gls = gl.section
-    gl.short_line_list = {"NvimTree", "vista", "dbui", "packer"}
+    gl.short_line_list = {"CHADTree", "vista", "dbui", "packer"}
     gls.left[1] = {
         ViMode = {
             provider = function()
@@ -286,35 +289,6 @@ function config.indent_blankline()
         "^if", "^table", "if_statement", "while", "for"
     }
     vim.cmd("autocmd CursorMoved * IndentBlanklineRefresh")
-end
-
-function config.tree()
-    vim.g.nvim_tree_disable_netrw = 0
-    vim.g.nvim_tree_hide_dotfiles = 1
-    vim.g.nvim_tree_indent_markers = 1
-    vim.g.nvim_tree_follow = 1
-    vim.g.nvim_tree_lsp_diagnostics = 1
-    vim.g.nvim_tree_auto_close = true
-    vim.g.nvim_tree_auto_ignore_ft = 'startify'
-    vim.g.nvim_tree_icons = {
-        default = '',
-        symlink = '',
-        git = {
-            unstaged = "",
-            staged = "",
-            unmerged = "",
-            renamed = "➜",
-            untracked = "",
-            ignored = "◌"
-        },
-        folder = {
-            default = "",
-            open = "",
-            empty = "",
-            empty_open = "",
-            symlink = ""
-        }
-    }
 end
 
 function config.colorize()

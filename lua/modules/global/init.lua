@@ -35,10 +35,13 @@ modules['lukas-reineke/indent-blankline.nvim'] = {
     config = ui_config.indent_blankline
 }
 
-modules['kyazdani42/nvim-tree.lua'] = {
-    cmd = 'NvimTreeToggle',
+modules['ms-jpq/chadtree'] = {
+    branch = 'chad',
+    opt = true,
+    cmd = {'CHADopen', 'CHADhelp', 'CHADdeps'},
     config = ui_config.tree,
-    requires = 'kyazdani42/nvim-web-devicons'
+    requires = 'kyazdani42/nvim-web-devicons',
+    run = 'python3 -m chadtree deps'
 }
 
 modules['vifm/vifm.vim'] = {cmd = 'Vifm'}
@@ -63,6 +66,11 @@ modules['voldikss/vim-floaterm'] = {config = ui_config.floaterm}
 local editor_config = require('modules.global.configs.editor')
 
 modules['vim-ctrlspace/vim-ctrlspace'] = {cmd = 'CtrlSpace'}
+
+modules['liuchengxu/vim-clap'] = {
+    config = editor_config.clap,
+    run = ':Clap install-binary'
+}
 
 modules['windwp/nvim-spectre'] = {
     event = 'VimEnter',
@@ -208,8 +216,8 @@ modules['iamcco/markdown-preview.nvim'] = {
     run = 'cd app && yarn install'
 }
 
--- modules['airblade/vim-rooter'] = {config = tools_config.rooter}
+modules['airblade/vim-rooter'] = {config = tools_config.rooter}
 
-modules['ahmedkhalf/lsp-rooter.nvim'] = {event = 'VimEnter'}
+-- modules['ahmedkhalf/lsp-rooter.nvim'] = {event = 'VimEnter'}
 
 return modules

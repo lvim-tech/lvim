@@ -1,5 +1,15 @@
 local config = {}
 
+function config.clap()
+    vim.g.clap_layout = {relative = 'editor'}
+    vim.clap_provider_grep_opts = '--hidden -g "!.git/ target/"'
+    vim.g.clap_fuzzy_match_hl_groups = {
+        {31, '#00839F'}, {31, '#00839F'}, {31, '#00839F'}, {31, '#00839F'},
+        {31, '#00839F'}, {31, '#00839F'}, {31, '#00839F'}, {31, '#00839F'},
+        {31, '#00839F'}
+    }
+end
+
 function config.spectre()
     if not packer_plugins['plenary.nvim'].loaded or
         not packer_plugins['popup.nvim'].loaded then
