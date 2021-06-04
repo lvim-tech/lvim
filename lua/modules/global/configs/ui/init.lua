@@ -13,22 +13,31 @@ function config.dashboard()
     vim.g.dashboard_preview_file_width = 80
     vim.g.dashboard_custom_section = {
         a = {
-            description = {'  Projects           '},
+            description = {'     Projects                 '},
             command = 'CtrlSpace b'
         },
-        b = {description = {'  File explorer      '}, command = 'Vifm'},
-        c = {description = {'  Search file        '}, command = 'Clap files'},
-        d = {description = {'  Search in files    '}, command = 'Clap grep'},
+        b = {
+            description = {'     File explorer            '},
+            command = 'Vifm'
+        },
+        c = {
+            description = {'     Search file              '},
+            command = 'Clap files'
+        },
+        d = {
+            description = {'     Search in files          '},
+            command = 'Clap grep'
+        },
         e = {
-            description = {'  Keywmaps           '},
+            description = {'     Keywmaps                 '},
             command = ":e ~/.config/nvim/lua/configs/global/keymaps.lua"
         },
         f = {
-            description = {'  Settings           '},
+            description = {'     Settings                 '},
             command = ":e ~/.config/nvim/lua/configs/global/lvim.lua"
         },
         g = {
-            description = {'  Readme             '},
+            description = {'     Readme                   '},
             command = ":e ~/.config/nvim/README.md"
         }
     }
