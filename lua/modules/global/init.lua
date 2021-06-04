@@ -37,11 +37,14 @@ modules['lukas-reineke/indent-blankline.nvim'] = {
 
 modules['ms-jpq/chadtree'] = {
     branch = 'chad',
-    opt = true,
+    event = 'VimEnter',
     cmd = {'CHADopen', 'CHADhelp', 'CHADdeps'},
-    config = ui_config.tree,
     requires = 'kyazdani42/nvim-web-devicons',
-    run = 'python3 -m chadtree deps'
+    run = function()
+        vim.fn.system("python3 -m chadtree deps")
+        vim.cmd("CHADdeps")
+    end,
+    config = ui_config.chadtree
 }
 
 modules['vifm/vifm.vim'] = {cmd = 'Vifm'}

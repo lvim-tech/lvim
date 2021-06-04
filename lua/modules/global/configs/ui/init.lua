@@ -312,6 +312,37 @@ function config.colorize()
     })
 end
 
+function config.chadtree()
+
+    local chadtree_settings = {
+        profiling = true,
+        ignore = {name_exact = {".*"}, name_glob = {'.*'}},
+        keymap = {open_sys = {'e'}, primary = {'<enter>', 'o'}},
+        theme = {
+            icon_glyph_set = 'devicons',
+            discrete_colour_map = {
+                black = "#2E3440",
+                red = "#ff5c57",
+                green = "#f78c6c",
+                yellow = "#F2AF5C",
+                blue = "#1C9898",
+                magenta = "#00839F",
+                cyan = "#25B8A5",
+                white = "#D9DA9E",
+                bright_black = "#2E3440",
+                bright_red = "#ff5c57",
+                bright_green = "#f78c6c",
+                bright_yellow = "#F2AF5C",
+                bright_blue = "#1C9898",
+                bright_magenta = "#00839F",
+                bright_cyan = "#25B8A5",
+                bright_white = "#D9DA9E"
+            }
+        }
+    }
+    vim.api.nvim_set_var("chadtree_settings", chadtree_settings)
+end
+
 function config.goyo()
     local opts = {silent = true, noremap = true}
     vim.api.nvim_set_keymap("n", "<C-z>", ":Goyo<CR>", opts)
