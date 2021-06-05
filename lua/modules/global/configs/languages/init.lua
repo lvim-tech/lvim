@@ -64,4 +64,6 @@ function config.symbols()
     }
 end
 
+function config.dependency() require'dependency_assist'.setup {} end
+
 return config

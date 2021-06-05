@@ -167,6 +167,11 @@ modules['simrat39/symbols-outline.nvim'] = {
     config = languages_config.symbols
 }
 
+modules['akinsho/dependency-assist.nvim'] = {
+    event = {'VimEnter', 'BufRead', 'BufNewFile'},
+    config = languages_config.dependency
+}
+
 modules['puremourning/vimspector'] = {opt = true}
 
 modules['mfussenegger/nvim-dap'] = {opt = true}
