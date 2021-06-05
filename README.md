@@ -15,9 +15,17 @@
 - By default - 51 plugins
 - Loading time - 044.807
 
-![Screenshot from 2021-04-25 15-07-07](https://user-images.githubusercontent.com/82431193/115992744-f0b6de00-a5d7-11eb-8ff0-04d767812245.png)
+![01.png](https://github.com/lvim-tech/lvim/blob/master/assets/01.png)
 
-![Screenshot from 2021-04-25 15-04-39](https://user-images.githubusercontent.com/82431193/115992725-d11fb580-a5d7-11eb-93af-b1a52d77aca8.png)
+![02.png](https://github.com/lvim-tech/lvim/blob/master/assets/02.png)
+
+![03.png](https://github.com/lvim-tech/lvim/blob/master/assets/03.png)
+
+![04.png](https://github.com/lvim-tech/lvim/blob/master/assets/04.png)
+
+![05.png](https://github.com/lvim-tech/lvim/blob/master/assets/05.png)
+
+![06.png](https://github.com/lvim-tech/lvim/blob/master/assets/06.png)
 
 ## Requirements
 
