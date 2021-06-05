@@ -16,6 +16,7 @@
 - Loading time - 044.807
 
 > ATTENTION: Now default branch is `master`
+>
 > Important changes:
 >
 > 1. Remove [telescope](https://github.com/nvim-telescope/telescope.nvim)
