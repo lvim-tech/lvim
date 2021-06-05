@@ -12,8 +12,8 @@
 - Add or remove settings, rewrite all settings
 - Dynamic LSP activation
 - Dynamic debugging activation - Vimspector or Dap
-- By default - 49 plugins
-- Loading time - 041.130
+- By default - 51 plugins
+- Loading time - 044.807
 
 ![Screenshot from 2021-04-25 15-07-07](https://user-images.githubusercontent.com/82431193/115992744-f0b6de00-a5d7-11eb-8ff0-04d767812245.png)
 
@@ -60,15 +60,13 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 
 [dashboard-nvim](https://github.com/glepnir/dashboard-nvim)
 
-[galaxyline.nvim](https://github.com/glepnir/galaxyline.nvim) (requires [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons))
+[galaxyline.nvim](https://github.com/lvim-tech/galaxyline.nvim) (requires [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons))
 
 [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
 
 [nvim-tree.lua](https://github.com/kyazdani42/nvim-tree.lua) (requires [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons))
 
 [vifm.vim](https://github.com/vifm/vifm.vim)
-
-[nvim-colorizer.lua](https://github.com/norcalli/nvim-colorizer.lua)
 
 [goyo.vim](https://github.com/junegunn/goyo.vim) (requires [limelight.vim](https://github.com/junegunn/limelight.vim))
 
@@ -77,6 +75,8 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 ### Editor
 
 [vim-ctrlspace](https://github.com/vim-ctrlspace/vim-ctrlspace)
+
+[vim-clap](https://github.com/liuchengxu/vim-clap)
 
 [nvim-spectre](https://github.com/windwp/nvim-spectre) (requires [popup.nvim](https://github.com/nvim-lua/popup.nvim) \| [plenary.nvim](https://github.com/nvim-lua/plenary.nvim))
 
@@ -110,6 +110,8 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 
 [nvim-jdtls](https://github.com/mfussenegger/nvim-jdtls)
 
+[nvim-lsp-ts-utils](https://github.com/jose-elias-alvarez/nvim-lsp-ts-utils)
+
 [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) (requires [playground](https://github.com/nvim-treesitter/playground))
 
 [any-jump.vim](https://github.com/pechorin/any-jump.vim)
@@ -135,6 +137,8 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 [emmet-vim](https://github.com/mattn/emmet-vim)
 
 ### Tools
+
+[nvim-colorizer.lua](https://github.com/norcalli/nvim-colorizer.lua)
 
 [vim-dadbod-ui](https://github.com/kristijanhusak/vim-dadbod-ui) (requires [vim-dadbod-ui](https://github.com/kristijanhusak/vim-dadbod-ui) \| [vim-dadbod-completion](https://github.com/kristijanhusak/vim-dadbod-completion))
 
@@ -175,7 +179,7 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 | `<C-Down>`  | `:resize +2<CR>`                                | Resize height +                      |
 | `<S-r>`     | `<C-W>v`                                        | Split right                          |
 | `<S-b>`     | `<C-W>s`                                        | Split bottom                         |
-| `<S-e>`     | `:CHADopen<CR>`                                 | CHAD explorer                        |
+| `<S-e>`     | `:NvimTreeToggle<CR>`                           | NvimTree explorer                    |
 | `<S-u>`     | `:Vifm<CR>`                                     | Vifm explorer                        |
 | `<S-l>`     | `:FloatermNew lazygit<CR>`                      | Lazygit                              |
 | `<S-m>`     | `:MarkdownPreviewToggle<CR>`                    | Markdown preview toggle              |

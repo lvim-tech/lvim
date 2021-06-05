@@ -1,5 +1,17 @@
 local config = {}
 
+function config.colorize()
+    require"colorizer".setup({"*"}, {
+        RGB = true,
+        RRGGBB = true,
+        RRGGBBAA = true,
+        rgb_fn = true,
+        hsl_fn = true,
+        css = true,
+        css_fn = true
+    })
+end
+
 function config.vim_dadbod_ui()
     if packer_plugins['vim-dadbod'] and not packer_plugins['vim-dadbod'].loaded then
         vim.cmd [[packadd vim-dadbod]]

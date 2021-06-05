@@ -210,7 +210,7 @@ function config.galaxyline()
             provider = "LineColumn",
             separator = "  ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.color_5, colors.bg}
+            highlight = {colors.fg, colors.bg}
         }
     }
     gls.right[7] = {
@@ -218,7 +218,7 @@ function config.galaxyline()
             provider = "LinePercent",
             separator = " ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.color_5, colors.bg}
+            highlight = {colors.fg, colors.bg}
         }
     }
     gls.right[8] = {
@@ -231,7 +231,7 @@ function config.galaxyline()
             condition = condition.hide_in_width,
             separator = " ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.color_5, colors.bg}
+            highlight = {colors.fg, colors.bg}
         }
     }
     gls.right[9] = {
@@ -240,7 +240,7 @@ function config.galaxyline()
             condition = condition.hide_in_width,
             separator = " ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.color_5, colors.bg}
+            highlight = {colors.fg, colors.bg}
         }
     }
     gls.right[10] = {
@@ -249,7 +249,7 @@ function config.galaxyline()
             condition = condition.hide_in_width,
             separator = " ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.color_5, colors.bg}
+            highlight = {colors.fg, colors.bg}
         }
     }
     gls.right[11] = {
@@ -257,20 +257,20 @@ function config.galaxyline()
             provider = function() return " " end,
             separator = " ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.color_5, colors.bg}
+            highlight = {colors.fg, colors.bg}
         }
     }
     gls.short_line_left[1] = {
         SFileName = {
             provider = "SFileName",
             condition = condition.buffer_not_empty,
-            highlight = {colors.color_5, colors.bg}
+            highlight = {colors.fg, colors.bg}
         }
     }
     gls.short_line_right[1] = {
         BufferIcon = {
             provider = "BufferIcon",
-            highlight = {colors.color_5, colors.bg}
+            highlight = {colors.fg, colors.bg}
         }
     }
 end
@@ -292,18 +292,6 @@ function config.indent_blankline()
         "^if", "^table", "if_statement", "while", "for"
     }
     vim.cmd("autocmd CursorMoved * IndentBlanklineRefresh")
-end
-
-function config.colorize()
-    require"colorizer".setup({"*"}, {
-        RGB = true,
-        RRGGBB = true,
-        RRGGBBAA = true,
-        rgb_fn = true,
-        hsl_fn = true,
-        css = true,
-        css_fn = true
-    })
 end
 
 -- function config.chadtree()

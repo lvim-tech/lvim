@@ -55,11 +55,6 @@ modules['kyazdani42/nvim-tree.lua'] = {
 
 modules['vifm/vifm.vim'] = {cmd = 'Vifm'}
 
-modules['norcalli/nvim-colorizer.lua'] = {
-    event = 'VimEnter',
-    config = ui_config.colorize
-}
-
 modules['junegunn/goyo.vim'] = {
     cmd = 'Goyo',
     requires = {{'junegunn/limelight.vim', after = 'goyo.vim'}},
@@ -203,6 +198,11 @@ modules['mattn/emmet-vim'] = {
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 local tools_config = require('modules.global.configs.tools')
+
+modules['norcalli/nvim-colorizer.lua'] = {
+    event = 'VimEnter',
+    config = tools_config.colorize
+}
 
 modules['kristijanhusak/vim-dadbod-ui'] = {
     cmd = {

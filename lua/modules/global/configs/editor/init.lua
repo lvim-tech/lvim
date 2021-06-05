@@ -8,6 +8,15 @@ function config.clap()
         {31, '#00839F'}, {31, '#00839F'}, {31, '#00839F'}, {31, '#00839F'},
         {31, '#00839F'}
     }
+
+    vim.api.nvim_exec([[
+        function! MyShiftTab() abort
+            call g:clap.input.set('')
+            call g:clap.provider._().bs_action()
+            return ''
+        endfunction
+        autocmd FileType clap_input inoremap <silent> <buffer> <S-Tab> <C-R>=MyShiftTab()<CR>
+    ]], true)
 end
 
 function config.spectre()
