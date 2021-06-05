@@ -19,7 +19,9 @@ vim.fn.sign_define('LspDiagnosticsSignInformation', {
     numhl = 'LspDiagnosticsSignInformation'
 })
 
-local function documentHighlight(client)
+local lsp_config = {}
+
+function lsp_config.documentHighlight(client)
     if client.resolved_capabilities.document_highlight then
         vim.api.nvim_exec([[
             hi LspReferenceRead cterm=bold ctermbg=red guibg=#4C566A
@@ -30,12 +32,8 @@ local function documentHighlight(client)
             autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
             autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
             augroup END
-            ]], false)
+        ]], false)
     end
 end
-
-local lsp_config = {}
-
-function lsp_config.common_on_attach(client) documentHighlight(client) end
 
 return lsp_config

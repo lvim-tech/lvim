@@ -1,9 +1,12 @@
 local global = require('core.global')
 local sumneko_root_path = global.lsp_path .. 'lspinstall/lua'
 local sumneko_binary = sumneko_root_path .. '/sumneko-lua-language-server'
+
 require'lspconfig'.sumneko_lua.setup {
     cmd = {sumneko_binary, '-E', sumneko_root_path .. '/main.lua'},
-    on_attach = require'lsp.global'.common_on_attach,
+    on_attach = function(client, bufnr)
+        require'lsp.global'.documentHighlight(client)
+    end,
     root_dir = require('lspconfig/util').root_pattern('.'),
     settings = {
         Lua = {
@@ -22,12 +25,13 @@ require'lspconfig'.sumneko_lua.setup {
         }
     },
     handlers = {
-        ['textDocument/publishDiagnostics'] = vim.lsp.with(
-            vim.lsp.diagnostic.on_publish_diagnostics, {
-                virtual_text = false,
-                signs = true,
-                underline = false,
-                update_in_insert = true
-            })
+        ['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic
+                                                               .on_publish_diagnostics,
+                                                           {
+            virtual_text = false,
+            signs = true,
+            underline = false,
+            update_in_insert = true
+        })
     }
 }

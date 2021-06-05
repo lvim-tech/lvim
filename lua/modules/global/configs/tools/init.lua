@@ -41,7 +41,7 @@ function config.whichkey()
         [';'] = {'<Cmd>Dashboard<CR>', 'home screen'},
         ['*'] = {'<Cmd>DogeGenerate<CR>', 'documentation generator'},
         ['/'] = {'<Cmd>CommentToggle<CR>', 'comment'},
-        ['e'] = {'<Cmd>CHADopen<CR>', 'explorer'},
+        ['e'] = {'<Cmd>NvimTreeToggle<CR>', 'explorer'},
         ['u'] = {'<Cmd>Vifm<CR>', 'vifm'},
         ['f'] = {'<Cmd>Neoformat<CR>', 'neoformal'},
         ['M'] = {'<Cmd>MarkdownPreviewToggle<CR>', 'markdown preview toggle'},

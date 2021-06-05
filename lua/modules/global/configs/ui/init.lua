@@ -48,21 +48,15 @@ function config.galaxyline()
     gl.exclude_filetypes = {"ctrlspace"}
     local colors = {
         bg = "#2A2F3A",
-        fg = "#E7BC74",
-        line_bg = "#2A2F3A",
-        lbg = "#2A2F3A",
-        fg_green = "#458588",
-        yellow = "#E6B673",
-        cyan = "#39A291",
-        darkblue = "#458588",
-        green = "#689d6a",
-        orange = "#F2994B",
-        purple = "#008080",
-        magenta = "#ea6962",
-        gray = "#E7BC74",
-        blue = "#83a598",
-        red = "#F24949",
-        error_red = "#F24949"
+        fg = "#D9DA9E",
+        color_0 = "#00839F",
+        color_1 = '#1C9898',
+        color_2 = '#25B8A5',
+        color_3 = '#56adb7',
+        color_4 = '#F2994B',
+        color_5 = "#E6B673",
+        color_6 = "#F05F4E",
+        color_7 = '#98c379'
     }
     local condition = require("galaxyline.condition")
     local buffer_not_empty = function()
@@ -70,7 +64,7 @@ function config.galaxyline()
         return false
     end
     local gls = gl.section
-    gl.short_line_list = {"CHADTree", "vista", "dbui", "packer"}
+    gl.short_line_list = {"NvimTree", "CHADTree", "vista", "dbui", "packer"}
     gls.left[1] = {
         ViMode = {
             provider = function()
@@ -91,33 +85,33 @@ function config.galaxyline()
                     t = "TERMINAL"
                 }
                 local mode_color = {
-                    n = colors.green,
-                    v = colors.orange,
-                    V = colors.orange,
-                    [""] = colors.orange,
-                    s = colors.orange,
-                    S = colors.orange,
-                    [""] = colors.orange,
-                    i = colors.red,
-                    R = colors.red,
-                    c = colors.blue,
-                    r = colors.magenta,
-                    ["!"] = colors.darkblue,
-                    t = colors.darkblue
+                    n = colors.color_1,
+                    v = colors.color_5,
+                    V = colors.color_5,
+                    [""] = colors.color_5,
+                    s = colors.color_5,
+                    S = colors.color_5,
+                    [""] = colors.color_5,
+                    i = colors.color_6,
+                    R = colors.color_6,
+                    c = colors.color_0,
+                    r = colors.color_0,
+                    ["!"] = colors.color_0,
+                    t = colors.color_0
                 }
                 local vim_mode = vim.fn.mode()
                 vim.api.nvim_command("hi GalaxyViMode guifg=" ..
                                          mode_color[vim_mode])
                 return alias[vim_mode] .. "    "
             end,
-            highlight = {colors.red, colors.line_bg, "bold"}
+            highlight = {colors.color_3, colors.bg, "bold"}
         }
     }
     gls.left[2] = {
         FileIcon = {
             provider = "FileIcon",
             condition = buffer_not_empty,
-            highlight = {colors.magenta, colors.line_bg}
+            highlight = {colors.fg, colors.bg}
         }
     }
     gls.left[3] = {
@@ -126,7 +120,7 @@ function config.galaxyline()
             condition = buffer_not_empty,
             separator = " ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.magenta, colors.line_bg}
+            highlight = {colors.fg, colors.bg}
         }
     }
     gls.left[4] = {
@@ -135,7 +129,7 @@ function config.galaxyline()
             condition = condition.check_git_workspace,
             -- separator = " ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.orange, colors.bg}
+            highlight = {colors.color_5, colors.bg}
         }
     }
     gls.left[5] = {
@@ -144,7 +138,7 @@ function config.galaxyline()
             condition = condition.check_git_workspace,
             separator = " ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.grey, colors.bg}
+            highlight = {colors.color_5, colors.bg}
         }
     }
     gls.left[6] = {
@@ -152,7 +146,7 @@ function config.galaxyline()
             provider = "DiffAdd",
             condition = condition.hide_in_width,
             icon = "   ",
-            highlight = {colors.green, colors.bg}
+            highlight = {colors.color_7, colors.bg}
         }
     }
     gls.left[7] = {
@@ -160,7 +154,7 @@ function config.galaxyline()
             provider = "DiffModified",
             condition = condition.hide_in_width,
             icon = "   ",
-            highlight = {colors.orange, colors.bg}
+            highlight = {colors.color_4, colors.bg}
         }
     }
     gls.left[8] = {
@@ -168,35 +162,35 @@ function config.galaxyline()
             provider = "DiffRemove",
             condition = condition.hide_in_width,
             icon = "   ",
-            highlight = {colors.red, colors.bg}
+            highlight = {colors.color_6, colors.bg}
         }
     }
     gls.right[1] = {
         DiagnosticError = {
             provider = "DiagnosticError",
             icon = "  ",
-            highlight = {colors.error_red, colors.bg}
+            highlight = {colors.color_6, colors.bg}
         }
     }
     gls.right[2] = {
         DiagnosticWarn = {
             provider = "DiagnosticWarn",
             icon = "  ",
-            highlight = {colors.orange, colors.bg}
+            highlight = {colors.color_3, colors.bg}
         }
     }
     gls.right[3] = {
         DiagnosticHint = {
             provider = "DiagnosticHint",
             icon = "  ",
-            highlight = {colors.orange, colors.bg}
+            highlight = {colors.color_3, colors.bg}
         }
     }
     gls.right[4] = {
         DiagnosticInfo = {
             provider = "DiagnosticInfo",
             icon = "  ",
-            highlight = {colors.blue, colors.bg}
+            highlight = {colors.color_3, colors.bg}
         }
     }
     gls.right[5] = {
@@ -208,7 +202,7 @@ function config.galaxyline()
                 return true
             end,
             icon = "   ",
-            highlight = {colors.purple, colors.bg}
+            highlight = {colors.color_1, colors.bg}
         }
     }
     gls.right[6] = {
@@ -216,7 +210,7 @@ function config.galaxyline()
             provider = "LineColumn",
             separator = "  ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.grey, colors.bg}
+            highlight = {colors.color_5, colors.bg}
         }
     }
     gls.right[7] = {
@@ -224,7 +218,7 @@ function config.galaxyline()
             provider = "LinePercent",
             separator = " ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.grey, colors.bg}
+            highlight = {colors.color_5, colors.bg}
         }
     }
     gls.right[8] = {
@@ -237,7 +231,7 @@ function config.galaxyline()
             condition = condition.hide_in_width,
             separator = " ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.grey, colors.bg}
+            highlight = {colors.color_5, colors.bg}
         }
     }
     gls.right[9] = {
@@ -246,7 +240,7 @@ function config.galaxyline()
             condition = condition.hide_in_width,
             separator = " ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.grey, colors.bg}
+            highlight = {colors.color_5, colors.bg}
         }
     }
     gls.right[10] = {
@@ -255,7 +249,7 @@ function config.galaxyline()
             condition = condition.hide_in_width,
             separator = " ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.grey, colors.bg}
+            highlight = {colors.color_5, colors.bg}
         }
     }
     gls.right[11] = {
@@ -263,20 +257,20 @@ function config.galaxyline()
             provider = function() return " " end,
             separator = " ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.orange, colors.bg}
+            highlight = {colors.color_5, colors.bg}
         }
     }
     gls.short_line_left[1] = {
         SFileName = {
             provider = "SFileName",
             condition = condition.buffer_not_empty,
-            highlight = {colors.grey, colors.bg}
+            highlight = {colors.color_5, colors.bg}
         }
     }
     gls.short_line_right[1] = {
         BufferIcon = {
             provider = "BufferIcon",
-            highlight = {colors.grey, colors.bg}
+            highlight = {colors.color_5, colors.bg}
         }
     }
 end
@@ -312,35 +306,64 @@ function config.colorize()
     })
 end
 
-function config.chadtree()
+-- function config.chadtree()
 
-    local chadtree_settings = {
-        profiling = true,
-        ignore = {name_exact = {".*"}, name_glob = {'.*'}},
-        keymap = {open_sys = {'e'}, primary = {'<enter>', 'o'}},
-        theme = {
-            icon_glyph_set = 'devicons',
-            discrete_colour_map = {
-                black = "#2E3440",
-                red = "#ff5c57",
-                green = "#f78c6c",
-                yellow = "#F2AF5C",
-                blue = "#1C9898",
-                magenta = "#00839F",
-                cyan = "#25B8A5",
-                white = "#D9DA9E",
-                bright_black = "#2E3440",
-                bright_red = "#ff5c57",
-                bright_green = "#f78c6c",
-                bright_yellow = "#F2AF5C",
-                bright_blue = "#1C9898",
-                bright_magenta = "#00839F",
-                bright_cyan = "#25B8A5",
-                bright_white = "#D9DA9E"
-            }
+--     local chadtree_settings = {
+--         profiling = true,
+--         ignore = {name_exact = {".*"}, name_glob = {'.*'}},
+--         keymap = {open_sys = {'e'}, primary = {'<enter>', 'o'}},
+--         theme = {
+--             icon_glyph_set = 'devicons',
+--             discrete_colour_map = {
+--                 black = "#2E3440",
+--                 red = "#ff5c57",
+--                 green = "#f78c6c",
+--                 yellow = "#F2AF5C",
+--                 blue = "#1C9898",
+--                 magenta = "#00839F",
+--                 cyan = "#25B8A5",
+--                 white = "#D9DA9E",
+--                 bright_black = "#2E3440",
+--                 bright_red = "#ff5c57",
+--                 bright_green = "#f78c6c",
+--                 bright_yellow = "#F2AF5C",
+--                 bright_blue = "#1C9898",
+--                 bright_magenta = "#00839F",
+--                 bright_cyan = "#25B8A5",
+--                 bright_white = "#D9DA9E"
+--             }
+--         }
+--     }
+--     vim.api.nvim_set_var("chadtree_settings", chadtree_settings)
+-- end
+
+function config.tree()
+    vim.g.nvim_tree_disable_netrw = 0
+    vim.g.nvim_tree_hide_dotfiles = 1
+    vim.g.nvim_tree_indent_markers = 1
+    vim.g.nvim_tree_follow = 1
+    vim.g.nvim_tree_lsp_diagnostics = 1
+    vim.g.nvim_tree_auto_close = true
+    vim.g.nvim_tree_auto_ignore_ft = 'startify'
+    vim.g.nvim_tree_icons = {
+        default = '',
+        symlink = '',
+        git = {
+            unstaged = "",
+            staged = "",
+            unmerged = "",
+            renamed = "➜",
+            untracked = "",
+            ignored = "◌"
+        },
+        folder = {
+            default = "",
+            open = "",
+            empty = "",
+            empty_open = "",
+            symlink = ""
         }
     }
-    vim.api.nvim_set_var("chadtree_settings", chadtree_settings)
 end
 
 function config.goyo()

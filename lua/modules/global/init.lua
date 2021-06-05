@@ -35,16 +35,22 @@ modules['lukas-reineke/indent-blankline.nvim'] = {
     config = ui_config.indent_blankline
 }
 
-modules['ms-jpq/chadtree'] = {
-    branch = 'chad',
-    event = 'VimEnter',
-    cmd = {'CHADopen', 'CHADhelp', 'CHADdeps'},
-    requires = 'kyazdani42/nvim-web-devicons',
-    run = function()
-        vim.fn.system("python3 -m chadtree deps")
-        vim.cmd("CHADdeps")
-    end,
-    config = ui_config.chadtree
+-- modules['ms-jpq/chadtree'] = {
+--     branch = 'chad',
+--     event = 'VimEnter',
+--     cmd = {'CHADopen', 'CHADhelp', 'CHADdeps'},
+--     requires = 'kyazdani42/nvim-web-devicons',
+--     run = function()
+--         vim.fn.system("python3 -m chadtree deps")
+--         vim.cmd("CHADdeps")
+--     end,
+--     config = ui_config.chadtree
+-- }
+
+modules['kyazdani42/nvim-tree.lua'] = {
+    cmd = 'NvimTreeToggle',
+    config = ui_config.tree,
+    requires = 'kyazdani42/nvim-web-devicons'
 }
 
 modules['vifm/vifm.vim'] = {cmd = 'Vifm'}
@@ -139,7 +145,9 @@ modules['neovim/nvim-lspconfig'] = {}
 
 modules['kabouzeid/nvim-lspinstall'] = {}
 
-modules['mfussenegger/nvim-jdtls'] = {}
+modules['mfussenegger/nvim-jdtls'] = {event = 'VimEnter'}
+
+modules['jose-elias-alvarez/nvim-lsp-ts-utils'] = {event = 'VimEnter'}
 
 modules['nvim-treesitter/nvim-treesitter'] = {
     event = 'BufRead',

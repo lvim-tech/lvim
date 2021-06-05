@@ -1,4 +1,5 @@
 local global = require('core.global')
+
 require'lspconfig'.rust_analyzer.setup {
     cmd = {global.lsp_path .. 'lspinstall/rust/rust-analyzer'},
     root_dir = require('lspconfig/util').root_pattern('.'),
@@ -7,14 +8,17 @@ require'lspconfig'.rust_analyzer.setup {
             ['rust-analyzer.diagnostics.disabled'] = {'unresolved-import'}
         }
     },
-    on_attach = require'lsp.global'.common_on_attach,
+    on_attach = function(client, bufnr)
+        require'lsp.global'.documentHighlight(client)
+    end,
     handlers = {
-        ['textDocument/publishDiagnostics'] = vim.lsp.with(
-            vim.lsp.diagnostic.on_publish_diagnostics, {
-                virtual_text = false,
-                signs = true,
-                underline = false,
-                update_in_insert = true
-            })
+        ['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic
+                                                               .on_publish_diagnostics,
+                                                           {
+            virtual_text = false,
+            signs = true,
+            underline = false,
+            update_in_insert = true
+        })
     }
 }
