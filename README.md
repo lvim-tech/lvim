@@ -23,7 +23,7 @@
 > 2. Add [vim-ctrlspace](https://github.com/vim-ctrlspace/vim-ctrlspace) for organize projects. Best tutorial for `vim-ctrlspace` [here](https://atlas-vim.readthedocs.io/vim/plugged/vim-ctrlspace/README/)
 > 3. Add [vim-clap](https://github.com/liuchengxu/vim-clap) for search `buffers`, `files`, `grep` and more and more and more
 >
->If you want use [telescope](https://github.com/nvim-telescope/telescope.nvim) - switch to branch `telescope`
+>If you want to use [telescope](https://github.com/nvim-telescope/telescope.nvim) - switch to branch `telescope`
 
 ![01.png](https://github.com/lvim-tech/lvim/blob/master/assets/01.png)
 
