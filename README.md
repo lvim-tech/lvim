@@ -12,8 +12,8 @@
 - Add or remove settings, rewrite all settings
 - Dynamic LSP activation
 - Dynamic debugging activation - Vimspector or Dap
-- By default - 52 plugins
-- Loading time - 044.807
+- By default - 53 plugins
+- Loading time - 050.144
 
 > ATTENTION: Now default branch is `master`
 >
@@ -119,6 +119,8 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 [git-blame.nvim](https://github.com/f-person/git-blame.nvim)
 
 [neogit](https://github.com/TimUntersberger/neogit) (requires [plenary.nvim](https://github.com/nvim-lua/plenary.nvim))
+
+[vim-arsync](https://github.com/kenn7/vim-arsync)
 
 ### Languages
 
