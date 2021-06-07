@@ -25,6 +25,8 @@
 >
 > If you want to use [telescope](https://github.com/nvim-telescope/telescope.nvim) - switch to branch `telescope`
 
+## [YouTube](https://www.youtube.com/channel/UCSV5_UXKLl1JDZbQaYWuFKQ) channel
+
 ![01.png](https://github.com/lvim-tech/lvim/blob/master/assets/01.png)
 
 ![02.png](https://github.com/lvim-tech/lvim/blob/master/assets/02.png)
