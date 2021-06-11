@@ -16,14 +16,15 @@
 - Loading time - 050.144
 
 > ATTENTION: Now default branch is `master`
->
+
 > Important changes:
 >
 > 1. Remove [telescope](https://github.com/nvim-telescope/telescope.nvim)
 > 2. Add [vim-ctrlspace](https://github.com/vim-ctrlspace/vim-ctrlspace) for organize projects. Best tutorial for `vim-ctrlspace` [here](https://atlas-vim.readthedocs.io/vim/plugged/vim-ctrlspace/README/)
 > 3. Add [vim-clap](https://github.com/liuchengxu/vim-clap) for search `buffers`, `files`, `grep` and more and more and more
 > 4. Add [snap](https://github.com/camspiers/snap) for search `buffers`, `files`, `grep`
->    If you want to use [telescope](https://github.com/nvim-telescope/telescope.nvim) - switch to branch `telescope`
+
+> If you want to use [telescope](https://github.com/nvim-telescope/telescope.nvim) - switch to branch `telescope`
 
 ## [YouTube](https://www.youtube.com/channel/UCSV5_UXKLl1JDZbQaYWuFKQ) channel
 
