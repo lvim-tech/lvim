@@ -10,11 +10,8 @@ end
 
 configs['events'] = function()
     funcs.augroups({
-        _general_settings = {
+        bufs = {
             {
-                'TextYankPost', '*',
-                'lua require(\'vim.highlight\').on_yank({higroup = \'Search\', timeout = 200})'
-            }, {
                 'BufWinEnter', '*',
                 'setlocal formatoptions-=c formatoptions-=r formatoptions-=o showtabline=0 '
             }, {
@@ -23,23 +20,29 @@ configs['events'] = function()
             }, {
                 'BufNewFile', '*',
                 'setlocal formatoptions-=c formatoptions-=r formatoptions-=o showtabline=0 '
-            }, {'BufWinEnter', '*.ex', 'set filetype=elixir'},
-            {'BufWinEnter', '*.exs', 'set filetype=elixir'},
-            {'BufNewFile', '*.ex', 'set filetype=elixir'},
-            {'BufNewFile', '*.exs', 'set filetype=elixir'},
-            {'BufWinEnter', '*.graphql', 'set filetype=graphql'}
+            }, --
+            {'BufNewFile,BufRead', '*.ex', 'set filetype=elixir'},
+            {'BufNewFile,BufRead', '*.exs', 'set filetype=elixir'},
+            {'BufNewFile,BufRead', '*.graphql', 'set filetype=graphql'},
+            {'BufWinEnter', 'NvimTree', 'set colorcolumn=0 nocursorcolumn'}
         },
-        _lsp = {
-            {'FileType', '*', 'lua require("configs.global.filetypes").init()'}
+        yank = {
+            {
+                'TextYankPost',
+                [[* silent! lua vim.highlight.on_yank({higroup='IncSearch', timeout=400})]]
+            }
         },
-        _dashboard = {
+        ft = {
             {
                 'FileType', 'dashboard',
-                'setlocal nocursorline noswapfile synmaxcol& signcolumn=no norelativenumber nocursorcolumn nospell  nolist  nonumber bufhidden=wipe colorcolumn= foldcolumn=0 matchpairs= '
-            }, {
-                'FileType', 'dashboard',
-                'set showtabline=0 | autocmd BufLeave <buffer> set showtabline=2'
-            }
+                'set showtabline=0 | autocmd WinLeave <buffer> set showtabline=2'
+            }, --
+            {'FileType', 'Trouble', 'set colorcolumn=0 nocursorcolumn'},
+            {'FileType', 'Outline', 'set colorcolumn=0 nocursorcolumn'},
+            {'FileType', 'git', 'set colorcolumn=0 nocursorcolumn'}
+        },
+        lsp = {
+            {'FileType', '*', 'lua require("configs.global.filetypes").init()'}
         }
     })
 end
@@ -146,6 +149,17 @@ configs['commands'] = function()
     vim.cmd('command! DapInit lua require("configs.global.debugers").init_dap()')
     -- Spectre
     vim.cmd('command! Spectre lua require("spectre").open()')
+    -- Snap
+    vim.cmd(
+        'command! SnapFiles lua require("configs.global.utils").snap_files()')
+    vim.cmd('command! SnapGrep lua require("configs.global.utils").snap_grep()')
+    vim.cmd(
+        'command! SnapGrepSelectedWord lua require("configs.global.utils").snap_grep_selected_word()')
+    vim.cmd(
+        'command! SnapBuffers lua require("configs.global.utils").snap_buffers()')
+    vim.cmd(
+        'command! SnapOldFiles lua require("configs.global.utils").snap_old_files()')
+
 end
 
 configs['keymaps'] = function()

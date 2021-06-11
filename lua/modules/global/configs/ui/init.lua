@@ -47,7 +47,7 @@ function config.galaxyline()
     local gl = require("galaxyline")
     gl.exclude_filetypes = {"ctrlspace"}
     local colors = {
-        bg = "#2A2F3A",
+        bg = "#252A34",
         fg = "#D9DA9E",
         color_0 = "#00839F",
         color_1 = '#1C9898',
@@ -332,7 +332,7 @@ function config.tree()
     vim.g.nvim_tree_follow = 1
     vim.g.nvim_tree_lsp_diagnostics = 1
     vim.g.nvim_tree_auto_close = true
-    vim.g.nvim_tree_auto_ignore_ft = 'startify'
+    vim.g.nvim_tree_auto_ignore_ft = {'startify', 'dashboard'}
     vim.g.nvim_tree_show_icons = {
         git = 1,
         folders = 1,
@@ -377,7 +377,7 @@ function config.goyo()
 
         autocmd! User GoyoEnter nested call Goyo_enter()
         autocmd! User GoyoLeave nested call Goyo_leave()
-    ]], false)
+    ]], true)
 end
 
 function config.floaterm()

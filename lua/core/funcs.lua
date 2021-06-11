@@ -1,16 +1,15 @@
 local M = {}
 local global = require 'core.global'
 
--- TODO update when api supports
 M.augroups = function(definitions)
     for group_name, definition in pairs(definitions) do
-        vim.cmd('augroup ' .. group_name)
-        vim.cmd('autocmd!')
-        for _, def in pairs(definition) do
+        vim.api.nvim_command('augroup ' .. group_name)
+        vim.api.nvim_command('autocmd!')
+        for _, def in ipairs(definition) do
             local command = table.concat(vim.tbl_flatten {'autocmd', def}, ' ')
-            vim.cmd(command)
+            vim.api.nvim_command(command)
         end
-        vim.cmd('augroup END')
+        vim.api.nvim_command('augroup END')
     end
 end
 

@@ -76,6 +76,8 @@ modules['liuchengxu/vim-clap'] = {
     run = ':Clap install-binary'
 }
 
+modules['camspiers/snap'] = {}
+
 modules['windwp/nvim-spectre'] = {
     event = 'VimEnter',
     config = editor_config.spectre,

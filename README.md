@@ -22,8 +22,8 @@
 > 1. Remove [telescope](https://github.com/nvim-telescope/telescope.nvim)
 > 2. Add [vim-ctrlspace](https://github.com/vim-ctrlspace/vim-ctrlspace) for organize projects. Best tutorial for `vim-ctrlspace` [here](https://atlas-vim.readthedocs.io/vim/plugged/vim-ctrlspace/README/)
 > 3. Add [vim-clap](https://github.com/liuchengxu/vim-clap) for search `buffers`, `files`, `grep` and more and more and more
->
-> If you want to use [telescope](https://github.com/nvim-telescope/telescope.nvim) - switch to branch `telescope`
+> 4. Add [snap](https://github.com/camspiers/snap) for search `buffers`, `files`, `grep`
+>    If you want to use [telescope](https://github.com/nvim-telescope/telescope.nvim) - switch to branch `telescope`
 
 ## [YouTube](https://www.youtube.com/channel/UCSV5_UXKLl1JDZbQaYWuFKQ) channel
 
@@ -97,6 +97,8 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 [vim-ctrlspace](https://github.com/vim-ctrlspace/vim-ctrlspace)
 
 [vim-clap](https://github.com/liuchengxu/vim-clap)
+
+[snap](https://github.com/camspiers/snap)
 
 [nvim-spectre](https://github.com/windwp/nvim-spectre) (requires [popup.nvim](https://github.com/nvim-lua/popup.nvim) \| [plenary.nvim](https://github.com/nvim-lua/plenary.nvim))
 
@@ -238,6 +240,20 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 | `J`     | `:move \'>+1<CR>gv-gv` | Move down       |
 | `<A-j>` | `:AnyJumpVisual<CR>`   | Any jump visual |
 | `<A-/>` | `:CommentToggle<CR>`   | Comment toggle  |
+
+## Commands
+
+### Clap
+
+```
+:Clap <name-of-command>
+```
+
+### Snap
+
+```
+:Snap<name-of-command>
+```
 
 ## LSP support
 
