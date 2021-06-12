@@ -380,6 +380,8 @@ function config.goyo()
     ]], true)
 end
 
+function config.limelight() vim.g.limelight_conceal_guifg = '#628b97' end
+
 function config.floaterm()
     vim.g.floaterm_keymap_toggle = "<F1>"
     vim.g.floaterm_keymap_next = "<F2>"

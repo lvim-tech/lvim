@@ -57,7 +57,13 @@ modules['vifm/vifm.vim'] = {cmd = 'Vifm'}
 
 modules['junegunn/goyo.vim'] = {
     cmd = 'Goyo',
-    requires = {{'junegunn/limelight.vim', after = 'goyo.vim'}},
+    requires = {
+        {
+            'junegunn/limelight.vim',
+            after = 'goyo.vim',
+            config = ui_config.limelight
+        }
+    },
     config = ui_config.goyo
 }
 

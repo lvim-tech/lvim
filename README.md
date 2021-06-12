@@ -12,8 +12,8 @@
 - Add or remove settings, rewrite all settings
 - Dynamic LSP activation
 - Dynamic debugging activation - Vimspector or Dap
-- By default - 53 plugins
-- Loading time - 050.144
+- By default - 54 plugins
+- Loading time - 047.610
 
 > ATTENTION: Now default branch is `master`
 
@@ -28,17 +28,41 @@
 
 ## [YouTube](https://www.youtube.com/channel/UCSV5_UXKLl1JDZbQaYWuFKQ) channel
 
-![01.png](https://github.com/lvim-tech/lvim/blob/master/assets/01.png)
+![01.Dashboard.png](https://github.com/lvim-tech/lvim/blob/master/media/01.Dashboard.png)
 
-![02.png](https://github.com/lvim-tech/lvim/blob/master/assets/02.png)
+![02.WhichKey.png](https://github.com/lvim-tech/lvim/blob/master/media/02.WhichKey.png)
 
-![03.png](https://github.com/lvim-tech/lvim/blob/master/assets/03.png)
+![03.CtrlSpace.png](https://github.com/lvim-tech/lvim/blob/master/media/03.CtrlSpace.png)
 
-![04.png](https://github.com/lvim-tech/lvim/blob/master/assets/04.png)
+![04.NvimTree.png](https://github.com/lvim-tech/lvim/blob/master/media/04.NvimTree.png)
 
-![05.png](https://github.com/lvim-tech/lvim/blob/master/assets/05.png)
+![05.Trouble.png](https://github.com/lvim-tech/lvim/blob/master/media/05.Trouble.png)
 
-![06.png](https://github.com/lvim-tech/lvim/blob/master/assets/06.png)
+![06.SymbolsOutline.png](https://github.com/lvim-tech/lvim/blob/master/media/06.SymbolsOutline.png)
+
+![07.AnyJump.png](https://github.com/lvim-tech/lvim/blob/master/media/07.AnyJump.png)
+
+![08.Spectre.png](https://github.com/lvim-tech/lvim/blob/master/media/08.Spectre.png)
+
+![09.Clap.png](https://github.com/lvim-tech/lvim/blob/master/media/09.Clap.png)
+
+![10.Snap.png](https://github.com/lvim-tech/lvim/blob/master/media/10.Snap.png)
+
+![11.GitSigns.png](https://github.com/lvim-tech/lvim/blob/master/media/11.GitSigns.png)
+
+![12.Figutive.png](https://github.com/lvim-tech/lvim/blob/master/media/12.Figutive.png)
+
+![13.Figutive.png](https://github.com/lvim-tech/lvim/blob/master/media/13.Figutive.png)
+
+![14.GitBlame.png](https://github.com/lvim-tech/lvim/blob/master/media/14.GitBlame.png)
+
+![15.UndoTree.png](https://github.com/lvim-tech/lvim/blob/master/media/15.UndoTree.png)
+
+![16.Floaterm.png](https://github.com/lvim-tech/lvim/blob/master/media/16.Floaterm.png)
+
+![17.DadbodUI.png](https://github.com/lvim-tech/lvim/blob/master/media/17.DadbodUI.png)
+
+![18.Goyo.png](https://github.com/lvim-tech/lvim/blob/master/media/18.Goyo.png)
 
 ## Requirements
 
