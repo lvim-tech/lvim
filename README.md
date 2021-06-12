@@ -28,39 +28,75 @@
 
 ## [YouTube](https://www.youtube.com/channel/UCSV5_UXKLl1JDZbQaYWuFKQ) channel
 
+## Screenshots
+
+> Dashboard
+
 ![01.Dashboard.png](https://github.com/lvim-tech/lvim/blob/master/media/01.Dashboard.png)
 
-![02.WhichKey.png](https://github.com/lvim-tech/lvim/blob/master/media/02.WhichKey.png)
+> WhichKey
+
+> ![02.WhichKey.png](https://github.com/lvim-tech/lvim/blob/master/media/02.WhichKey.png)
+
+> CtrlSpace
 
 ![03.CtrlSpace.png](https://github.com/lvim-tech/lvim/blob/master/media/03.CtrlSpace.png)
 
+> NvimTree
+
 ![04.NvimTree.png](https://github.com/lvim-tech/lvim/blob/master/media/04.NvimTree.png)
+
+> Trouble
 
 ![05.Trouble.png](https://github.com/lvim-tech/lvim/blob/master/media/05.Trouble.png)
 
+> SymbolsOutline
+
 ![06.SymbolsOutline.png](https://github.com/lvim-tech/lvim/blob/master/media/06.SymbolsOutline.png)
+
+> AnyJump
 
 ![07.AnyJump.png](https://github.com/lvim-tech/lvim/blob/master/media/07.AnyJump.png)
 
+> Spectre
+
 ![08.Spectre.png](https://github.com/lvim-tech/lvim/blob/master/media/08.Spectre.png)
+
+> Clap
 
 ![09.Clap.png](https://github.com/lvim-tech/lvim/blob/master/media/09.Clap.png)
 
+> Snap
+
 ![10.Snap.png](https://github.com/lvim-tech/lvim/blob/master/media/10.Snap.png)
 
+> GitSigns
+
 ![11.GitSigns.png](https://github.com/lvim-tech/lvim/blob/master/media/11.GitSigns.png)
+
+> Figutive
 
 ![12.Figutive.png](https://github.com/lvim-tech/lvim/blob/master/media/12.Figutive.png)
 
 ![13.Figutive.png](https://github.com/lvim-tech/lvim/blob/master/media/13.Figutive.png)
 
+> GitBlame
+
 ![14.GitBlame.png](https://github.com/lvim-tech/lvim/blob/master/media/14.GitBlame.png)
+
+> UndoTree
 
 ![15.UndoTree.png](https://github.com/lvim-tech/lvim/blob/master/media/15.UndoTree.png)
 
+> Floaterm
+
 ![16.Floaterm.png](https://github.com/lvim-tech/lvim/blob/master/media/16.Floaterm.png)
 
+> DadbodUI
+
 ![17.DadbodUI.png](https://github.com/lvim-tech/lvim/blob/master/media/17.DadbodUI.png)
+
+> Goyo
 
 ![18.Goyo.png](https://github.com/lvim-tech/lvim/blob/master/media/18.Goyo.png)
 
