@@ -36,7 +36,7 @@
 
 > WhichKey
 
-> ![02.WhichKey.png](https://github.com/lvim-tech/lvim/blob/master/media/02.WhichKey.png)
+![02.WhichKey.png](https://github.com/lvim-tech/lvim/blob/master/media/02.WhichKey.png)
 
 > CtrlSpace
 
