@@ -6,7 +6,7 @@ require'lspconfig'.tsserver.setup {
             'lspinstall/typescript/node_modules/.bin/typescript-language-server',
         '--stdio'
     },
-    on_attach = function(client, bufnr)
+    on_attach = function(client, buf)
         require'lsp.global'.documentHighlight(client)
         local ts_utils = require("nvim-lsp-ts-utils")
 

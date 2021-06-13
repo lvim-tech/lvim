@@ -39,7 +39,8 @@ configs['events'] = function()
             }, --
             {'FileType', 'Trouble', 'set colorcolumn=0 nocursorcolumn'},
             {'FileType', 'Outline', 'set colorcolumn=0 nocursorcolumn'},
-            {'FileType', 'git', 'set colorcolumn=0 nocursorcolumn'}
+            {'FileType', 'git', 'set colorcolumn=0 nocursorcolumn'},
+            {'FileType', 'packer', 'set colorcolumn=0 nocursorcolumn'}
         },
         lsp = {
             {'FileType', '*', 'lua require("configs.global.filetypes").init()'}

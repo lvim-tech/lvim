@@ -6,7 +6,7 @@ require'lspconfig'.dartls.setup {
         global.home ..
             '/sdk/dart-sdk/bin/snapshots/analysis_server.dart.snapshot', '--lsp'
     },
-    on_attach = function(client, bufnr)
+    on_attach = function(client, buf)
         require'lsp.global'.documentHighlight(client)
     end,
     root_dir = require('lspconfig/util').root_pattern('.'),

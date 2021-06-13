@@ -3,7 +3,7 @@ local global = require('core.global')
 require'lspconfig'.texlab.setup {
     cmd = {global.lsp_path .. 'lspinstall/latex/texlab'},
     root_dir = require('lspconfig/util').root_pattern('.'),
-    on_attach = function(client, bufnr)
+    on_attach = function(client, buf)
         require'lsp.global'.documentHighlight(client)
     end,
     handlers = {

@@ -13,11 +13,10 @@ local bundles = {
 
 require'lspconfig'.jdtls.setup {
     cmd = {JAVA_LS_EXECUTABLE},
-    on_attach = function(client, bufnr)
+    on_attach = function(client, buf)
         require('jdtls').setup_dap()
-        require'lsp.global'.common_on_attach(client, bufr)
+        require'lsp.global'.documentHighlight(client)
     end,
-    on_attach = on_attach,
     root_dir = require('lspconfig/util').root_pattern('.'),
     init_options = {bundles = bundles},
     handlers = {

@@ -7,7 +7,7 @@ require'lspconfig'.jsonls.setup {
         '--stdio'
     },
     root_dir = require('lspconfig/util').root_pattern('.'),
-    on_attach = function(client, bufnr)
+    on_attach = function(client, buf)
         require'lsp.global'.documentHighlight(client)
     end,
     handlers = {

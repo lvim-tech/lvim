@@ -2,7 +2,7 @@ local global = require('core.global')
 
 require'lspconfig'.clangd.setup {
     cmd = {global.lsp_path .. 'lspinstall/cpp/clangd/bin/clangd'},
-    on_attach = function(client, bufnr)
+    on_attach = function(client, buf)
         require'lsp.global'.documentHighlight(client)
     end,
     root_dir = require('lspconfig/util').root_pattern('.'),

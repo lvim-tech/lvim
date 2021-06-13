@@ -7,7 +7,7 @@ require'lspconfig'.omnisharp.setup {
         "--hostPID", tostring(pid)
     },
     root_dir = require('lspconfig/util').root_pattern('.'),
-    on_attach = function(client, bufnr)
+    on_attach = function(client, buf)
         require'lsp.global'.documentHighlight(client)
     end,
     init_options = {},

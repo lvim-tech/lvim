@@ -8,7 +8,7 @@ require'lspconfig'.rust_analyzer.setup {
             ['rust-analyzer.diagnostics.disabled'] = {'unresolved-import'}
         }
     },
-    on_attach = function(client, bufnr)
+    on_attach = function(client, buf)
         require'lsp.global'.documentHighlight(client)
     end,
     handlers = {

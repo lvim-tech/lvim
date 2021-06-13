@@ -4,7 +4,7 @@ local sumneko_binary = sumneko_root_path .. '/sumneko-lua-language-server'
 
 require'lspconfig'.sumneko_lua.setup {
     cmd = {sumneko_binary, '-E', sumneko_root_path .. '/main.lua'},
-    on_attach = function(client, bufnr)
+    on_attach = function(client, buf)
         require'lsp.global'.documentHighlight(client)
     end,
     root_dir = require('lspconfig/util').root_pattern('.'),
