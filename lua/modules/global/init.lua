@@ -192,14 +192,9 @@ modules['akinsho/dependency-assist.nvim'] = {
 
 modules['puremourning/vimspector'] = {opt = true}
 
-modules['mfussenegger/nvim-dap'] = {
-    opt = true,
-    requires = {
-        'rcarriga/nvim-dap-ui',
-        after = 'nvim-dap',
-        config = languages_config.dapui
-    }
-}
+modules['mfussenegger/nvim-dap'] = {opt = true}
+
+modules['rcarriga/nvim-dap-ui'] = {opt = true}
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Completion ---------------------------------------------------

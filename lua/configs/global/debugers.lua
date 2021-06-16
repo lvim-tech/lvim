@@ -25,7 +25,31 @@ end
 M.init_dap = function()
     if not packer_plugins['nvim-dap'].loaded then
         vim.cmd [[packadd nvim-dap]]
+        vim.cmd [[packadd nvim-dap-ui]]
         local dap = require('dap')
+        require("dapui").setup({
+            icons = {expanded = "⯆", collapsed = "⯈"},
+            mappings = {
+                -- Use a table to apply multiple mappings
+                expand = {"<CR>", "<2-LeftMouse>"},
+                open = "o",
+                remove = "d",
+                edit = "e"
+            },
+            sidebar = {
+                open_on_start = true,
+                elements = {"scopes", "breakpoints", "stacks", "watches"},
+                width = 40,
+                position = "left"
+            },
+            tray = {
+                open_on_start = true,
+                elements = {"repl"},
+                height = 10,
+                position = "bottom"
+            },
+            floating = {max_height = nil, max_width = nil}
+        })
         vim.fn.sign_define('DapBreakpoint',
                            {text = '●', texthl = '', linehl = '', numhl = ''})
         vim.fn.sign_define('DapStopped', {
@@ -204,7 +228,7 @@ M.init_dap = function()
 
         require('dap.ext.vscode').load_launchjs()
     end
-    local vimspector_keymaps = {
+    local dap_keymaps = {
         {'<A-F1>', '<Cmd>DapToggleBreakpoint<CR>'}, -- Toggle breakpoint
         {'<A-F2>', '<Cmd>DapStart<CR>'}, -- Start / continue
         {'<A-F3>', '<Cmd>DapStop<CR>'}, -- Stop
@@ -216,7 +240,7 @@ M.init_dap = function()
         {'<A-F9>', '<Cmd>DapToggleRepl<CR>'}, -- Toggle repl
         {'<S-F10>', '<Cmd>DapGetSession<CR>'} -- Get session
     }
-    funcs.keymaps('n', {noremap = false, silent = true}, vimspector_keymaps)
+    funcs.keymaps('n', {noremap = false, silent = true}, dap_keymaps)
 end
 
 return M
