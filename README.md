@@ -12,7 +12,7 @@
 - Add or remove settings, rewrite all settings
 - Dynamic LSP activation
 - Dynamic debugging activation - Vimspector or Dap
-- By default - 55 plugins
+- By default - 56 plugins
 - Loading time - 047.321
 
 > ATTENTION: Now default branch is `master`
