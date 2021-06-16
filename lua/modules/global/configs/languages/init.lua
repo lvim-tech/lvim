@@ -66,4 +66,29 @@ end
 
 function config.dependency() require'dependency_assist'.setup {} end
 
+function config.dapui()
+    require("dapui").setup({
+        icons = {expanded = "⯆", collapsed = "⯈"},
+        mappings = {
+            expand = {"<CR>", "<2-LeftMouse>"},
+            open = "o",
+            remove = "d",
+            edit = "e"
+        },
+        sidebar = {
+            open_on_start = true,
+            elements = {"scopes", "breakpoints", "stacks", "watches"},
+            width = 40,
+            position = "left"
+        },
+        tray = {
+            open_on_start = true,
+            elements = {"repl"},
+            height = 10,
+            position = "bottom"
+        },
+        floating = {max_height = nil, max_width = nil}
+    })
+end
+
 return config

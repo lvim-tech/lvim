@@ -130,6 +130,14 @@ modules['lewis6991/gitsigns.nvim'] = {
 
 modules['tpope/vim-fugitive'] = {}
 
+modules['sindrets/diffview.nvim'] = {
+    cmd = {
+        'DiffviewOpen', 'DiffviewClose', 'DiffviewToggleFiles',
+        'DiffviewFocusFiles', 'DiffviewRefresh'
+    },
+    config = editor_config.diffview
+}
+
 modules['f-person/git-blame.nvim'] = {config = editor_config.blame}
 
 modules['TimUntersberger/neogit'] = {
@@ -184,7 +192,14 @@ modules['akinsho/dependency-assist.nvim'] = {
 
 modules['puremourning/vimspector'] = {opt = true}
 
-modules['mfussenegger/nvim-dap'] = {opt = true}
+modules['mfussenegger/nvim-dap'] = {
+    opt = true,
+    requires = {
+        'rcarriga/nvim-dap-ui',
+        after = 'nvim-dap',
+        config = languages_config.dapui
+    }
+}
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Completion ---------------------------------------------------
