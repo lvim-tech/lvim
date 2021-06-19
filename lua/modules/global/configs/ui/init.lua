@@ -45,7 +45,7 @@ end
 
 function config.galaxyline()
     local gl = require("galaxyline")
-    gl.exclude_filetypes = {"LvimHelper", "ctrlspace"}
+    gl.exclude_filetypes = {"ctrlspace"}
     local colors = {
         bg = "#252A34",
         fg = "#D9DA9E",
@@ -64,7 +64,9 @@ function config.galaxyline()
         return false
     end
     local gls = gl.section
-    gl.short_line_list = {"NvimTree", "CHADTree", "vista", "dbui", "packer"}
+    gl.short_line_list = {
+        "NvimTree", "LvimHelper", "CHADTree", "vista", "dbui", "packer"
+    }
     gls.left[1] = {
         ViMode = {
             provider = function()
