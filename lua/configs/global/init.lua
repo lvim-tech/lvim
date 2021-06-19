@@ -36,7 +36,7 @@ configs['events'] = function()
             {'FileType', 'help', 'set colorcolumn=0 nocursorcolumn'}, --
             {
                 'FileType', 'dashboard',
-                'set showtabline=0 | autocmd WinLeave <buffer> set showtabline=2'
+                'set showtabline=0 | autocmd WinLeave <buffer> set showtabline=2 nowrap'
             }, --
             {'FileType', 'Trouble', 'set colorcolumn=0 nocursorcolumn'},
             {'FileType', 'Outline', 'set colorcolumn=0 nocursorcolumn'},
