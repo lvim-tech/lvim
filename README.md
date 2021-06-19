@@ -242,6 +242,7 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 ## Keymaps
 
 > For `Helper` press `<F11>`
+> Navigate with `]` and `[`
 
 ### Normal mode
 
