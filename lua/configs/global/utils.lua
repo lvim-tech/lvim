@@ -68,10 +68,13 @@ local producer_file = snap.get'producer.ripgrep.file'.args {
 local producer_vimgrep = snap.get 'producer.ripgrep.vimgrep'
 local producer_buffer = snap.get 'producer.vim.buffer'
 local producer_oldfile = snap.get 'producer.vim.oldfile'
+local producer_git = snap.get 'consumer.fzf'(snap.get 'producer.git.file')
+local producer_help = snap.get 'consumer.fzf'(snap.get 'producer.vim.help')
 local select_file = snap.get 'select.file'
 local select_vimgrep = snap.get 'select.vimgrep'
 local preview_file = snap.get 'preview.file'
 local preview_vimgrep = snap.get 'preview.vimgrep'
+
 function utils.snap_files()
     snap.run({
         prompt = 'Files  ',
@@ -101,6 +104,25 @@ function utils.snap_grep_selected_word()
         views = {preview_vimgrep},
         initial_filter = vim.fn.expand('<cword>')
     })
+end
+
+function utils.snap_git()
+    snap.run {
+        prompt = 'Git  ',
+        producer = producer_git,
+        select = snap.get'select.file'.select,
+        multiselect = snap.get'select.file'.multiselect,
+        views = {snap.get 'preview.file'}
+    }
+end
+
+function utils.snap_help()
+    snap.run {
+        prompt = "Help  ",
+        producer = producer_help,
+        select = snap.get'select.help'.select,
+        views = {snap.get 'preview.help'}
+    }
 end
 
 function utils.snap_buffers()

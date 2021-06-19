@@ -165,6 +165,8 @@ configs['commands'] = function()
         'command! SnapGrepSelectedWord lua require("configs.global.utils").snap_grep_selected_word()')
     vim.cmd(
         'command! SnapBuffers lua require("configs.global.utils").snap_buffers()')
+    vim.cmd('command! SnapGit lua require("configs.global.utils").snap_git()')
+    vim.cmd('command! SnapHelp lua require("configs.global.utils").snap_help()')
     vim.cmd(
         'command! SnapOldFiles lua require("configs.global.utils").snap_old_files()')
 
