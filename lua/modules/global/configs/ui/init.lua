@@ -45,7 +45,7 @@ end
 
 function config.galaxyline()
     local gl = require("galaxyline")
-    gl.exclude_filetypes = {"ctrlspace"}
+    gl.exclude_filetypes = {"LvimHelper", "ctrlspace"}
     local colors = {
         bg = "#252A34",
         fg = "#D9DA9E",
@@ -282,7 +282,7 @@ function config.indent_blankline()
         "startify", "dashboard", "dotooagenda", "log", "fugitive", "gitcommit",
         "packer", "vimwiki", "markdown", "json", "txt", "vista", "help",
         "todoist", "NvimTree", "peekaboo", "git", "TelescopePrompt", "undotree",
-        "flutterToolsOutline", ""
+        "flutterToolsOutline"
     }
     vim.g.indent_blankline_buftype_exclude = {"terminal", "nofile"}
     vim.g.indent_blankline_show_trailing_blankline_indent = false
