@@ -2,12 +2,12 @@ local config = {}
 
 function config.dashboard()
     vim.g.dashboard_custom_header = {
-        "888     Y88b      / 888      e    e",
-        "888      Y88b    /  888     d8b  d8b",
-        "888       Y88b  /   888    d888bdY88b",
-        "888        Y888/    888   / Y88Y Y888b",
-        "888         Y8/     888  /   YY   Y888b",
-        "888____      Y      888 /          Y888b"
+        "       888     Y88b      / 888      e    e             ",
+        "       888      Y88b    /  888     d8b  d8b            ",
+        "       888       Y88b  /   888    d888bdY88b           ",
+        "       888        Y888/    888   / Y88Y Y888b          ",
+        "       888         Y8/     888  /   YY   Y888b         ",
+        "       888____      Y      888 /          Y888b        "
     }
     vim.g.dashboard_preview_file_height = 12
     vim.g.dashboard_preview_file_width = 80
@@ -395,6 +395,17 @@ function config.floaterm()
     vim.g.floaterm_height = 0.8
     vim.g.floaterm_wintitle = 0
     vim.g.floaterm_autoclose = 1
+end
+
+function config.helper()
+    local home = os.getenv('HOME')
+    require('lvim-helper').setup({
+        files = {
+            home .. '/.config/nvim/help/lvim_commands.txt',
+            home .. '/.config/nvim/help/lvim_bindings_normal_mode.txt',
+            home .. '/.config/nvim/help/lvim_bindings_visual_mode.txt'
+        }
+    })
 end
 
 return config

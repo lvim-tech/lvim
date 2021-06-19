@@ -1,0 +1,22 @@
+COMMANDS
+
+1. Clap
+:Clap <name-of-command>
+
+2 Snap
+:Snap<name-of-command>
+
+3. LspInstall
+:LspInstall <name-of-language-server>
+
+4. VimspectorInit
+:VimspectorInit
+
+5. DapInit
+:DapInit
+
+6. Spectre
+:Spectre
+
+7. Write as sudo
+:SudaWrite

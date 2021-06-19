@@ -69,6 +69,11 @@ modules['junegunn/goyo.vim'] = {
 
 modules['voldikss/vim-floaterm'] = {config = ui_config.floaterm}
 
+modules['lvim-tech/lvim-helper'] = {
+    cmd = 'LvimHelper',
+    config = ui_config.helper
+}
+
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Editor -------------------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

@@ -33,6 +33,7 @@ configs['events'] = function()
             }
         },
         ft = {
+            {'FileType', 'help', 'set colorcolumn=0 nocursorcolumn'}, --
             {
                 'FileType', 'dashboard',
                 'set showtabline=0 | autocmd WinLeave <buffer> set showtabline=2'
@@ -183,8 +184,8 @@ configs['ctrlspace'] = function()
     vim.g.CtrlSpaceSaveWorkspaceOnExit = 1
     vim.g.CtrlSpaceGlobCommand =
         'rg --files --follow --hidden -g "!{node_modules/*,.git/*,target/*}"'
-    vim.g.CtrlSpaceIgnoredFiles = '\v(tmp|temp|target|node_modules)[\\/]',
-                                  vim.api.nvim_exec([[
+    vim.g.CtrlSpaceIgnoredFiles = '\v(tmp|temp|target|node_modules)[\\/]'
+    vim.api.nvim_exec([[
         let g:CtrlSpaceSymbols = { "CS": " ", "Sin": "", "All": "", "Vis": "★", "File": "", "Tabs": "ﱡ", "CTab": "ﱢ", "NTM": "⁺", "WLoad": "", "WSave": "", "Zoom": "", "SLeft": "", "SRight": "", "BM": "", "Help": "", "IV": "", "IA": "", "IM": " ", "Dots": "ﳁ"}
         ]], true)
 end
