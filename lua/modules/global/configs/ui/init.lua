@@ -65,7 +65,7 @@ function config.galaxyline()
     end
     local gls = gl.section
     gl.short_line_list = {
-        "NvimTree", "LvimHelper", "CHADTree", "vista", "dbui", "packer"
+        "NvimTree", "LvimHelper", "dashboard", "vista", "dbui", "packer"
     }
     gls.left[1] = {
         ViMode = {
