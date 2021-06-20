@@ -262,7 +262,7 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 | `<C-a>`     | `:wa<CR>`                    | Save all                      |
 | `<C-e>`     | `:qa!<CR>`                   | Close all, exit nvim          |
 | `<C-x>`     | `<C-w>c`                     | Close current window          |
-| `<C-x>`     | `<C-w>o`                     | Close other windows           |
+| `<C-o>`     | `<C-w>o`                     | Close other windows           |
 | `<C-d>`     | `:bdelete<CR>`               | Bdelete                       |
 | `<C-h>`     | `<C-w>h`                     | Move to window left           |
 | `<C-l>`     | `<C-w>l`                     | Move to window right          |
@@ -272,8 +272,6 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 | `<C-Right>` | `:vertical resize +2<CR>`    | Resize width +                |
 | `<C-Up>`    | `:resize -2<CR>`             | Resize height -               |
 | `<C-Down>`  | `:resize +2<CR>`             | Resize height +               |
-| `<S-r>`     | `<C-W>v`                     | Split right                   |
-| `<S-b>`     | `<C-W>s`                     | Split bottom                  |
 | `<S-e>`     | `:NvimTreeToggle<CR>`        | NvimTree explorer             |
 | `<S-u>`     | `:Vifm<CR>`                  | Vifm explorer                 |
 | `<S-l>`     | `:FloatermNew lazygit<CR>`   | Lazygit                       |

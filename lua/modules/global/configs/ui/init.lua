@@ -403,9 +403,28 @@ function config.helper()
     local home = os.getenv('HOME')
     require('lvim-helper').setup({
         files = {
-            home .. '/.config/nvim/help/lvim_commands.txt',
-            home .. '/.config/nvim/help/lvim_bindings_normal_mode.txt',
-            home .. '/.config/nvim/help/lvim_bindings_visual_mode.txt'
+            home .. '/.config/nvim/help/lvim_commands.md',
+            home .. '/.config/nvim/help/lvim_bindings_normal_mode.md',
+            home .. '/.config/nvim/help/lvim_bindings_visual_mode.md',
+            home .. '/.config/nvim/help/vim_cheat_sheet_global.md',
+            home .. '/.config/nvim/help/vim_cheat_sheet_cursor_movement.md',
+            home .. '/.config/nvim/help/vim_cheat_sheet_visual_mode.md',
+            home .. '/.config/nvim/help/vim_cheat_sheet_visual_commands.md',
+            home .. '/.config/nvim/help/vim_cheat_sheet_insert_mode.md',
+            home .. '/.config/nvim/help/vim_cheat_sheet_editing.md',
+            home .. '/.config/nvim/help/vim_cheat_sheet_registers.md',
+            home .. '/.config/nvim/help/vim_cheat_sheet_marks_and_positions.md',
+            home .. '/.config/nvim/help/vim_cheat_sheet_macros.md',
+            home .. '/.config/nvim/help/vim_cheat_sheet_cut_and_paste.md',
+            home .. '/.config/nvim/help/vim_cheat_sheet_indent_text.md',
+            home .. '/.config/nvim/help/vim_cheat_sheet_exiting.md',
+            home .. '/.config/nvim/help/vim_cheat_sheet_search_and_replace.md',
+            home ..
+                '/.config/nvim/help/vim_cheat_sheet_search_in_multiple_files.md',
+            home .. '/.config/nvim/help/vim_cheat_sheet_tabs.md',
+            home ..
+                '/.config/nvim/help/vim_cheat_sheet_working_with_multiple_files.md',
+            home .. '/.config/nvim/help/vim_cheat_sheet_diff.md'
         }
     })
 end

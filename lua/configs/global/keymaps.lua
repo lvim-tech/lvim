@@ -20,8 +20,6 @@ keymaps['normal'] = {
     {'<C-Right>', ':vertical resize +2<CR>'}, -- Resize width +
     {'<C-Up>', ':resize -2<CR>'}, -- Resize height -
     {'<C-Down>', ':resize +2<CR>'}, -- Resize height +
-    {'<S-r>', '<C-W>v'}, -- Split right
-    {'<S-b>', '<C-W>s'}, -- Split bottom
     {'<S-e>', ':NvimTreeToggle<CR>'}, -- Nvim tree explorer
     {'<S-u>', ':Vifm<CR>'}, -- Vifm explorer
     {'<S-l>', ':FloatermNew lazygit<CR>'}, -- Lazygit
