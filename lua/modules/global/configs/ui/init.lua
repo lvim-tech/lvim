@@ -178,7 +178,7 @@ function config.galaxyline()
         DiagnosticWarn = {
             provider = "DiagnosticWarn",
             icon = "  ",
-            highlight = {colors.color_3, colors.bg}
+            highlight = {colors.color_4, colors.bg}
         }
     }
     gls.right[3] = {
