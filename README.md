@@ -26,6 +26,10 @@
 
 > If you want to use [telescope](https://github.com/nvim-telescope/telescope.nvim) - switch to branch `telescope`
 
+## HELP FOR LVIM
+
+> ## **For `HELP` press `<F11>` and Navigate with `]` and `[`**
+
 ## [YouTube](https://www.youtube.com/channel/UCSV5_UXKLl1JDZbQaYWuFKQ) channel
 
 ## Screenshots
@@ -240,9 +244,6 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 [vim-rooter](https://github.com/airblade/vim-rooter)
 
 ## Keymaps
-
-> For `Helper` press `<F11>`
-> Navigate with `]` and `[`
 
 ### Normal mode
 
