@@ -148,7 +148,10 @@ modules['f-person/git-blame.nvim'] = {config = editor_config.blame}
 modules['TimUntersberger/neogit'] = {
     cmd = 'Neogit',
     config = editor_config.neogit,
-    requires = {'nvim-lua/plenary.nvim', opt = true}
+    requires = {
+        {'nvim-lua/plenary.nvim', opt = true},
+        {'sindrets/diffview.nvim', opt = true, config = editor_config.diffview}
+    }
 }
 
 modules['kenn7/vim-arsync'] = {}

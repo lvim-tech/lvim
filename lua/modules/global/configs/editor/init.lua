@@ -301,7 +301,20 @@ function config.neogit()
     if not packer_plugins['plenary.nvim'].loaded then
         vim.cmd [[packadd plenary.nvim]]
     end
-    require('neogit').setup {}
+    if not packer_plugins['diffview.nvim'].loaded then
+        vim.cmd [[packadd diffview.nvim]]
+    end
+    require('neogit').setup {
+        disable_signs = false,
+        disable_context_highlighting = false,
+        disable_commit_confirmation = false,
+        signs = {
+            section = {"", ""},
+            item = {"", ""},
+            hunk = {"", ""}
+        },
+        integrations = {diffview = true}
+    }
 end
 
 function foldsigns() require('foldsigns').setup() end

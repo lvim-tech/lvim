@@ -188,7 +188,7 @@ configs['ctrlspace'] = function()
         'rg --files --follow --hidden -g "!{node_modules/*,.git/*,target/*}"'
     vim.g.CtrlSpaceIgnoredFiles = '\v(tmp|temp|target|node_modules)[\\/]'
     vim.api.nvim_exec([[
-        let g:CtrlSpaceSymbols = { "CS": " ", "Sin": "", "All": "", "Vis": "★", "File": "", "Tabs": "ﱡ", "CTab": "ﱢ", "NTM": "⁺", "WLoad": "", "WSave": "", "Zoom": "", "SLeft": "", "SRight": "", "BM": "", "Help": "", "IV": "", "IA": "", "IM": " ", "Dots": "ﳁ"}
+        let g:CtrlSpaceSymbols = { "CS": " ", "Sin": "", "All": "", "Vis": "★", "File": "", "Tabs": "ﱡ", "CTab": "ﱢ", "NTM": "⁺", "WLoad": "ﰬ", "WSave": "ﰵ", "Zoom": "", "SLeft": "", "SRight": "", "BM": "", "Help": "", "IV": "", "IA": "", "IM": " ", "Dots": "ﳁ"}
         ]], true)
 end
 
