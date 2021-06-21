@@ -12,7 +12,6 @@ modules['lvim-tech/lvim-colorscheme'] = {
 }
 
 modules['glepnir/dashboard-nvim'] = {
-    after = 'galaxyline.nvim',
     event = 'VimEnter',
     config = ui_config.dashboard
 }

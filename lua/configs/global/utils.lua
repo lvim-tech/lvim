@@ -75,7 +75,14 @@ local select_vimgrep = snap.get 'select.vimgrep'
 local preview_file = snap.get 'preview.file'
 local preview_vimgrep = snap.get 'preview.vimgrep'
 
+function init_treesitter()
+    if not packer_plugins['nvim-treesitter'].loaded then
+        vim.cmd [[packadd nvim-treesitter]]
+    end
+end
+
 function utils.snap_files()
+    init_treesitter()
     snap.run({
         prompt = '  Files  ',
         producer = fzf(producer_file),
@@ -86,6 +93,7 @@ function utils.snap_files()
 end
 
 function utils.snap_grep()
+    init_treesitter()
     snap.run({
         prompt = '  Grep  ',
         producer = limit(10000, producer_vimgrep),
@@ -96,6 +104,7 @@ function utils.snap_grep()
 end
 
 function utils.snap_grep_selected_word()
+    init_treesitter()
     snap.run({
         prompt = '  Grep  ',
         producer = limit(10000, producer_vimgrep),
@@ -107,6 +116,7 @@ function utils.snap_grep_selected_word()
 end
 
 function utils.snap_git()
+    init_treesitter()
     snap.run {
         prompt = '  Git  ',
         producer = producer_git,
@@ -117,6 +127,7 @@ function utils.snap_git()
 end
 
 function utils.snap_help()
+    init_treesitter()
     snap.run {
         prompt = " ﲉ Help  ",
         producer = producer_help,
@@ -126,6 +137,7 @@ function utils.snap_help()
 end
 
 function utils.snap_buffers()
+    init_treesitter()
     snap.run({
         prompt = ' ﬘ Buffers  ',
         producer = fzf(producer_buffer),
@@ -136,6 +148,7 @@ function utils.snap_buffers()
 end
 
 function utils.snap_old_files()
+    init_treesitter()
     snap.run({
         prompt = '  Oldfiles  ',
         producer = fzf(producer_oldfile),
