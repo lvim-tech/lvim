@@ -56,7 +56,8 @@ configs["events"] = function()
                     "set colorcolumn=0 nocursorcolumn"
                 },
                 {"FileType", "dapui_stacks", "set colorcolumn=0 nocursorcolumn"},
-                {"FileType", "dapui_watches", "set colorcolumn=0 nocursorcolumn"}
+                {"FileType", "dapui_watches", "set colorcolumn=0 nocursorcolumn"},
+                {"FileType", "NeogitStatus", "set colorcolumn=0 nocursorcolumn"}
             },
             lsp = {
                 {"FileType", "*", 'lua require("configs.global.filetypes").init()'}
