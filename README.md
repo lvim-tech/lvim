@@ -55,10 +55,6 @@
 
 ![08.Spectre.png](https://github.com/lvim-tech/lvim/blob/master/media/08.Spectre.png)
 
-> Clap
-
-![09.Clap.png](https://github.com/lvim-tech/lvim/blob/master/media/09.Clap.png)
-
 > Snap
 
 ![10.Snap.png](https://github.com/lvim-tech/lvim/blob/master/media/10.Snap.png)
@@ -296,12 +292,6 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 | `<A-/>` | `:CommentToggle<CR>`   | Comment toggle  |
 
 ## Commands
-
-### Clap
-
-```
-:Clap <name-of-command>
-```
 
 ### Snap
 

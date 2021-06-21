@@ -1,22 +1,19 @@
 LVIM COMMANDS
 
-1. Clap
-   :Clap <name-of-command>
-
-2. Snap
+1. Snap
    :Snap<name-of-command>
 
-3. LspInstall
+2. LspInstall
    :LspInstall <name-of-language-server>
 
-4. VimspectorInit
+3. VimspectorInit
    :VimspectorInit
 
-5. DapInit
+4. DapInit
    :DapInit
 
-6. Spectre
+5. Spectre
    :Spectre
 
-7. Write as sudo
+6. Write as sudo
    :SudaWrite
