@@ -12,6 +12,7 @@ modules['lvim-tech/lvim-colorscheme'] = {
 }
 
 modules['glepnir/dashboard-nvim'] = {
+    after = 'galaxyline.nvim',
     event = 'VimEnter',
     config = ui_config.dashboard
 }
@@ -82,10 +83,10 @@ local editor_config = require('modules.global.configs.editor')
 
 modules['vim-ctrlspace/vim-ctrlspace'] = {cmd = 'CtrlSpace'}
 
-modules['liuchengxu/vim-clap'] = {
-    config = editor_config.clap,
-    run = ':Clap install-binary'
-}
+-- modules['liuchengxu/vim-clap'] = {
+--     config = editor_config.clap,
+--     run = ':Clap install-binary'
+-- }
 
 modules['camspiers/snap'] = {}
 

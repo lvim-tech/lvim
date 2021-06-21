@@ -77,7 +77,7 @@ local preview_vimgrep = snap.get 'preview.vimgrep'
 
 function utils.snap_files()
     snap.run({
-        prompt = 'Files  ',
+        prompt = '  Files  ',
         producer = fzf(producer_file),
         select = select_file.select,
         multiselect = select_file.multiselect,
@@ -87,7 +87,7 @@ end
 
 function utils.snap_grep()
     snap.run({
-        prompt = 'Grep  ',
+        prompt = '  Grep  ',
         producer = limit(10000, producer_vimgrep),
         select = select_vimgrep.select,
         multiselect = select_vimgrep.multiselect,
@@ -97,7 +97,7 @@ end
 
 function utils.snap_grep_selected_word()
     snap.run({
-        prompt = 'Grep  ',
+        prompt = '  Grep  ',
         producer = limit(10000, producer_vimgrep),
         select = select_vimgrep.select,
         multiselect = select_vimgrep.multiselect,
@@ -108,7 +108,7 @@ end
 
 function utils.snap_git()
     snap.run {
-        prompt = 'Git  ',
+        prompt = '  Git  ',
         producer = producer_git,
         select = snap.get'select.file'.select,
         multiselect = snap.get'select.file'.multiselect,
@@ -118,7 +118,7 @@ end
 
 function utils.snap_help()
     snap.run {
-        prompt = "Help  ",
+        prompt = " ﲉ Help  ",
         producer = producer_help,
         select = snap.get'select.help'.select,
         views = {snap.get 'preview.help'}
@@ -127,7 +127,7 @@ end
 
 function utils.snap_buffers()
     snap.run({
-        prompt = 'Buffers  ',
+        prompt = ' ﬘ Buffers  ',
         producer = fzf(producer_buffer),
         select = select_file.select,
         multiselect = select_file.multiselect,
@@ -137,7 +137,7 @@ end
 
 function utils.snap_old_files()
     snap.run({
-        prompt = 'Oldfiles  ',
+        prompt = '  Oldfiles  ',
         producer = fzf(producer_oldfile),
         select = select_file.select,
         multiselect = select_file.multiselect,

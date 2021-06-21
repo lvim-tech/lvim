@@ -12,19 +12,8 @@
 - Add or remove settings, rewrite all settings
 - Dynamic LSP activation
 - Dynamic debugging activation - Vimspector or Dap
-- By default - 57 plugins
-- Loading time - 053.136
-
-> ATTENTION: Now default branch is `master`
-
-> Important changes:
->
-> 1. Remove [telescope](https://github.com/nvim-telescope/telescope.nvim)
-> 2. Add [vim-ctrlspace](https://github.com/vim-ctrlspace/vim-ctrlspace) for organize projects. Best tutorial for `vim-ctrlspace` [here](https://atlas-vim.readthedocs.io/vim/plugged/vim-ctrlspace/README/)
-> 3. Add [vim-clap](https://github.com/liuchengxu/vim-clap) for search `buffers`, `files`, `grep` and more and more and more
-> 4. Add [snap](https://github.com/camspiers/snap) for search `buffers`, `files`, `grep`
-
-> If you want to use [telescope](https://github.com/nvim-telescope/telescope.nvim) - switch to branch `telescope`
+- By default - 56 plugins
+- Loading time - 051.362
 
 ## HELP FOR LVIM
 
@@ -162,8 +151,6 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 ### Editor
 
 [vim-ctrlspace](https://github.com/vim-ctrlspace/vim-ctrlspace)
-
-[vim-clap](https://github.com/liuchengxu/vim-clap)
 
 [snap](https://github.com/camspiers/snap)
 
