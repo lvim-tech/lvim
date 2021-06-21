@@ -1,32 +1,31 @@
 local config = {}
 
-function config.clap()
-    vim.g.clap_layout = {relative = "editor"}
-    vim.clap_provider_grep_opts = '--hidden -g "!.git/ target/"'
-    vim.g.clap_fuzzy_match_hl_groups = {
-        {31, "#00839F"},
-        {31, "#00839F"},
-        {31, "#00839F"},
-        {31, "#00839F"},
-        {31, "#00839F"},
-        {31, "#00839F"},
-        {31, "#00839F"},
-        {31, "#00839F"},
-        {31, "#00839F"}
-    }
-
-    vim.api.nvim_exec(
-        [[
-        function! MyShiftTab() abort
-            call g:clap.input.set('')
-            call g:clap.provider._().bs_action()
-            return ''
-        endfunction
-        autocmd FileType clap_input inoremap <silent> <buffer> <S-Tab> <C-R>=MyShiftTab()<CR>
-    ]],
-        true
-    )
-end
+-- function config.clap()
+--     vim.g.clap_layout = {relative = "editor"}
+--     vim.clap_provider_grep_opts = '--hidden -g "!.git/ target/"'
+--     vim.g.clap_fuzzy_match_hl_groups = {
+--         {31, "#00839F"},
+--         {31, "#00839F"},
+--         {31, "#00839F"},
+--         {31, "#00839F"},
+--         {31, "#00839F"},
+--         {31, "#00839F"},
+--         {31, "#00839F"},
+--         {31, "#00839F"},
+--         {31, "#00839F"}
+--     }
+--     vim.api.nvim_exec(
+--         [[
+--         function! MyShiftTab() abort
+--             call g:clap.input.set('')
+--             call g:clap.provider._().bs_action()
+--             return ''
+--         endfunction
+--         autocmd FileType clap_input inoremap <silent> <buffer> <S-Tab> <C-R>=MyShiftTab()<CR>
+--     ]],
+--         true
+--     )
+-- end
 
 function config.spectre()
     if not packer_plugins["plenary.nvim"].loaded or not packer_plugins["popup.nvim"].loaded then
@@ -324,9 +323,9 @@ function config.neogit()
         disable_context_highlighting = false,
         disable_commit_confirmation = false,
         signs = {
-            section = {"", ""},
-            item = {"", ""},
-            hunk = {"", ""}
+            section = {"", ""},
+            item = {"", ""},
+            hunk = {"", ""}
         },
         integrations = {diffview = true}
     }
