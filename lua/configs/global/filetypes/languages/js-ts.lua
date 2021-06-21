@@ -1,16 +1,15 @@
 vim.bo.shiftwidth = 4
 vim.bo.tabstop = 4
-local global = require 'core.global'
-local funcs = require 'core.funcs'
+local global = require "core.global"
+local funcs = require "core.funcs"
 local cwd = vim.fn.getcwd()
 
 local settins = {
-    lsp_config = 'lsp.global.languages.js-ts',
-    lsp_command = ':LspStart tsserver'
+    lsp_config = "lsp.global.languages.js-ts",
+    lsp_command = ":LspStart tsserver"
 }
 
-if funcs.file_exists(cwd .. global.path_sep .. '.lvim' .. global.path_sep ..
-                         'js-ts.lua') then
+if funcs.file_exists(cwd .. global.path_sep .. ".lvim" .. global.path_sep .. "js-ts.lua") then
     config_file = dofile(cwd .. global.path_sep .. "js-ts.lua")
 
     if config_file.lsp_config ~= nil then

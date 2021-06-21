@@ -13,31 +13,31 @@ function config.dashboard()
     vim.g.dashboard_preview_file_width = 80
     vim.g.dashboard_custom_section = {
         a = {
-            description = {'     Projects                 '},
-            command = 'CtrlSpace b'
+            description = {"     Projects                 "},
+            command = "CtrlSpace b"
         },
         b = {
-            description = {'     File explorer            '},
-            command = 'Vifm'
+            description = {"     File explorer            "},
+            command = "Vifm"
         },
         c = {
-            description = {'     Search file              '},
-            command = 'Clap files'
+            description = {"     Search file              "},
+            command = "Clap files"
         },
         d = {
-            description = {'     Search in files          '},
-            command = 'Clap grep'
+            description = {"     Search in files          "},
+            command = "Clap grep"
         },
         e = {
-            description = {'     Keywmaps                 '},
+            description = {"     Keywmaps                 "},
             command = ":e ~/.config/nvim/lua/configs/global/keymaps.lua"
         },
         f = {
-            description = {'     Settings                 '},
+            description = {"     Settings                 "},
             command = ":e ~/.config/nvim/lua/configs/global/lvim.lua"
         },
         g = {
-            description = {'     Readme                   '},
+            description = {"     Readme                   "},
             command = ":e ~/.config/nvim/README.md"
         }
     }
@@ -50,22 +50,29 @@ function config.galaxyline()
         bg = "#252A34",
         fg = "#D9DA9E",
         color_0 = "#00839F",
-        color_1 = '#1C9898',
-        color_2 = '#25B8A5',
-        color_3 = '#56adb7',
-        color_4 = '#F2994B',
+        color_1 = "#1C9898",
+        color_2 = "#25B8A5",
+        color_3 = "#56adb7",
+        color_4 = "#F2994B",
         color_5 = "#E6B673",
         color_6 = "#F05F4E",
-        color_7 = '#98c379'
+        color_7 = "#98c379"
     }
     local condition = require("galaxyline.condition")
     local buffer_not_empty = function()
-        if vim.fn.empty(vim.fn.expand("%:t")) ~= 1 then return true end
+        if vim.fn.empty(vim.fn.expand("%:t")) ~= 1 then
+            return true
+        end
         return false
     end
     local gls = gl.section
     gl.short_line_list = {
-        "NvimTree", "LvimHelper", "dashboard", "vista", "dbui", "packer"
+        "NvimTree",
+        "LvimHelper",
+        "dashboard",
+        "vista",
+        "dbui",
+        "packer"
     }
     gls.left[1] = {
         ViMode = {
@@ -102,8 +109,7 @@ function config.galaxyline()
                     t = colors.color_0
                 }
                 local vim_mode = vim.fn.mode()
-                vim.api.nvim_command("hi GalaxyViMode guifg=" ..
-                                         mode_color[vim_mode])
+                vim.api.nvim_command("hi GalaxyViMode guifg=" .. mode_color[vim_mode])
                 return alias[vim_mode] .. "    "
             end,
             highlight = {colors.color_3, colors.bg, "bold"}
@@ -127,7 +133,9 @@ function config.galaxyline()
     }
     gls.left[4] = {
         GitIcon = {
-            provider = function() return "  " end,
+            provider = function()
+                return "  "
+            end,
             condition = condition.check_git_workspace,
             -- separator = " ",
             separator_highlight = {"NONE", colors.bg},
@@ -200,7 +208,9 @@ function config.galaxyline()
             provider = "GetLspClient",
             condition = function()
                 local tbl = {["dashboard"] = true, [" "] = true}
-                if tbl[vim.bo.filetype] then return false end
+                if tbl[vim.bo.filetype] then
+                    return false
+                end
                 return true
             end,
             icon = "   ",
@@ -226,9 +236,7 @@ function config.galaxyline()
     gls.right[8] = {
         Tabstop = {
             provider = function()
-                return
-                    "Spaces: " .. vim.api.nvim_buf_get_option(0, "tabstop") ..
-                        " "
+                return "Spaces: " .. vim.api.nvim_buf_get_option(0, "tabstop") .. " "
             end,
             condition = condition.hide_in_width,
             separator = " ",
@@ -256,7 +264,9 @@ function config.galaxyline()
     }
     gls.right[11] = {
         Space = {
-            provider = function() return " " end,
+            provider = function()
+                return " "
+            end,
             separator = " ",
             separator_highlight = {"NONE", colors.bg},
             highlight = {colors.fg, colors.bg}
@@ -281,17 +291,42 @@ function config.indent_blankline()
     vim.g.indent_blankline_char = "▏"
     vim.g.indent_blankline_show_first_indent_level = true
     vim.g.indent_blankline_filetype_exclude = {
-        "startify", "dashboard", "dotooagenda", "log", "fugitive", "gitcommit",
-        "packer", "vimwiki", "markdown", "json", "txt", "vista", "help",
-        "todoist", "NvimTree", "peekaboo", "git", "TelescopePrompt", "undotree",
+        "startify",
+        "dashboard",
+        "dotooagenda",
+        "log",
+        "fugitive",
+        "gitcommit",
+        "packer",
+        "vimwiki",
+        "markdown",
+        "json",
+        "txt",
+        "vista",
+        "help",
+        "todoist",
+        "NvimTree",
+        "peekaboo",
+        "git",
+        "TelescopePrompt",
+        "undotree",
         "flutterToolsOutline"
     }
     vim.g.indent_blankline_buftype_exclude = {"terminal", "nofile"}
     vim.g.indent_blankline_show_trailing_blankline_indent = false
     vim.g.indent_blankline_show_current_context = true
     vim.g.indent_blankline_context_patterns = {
-        "class", "function", "method", "block", "list_literal", "selector",
-        "^if", "^table", "if_statement", "while", "for"
+        "class",
+        "function",
+        "method",
+        "block",
+        "list_literal",
+        "selector",
+        "^if",
+        "^table",
+        "if_statement",
+        "while",
+        "for"
     }
     vim.cmd("autocmd CursorMoved * IndentBlanklineRefresh")
 end
@@ -334,7 +369,7 @@ function config.tree()
     vim.g.nvim_tree_follow = 1
     vim.g.nvim_tree_lsp_diagnostics = 1
     vim.g.nvim_tree_auto_close = true
-    vim.g.nvim_tree_auto_ignore_ft = {'startify', 'dashboard'}
+    vim.g.nvim_tree_auto_ignore_ft = {"startify", "dashboard"}
     vim.g.nvim_tree_show_icons = {
         git = 1,
         folders = 1,
@@ -342,8 +377,8 @@ function config.tree()
         folder_arrows = 0
     }
     vim.g.nvim_tree_icons = {
-        default = '',
-        symlink = '',
+        default = "",
+        symlink = "",
         git = {
             unstaged = "",
             staged = "",
@@ -366,7 +401,8 @@ function config.goyo()
     local opts = {silent = true, noremap = true}
     vim.api.nvim_set_keymap("n", "<C-z>", ":Goyo<CR>", opts)
     -- TODO handle this better
-    vim.api.nvim_exec([[
+    vim.api.nvim_exec(
+        [[
         function! Goyo_enter()
         set noshowcmd
         Limelight
@@ -379,10 +415,14 @@ function config.goyo()
 
         autocmd! User GoyoEnter nested call Goyo_enter()
         autocmd! User GoyoLeave nested call Goyo_leave()
-    ]], true)
+    ]],
+        true
+    )
 end
 
-function config.limelight() vim.g.limelight_conceal_guifg = '#628b97' end
+function config.limelight()
+    vim.g.limelight_conceal_guifg = "#628b97"
+end
 
 function config.floaterm()
     vim.g.floaterm_keymap_toggle = "<F1>"
@@ -400,33 +440,33 @@ function config.floaterm()
 end
 
 function config.helper()
-    local home = os.getenv('HOME')
-    require('lvim-helper').setup({
-        files = {
-            home .. '/.config/nvim/help/lvim_commands.md',
-            home .. '/.config/nvim/help/lvim_bindings_normal_mode.md',
-            home .. '/.config/nvim/help/lvim_bindings_visual_mode.md',
-            home .. '/.config/nvim/help/vim_cheat_sheet_global.md',
-            home .. '/.config/nvim/help/vim_cheat_sheet_cursor_movement.md',
-            home .. '/.config/nvim/help/vim_cheat_sheet_visual_mode.md',
-            home .. '/.config/nvim/help/vim_cheat_sheet_visual_commands.md',
-            home .. '/.config/nvim/help/vim_cheat_sheet_insert_mode.md',
-            home .. '/.config/nvim/help/vim_cheat_sheet_editing.md',
-            home .. '/.config/nvim/help/vim_cheat_sheet_registers.md',
-            home .. '/.config/nvim/help/vim_cheat_sheet_marks_and_positions.md',
-            home .. '/.config/nvim/help/vim_cheat_sheet_macros.md',
-            home .. '/.config/nvim/help/vim_cheat_sheet_cut_and_paste.md',
-            home .. '/.config/nvim/help/vim_cheat_sheet_indent_text.md',
-            home .. '/.config/nvim/help/vim_cheat_sheet_exiting.md',
-            home .. '/.config/nvim/help/vim_cheat_sheet_search_and_replace.md',
-            home ..
-                '/.config/nvim/help/vim_cheat_sheet_search_in_multiple_files.md',
-            home .. '/.config/nvim/help/vim_cheat_sheet_tabs.md',
-            home ..
-                '/.config/nvim/help/vim_cheat_sheet_working_with_multiple_files.md',
-            home .. '/.config/nvim/help/vim_cheat_sheet_diff.md'
+    local home = os.getenv("HOME")
+    require("lvim-helper").setup(
+        {
+            files = {
+                home .. "/.config/nvim/help/lvim_commands.md",
+                home .. "/.config/nvim/help/lvim_bindings_normal_mode.md",
+                home .. "/.config/nvim/help/lvim_bindings_visual_mode.md",
+                home .. "/.config/nvim/help/vim_cheat_sheet_global.md",
+                home .. "/.config/nvim/help/vim_cheat_sheet_cursor_movement.md",
+                home .. "/.config/nvim/help/vim_cheat_sheet_visual_mode.md",
+                home .. "/.config/nvim/help/vim_cheat_sheet_visual_commands.md",
+                home .. "/.config/nvim/help/vim_cheat_sheet_insert_mode.md",
+                home .. "/.config/nvim/help/vim_cheat_sheet_editing.md",
+                home .. "/.config/nvim/help/vim_cheat_sheet_registers.md",
+                home .. "/.config/nvim/help/vim_cheat_sheet_marks_and_positions.md",
+                home .. "/.config/nvim/help/vim_cheat_sheet_macros.md",
+                home .. "/.config/nvim/help/vim_cheat_sheet_cut_and_paste.md",
+                home .. "/.config/nvim/help/vim_cheat_sheet_indent_text.md",
+                home .. "/.config/nvim/help/vim_cheat_sheet_exiting.md",
+                home .. "/.config/nvim/help/vim_cheat_sheet_search_and_replace.md",
+                home .. "/.config/nvim/help/vim_cheat_sheet_search_in_multiple_files.md",
+                home .. "/.config/nvim/help/vim_cheat_sheet_tabs.md",
+                home .. "/.config/nvim/help/vim_cheat_sheet_working_with_multiple_files.md",
+                home .. "/.config/nvim/help/vim_cheat_sheet_diff.md"
+            }
         }
-    })
+    )
 end
 
 return config

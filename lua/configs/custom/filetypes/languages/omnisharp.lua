@@ -5,12 +5,12 @@ local funcs = require "core.funcs"
 local cwd = vim.fn.getcwd()
 
 local settins = {
-    lsp_config = "lsp.global.languages.svelte",
-    lsp_command = ":LspStart svelte"
+    lsp_config = "lsp.custom.languages.omnisharp",
+    lsp_command = ":LspStart omnisharp"
 }
 
-if funcs.file_exists(cwd .. global.path_sep .. ".lvim" .. global.path_sep .. "svelte.lua") then
-    config_file = dofile(cwd .. global.path_sep .. ".lvim" .. global.path_sep .. "svelte.lua")
+if funcs.file_exists(cwd .. global.path_sep .. ".lvim" .. global.path_sep .. "omnisharp.lua") then
+    config_file = dofile(cwd .. global.path_sep .. ".lvim" .. global.path_sep .. "omnisharp.lua")
 
     if config_file.lsp_config ~= nil then
         settins.lsp_config = config_file.lsp_config

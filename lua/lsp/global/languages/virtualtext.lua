@@ -1,4 +1,3 @@
-local api = vim.api
 local virtualtext = {}
 
 local function get_size(tabl)

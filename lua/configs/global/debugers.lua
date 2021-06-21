@@ -31,7 +31,6 @@ M.init_dap = function()
             {
                 icons = {expanded = "⯆", collapsed = "⯈"},
                 mappings = {
-                    -- Use a table to apply multiple mappings
                     expand = {"<CR>", "<2-LeftMouse>"},
                     open = "o",
                     remove = "d",

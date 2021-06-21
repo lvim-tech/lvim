@@ -1,16 +1,16 @@
-vim.bo.shiftwidth = 2
-vim.bo.tabstop = 2
-local global = require 'core.global'
-local funcs = require 'core.funcs'
+vim.bo.shiftwidth = 4
+vim.bo.tabstop = 4
+local global = require "core.global"
+local funcs = require "core.funcs"
 local cwd = vim.fn.getcwd()
 
 local settins = {
-    lsp_config = 'lsp.custom.languages.svelte',
-    lsp_command = ':LspStart svelte'
+    lsp_config = "lsp.custom.languages.svelte",
+    lsp_command = ":LspStart svelte"
 }
 
-if funcs.file_exists(cwd .. global.path_sep .. "svelte.lua") then
-    config_file = dofile(cwd .. global.path_sep .. "svelte.lua")
+if funcs.file_exists(cwd .. global.path_sep .. ".lvim" .. global.path_sep .. "svelte.lua") then
+    config_file = dofile(cwd .. global.path_sep .. ".lvim" .. global.path_sep .. "svelte.lua")
 
     if config_file.lsp_config ~= nil then
         settins.lsp_config = config_file.lsp_config

@@ -6,7 +6,7 @@
         "request": "launch",
         "program": "${file}",
         "cwd": "${workspaceRoot}",
-        // "python": "/path/to/python/interpreter/to/use",
+        "python": "/path/to/python/interpreter/to/use",
         "stopOnEntry": true,
         "debugOptions": []
       }

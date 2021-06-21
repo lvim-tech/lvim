@@ -1,18 +1,16 @@
 vim.bo.shiftwidth = 2
 vim.bo.tabstop = 2
-local global = require 'core.global'
-local funcs = require 'core.funcs'
+local global = require "core.global"
+local funcs = require "core.funcs"
 local cwd = vim.fn.getcwd()
 
 local settins = {
-    lsp_config = 'lsp.custom.languages.dart',
-    lsp_command = ':LspStart dartls'
+    lsp_config = "lsp.custom.languages.dart",
+    lsp_command = ":LspStart dartls"
 }
 
-if funcs.file_exists(cwd .. global.path_sep .. '.lvim' .. global.path_sep ..
-                         'dart.lua') then
-    config_file = dofile(cwd .. global.path_sep .. '.lvim' .. global.path_sep ..
-                             'dart.lua')
+if funcs.file_exists(cwd .. global.path_sep .. ".lvim" .. global.path_sep .. "dart.lua") then
+    config_file = dofile(cwd .. global.path_sep .. ".lvim" .. global.path_sep .. "dart.lua")
 
     if config_file.lsp_config ~= nil then
         settins.lsp_config = config_file.lsp_config

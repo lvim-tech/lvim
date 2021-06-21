@@ -4,7 +4,7 @@ function config.treesitter()
     if not packer_plugins["playground"].loaded then
         vim.cmd [[packadd playground]]
     end
-    require"nvim-treesitter.configs".setup {
+    require "nvim-treesitter.configs".setup {
         ensure_installed = "all",
         ignore_install = {"haskell"},
         highlight = {enable = true},
@@ -64,6 +64,8 @@ function config.symbols()
     }
 end
 
-function config.dependency() require'dependency_assist'.setup {} end
+function config.dependency()
+    require "dependency_assist".setup {}
+end
 
 return config

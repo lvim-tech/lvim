@@ -1,18 +1,16 @@
 vim.bo.shiftwidth = 4
 vim.bo.tabstop = 4
-local global = require 'core.global'
-local funcs = require 'core.funcs'
+local global = require "core.global"
+local funcs = require "core.funcs"
 local cwd = vim.fn.getcwd()
 
 local settins = {
-    lsp_config = 'lsp.custom.languages.vim',
-    lsp_command = ':LspStart vimls'
+    lsp_config = "lsp.custom.languages.vim",
+    lsp_command = ":LspStart vimls"
 }
 
-if funcs.file_exists(cwd .. global.path_sep .. '.lvim' .. global.path_sep ..
-                         'vim.lua') then
-    config_file = dofile(cwd .. global.path_sep .. '.lvim' .. global.path_sep ..
-                             'vim.lua')
+if funcs.file_exists(cwd .. global.path_sep .. ".lvim" .. global.path_sep .. "vim.lua") then
+    config_file = dofile(cwd .. global.path_sep .. ".lvim" .. global.path_sep .. "vim.lua")
 
     if config_file.lsp_config ~= nil then
         settins.lsp_config = config_file.lsp_config

@@ -1,16 +1,16 @@
 vim.bo.shiftwidth = 4
 vim.bo.tabstop = 4
-local global = require 'core.global'
-local funcs = require 'core.funcs'
+local global = require "core.global"
+local funcs = require "core.funcs"
 local cwd = vim.fn.getcwd()
 
 local settins = {
-    lsp_config = 'lsp.global.languages.java',
-    lsp_command = ':LspStart jdtls'
+    lsp_config = "lsp.global.languages.java",
+    lsp_command = ":LspStart jdtls"
 }
 
-if funcs.file_exists(cwd .. global.path_sep .. '.lvim' .. global.path_sep ..
-                         'java.lua') then
+if funcs.file_exists(cwd .. global.path_sep .. ".lvim" .. global.path_sep ..
+                         "java.lua") then
     config_file = dofile(cwd .. global.path_sep .. "java.lua")
 
     if config_file.lsp_config ~= nil then

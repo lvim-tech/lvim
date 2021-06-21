@@ -1,16 +1,15 @@
-vim.bo.shiftwidth = 4
-vim.bo.tabstop = 4
-local global = require 'core.global'
-local funcs = require 'core.funcs'
+vim.bo.shiftwidth = 2
+vim.bo.tabstop = 2
+local global = require "core.global"
+local funcs = require "core.funcs"
 local cwd = vim.fn.getcwd()
 
 local settins = {
-    lsp_config = 'lsp.custom.languages.json',
-    lsp_command = ':LspStart jsonls'
+    lsp_config = "lsp.custom.languages.json",
+    lsp_command = ":LspStart jsonls"
 }
 
-if funcs.file_exists(cwd .. global.path_sep .. '.lvim' .. global.path_sep ..
-                         'json.lua') then
+if funcs.file_exists(cwd .. global.path_sep .. ".lvim" .. global.path_sep .. "json.lua") then
     config_file = dofile(cwd .. global.path_sep .. "json.lua")
 
     if config_file.lsp_config ~= nil then
