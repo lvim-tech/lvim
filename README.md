@@ -100,6 +100,7 @@
 - [universal-ctags](https://github.com/universal-ctags/ctags)
 - [ripgrep](https://github.com/BurntSushi/ripgrep)
 - [fzf](https://github.com/junegunn/fzf)
+- [rsync](https://github.com/WayneD/rsync)
 
 ### External apps
 
