@@ -257,7 +257,7 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 | `<C-Right>` | `:vertical resize +2<CR>`    | Resize width +                |
 | `<C-Up>`    | `:resize -2<CR>`             | Resize height -               |
 | `<C-Down>`  | `:resize +2<CR>`             | Resize height +               |
-| `<S-e>`     | `:NvimTreeToggle<CR>`        | NvimTree explorer             |
+| `<S-x>`     | `:NvimTreeToggle<CR>`        | NvimTree explorer             |
 | `<S-u>`     | `:Vifm<CR>`                  | Vifm explorer                 |
 | `<S-l>`     | `:FloatermNew lazygit<CR>`   | Lazygit                       |
 | `<S-m>`     | `:MarkdownPreviewToggle<CR>` | Markdown preview toggle       |
