@@ -22,11 +22,11 @@ function config.dashboard()
         },
         c = {
             description = {"     Search file              "},
-            command = "Clap files"
+            command = "SnapFiles"
         },
         d = {
             description = {"     Search in files          "},
-            command = "Clap grep"
+            command = "SnapGrep"
         },
         e = {
             description = {"     Keywmaps                 "},
