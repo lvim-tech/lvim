@@ -26,7 +26,7 @@ configs["events"] = function()
                     "BufNewFile",
                     "*",
                     "setlocal formatoptions-=c formatoptions-=r formatoptions-=o showtabline=0 "
-                }, --
+                },
                 {"BufNewFile,BufRead", "*.ex", "set filetype=elixir"},
                 {"BufNewFile,BufRead", "*.exs", "set filetype=elixir"},
                 {"BufNewFile,BufRead", "*.graphql", "set filetype=graphql"},
@@ -39,12 +39,12 @@ configs["events"] = function()
                 }
             },
             ft = {
-                {"FileType", "help", "set colorcolumn=0 nocursorcolumn"}, --
+                {"FileType", "help", "set colorcolumn=0 nocursorcolumn"},
                 {
                     "FileType",
                     "dashboard",
                     "set showtabline=0 | autocmd WinLeave <buffer> set showtabline=2 nowrap"
-                }, --
+                },
                 {"FileType", "Trouble", "set colorcolumn=0 nocursorcolumn"},
                 {"FileType", "Outline", "set colorcolumn=0 nocursorcolumn"},
                 {"FileType", "git", "set colorcolumn=0 nocursorcolumn"},
