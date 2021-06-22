@@ -29,8 +29,8 @@ function config.dashboard()
             command = "SnapGrep"
         },
         e = {
-            description = {"     Keywmaps                 "},
-            command = ":e ~/.config/nvim/lua/configs/global/keymaps.lua"
+            description = {"     Help                     "},
+            command = ":LvimHelper"
         },
         f = {
             description = {"     Settings                 "},
