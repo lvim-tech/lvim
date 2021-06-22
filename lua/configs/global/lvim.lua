@@ -7,7 +7,6 @@ M.global = function()
     local global_opt = {
         background = "dark",
         termguicolors = true,
-        shell = "zsh",
         mouse = "nv",
         errorbells = true,
         visualbell = true,
