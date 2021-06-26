@@ -37,9 +37,9 @@ function lsp_config.documentHighlight(client)
     if client.resolved_capabilities.document_highlight then
         vim.api.nvim_exec(
             [[
-            hi LspReferenceRead cterm=bold ctermbg=red guibg=#4C566A
-            hi LspReferenceText cterm=bold ctermbg=red guibg=#4C566A
-            hi LspReferenceWrite cterm=bold ctermbg=red guibg=#4C566A
+            hi LspReferenceRead cterm=bold ctermbg=red guibg=#41495A
+            hi LspReferenceText cterm=bold ctermbg=red guibg=#41495A
+            hi LspReferenceWrite cterm=bold ctermbg=red guibg=#41495A
             augroup lsp_document_highlight
             autocmd! * <buffer>
             autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()

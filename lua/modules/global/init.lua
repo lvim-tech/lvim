@@ -152,8 +152,7 @@ modules["TimUntersberger/neogit"] = {
     cmd = "Neogit",
     config = editor_config.neogit,
     requires = {
-        {"nvim-lua/plenary.nvim", opt = true},
-        {"sindrets/diffview.nvim", opt = true, config = editor_config.diffview}
+        {"nvim-lua/plenary.nvim", opt = true}
     }
 }
 
