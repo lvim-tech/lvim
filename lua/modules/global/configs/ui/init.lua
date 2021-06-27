@@ -447,6 +447,8 @@ function config.helper()
                 home .. "/.config/nvim/help/lvim_commands.md",
                 home .. "/.config/nvim/help/lvim_bindings_normal_mode.md",
                 home .. "/.config/nvim/help/lvim_bindings_visual_mode.md",
+                home .. "/.config/nvim/help/lvim_bindings_debug_vimspector.md",
+                home .. "/.config/nvim/help/lvim_bindings_debug_dap.md",
                 home .. "/.config/nvim/help/vim_cheat_sheet_global.md",
                 home .. "/.config/nvim/help/vim_cheat_sheet_cursor_movement.md",
                 home .. "/.config/nvim/help/vim_cheat_sheet_visual_mode.md",
