@@ -20,7 +20,7 @@ Debug Vimspector
 | <S-F7>  | VimspectorStepOut          | Step out            |
 | ------- | -------------------------- | ------------------- |
 | <S-F8>  | VimspectorAdd              | Function breakpoint |
-|         | FunctionBreakpoint         | Function breakpoint |
+|         | FunctionBreakpoint         |                     |
 | ------- | -------------------------- | ------------------- |
 | <S-F9>  | VimspectorRunToCursor      | Run to cursor       |
 | ------- | -------------------------- | ------------------- |
