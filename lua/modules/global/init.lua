@@ -165,7 +165,9 @@ modules["kenn7/vim-arsync"] = {}
 
 local languages_config = require("modules.global.configs.languages")
 
-modules["neovim/nvim-lspconfig"] = {}
+modules["neovim/nvim-lspconfig"] = {
+    config = languages_config.lsp
+}
 
 modules["kabouzeid/nvim-lspinstall"] = {}
 

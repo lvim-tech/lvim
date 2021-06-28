@@ -30,8 +30,8 @@ local pack = require("core.pack")
 local load_ide = function()
     createdir()
     leader_map()
-    funcs.configs()
     pack.ensure_plugins()
+    funcs.configs()
     pack.load_compile()
 end
 
