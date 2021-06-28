@@ -90,7 +90,7 @@ modules["vim-ctrlspace/vim-ctrlspace"] = {cmd = "CtrlSpace"}
 modules["camspiers/snap"] = {}
 
 modules["windwp/nvim-spectre"] = {
-    event = "VimEnter",
+    cmd = "Spectre",
     config = editor_config.spectre,
     requires = {
         {"nvim-lua/popup.nvim", opt = true},
@@ -123,6 +123,7 @@ modules["MattesGroeger/vim-bookmarks"] = {
 modules["mbbill/undotree"] = {cmd = "UndotreeToggle"}
 
 modules["kkoomen/vim-doge"] = {
+    cmd = {"DogeGenerate", "DogeCreateDocStandard"},
     run = ":call doge#install()",
     config = editor_config.doge
 }
@@ -185,7 +186,7 @@ modules["pechorin/any-jump.vim"] = {
 }
 
 modules["folke/lsp-trouble.nvim"] = {
-    event = "BufRead",
+    -- event = "BufRead",
     config = languages_config.trouble,
     requires = "kyazdani42/nvim-web-devicons"
 }
@@ -266,6 +267,8 @@ modules["iamcco/markdown-preview.nvim"] = {
 }
 
 modules["airblade/vim-rooter"] = {config = tools_config.rooter}
+
+-- modules["kristijanhusak/orgmode.nvim"] = {config = tools_config.org}
 
 -- modules['ahmedkhalf/lsp-rooter.nvim'] = {event = 'VimEnter'}
 

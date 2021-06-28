@@ -2,39 +2,18 @@ local M = {}
 
 M.init = function()
     local filetypes = {
-        ["cpp"] = {"c", "cpp"},
-        ["omnisharp"] = {"cs", "vb"},
-        ["java"] = {"java"},
-        ["rust"] = {"rust"},
-        ["go"] = {"go"},
-        ["python"] = {"python"},
-        ["ruby"] = {"ruby"},
-        ["lua"] = {"lua"},
-        ["php"] = {"php"},
+        ["css"] = {"css", "less", "scss"},
         ["dart"] = {"dart"},
-        ["elixir"] = {"elixir"},
-        ["bash"] = {"sh"},
-        ["vim"] = {"vim"},
-        ["js-ts"] = {
-            "javascript",
-            "javascriptreact",
-            "typescript",
-            "typescriptreact"
-        },
-        ["graphql"] = {"graphql"},
-        ["docker"] = {"dockerfile"},
-        ["json"] = {"json"},
-        ["latex"] = {"tex"},
-        ["yaml"] = {"yaml"},
-        ["svelte"] = {"svelte"},
         ["html"] = {"html"},
-        ["css"] = {"css", "less", "scss"}
+        ["json"] = {"json"},
+        ["ruby"] = {"ruby"},
+        ["yaml"] = {"yaml"}
     }
     function search_extensions(filetype)
         for k, v in pairs(filetypes) do
             for _, v2 in pairs(v) do
                 if v2 == filetype then
-                    require("configs.global.filetypes.languages." .. k)
+                    require("configs.global.filetypes.filetypes." .. k)
                 end
             end
         end

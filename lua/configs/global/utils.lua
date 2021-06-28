@@ -239,4 +239,17 @@ function utils.snap_old_files()
     )
 end
 
+function utils.init_spectre()
+    if not packer_plugins["nvim-spectre"].loaded then
+        vim.cmd [[packadd nvim-spectre]]
+    end
+    if not packer_plugins["plenary.nvim"].loaded then
+        vim.cmd [[packadd plenary.nvim]]
+    end
+    if not packer_plugins["popup.nvim"].loaded then
+        vim.cmd [[packadd popup.nvim]]
+    end
+    require("spectre").open()
+end
+
 return utils

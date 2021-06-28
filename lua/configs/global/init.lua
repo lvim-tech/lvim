@@ -11,6 +11,10 @@ end
 configs["events"] = function()
     funcs.augroups(
         {
+            -- lsp = {
+            --     {"FileType", "*", 'lua require("configs.global.filetypes").init()'}
+            -- },
+
             bufs = {
                 {
                     "BufWinEnter",
@@ -58,9 +62,6 @@ configs["events"] = function()
                 {"FileType", "dapui_stacks", "set colorcolumn=0 nocursorcolumn"},
                 {"FileType", "dapui_watches", "set colorcolumn=0 nocursorcolumn"},
                 {"FileType", "NeogitStatus", "set colorcolumn=0 nocursorcolumn"}
-            },
-            lsp = {
-                {"FileType", "*", 'lua require("configs.global.filetypes").init()'}
             }
         }
     )
@@ -130,7 +131,7 @@ configs["commands"] = function()
     -- Init Dap
     vim.cmd('command! DapInit lua require("configs.global.debugers").init_dap()')
     -- Spectre
-    vim.cmd('command! Spectre lua require("spectre").open()')
+    vim.cmd('command! Spectre lua require("configs.global.utils").init_spectre()')
     -- Snap
     vim.cmd('command! SnapFiles lua require("configs.global.utils").snap_files()')
     vim.cmd('command! SnapGrep lua require("configs.global.utils").snap_grep()')
@@ -161,6 +162,18 @@ configs["ctrlspace"] = function()
         ]],
         true
     )
+end
+
+configs["lsp"] = function()
+    local servers = {
+        'bash', 'cpp', 'css', 'dart', 'docker', 'elixir', 'go', 'graphql', 'html', 'java', 'js-ts', 'json', 'latex', 'lua', 'omnisharp', 'php', 'python', 'ruby', 'rust', 'svelte', 'vim', 'yaml'
+    }
+    for _,server in ipairs(servers) do
+        local settins = {
+            lsp_config = "lsp.global.languages." .. server
+        }
+        require(settins.lsp_config)
+    end
 end
 
 return configs
