@@ -11,10 +11,6 @@ end
 configs["events"] = function()
     funcs.augroups(
         {
-            -- lsp = {
-            --     {"FileType", "*", 'lua require("configs.global.filetypes").init()'}
-            -- },
-
             bufs = {
                 {
                     "BufWinEnter",
@@ -43,6 +39,7 @@ configs["events"] = function()
                 }
             },
             ft = {
+                {"FileType", "*", 'lua require("configs.global.filetypes").init()'},
                 {"FileType", "help", "set colorcolumn=0 nocursorcolumn"},
                 {
                     "FileType",
