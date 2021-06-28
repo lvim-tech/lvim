@@ -90,7 +90,7 @@ modules["vim-ctrlspace/vim-ctrlspace"] = {cmd = "CtrlSpace"}
 modules["camspiers/snap"] = {}
 
 modules["windwp/nvim-spectre"] = {
-    cmd = "Spectre",
+    opt = true,
     config = editor_config.spectre,
     requires = {
         {"nvim-lua/popup.nvim", opt = true},
