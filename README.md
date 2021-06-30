@@ -694,19 +694,18 @@ vsconfig
 
 #### Keymaps
 
-| Key       | Action                                        | Description                   |
-| --------- | --------------------------------------------- | ----------------------------- |
-| `<S-F1>`  | `<Plug>VimspectorToggleBreakpoint`            | Toggle breakpoint             |
-| `<S-F2>`  | `<Plug>VimspectorContinue`                    | Start / continue              |
-| `<S-F3>`  | `<Plug>VimspectorStop`                        | Stop                          |
-| `<S-F4>`  | `<Plug>VimpectorRestart`                      | Restart                       |
-| `<S-F5>`  | `<Plug>VimspectorStepOver`                    | Step over                     |
-| `<S-F6>`  | `<Plug>VimspectorStepInto`                    | Step into                     |
-| `<S-F7>`  | `<Plug>VimspectorStepOut`                     | Step out                      |
-| `<S-F8>`  | `<Plug>VimspectorAddFunctionBreakpoint`       | Function breakpoint           |
-| `<S-F9>`  | `<Plug>VimspectorRunToCursor`                 | Run to cursor                 |
-| `<S-F10>` | `<Plug>VimspectorToggleConditionalBreakpoint` | Toggle conditional breakpoint |
-| `<S-F12>` | `:VimspectorReset<CR>`                        | Reset                         |
+| Key     | Action                                  | Description         |
+| ------- | --------------------------------------- | ------------------- |
+| `<A-1>` | `<Plug>VimspectorToggleBreakpoint`      | Toggle breakpoint   |
+| `<A-2>` | `<Plug>VimspectorContinue`              | Start / continue    |
+| `<A-3>` | `<Plug>VimspectorStop`                  | Stop                |
+| `<A-4>` | `<Plug>VimpectorRestart`                | Restart             |
+| `<A-5>` | `<Plug>VimspectorStepOver`              | Step over           |
+| `<A-6>` | `<Plug>VimspectorStepInto`              | Step into           |
+| `<A-7>` | `<Plug>VimspectorStepOut`               | Step out            |
+| `<A-8>` | `<Plug>VimspectorAddFunctionBreakpoint` | Function breakpoint |
+| `<A-9>` | `<Plug>VimspectorRunToCursor`           | Run to cursor       |
+| `<A-0>` | `:VimspectorReset<CR>`                  | Reset               |
 
 ### DAP (Debug Adapter Protocol)
 
@@ -745,18 +744,18 @@ vsconfig
 
 #### Keymaps
 
-| Key       | Action                         | Description       |
-| --------- | ------------------------------ | ----------------- |
-| `<A-F1>`  | `<Cmd>DapToggleBreakpoint<CR>` | Toggle breakpoint |
-| `<A-F2>`  | `<Cmd>DapStart<CR>`            | Start / continue  |
-| `<A-F3>`  | `<Cmd>DapStop<CR>`             | Stop              |
-| `<A-F4>`  | `<Cmd>DapRestart<CR>`          | Restart           |
-| `<A-F5>`  | `<Cmd>DapStepOver<CR>`         | Step over         |
-| `<A-F6>`  | `<Cmd>DapStepInto<CR>`         | Step into         |
-| `<A-F7>`  | `<Cmd>DapStepOut<CR>`          | Step out          |
-| `<A-F8>`  | `<Cmd>DapPause<CR>`            | Pause             |
-| `<A-F9>`  | `<Cmd>DapToggleRepl<CR>`       | Toggle repl       |
-| `<A-F10>` | `<Cmd>DapGetSession<CR>`       | Get session       |
+| Key     | Action                         | Description       |
+| ------- | ------------------------------ | ----------------- |
+| `<A-1>` | `<Cmd>DapToggleBreakpoint<CR>` | Toggle breakpoint |
+| `<A-2>` | `<Cmd>DapStart<CR>`            | Start / continue  |
+| `<A-3>` | `<Cmd>DapStop<CR>`             | Stop              |
+| `<A-4>` | `<Cmd>DapRestart<CR>`          | Restart           |
+| `<A-5>` | `<Cmd>DapStepOver<CR>`         | Step over         |
+| `<A-6>` | `<Cmd>DapStepInto<CR>`         | Step into         |
+| `<A-7>` | `<Cmd>DapStepOut<CR>`          | Step out          |
+| `<A-8>` | `<Cmd>DapPause<CR>`            | Pause             |
+| `<A-9>` | `<Cmd>DapToggleRepl<CR>`       | Toggle repl       |
+| `<A-0>` | `<Cmd>DapGetSession<CR>`       | Get session       |
 
 ### Replace in multiple files
 

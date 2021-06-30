@@ -5,23 +5,23 @@ Debug DAP
 | Key     | Action                     | Description         |
 | ------- | -------------------------- | ------------------- |
 | ------- | -------------------------- | ------------------- |
-| <A-F1>  | DapToggleBreakpoint        | Toggle breakpoint   |
+| <A-1>   | DapToggleBreakpoint        | Toggle breakpoint   |
 | ------- | -------------------------- | ------------------- |
-| <A-F2>  | DapStart                   | Start / continue    |
+| <A-2>   | DapStart                   | Start / continue    |
 | ------- | -------------------------- | ------------------- |
-| <A-F3>  | DapStop                    | Stop                |
+| <A-3>   | DapStop                    | Stop                |
 | ------- | -------------------------- | ------------------- |
-| <A-F4>  | DapRestart                 | Restart             |
+| <A-4>   | DapRestart                 | Restart             |
 | ------- | -------------------------- | ------------------- |
-| <A-F5>  | DapStepOver                | Step over           |
+| <A-5>   | DapStepOver                | Step over           |
 | ------- | -------------------------- | ------------------- |
-| <A-F6>  | DapStepInto                | Step into           |
+| <A-6>   | DapStepInto                | Step into           |
 | ------- | -------------------------- | ------------------- |
-| <A-F7>  | DapStepOut                 | Step out            |
+| <A-7>   | DapStepOut                 | Step out            |
 | ------- | -------------------------- | ------------------- |
-| <A-F8>  | DapPause                   | Pause               |
+| <A-8>   | DapPause                   | Pause               |
 | ------- | -------------------------- | ------------------- |
-| <A-F9>  | DapToggleRepl              | Toggle repl         |
+| <A-9>   | DapToggleRepl              | Toggle repl         |
 | ------- | -------------------------- | ------------------- |
-| <A-F10> | DapGetSession              | Get session         |
+| <A-0>   | DapGetSession              | Get session         |
 | ------- | -------------------------- | ------------------- |

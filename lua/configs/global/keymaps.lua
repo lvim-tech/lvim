@@ -24,6 +24,8 @@ keymaps["normal"] = {
     {"<S-u>", ":Vifm<CR>"}, -- Vifm explorer
     {"<S-l>", ":FloatermNew lazygit<CR>"}, -- Lazygit
     {"<S-m>", ":MarkdownPreviewToggle<CR>"}, -- Markdown preview toggle
+    {"<S-f>", ":SnapFiles<CR>"}, -- Search files with Snap
+    {"<S-t>", ":SnapGrep<CR>"}, -- Search word in files with Snap
     {"<A-j>", ":AnyJump<CR>"}, -- Any jump
     {"<A-v>", ":SymbolsOutline<CR>"}, -- Symbols outline
     {"<A-[>", ":foldopen<CR>"}, -- Fold open

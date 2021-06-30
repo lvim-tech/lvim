@@ -7,61 +7,58 @@ M.init_vimspector = function()
         vim.cmd [[packadd vimspector]]
     end
     local vimspector_keymaps = {
-        {"<S-F1>", "<Plug>VimspectorToggleBreakpoint"}, -- Toggle breakpoint
-        {"<S-F2>", "<Plug>VimspectorContinue"}, -- Start / continue
-        {"<S-F3>", "<Plug>VimspectorStop"}, -- Stop
-        {"<S-F4>", "<Plug>VimpectorRestart"}, -- Restart
-        {"<S-F5>", "<Plug>VimspectorStepOver"}, -- Step over
-        {"<S-F6>", "<Plug>VimspectorStepInto"}, -- Step into
-        {"<S-F7>", "<Plug>VimspectorStepOut"}, -- Step out
-        {"<S-F8>", "<Plug>VimspectorAddFunctionBreakpoint"}, -- Function breakpoint
-        {"<S-F9>", "<Plug>VimspectorRunToCursor"}, -- Run to cursor
-        {"<S-F10>", "<Plug>VimspectorToggleConditionalBreakpoint"}, -- Toggle conditional breakpoint
-        {"<S-F12>", ":VimspectorReset<CR>"} -- Reset
+        {"<A-1>", "<Plug>VimspectorToggleBreakpoint"}, -- Toggle breakpoint
+        {"<A-2>", "<Plug>VimspectorContinue"}, -- Start / continue
+        {"<A-3>", "<Plug>VimspectorStop"}, -- Stop
+        {"<A-4>", "<Plug>VimpectorRestart"}, -- Restart
+        {"<A-5>", "<Plug>VimspectorStepOver"}, -- Step over
+        {"<A-6>", "<Plug>VimspectorStepInto"}, -- Step into
+        {"<A-7>", "<Plug>VimspectorStepOut"}, -- Step out
+        {"<A-8>", "<Plug>VimspectorAddFunctionBreakpoint"}, -- Function breakpoint
+        {"<A-9>", "<Plug>VimspectorRunToCursor"}, -- Run to cursor
+        {"<A-0>", ":VimspectorReset<CR>"} -- Reset
     }
     funcs.keymaps("n", {noremap = false, silent = true}, vimspector_keymaps)
 end
 
 M.init_dap = function()
-    if not packer_plugins["nvim-dap"].loaded then
-        vim.cmd [[packadd nvim-dap]]
+    if not packer_plugins["nvim-dap"].loaded or
+        not packer_plugins['nvim-dap-ui'].loaded then
         vim.cmd [[packadd nvim-dap-ui]]
+        vim.cmd [[packadd nvim-dap]]
         local dap = require("dap")
-        require("dapui").setup(
-            {
-                icons = {expanded = "⯆", collapsed = "⯈"},
-                mappings = {
-                    expand = {"<CR>", "<2-LeftMouse>"},
-                    open = "o",
-                    remove = "d",
-                    edit = "e"
-                },
-                sidebar = {
-                    open_on_start = true,
-                    elements = {"scopes", "breakpoints", "stacks", "watches"},
-                    width = 40,
-                    position = "left"
-                },
-                tray = {
-                    open_on_start = true,
-                    elements = {"repl"},
-                    height = 10,
-                    position = "bottom"
-                },
-                floating = {max_height = nil, max_width = nil}
-            }
-        )
-        vim.fn.sign_define("DapBreakpoint", {text = "●", texthl = "", linehl = "", numhl = ""})
-        vim.fn.sign_define(
-            "DapStopped",
-            {
-                text = "●▶",
-                texthl = "",
-                linehl = "",
-                numhl = ""
-            }
-        )
-        vim.fn.sign_define("DapLogPoint", {text = "▶", texthl = "", linehl = "", numhl = ""})
+        require("dapui").setup({
+            icons = {expanded = "⯆", collapsed = "⯈"},
+            mappings = {
+                expand = {"<CR>", "<2-LeftMouse>"},
+                open = "o",
+                remove = "d",
+                edit = "e"
+            },
+            sidebar = {
+                open_on_start = true,
+                elements = {"scopes", "breakpoints", "stacks", "watches"},
+                width = 40,
+                position = "left"
+            },
+            tray = {
+                open_on_start = true,
+                elements = {"repl"},
+                height = 10,
+                position = "bottom"
+            },
+            floating = {max_height = nil, max_width = nil}
+        })
+        vim.fn.sign_define("DapBreakpoint",
+                           {text = "●", texthl = "", linehl = "", numhl = ""})
+        vim.fn.sign_define("DapStopped", {
+            text = "●▶",
+            texthl = "",
+            linehl = "",
+            numhl = ""
+        })
+        vim.fn.sign_define("DapLogPoint",
+                           {text = "▶", texthl = "", linehl = "", numhl = ""})
 
         -- dap.adapters.lang = {}
         -- dap.configurations.lang = {{}}
@@ -78,7 +75,9 @@ M.init_dap = function()
                 request = "launch",
                 name = "Launch",
                 program = function()
-                    return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. global.path_sep, "file")
+                    return vim.fn.input("Path to executable: ",
+                                        vim.fn.getcwd() .. global.path_sep,
+                                        "file")
                 end,
                 args = {},
                 cwd = "${workspaceFolder}",
@@ -97,8 +96,7 @@ M.init_dap = function()
             type = "executable",
             command = "node",
             args = {
-                os.getenv("HOME") .. "/sdk/Dart-Code/out/dist/debug.js",
-                "dart"
+                os.getenv("HOME") .. "/sdk/Dart-Code/out/dist/debug.js", "dart"
             }
         }
         dap.configurations.dart = {
@@ -109,7 +107,9 @@ M.init_dap = function()
                 dartSdkPath = os.getenv("HOME") .. "/sdk/dart-sdk",
                 flutterSdkPath = os.getenv("HOME") .. "/sdk/flutter",
                 program = function()
-                    return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. global.path_sep, "file")
+                    return vim.fn.input("Path to executable: ",
+                                        vim.fn.getcwd() .. global.path_sep,
+                                        "file")
                 end,
                 cwd = "${workspaceFolder}"
             }
@@ -118,24 +118,16 @@ M.init_dap = function()
         dap.adapters.go = function(callback)
             local handle
             local port = 38697
-            handle =
-                vim.loop.spawn(
-                "dlv",
-                {
-                    args = {"dap", "-l", "127.0.0.1:" .. port},
-                    detached = true
-                },
-                function(code)
-                    handle:close()
-                    print("Delve exited with exit code: " .. code)
-                end
-            )
-            vim.defer_fn(
-                function()
-                    callback({type = "server", host = "127.0.0.1", port = port})
-                end,
-                100
-            )
+            handle = vim.loop.spawn("dlv", {
+                args = {"dap", "-l", "127.0.0.1:" .. port},
+                detached = true
+            }, function(code)
+                handle:close()
+                print("Delve exited with exit code: " .. code)
+            end)
+            vim.defer_fn(function()
+                callback({type = "server", host = "127.0.0.1", port = port})
+            end, 100)
         end
         dap.configurations.go = {
             {
@@ -143,7 +135,9 @@ M.init_dap = function()
                 name = "Debug",
                 request = "launch",
                 program = function()
-                    return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. global.path_sep, "file")
+                    return vim.fn.input("Path to executable: ",
+                                        vim.fn.getcwd() .. global.path_sep,
+                                        "file")
                 end
             }
         }
@@ -152,7 +146,8 @@ M.init_dap = function()
             type = "executable",
             command = "node",
             args = {
-                os.getenv("HOME") .. "/sdk/vscode-node-debug2/out/src/nodeDebug.js"
+                os.getenv("HOME") ..
+                    "/sdk/vscode-node-debug2/out/src/nodeDebug.js"
             }
         }
         jsts_configuration = {
@@ -160,7 +155,8 @@ M.init_dap = function()
             request = "launch",
             name = "Launch",
             program = function()
-                return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. global.path_sep, "file")
+                return vim.fn.input("Path to executable: ",
+                                    vim.fn.getcwd() .. global.path_sep, "file")
             end,
             cwd = "${workspaceFolder}",
             outFiles = {"${workspaceRoot}/dist/js/*"},
@@ -186,7 +182,9 @@ M.init_dap = function()
                 request = "launch",
                 name = "Launch",
                 program = function()
-                    return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. global.path_sep, "file")
+                    return vim.fn.input("Path to executable: ",
+                                        vim.fn.getcwd() .. global.path_sep,
+                                        "file")
                 end,
                 pythonPath = function()
                     return global.home .. "/.pyenv/shims/python"
@@ -207,7 +205,9 @@ M.init_dap = function()
                 request = "launch",
                 name = "Launch",
                 program = function()
-                    return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. global.path_sep, "file")
+                    return vim.fn.input("Path to executable: ",
+                                        vim.fn.getcwd() .. global.path_sep,
+                                        "file")
                 end,
                 args = {},
                 cwd = "${workspaceFolder}",
@@ -225,16 +225,16 @@ M.init_dap = function()
         require("dap.ext.vscode").load_launchjs()
     end
     local dap_keymaps = {
-        {"<A-F1>", "<Cmd>DapToggleBreakpoint<CR>"}, -- Toggle breakpoint
-        {"<A-F2>", "<Cmd>DapStart<CR>"}, -- Start / continue
-        {"<A-F3>", "<Cmd>DapStop<CR>"}, -- Stop
-        {"<A-F4>", "<Cmd>DapRestart<CR>"}, -- Restart
-        {"<A-F5>", "<Cmd>DapStepOver<CR>"}, -- Step over
-        {"<A-F6>", "<Cmd>DapStepInto<CR>"}, -- Step into
-        {"<A-F7>", "<Cmd>DapStepOut<CR>"}, -- Step out
-        {"<A-F8>", "<Cmd>DapPause<CR>"}, -- Pause
-        {"<A-F9>", "<Cmd>DapToggleRepl<CR>"}, -- Toggle repl
-        {"<S-F10>", "<Cmd>DapGetSession<CR>"} -- Get session
+        {"<A-1>", "<Cmd>DapToggleBreakpoint<CR>"}, -- Toggle breakpoint
+        {"<A-2>", "<Cmd>DapStart<CR>"}, -- Start / continue
+        {"<A-3>", "<Cmd>DapStop<CR>"}, -- Stop
+        {"<A-4>", "<Cmd>DapRestart<CR>"}, -- Restart
+        {"<A-5>", "<Cmd>DapStepOver<CR>"}, -- Step over
+        {"<A-6>", "<Cmd>DapStepInto<CR>"}, -- Step into
+        {"<A-7>", "<Cmd>DapStepOut<CR>"}, -- Step out
+        {"<A-8>", "<Cmd>DapPause<CR>"}, -- Pause
+        {"<A-9>", "<Cmd>DapToggleRepl<CR>"}, -- Toggle repl
+        {"<A-0>", "<Cmd>DapGetSession<CR>"} -- Get session
     }
     funcs.keymaps("n", {noremap = false, silent = true}, dap_keymaps)
 end
