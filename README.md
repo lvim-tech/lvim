@@ -367,18 +367,6 @@ export PATH="$PATH:$HOME/sdk/dart-sdk/bin"
 :LspInstall go
 ```
 
-Export path to `go` in your shell (`.bashrc`, `.zshrc` etc)
-
-```
-export GOROOT=/usr/lib64/go/1.16
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOROOT/bin
-export PATH=$PATH:$GOPATH/bin
-GO111MODULE=auto
-```
-
-> **IMPORTANT:**  In your operating system, the path and version may be different
-
 ### Graphql
 
 ```
