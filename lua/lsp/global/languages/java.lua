@@ -1,19 +1,7 @@
 local global = require("core.global")
 
-if vim.fn.has("mac") or vim.fn.has("unix") == 1 then
-    JAVA_LS_EXECUTABLE = "launch_jdtls"
-else
-    print("Unsupported system")
-end
-
-local bundles = {
-    vim.fn.glob(
-        global.home .. "/sdk/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar"
-    )
-}
-
 require "lspconfig".jdtls.setup {
-    cmd = {JAVA_LS_EXECUTABLE},
+    cmd = {global.lsp_path .. "lspinstall/java/jdtls.sh"},
     on_attach = function(client)
         require("jdtls").setup_dap()
         require "lsp.global".documentHighlight(client)

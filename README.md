@@ -393,37 +393,9 @@ GO111MODULE=auto
 
 ### Java
 
-1. Clone repository (eclipse.jdt.ls.git)
-
 ```
-git clone https://github.com/eclipse/eclipse.jdt.ls.git
+:LspInstall java
 ```
-
-2. Install
-
-```
-cd eclipse.jdt.ls
-./mvnw clean install -DskipTests
-```
-
-3. Move folder `eclipse.jdt.ls` to `~/sdk/eclipse`
-
-\-\-\- OR \-\-\-
-
-Install `eclipse.jdt.ls` with script from [bin](https://github.com/lvim-tech/lvim/tree/main/bin) folder
-
-```
-install_jdtls
-```
-
-Export path to `Java` in your shell (`.bashrc`, `.zshrc` etc)
-
-```
-export JAVA_HOME=/usr/lib64/jvm/java-16-openjdk
-export PATH=$JAVA_HOME/bin:$PATH
-```
-
-> **IMPORTANT:**  In your operating system, the path and version may be different
 
 ### JavaScript
 
