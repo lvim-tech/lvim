@@ -115,19 +115,26 @@ M.init_dap = function()
             }
         }
 
-        dap.adapters.go = function(callback)
+        dap.adapters.go = function(callback, config)
             local handle
+            local pid_or_err
             local port = 38697
-            handle = vim.loop.spawn("dlv", {
-                args = {"dap", "-l", "127.0.0.1:" .. port},
-                detached = true
-            }, function(code)
-                handle:close()
-                print("Delve exited with exit code: " .. code)
-            end)
-            vim.defer_fn(function()
+            handle, pid_or_err = vim.loop.spawn(
+                "dlv",
+                {
+                    args = {"dap", "-l", "127.0.0.1:" .. port},
+                    detached = true
+                },
+                function(code)
+                    handle:close()
+                    print("Delve exited with exit code: " .. code)
+                end
+            )
+            vim.defer_fn(
+            function()
                 callback({type = "server", host = "127.0.0.1", port = port})
-            end, 100)
+            end,
+            100)
         end
         dap.configurations.go = {
             {
@@ -138,8 +145,19 @@ M.init_dap = function()
                     return vim.fn.input("Path to executable: ",
                                         vim.fn.getcwd() .. global.path_sep,
                                         "file")
-                end
-            }
+                end,
+            },
+            {
+                type = "go",
+                name = "Debug test", -- configuration for debugging test files
+                request = "launch",
+                mode = "test",
+                program = function()
+                    return vim.fn.input("Path to executable: ",
+                                        vim.fn.getcwd() .. global.path_sep,
+                                        "file")
+                end,
+            },
         }
 
         jsts_adapter = {

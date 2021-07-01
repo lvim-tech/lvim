@@ -67,7 +67,7 @@ function choice_language {
     echo "Available languages:"
     echo ""
     PS3='Please enter your choice: '
-    options=("cpp" "dart" "javascript / typescript" "python" "rust" "Quit")
+    options=("cpp" "dart" "go" "javascript / typescript" "python" "rust" "Quit")
     select opt in "${options[@]}"
     do
         case $opt in
@@ -139,6 +139,40 @@ function choice_language {
                 edit
                 ;;
 ## DART
+## GO
+            "go")
+                FILE='.vimspector.json'
+                if [ -f $FILE ]; then
+                    echo ""
+                    echo "File exist. Overwrite?"
+                    echo ""
+                    PS3='Please enter your choice: '
+                        options=("Yes" "No" "Quit")
+                        select opt in "${options[@]}"
+                        do
+                            case $opt in
+                                "Yes")
+                                    cp ~/.config/nvim/bin/debugers/vimspector/go/$FILE ./
+                                    break
+                                    ;;
+                                "No")
+                                    break
+                                    ;;
+                                "Quit")
+                                    exit 0
+                                    ;;
+                                *) echo "invalid option $REPLY";;
+                            esac
+                        done
+                else
+                    cp ~/.config/nvim/bin/debugers/vimspector/go/$FILE ./
+                fi
+                echo "File $FILE created in: '$PROJECT_DIRECTORY'"
+                echo ""
+                echo "== 2: CHOICE LANGUAGE =============================="
+                edit
+                ;;
+## GO
 ## JAVASCRIPT / TYPESCRIPT
             "javascript / typescript")
                 FILE='.vimspector.json'

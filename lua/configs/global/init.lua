@@ -23,7 +23,7 @@ configs["events"] = function()
             }, {"BufNewFile,BufRead", "*.ex", "set filetype=elixir"},
             {"BufNewFile,BufRead", "*.exs", "set filetype=elixir"},
             {"BufNewFile,BufRead", "*.graphql", "set filetype=graphql"},
-            {"BufWinEnter", "NvimTree", "set colorcolumn=0 nocursorcolumn"}
+            {"BufWinEnter", "NvimTree", "set colorcolumn=0 nocursorcolumn"},
             -- {"BufWritePre", "*", ":Neoformat"}
         },
         yank = {
@@ -39,6 +39,7 @@ configs["events"] = function()
                 "set showtabline=0 | autocmd WinLeave <buffer> set showtabline=2 nowrap"
             }, {"FileType", "Trouble", "set colorcolumn=0 nocursorcolumn"},
             {"FileType", "Outline", "set colorcolumn=0 nocursorcolumn"},
+            {"FileType", "VimspectorPrompt", "set colorcolumn=0 nocursorcolumn"},
             {"FileType", "git", "set colorcolumn=0 nocursorcolumn"},
             {"FileType", "packer", "set colorcolumn=0 nocursorcolumn"},
             {"FileType", "dapui_scopes", "set colorcolumn=0 nocursorcolumn"},
