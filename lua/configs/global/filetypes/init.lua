@@ -8,7 +8,8 @@ M.init = function()
         ["html"] = {"html"},
         ["json"] = {"json"},
         ["ruby"] = {"ruby"},
-        ["yaml"] = {"yaml"}
+        ["yaml"] = {"yaml"},
+        ["js-ts"] = {"javascript", "typescript", "javascriptreact", "typescriptreact"}
     }
     function search_extensions(filetype)
         for k, v in pairs(filetypes) do
