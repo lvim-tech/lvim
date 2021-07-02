@@ -12,8 +12,8 @@
 - Add or remove settings, rewrite all settings
 - Dynamic LSP activation
 - Dynamic debugging activation - Vimspector or Dap
-- By default - 56 plugins
-- Loading time - 051.362
+- By default - 57 plugins
+- Loading time - 058.681
 
 ## HELP FOR LVIM
 
@@ -188,6 +188,8 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 [nvim-jdtls](https://github.com/mfussenegger/nvim-jdtls)
 
 [nvim-lsp-ts-utils](https://github.com/jose-elias-alvarez/nvim-lsp-ts-utils)
+
+[lsp_signature.nvim](https://github.com/ray-x/lsp_signature.nvim)
 
 [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) (requires [playground](https://github.com/nvim-treesitter/playground))
 
@@ -717,7 +719,7 @@ vsconfig
 | `<A-9>` | `<Cmd>DapToggleRepl<CR>`       | Toggle repl       |
 | `<A-0>` | `<Cmd>DapGetSession<CR>`       | Get session       |
 
-### Replace in multiple files
+## Replace in multiple files
 
 How use:
 
@@ -733,6 +735,8 @@ Use keymap `<A-s>`
 
 > IMPORTANT: LVIM use Neoformat by default. For more info use this [link](https://github.com/sbdchd/neoformat)
 
+> IMPORTANT: If you have installed formatters then Neoformat not need of settings
+
 How use:
 
 ```
@@ -742,6 +746,31 @@ How use:
 \-\-\- OR \-\-\-
 
 Use keymap `<A-,>`
+
+## Autoformat
+
+Just add custom function to `lua/configs/custom/init.lua`
+
+```lua
+local configs = {}
+local funcs = require "core.funcs"
+
+configs["custom_events"] = function()
+    funcs.augroups({
+        custom_bufs = {
+            {"BufWritePre", "*.go", ":Neoformat"},
+            {"BufWritePre", "*.py", ":Neoformat"},
+            {"BufWritePre", "*.rs", ":Neoformat"},
+            {"BufWritePre", "*.dart", ":Neoformat"},
+            {"BufWritePre", "*.cpp", ":Neoformat"},
+            {"BufWritePre", "*.js", ":Neoformat"},
+            {"BufWritePre", "*.ts", ":Neoformat"}
+        }
+    })
+end
+
+return configs
+```
 
 ## Sudo write
 
