@@ -72,19 +72,6 @@ function config.whichkey()
             ["w"] = {"<Cmd>SetWindowPath<CR>", "set window path"}
         },
         ["d"] = {
-            name = "+debug",
-            ["b"] = {"<Cmd>DapToggleBreakpoint<CR>", "toggle breakpoint"},
-            ["s"] = {"<Cmd>DapStart<CR>", "start / continue"},
-            ["f"] = {"<Cmd>DapStop<CR>", "stop"},
-            ["r"] = {"<Cmd>DapRestart<CR>", "restart"},
-            ["p"] = {"<Cmd>DapPause<CR>", "pause"},
-            ["i"] = {"<Cmd>DapStepInto<CR>", "step into"},
-            ["o"] = {"<Cmd>DapStepOut<CR>", "step out"},
-            ["O"] = {"<Cmd>DapStepOver<CR>", "step over"},
-            ["R"] = {"<Cmd>DapToggleRepl<CR>", "togle repl"},
-            ["S"] = {"<Cmd>DapGetSession<CR>", "get session"}
-        },
-        ["D"] = {
             name = "+database",
             ["u"] = {"<Cmd>DBUIToggle<CR>", "db ui toggle"},
             ["f"] = {"<Cmd>DBUIFindBuffer<CR>", "db find buffer"},
