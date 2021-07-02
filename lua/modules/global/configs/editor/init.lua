@@ -28,105 +28,92 @@ local config = {}
 -- end
 
 function config.spectre()
-    if not packer_plugins["plenary.nvim"].loaded or not packer_plugins["popup.nvim"].loaded then
+    if not packer_plugins["plenary.nvim"].loaded or
+        not packer_plugins["popup.nvim"].loaded then
         vim.cmd [[packadd plenary.nvim]]
         vim.cmd [[packadd popup.nvim]]
     end
-    require("spectre").setup(
-        {
-            color_devicons = true,
-            line_sep_start = "-----------------------------------------",
-            result_padding = "|  ",
-            line_sep = "-----------------------------------------",
-            highlight = {
-                ui = "String",
-                search = "DiffChange",
-                replace = "DiffDelete"
-            },
-            mapping = {
-                ["delete_line"] = nil,
-                ["enter_file"] = nil,
-                ["send_to_qf"] = nil,
-                ["replace_cmd"] = nil,
-                ["show_option_menu"] = nil,
-                ["run_replace"] = nil,
-                ["change_view_mode"] = nil,
-                ["toggle_ignore_case"] = nil,
-                ["toggle_ignore_hidden"] = nil
-            },
-            find_engine = {
-                ["rg"] = {
-                    cmd = "rg",
-                    args = {
-                        "--color=never",
-                        "--no-heading",
-                        "--with-filename",
-                        "--line-number",
-                        "--column"
-                    },
-                    options = {
-                        ["ignore-case"] = {
-                            value = "--ignore-case",
-                            icon = "[I]",
-                            desc = "ignore case"
-                        },
-                        ["hidden"] = {
-                            value = "--hidden",
-                            desc = "hidden file",
-                            icon = "[H]"
-                        }
-                    }
+    require("spectre").setup({
+        color_devicons = true,
+        line_sep_start = "-----------------------------------------",
+        result_padding = "|  ",
+        line_sep = "-----------------------------------------",
+        highlight = {
+            ui = "String",
+            search = "DiffChange",
+            replace = "DiffDelete"
+        },
+        mapping = {
+            ["delete_line"] = nil,
+            ["enter_file"] = nil,
+            ["send_to_qf"] = nil,
+            ["replace_cmd"] = nil,
+            ["show_option_menu"] = nil,
+            ["run_replace"] = nil,
+            ["change_view_mode"] = nil,
+            ["toggle_ignore_case"] = nil,
+            ["toggle_ignore_hidden"] = nil
+        },
+        find_engine = {
+            ["rg"] = {
+                cmd = "rg",
+                args = {
+                    "--color=never", "--no-heading", "--with-filename",
+                    "--line-number", "--column"
                 },
-                ["ag"] = {
-                    cmd = "ag",
-                    args = {"--vimgrep", "-s"},
-                    options = {
-                        ["ignore-case"] = {
-                            value = "-i",
-                            icon = "[I]",
-                            desc = "ignore case"
-                        },
-                        ["hidden"] = {
-                            value = "--hidden",
-                            desc = "hidden file",
-                            icon = "[H]"
-                        }
-                    }
-                }
-            },
-            replace_engine = {
-                ["sed"] = {cmd = "sed", args = nil},
                 options = {
                     ["ignore-case"] = {
                         value = "--ignore-case",
                         icon = "[I]",
                         desc = "ignore case"
+                    },
+                    ["hidden"] = {
+                        value = "--hidden",
+                        desc = "hidden file",
+                        icon = "[H]"
                     }
                 }
             },
-            default = {
-                find = {
-                    cmd = "rg",
-                    options = {"ignore-case"}
-                },
-                replace = {
-                    cmd = "sed"
+            ["ag"] = {
+                cmd = "ag",
+                args = {"--vimgrep", "-s"},
+                options = {
+                    ["ignore-case"] = {
+                        value = "-i",
+                        icon = "[I]",
+                        desc = "ignore case"
+                    },
+                    ["hidden"] = {
+                        value = "--hidden",
+                        desc = "hidden file",
+                        icon = "[H]"
+                    }
                 }
-            },
-            replace_vim_cmd = "cfdo",
-            is_open_target_win = true,
-            is_insert_mode = false
-        }
-    )
+            }
+        },
+        replace_engine = {
+            ["sed"] = {cmd = "sed", args = nil},
+            options = {
+                ["ignore-case"] = {
+                    value = "--ignore-case",
+                    icon = "[I]",
+                    desc = "ignore case"
+                }
+            }
+        },
+        default = {
+            find = {cmd = "rg", options = {"ignore-case"}},
+            replace = {cmd = "sed"}
+        },
+        replace_vim_cmd = "cfdo",
+        is_open_target_win = true,
+        is_insert_mode = false
+    })
 end
 
-function config.suda()
-    vim.g.suda_smart_edit = 1
-end
+function config.suda() vim.g.suda_smart_edit = 1 end
 
-function config.comment()
-    require("nvim_comment").setup()
-end
+function config.comment() require("nvim_comment").setup() end
 
 function config.autopairs()
     if not packer_plugins["nvim-treesitter"].loaded then
@@ -137,9 +124,7 @@ function config.autopairs()
 
     local function imap(lhs, rhs, opts)
         local options = {noremap = false}
-        if opts then
-            options = vim.tbl_extend("force", options, opts)
-        end
+        if opts then options = vim.tbl_extend("force", options, opts) end
         vim.api.nvim_set_keymap("i", lhs, rhs, options)
     end
 
@@ -152,12 +137,9 @@ function config.autopairs()
                 vim.fn["compe#confirm"]()
                 return npairs.esc("")
             else
-                vim.defer_fn(
-                    function()
-                        vim.fn["compe#confirm"]("<cr>")
-                    end,
-                    20
-                )
+                vim.defer_fn(function()
+                    vim.fn["compe#confirm"]("<cr>")
+                end, 20)
                 return npairs.esc("<c-n>")
             end
         else
@@ -185,7 +167,8 @@ function config.autopairs()
             return npairs.esc("<C-n>")
         else
             if vim.fn["vsnip#available"](1) ~= 0 then
-                vim.fn.feedkeys(string.format("%c%c%c(vsnip-expand-or-jump)", 0x80, 253, 83))
+                vim.fn.feedkeys(string.format("%c%c%c(vsnip-expand-or-jump)",
+                                              0x80, 253, 83))
                 return npairs.esc("")
             else
                 return npairs.esc("<Tab>")
@@ -198,7 +181,8 @@ function config.autopairs()
             return npairs.esc("<C-p>")
         else
             if vim.fn["vsnip#jumpable"](-1) ~= 0 then
-                vim.fn.feedkeys(string.format("%c%c%c(vsnip-jump-prev)", 0x80, 253, 83))
+                vim.fn.feedkeys(string.format("%c%c%c(vsnip-jump-prev)", 0x80,
+                                              253, 83))
                 return npairs.esc("")
             else
                 return npairs.esc("<C-h>")
@@ -206,7 +190,8 @@ function config.autopairs()
         end
     end
 
-    vim.api.nvim_set_keymap("i", "<CR>", "v:lua.MUtils.completion_confirm()", {expr = true, noremap = true})
+    vim.api.nvim_set_keymap("i", "<CR>", "v:lua.MUtils.completion_confirm()",
+                            {expr = true, noremap = true})
     imap("<Tab>", "v:lua.MUtils.tab()", {expr = true, noremap = true})
     imap("<S-Tab>", "v:lua.MUtils.s_tab()", {expr = true, noremap = true})
 end
@@ -216,9 +201,7 @@ function config.bookmarks()
     vim.g.bookmark_sign = ""
 end
 
-function config.doge()
-    vim.g.doge_mapping = "<Leader>*"
-end
+function config.doge() vim.g.doge_mapping = "<Leader>*" end
 
 function config.gitsigns()
     if not packer_plugins["plenary.nvim"].loaded then
@@ -265,10 +248,7 @@ function config.gitsigns()
             noremap = true,
             buffer = true
         },
-        watch_index = {
-            interval = 1000,
-            follow_files = true
-        },
+        watch_index = {interval = 1000, follow_files = true},
         current_line_blame = false,
         current_line_blame_delay = 1000,
         current_line_blame_position = 'eol',
@@ -277,13 +257,13 @@ function config.gitsigns()
         status_formatter = nil, -- Use default
         word_diff = false,
         use_decoration_api = true,
-        use_internal_diff = true,
+        use_internal_diff = true
     }
 end
 
 function config.diffview()
-    local cb = require "diffview.config".diffview_callback
-    require "diffview".setup {
+    local cb = require"diffview.config".diffview_callback
+    require"diffview".setup {
         diff_binaries = false,
         file_panel = {width = 35, use_icons = true},
         key_bindings = {
@@ -315,9 +295,7 @@ function config.diffview()
     }
 end
 
-function config.blame()
-    vim.g.gitblame_enabled = 0
-end
+function config.blame() vim.g.gitblame_enabled = 0 end
 
 function config.neogit()
     if not packer_plugins["plenary.nvim"].loaded then
@@ -339,8 +317,6 @@ function config.neogit()
     }
 end
 
-function foldsigns()
-    require("foldsigns").setup()
-end
+function foldsigns() require("foldsigns").setup() end
 
 return config

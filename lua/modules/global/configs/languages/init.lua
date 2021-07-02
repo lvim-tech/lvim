@@ -2,12 +2,12 @@ local config = {}
 
 function config.lsp()
     local servers = {
-        'bash', 'cpp', 'css', 'dart', 'docker', 'elixir', 'go', 'graphql', 'html', 'java', 'js-ts', 'json', 'latex', 'lua', 'omnisharp', 'php', 'python', 'ruby', 'rust', 'svelte', 'vim', 'yaml'
+        'bash', 'cpp', 'css', 'dart', 'docker', 'elixir', 'go', 'graphql',
+        'html', 'java', 'js-ts', 'json', 'latex', 'lua', 'omnisharp', 'php',
+        'python', 'ruby', 'rust', 'svelte', 'vim', 'yaml'
     }
-    for _,server in ipairs(servers) do
-        local settins = {
-            lsp_config = "lsp.global.languages." .. server
-        }
+    for _, server in ipairs(servers) do
+        local settins = {lsp_config = "lsp.global.languages." .. server}
         require(settins.lsp_config)
     end
 end
@@ -16,7 +16,7 @@ function config.treesitter()
     if not packer_plugins["playground"].loaded then
         vim.cmd [[packadd playground]]
     end
-    require "nvim-treesitter.configs".setup {
+    require"nvim-treesitter.configs".setup {
         ensure_installed = "all",
         ignore_install = {"haskell"},
         highlight = {enable = true},
@@ -76,8 +76,6 @@ function config.symbols()
     }
 end
 
-function config.dependency()
-    require "dependency_assist".setup {}
-end
+function config.dependency() require"dependency_assist".setup {} end
 
 return config

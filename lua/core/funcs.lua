@@ -39,9 +39,7 @@ M.merge = function(a, b)
 end
 
 M.options_global = function(options)
-    for name, value in pairs(options) do
-        vim.o[name] = value
-    end
+    for name, value in pairs(options) do vim.o[name] = value end
 end
 
 M.options_set = function(options)
@@ -64,11 +62,7 @@ M.configs = function()
     local global_configs = require "configs.global"
     local custom_configs = require "configs.custom"
     local configs = M.merge(global_configs, custom_configs)
-    for _, func in pairs(configs) do
-        if func ~= false then
-            func()
-        end
-    end
+    for _, func in pairs(configs) do if func ~= false then func() end end
 end
 
 M.file_exists = function(name)

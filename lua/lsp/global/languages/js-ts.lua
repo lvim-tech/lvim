@@ -1,15 +1,20 @@
 local global = require("core.global")
+local lsp_settings = require("lsp.global")
 
-require "lspconfig".tsserver.setup {
+require"lspconfig".tsserver.setup {
     cmd = {
-        global.lsp_path .. "lspinstall/typescript/node_modules/.bin/typescript-language-server",
+        global.lsp_path ..
+            "lspinstall/typescript/node_modules/.bin/typescript-language-server",
         "--stdio"
     },
     on_attach = function(client)
-        require "lsp.global".documentHighlight(client)
-        local ts_utils = require("nvim-lsp-ts-utils")
+        if not packer_plugins["lsp_signature.nvim"].loaded then
+            vim.cmd [[packadd lsp_signature.nvim]]
+        end
+        require"lsp_signature".on_attach(lsp_settings.signature_cfg)
+        lsp_settings.documentHighlight(client)
 
-        -- defaults
+        local ts_utils = require("nvim-lsp-ts-utils")
         ts_utils.setup {
             debug = false,
             disable_commands = false,
@@ -19,11 +24,7 @@ require "lspconfig".tsserver.setup {
             eslint_enable_code_actions = true,
             eslint_bin = "eslint",
             eslint_args = {
-                "-f",
-                "json",
-                "--stdin",
-                "--stdin-filename",
-                "$FILENAME"
+                "-f", "json", "--stdin", "--stdin-filename", "$FILENAME"
             },
             eslint_enable_disable_comments = true,
             -- experimental settings!
@@ -49,14 +50,8 @@ require "lspconfig".tsserver.setup {
     end,
     root_dir = require("lspconfig/util").root_pattern("."),
     handlers = {
-        ["textDocument/publishDiagnostics"] = vim.lsp.with(
-            vim.lsp.diagnostic.on_publish_diagnostics,
-            {
-                virtual_text = false,
-                signs = true,
-                underline = false,
-                update_in_insert = true
-            }
-        )
+        ["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic
+                                                               .on_publish_diagnostics,
+                                                           lsp_settings.diagnostics_cfg)
     }
 }

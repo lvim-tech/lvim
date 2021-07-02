@@ -1,18 +1,15 @@
 local config = {}
 
 function config.colorize()
-    require "colorizer".setup(
-        {"*"},
-        {
-            RGB = true,
-            RRGGBB = true,
-            RRGGBBAA = true,
-            rgb_fn = true,
-            hsl_fn = true,
-            css = true,
-            css_fn = true
-        }
-    )
+    require"colorizer".setup({"*"}, {
+        RGB = true,
+        RRGGBB = true,
+        RRGGBBAA = true,
+        rgb_fn = true,
+        hsl_fn = true,
+        css = true,
+        css_fn = true
+    })
 end
 
 function config.vim_dadbod_ui()
@@ -23,10 +20,14 @@ function config.vim_dadbod_ui()
     vim.g.db_ui_win_position = "left"
     vim.g.db_ui_use_nerd_fonts = 1
     vim.g.db_ui_winwidth = 35
-    vim.api.nvim_set_keymap("n", "<leader>Du", ":DBUIToggle<CR>", {noremap = true, silent = true})
-    vim.api.nvim_set_keymap("n", "<leader>Df", ":DBUIFindBuffer<CR>", {noremap = true, silent = true})
-    vim.api.nvim_set_keymap("n", "<leader>Dr", ":DBUIRenameBuffer<CR>", {noremap = true, silent = true})
-    vim.api.nvim_set_keymap("n", "<leader>Dl", ":DBUILastQueryInfo<CR>", {noremap = true, silent = true})
+    vim.api.nvim_set_keymap("n", "<leader>Du", ":DBUIToggle<CR>",
+                            {noremap = true, silent = true})
+    vim.api.nvim_set_keymap("n", "<leader>Df", ":DBUIFindBuffer<CR>",
+                            {noremap = true, silent = true})
+    vim.api.nvim_set_keymap("n", "<leader>Dr", ":DBUIRenameBuffer<CR>",
+                            {noremap = true, silent = true})
+    vim.api.nvim_set_keymap("n", "<leader>Dl", ":DBUILastQueryInfo<CR>",
+                            {noremap = true, silent = true})
     vim.g.db_ui_auto_execute_table_helpers = true
 end
 
@@ -47,8 +48,7 @@ function config.whichkey()
     vim.g.which_key_max_size = 0
     vim.cmd("autocmd! FileType which_key")
     vim.cmd(
-        "autocmd FileType which_key set laststatus=0 noshowmode noruler | autocmd BufLeave <buffer> set laststatus=2 noshowmode ruler"
-    )
+        "autocmd FileType which_key set laststatus=0 noshowmode noruler | autocmd BufLeave <buffer> set laststatus=2 noshowmode ruler")
     local keymap = {
         [";"] = {"<Cmd>Dashboard<CR>", "home screen"},
         ["*"] = {"<Cmd>DogeGenerate<CR>", "documentation generator"},
@@ -112,8 +112,7 @@ function config.whichkey()
                     "remove workspace folder"
                 },
                 ["l"] = {
-                    "<Cmd>LspListWorkspaceFolders<CR>",
-                    "list workspace folder"
+                    "<Cmd>LspListWorkspaceFolders<CR>", "list workspace folder"
                 }
             },
             ["s"] = {
@@ -211,8 +210,7 @@ function config.whichkey()
                 "input replace vim command"
             },
             ["o"] = {
-                '<Cmd>lua require("spectre").show_options()<CR>',
-                "show option"
+                '<Cmd>lua require("spectre").show_options()<CR>', "show option"
             },
             ["R"] = {
                 '<Cmd>lua require("spectre.actions").run_replace()<CR>',
@@ -241,8 +239,6 @@ function config.whichkey()
     wk.register_keymap("leader", keymap, {mode = "n"})
 end
 
-function config.rooter()
-    vim.g.rooter_silent_chdir = 1
-end
+function config.rooter() vim.g.rooter_silent_chdir = 1 end
 
 return config

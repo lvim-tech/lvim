@@ -138,11 +138,8 @@ modules["tpope/vim-fugitive"] = {}
 
 modules["sindrets/diffview.nvim"] = {
     cmd = {
-        "DiffviewOpen",
-        "DiffviewClose",
-        "DiffviewToggleFiles",
-        "DiffviewFocusFiles",
-        "DiffviewRefresh"
+        "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles",
+        "DiffviewFocusFiles", "DiffviewRefresh"
     },
     config = editor_config.diffview
 }
@@ -152,9 +149,7 @@ modules["f-person/git-blame.nvim"] = {config = editor_config.blame}
 modules["TimUntersberger/neogit"] = {
     cmd = "Neogit",
     config = editor_config.neogit,
-    requires = {
-        {"nvim-lua/plenary.nvim", opt = true}
-    }
+    requires = {{"nvim-lua/plenary.nvim", opt = true}}
 }
 
 modules["kenn7/vim-arsync"] = {}
@@ -165,15 +160,15 @@ modules["kenn7/vim-arsync"] = {}
 
 local languages_config = require("modules.global.configs.languages")
 
-modules["neovim/nvim-lspconfig"] = {
-    config = languages_config.lsp
-}
+modules["neovim/nvim-lspconfig"] = {config = languages_config.lsp}
 
 modules["kabouzeid/nvim-lspinstall"] = {}
 
 modules["mfussenegger/nvim-jdtls"] = {event = "VimEnter"}
 
 modules["jose-elias-alvarez/nvim-lsp-ts-utils"] = {event = "VimEnter"}
+
+modules["ray-x/lsp_signature.nvim"] = {opt = true}
 
 modules["nvim-treesitter/nvim-treesitter"] = {
     event = "BufRead",
@@ -244,10 +239,7 @@ modules["norcalli/nvim-colorizer.lua"] = {
 
 modules["kristijanhusak/vim-dadbod-ui"] = {
     cmd = {
-        "DBUIToggle",
-        "DBUIAddConnection",
-        "DBUI",
-        "DBUIFindBuffer",
+        "DBUIToggle", "DBUIAddConnection", "DBUI", "DBUIFindBuffer",
         "DBUIRenameBuffer"
     },
     config = tools_config.vim_dadbod_ui,

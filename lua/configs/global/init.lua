@@ -23,7 +23,7 @@ configs["events"] = function()
             }, {"BufNewFile,BufRead", "*.ex", "set filetype=elixir"},
             {"BufNewFile,BufRead", "*.exs", "set filetype=elixir"},
             {"BufNewFile,BufRead", "*.graphql", "set filetype=graphql"},
-            {"BufWinEnter", "NvimTree", "set colorcolumn=0 nocursorcolumn"},
+            {"BufWinEnter", "NvimTree", "set colorcolumn=0 nocursorcolumn"}
             -- {"BufWritePre", "*", ":Neoformat"}
         },
         yank = {

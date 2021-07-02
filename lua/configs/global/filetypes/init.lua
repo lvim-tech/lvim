@@ -2,6 +2,7 @@ local M = {}
 
 M.init = function()
     local filetypes = {
+        ["cpp"] = {"cpp"},
         ["css"] = {"css", "less", "scss"},
         ["dart"] = {"dart"},
         ["html"] = {"html"},

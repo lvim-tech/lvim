@@ -119,22 +119,16 @@ M.init_dap = function()
             local handle
             local pid_or_err
             local port = 38697
-            handle, pid_or_err = vim.loop.spawn(
-                "dlv",
-                {
-                    args = {"dap", "-l", "127.0.0.1:" .. port},
-                    detached = true
-                },
-                function(code)
-                    handle:close()
-                    print("Delve exited with exit code: " .. code)
-                end
-            )
-            vim.defer_fn(
-            function()
+            handle, pid_or_err = vim.loop.spawn("dlv", {
+                args = {"dap", "-l", "127.0.0.1:" .. port},
+                detached = true
+            }, function(code)
+                handle:close()
+                print("Delve exited with exit code: " .. code)
+            end)
+            vim.defer_fn(function()
                 callback({type = "server", host = "127.0.0.1", port = port})
-            end,
-            100)
+            end, 100)
         end
         dap.configurations.go = {
             {
@@ -145,9 +139,8 @@ M.init_dap = function()
                     return vim.fn.input("Path to executable: ",
                                         vim.fn.getcwd() .. global.path_sep,
                                         "file")
-                end,
-            },
-            {
+                end
+            }, {
                 type = "go",
                 name = "Debug test", -- configuration for debugging test files
                 request = "launch",
@@ -156,11 +149,31 @@ M.init_dap = function()
                     return vim.fn.input("Path to executable: ",
                                         vim.fn.getcwd() .. global.path_sep,
                                         "file")
-                end,
-            },
+                end
+            }
         }
 
-        jsts_adapter = {
+        dap.adapters.node2 = {
+            type = 'executable',
+            command = 'node',
+            args = {
+                os.getenv('HOME') ..
+                    '/dev/microsoft/vscode-node-debug2/out/src/nodeDebug.js'
+            }
+        }
+        dap.configurations.javascript = {
+            {
+                type = 'node2',
+                request = 'launch',
+                program = '${file}',
+                cwd = vim.fn.getcwd(),
+                sourceMaps = true,
+                protocol = 'inspector',
+                console = 'integratedTerminal'
+            }
+        }
+
+        dap.adapters.typescript = {
             type = "executable",
             command = "node",
             args = {
@@ -168,26 +181,29 @@ M.init_dap = function()
                     "/sdk/vscode-node-debug2/out/src/nodeDebug.js"
             }
         }
-        jsts_configuration = {
-            type = "jsts",
-            request = "launch",
-            name = "Launch",
-            program = function()
-                return vim.fn.input("Path to executable: ",
-                                    vim.fn.getcwd() .. global.path_sep, "file")
-            end,
-            cwd = "${workspaceFolder}",
-            outFiles = {"${workspaceRoot}/dist/js/*"},
-            sourceMaps = true,
-            protocol = "inspector",
-            console = "integratedTerminal"
+        dap.configurations.typescript = {
+            {
+                type = "typescript",
+                request = "launch",
+                name = "Launch",
+                program = function()
+                    return vim.fn.input("Path to executable: ",
+                                        vim.fn.getcwd() .. global.path_sep,
+                                        "file")
+                end,
+                cwd = "${workspaceFolder}",
+                outFiles = {"${workspaceRoot}/dist/js/*"},
+                sourceMaps = true,
+                protocol = "inspector",
+                console = "integratedTerminal"
+            }
         }
 
-        dap.adapters.javascript = jsts_adapter
-        dap.configurations.javascript = {jsts_configuration}
+        -- dap.adapters.javascript = jsts_adapter
+        -- dap.configurations.javascript = {jsts_configuration}
 
-        dap.adapters.typescript = jsts_adapter
-        dap.configurations.typescript = {jsts_configuration}
+        -- dap.adapters.typescript = jsts_adapter
+        -- dap.configurations.typescript = {jsts_configuration}
 
         dap.adapters.python = {
             type = "executable",
