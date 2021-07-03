@@ -341,14 +341,20 @@ export PATH=$PATH:$HOME/dotnet
 :LspInstall css
 ```
 
-### Dart
+### Dart + Flutter
 
-1. Download Dart from [here](https://dart.dev/tools/sdk/archive)
-2. Copy folder `dart-sdk` to `~/sdk`
-3. Export path to `dart-sdk` folder in your shell (`.bashrc`, `.zshrc` etc)
+1. Download Flutter (includes dart) from [here](https://flutter.dev)
+2. Copy folder `flutter` to `~/sdk`
+3. Export path to `flutter` folder in your shell (`.bashrc`, `.zshrc` etc)
 
 ```
-export PATH="$PATH:$HOME/sdk/dart-sdk/bin"
+export PATH="$PATH:$HOME/sdk/flutter/bin"
+```
+
+Upgrade flutter and dart from command line:
+
+```
+flutter upgrade
 ```
 
 ### Docker
