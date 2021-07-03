@@ -345,10 +345,11 @@ export PATH=$PATH:$HOME/dotnet
 
 1. Download Flutter (includes dart) from [here](https://flutter.dev)
 2. Copy folder `flutter` to `~/sdk`
-3. Export path to `flutter` folder in your shell (`.bashrc`, `.zshrc` etc)
+3. Export paths to `flutter` and `dart` in your shell (`.bashrc`, `.zshrc` etc)
 
 ```
 export PATH="$PATH:$HOME/sdk/flutter/bin"
+export PATH="$PATH:$HOME/sdk/flutter/bin/cache/dart-sdk/bin"
 ```
 
 Upgrade flutter and dart from command line:

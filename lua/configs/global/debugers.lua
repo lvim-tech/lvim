@@ -60,9 +60,6 @@ M.init_dap = function()
         vim.fn.sign_define("DapLogPoint",
                            {text = "▶", texthl = "", linehl = "", numhl = ""})
 
-        -- dap.adapters.lang = {}
-        -- dap.configurations.lang = {{}}
-
         dap.adapters.cpp = {
             type = "executable",
             attach = {pidProperty = "pid", pidSelect = "ask"},
@@ -153,7 +150,7 @@ M.init_dap = function()
             }
         }
 
-        dap.adapters.node2 = {
+        dap.adapters.javascript = {
             type = 'executable',
             command = 'node',
             args = {
@@ -163,13 +160,19 @@ M.init_dap = function()
         }
         dap.configurations.javascript = {
             {
-                type = 'node2',
-                request = 'launch',
-                program = '${file}',
-                cwd = vim.fn.getcwd(),
+                type = "typescript",
+                request = "launch",
+                name = "Launch",
+                program = function()
+                    return vim.fn.input("Path to executable: ",
+                                        vim.fn.getcwd() .. global.path_sep,
+                                        "file")
+                end,
+                cwd = "${workspaceFolder}",
+                outFiles = {"${workspaceRoot}/dist/js/*"},
                 sourceMaps = true,
-                protocol = 'inspector',
-                console = 'integratedTerminal'
+                protocol = "inspector",
+                console = "integratedTerminal"
             }
         }
 
@@ -198,12 +201,6 @@ M.init_dap = function()
                 console = "integratedTerminal"
             }
         }
-
-        -- dap.adapters.javascript = jsts_adapter
-        -- dap.configurations.javascript = {jsts_configuration}
-
-        -- dap.adapters.typescript = jsts_adapter
-        -- dap.configurations.typescript = {jsts_configuration}
 
         dap.adapters.python = {
             type = "executable",

@@ -63,7 +63,7 @@ local snap = require "snap"
 local fzf = snap.get "consumer.fzf"
 local limit = snap.get "consumer.limit"
 local producer_file = snap.get"producer.ripgrep.file".args {
-    "--iglob", "!vendor/* node_modules/* target/* git/*"
+    '--hidden', "--iglob", "!vendor/* !node_modules/* !target/* !git/*"
 }
 local producer_vimgrep = snap.get "producer.ripgrep.vimgrep"
 local producer_buffer = snap.get "producer.vim.buffer"

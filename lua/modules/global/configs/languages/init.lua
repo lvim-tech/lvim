@@ -12,6 +12,13 @@ function config.lsp()
     end
 end
 
+function config.dart()
+    if not packer_plugins["plenary.nvim"].loaded then
+        vim.cmd [[packadd plenary.nvim]]
+    end
+    require("flutter-tools").setup{}
+end
+
 function config.treesitter()
     if not packer_plugins["playground"].loaded then
         vim.cmd [[packadd playground]]

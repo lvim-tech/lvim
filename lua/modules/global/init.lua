@@ -30,7 +30,7 @@ modules["lvim-tech/galaxyline.nvim"] = {
 }
 
 modules["lukas-reineke/indent-blankline.nvim"] = {
-    event = "BufRead",
+    event = {"BufRead", "BufNewFile"},
     branch = "lua",
     config = ui_config.indent_blankline
 }
@@ -93,9 +93,10 @@ modules["windwp/nvim-spectre"] = {
     opt = true,
     config = editor_config.spectre,
     requires = {
-        {"nvim-lua/popup.nvim", opt = true},
-        {"nvim-lua/plenary.nvim", opt = true}
-    }
+        {"nvim-lua/popup.nvim"},
+        {"nvim-lua/plenary.nvim"},
+        after = "nvim-spectre"
+    },
 }
 
 modules["lambdalisue/suda.vim"] = {
@@ -131,7 +132,7 @@ modules["kkoomen/vim-doge"] = {
 modules["lewis6991/gitsigns.nvim"] = {
     event = "BufReadPre",
     config = editor_config.gitsigns,
-    requires = {"nvim-lua/plenary.nvim", opt = true}
+    requires = {{"nvim-lua/plenary.nvim", after = "gitsigns.nvim"}}
 }
 
 modules["tpope/vim-fugitive"] = {}
@@ -149,7 +150,7 @@ modules["f-person/git-blame.nvim"] = {config = editor_config.blame}
 modules["TimUntersberger/neogit"] = {
     cmd = "Neogit",
     config = editor_config.neogit,
-    requires = {{"nvim-lua/plenary.nvim", opt = true}}
+    requires = {{"nvim-lua/plenary.nvim", after = "neogit"}}
 }
 
 modules["kenn7/vim-arsync"] = {}
@@ -166,19 +167,24 @@ modules["kabouzeid/nvim-lspinstall"] = {}
 
 modules["mfussenegger/nvim-jdtls"] = {event = "VimEnter"}
 
+modules["akinsho/flutter-tools.nvim"] = {
+    ft = "dart",
+    config = languages_config.dart
+}
+
 modules["jose-elias-alvarez/nvim-lsp-ts-utils"] = {event = "VimEnter"}
 
 modules["ray-x/lsp_signature.nvim"] = {opt = true}
 
 modules["nvim-treesitter/nvim-treesitter"] = {
-    event = "BufRead",
+    event = {"BufRead", "BufNewFile"},
     config = languages_config.treesitter,
     requires = {{"nvim-treesitter/playground", opt = true}},
     run = ":TSUpdate"
 }
 
 modules["pechorin/any-jump.vim"] = {
-    event = "BufRead",
+    event = {"BufRead", "BufNewFile"},
     config = languages_config.jump
 }
 
@@ -189,7 +195,7 @@ modules["folke/lsp-trouble.nvim"] = {
 }
 
 modules["simrat39/symbols-outline.nvim"] = {
-    event = "BufRead",
+    event = {"BufRead", "BufNewFile"},
     config = languages_config.symbols
 }
 
