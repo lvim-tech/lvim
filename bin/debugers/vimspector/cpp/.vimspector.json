@@ -10,14 +10,6 @@
         "environment": [],
         "MIMode": "gdb"
       }
-    },
-    "Attach": {
-      "adapter": "vscode-cpptools",
-      "configuration": {
-        "request": "attach",
-        "program": "${workspaceFolder}/<name-of-program>",
-        "MIMode": "gdb"
-      }
     }
   }
 }

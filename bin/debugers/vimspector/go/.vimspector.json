@@ -1,22 +1,13 @@
 {
-	"configurations": {
-		"Go: Launch": {
-			"adapter": "vscode-go",
-			"configuration": {
-				"request": "launch",
-				"program": "${file}",
-				"mode": "debug",
-				"dlvToolPath": "$HOME/go/bin/dlv"
-			}
-		},
-		"Go: test": {
-			"name": "Launch test function",
-			"type": "go",
-			"request": "launch",
-			"mode": "test",
-			"dlvToolPath": "$HOME/go/bin/dlv",
-			"program": "${workspaceFolder}",
-			"args": ["-test.run", "MyTestFunction"]
-		}
-	}
+  "configurations": {
+    "Go: Launch": {
+      "adapter": "vscode-go",
+      "configuration": {
+        "request": "launch",
+        "program": "${file}",
+        "mode": "debug",
+        "dlvToolPath": "$HOME/go/bin/dlv"
+      }
+    }
+  }
 }
