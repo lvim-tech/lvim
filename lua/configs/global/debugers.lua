@@ -104,7 +104,7 @@ M.init_dap = function()
                 type = "dart",
                 name = "Launch flutter",
                 request = "launch",
-                dartSdkPath = os.getenv("HOME") .. "/sdk/dart-sdk",
+                dartSdkPath = os.getenv("HOME") .. "/sdk/flutter",
                 flutterSdkPath = os.getenv("HOME") .. "/sdk/flutter",
                 program = function()
                     return vim.fn.input("Path to executable: ",
