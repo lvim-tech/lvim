@@ -39,7 +39,10 @@ end
 lsp_config.signature_cfg = {hint_prefix = " ", handler_opts = {border = "none"}}
 
 lsp_config.diagnostics_cfg = {
-    virtual_text = true,
+    virtual_text = {
+      prefix = "",
+      spacing = 2,
+    },
     signs = true,
     underline = true,
     update_in_insert = true

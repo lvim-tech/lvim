@@ -31,7 +31,6 @@ modules["lvim-tech/galaxyline.nvim"] = {
 
 modules["lukas-reineke/indent-blankline.nvim"] = {
     event = {"BufRead", "BufNewFile"},
-    branch = "lua",
     config = ui_config.indent_blankline
 }
 
