@@ -272,6 +272,7 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 | `<A-s>`     | `:Spectre<CR>`               | Replace in multiple files     |
 | `<A-/>`     | `:CommentToggle<CR>`         | Comment toggle                |
 | `<A-f>`     | `:LspFormatting<CR>`         | Lsp format code               |
+| `<A-t>`     | `:LspAction<CR>`             | Lsp action                    |
 | `<A-g>`     | `:LspReferences<CR>`         | Lsp references                |
 | `<A-d>`     | `:LspDeclaration<CR>`        | Lsp declaration               |
 | `<A-p>`     | `:LspDefinition<CR>`         | Lsp definition                |
