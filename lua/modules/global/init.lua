@@ -34,18 +34,6 @@ modules["lukas-reineke/indent-blankline.nvim"] = {
     config = ui_config.indent_blankline
 }
 
--- modules['ms-jpq/chadtree'] = {
---     branch = 'chad',
---     event = 'VimEnter',
---     cmd = {'CHADopen', 'CHADhelp', 'CHADdeps'},
---     requires = 'kyazdani42/nvim-web-devicons',
---     run = function()
---         vim.fn.system("python3 -m chadtree deps")
---         vim.cmd("CHADdeps")
---     end,
---     config = ui_config.chadtree
--- }
-
 modules["kyazdani42/nvim-tree.lua"] = {
     cmd = "NvimTreeToggle",
     config = ui_config.tree,
@@ -81,11 +69,6 @@ local editor_config = require("modules.global.configs.editor")
 
 modules["vim-ctrlspace/vim-ctrlspace"] = {cmd = "CtrlSpace"}
 
--- modules['liuchengxu/vim-clap'] = {
---     config = editor_config.clap,
---     run = ':Clap install-binary'
--- }
-
 modules["camspiers/snap"] = {}
 
 modules["windwp/nvim-spectre"] = {
@@ -95,7 +78,7 @@ modules["windwp/nvim-spectre"] = {
         {"nvim-lua/popup.nvim"},
         {"nvim-lua/plenary.nvim"},
         after = "nvim-spectre"
-    },
+    }
 }
 
 modules["lambdalisue/suda.vim"] = {
@@ -266,9 +249,5 @@ modules["iamcco/markdown-preview.nvim"] = {
 }
 
 modules["airblade/vim-rooter"] = {config = tools_config.rooter}
-
--- modules["kristijanhusak/orgmode.nvim"] = {config = tools_config.org}
-
--- modules['ahmedkhalf/lsp-rooter.nvim'] = {event = 'VimEnter'}
 
 return modules
