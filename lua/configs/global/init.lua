@@ -3,12 +3,12 @@ local funcs = require "core.funcs"
 local lvim = require "configs.global.lvim"
 local keymaps = require "configs.global.keymaps"
 
-configs["options"] = function()
+configs["_options"] = function()
     lvim.global()
     lvim.set()
 end
 
-configs["events"] = function()
+configs["_events"] = function()
     funcs.augroups({
         bufs = {
             {
@@ -53,7 +53,7 @@ configs["events"] = function()
     })
 end
 
-configs["commands"] = function()
+configs["_commands"] = function()
     -- LSP
     vim.cmd(
         'command! LspAddToWorkspaceFolder lua require("configs.global.utils").add_to_workspace_folder()')
@@ -170,15 +170,15 @@ configs["commands"] = function()
         'command! SnapOldFiles lua require("configs.global.utils").snap_old_files()')
 end
 
-configs["keymaps"] = function()
+configs["_keymaps"] = function()
     -- normal
     funcs.keymaps("n", {noremap = false, silent = true}, keymaps.normal)
     -- visual
     funcs.keymaps("x", {noremap = false, silent = true}, keymaps.visual)
 end
 
-configs["ctrlspace"] = function()
-    vim.ctrlspace_use_tablineend = 1
+configs["_ctrlspace"] = function()
+    vim.ctrlspace_use_tablineend = 0
     vim.g.CtrlSpaceLoadLastWorkspaceOnStart = 1
     vim.g.CtrlSpaceSaveWorkspaceOnSwitch = 1
     vim.g.CtrlSpaceSaveWorkspaceOnExit = 1
