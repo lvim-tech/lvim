@@ -367,7 +367,7 @@ function config.tree()
     vim.g.nvim_tree_hide_dotfiles = 1
     vim.g.nvim_tree_indent_markers = 0
     vim.g.nvim_tree_follow = 1
-    vim.g.nvim_tree_lsp_diagnostics = 1
+    vim.g.nvim_tree_lsp_diagnostics = 0
     vim.g.nvim_tree_auto_close = true
     vim.g.nvim_tree_auto_ignore_ft = {"startify", "dashboard"}
     vim.g.nvim_tree_show_icons = {

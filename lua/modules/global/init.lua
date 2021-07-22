@@ -117,7 +117,7 @@ modules["lewis6991/gitsigns.nvim"] = {
     requires = {{"nvim-lua/plenary.nvim", after = "gitsigns.nvim"}}
 }
 
-modules["tpope/vim-fugitive"] = {}
+modules["tpope/vim-fugitive"] = {event = {"BufRead", "BufNewFile"}}
 
 modules["sindrets/diffview.nvim"] = {
     cmd = {
@@ -127,7 +127,10 @@ modules["sindrets/diffview.nvim"] = {
     config = editor_config.diffview
 }
 
-modules["f-person/git-blame.nvim"] = {config = editor_config.blame}
+modules["f-person/git-blame.nvim"] = {
+    event = {"BufRead", "BufNewFile"},
+    config = editor_config.blame
+}
 
 modules["TimUntersberger/neogit"] = {
     cmd = "Neogit",
@@ -135,7 +138,7 @@ modules["TimUntersberger/neogit"] = {
     requires = {{"nvim-lua/plenary.nvim", after = "neogit"}}
 }
 
-modules["kenn7/vim-arsync"] = {}
+modules["kenn7/vim-arsync"] = {event = {"BufRead", "BufNewFile"}}
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Languages ----------------------------------------------------
@@ -207,7 +210,10 @@ modules["hrsh7th/vim-vsnip"] = {after = "nvim-compe"}
 
 modules["rafamadriz/friendly-snippets"] = {after = "nvim-compe"}
 
-modules["onsails/lspkind-nvim"] = {config = completion_config.lspkind}
+modules["onsails/lspkind-nvim"] = {
+    event = {"BufRead", "BufNewFile"},
+    config = completion_config.lspkind
+}
 
 modules["mattn/emmet-vim"] = {
     event = "InsertEnter",

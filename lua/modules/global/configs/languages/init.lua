@@ -16,7 +16,7 @@ function config.dart()
     if not packer_plugins["plenary.nvim"].loaded then
         vim.cmd [[packadd plenary.nvim]]
     end
-    require("flutter-tools").setup{}
+    require("flutter-tools").setup {}
 end
 
 function config.treesitter()
@@ -64,6 +64,7 @@ end
 function config.trouble()
     require("trouble").setup {
         height = 12,
+        mode = "lsp_document_diagnostics",
         use_lsp_diagnostic_signs = true,
         action_keys = {
             refresh = "r",
