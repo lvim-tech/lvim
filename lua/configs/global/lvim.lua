@@ -86,8 +86,8 @@ M.global = function()
         relativenumber = true,
         wrap = true,
         listchars = "tab:»·,nbsp:+,trail:·,extends:→,precedes:←",
-        pumblend = 20,
-        winblend = 20
+        pumblend = 10,
+        winblend = 10
     }
     funcs.options_global(global_opt)
 end

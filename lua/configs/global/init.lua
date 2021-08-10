@@ -3,28 +3,27 @@ local funcs = require "core.funcs"
 local lvim = require "configs.global.lvim"
 local keymaps = require "configs.global.keymaps"
 
-configs["_options"] = function()
+configs["options_global"] = function()
     lvim.global()
     lvim.set()
 end
 
-configs["_events"] = function()
+configs["events_global"] = function()
     funcs.augroups({
         bufs = {
             {
                 "BufWinEnter", "*",
-                "setlocal formatoptions-=c formatoptions-=r formatoptions-=o showtabline=0 "
+                "setlocal formatoptions-=c formatoptions-=r formatoptions-=o "
             }, {
                 "BufRead", "*",
-                "setlocal formatoptions-=c formatoptions-=r formatoptions-=o showtabline=0 "
+                "setlocal formatoptions-=c formatoptions-=r formatoptions-=o "
             }, {
                 "BufNewFile", "*",
-                "setlocal formatoptions-=c formatoptions-=r formatoptions-=o showtabline=0 "
+                "setlocal formatoptions-=c formatoptions-=r formatoptions-=o "
             }, {"BufNewFile,BufRead", "*.ex", "set filetype=elixir"},
             {"BufNewFile,BufRead", "*.exs", "set filetype=elixir"},
             {"BufNewFile,BufRead", "*.graphql", "set filetype=graphql"},
             {"BufWinEnter", "NvimTree", "set colorcolumn=0 nocursorcolumn"}
-            -- {"BufWritePre", "*", ":Neoformat"}
         },
         yank = {
             {
@@ -34,10 +33,9 @@ configs["_events"] = function()
         },
         ft = {
             {"FileType", "*", 'lua require("configs.global.filetypes").init()'},
-            {"FileType", "help", "set colorcolumn=0 nocursorcolumn"}, {
-                "FileType", "dashboard",
-                "set showtabline=0 | autocmd WinLeave <buffer> set showtabline=2 nowrap"
-            }, {"FileType", "Trouble", "set colorcolumn=0 nocursorcolumn"},
+            {"FileType", "help", "set colorcolumn=0 nocursorcolumn"},
+            {"FileType", "dashboard", "set nowrap"},
+            {"FileType", "Trouble", "set colorcolumn=0 nocursorcolumn"},
             {"FileType", "Outline", "set colorcolumn=0 nocursorcolumn"},
             {"FileType", "VimspectorPrompt", "set colorcolumn=0 nocursorcolumn"},
             {"FileType", "git", "set colorcolumn=0 nocursorcolumn"},
@@ -53,7 +51,7 @@ configs["_events"] = function()
     })
 end
 
-configs["_commands"] = function()
+configs["commands_global"] = function()
     -- LSP
     vim.cmd(
         'command! LspAddToWorkspaceFolder lua require("configs.global.utils").add_to_workspace_folder()')
@@ -170,15 +168,15 @@ configs["_commands"] = function()
         'command! SnapOldFiles lua require("configs.global.utils").snap_old_files()')
 end
 
-configs["_keymaps"] = function()
+configs["keymaps_global"] = function()
     -- normal
     funcs.keymaps("n", {noremap = false, silent = true}, keymaps.normal)
     -- visual
     funcs.keymaps("x", {noremap = false, silent = true}, keymaps.visual)
 end
 
-configs["_ctrlspace"] = function()
-    vim.ctrlspace_use_tablineend = 0
+configs["ctrlspace_global"] = function()
+    vim.ctrlspace_use_tablineend = 1
     vim.g.CtrlSpaceLoadLastWorkspaceOnStart = 1
     vim.g.CtrlSpaceSaveWorkspaceOnSwitch = 1
     vim.g.CtrlSpaceSaveWorkspaceOnExit = 1
