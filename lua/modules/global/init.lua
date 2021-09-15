@@ -201,14 +201,29 @@ modules["rcarriga/nvim-dap-ui"] = {opt = true}
 
 local completion_config = require("modules.global.configs.completion")
 
-modules["hrsh7th/nvim-compe"] = {
+-- modules["hrsh7th/nvim-compe"] = {
+--     event = "InsertEnter",
+--     config = completion_config.compe
+-- }
+
+modules["hrsh7th/nvim-cmp"] = {
     event = "InsertEnter",
-    config = completion_config.compe
+    config = completion_config.cmp,
+    requires = {
+        { 'hrsh7th/cmp-buffer', after = 'nvim-cmp', },
+        { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp', },
+        { 'saadparwaiz1/cmp_luasnip', after = 'LuaSnip'}
+    },
+    after = "LuaSnip"
 }
 
-modules["hrsh7th/vim-vsnip"] = {after = "nvim-compe"}
+modules["L3MON4D3/LuaSnip"] = {
+    event = "InsertEnter"
+}
 
-modules["rafamadriz/friendly-snippets"] = {after = "nvim-compe"}
+-- modules["hrsh7th/vim-vsnip"] = {after = "nvim-compe"}
+
+-- modules["rafamadriz/friendly-snippets"] = {after = "nvim-compe"}
 
 modules["onsails/lspkind-nvim"] = {
     event = {"BufRead", "BufNewFile"},
