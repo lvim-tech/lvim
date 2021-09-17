@@ -2,7 +2,6 @@ local config = {}
 
 function config.cmp()
     local cmp = require("cmp")
-    local luasnip = require("luasnip")
 
     local lsp_symbols = {
         Text = "   (Text) ",
@@ -33,37 +32,42 @@ function config.cmp()
     }
 
     cmp.setup({
-        sources = {
-            {name = "buffer"},
-            {name = "nvim_lsp"},
-            {name = "path"},
-            {name = "luasnip"}
-        },
         mapping = {
-            ["<cr>"] = cmp.mapping.confirm({select = true}),
-            ["<s-tab>"] = cmp.mapping.select_prev_item(),
-            ["<tab>"] = cmp.mapping.select_next_item()
+            ["<C-p>"] = cmp.mapping.select_prev_item(),
+            ["<C-n>"] = cmp.mapping.select_next_item(),
+            ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+            ["<C-f>"] = cmp.mapping.scroll_docs(4),
+            ["<C-Space>"] = cmp.mapping.complete(),
+            ["<C-e>"] = cmp.mapping.close(),
+            ["<CR>"] = cmp.mapping.confirm({
+                behavior = cmp.ConfirmBehavior.Replace,
+                select = true
+            }),
+            ["<Tab>"] = cmp.mapping(cmp.mapping.select_next_item(), {"i", "s"}),
+            ["<S-Tab>"] = cmp.mapping(cmp.mapping.select_prev_item(), {"i", "s"})
         },
         formatting = {
             format = function(entry, item)
                 item.kind = lsp_symbols[item.kind]
                 item.menu = ({
-                    buffer = "[Buffer]",
                     nvim_lsp = "[LSP]",
+                    buffer = "[Buffer]",
                     path = "[Path]",
-                    luasnip = "[Snippet]"
+                    vsnip = "[VSnip]"
                 })[entry.source.name]
-
                 return item
-            end,
+            end
+        },
+        sources = {
+            {name = "nvim_lsp"}, {name = "vsnip"}, {name = "path"},
+            {name = "buffer"}
         },
         snippet = {
             expand = function(args)
-                luasnip.lsp_expand(args.body)
-            end,
-        },
+                vim.fn['vsnip#anonymous'](args.body)
+            end
+        }
     })
-
 end
 
 function config.emmet()

@@ -12,8 +12,8 @@
 - Add or remove settings, rewrite all settings
 - Dynamic LSP activation
 - Dynamic debugging activation - Vimspector or Dap
-- By default - 57 plugins
-- Loading time - 058.681
+- By default - 63 plugins
+- Loading time - 060.260
 
 ## HELP FOR LVIM
 
@@ -207,11 +207,9 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 
 ### Completion
 
-[nvim-compe](https://github.com/hrsh7th/nvim-compe)
+[nvim-cmp](https://github.com/hrsh7th/nvim-cmp) (requires [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp) \| [cmp-vsnip](https://github.com/hrsh7th/cmp-vsnip) \| [cmp-buffer](https://github.com/hrsh7th/cmp-buffer) \| [cmp-path](https://github.com/hrsh7th/cmp-path)))
 
-[vim-vsnip](https://github.com/hrsh7th/vim-vsnip)
-
-[friendly-snippets](https://github.com/rafamadriz/friendly-snippets)
+[vim-vsnip](https://github.com/hrsh7th/vim-vsnip) (requires [vim-vsnip-integ](https://github.com/hrsh7th/vim-vsnip-integ) \| [friendly-snippets](https://github.com/rafamadriz/friendly-snippets)))
 
 [lspkind-nvim](https://github.com/onsails/lspkind-nvim)
 
