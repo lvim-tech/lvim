@@ -207,9 +207,9 @@ export PATH="$HOME/.config/nvim/bin:$PATH"
 
 ### Completion
 
-[nvim-cmp](https://github.com/hrsh7th/nvim-cmp) (requires [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp) \| [cmp-vsnip](https://github.com/hrsh7th/cmp-vsnip) \| [cmp-buffer](https://github.com/hrsh7th/cmp-buffer) \| [cmp-path](https://github.com/hrsh7th/cmp-path)))
+[nvim-cmp](https://github.com/hrsh7th/nvim-cmp) (requires [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp) \| [cmp-vsnip](https://github.com/hrsh7th/cmp-vsnip) \| [cmp-buffer](https://github.com/hrsh7th/cmp-buffer) \| [cmp-path](https://github.com/hrsh7th/cmp-path))
 
-[vim-vsnip](https://github.com/hrsh7th/vim-vsnip) (requires [vim-vsnip-integ](https://github.com/hrsh7th/vim-vsnip-integ) \| [friendly-snippets](https://github.com/rafamadriz/friendly-snippets)))
+[vim-vsnip](https://github.com/hrsh7th/vim-vsnip) (requires [vim-vsnip-integ](https://github.com/hrsh7th/vim-vsnip-integ) \| [friendly-snippets](https://github.com/rafamadriz/friendly-snippets))
 
 [lspkind-nvim](https://github.com/onsails/lspkind-nvim)
 
