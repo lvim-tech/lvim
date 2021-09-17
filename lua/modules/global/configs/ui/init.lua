@@ -214,7 +214,7 @@ function config.galaxyline()
                 return true
             end,
             icon = "   ",
-            highlight = {colors.color_1, colors.bg}
+            highlight = {colors.color_0, colors.bg}
         }
     }
     gls.right[6] = {
@@ -222,7 +222,7 @@ function config.galaxyline()
             provider = "LineColumn",
             separator = "  ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.fg, colors.bg}
+            highlight = {colors.color_7, colors.bg}
         }
     }
     gls.right[7] = {
@@ -230,7 +230,7 @@ function config.galaxyline()
             provider = "LinePercent",
             separator = " ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.fg, colors.bg}
+            highlight = {colors.color_7, colors.bg}
         }
     }
     gls.right[8] = {
@@ -241,7 +241,7 @@ function config.galaxyline()
             condition = condition.hide_in_width,
             separator = " ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.fg, colors.bg}
+            highlight = {colors.color_7, colors.bg}
         }
     }
     gls.right[9] = {
@@ -250,7 +250,7 @@ function config.galaxyline()
             condition = condition.hide_in_width,
             separator = " ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.fg, colors.bg}
+            highlight = {colors.color_7, colors.bg}
         }
     }
     gls.right[10] = {
@@ -259,7 +259,7 @@ function config.galaxyline()
             condition = condition.hide_in_width,
             separator = " ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.fg, colors.bg}
+            highlight = {colors.color_7, colors.bg}
         }
     }
     gls.right[11] = {
@@ -269,7 +269,7 @@ function config.galaxyline()
             end,
             separator = " ",
             separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.fg, colors.bg}
+            highlight = {colors.color_7, colors.bg}
         }
     }
     gls.short_line_left[1] = {
