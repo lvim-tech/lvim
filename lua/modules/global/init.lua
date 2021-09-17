@@ -16,11 +16,24 @@ modules["glepnir/dashboard-nvim"] = {
     config = ui_config.dashboard
 }
 
-modules["NTBBloodbath/galaxyline.nvim"] = {
+-- modules['glepnir/galaxyline.nvim'] = {
+--     branch = 'main',
+--     config = ui_config.galaxyline,
+--     requires = 'kyazdani42/nvim-web-devicons'
+-- }
+
+modules["lvim-tech/galaxyline.nvim"] = {
     event = {"VimEnter", "BufRead", "BufNewFile"},
+    branch = "exclude_filetypes",
     config = ui_config.galaxyline,
     requires = "kyazdani42/nvim-web-devicons"
 }
+
+-- modules["NTBBloodbath/galaxyline.nvim"] = {
+--     event = {"VimEnter", "BufRead", "BufNewFile"},
+--     config = ui_config.galaxyline,
+--     requires = "kyazdani42/nvim-web-devicons"
+-- }
 
 modules["lukas-reineke/indent-blankline.nvim"] = {
     event = {"BufRead", "BufNewFile"},
