@@ -36,7 +36,13 @@ function lsp_config.documentHighlight(client)
     end
 end
 
-lsp_config.signature_cfg = {hint_prefix = " ", handler_opts = {border = "none"}}
+lsp_config.signature_cfg = {
+    handler_opts = {border = "none"},
+    hint_prefix = "   ",
+    padding = ' ',
+    zindex = 200,
+    transpancy = 0
+}
 
 lsp_config.diagnostics_cfg = {
     virtual_text = {
