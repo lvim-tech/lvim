@@ -20,6 +20,7 @@ keymaps["normal"] = {
     {"<C-Right>", ":vertical resize +2<CR>"}, -- Resize width +
     {"<C-Up>", ":resize -2<CR>"}, -- Resize height -
     {"<C-Down>", ":resize +2<CR>"}, -- Resize height +
+    {"<C-b>", ":GitBlameToggle<CR>"}, -- Git blame toggle
     {"<S-x>", ":NvimTreeToggle<CR>"}, -- Nvim tree explorer
     {"<S-u>", ":Vifm<CR>"}, -- Vifm explorer
     {"<S-l>", ":FloatermNew lazygit<CR>"}, -- Lazygit

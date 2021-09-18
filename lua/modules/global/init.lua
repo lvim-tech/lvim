@@ -134,7 +134,6 @@ modules["sindrets/diffview.nvim"] = {
 }
 
 modules["f-person/git-blame.nvim"] = {
-    event = {"BufRead", "BufNewFile"},
     config = editor_config.blame
 }
 
@@ -165,7 +164,7 @@ modules["akinsho/flutter-tools.nvim"] = {
 
 modules["jose-elias-alvarez/nvim-lsp-ts-utils"] = {event = "VimEnter"}
 
-modules["ray-x/lsp_signature.nvim"] = {opt = true}
+modules["ray-x/lsp_signature.nvim"] = {}
 
 modules["nvim-treesitter/nvim-treesitter"] = {
     event = {"BufRead", "BufNewFile"},
