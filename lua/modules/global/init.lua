@@ -29,11 +29,11 @@ modules["lvim-tech/galaxyline.nvim"] = {
     requires = "kyazdani42/nvim-web-devicons"
 }
 
-modules["NTBBloodbath/galaxyline.nvim"] = {
-    event = {"VimEnter", "BufRead", "BufNewFile"},
-    config = ui_config.galaxyline,
-    requires = "kyazdani42/nvim-web-devicons"
-}
+-- modules["NTBBloodbath/galaxyline.nvim"] = {
+--     event = {"VimEnter", "BufRead", "BufNewFile"},
+--     config = ui_config.galaxyline,
+--     requires = "kyazdani42/nvim-web-devicons"
+-- }
 
 modules["lukas-reineke/indent-blankline.nvim"] = {
     event = {"BufRead", "BufNewFile"},
