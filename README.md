@@ -2,7 +2,7 @@
 
 ![lvim-logo](https://user-images.githubusercontent.com/82431193/115121988-3bc06800-9fbe-11eb-8dab-19f624aa7b93.png)
 
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/lvim-tech/lvim/blob/main/LICENSE)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/lvim-tech/lvim/blob/master/LICENSE)
 
 ## About
 
@@ -117,7 +117,7 @@
 git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 ```
 
-2. Export path to [bin](https://github.com/lvim-tech/lvim/tree/main/bin) folder in your shell (`.bashrc`, `.zshrc` etc)
+2. Export path to [bin](https://github.com/lvim-tech/lvim/tree/master/bin) folder in your shell (`.bashrc`, `.zshrc` etc)
 
 ```
 export PATH="$HOME/.config/nvim/bin:$PATH"
@@ -475,9 +475,9 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 ### Modules (plugins)
 
-All included plugins are in this [file](https://github.com/lvim-tech/lvim/blob/main/lua/modules/global/init.lua) by default
+All included plugins are in this [file](https://github.com/lvim-tech/lvim/blob/master/lua/modules/global/init.lua) by default
 
-You can modify plugins from this [file](https://github.com/lvim-tech/lvim/blob/main/lua/modules/custom/init.lua)
+You can modify plugins from this [file](https://github.com/lvim-tech/lvim/blob/master/lua/modules/custom/init.lua)
 
 ### Remove an existing plugin(s)
 
@@ -519,9 +519,9 @@ return modules
 
 ### Configs (settings)
 
-All settings are in this [file](https://github.com/lvim-tech/lvim/blob/main/lua/configs/global/init.lua)
+All settings are in this [file](https://github.com/lvim-tech/lvim/blob/master/lua/configs/global/init.lua)
 
-You can modify settings from this [file](https://github.com/lvim-tech/lvim/blob/main/lua/configs/custom/init.lua)
+You can modify settings from this [file](https://github.com/lvim-tech/lvim/blob/master/lua/configs/custom/init.lua)
 
 ### Remove an existing setting(s)
 
@@ -563,7 +563,7 @@ return modules
 
 ### Global
 
-1. Modify `configs['events']` from this [file](https://github.com/lvim-tech/lvim/blob/main/lua/configs/custom/init.lua)
+1. Modify `configs['events']` from this [file](https://github.com/lvim-tech/lvim/blob/master/lua/configs/custom/init.lua)
 
 ```lua
 configs['events'] = function()
@@ -610,7 +610,7 @@ configs['events'] = function()
 end
 ```
 
-2. Add your LSP settings in this [folder](https://github.com/lvim-tech/lvim/tree/main/lua/lsp/custom)
+2. Add your LSP settings in this [folder](https://github.com/lvim-tech/lvim/tree/master/lua/lsp/custom)
 
 > **IMPORTANT:**  After this change run `:PackerSync` and restart nvim
 
@@ -654,7 +654,7 @@ You can use `Vimpector` or `DAP (Debug Adapter Protocol)`
 :VimspectorInstall --all
 ```
 
-You can generate `.vimspector.json` file for your current project with script from [bin](https://github.com/lvim-tech/lvim/tree/main/bin) folder
+You can generate `.vimspector.json` file for your current project with script from [bin](https://github.com/lvim-tech/lvim/tree/master/bin) folder
 
 ```
 vsconfig
