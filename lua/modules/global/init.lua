@@ -42,6 +42,7 @@ modules["lukas-reineke/indent-blankline.nvim"] = {
 
 modules["kyazdani42/nvim-tree.lua"] = {
     cmd = "NvimTreeToggle",
+    opt = true,
     config = ui_config.tree,
     requires = "kyazdani42/nvim-web-devicons"
 }
