@@ -12,6 +12,7 @@
 
 ## LVIM IDE is a modular Neovim configuration written in LUA with full customization
 
+- Now support Neovim 0.5.0, 0.5.1, 0.6.0+
 - Add or remove plugins, rewrite all plugins
 - Add or remove settings, rewrite all settings
 - Dynamic LSP activation
@@ -31,11 +32,13 @@
 
 For detail info see [wiki](https://github.com/lvim-tech/lvim/wiki) - `6500+` lines of istructions and code
 
+## [YouTube](https://www.youtube.com/channel/UCSV5_UXKLl1JDZbQaYWuFKQ) channel
+
 ## Requirements
 
 ### Base
 
-- [neovim nightly(>=0.5.0)](https://github.com/neovim/neovim/wiki/Installing-Neovim)
+- [neovim >=0.5.0](https://github.com/neovim/neovim/wiki/Installing-Neovim)
 - [pynvim](https://github.com/neovim/pynvim)
 - [neovim-remote](https://github.com/mhinz/neovim-remote)
 - [nodejs](https://nodejs.org/en/)
