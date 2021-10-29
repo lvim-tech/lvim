@@ -1,5 +1,5 @@
-local global = require "core.global"
-local funcs = require "core.funcs"
+local global = require("core.global")
+local funcs = require("core.funcs")
 
 local M = {}
 
@@ -82,9 +82,6 @@ M.global = function()
         cursorline = true,
         cursorcolumn = true,
         showbreak = " ↳  ",
-        number = true,
-        relativenumber = true,
-        wrap = true,
         listchars = "tab:»·,nbsp:+,trail:·,extends:→,precedes:←",
         pumblend = 10,
         winblend = 10
@@ -94,7 +91,10 @@ end
 
 M.set = function()
     local set_opt = {
+        number = true,
+        relativenumber = true,
         nocompatible = true,
+        wrap = true,
         cmdheight = 1,
         synmaxcol = 2500,
         formatoptions = "1jcroql",

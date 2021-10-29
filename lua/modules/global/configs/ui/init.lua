@@ -1,6 +1,10 @@
 local config = {}
 
-function config.dashboard()
+function config.lvim_colorscheme()
+    vim.cmd("colorscheme lvim")
+end
+
+function config.dashboard_nvim()
     vim.g.dashboard_custom_header = {
         "       888     Y88b      / 888      e    e             ",
         "       888      Y88b    /  888     d8b  d8b            ",
@@ -18,15 +22,15 @@ function config.dashboard()
         },
         b = {
             description = {"     File explorer            "},
-            command = "Vifm"
+            command = "Telescope file_browser"
         },
         c = {
             description = {"     Search file              "},
-            command = "SnapFiles"
+            command = "Telescope find_files"
         },
         d = {
             description = {"     Search in files          "},
-            command = "SnapGrep"
+            command = "Telescope live_grep"
         },
         e = {
             description = {"     Help                     "},
@@ -41,6 +45,282 @@ function config.dashboard()
             command = ":e ~/.config/nvim/README.md"
         }
     }
+end
+
+function config.nvim_tree()
+    vim.g.nvim_tree_show_icons = {
+        git = 1,
+        folders = 1,
+        files = 1,
+        folder_arrows = 0
+    }
+    vim.g.nvim_tree_icons = {
+        default = "",
+        symlink = "",
+        git = {
+            unstaged = "",
+            staged = "",
+            unmerged = "",
+            renamed = "➜",
+            untracked = "",
+            ignored = "◌"
+        },
+        folder = {
+            default = "",
+            open = "",
+            empty = "",
+            empty_open = "",
+            symlink = ""
+        }
+    }
+    require("nvim-tree").setup {
+        disable_netrw = true,
+        hijack_netrw = true,
+        open_on_setup = false,
+        ignore_ft_on_setup = {},
+        auto_close = false,
+        open_on_tab = false,
+        hijack_cursor = false,
+        update_cwd = false,
+        diagnostics = {
+            enable = true,
+            icons = {
+                error = "",
+                warning = "",
+                hint = "",
+                info = ""
+            }
+        },
+        update_focused_file = {
+            enable = true,
+            update_cwd = false,
+            ignore_list = {}
+        },
+        system_open = {
+            cmd = nil,
+            args = {}
+        },
+        view = {
+            width = 30,
+            side = "left",
+            auto_resize = true,
+            mappings = {
+                custom_only = false,
+                list = {}
+            }
+        }
+    }
+end
+
+function config.which_key()
+    local options = {
+        plugins = {
+            marks = true,
+            registers = true,
+            presets = {
+                operators = false,
+                motions = false,
+                text_objects = false,
+                windows = false,
+                nav = false,
+                z = false,
+                g = false
+            },
+            spelling = {
+                enabled = true,
+                suggestions = 20
+            }
+        },
+        icons = {
+            breadcrumb = "»",
+            separator = "➜",
+            group = "+"
+        },
+        window = {
+            border = "single",
+            position = "bottom",
+            margin = {
+                0,
+                0,
+                0,
+                0
+            },
+            padding = {
+                2,
+                2,
+                2,
+                2
+            }
+        },
+        layout = {
+            height = {
+                min = 4,
+                max = 25
+            },
+            width = {
+                min = 20,
+                max = 50
+            },
+            spacing = 10
+        },
+        hidden = {"<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ "},
+        show_help = true
+    }
+    local nopts = {
+        mode = "n",
+        prefix = "<leader>",
+        buffer = nil,
+        silent = true,
+        noremap = true,
+        nowait = true
+    }
+    local vopts = {
+        mode = "v",
+        prefix = "<leader>",
+        buffer = nil,
+        silent = true,
+        noremap = true,
+        nowait = true
+    }
+    local nmappings = {
+        b = {
+            name = "Buffers",
+            n = {"<Cmd>bnext<CR>", "Next buffer"},
+            p = {"<Cmd>bprevious<CR>", "Prev buffer"},
+            l = {"<Cmd>Telescope buffers<CR>", "List buffers"}
+        },
+        d = {
+            name = "Database",
+            u = {"<Cmd>DBUIToggle<CR>", "DB UI toggle"},
+            f = {"<Cmd>DBUIFindBuffer<CR>", "DB find buffer"},
+            r = {"<Cmd>DBUIRenameBuffer<CR>", "DB rename buffer"},
+            l = {"<Cmd>DBUILastQueryInfo<CR>", "DB last query"}
+        },
+        p = {
+            name = "Packer",
+            c = {"<cmd>PackerCompile<CR>", "Compile"},
+            i = {"<cmd>PackerInstall<CR>", "Install"},
+            s = {"<cmd>PackerSync<CR>", "Sync"},
+            S = {"<cmd>PackerStatus<CR>", "Status"},
+            u = {"<cmd>PackerUpdate<CR>", "Update"}
+        },
+        P = {
+            name = "Path",
+            g = {"<Cmd>SetGlobalPath<CR>", "Set global path"},
+            w = {"<Cmd>SetWindowPath<CR>", "Set window path"}
+        },
+        l = {
+            name = "LSP",
+            n = {"<Cmd>LspGoToNext<CR>", "Go to next"},
+            p = {"<Cmd>LspGoToPrev<CR>", "Go to prev"},
+            r = {"<Cmd>LspRename<CR>", "Rename"},
+            h = {"<Cmd>LspHover<CR>", "Hover"},
+            d = {"<Cmd>LspDefinition<CR>", "Definition"},
+            t = {"<Cmd>LspTypeDefinition<CR>", "Type definition"},
+            R = {"<Cmd>LspReferences<CR>", "References"},
+            a = {"<Cmd>LspCodeAction<CR>", "Code action"},
+            f = {"<Cmd>LspFormatting<CR>", "Formatting"},
+            s = {"<Cmd>LspFormattingSync<CR>", "Sync formatting"},
+            S = {
+                name = "Symbol",
+                d = {"<Cmd>LspDocumentSymbol<CR>", "Document symbol"},
+                w = {"<Cmd>LspWorkspaceSymbol<CR>", "Workspace symbol"}
+            },
+            w = {
+                "<Cmd>LspAddToWorkspaceFolder<CR>",
+                "Add to workspace folder"
+            },
+            v = {
+                name = "Virtualtext",
+                s = {"<Cmd>LspVirtualTextShow<CR>", "Virtual text show"},
+                h = {"<Cmd>LspVirtualTextHide<CR>", "Virtual text hide"}
+            }
+        },
+        g = {
+            name = "GIT",
+            b = {"<Cmd>GitSignsBlameLine<CR>", "Blame"},
+            B = {"<Cmd>GBrowse<CR>", "Browse"},
+            d = {"<Cmd>Git diff<CR>", "Diff"},
+            n = {"<Cmd>GitSignsNextHunk<CR>", "Next hunk"},
+            p = {"<Cmd>GitSignsPrevHunk<CR>", "Prev hunk"},
+            l = {"<Cmd>Git log<CR>", "Log"},
+            P = {"<Cmd>GitSignsPreviewHunk<CR>", "Preview hunk"},
+            r = {"<Cmd>GitSignsResetHunk<CR>", "Reset stage hunk"},
+            s = {"<Cmd>GitSignsStageHunk<CR>", "Stage hunk"},
+            u = {"<Cmd>GitSignsUndoStageHunk<CR>", "Undo stage hunk"},
+            R = {"<Cmd>GitSignsResetBuffer<CR>", "Reset buffer"},
+            S = {"<Cmd>Gstatus<CR>", "Status"},
+            N = {"<Cmd>Neogit<CR>", "Neogit"}
+        },
+        m = {
+            name = "Bookmark",
+            t = {"<Cmd>BookmarkToggle<CR>", "toggle bookmark"},
+            n = {"<Cmd>BookmarkNext<CR>", "next bookmark"},
+            p = {"<Cmd>BookmarkPrev<CR>", "prev bookmark"}
+        },
+        f = {
+            name = "Fold",
+            m = {"<Cmd>:set foldmethod=manual<CR>", "manual (default)"},
+            i = {"<Cmd>:set foldmethod=indent<CR>", "indent"},
+            e = {"<Cmd>:set foldmethod=expr<CR>", "expr"},
+            d = {"<Cmd>:set foldmethod=diff<CR>", "diff"},
+            M = {"<Cmd>:set foldmethod=marker<CR>", "marker"}
+        },
+        s = {
+            name = "Spectre",
+            d = {
+                '<Cmd>lua require("spectre").delete()<CR>',
+                "toggle current item"
+            },
+            g = {
+                '<Cmd>lua require("spectre.actions").select_entry()<CR>',
+                "goto current file"
+            },
+            q = {
+                '<Cmd>lua require("spectre.actions").send_to_qf()<CR>',
+                "send all item to quickfix"
+            },
+            m = {
+                '<Cmd>lua require("spectre.actions").replace_cmd()<CR>',
+                "input replace vim command"
+            },
+            o = {
+                '<Cmd>lua require("spectre").show_options()<CR>',
+                "show option"
+            },
+            R = {
+                '<Cmd>lua require("spectre.actions").run_replace()<CR>',
+                "replace all"
+            },
+            v = {
+                '<Cmd>lua require("spectre").change_view()<CR>',
+                "change result view mode"
+            },
+            c = {
+                '<Cmd>lua require("spectre").change_options("ignore-case")<CR>',
+                "toggle ignore case"
+            },
+            h = {
+                '<Cmd>lua require("spectre").change_options("hidden")<CR>',
+                "toggle search hidden"
+            }
+        },
+        t = {
+            name = "Terminal",
+            o = {"<Cmd>FloatermShow<CR>", "git"},
+            g = {"<Cmd>FloatermNew lazygit<CR>", "git"},
+            d = {"<Cmd>FloatermNew lazydocker<CR>", "docker"},
+            n = {"<Cmd>FloatermNew lazynpm<CR>", "npm"}
+        }
+    }
+    local vmappings = {
+        ["/"] = {":CommentToggle<CR>", "Comment"},
+        f = {"<Cmd>LspRangeFormatting<CR>", "Range formatting"}
+    }
+    local which_key = require "which-key"
+    which_key.setup(options)
+    which_key.register(nmappings, nopts)
+    which_key.register(vmappings, vopts)
 end
 
 function config.galaxyline()
@@ -72,12 +352,15 @@ function config.galaxyline()
         "dashboard",
         "vista",
         "dbui",
-        "packer"
+        "packer",
+        "dapui_scopes",
+        "dapui_breakpoints",
+        "dapui_stacks",
+        "dapui_watches"
     }
     gls.left[1] = {
         ViMode = {
             provider = function()
-                -- auto change color according the vim mode
                 local alias = {
                     n = "NORMAL",
                     v = "VISUAL",
@@ -112,23 +395,36 @@ function config.galaxyline()
                 vim.api.nvim_command("hi GalaxyViMode guifg=" .. mode_color[vim_mode])
                 return alias[vim_mode] .. "    "
             end,
-            highlight = {colors.color_3, colors.bg, "bold"}
+            highlight = {
+                colors.color_3,
+                colors.bg,
+                "bold"
+            }
         }
     }
     gls.left[2] = {
         FileIcon = {
             provider = "FileIcon",
             condition = buffer_not_empty,
-            highlight = {colors.fg, colors.bg}
+            highlight = {
+                colors.fg,
+                colors.bg
+            }
         }
     }
     gls.left[3] = {
         FileName = {
-            provider = {"FileName"},
+            provider = "FileName",
             condition = buffer_not_empty,
             separator = " ",
-            separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.fg, colors.bg}
+            separator_highlight = {
+                "NONE",
+                colors.bg
+            },
+            highlight = {
+                colors.fg,
+                colors.bg
+            }
         }
     }
     gls.left[4] = {
@@ -138,8 +434,14 @@ function config.galaxyline()
             end,
             condition = condition.check_git_workspace,
             -- separator = " ",
-            separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.color_5, colors.bg}
+            separator_highlight = {
+                "NONE",
+                colors.bg
+            },
+            highlight = {
+                colors.color_5,
+                colors.bg
+            }
         }
     }
     gls.left[5] = {
@@ -147,8 +449,14 @@ function config.galaxyline()
             provider = "GitBranch",
             condition = condition.check_git_workspace,
             separator = " ",
-            separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.color_5, colors.bg}
+            separator_highlight = {
+                "NONE",
+                colors.bg
+            },
+            highlight = {
+                colors.color_5,
+                colors.bg
+            }
         }
     }
     gls.left[6] = {
@@ -156,7 +464,10 @@ function config.galaxyline()
             provider = "DiffAdd",
             condition = condition.hide_in_width,
             icon = "   ",
-            highlight = {colors.color_7, colors.bg}
+            highlight = {
+                colors.color_7,
+                colors.bg
+            }
         }
     }
     gls.left[7] = {
@@ -164,7 +475,10 @@ function config.galaxyline()
             provider = "DiffModified",
             condition = condition.hide_in_width,
             icon = "   ",
-            highlight = {colors.color_4, colors.bg}
+            highlight = {
+                colors.color_4,
+                colors.bg
+            }
         }
     }
     gls.left[8] = {
@@ -172,35 +486,50 @@ function config.galaxyline()
             provider = "DiffRemove",
             condition = condition.hide_in_width,
             icon = "   ",
-            highlight = {colors.color_6, colors.bg}
+            highlight = {
+                colors.color_6,
+                colors.bg
+            }
         }
     }
     gls.right[1] = {
         DiagnosticError = {
             provider = "DiagnosticError",
             icon = "  ",
-            highlight = {colors.color_6, colors.bg}
+            highlight = {
+                colors.color_6,
+                colors.bg
+            }
         }
     }
     gls.right[2] = {
         DiagnosticWarn = {
             provider = "DiagnosticWarn",
-            icon = "  ",
-            highlight = {colors.color_4, colors.bg}
+            icon = "  ",
+            highlight = {
+                colors.color_4,
+                colors.bg
+            }
         }
     }
     gls.right[3] = {
         DiagnosticHint = {
             provider = "DiagnosticHint",
-            icon = "  ",
-            highlight = {colors.color_3, colors.bg}
+            icon = "  ",
+            highlight = {
+                colors.color_3,
+                colors.bg
+            }
         }
     }
     gls.right[4] = {
         DiagnosticInfo = {
             provider = "DiagnosticInfo",
             icon = "  ",
-            highlight = {colors.color_3, colors.bg}
+            highlight = {
+                colors.color_3,
+                colors.bg
+            }
         }
     }
     gls.right[5] = {
@@ -214,23 +543,38 @@ function config.galaxyline()
                 return true
             end,
             icon = "   ",
-            highlight = {colors.color_0, colors.bg}
+            highlight = {
+                colors.color_0,
+                colors.bg
+            }
         }
     }
     gls.right[6] = {
         LineInfo = {
             provider = "LineColumn",
             separator = "  ",
-            separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.color_7, colors.bg}
+            separator_highlight = {
+                "NONE",
+                colors.bg
+            },
+            highlight = {
+                colors.color_7,
+                colors.bg
+            }
         }
     }
     gls.right[7] = {
         PerCent = {
             provider = "LinePercent",
             separator = " ",
-            separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.color_7, colors.bg}
+            separator_highlight = {
+                "NONE",
+                colors.bg
+            },
+            highlight = {
+                colors.color_7,
+                colors.bg
+            }
         }
     }
     gls.right[8] = {
@@ -240,8 +584,14 @@ function config.galaxyline()
             end,
             condition = condition.hide_in_width,
             separator = " ",
-            separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.color_7, colors.bg}
+            separator_highlight = {
+                "NONE",
+                colors.bg
+            },
+            highlight = {
+                colors.color_7,
+                colors.bg
+            }
         }
     }
     gls.right[9] = {
@@ -249,8 +599,14 @@ function config.galaxyline()
             provider = "FileTypeName",
             condition = condition.hide_in_width,
             separator = " ",
-            separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.color_7, colors.bg}
+            separator_highlight = {
+                "NONE",
+                colors.bg
+            },
+            highlight = {
+                colors.color_7,
+                colors.bg
+            }
         }
     }
     gls.right[10] = {
@@ -258,8 +614,14 @@ function config.galaxyline()
             provider = "FileEncode",
             condition = condition.hide_in_width,
             separator = " ",
-            separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.color_7, colors.bg}
+            separator_highlight = {
+                "NONE",
+                colors.bg
+            },
+            highlight = {
+                colors.color_7,
+                colors.bg
+            }
         }
     }
     gls.right[11] = {
@@ -268,163 +630,38 @@ function config.galaxyline()
                 return " "
             end,
             separator = " ",
-            separator_highlight = {"NONE", colors.bg},
-            highlight = {colors.color_7, colors.bg}
+            separator_highlight = {
+                "NONE",
+                colors.bg
+            },
+            highlight = {
+                colors.color_7,
+                colors.bg
+            }
         }
     }
     gls.short_line_left[1] = {
         SFileName = {
             provider = "SFileName",
             condition = condition.buffer_not_empty,
-            highlight = {colors.fg, colors.bg}
+            highlight = {
+                colors.fg,
+                colors.bg
+            }
         }
     }
     gls.short_line_right[1] = {
         BufferIcon = {
             provider = "BufferIcon",
-            highlight = {colors.fg, colors.bg}
+            highlight = {
+                colors.fg,
+                colors.bg
+            }
         }
     }
 end
 
-function config.indent_blankline()
-    vim.g.indent_blankline_char = "▏"
-    vim.g.indent_blankline_show_first_indent_level = true
-    vim.g.indent_blankline_filetype_exclude = {
-        "startify",
-        "dashboard",
-        "dotooagenda",
-        "log",
-        "fugitive",
-        "gitcommit",
-        "packer",
-        "vimwiki",
-        "markdown",
-        "json",
-        "txt",
-        "vista",
-        "help",
-        "todoist",
-        "NvimTree",
-        "peekaboo",
-        "git",
-        "TelescopePrompt",
-        "undotree",
-        "flutterToolsOutline"
-    }
-    vim.g.indent_blankline_buftype_exclude = {"terminal", "nofile"}
-    vim.g.indent_blankline_show_trailing_blankline_indent = false
-    vim.g.indent_blankline_show_current_context = true
-    vim.g.indent_blankline_context_patterns = {
-        "class",
-        "function",
-        "method",
-        "block",
-        "list_literal",
-        "selector",
-        "^if",
-        "^table",
-        "if_statement",
-        "while",
-        "for"
-    }
-    vim.cmd("autocmd CursorMoved * IndentBlanklineRefresh")
-end
-
--- function config.chadtree()
-
---     local chadtree_settings = {
---         profiling = true,
---         ignore = {name_exact = {".*"}, name_glob = {'.*'}},
---         keymap = {open_sys = {'e'}, primary = {'<enter>', 'o'}},
---         theme = {
---             icon_glyph_set = 'devicons',
---             discrete_colour_map = {
---                 black = "#2E3440",
---                 red = "#ff5c57",
---                 green = "#f78c6c",
---                 yellow = "#F2AF5C",
---                 blue = "#1C9898",
---                 magenta = "#00839F",
---                 cyan = "#25B8A5",
---                 white = "#D9DA9E",
---                 bright_black = "#2E3440",
---                 bright_red = "#ff5c57",
---                 bright_green = "#f78c6c",
---                 bright_yellow = "#F2AF5C",
---                 bright_blue = "#1C9898",
---                 bright_magenta = "#00839F",
---                 bright_cyan = "#25B8A5",
---                 bright_white = "#D9DA9E"
---             }
---         }
---     }
---     vim.api.nvim_set_var("chadtree_settings", chadtree_settings)
--- end
-
-function config.tree()
-    vim.g.nvim_tree_disable_netrw = 0
-    vim.g.nvim_tree_hide_dotfiles = 1
-    vim.g.nvim_tree_indent_markers = 0
-    vim.g.nvim_tree_follow = 1
-    vim.g.nvim_tree_lsp_diagnostics = 0
-    vim.g.nvim_tree_auto_close = true
-    vim.g.nvim_tree_auto_ignore_ft = {"startify", "dashboard"}
-    vim.g.nvim_tree_show_icons = {
-        git = 1,
-        folders = 1,
-        files = 1,
-        folder_arrows = 0
-    }
-    vim.g.nvim_tree_icons = {
-        default = "",
-        symlink = "",
-        git = {
-            unstaged = "",
-            staged = "",
-            unmerged = "",
-            renamed = "➜",
-            untracked = "",
-            ignored = "◌"
-        },
-        folder = {
-            default = "",
-            open = "",
-            empty = "",
-            empty_open = "",
-            symlink = ""
-        }
-    }
-end
-
-function config.goyo()
-    local opts = {silent = true, noremap = true}
-    vim.api.nvim_set_keymap("n", "<C-z>", ":Goyo<CR>", opts)
-    -- TODO handle this better
-    vim.api.nvim_exec(
-        [[
-        function! Goyo_enter()
-        set noshowcmd
-        Limelight
-        endfunction
-
-        function! Goyo_leave()
-        set showcmd
-        Limelight!
-        endfunction
-
-        autocmd! User GoyoEnter nested call Goyo_enter()
-        autocmd! User GoyoLeave nested call Goyo_leave()
-    ]],
-        true
-    )
-end
-
-function config.limelight()
-    vim.g.limelight_conceal_guifg = "#628b97"
-end
-
-function config.floaterm()
+function config.vim_floaterm()
     vim.g.floaterm_keymap_toggle = "<F1>"
     vim.g.floaterm_keymap_next = "<F2>"
     vim.g.floaterm_keymap_prev = "<F3>"
@@ -439,33 +676,87 @@ function config.floaterm()
     vim.g.floaterm_autoclose = 1
 end
 
-function config.helper()
-    local home = os.getenv("HOME")
+function config.twilight()
+    require("twilight").setup {}
+end
+
+function config.indent_blankline()
+    require("indent_blankline").setup {
+        char = "▏",
+        show_first_indent_level = true,
+        show_trailing_blankline_indent = true,
+        show_current_context = true,
+        context_patterns = {
+            "class",
+            "function",
+            "method",
+            "block",
+            "list_literal",
+            "selector",
+            "^if",
+            "^table",
+            "if_statement",
+            "while",
+            "for"
+        },
+        filetype_exclude = {
+            "startify",
+            "dashboard",
+            "dotooagenda",
+            "log",
+            "fugitive",
+            "gitcommit",
+            "packer",
+            "vimwiki",
+            "markdown",
+            "json",
+            "txt",
+            "vista",
+            "help",
+            "todoist",
+            "NvimTree",
+            "peekaboo",
+            "git",
+            "TelescopePrompt",
+            "undotree",
+            "flutterToolsOutline"
+        },
+        buftype_exclude = {
+            "terminal",
+            "nofile"
+        }
+    }
+end
+
+function config.lvim_focus()
+    require("lvim-focus").setup()
+end
+
+function config.lvim_helper()
+    local global = require("core.global")
     require("lvim-helper").setup(
         {
             files = {
-                home .. "/.config/nvim/help/lvim_commands.md",
-                home .. "/.config/nvim/help/lvim_bindings_normal_mode.md",
-                home .. "/.config/nvim/help/lvim_bindings_visual_mode.md",
-                home .. "/.config/nvim/help/lvim_bindings_debug_vimspector.md",
-                home .. "/.config/nvim/help/lvim_bindings_debug_dap.md",
-                home .. "/.config/nvim/help/vim_cheat_sheet_global.md",
-                home .. "/.config/nvim/help/vim_cheat_sheet_cursor_movement.md",
-                home .. "/.config/nvim/help/vim_cheat_sheet_visual_mode.md",
-                home .. "/.config/nvim/help/vim_cheat_sheet_visual_commands.md",
-                home .. "/.config/nvim/help/vim_cheat_sheet_insert_mode.md",
-                home .. "/.config/nvim/help/vim_cheat_sheet_editing.md",
-                home .. "/.config/nvim/help/vim_cheat_sheet_registers.md",
-                home .. "/.config/nvim/help/vim_cheat_sheet_marks_and_positions.md",
-                home .. "/.config/nvim/help/vim_cheat_sheet_macros.md",
-                home .. "/.config/nvim/help/vim_cheat_sheet_cut_and_paste.md",
-                home .. "/.config/nvim/help/vim_cheat_sheet_indent_text.md",
-                home .. "/.config/nvim/help/vim_cheat_sheet_exiting.md",
-                home .. "/.config/nvim/help/vim_cheat_sheet_search_and_replace.md",
-                home .. "/.config/nvim/help/vim_cheat_sheet_search_in_multiple_files.md",
-                home .. "/.config/nvim/help/vim_cheat_sheet_tabs.md",
-                home .. "/.config/nvim/help/vim_cheat_sheet_working_with_multiple_files.md",
-                home .. "/.config/nvim/help/vim_cheat_sheet_diff.md"
+                global.home .. "/.config/nvim/help/lvim_bindings_normal_mode.md",
+                global.home .. "/.config/nvim/help/lvim_bindings_visual_mode.md",
+                global.home .. "/.config/nvim/help/lvim_bindings_debug_dap.md",
+                global.home .. "/.config/nvim/help/vim_cheat_sheet_global.md",
+                global.home .. "/.config/nvim/help/vim_cheat_sheet_cursor_movement.md",
+                global.home .. "/.config/nvim/help/vim_cheat_sheet_visual_mode.md",
+                global.home .. "/.config/nvim/help/vim_cheat_sheet_visual_commands.md",
+                global.home .. "/.config/nvim/help/vim_cheat_sheet_insert_mode.md",
+                global.home .. "/.config/nvim/help/vim_cheat_sheet_editing.md",
+                global.home .. "/.config/nvim/help/vim_cheat_sheet_registers.md",
+                global.home .. "/.config/nvim/help/vim_cheat_sheet_marks_and_positions.md",
+                global.home .. "/.config/nvim/help/vim_cheat_sheet_macros.md",
+                global.home .. "/.config/nvim/help/vim_cheat_sheet_cut_and_paste.md",
+                global.home .. "/.config/nvim/help/vim_cheat_sheet_indent_text.md",
+                global.home .. "/.config/nvim/help/vim_cheat_sheet_exiting.md",
+                global.home .. "/.config/nvim/help/vim_cheat_sheet_search_and_replace.md",
+                global.home .. "/.config/nvim/help/vim_cheat_sheet_search_in_multiple_files.md",
+                global.home .. "/.config/nvim/help/vim_cheat_sheet_tabs.md",
+                global.home .. "/.config/nvim/help/vim_cheat_sheet_working_with_multiple_files.md",
+                global.home .. "/.config/nvim/help/vim_cheat_sheet_diff.md"
             }
         }
     )

@@ -1,5 +1,4 @@
 local M = {}
-local global = require "core.global"
 
 M.augroups = function(definitions)
     for group_name, definition in pairs(definitions) do
@@ -39,7 +38,9 @@ M.merge = function(a, b)
 end
 
 M.options_global = function(options)
-    for name, value in pairs(options) do vim.o[name] = value end
+    for name, value in pairs(options) do
+        vim.o[name] = value
+    end
 end
 
 M.options_set = function(options)
@@ -62,7 +63,11 @@ M.configs = function()
     local global_configs = require "configs.global"
     local custom_configs = require "configs.custom"
     local configs = M.merge(global_configs, custom_configs)
-    for _, func in pairs(configs) do if func ~= false then func() end end
+    for _, func in pairs(configs) do
+        if type(func) == "function" then
+            func()
+        end
+    end
 end
 
 M.file_exists = function(name)
@@ -70,8 +75,12 @@ M.file_exists = function(name)
     return f ~= nil and io.close(f)
 end
 
+M.dir_exists = function(path)
+    return M.file_exists(path)
+end
+
 M.change_path = function()
-    return vim.fn.input("Path: ", vim.fn.getcwd() .. global.path_sep, "file")
+    return vim.fn.input("Path: ", vim.fn.getcwd() .. "/", "file")
 end
 
 M.set_global_path = function()

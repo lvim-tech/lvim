@@ -1,30 +1,36 @@
 local global = {}
+
 local home = os.getenv("HOME")
--- local path_sep = global.is_windows and '\\' or '/'
-local path_sep = package.config:sub(1, 1)
 local os_name = vim.loop.os_uname().sysname
+local vim_path = vim.fn.stdpath "config"
+local os
+if os_name == "Darwin" then
+    os = "macOS"
+elseif os_name == "Linux" then
+    os = "Linux"
+elseif os_name == "Windows" then
+    os = "unsuported"
+else
+    os = "other"
+end
 
 function global:load_variables()
-    self.is_mac = os_name == "Darwin"
-    self.is_linux = os_name == "Linux"
-    self.is_windows = os_name == "Windows"
-    self.vim_path = vim.fn.stdpath("config")
-    self.cache_path = home .. path_sep .. ".cache" .. path_sep .. "nvim" ..
-                          path_sep
-    self.modules_path = self.vim_path .. path_sep .. "lua" .. path_sep ..
-                            "modules"
-    self.global_config = self.vim_path .. path_sep .. "lua" .. path_sep ..
-                             "config" .. path_sep .. "global" .. path_sep
-    self.custom_config = self.vim_path .. path_sep .. "lua" .. path_sep ..
-                             "config" .. path_sep .. "custom" .. path_sep
-    self.lsp_languages =
-        self.vim_path .. path_sep .. "lua" .. path_sep .. "lsp" .. path_sep ..
-            "languages" .. path_sep
-    self.path_sep = path_sep
+    self.os = os
+    self.vim_path = vim_path
+    self.cache_path = home .. "/.cache/nvim/"
+    self.modules_path = vim_path .. "/lua/modules"
+    self.global_config = vim_path .. "/lua/config/global/"
+    self.custom_config = vim_path .. "/lua/config/custom/"
+    self.languages_path = vim_path .. "/lua/languages/global/languages/"
+    self.lsp_languages = vim_path .. "/lua/lsp/languages/"
     self.home = home
-    self.data_path = string.format("%s" .. path_sep .. "site" .. path_sep,
-                                   vim.fn.stdpath("data"))
-    self.lsp_path = string.format("%s" .. path_sep, vim.fn.stdpath("data"))
+    self.data_path = string.format("%s/site/", vim.fn.stdpath "data")
+    self.lsp_path = string.format("%s/", vim.fn.stdpath("data"))
+    self.languages = {}
+    self.current_cwd = vim.fn.getcwd()
+    self.diagnostics = {}
+    self.virtual_text = "no"
+    self.pack_installer = nil
 end
 
 global:load_variables()

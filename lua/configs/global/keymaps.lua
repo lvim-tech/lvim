@@ -22,29 +22,37 @@ keymaps["normal"] = {
     {"<C-Down>", ":resize +2<CR>"}, -- Resize height +
     {"<C-b>", ":GitBlameToggle<CR>"}, -- Git blame toggle
     {"<S-x>", ":NvimTreeToggle<CR>"}, -- Nvim tree explorer
-    {"<S-u>", ":Vifm<CR>"}, -- Vifm explorer
     {"<S-l>", ":FloatermNew lazygit<CR>"}, -- Lazygit
     {"<S-m>", ":MarkdownPreviewToggle<CR>"}, -- Markdown preview toggle
-    {"<S-f>", ":SnapFiles<CR>"}, -- Search files with Snap
-    {"<S-t>", ":SnapGrep<CR>"}, -- Search word in files with Snap
+    {"<A-,>", ":Telescope find_files<CR>"}, -- Search files with Telescope
+    {"<A-.>", ":Telescope live_grep<CR>"}, -- Search word with Telescope
     {"<A-j>", ":AnyJump<CR>"}, -- Any jump
     {"<A-v>", ":SymbolsOutline<CR>"}, -- Symbols outline
     {"<A-[>", ":foldopen<CR>"}, -- Fold open
     {"<A-]>", ":foldclose<CR>"}, -- Fold close
-    {"<A-.>", ":BookmarkToggle<CR>"}, -- Bookmark toggle
-    {"<A-,>", ":Neoformat<CR>"}, -- Format code
     {"<A-s>", ":Spectre<CR>"}, -- Replace in multiple files
     {"<A-/>", ":CommentToggle<CR>"}, -- Comment toggle
     {"<A-f>", ":LspFormatting<CR>"}, -- Lsp format code
     {"<A-t>", ":LspCodeAction<CR>"}, -- Lsp action
     {"<A-g>", ":LspReferences<CR>"}, -- Lsp references
-    {"<A-d>", ":LspDeclaration<CR>"}, -- Lsp declaration
-    {"<A-p>", ":LspDefinition<CR>"}, -- Lsp definition
+    {"<A-d>", ":LspDefinition<CR>"}, -- Lsp definition
     {"<A-h>", ":LspHover<CR>"}, -- Lsp hover
     {"<A-r>", ":LspRename<CR>"}, -- Lsp rename
     {"<A-n>", ":LspGoToNext<CR>"}, -- Lsp go to next
     {"<A-p>", ":LspGoToPrev<CR>"}, -- Lsp go to prev
-    {"<A-e>", ":LspTroubleToggle<CR>"} -- Lsp trouble toggle
+    {"<A-e>", ":LspTroubleToggle<CR>"}, -- Lsp trouble toggle
+    {"<A-/>", ":CommentToggle<CR>"}, -- Comment toggle
+    {"<A-*>", ":LspVirtualTextToggle<CR>"}, -- Lsp virtual text toggle
+    {"<A-1>", "<Cmd>DapToggleBreakpoint<CR>"}, -- Toggle breakpoint
+    {"<A-2>", "<Cmd>DapStartContinue<CR>"}, -- Start / continue
+    {"<A-3>", "<Cmd>DapStepInto<CR>"}, -- Step into
+    {"<A-4>", "<Cmd>DapStepOver<CR>"}, -- Step over
+    {"<A-5>", "<Cmd>DapStepOut<CR>"}, -- Step out
+    {"<A-6>", "<Cmd>DapUp<CR>"}, -- Up
+    {"<A-7>", "<Cmd>DapDown<CR>"}, -- Down
+    {"<A-8>", "<Cmd>DapUIClose<CR>"}, -- UI close
+    {"<A-9>", "<Cmd>DapRestart<CR>"}, -- Restart
+    {"<A-0>", "<Cmd>DapToggleRepl<CR>"} -- Toggle Repl
 }
 
 keymaps["visual"] = {

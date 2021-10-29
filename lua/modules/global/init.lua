@@ -1,70 +1,83 @@
 local modules = {}
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- SYSTEM -------------------------------------------------------
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+modules["nvim-lua/plenary.nvim"] = {}
+modules["nvim-lua/popup.nvim"] = {}
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- UI -----------------------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 local ui_config = require("modules.global.configs.ui")
 
 modules["lvim-tech/lvim-colorscheme"] = {
-    event = "VimEnter",
-    config = [[vim.cmd('colorscheme lvim')]]
+    event = {
+        "VimEnter",
+        "BufRead",
+        "BufNewFile"
+    },
+    config = ui_config.lvim_colorscheme
 }
 
 modules["glepnir/dashboard-nvim"] = {
     event = "VimEnter",
-    config = ui_config.dashboard
-}
-
--- modules['glepnir/galaxyline.nvim'] = {
---     branch = 'main',
---     config = ui_config.galaxyline,
---     requires = 'kyazdani42/nvim-web-devicons'
--- }
-
-modules["lvim-tech/galaxyline.nvim"] = {
-    event = {"VimEnter", "BufRead", "BufNewFile"},
-    branch = "exclude_filetypes",
-    config = ui_config.galaxyline,
-    requires = "kyazdani42/nvim-web-devicons"
-}
-
--- modules["NTBBloodbath/galaxyline.nvim"] = {
---     event = {"VimEnter", "BufRead", "BufNewFile"},
---     config = ui_config.galaxyline,
---     requires = "kyazdani42/nvim-web-devicons"
--- }
-
-modules["lukas-reineke/indent-blankline.nvim"] = {
-    event = {"BufRead", "BufNewFile"},
-    config = ui_config.indent_blankline
+    config = ui_config.dashboard_nvim
 }
 
 modules["kyazdani42/nvim-tree.lua"] = {
+    requires = "kyazdani42/nvim-web-devicons",
     cmd = "NvimTreeToggle",
-    config = ui_config.tree,
-    requires = "kyazdani42/nvim-web-devicons"
+    config = ui_config.nvim_tree
 }
 
-modules["vifm/vifm.vim"] = {cmd = "Vifm"}
+modules["folke/which-key.nvim"] = {
+    event = "BufWinEnter",
+    config = ui_config.which_key
+}
 
-modules["junegunn/goyo.vim"] = {
-    cmd = "Goyo",
-    requires = {
-        {
-            "junegunn/limelight.vim",
-            after = "goyo.vim",
-            config = ui_config.limelight
-        }
+modules["NTBBloodbath/galaxyline.nvim"] = {
+    requires = "kyazdani42/nvim-web-devicons",
+    event = {
+        "VimEnter",
+        "BufRead",
+        "BufNewFile"
     },
-    config = ui_config.goyo
+    config = ui_config.galaxyline
 }
 
-modules["voldikss/vim-floaterm"] = {config = ui_config.floaterm}
+modules["voldikss/vim-floaterm"] = {
+    config = ui_config.vim_floaterm
+}
+
+modules["folke/twilight.nvim"] = {
+    cmd = "Twilight",
+    config = ui_config.twilight
+}
+
+modules["lukas-reineke/indent-blankline.nvim"] = {
+    event = {
+        "VimEnter",
+        "BufRead",
+        "BufNewFile"
+    },
+    config = ui_config.indent_blankline
+}
+
+modules["lvim-tech/lvim-focus"] = {
+    event = {
+        "VimEnter",
+        "BufRead",
+        "BufNewFile"
+    },
+    config = ui_config.lvim_focus
+}
 
 modules["lvim-tech/lvim-helper"] = {
     cmd = "LvimHelper",
-    config = ui_config.helper
+    config = ui_config.lvim_helper
 }
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -73,77 +86,139 @@ modules["lvim-tech/lvim-helper"] = {
 
 local editor_config = require("modules.global.configs.editor")
 
-modules["vim-ctrlspace/vim-ctrlspace"] = {cmd = "CtrlSpace"}
-
-modules["camspiers/snap"] = {}
-
-modules["windwp/nvim-spectre"] = {
-    opt = true,
-    config = editor_config.spectre,
-    requires = {
-        {"nvim-lua/popup.nvim"},
-        {"nvim-lua/plenary.nvim"},
-        after = "nvim-spectre"
-    }
+modules["vim-ctrlspace/vim-ctrlspace"] = {
+    cmd = "CtrlSpace"
 }
 
-modules["lambdalisue/suda.vim"] = {
-    event = {"BufRead", "BufNewFile"},
-    config = editor_config.suda
+modules["nvim-telescope/telescope.nvim"] = {
+    requires = {
+        {
+            "nvim-telescope/telescope-fzf-native.nvim",
+            after = "telescope.nvim",
+            run = "make"
+        },
+        {
+            "nvim-telescope/telescope-media-files.nvim",
+            after = "telescope.nvim"
+        }
+    },
+    cmd = "Telescope",
+    config = editor_config.telescope
+}
+
+modules["windwp/nvim-spectre"] = {
+    requires = {
+        {
+            "nvim-lua/popup.nvim"
+        },
+        {
+            "nvim-lua/plenary.nvim"
+        }
+    },
+    cmd = "Spectre",
+    config = editor_config.nvim_spectre
 }
 
 modules["terrortylor/nvim-comment"] = {
     cmd = "CommentToggle",
-    config = editor_config.comment
-}
-
-modules["sbdchd/neoformat"] = {cmd = "Neoformat"}
-
-modules["windwp/nvim-autopairs"] = {
-    after = "nvim-treesitter",
-    config = editor_config.autopairs
+    config = editor_config.nvim_comment
 }
 
 modules["MattesGroeger/vim-bookmarks"] = {
     cmd = "BookmarkToggle",
-    config = editor_config.bookmarks
+    config = editor_config.vim_bookmarks
 }
 
-modules["mbbill/undotree"] = {cmd = "UndotreeToggle"}
-
 modules["kkoomen/vim-doge"] = {
-    cmd = {"DogeGenerate", "DogeCreateDocStandard"},
+    cmd = {
+        "DogeGenerate",
+        "DogeCreateDocStandard"
+    },
     run = ":call doge#install()",
-    config = editor_config.doge
+    config = editor_config.vim_doge
+}
+
+modules["windwp/nvim-autopairs"] = {
+    after = {
+        "nvim-treesitter",
+        "nvim-cmp"
+    },
+    config = editor_config.nvim_autopairs
+}
+
+modules["norcalli/nvim-colorizer.lua"] = {
+    event = {
+        "BufRead",
+        "BufNewFile"
+    },
+    config = editor_config.nvim_colorize
+}
+
+modules["lambdalisue/suda.vim"] = {
+    event = {
+        "BufRead",
+        "BufNewFile"
+    },
+    config = editor_config.suda
+}
+
+modules["kenn7/vim-arsync"] = {
+    event = {
+        "BufRead",
+        "BufNewFile"
+    }
+}
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- Version control ----------------------------------------------
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+local version_control_config = require("modules.global.configs.version_control")
+
+modules["TimUntersberger/neogit"] = {
+    requires = "nvim-lua/plenary.nvim",
+    cmd = "Neogit",
+    config = version_control_config.neogit
+}
+
+modules["tpope/vim-fugitive"] = {
+    event = {
+        "BufRead",
+        "BufNewFile"
+    }
 }
 
 modules["lewis6991/gitsigns.nvim"] = {
-    event = "BufReadPre",
-    config = editor_config.gitsigns,
-    requires = {{"nvim-lua/plenary.nvim", after = "gitsigns.nvim"}}
-}
-
-modules["tpope/vim-fugitive"] = {event = {"BufRead", "BufNewFile"}}
-
-modules["sindrets/diffview.nvim"] = {
-    cmd = {
-        "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles",
-        "DiffviewFocusFiles", "DiffviewRefresh"
+    requires = "nvim-lua/plenary.nvim",
+    event = {
+        "BufRead",
+        "BufNewFile"
     },
-    config = editor_config.diffview
+    config = version_control_config.gitsigns
 }
 
 modules["f-person/git-blame.nvim"] = {
-    config = editor_config.blame
+    config = version_control_config.git_blame
 }
 
-modules["TimUntersberger/neogit"] = {
-    cmd = "Neogit",
-    config = editor_config.neogit,
-    requires = {{"nvim-lua/plenary.nvim", after = "neogit"}}
+modules["sindrets/diffview.nvim"] = {
+    cmd = {
+        "DiffviewOpen",
+        "DiffviewClose",
+        "DiffviewToggleFiles",
+        "DiffviewFocusFiles",
+        "DiffviewRefresh"
+    },
+    config = version_control_config.diffview
 }
 
-modules["kenn7/vim-arsync"] = {event = {"BufRead", "BufNewFile"}}
+modules["mbbill/undotree"] = {
+    event = {
+        "BufRead",
+        "BufNewFile"
+    },
+    cmd = "UndotreeToggle"
+}
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Languages ----------------------------------------------------
@@ -151,54 +226,101 @@ modules["kenn7/vim-arsync"] = {event = {"BufRead", "BufNewFile"}}
 
 local languages_config = require("modules.global.configs.languages")
 
-modules["neovim/nvim-lspconfig"] = {config = languages_config.lsp}
-
-modules["kabouzeid/nvim-lspinstall"] = {}
-
-modules["mfussenegger/nvim-jdtls"] = {event = "VimEnter"}
-
-modules["akinsho/flutter-tools.nvim"] = {
-    ft = "dart",
-    config = languages_config.dart
+modules["neovim/nvim-lspconfig"] = {
+    event = {
+        "VimEnter",
+        "BufWinEnter",
+        "BufRead",
+        "BufNewFile"
+    },
+    config = languages_config.nvim_lspconfig
 }
 
-modules["jose-elias-alvarez/nvim-lsp-ts-utils"] = {event = "VimEnter"}
+modules["williamboman/nvim-lsp-installer"] = {
+    requires = "neovim/nvim-lspconfig",
+    config = languages_config.nvim_lsp_installer
+}
 
 modules["ray-x/lsp_signature.nvim"] = {}
 
 modules["nvim-treesitter/nvim-treesitter"] = {
-    event = {"BufRead", "BufNewFile"},
-    config = languages_config.treesitter,
-    requires = {{"nvim-treesitter/playground", opt = true}},
-    run = ":TSUpdate"
+    requires = {
+        {
+            "nvim-treesitter/playground",
+            after = "nvim-treesitter"
+        }
+    },
+    event = {
+        "BufRead",
+        "BufNewFile"
+    },
+    run = ":TSUpdate",
+    config = languages_config.nvim_treesitter
 }
 
 modules["pechorin/any-jump.vim"] = {
-    event = {"BufRead", "BufNewFile"},
-    config = languages_config.jump
+    event = {
+        "BufRead",
+        "BufNewFile"
+    },
+    config = languages_config.any_jump
 }
 
 modules["folke/lsp-trouble.nvim"] = {
-    -- event = "BufRead",
-    config = languages_config.trouble,
-    requires = "kyazdani42/nvim-web-devicons"
+    requires = "kyazdani42/nvim-web-devicons",
+    config = languages_config.lsp_trouble
 }
 
 modules["simrat39/symbols-outline.nvim"] = {
-    event = {"BufRead", "BufNewFile"},
-    config = languages_config.symbols
+    cmd = "SymbolsOutline",
+    config = languages_config.symbols_outline
 }
 
-modules["akinsho/dependency-assist.nvim"] = {
-    event = {"VimEnter", "BufRead", "BufNewFile"},
-    config = languages_config.dependency
+modules["rcarriga/nvim-dap-ui"] = {
+    event = {
+        "BufRead",
+        "BufNewFile"
+    },
+    requires = {
+        "mfussenegger/nvim-dap",
+        "jbyuki/one-small-step-for-vimkind"
+    },
+    config = languages_config.nvim_dap_ui
 }
 
-modules["puremourning/vimspector"] = {opt = true}
+modules["Pocco81/DAPInstall.nvim"] = {
+    event = "BufWinEnter",
+    config = languages_config.dapinstall
+}
 
-modules["mfussenegger/nvim-dap"] = {opt = true}
+modules["kristijanhusak/vim-dadbod-ui"] = {
+    requires = {
+        {
+            "tpope/vim-dadbod",
+            opt = true
+        },
+        {
+            "kristijanhusak/vim-dadbod-completion",
+            opt = true
+        }
+    },
+    cmd = {
+        "DBUIToggle",
+        "DBUIAddConnection",
+        "DBUI",
+        "DBUIFindBuffer",
+        "DBUIRenameBuffer"
+    },
+    config = languages_config.vim_dadbod_ui
+}
 
-modules["rcarriga/nvim-dap-ui"] = {opt = true}
+modules["iamcco/markdown-preview.nvim"] = {
+    event = {
+        "VimEnter",
+        "BufReadPre"
+    },
+    run = "cd app && yarn install"
+}
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Completion ---------------------------------------------------
@@ -207,68 +329,56 @@ modules["rcarriga/nvim-dap-ui"] = {opt = true}
 local completion_config = require("modules.global.configs.completion")
 
 modules["hrsh7th/nvim-cmp"] = {
-    event = "InsertEnter",
-    config = completion_config.cmp,
     requires = {
-        {'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp'},
-        {'hrsh7th/cmp-vsnip', after = 'nvim-cmp'},
-        {'hrsh7th/cmp-buffer', after = 'nvim-cmp'},
-        {'hrsh7th/cmp-path', after = 'nvim-cmp'}
-    }
+        {
+            "hrsh7th/cmp-nvim-lsp"
+        },
+        {
+            "hrsh7th/cmp-vsnip",
+            after = "nvim-cmp"
+        },
+        {
+            "hrsh7th/cmp-buffer",
+            after = "nvim-cmp"
+        },
+        {
+            "hrsh7th/cmp-path",
+            after = "nvim-cmp"
+        }
+    },
+    event = {
+        "BufRead",
+        "BufNewFile",
+        "InsertEnter"
+    },
+    config = completion_config.nvim_cmp
 }
 
 modules["hrsh7th/vim-vsnip"] = {
-    event = "InsertEnter",
     requires = {
-        {'hrsh7th/vim-vsnip-integ', after = 'vim-vsnip'},
-        {'rafamadriz/friendly-snippets', after = 'vim-vsnip'}
-    }
+        {
+            "hrsh7th/vim-vsnip-integ",
+            after = "vim-vsnip"
+        },
+        {
+            "rafamadriz/friendly-snippets",
+            after = "vim-vsnip"
+        }
+    },
+    event = "InsertEnter"
 }
 
 modules["onsails/lspkind-nvim"] = {
-    event = {"BufRead", "BufNewFile"},
-    config = completion_config.lspkind
+    event = {
+        "BufRead",
+        "BufNewFile"
+    },
+    config = completion_config.lspkind_nvim
 }
 
 modules["mattn/emmet-vim"] = {
     event = "InsertEnter",
-    config = completion_config.emmet
+    config = completion_config.emmet_vim
 }
-
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- Tools --------------------------------------------------------
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-local tools_config = require("modules.global.configs.tools")
-
-modules["norcalli/nvim-colorizer.lua"] = {
-    event = "VimEnter",
-    config = tools_config.colorize
-}
-
-modules["kristijanhusak/vim-dadbod-ui"] = {
-    cmd = {
-        "DBUIToggle", "DBUIAddConnection", "DBUI", "DBUIFindBuffer",
-        "DBUIRenameBuffer"
-    },
-    config = tools_config.vim_dadbod_ui,
-    requires = {
-        {"tpope/vim-dadbod", opt = true},
-        {"kristijanhusak/vim-dadbod-completion", opt = true}
-    }
-}
-
-modules["AckslD/nvim-whichkey-setup.lua"] = {
-    event = {"VimEnter", "BufReadPre"},
-    requires = "liuchengxu/vim-which-key",
-    config = tools_config.whichkey
-}
-
-modules["iamcco/markdown-preview.nvim"] = {
-    event = {"VimEnter", "BufReadPre"},
-    run = "cd app && yarn install"
-}
-
-modules["airblade/vim-rooter"] = {config = tools_config.rooter}
 
 return modules
