@@ -238,23 +238,6 @@ function config.nvim_autopairs()
             end
         )
     }
-    require("nvim-autopairs.completion.cmp").setup {
-        map_cr = false,
-        map_complete = true,
-        map_char = {
-            all = "(",
-            tex = "{"
-        },
-        vim.api.nvim_set_keymap(
-            "i",
-            "<CR>",
-            "v:lua.MPairs.autopairs_cr()",
-            {
-                expr = true,
-                noremap = true
-            }
-        )
-    }
     local ts_conds = require "nvim-autopairs.ts-conds"
     autopairs.add_rules {
         Rule("%", "%", "lua"):with_pair(ts_conds.is_ts_node {"string", "comment"}),
