@@ -202,14 +202,10 @@ modules["f-person/git-blame.nvim"] = {
 }
 
 modules["sindrets/diffview.nvim"] = {
-    cmd = {
-        "DiffviewOpen",
-        "DiffviewClose",
-        "DiffviewToggleFiles",
-        "DiffviewFocusFiles",
-        "DiffviewRefresh"
-    },
-    config = version_control_config.diffview
+    event = {
+        "BufRead",
+        "BufNewFile"
+    }
 }
 
 modules["mbbill/undotree"] = {
