@@ -33,7 +33,7 @@ language_configs["lsp"] = function()
             handlers = languages_setup.show_line_diagnostics()
         }
     end
-    languages_setup.setup_lsp("cssls", start_clangd)
+    languages_setup.setup_lsp("clangd", start_clangd)
 end
 
 language_configs["dap"] = function()
