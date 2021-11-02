@@ -22,7 +22,7 @@
 - Autoformat
 - Custom settings for projects
 - 58 plugins
-- Loading time - ~060.000
+- Loading time - ~065.000
 
 ---
 

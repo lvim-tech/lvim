@@ -7,13 +7,9 @@
 local global = require("core.global")
 local funcs = require("core.funcs")
 local languages_setup = require("languages.global.utils")
-local nvim_lsp = require("lspconfig")
 local nvim_lsp_util = require("lspconfig/util")
 local lsp_signature = require("lsp_signature")
 local default_debouce_time = 150
-local sumneko_path = global.lsp_path .. "lsp_servers/sumneko_lua/extension/server/bin/" .. global.os
-local lsp_installer = require("nvim-lsp-installer")
-local lsp_installer_servers = require("nvim-lsp-installer.servers")
 local dap = require("dap")
 
 local language_configs = {}
@@ -24,9 +20,8 @@ language_configs["buffer"] = function()
 end
 
 language_configs["lsp"] = function()
-    local function start_sumneko_lua()
-        nvim_lsp.sumneko_lua.setup {
-            cmd = {sumneko_path .. "/lua-language-server", "-E", sumneko_path .. "/main.lua"},
+    local function start_sumneko_lua(server)
+        server:setup {
             flags = {
                 debounce_text_changes = default_debouce_time
             },
@@ -36,7 +31,7 @@ language_configs["lsp"] = function()
                 table.insert(global["languages"]["lua"]["pid"], client.rpc.pid)
                 vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
                 lsp_signature.on_attach(languages_setup.config_lsp_signature)
-                languages_setup.document_highlight(client, bufnr)
+                languages_setup.document_highlight(client)
             end,
             capabilities = languages_setup.get_capabilities(),
             settings = {
@@ -59,19 +54,7 @@ language_configs["lsp"] = function()
             handlers = languages_setup.show_line_diagnostics()
         }
     end
-    local ok, sumneko_lua = lsp_installer_servers.get_server("sumneko_lua")
-    if ok then
-        if not sumneko_lua:is_installed() then
-            sumneko_lua:install()
-            lsp_installer.on_server_ready(
-                function()
-                    start_sumneko_lua()
-                end
-            )
-        else
-            start_sumneko_lua()
-        end
-    end
+    languages_setup.setup_lsp("sumneko_lua", start_sumneko_lua)
 end
 
 language_configs["dap"] = function()

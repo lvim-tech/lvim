@@ -21,14 +21,13 @@ language_configs["lsp"] = function()
                 table.insert(global["languages"]["css"]["pid"], client.rpc.pid)
                 vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
                 lsp_signature.on_attach(languages_setup.config_lsp_signature)
-                languages_setup.document_highlight(client, bufnr)
+                languages_setup.document_highlight(client)
             end,
             capabilities = languages_setup.get_capabilities(),
             root_dir = nvim_lsp_util.root_pattern("."),
             handlers = languages_setup.show_line_diagnostics()
         }
     end
-
     languages_setup.setup_lsp("cssls", start_cssls)
 end
 

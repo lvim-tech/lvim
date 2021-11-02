@@ -4,14 +4,14 @@ local global = require("core.global")
 local M = {}
 
 M.setup_lsp = function (server_name, start_fn)
-    local ok , server = lsp_installer_servers.get_server(server_name)
+    local ok, server = lsp_installer_servers.get_server(server_name)
     if ok then
         server:on_ready(start_fn)
         if not server:is_installed() then
             server:install()
         end
     else
-        -- TODO: print error
+        print("Error starting lsp server " .. server_name)
     end
 end
 
