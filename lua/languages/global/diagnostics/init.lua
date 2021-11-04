@@ -24,7 +24,8 @@ M.config = {
         "python",
         -- "rust",
         "sh",
-        "vim"
+        "vim",
+        "vue"
     },
     linters_filetypes = {
         css = "stylelint",
@@ -34,6 +35,7 @@ M.config = {
         typescript = "eslint",
         javascriptreact = "eslint",
         typescriptreact = "eslint",
+        vue = "eslint",
         html = "tidy",
         c = "cpplint",
         cpp = "cpplint",
@@ -337,6 +339,7 @@ M.config = {
         typescript = "prettier",
         javascriptreact = "prettier",
         typescriptreact = "prettier",
+        vue = "prettier",
         lua = "luafmt",
         python = "autopep8",
         vim = "prettier",
