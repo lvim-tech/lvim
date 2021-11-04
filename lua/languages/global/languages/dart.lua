@@ -11,6 +11,7 @@ local nvim_lsp = require("lspconfig")
 local nvim_lsp_util = require("lspconfig/util")
 local lsp_signature = require("lsp_signature")
 local default_debouce_time = 150
+local dap_install = require("dap-install")
 local dap = require("dap")
 
 local language_configs = {}
@@ -76,6 +77,7 @@ language_configs["dap"] = function()
     local find_dart_sdk_root_path = function()
         if os.getenv "FLUTTER_SDK" then
             local flutter_path = os.getenv "FLUTTER_SDK"
+            return flutter_path
         elseif vim.fn["executable"] "flutter" == 1 then
             local flutter_exe_path = vim.fn["resolve"](vim.fn["exepath"] "flutter")
             local flutter_path = flutter_exe_path:gsub("/bin/flutter", "")
@@ -83,21 +85,13 @@ language_configs["dap"] = function()
         elseif vim.fn["executable"] "dart" == 1 then
             local dart_exe_path = vim.fn["resolve"](vim.fn["exepath"] "dart")
             local dart_path = dart_exe_path:gsub("/bin/dart", "")
+            return dart_path
         else
             return ""
         end
     end
     local dart_path = find_dart_sdk_root_path()
-    local global = require("core.global")
-    local path_debuggers = vim.fn.stdpath("data") .. "/dapinstall/"
-    dap.adapters.dart = {
-        type = "executable",
-        command = "node",
-        args = {
-            path_debuggers .. "dart/Dart-Code/out/dist/debug.js",
-            "dart"
-        }
-    }
+    dap_install.config("dart", {})
     dap.configurations.dart = {
         {
             type = "dart",

@@ -729,7 +729,12 @@ function config.indent_blankline()
 end
 
 function config.lvim_focus()
-    require("lvim-focus").setup()
+    require("lvim-focus").setup({
+        active_plugin = 1,
+        blacklist_ft = {
+            "lvim"
+        }
+    })
 end
 
 function config.lvim_helper()

@@ -10,6 +10,7 @@ local languages_setup = require("languages.global.utils")
 local nvim_lsp_util = require("lspconfig/util")
 local lsp_signature = require("lsp_signature")
 local default_debouce_time = 150
+local dap_install = require("dap-install")
 local dap = require("dap")
 
 local language_configs = {}
@@ -51,6 +52,7 @@ language_configs["dap"] = function()
     if funcs.dir_exists(global.lsp_path .. "dapinstall/go_delve/") ~= true then
         vim.cmd("DIInstall go_delve")
     end
+    dap_install.config("go_delve", {})
     dap.adapters.go = function(callback)
         local handle
         local port = 38697

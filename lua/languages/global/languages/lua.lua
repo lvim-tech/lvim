@@ -10,14 +10,10 @@ local languages_setup = require("languages.global.utils")
 local nvim_lsp_util = require("lspconfig/util")
 local lsp_signature = require("lsp_signature")
 local default_debouce_time = 150
+local dap_install = require("dap-install")
 local dap = require("dap")
 
 local language_configs = {}
-
-language_configs["buffer"] = function()
-    vim.bo.shiftwidth = 4
-    vim.bo.tabstop = 4
-end
 
 language_configs["lsp"] = function()
     local function start_sumneko_lua(server)
@@ -61,15 +57,7 @@ language_configs["dap"] = function()
     if funcs.dir_exists(global.lsp_path .. "dapinstall/lua/") ~= true then
         vim.cmd("DIInstall lua")
     end
-    dap.adapters.nlua = function(callback, config)
-        callback(
-            {
-                type = "server",
-                host = config.host,
-                port = config.port
-            }
-        )
-    end
+    dap_install.config("lua", {})
     dap.configurations.lua = {
         {
             type = "nlua",

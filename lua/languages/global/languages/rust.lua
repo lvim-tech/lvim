@@ -10,6 +10,7 @@ local languages_setup = require("languages.global.utils")
 local nvim_lsp_util = require("lspconfig/util")
 local lsp_signature = require("lsp_signature")
 local default_debouce_time = 150
+local dap_install = require("dap-install")
 local dap = require("dap")
 
 local language_configs = {}
@@ -51,16 +52,10 @@ language_configs["dap"] = function()
     if funcs.dir_exists(global.lsp_path .. "dapinstall/ccppr_lldb/") ~= true then
         vim.cmd("DIInstall ccppr_lldb")
     end
-    dap.adapters.rust = {
-        type = "executable",
-        attach = {pidProperty = "pid", pidSelect = "ask"},
-        command = "lldb-vscode",
-        env = {LLDB_LAUNCH_FLAG_LAUNCH_IN_TTY = "YES"},
-        name = "lldb"
-    }
+    dap_install.config("ccppr_lldb", {})
     dap.configurations.rust = {
         {
-            type = "rust",
+            type = "cpp",
             request = "launch",
             name = "Launch",
             program = function()

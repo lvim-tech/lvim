@@ -32,6 +32,7 @@ M.filetypes = {
     ["rust"] = {"rust"},
     ["shell"] = {"sh"},
     ["vim"] = {"vim"},
+    ["vue"] = {"vue"},
     ["yaml"] = {"yaml"}
 }
 

@@ -10,8 +10,8 @@ local languages_setup = require("languages.global.utils")
 local nvim_lsp_util = require("lspconfig/util")
 local lsp_signature = require("lsp_signature")
 local default_debouce_time = 150
+local dap_install = require("dap-install")
 local dap = require("dap")
-local path_debugger = vim.fn.stdpath("data") .. "/dapinstall/jsnode/vscode-node-debug2/out/src/nodeDebug.js"
 
 local language_configs = {}
 
@@ -41,11 +41,7 @@ language_configs["dap"] = function()
     if funcs.dir_exists(global.lsp_path .. "dapinstall/jsnode/") ~= true then
         vim.cmd("DIInstall jsnode")
     end
-    dap.adapters.node2 = {
-        type = "executable",
-        command = "node",
-        args = {path_debugger}
-    }
+    dap_install.config("jsnode", {})
     dap.configurations.javascript = {
         {
             type = "node2",

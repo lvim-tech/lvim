@@ -12,6 +12,7 @@ local languages_setup = require("languages.global.utils")
 local nvim_lsp_util = require("lspconfig/util")
 local lsp_signature = require("lsp_signature")
 local default_debouce_time = 150
+local dap_install = require("dap-install")
 local dap = require("dap")
 
 local language_configs = {}
@@ -53,12 +54,7 @@ language_configs["dap"] = function()
     if funcs.dir_exists(global.lsp_path .. "dapinstall/ruby_vsc/") ~= true then
         vim.cmd("DIInstall ruby_vsc")
     end
-    local path_debuggers = vim.fn.stdpath("data") .. "/dapinstall/"
-    dap.adapters.ruby = {
-        type = "executable",
-        command = "node",
-        args = {path_debuggers .. "ruby_vsc/extension/dist/debugger/main.js"}
-    }
+    dap_install.config("ruby_vsc", {})
     dap.configurations.ruby = {
         {
             type = "ruby",

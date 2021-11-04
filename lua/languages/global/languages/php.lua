@@ -10,14 +10,10 @@ local languages_setup = require("languages.global.utils")
 local nvim_lsp_util = require("lspconfig/util")
 local lsp_signature = require("lsp_signature")
 local default_debouce_time = 150
+local dap_install = require("dap-install")
 local dap = require("dap")
 
 local language_configs = {}
-
-language_configs["buffer"] = function()
-    vim.bo.shiftwidth = 4
-    vim.bo.tabstop = 4
-end
 
 language_configs["lsp"] = function()
     local function start_intelephense(server)
@@ -45,12 +41,7 @@ language_configs["dap"] = function()
     if funcs.dir_exists(global.lsp_path .. "dapinstall/php/") ~= true then
         vim.cmd("DIInstall php")
     end
-    local path_debuggers = vim.fn.stdpath("data") .. "/dapinstall/"
-    dap.adapters.php = {
-        type = "executable",
-        command = "node",
-        args = {path_debuggers .. "php/vscode-php-debug/out/phpDebug.js"}
-    }
+    dap_install.config("php", {})
     dap.configurations.php = {
         {
             type = "php",
