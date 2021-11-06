@@ -1,4 +1,5 @@
-local global = require("core.global")
+local languages_setup = require("languages.global.utils")
+local default_debouce_time = 150
 
 local M = {}
 
@@ -417,31 +418,22 @@ M.config = {
 }
 
 function M.init_diagnosticls()
-    local default_debouce_time = 150
-    local nvim_lsp = require("lspconfig")
-    local lsp_installer = require("nvim-lsp-installer")
-    local lsp_installer_servers = require("nvim-lsp-installer.servers")
-
-    local function start_server()
-        nvim_lsp.diagnosticls.setup {
-            cmd = {
-                global.lsp_path .. "lsp_servers/diagnosticls/node_modules/.bin/diagnostic-languageserver",
-                "--stdio"
-            },
+    local function start_diagnosticls(server)
+        server:setup {
             flags = {
                 debounce_text_changes = default_debouce_time
             },
             autostart = true,
             filetypes = M.config.lsp_filetypes,
-            on_attach = function(client, bufnr)
+            on_attach = function(client)
                 if client.resolved_capabilities.document_formatting then
                     vim.api.nvim_exec(
                         [[
-                    augroup LspAutocommands
-                        autocmd! * <buffer>
-                        autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()
-                    augroup END
-                    ]],
+                            augroup LspAutocommands
+                                autocmd! * <buffer>
+                                autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()
+                            augroup END
+                        ]],
                         true
                     )
                 end
@@ -454,20 +446,7 @@ function M.init_diagnosticls()
             }
         }
     end
-    local ok, diagnosticls = lsp_installer_servers.get_server("diagnosticls")
-    if ok then
-        if not diagnosticls:is_installed() then
-            diagnosticls:install()
-            lsp_installer.on_server_ready(
-                function(diagnosticls)
-                    start_server()
-                    vim.cmd [[ do User LspAttachBuffers ]]
-                end
-            )
-        else
-            start_server()
-        end
-    end
+    languages_setup.setup_lsp("diagnosticls", start_diagnosticls)
 end
 
 return M
