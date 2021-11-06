@@ -31,7 +31,7 @@ configs["events_global"] = function()
                 {"BufNewFile,BufRead", "*.ex", "set filetype=elixir"},
                 {"BufNewFile,BufRead", "*.exs", "set filetype=elixir"},
                 {"BufNewFile,BufRead", "*.graphql", "set filetype=graphql"},
-                {"BufWinEnter", "NvimTree", "set colorcolumn=0 nocursorcolumn"}
+                {"BufWinEnter", "NvimTree", "setlocal colorcolumn=0 nocursorcolumn"}
             },
             yank = {
                 {
@@ -40,29 +40,29 @@ configs["events_global"] = function()
                 }
             },
             ft = {
-                {"FileType", "dart", "set ts=2 sw=2"},
-                {"FileType", "ruby", "set ts=2 sw=2"},
-                {"FileType", "yaml", "set ts=2 sw=2"},
-                {"FileType", "c", "set ts=2 sw=2"},
-                {"FileType", "cpp", "set ts=2 sw=2"},
-                {"FileType", "objc", "set ts=2 sw=2"},
-                {"FileType", "objcpp", "set ts=2 sw=2"},
-                {"FileType", "help", "set colorcolumn=0 nocursorcolumn"},
-                {"FileType", "dashboard", "set nowrap"},
-                {"FileType", "Trouble", "set colorcolumn=0 nocursorcolumn"},
-                {"FileType", "Outline", "set colorcolumn=0 nocursorcolumn"},
-                {"FileType", "VimspectorPrompt", "set colorcolumn=0 nocursorcolumn"},
-                {"FileType", "git", "set colorcolumn=0 nocursorcolumn"},
-                {"FileType", "packer", "set colorcolumn=0 nocursorcolumn"},
-                {"FileType", "dapui_scopes", "set colorcolumn=0 nocursorcolumn"},
+                {"FileType", "dart", "setlocal ts=2 sw=2"},
+                {"FileType", "ruby", "setlocal ts=2 sw=2"},
+                {"FileType", "yaml", "setlocal ts=2 sw=2"},
+                {"FileType", "c", "setlocal ts=2 sw=2"},
+                {"FileType", "cpp", "setlocal ts=2 sw=2"},
+                {"FileType", "objc", "setlocal ts=2 sw=2"},
+                {"FileType", "objcpp", "setlocal ts=2 sw=2"},
+                {"FileType", "help", "setlocal colorcolumn=0 nocursorcolumn"},
+                {"FileType", "dashboard", "setlocal nowrap"},
+                {"FileType", "Trouble", "setlocal colorcolumn=0 nocursorcolumn"},
+                {"FileType", "Outline", "setlocal colorcolumn=0 nocursorcolumn"},
+                {"FileType", "VimspectorPrompt", "setlocal colorcolumn=0 nocursorcolumn"},
+                {"FileType", "git", "setlocal colorcolumn=0 nocursorcolumn"},
+                {"FileType", "packer", "setlocal colorcolumn=0 nocursorcolumn"},
+                {"FileType", "dapui_scopes", "setlocal colorcolumn=0 nocursorcolumn"},
                 {
                     "FileType",
                     "dapui_breakpoints",
                     "set colorcolumn=0 nocursorcolumn"
                 },
-                {"FileType", "dapui_stacks", "set colorcolumn=0 nocursorcolumn"},
-                {"FileType", "dapui_watches", "set colorcolumn=0 nocursorcolumn"},
-                {"FileType", "NeogitStatus", "set colorcolumn=0 nocursorcolumn"}
+                {"FileType", "dapui_stacks", "setlocal colorcolumn=0 nocursorcolumn"},
+                {"FileType", "dapui_watches", "setlocal colorcolumn=0 nocursorcolumn"},
+                {"FileType", "NeogitStatus", "setlocal colorcolumn=0 nocursorcolumn"}
             }
         }
     )
@@ -102,7 +102,27 @@ configs["ctrlspace_pre_config_global"] = function()
     vim.g.CtrlSpaceIgnoredFiles = "\v(tmp|temp)[\\/]"
     vim.api.nvim_exec(
         [[
-        let g:CtrlSpaceSymbols = { "CS": " ", "Sin": "", "All": "", "Vis": "★", "File": "", "Tabs": "ﱡ", "CTab": "ﱢ", "NTM": "⁺", "WLoad": "ﰬ", "WSave": "ﰵ", "Zoom": "", "SLeft": "", "SRight": "", "BM": "", "Help": "", "IV": "", "IA": "", "IM": " ", "Dots": "ﳁ"}
+        let g:CtrlSpaceSymbols = {
+            \ "CS": " ",
+            \ "Sin": "",
+            \ "All": "",
+            \ "Vis": "★",
+            \ "File": "",
+            \ "Tabs": "ﱡ",
+            \ "CTab": "ﱢ",
+            \ "NTM": "⁺",
+            \ "WLoad": "ﰬ",
+            \ "WSave": "ﰵ",
+            \ "Zoom": "",
+            \ "SLeft": "",
+            \ "SRight": "",
+            \ "BM": "",
+            \ "Help": "",
+            \ "IV": "",
+            \ "IA": "",
+            \ "IM": " ",
+            \ "Dots": "ﳁ"
+        \ }
         ]],
         true
     )
