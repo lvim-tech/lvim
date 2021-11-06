@@ -77,24 +77,4 @@ local modules = {}
 --     config = completion_config.name_of_your_function
 -- }
 
-local editor_config = require("modules.custom.configs.editor")
-
-modules["vuki656/package-info.nvim"] = {
-    requires = {
-        "MunifTanjim/nui.nvim",
-        after = "package_info.nvim"
-    },
-    file = "package.json",
-    config = editor_config.package_info
-}
-
-modules["lvim-tech/lvim-dependencies"] = {
-    event = {
-        "VimEnter",
-        "BufRead",
-        "BufNewFile"
-    },
-    config = editor_config.lvim_dependencies
-}
-
 return modules
