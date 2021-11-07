@@ -115,6 +115,10 @@ modules["nvim-telescope/telescope.nvim"] = {
 }
 
 modules["windwp/nvim-spectre"] = {
+    event = {
+        "BufRead",
+        "BufNewFile"
+    },
     requires = {
         {
             "nvim-lua/popup.nvim"
@@ -123,7 +127,6 @@ modules["windwp/nvim-spectre"] = {
             "nvim-lua/plenary.nvim"
         }
     },
-    cmd = "Spectre",
     config = editor_config.nvim_spectre
 }
 
@@ -301,11 +304,11 @@ modules["kristijanhusak/vim-dadbod-ui"] = {
     requires = {
         {
             "tpope/vim-dadbod",
-            opt = true
+            after = "vim-dadbod-ui"
         },
         {
             "kristijanhusak/vim-dadbod-completion",
-            opt = true
+            after = "vim-dadbod-ui"
         }
     },
     cmd = {

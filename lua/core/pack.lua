@@ -1,4 +1,4 @@
-local fn, uv, api = vim.fn, vim.loop, vim.api
+local fn = vim.fn
 local global = require("core.global")
 local data_path = global.data_path
 local packer_compiled = data_path .. "packer_compiled.vim"
@@ -21,7 +21,7 @@ function Packer:load_plugins()
     end
 end
 
-function Packer:convert_compile_file()
+local function convert_compile_file()
     local lines = {}
     local lnum = 1
     lines[#lines + 1] = "vim.cmd [[packadd packer.nvim]]\n"
@@ -79,7 +79,7 @@ function Packer:load_packer()
             packer.on_compile_done =
                 vim.schedule_wrap(
                 function()
-                    self:convert_compile_file()
+                    convert_compile_file()
                 end
             )
         end

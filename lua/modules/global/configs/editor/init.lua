@@ -78,22 +78,12 @@ function config.telescope()
             }
         }
     }
-    local extensions = {"fzf"}
-    local packer_repos = [["extensions", "telescope-fzf-native.nvim"]]
-    if vim.fn.executable "ueberzug" == 1 then
-        table.insert(extensions, "media_files")
-        packer_repos = packer_repos .. ', "telescope-media-files.nvim"'
-    end
-    pcall(
-        function()
-            for _, ext in ipairs(extensions) do
-                telescope.load_extension(ext)
-            end
-        end
-    )
+    telescope.load_extension "fzf"
+    telescope.load_extension "telescope-media-files.nvim"
 end
 
 function config.nvim_spectre()
+    vim.cmd("command! Spectre lua require('spectre').open()")
     require("spectre").setup(
         {
             color_devicons = true,
@@ -183,14 +173,6 @@ function config.nvim_spectre()
             is_insert_mode = false
         }
     )
-    function init_spectre()
-        if not packer_plugins["nvim-spectre"].loaded then
-            vim.cmd [[packadd nvim-spectre]]
-            vim.cmd [[packadd popup.nvim]]
-        end
-        require("spectre").open()
-    end
-    vim.cmd("command! Spectre lua init_spectre()")
 end
 
 function config.nvim_comment()

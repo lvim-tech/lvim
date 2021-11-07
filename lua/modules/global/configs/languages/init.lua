@@ -252,9 +252,9 @@ function config.dapinstall()
 end
 
 function config.vim_dadbod_ui()
-    if packer_plugins["vim-dadbod"] and not packer_plugins["vim-dadbod"].loaded then
-        vim.cmd [[packadd vim-dadbod]]
-    end
+    -- if packer_plugins["vim-dadbod"] and not packer_plugins["vim-dadbod"].loaded then
+    --     vim.cmd [[packadd vim-dadbod]]
+    -- end
     vim.g.db_ui_show_help = 0
     vim.g.db_ui_win_position = "left"
     vim.g.db_ui_use_nerd_fonts = 1
