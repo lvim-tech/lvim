@@ -3,7 +3,7 @@ local global = require("core.global")
 
 local M = {}
 
-M.setup_lsp = function (server_name, start_fn)
+M.setup_lsp = function(server_name, start_fn)
     local ok, server = lsp_installer_servers.get_server(server_name)
     if ok then
         server:on_ready(start_fn)
@@ -107,34 +107,34 @@ M.setup_diagnostic = function(custom_config_diagnostic)
                 end
                 vim.fn.sign_define(
                     "LspDiagnosticsSignError",
-                    {
-                        texthl = "LspDiagnosticsSignError",
+                   {
+                        texthl = "DiagnosticSignError",
                         text = M.icons.error,
-                        numhl = "LspDiagnosticsSignError"
+                        numhl = "DiagnosticSignError"
                     }
                 )
                 vim.fn.sign_define(
                     "LspDiagnosticsSignWarning",
                     {
-                        texthl = "LspDiagnosticsSignWarning",
+                        texthl = "DiagnosticSignWarn",
                         text = M.icons.warn,
-                        numhl = "LspDiagnosticsSignWarning"
+                        numhl = "DiagnosticSignWarn"
                     }
                 )
                 vim.fn.sign_define(
                     "LspDiagnosticsSignHint",
                     {
-                        texthl = "LspDiagnosticsSignHint",
+                        texthl = "DiagnosticSignHint",
                         text = M.icons.hint,
-                        numhl = "LspDiagnosticsSignHint"
+                        numhl = "DiagnosticSignHint"
                     }
                 )
                 vim.fn.sign_define(
                     "LspDiagnosticsSignInformation",
                     {
-                        texthl = "LspDiagnosticsSignInformation",
+                        texthl = "DiagnosticSignInfo",
                         text = M.icons.info,
-                        numhl = "LspDiagnosticsSignInformation"
+                        numhl = "DiagnosticSignInfo"
                     }
                 )
                 vim.lsp.diagnostic.display(diagnostics, bufnr, ctx.client_id, local_config_diagnostic)
@@ -171,17 +171,17 @@ M.setup_diagnostic = function(custom_config_diagnostic)
             vim.fn.sign_define(
                 "LspDiagnosticsSignHint",
                 {
-                    texthl = "LspDiagnosticsSignHint",
+                    texthl = "DiagnosticSignHint",
                     text = M.icons.hint,
-                    numhl = "LspDiagnosticsSignHint"
+                    numhl = "DiagnosticSignHint"
                 }
             )
             vim.fn.sign_define(
                 "LspDiagnosticsSignInformation",
                 {
-                    texthl = "LspDiagnosticsSignInformation",
+                    texthl = "DiagnosticSignInformation",
                     text = M.icons.info,
-                    numhl = "LspDiagnosticsSignInformation"
+                    numhl = "DiagnosticSignInformation"
                 }
             )
             vim.lsp.diagnostic.display(diagnostics, bufnr, client_id, local_config_diagnostic)
@@ -189,42 +189,20 @@ M.setup_diagnostic = function(custom_config_diagnostic)
     end
 end
 
-M.show_line_diagnostics = function()
-    local diagnostics = vim.lsp.diagnostic.get_line_diagnostics()
-    local severity_highlight = {
-        "LspDiagnosticsFloatingError",
-        "LspDiagnosticsFloatingWarning",
-        "LspDiagnosticsFloatingHint",
-        "LspDiagnosticsFloatingInformation"
-    }
-    local ok, vim_diag = pcall(require, "vim.diagnostic")
-    if ok then
-        local buf_id = vim.api.nvim_win_get_buf(0)
-        local win_id = vim.api.nvim_get_current_win()
-        local cursor_position = vim.api.nvim_win_get_cursor(win_id)
-        severity_highlight = {
-            "DiagnosticFloatingError",
-            "DiagnosticFloatingWarn",
-            "DiagnosticFloatingInfo",
-            "DiagnosticFloatingHint"
-        }
-        diagnostics = vim_diag.get(buf_id, {lnum = cursor_position[1] - 1})
-    end
-end
 
 M.document_highlight = function(client)
     if client.resolved_capabilities.document_highlight then
         vim.api.nvim_exec(
             [[
-        hi LspReferenceRead cterm=bold guibg=#41495A
-        hi LspReferenceText cterm=bold guibg=#41495A
-        hi LspReferenceWrite cterm=bold guibg=#41495A
-        augroup lsp_document_highlight
-            autocmd! * <buffer>
-            autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-            autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-        augroup END
-        ]],
+            hi LspReferenceRead cterm=bold guibg=#41495A
+            hi LspReferenceText cterm=bold guibg=#41495A
+            hi LspReferenceWrite cterm=bold guibg=#41495A
+            augroup lsp_document_highlight
+                autocmd! * <buffer>
+                autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+                autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+            augroup END
+            ]],
             false
         )
     end
@@ -232,7 +210,18 @@ end
 
 M.get_capabilities = function()
     local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
+    capabilities.textDocument.completion.completionItem.snippetSupport = true
+    capabilities.textDocument.completion.completionItem.resolveSupport = {
+        properties = {
+        "documentation",
+        "detail",
+        "additionalTextEdits",
+        },
+    }
+    local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+    if status_ok then
+        capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
+    end
     return capabilities
 end
 
@@ -248,13 +237,13 @@ M.toggle_virtual_text = function()
             severity_sort = true
         }
         M.setup_diagnostic(config_diagnostic)
-        if vim.api.nvim_buf_get_option(bufnr, "modifiable") then
+        if vim.api.nvim_buf_get_option(0, "modifiable") then
             vim.cmd("w")
         end
         global.virtual_text = "yes"
     else
         M.setup_diagnostic()
-        if vim.api.nvim_buf_get_option(bufnr, "modifiable") then
+        if vim.api.nvim_buf_get_option(0, "modifiable") then
             vim.cmd("w")
         end
         global.virtual_text = "no"
