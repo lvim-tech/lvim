@@ -5,6 +5,7 @@ function config.telescope()
     if not present then
         return
     end
+
     telescope.setup {
         defaults = {
             prompt_prefix = "   ",
@@ -65,21 +66,21 @@ function config.telescope()
                 only_sort_text = true
             }
         },
-        extensions = {
-            fzf = {
-                fuzzy = true,
-                override_generic_sorter = false,
-                override_file_sorter = true,
-                case_mode = "smart_case"
-            },
-            media_files = {
-                filetypes = {"png", "webp", "jpg", "jpeg"},
-                find_cmd = "rg"
-            }
-        }
+        -- extensions = {
+        --     fzf = {
+        --         fuzzy = true,
+        --         override_generic_sorter = false,
+        --         override_file_sorter = true,
+        --         case_mode = "smart_case"
+        --     },
+        --     media_files = {
+        --         filetypes = {"png", "webp", "jpg", "jpeg"},
+        --         find_cmd = "rg"
+        --     }
+        -- }
     }
-    telescope.load_extension "fzf"
-    telescope.load_extension "telescope-media-files.nvim"
+
+
 end
 
 function config.nvim_spectre()
