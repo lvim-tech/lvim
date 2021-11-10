@@ -46,8 +46,7 @@ language_configs["lsp"] = function()
                     }
                 }
             },
-            root_dir = nvim_lsp_util.root_pattern("."),
-            handlers = languages_setup.show_line_diagnostics()
+            root_dir = nvim_lsp_util.root_pattern(".")
         }
     end
     languages_setup.setup_lsp("sumneko_lua", start_sumneko_lua)

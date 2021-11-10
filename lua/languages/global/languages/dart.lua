@@ -62,11 +62,10 @@ language_configs["lsp"] = function()
             end
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             lsp_signature.on_attach(languages_utils.config_lsp_signature)
-            languages_utils.document_highlight(client, bufnr)
+            languages_utils.document_highlight(client)
         end,
         capabilities = languages_utils.get_capabilities(),
-        root_dir = nvim_lsp_util.root_pattern("."),
-        handlers = languages_utils.show_line_diagnostics()
+        root_dir = nvim_lsp_util.root_pattern(".")
     }
 end
 
