@@ -24,18 +24,22 @@ keymaps["normal"] = {
     {"<S-x>", ":NvimTreeToggle<CR>"}, -- Nvim tree explorer
     {"<S-l>", ":FloatermNew lazygit<CR>"}, -- Lazygit
     {"<S-m>", ":MarkdownPreviewToggle<CR>"}, -- Markdown preview toggle
+    {"<S-n>", ":GitSignsNextHunk<CR>"}, -- Git signs next hunk
+    {"<S-p>", ":GitSignsPrevHunk<CR>"}, -- Git signs prev hunk
+    {"<S-u>", ":GitSignsPreviewHunk<CR>"}, -- Git signs preview hunk
     {"<A-,>", ":Telescope find_files<CR>"}, -- Search files with Telescope
     {"<A-.>", ":Telescope live_grep<CR>"}, -- Search word with Telescope
     {"<A-j>", ":AnyJump<CR>"}, -- Any jump
     {"<A-v>", ":SymbolsOutline<CR>"}, -- Symbols outline
     {"<A-[>", ":foldopen<CR>"}, -- Fold open
     {"<A-]>", ":foldclose<CR>"}, -- Fold close
-    {"<A-s>", ":Spectre<CR>"}, -- Replace in multiple files
     {"<A-/>", ":CommentToggle<CR>"}, -- Comment toggle
     {"<A-f>", ":LspFormatting<CR>"}, -- Lsp format code
     {"<A-t>", ":LspCodeAction<CR>"}, -- Lsp action
+    {"<A-s>", ":Spectre<CR>"}, -- Replace in multiple files
     {"<A-g>", ":LspReferences<CR>"}, -- Lsp references
     {"<A-d>", ":LspDefinition<CR>"}, -- Lsp definition
+    {"<A-c>", ":LspDeclaration<CR>"}, -- Lsp declaration
     {"<A-h>", ":LspHover<CR>"}, -- Lsp hover
     {"<A-r>", ":LspRename<CR>"}, -- Lsp rename
     {"<A-n>", ":LspGoToNext<CR>"}, -- Lsp go to next
