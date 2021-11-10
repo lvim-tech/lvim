@@ -45,6 +45,10 @@ function config.nvim_lsp_installer()
     }
 end
 
+function config.sniprun()
+    require("sniprun").setup()
+end
+
 function config.nvim_treesitter()
     require("nvim-treesitter.configs").setup {
         ensure_installed = "all",

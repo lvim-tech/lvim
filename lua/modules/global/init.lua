@@ -246,6 +246,19 @@ modules["williamboman/nvim-lsp-installer"] = {
     config = languages_config.nvim_lsp_installer
 }
 
+modules["michaelb/sniprun"] = {
+    requires = "neovim/nvim-lspconfig",
+    run = "bash ./install.sh",
+    cmd = {
+        "SnipRun",
+        "SnipInfo",
+        "SnipReset",
+        "SnipReplMemoryClean",
+        "SnipClose"
+    },
+    config = languages_config.sniprun
+}
+
 modules["ray-x/lsp_signature.nvim"] = {}
 
 modules["nvim-treesitter/nvim-treesitter"] = {
