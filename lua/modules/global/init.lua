@@ -108,9 +108,7 @@ modules["nvim-telescope/telescope.nvim"] = {
             "nvim-telescope/telescope-media-files.nvim"
         }
     },
-    cmd = {
-        "Telescope"
-    },
+    cmd = "Telescope",
     config = editor_config.telescope
 }
 

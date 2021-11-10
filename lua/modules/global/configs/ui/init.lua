@@ -183,6 +183,7 @@ function config.which_key()
         nowait = true
     }
     local nmappings = {
+        e = {"<Cmd>MvimTree<CR>", "Nvim tree explorer"},
         b = {
             name = "Buffers",
             n = {"<Cmd>bnext<CR>", "Next buffer"},
@@ -254,35 +255,35 @@ function config.which_key()
         },
         m = {
             name = "Bookmark",
-            t = {"<Cmd>BookmarkToggle<CR>", "toggle bookmark"},
-            n = {"<Cmd>BookmarkNext<CR>", "next bookmark"},
-            p = {"<Cmd>BookmarkPrev<CR>", "prev bookmark"}
+            t = {"<Cmd>BookmarkToggle<CR>", "Toggle bookmark"},
+            n = {"<Cmd>BookmarkNext<CR>", "Next bookmark"},
+            p = {"<Cmd>BookmarkPrev<CR>", "Prev bookmark"}
         },
         f = {
             name = "Fold",
-            m = {"<Cmd>:set foldmethod=manual<CR>", "manual (default)"},
-            i = {"<Cmd>:set foldmethod=indent<CR>", "indent"},
-            e = {"<Cmd>:set foldmethod=expr<CR>", "expr"},
-            d = {"<Cmd>:set foldmethod=diff<CR>", "diff"},
-            M = {"<Cmd>:set foldmethod=marker<CR>", "marker"}
+            m = {"<Cmd>:set foldmethod=manual<CR>", "Manual (default)"},
+            i = {"<Cmd>:set foldmethod=indent<CR>", "Indent"},
+            e = {"<Cmd>:set foldmethod=expr<CR>", "Expr"},
+            d = {"<Cmd>:set foldmethod=diff<CR>", "Diff"},
+            M = {"<Cmd>:set foldmethod=marker<CR>", "Marker"}
         },
         s = {
             name = "Spectre",
             d = {
                 '<Cmd>lua require("spectre").delete()<CR>',
-                "toggle current item"
+                "Toggle current item"
             },
             g = {
                 '<Cmd>lua require("spectre.actions").select_entry()<CR>',
-                "goto current file"
+                "Goto current file"
             },
             q = {
                 '<Cmd>lua require("spectre.actions").send_to_qf()<CR>',
-                "send all item to quickfix"
+                "Send all item to quickfix"
             },
             m = {
                 '<Cmd>lua require("spectre.actions").replace_cmd()<CR>',
-                "input replace vim command"
+                "Input replace vim command"
             },
             o = {
                 '<Cmd>lua require("spectre").show_options()<CR>',
@@ -290,27 +291,47 @@ function config.which_key()
             },
             R = {
                 '<Cmd>lua require("spectre.actions").run_replace()<CR>',
-                "replace all"
+                "Replace all"
             },
             v = {
                 '<Cmd>lua require("spectre").change_view()<CR>',
-                "change result view mode"
+                "Change result view mode"
             },
             c = {
                 '<Cmd>lua require("spectre").change_options("ignore-case")<CR>',
-                "toggle ignore case"
+                "Toggle ignore case"
             },
             h = {
                 '<Cmd>lua require("spectre").change_options("hidden")<CR>',
-                "toggle search hidden"
+                "Toggle search hidden"
             }
         },
         t = {
+            name = "Telescope",
+            b = {"<Cmd>Telescope file_browser<CR>", "git"},
+            f = {"<Cmd>Telescope find_files<CR>", "git"},
+            w = {"<Cmd>Telescope live_grep<CR>", "docker"},
+            d = {"<Cmd>Telescope fd<CR>", "npm"},
+            z = {"<Cmd>Telescope fzf<CR>", "npm"},
+            u = {"<Cmd>Telescope buffers<CR>", "npm"},
+            m = {"<Cmd>Telescope marks<CR>", "npm"},
+            o = {"<Cmd>Telescope commands<CR>", "npm"},
+            y = {"<Cmd>Telescope symbols<CR>", "npm"},
+            n = {"<Cmd>Telescope quickfix<CR>", "npm"},
+            c = {"<Cmd>Telescope git_commits<CR>", "npm"},
+            B = {"<Cmd>Telescope git_bcommits<CR>", "npm"},
+            r = {"<Cmd>Telescope git_branches<CR>", "npm"},
+            s = {"<Cmd>Telescope git_status<CR>", "npm"},
+            S = {"<Cmd>Telescope git_stash<CR>", "npm"},
+            i = {"<Cmd>Telescope git_files<CR>", "npm"},
+            M = {"<Cmd>Telescope media_files<CR>", "npm"}
+        },
+        T = {
             name = "Terminal",
-            o = {"<Cmd>FloatermShow<CR>", "git"},
-            g = {"<Cmd>FloatermNew lazygit<CR>", "git"},
-            d = {"<Cmd>FloatermNew lazydocker<CR>", "docker"},
-            n = {"<Cmd>FloatermNew lazynpm<CR>", "npm"}
+            o = {"<Cmd>FloatermShow<CR>", "Floaterm"},
+            g = {"<Cmd>FloatermNew lazygit<CR>", "Lazy git"},
+            d = {"<Cmd>FloatermNew lazydocker<CR>", "Lazy docker"},
+            n = {"<Cmd>FloatermNew lazynpm<CR>", "Lazy npm"}
         }
     }
     local vmappings = {
