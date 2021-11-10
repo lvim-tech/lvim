@@ -183,7 +183,7 @@ function config.which_key()
         nowait = true
     }
     local nmappings = {
-        e = {"<Cmd>MvimTree<CR>", "Nvim tree explorer"},
+        e = {"<Cmd>NvimTreeToggle<CR>", "NvimTree toggle"},
         b = {
             name = "Buffers",
             n = {"<Cmd>bnext<CR>", "Next buffer"},
