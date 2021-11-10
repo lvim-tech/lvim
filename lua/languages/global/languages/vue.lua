@@ -5,7 +5,6 @@
 -- :DIInstall python
 
 local global = require("core.global")
-local funcs = require("core.funcs")
 local languages_setup = require("languages.global.utils")
 local nvim_lsp_util = require("lspconfig/util")
 local lsp_signature = require("lsp_signature")

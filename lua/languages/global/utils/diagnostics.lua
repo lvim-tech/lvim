@@ -81,9 +81,13 @@ end
 
 local function open_floating_preview(contents, syntax)
     contents = trim_and_pad(contents, padding)
-    local width, height = make_floating_popup_size(contents, {
-        max_width = 130,
-    })
+    local width, height =
+        make_floating_popup_size(
+        contents,
+        {
+            max_width = 130
+        }
+    )
     local floating_bufnr = api.nvim_create_buf(false, true)
     if syntax then
         api.nvim_buf_set_option(floating_bufnr, "syntax", syntax)
@@ -98,7 +102,7 @@ local function open_floating_preview(contents, syntax)
     api.nvim_buf_set_lines(floating_bufnr, 0, -1, true, contents)
     api.nvim_buf_set_option(floating_bufnr, "modifiable", false)
     api.nvim_buf_set_option(floating_bufnr, "bufhidden", "wipe")
-    util.close_preview_autocmd({ "CursorMoved", "CursorMovedI", "BufHidden", "InsertCharPre" }, floating_winnr)
+    util.close_preview_autocmd({"CursorMoved", "CursorMovedI", "BufHidden", "InsertCharPre"}, floating_winnr)
     return floating_bufnr, floating_winnr
 end
 
@@ -174,7 +178,7 @@ M.goto_next = function(opts)
     vim.schedule(
         function()
             M.show_line_diagnostics(vim.api.nvim_win_get_buf(win_id))
-            vim.cmd[[silent! LvimRestoreEnableCurrent]]
+            vim.cmd [[silent! LvimRestoreEnableCurrent]]
         end
     )
 end
@@ -193,7 +197,7 @@ M.goto_prev = function(opts)
     vim.schedule(
         function()
             M.show_line_diagnostics(vim.api.nvim_win_get_buf(win_id))
-            vim.cmd[[silent! LvimRestoreEnableCurrent]]
+            vim.cmd [[silent! LvimRestoreEnableCurrent]]
         end
     )
 end

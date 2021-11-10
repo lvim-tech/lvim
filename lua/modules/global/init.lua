@@ -105,10 +105,12 @@ modules["nvim-telescope/telescope.nvim"] = {
             run = "make"
         },
         {
-            "nvim-telescope/telescope-media-files.nvim",
+            "nvim-telescope/telescope-media-files.nvim"
         }
     },
-    cmd = "Telescope",
+    cmd = {
+        "Telescope"
+    },
     config = editor_config.telescope
 }
 

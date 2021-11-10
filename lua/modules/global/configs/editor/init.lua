@@ -1,11 +1,14 @@
 local config = {}
 
 function config.telescope()
-    local present, telescope = pcall(require, "telescope")
-    if not present then
-        return
+    if not packer_plugins["telescope.nvim"].loaded then
+        vim.cmd [[packadd telescope.nvim]]
+        vim.cmd [[packadd telescope-fzf-native.nvim]]
+        vim.cmd [[packadd telescope-media-files.nvim]]
     end
-
+    local telescope = require("telescope")
+    telescope.load_extension "fzf"
+    telescope.load_extension "media_files"
     telescope.setup {
         defaults = {
             prompt_prefix = "   ",
@@ -66,21 +69,19 @@ function config.telescope()
                 only_sort_text = true
             }
         },
-        -- extensions = {
-        --     fzf = {
-        --         fuzzy = true,
-        --         override_generic_sorter = false,
-        --         override_file_sorter = true,
-        --         case_mode = "smart_case"
-        --     },
-        --     media_files = {
-        --         filetypes = {"png", "webp", "jpg", "jpeg"},
-        --         find_cmd = "rg"
-        --     }
-        -- }
+        extensions = {
+            fzf = {
+                fuzzy = true,
+                override_generic_sorter = false,
+                override_file_sorter = true,
+                case_mode = "smart_case"
+            },
+            media_files = {
+                filetypes = {"png", "webp", "jpg", "jpeg"},
+                find_cmd = "rg"
+            }
+        }
     }
-
-
 end
 
 function config.nvim_spectre()

@@ -107,7 +107,7 @@ M.setup_diagnostic = function(custom_config_diagnostic)
                 end
                 vim.fn.sign_define(
                     "LspDiagnosticsSignError",
-                   {
+                    {
                         texthl = "DiagnosticSignError",
                         text = M.icons.error,
                         numhl = "DiagnosticSignError"
@@ -189,7 +189,6 @@ M.setup_diagnostic = function(custom_config_diagnostic)
     end
 end
 
-
 M.document_highlight = function(client)
     if client.resolved_capabilities.document_highlight then
         vim.api.nvim_exec(
@@ -213,10 +212,10 @@ M.get_capabilities = function()
     capabilities.textDocument.completion.completionItem.snippetSupport = true
     capabilities.textDocument.completion.completionItem.resolveSupport = {
         properties = {
-        "documentation",
-        "detail",
-        "additionalTextEdits",
-        },
+            "documentation",
+            "detail",
+            "additionalTextEdits"
+        }
     }
     local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
     if status_ok then
