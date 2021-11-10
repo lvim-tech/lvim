@@ -27,11 +27,6 @@ function config.nvim_lspconfig()
     vim.cmd("command! LspRename lua vim.lsp.buf.rename()")
     vim.cmd("command! LspSignatureHelp lua vim.lsp.buf.signature_help()")
     -- LSP diagnostic
-    -- vim.cmd("command! LspGetAll lua vim.lsp.diagnostic.get_all()")
-    -- vim.cmd("command! LspGetNext lua vim.lsp.diagnostic.get_next()")
-    -- vim.cmd("command! LspGetPrev lua vim.lsp.diagnostic.get_prev()")
-    -- vim.cmd("command! LspGoToNext lua vim.lsp.diagnostic.goto_next()")
-    -- vim.cmd("command! LspGoToPrev lua vim.lsp.diagnostic.goto_prev()")
     vim.cmd("command! LspGoToNext lua require('languages.global.utils.diagnostics').goto_next()")
     vim.cmd("command! LspGoToPrev lua require('languages.global.utils.diagnostics').goto_prev()")
     -- Virtual text toggle

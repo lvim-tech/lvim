@@ -404,7 +404,7 @@ function config.lualine()
             gui = "bold"
         },
         path = 2,
-        shorting_target = 20,
+        shorting_target = 20
     }
     ins_left {
         "filetype",
