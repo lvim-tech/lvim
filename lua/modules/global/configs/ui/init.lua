@@ -323,342 +323,264 @@ function config.which_key()
     which_key.register(vmappings, vopts)
 end
 
-function config.galaxyline()
-    local gl = require("galaxyline")
-    gl.exclude_filetypes = {"ctrlspace"}
+function config.lualine()
+    local lualine = require "lualine"
     local colors = {
         bg = "#252A34",
+        darkbg = "#1E222A",
         fg = "#D9DA9E",
-        color_0 = "#00839F",
-        color_1 = "#1C9898",
-        color_2 = "#25B8A5",
-        color_3 = "#56adb7",
-        color_4 = "#F2994B",
-        color_5 = "#E6B673",
-        color_6 = "#F05F4E",
-        color_7 = "#98c379"
+        color_01 = "#E6B673",
+        color_02 = "#00839F",
+        color_03 = "#98c379",
+        color_04 = "#F2994B",
+        color_05 = "#1C9898",
+        color_06 = "#25B8A5",
+        color_07 = "#56adb7",
+        color_08 = "#F05F4E"
     }
-    local condition = require("galaxyline.condition")
-    local buffer_not_empty = function()
-        if vim.fn.empty(vim.fn.expand("%:t")) ~= 1 then
-            return true
+    local conditions = {
+        buffer_not_empty = function()
+            return vim.fn.empty(vim.fn.expand "%:t") ~= 1
+        end,
+        hide_in_width = function()
+            return vim.fn.winwidth(0) > 120
+        end,
+        check_git_workspace = function()
+            local filepath = vim.fn.expand "%:p:h"
+            local gitdir = vim.fn.finddir(".git", filepath .. ";")
+            return gitdir and #gitdir > 0 and #gitdir < #filepath
         end
-        return false
+    }
+    local lualine_config = {
+        options = {
+            component_separators = "",
+            section_separators = "",
+            theme = {
+                normal = {c = {fg = colors.fg, bg = colors.bg}},
+                inactive = {c = {fg = colors.fg, bg = colors.bg}}
+            },
+            disabled_filetypes = {
+                "NvimTree",
+                "LvimHelper",
+                "dashboard",
+                "vista",
+                "dbui",
+                "packer",
+                "dapui_scopes",
+                "dapui_breakpoints",
+                "dapui_stacks",
+                "dapui_watches",
+                "ctrlspace"
+            }
+        },
+        sections = {
+            lualine_a = {},
+            lualine_b = {},
+            lualine_y = {},
+            lualine_z = {},
+            lualine_c = {},
+            lualine_x = {}
+        },
+        inactive_sections = {
+            lualine_a = {},
+            lualine_v = {},
+            lualine_y = {},
+            lualine_z = {},
+            lualine_c = {},
+            lualine_x = {}
+        }
+    }
+    local function ins_left(component)
+        table.insert(lualine_config.sections.lualine_c, component)
     end
-    local gls = gl.section
-    gl.short_line_list = {
-        "NvimTree",
-        "LvimHelper",
-        "dashboard",
-        "vista",
-        "dbui",
-        "packer",
-        "dapui_scopes",
-        "dapui_breakpoints",
-        "dapui_stacks",
-        "dapui_watches"
+    local function ins_right(component)
+        table.insert(lualine_config.sections.lualine_x, component)
+    end
+    ins_left {
+        "filename",
+        cond = conditions.buffer_not_empty,
+        color = {
+            fg = colors.color_02,
+            gui = "bold"
+        },
+        path = 2,
+        shorting_target = 20,
     }
-    gls.left[1] = {
-        ViMode = {
-            provider = function()
-                local alias = {
-                    n = "NORMAL",
-                    v = "VISUAL",
-                    V = "V-LINE",
-                    [""] = "V-BLOCK",
-                    s = "SELECT",
-                    S = "S-LINE",
-                    [""] = "S-BLOCK",
-                    i = "INSERT",
-                    R = "REPLACE",
-                    c = "COMMAND",
-                    r = "PROMPT",
-                    ["!"] = "EXTERNAL",
-                    t = "TERMINAL"
-                }
-                local mode_color = {
-                    n = colors.color_1,
-                    v = colors.color_5,
-                    V = colors.color_5,
-                    [""] = colors.color_5,
-                    s = colors.color_5,
-                    S = colors.color_5,
-                    [""] = colors.color_5,
-                    i = colors.color_6,
-                    R = colors.color_6,
-                    c = colors.color_0,
-                    r = colors.color_0,
-                    ["!"] = colors.color_0,
-                    t = colors.color_0
-                }
-                local vim_mode = vim.fn.mode()
-                vim.api.nvim_command("hi GalaxyViMode guifg=" .. mode_color[vim_mode])
-                return alias[vim_mode] .. "    "
-            end,
-            highlight = {
-                colors.color_3,
-                colors.bg,
-                "bold"
-            }
+    ins_left {
+        "filetype",
+        colored = false,
+        icon_only = false,
+        color = {
+            fg = colors.color_07,
+            gui = "bold"
         }
     }
-    gls.left[2] = {
-        FileIcon = {
-            provider = "FileIcon",
-            condition = buffer_not_empty,
-            highlight = {
-                colors.fg,
-                colors.bg
-            }
-        }
-    }
-    gls.left[3] = {
-        FileName = {
-            provider = "FileName",
-            condition = buffer_not_empty,
-            separator = " ",
-            separator_highlight = {
-                "NONE",
-                colors.bg
+    ins_left {
+        "diff",
+        symbols = {
+            added = "   ",
+            modified = "  ",
+            removed = "  "
+        },
+        diff_color = {
+            added = {
+                fg = colors.color_03
             },
-            highlight = {
-                colors.fg,
-                colors.bg
-            }
-        }
-    }
-    gls.left[4] = {
-        GitIcon = {
-            provider = function()
-                return "  "
-            end,
-            condition = condition.check_git_workspace,
-            -- separator = " ",
-            separator_highlight = {
-                "NONE",
-                colors.bg
+            modified = {
+                fg = colors.color_04
             },
-            highlight = {
-                colors.color_5,
-                colors.bg
+            removed = {
+                fg = colors.color_08
             }
         }
     }
-    gls.left[5] = {
-        GitBranch = {
-            provider = "GitBranch",
-            condition = condition.check_git_workspace,
-            separator = " ",
-            separator_highlight = {
-                "NONE",
-                colors.bg
+    ins_left {
+        "branch",
+        icon = " ",
+        color = {
+            fg = colors.color_05,
+            gui = "bold"
+        },
+        cond = conditions.hide_in_width
+    }
+    ins_right {
+        "diagnostics",
+        sources = {
+            "nvim_lsp"
+        },
+        symbols = {
+            error = "  ",
+            warn = "  ",
+            hint = "  ",
+            info = "  "
+        },
+        diagnostics_color = {
+            error = {
+                fg = colors.color_08
             },
-            highlight = {
-                colors.color_5,
-                colors.bg
+            warn = {
+                fg = colors.color_04
+            },
+            hint = {
+                fg = colors.color_07
+            },
+            info = {
+                fg = colors.color_07
             }
         }
     }
-    gls.left[6] = {
-        DiffAdd = {
-            provider = "DiffAdd",
-            condition = condition.hide_in_width,
-            icon = "   ",
-            highlight = {
-                colors.color_7,
-                colors.bg
-            }
-        }
-    }
-    gls.left[7] = {
-        DiffModified = {
-            provider = "DiffModified",
-            condition = condition.hide_in_width,
-            icon = "   ",
-            highlight = {
-                colors.color_4,
-                colors.bg
-            }
-        }
-    }
-    gls.left[8] = {
-        DiffRemove = {
-            provider = "DiffRemove",
-            condition = condition.hide_in_width,
-            icon = "   ",
-            highlight = {
-                colors.color_6,
-                colors.bg
-            }
-        }
-    }
-    gls.right[1] = {
-        DiagnosticError = {
-            provider = "DiagnosticError",
-            icon = "  ",
-            highlight = {
-                colors.color_6,
-                colors.bg
-            }
-        }
-    }
-    gls.right[2] = {
-        DiagnosticWarn = {
-            provider = "DiagnosticWarn",
-            icon = "  ",
-            highlight = {
-                colors.color_4,
-                colors.bg
-            }
-        }
-    }
-    gls.right[3] = {
-        DiagnosticHint = {
-            provider = "DiagnosticHint",
-            icon = "  ",
-            highlight = {
-                colors.color_3,
-                colors.bg
-            }
-        }
-    }
-    gls.right[4] = {
-        DiagnosticInfo = {
-            provider = "DiagnosticInfo",
-            icon = "  ",
-            highlight = {
-                colors.color_3,
-                colors.bg
-            }
-        }
-    }
-    gls.right[5] = {
-        ShowLspClient = {
-            provider = "GetLspClient",
-            condition = function()
-                local tbl = {["dashboard"] = true, [" "] = true}
-                if tbl[vim.bo.filetype] then
-                    return false
+    ins_right {
+        function(msg)
+            msg = msg or ""
+            local buf_clients = vim.lsp.buf_get_clients()
+            if next(buf_clients) == nil then
+                if type(msg) == "boolean" or #msg == 0 then
+                    return ""
                 end
-                return true
-            end,
-            icon = "   ",
-            highlight = {
-                colors.color_0,
-                colors.bg
-            }
+                return msg
+            end
+            local buf_client_names = {}
+            for _, client in pairs(buf_clients) do
+                table.insert(buf_client_names, client.name)
+            end
+            return table.concat(buf_client_names, ", ")
+        end,
+        icon = " ",
+        cond = conditions.hide_in_width,
+        color = {
+            fg = colors.color_02,
+            gui = "bold"
         }
     }
-    gls.right[6] = {
-        LineInfo = {
-            provider = "LineColumn",
-            separator = "  ",
-            separator_highlight = {
-                "NONE",
-                colors.bg
-            },
-            highlight = {
-                colors.color_7,
-                colors.bg
-            }
+    ins_right {
+        "o:encoding",
+        fmt = string.upper,
+        cond = conditions.hide_in_width,
+        color = {
+            fg = colors.color_03,
+            gui = "bold"
         }
     }
-    gls.right[7] = {
-        PerCent = {
-            provider = "LinePercent",
-            separator = " ",
-            separator_highlight = {
-                "NONE",
-                colors.bg
-            },
-            highlight = {
-                colors.color_7,
-                colors.bg
-            }
+    ins_right {
+        "fileformat",
+        fmt = string.upper,
+        cond = conditions.hide_in_width,
+        icons_enabled = true,
+        padding = {
+            left = 0,
+            right = 2
+        },
+        color = {
+            fg = colors.color_03,
+            gui = "bold"
         }
     }
-    gls.right[8] = {
-        Tabstop = {
-            provider = function()
-                return "Spaces: " .. vim.api.nvim_buf_get_option(0, "tabstop") .. " "
-            end,
-            condition = condition.hide_in_width,
-            separator = " ",
-            separator_highlight = {
-                "NONE",
-                colors.bg
-            },
-            highlight = {
-                colors.color_7,
-                colors.bg
+    ins_right {
+        function()
+            local alias = {
+                n = "NORMAL",
+                v = "VISUAL",
+                V = "V-LINE",
+                [""] = "V-BLOCK",
+                s = "SELECT",
+                S = "S-LINE",
+                [""] = "S-BLOCK",
+                i = "INSERT",
+                R = "REPLACE",
+                c = "COMMAND",
+                r = "PROMPT",
+                ["!"] = "EXTERNAL",
+                t = "TERMINAL"
             }
-        }
-    }
-    gls.right[9] = {
-        BufferType = {
-            provider = "FileTypeName",
-            condition = condition.hide_in_width,
-            separator = " ",
-            separator_highlight = {
-                "NONE",
-                colors.bg
-            },
-            highlight = {
-                colors.color_7,
-                colors.bg
+            local mode_color = {
+                n = colors.color_03,
+                i = colors.color_08,
+                v = colors.color_04,
+                [""] = colors.color_04,
+                V = colors.color_04,
+                c = colors.color_06,
+                no = colors.color_08,
+                s = colors.color_04,
+                S = colors.color_04,
+                [""] = colors.color_04,
+                ic = colors.color_01,
+                R = colors.color_05,
+                Rv = colors.color_05,
+                cv = colors.color_08,
+                ce = colors.color_08,
+                r = colors.color_02,
+                rm = colors.color_02,
+                ["r?"] = colors.color_02,
+                ["!"] = colors.color_08,
+                t = colors.color_08
             }
-        }
+            local vim_mode = vim.fn.mode()
+            vim.api.nvim_command("hi! LualineMode guifg=" .. mode_color[vim.fn.mode()] .. " guibg=" .. colors.bg)
+            return alias[vim_mode] .. "  "
+        end,
+        color = "LualineMode",
+        padding = {right = 1}
     }
-    gls.right[10] = {
-        FileEncode = {
-            provider = "FileEncode",
-            condition = condition.hide_in_width,
-            separator = " ",
-            separator_highlight = {
-                "NONE",
-                colors.bg
-            },
-            highlight = {
-                colors.color_7,
-                colors.bg
-            }
-        }
+    ins_right {
+        function()
+            local current_line = vim.fn.line "."
+            local total_lines = vim.fn.line "$"
+            local chars = {"█", "▇", "▆", "▅", "▄", "▃", "▂", "▁"}
+            local line_ratio = current_line / total_lines
+            local index = math.ceil(line_ratio * #chars)
+            return chars[index]
+        end,
+        padding = {
+            left = 0,
+            right = 0
+        },
+        color = {
+            fg = colors.color_08,
+            bg = colors.darkbg
+        },
+        cond = nil
     }
-    gls.right[11] = {
-        Space = {
-            provider = function()
-                return " "
-            end,
-            separator = " ",
-            separator_highlight = {
-                "NONE",
-                colors.bg
-            },
-            highlight = {
-                colors.color_7,
-                colors.bg
-            }
-        }
-    }
-    gls.short_line_left[1] = {
-        SFileName = {
-            provider = "SFileName",
-            condition = condition.buffer_not_empty,
-            highlight = {
-                colors.fg,
-                colors.bg
-            }
-        }
-    }
-    gls.short_line_right[1] = {
-        BufferIcon = {
-            provider = "BufferIcon",
-            highlight = {
-                colors.fg,
-                colors.bg
-            }
-        }
-    }
+    lualine.setup(lualine_config)
 end
 
 function config.vim_floaterm()
@@ -729,12 +651,14 @@ function config.indent_blankline()
 end
 
 function config.lvim_focus()
-    require("lvim-focus").setup({
-        active_plugin = 1,
-        blacklist_ft = {
-            "lvim"
+    require("lvim-focus").setup(
+        {
+            active_plugin = 1,
+            blacklist_ft = {
+                "lvim"
+            }
         }
-    })
+    )
 end
 
 function config.lvim_helper()

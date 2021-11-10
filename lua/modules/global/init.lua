@@ -38,14 +38,14 @@ modules["folke/which-key.nvim"] = {
     config = ui_config.which_key
 }
 
-modules["NTBBloodbath/galaxyline.nvim"] = {
+modules["nvim-lualine/lualine.nvim"] = {
     requires = "kyazdani42/nvim-web-devicons",
     event = {
         "VimEnter",
         "BufRead",
         "BufNewFile"
     },
-    config = ui_config.galaxyline
+    config = ui_config.lualine
 }
 
 modules["voldikss/vim-floaterm"] = {
@@ -102,12 +102,10 @@ modules["nvim-telescope/telescope.nvim"] = {
     requires = {
         {
             "nvim-telescope/telescope-fzf-native.nvim",
-            after = "telescope.nvim",
             run = "make"
         },
         {
             "nvim-telescope/telescope-media-files.nvim",
-            after = "telescope.nvim"
         }
     },
     cmd = "Telescope",
