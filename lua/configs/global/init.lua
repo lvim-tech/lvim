@@ -100,32 +100,27 @@ configs["ctrlspace_pre_config_global"] = function()
     vim.g.CtrlSpaceSaveWorkspaceOnExit = 1
     vim.g.CtrlSpaceGlobCommand = "rg --files --follow --hidden -g '!{.git/*,node_modules/*,target/*,vendor/*}'"
     vim.g.CtrlSpaceIgnoredFiles = "\v(tmp|temp)[\\/]"
-    vim.api.nvim_exec(
-        [[
-        let g:CtrlSpaceSymbols = {
-            \ "CS": " ",
-            \ "Sin": "",
-            \ "All": "",
-            \ "Vis": "★",
-            \ "File": "",
-            \ "Tabs": "ﱡ",
-            \ "CTab": "ﱢ",
-            \ "NTM": "⁺",
-            \ "WLoad": "ﰬ",
-            \ "WSave": "ﰵ",
-            \ "Zoom": "",
-            \ "SLeft": "",
-            \ "SRight": "",
-            \ "BM": "",
-            \ "Help": "",
-            \ "IV": "",
-            \ "IA": "",
-            \ "IM": " ",
-            \ "Dots": "ﳁ"
-        \ }
-        ]],
-        true
-    )
+    vim.g.CtrlSpaceSymbols = {
+        CS = " ",
+        Sin = "",
+        All = "",
+        Vis = "★",
+        File = "",
+        Tabs = "ﱡ",
+        CTab = "ﱢ",
+        NTM = "⁺",
+        WLoad = "ﰬ",
+        WSave = "ﰵ",
+        Zoom = "",
+        SLeft = "",
+        SRight = "",
+        BM = "",
+        Help = "",
+        IV = "",
+        IA = "",
+        IM = " ",
+        Dots = "ﳁ"
+    }
 end
 
 return configs
