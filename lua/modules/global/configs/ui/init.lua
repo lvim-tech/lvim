@@ -377,8 +377,22 @@ function config.lualine()
             component_separators = "",
             section_separators = "",
             theme = {
-                normal = {c = {fg = colors.fg, bg = colors.bg}},
-                inactive = {c = {fg = colors.fg, bg = colors.bg}}
+                normal = {
+                    a = {fg = colors.fg, bg = colors.bg},
+                    b = {fg = colors.fg, bg = colors.bg},
+                    c = {fg = colors.fg, bg = colors.bg},
+                    x = {fg = colors.fg, bg = colors.bg},
+                    y = {fg = colors.fg, bg = colors.bg},
+                    z = {fg = colors.fg, bg = colors.bg}
+                },
+                inactive = {
+                    a = {fg = colors.fg, bg = colors.bg},
+                    b = {fg = colors.fg, bg = colors.bg},
+                    c = {fg = colors.fg, bg = colors.bg},
+                    x = {fg = colors.fg, bg = colors.bg},
+                    y = {fg = colors.fg, bg = colors.bg},
+                    z = {fg = colors.fg, bg = colors.bg}
+                }
             },
             disabled_filetypes = {
                 "NvimTree",
@@ -397,27 +411,88 @@ function config.lualine()
         sections = {
             lualine_a = {},
             lualine_b = {},
-            lualine_y = {},
-            lualine_z = {},
             lualine_c = {},
-            lualine_x = {}
+            lualine_x = {},
+            lualine_y = {},
+            lualine_z = {}
         },
         inactive_sections = {
             lualine_a = {},
-            lualine_v = {},
-            lualine_y = {},
-            lualine_z = {},
+            lualine_b = {},
             lualine_c = {},
-            lualine_x = {}
+            lualine_x = {},
+            lualine_y = {},
+            lualine_z = {}
         }
     }
-    local function ins_left(component)
+    local function ins_left_a(component)
+        table.insert(lualine_config.sections.lualine_a, component)
+    end
+    local function ins_left_b(component)
+        table.insert(lualine_config.sections.lualine_b, component)
+    end
+    local function ins_left_c(component)
         table.insert(lualine_config.sections.lualine_c, component)
     end
     local function ins_right(component)
         table.insert(lualine_config.sections.lualine_x, component)
     end
-    ins_left {
+    ins_left_a {
+        function()
+            local alias = {
+                n = "NORMAL",
+                v = "VISUAL",
+                V = "V-LINE",
+                [""] = "V-BLOCK",
+                s = "SELECT",
+                S = "S-LINE",
+                [""] = "S-BLOCK",
+                i = "INSERT",
+                R = "REPLACE",
+                c = "COMMAND",
+                r = "PROMPT",
+                ["!"] = "EXTERNAL",
+                t = "TERMINAL"
+            }
+            local mode_color = {
+                n = colors.color_03,
+                i = colors.color_08,
+                v = colors.color_04,
+                [""] = colors.color_04,
+                V = colors.color_04,
+                c = colors.color_06,
+                no = colors.color_08,
+                s = colors.color_04,
+                S = colors.color_04,
+                [""] = colors.color_04,
+                ic = colors.color_01,
+                R = colors.color_05,
+                Rv = colors.color_05,
+                cv = colors.color_08,
+                ce = colors.color_08,
+                r = colors.color_02,
+                rm = colors.color_02,
+                ["r?"] = colors.color_02,
+                ["!"] = colors.color_08,
+                t = colors.color_08
+            }
+            local vim_mode = vim.fn.mode()
+            vim.api.nvim_command("hi! LualineMode guifg=" .. mode_color[vim.fn.mode()] .. " guibg=" .. colors.bg)
+            return alias[vim_mode] .. " "
+        end,
+        color = "LualineMode",
+        padding = {right = 1}
+    }
+    ins_left_b {
+        "filetype",
+        colored = false,
+        icon_only = false,
+        color = {
+            fg = colors.color_07,
+            gui = "bold"
+        }
+    }
+    ins_left_c {
         "filename",
         cond = conditions.buffer_not_empty,
         color = {
@@ -427,16 +502,7 @@ function config.lualine()
         path = 2,
         shorting_target = 20
     }
-    ins_left {
-        "filetype",
-        colored = false,
-        icon_only = false,
-        color = {
-            fg = colors.color_07,
-            gui = "bold"
-        }
-    }
-    ins_left {
+    ins_left_c {
         "diff",
         symbols = {
             added = "   ",
@@ -455,7 +521,7 @@ function config.lualine()
             }
         }
     }
-    ins_left {
+    ins_left_c {
         "branch",
         icon = " ",
         color = {
@@ -463,6 +529,20 @@ function config.lualine()
             gui = "bold"
         },
         cond = conditions.hide_in_width
+    }
+    ins_left_c {
+        function()
+            local package = require("package-info")
+            return package.get_status()
+        end,
+        padding = {
+            left = 0,
+            right = 0
+        },
+        color = {
+            fg = colors.color_05
+        },
+        cond = nil
     }
     ins_right {
         "diagnostics",
@@ -535,52 +615,6 @@ function config.lualine()
             fg = colors.color_03,
             gui = "bold"
         }
-    }
-    ins_right {
-        function()
-            local alias = {
-                n = "NORMAL",
-                v = "VISUAL",
-                V = "V-LINE",
-                [""] = "V-BLOCK",
-                s = "SELECT",
-                S = "S-LINE",
-                [""] = "S-BLOCK",
-                i = "INSERT",
-                R = "REPLACE",
-                c = "COMMAND",
-                r = "PROMPT",
-                ["!"] = "EXTERNAL",
-                t = "TERMINAL"
-            }
-            local mode_color = {
-                n = colors.color_03,
-                i = colors.color_08,
-                v = colors.color_04,
-                [""] = colors.color_04,
-                V = colors.color_04,
-                c = colors.color_06,
-                no = colors.color_08,
-                s = colors.color_04,
-                S = colors.color_04,
-                [""] = colors.color_04,
-                ic = colors.color_01,
-                R = colors.color_05,
-                Rv = colors.color_05,
-                cv = colors.color_08,
-                ce = colors.color_08,
-                r = colors.color_02,
-                rm = colors.color_02,
-                ["r?"] = colors.color_02,
-                ["!"] = colors.color_08,
-                t = colors.color_08
-            }
-            local vim_mode = vim.fn.mode()
-            vim.api.nvim_command("hi! LualineMode guifg=" .. mode_color[vim.fn.mode()] .. " guibg=" .. colors.bg)
-            return alias[vim_mode] .. "  "
-        end,
-        color = "LualineMode",
-        padding = {right = 1}
     }
     ins_right {
         function()

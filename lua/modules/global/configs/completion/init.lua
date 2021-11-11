@@ -84,6 +84,9 @@ function config.nvim_cmp()
                 },
                 {
                     name = "buffer"
+                },
+                {
+                    name = "crates"
                 }
             },
             snippet = {

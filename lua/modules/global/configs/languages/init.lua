@@ -253,9 +253,6 @@ function config.dapinstall()
 end
 
 function config.vim_dadbod_ui()
-    -- if packer_plugins["vim-dadbod"] and not packer_plugins["vim-dadbod"].loaded then
-    --     vim.cmd [[packadd vim-dadbod]]
-    -- end
     vim.g.db_ui_show_help = 0
     vim.g.db_ui_win_position = "left"
     vim.g.db_ui_use_nerd_fonts = 1
@@ -297,6 +294,34 @@ function config.vim_dadbod_ui()
         }
     )
     vim.g.db_ui_auto_execute_table_helpers = true
+end
+
+function config.package_info()
+    require("package-info").setup({
+        colors = {
+            up_to_date = "#98c379",
+            outdated = "#F05F4E",
+        },
+    })
+end
+
+function config.crates()
+    require("crates").setup()
+    vim.cmd('command! CratesUpdate lua require("crates").update()')
+    vim.cmd('command! CratesReload lua require("crates").reload()')
+    vim.cmd('command! CratesHide lua require("crates").hide()')
+    vim.cmd('command! CratesToggle lua require("crates").toggle()')
+    vim.cmd('command! CratesUpdateCrate lua require("crates").update_crate()')
+    vim.cmd('command! CratesUpdateCrates lua require("crates").update_crates()')
+    vim.cmd('command! CratesUpdateAllCrates lua require("crates").update_all_crates()')
+    vim.cmd('command! CratesUpgradeCrate lua require("crates").upgrade_crate()')
+    vim.cmd('command! CratesUpgradeCrates lua require("crates").upgrade_crates()')
+    vim.cmd('command! CratesUpgradeAllCrates lua require("crates").upgrade_all_crates()')
+    vim.cmd('command! CratesShowPopup lua require("crates").show_popup()')
+    vim.cmd('command! CratesShowVersionsPopup lua require("crates").show_versions_popup()')
+    vim.cmd('command! CratesShowFeaturesPopup lua require("crates").show_features_popup()')
+    vim.cmd('command! CratesFocusPopup lua require("crates").focus_popup()')
+    vim.cmd('command! CratesHidePopup lua require("crates").hide_popup()')
 end
 
 return config

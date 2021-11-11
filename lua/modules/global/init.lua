@@ -332,6 +332,18 @@ modules["kristijanhusak/vim-dadbod-ui"] = {
     config = languages_config.vim_dadbod_ui
 }
 
+modules["vuki656/package-info.nvim"] = {
+    requires = "MunifTanjim/nui.nvim",
+    event = "BufRead package.json",
+    config = languages_config.package_info
+}
+
+modules["Saecki/crates.nvim"] = {
+    requires = "nvim-lua/plenary.nvim",
+    event = "BufRead Cargo.toml",
+    config = languages_config.crates
+}
+
 modules["iamcco/markdown-preview.nvim"] = {
     event = {
         "VimEnter",
