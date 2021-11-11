@@ -550,10 +550,10 @@ function config.lualine()
             "nvim_lsp"
         },
         symbols = {
-            error = "  ",
-            warn = "  ",
-            hint = "  ",
-            info = "  "
+            error = " ",
+            warn = " ",
+            hint = " ",
+            info = " "
         },
         diagnostics_color = {
             error = {
