@@ -311,8 +311,6 @@ function config.which_key()
             b = {"<Cmd>Telescope file_browser<CR>", "File browser"},
             f = {"<Cmd>Telescope find_files<CR>", "Find files"},
             w = {"<Cmd>Telescope live_grep<CR>", "Live grep"},
-            d = {"<Cmd>Telescope fd<CR>", "Fd"},
-            z = {"<Cmd>Telescope fzf<CR>", "Fzf"},
             u = {"<Cmd>Telescope buffers<CR>", "Buffers"},
             m = {"<Cmd>Telescope marks<CR>", "Marks"},
             o = {"<Cmd>Telescope commands<CR>", "Commands"},
