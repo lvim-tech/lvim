@@ -5,7 +5,7 @@ keymaps["normal"] = {
     {"<C-space>", ":CtrlSpace<CR>"}, -- CtrlSpace
     {"<Esc>", "<Esc>:noh<CR>"}, -- Remove highlight after search
     {"<F5>", ":UndotreeToggle<CR>"}, -- UndoTree toggle
-    {"<C-c>n", ":e %:h/filename<CR>"}, -- Create new file in current directory        
+    {"<C-c>n", ":e %:h/filename<CR>"}, -- Create new file in current directory
     {"<C-s>", ":w<CR>"}, -- Save
     {"<C-c>a", ":wa<CR>"}, -- Save all
     {"<C-c>e", ":qa!<CR>"}, -- Close all, exit nvim
