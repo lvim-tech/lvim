@@ -65,7 +65,9 @@ language_configs["lsp"] = function()
             languages_utils.document_highlight(client)
         end,
         capabilities = languages_utils.get_capabilities(),
-        root_dir = nvim_lsp_util.root_pattern(".")
+        root_dir = function(fname)
+            return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
+        end
     }
 end
 

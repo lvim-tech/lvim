@@ -1,4 +1,5 @@
 local languages_setup = require("languages.global.utils")
+local nvim_lsp_util = require("lspconfig/util")
 local default_debouce_time = 150
 
 local M = {}
@@ -443,7 +444,10 @@ function M.init_diagnosticls()
                 linters = M.config.linters,
                 formatFiletypes = M.config.format_filetypes,
                 formatters = M.config.formatters
-            }
+            },
+            root_dir = function(fname)
+                return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
+            end
         }
     end
     languages_setup.setup_lsp("diagnosticls", start_diagnosticls)

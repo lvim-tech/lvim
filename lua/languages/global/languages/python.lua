@@ -17,6 +17,7 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     local function start_pyright(server)
+        print("azz")
         server:setup {
             flags = {
                 debounce_text_changes = default_debouce_time
@@ -30,7 +31,9 @@ language_configs["lsp"] = function()
                 languages_setup.document_highlight(client)
             end,
             capabilities = languages_setup.get_capabilities(),
-            root_dir = nvim_lsp_util.root_pattern(".")
+            root_dir = function(fname)
+                return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
+            end
         }
     end
     languages_setup.setup_lsp("pyright", start_pyright)

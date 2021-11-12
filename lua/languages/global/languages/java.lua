@@ -24,7 +24,9 @@ language_configs["lsp"] = function()
                 languages_setup.document_highlight(client)
             end,
             capabilities = languages_setup.get_capabilities(),
-            root_dir = nvim_lsp_util.root_pattern(".")
+            root_dir = function(fname)
+                return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
+            end
         }
     end
     languages_setup.setup_lsp("jdtls", start_jdtls)
