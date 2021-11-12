@@ -5,13 +5,14 @@ keymaps["normal"] = {
     {"<C-space>", ":CtrlSpace<CR>"}, -- CtrlSpace
     {"<Esc>", "<Esc>:noh<CR>"}, -- Remove highlight after search
     {"<F5>", ":UndotreeToggle<CR>"}, -- UndoTree toggle
-    {"<C-n>", ":e %:h/filename<CR>"}, -- Create new file in current directory
+    {"<C-c>n", ":e %:h/filename<CR>"}, -- Create new file in current directory        
     {"<C-s>", ":w<CR>"}, -- Save
-    {"<C-a>", ":wa<CR>"}, -- Save all
-    {"<C-e>", ":qa!<CR>"}, -- Close all, exit nvim
-    {"<C-x>", "<C-w>c"}, -- Close current window
-    {"<C-o>", "<C-w>o"}, -- Close other windows
-    {"<C-d>", ":bdelete<CR>"}, -- BDelete
+    {"<C-c>a", ":wa<CR>"}, -- Save all
+    {"<C-c>e", ":qa!<CR>"}, -- Close all, exit nvim
+    {"<C-c>x", "<C-w>c"}, -- Close current window
+    {"<C-c>o", "<C-w>o"}, -- Close other windows
+    {"<C-c>d", ":bdelete<CR>"}, -- BDelete
+    {"<C-c>b", ":GitBlameToggle<CR>"}, -- Git blame toggle
     {"<C-h>", "<C-w>h"}, -- Move to window left
     {"<C-l>", "<C-w>l"}, -- Move to window right
     {"<C-j>", "<C-w>j"}, -- Move to window down
@@ -20,7 +21,6 @@ keymaps["normal"] = {
     {"<C-Right>", ":vertical resize +2<CR>"}, -- Resize width +
     {"<C-Up>", ":resize -2<CR>"}, -- Resize height -
     {"<C-Down>", ":resize +2<CR>"}, -- Resize height +
-    {"<C-b>", ":GitBlameToggle<CR>"}, -- Git blame toggle
     {"<S-x>", ":NvimTreeToggle<CR>"}, -- Nvim tree explorer
     {"<S-l>", ":FloatermNew lazygit<CR>"}, -- Lazygit
     {"<S-m>", ":MarkdownPreviewToggle<CR>"}, -- Markdown preview toggle
