@@ -81,7 +81,7 @@ function config.nvim_tree()
         auto_close = false,
         open_on_tab = false,
         hijack_cursor = false,
-        update_cwd = false,
+        update_cwd = true,
         diagnostics = {
             enable = true,
             icons = {
@@ -704,14 +704,7 @@ function config.indent_blankline()
 end
 
 function config.lvim_focus()
-    require("lvim-focus").setup(
-        {
-            active_plugin = 1,
-            blacklist_ft = {
-                "lvim"
-            }
-        }
-    )
+    require("lvim-focus").setup()
 end
 
 function config.lvim_helper()
