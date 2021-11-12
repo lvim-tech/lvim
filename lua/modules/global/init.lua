@@ -209,6 +209,7 @@ modules["lewis6991/gitsigns.nvim"] = {
     requires = "nvim-lua/plenary.nvim",
     event = {
         "BufRead",
+        "BufReadPost",
         "BufNewFile"
     },
     config = version_control_config.gitsigns
