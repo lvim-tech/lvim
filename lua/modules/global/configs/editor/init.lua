@@ -250,4 +250,15 @@ function config.suda()
     vim.g.suda_smart_edit = 1
 end
 
+function config.neoscroll()
+    require('neoscroll').setup({
+        mappings = {
+            '<C-y>', '<C-e>',
+            '<C-u>', '<C-d>',
+            '<C-b>', '<C-f>',
+            'zt', 'zz', 'zb'
+        }
+    })
+end
+
 return config

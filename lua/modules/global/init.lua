@@ -163,6 +163,14 @@ modules["norcalli/nvim-colorizer.lua"] = {
     config = editor_config.nvim_colorize
 }
 
+modules["karb94/neoscroll.nvim"] = {
+    event = {
+        "BufRead",
+        "BufNewFile"
+    },
+    config = editor_config.neoscroll
+}
+
 modules["lambdalisue/suda.vim"] = {
     event = {
         "BufRead",
