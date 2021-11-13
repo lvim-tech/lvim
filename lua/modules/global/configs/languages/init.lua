@@ -297,12 +297,14 @@ function config.vim_dadbod_ui()
 end
 
 function config.package_info()
-    require("package-info").setup({
-        colors = {
-            up_to_date = "#98c379",
-            outdated = "#F05F4E",
-        },
-    })
+    require("package-info").setup(
+        {
+            colors = {
+                up_to_date = "#98c379",
+                outdated = "#F05F4E"
+            }
+        }
+    )
 end
 
 function config.crates()
