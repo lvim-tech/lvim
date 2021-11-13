@@ -13,7 +13,7 @@ local default_debouce_time = 150
 local language_configs = {}
 
 language_configs["lsp"] = function()
-    local function start_vuels(server)
+    local function start_volar(server)
         server:setup {
             flags = {
                 debounce_text_changes = default_debouce_time
@@ -32,7 +32,7 @@ language_configs["lsp"] = function()
             end
         }
     end
-    languages_setup.setup_lsp("vuels", start_vuels)
+    languages_setup.setup_lsp("volar", start_volar)
 end
 
 return language_configs
