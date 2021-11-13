@@ -48,8 +48,14 @@ modules["nvim-lualine/lualine.nvim"] = {
     config = ui_config.lualine
 }
 
-modules["voldikss/vim-floaterm"] = {
-    config = ui_config.vim_floaterm
+modules["akinsho/toggleterm.nvim"] = {
+    cmd = {
+        "TTFloat",
+        "TTOne",
+        "TTTwo",
+        "TTThree"
+    },
+    config = ui_config.toggleterm
 }
 
 modules["folke/twilight.nvim"] = {

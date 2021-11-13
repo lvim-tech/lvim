@@ -323,13 +323,6 @@ function config.which_key()
             S = {"<Cmd>Telescope git_stash<CR>", "Git stash"},
             i = {"<Cmd>Telescope git_files<CR>", "Git files"},
             M = {"<Cmd>Telescope media_files<CR>", "Media files"}
-        },
-        T = {
-            name = "Terminal",
-            o = {"<Cmd>FloatermShow<CR>", "Floaterm"},
-            g = {"<Cmd>FloatermNew lazygit<CR>", "Lazy git"},
-            d = {"<Cmd>FloatermNew lazydocker<CR>", "Lazy docker"},
-            n = {"<Cmd>FloatermNew lazynpm<CR>", "Lazy npm"}
         }
     }
     local vmappings = {
@@ -376,20 +369,20 @@ function config.lualine()
             section_separators = "",
             theme = {
                 normal = {
-                    a = {fg = colors.fg, bg = colors.bg},
-                    b = {fg = colors.fg, bg = colors.bg},
-                    c = {fg = colors.fg, bg = colors.bg},
-                    x = {fg = colors.fg, bg = colors.bg},
-                    y = {fg = colors.fg, bg = colors.bg},
-                    z = {fg = colors.fg, bg = colors.bg}
+                    a = {fg = colors.bg, bg = colors.bg},
+                    b = {fg = colors.bg, bg = colors.bg},
+                    c = {fg = colors.bg, bg = colors.bg},
+                    x = {fg = colors.bg, bg = colors.bg},
+                    y = {fg = colors.bg, bg = colors.bg},
+                    z = {fg = colors.bg, bg = colors.bg}
                 },
                 inactive = {
-                    a = {fg = colors.fg, bg = colors.bg},
-                    b = {fg = colors.fg, bg = colors.bg},
-                    c = {fg = colors.fg, bg = colors.bg},
-                    x = {fg = colors.fg, bg = colors.bg},
-                    y = {fg = colors.fg, bg = colors.bg},
-                    z = {fg = colors.fg, bg = colors.bg}
+                    a = {fg = colors.bg, bg = colors.bg},
+                    b = {fg = colors.bg, bg = colors.bg},
+                    c = {fg = colors.bg, bg = colors.bg},
+                    x = {fg = colors.bg, bg = colors.bg},
+                    y = {fg = colors.bg, bg = colors.bg},
+                    z = {fg = colors.bg, bg = colors.bg}
                 }
             },
             disabled_filetypes = {
@@ -636,19 +629,129 @@ function config.lualine()
     lualine.setup(lualine_config)
 end
 
-function config.vim_floaterm()
-    vim.g.floaterm_keymap_toggle = "<F1>"
-    vim.g.floaterm_keymap_next = "<F2>"
-    vim.g.floaterm_keymap_prev = "<F3>"
-    vim.g.floaterm_keymap_new = "<F4>"
-    vim.g.floaterm_keymap_kill = "<F12>"
-    vim.g.floaterm_title = "Floaterm ($1/$2)"
-    vim.g.floaterm_shell = vim.o.shell
-    vim.g.floaterm_autoinsert = 1
-    vim.g.floaterm_width = 0.8
-    vim.g.floaterm_height = 0.8
-    vim.g.floaterm_wintitle = 0
-    vim.g.floaterm_autoclose = 1
+function config.toggleterm()
+    local terminal_float =
+        require("toggleterm.terminal").Terminal:new(
+        {
+            count = 4,
+            direction = "float",
+            float_opts = {
+                border = "single",
+                winblend = 3,
+                highlights = {
+                    border = "FloatBorder",
+                    background = "Normal"
+                }
+            },
+            on_open = function(term)
+                vim.api.nvim_buf_set_keymap(term.bufnr, "n", "<Esc>", "<cmd>close<cr>", {noremap = true, silent = true})
+                vim.api.nvim_buf_set_keymap(
+                    term.bufnr,
+                    "t",
+                    "<Esc>",
+                    "<c-\\><c-n><cmd>close<cr><c-w><c-p>",
+                    {noremap = true}
+                )
+                vim.wo.cursorcolumn = false
+                vim.wo.cursorline = false
+                vim.cmd("startinsert!")
+            end,
+            on_close = function()
+                vim.cmd("quit!")
+            end
+        }
+    )
+    local terminal_one =
+        require("toggleterm.terminal").Terminal:new(
+        {
+            count = 1,
+            direction = "horizontal",
+            on_open = function(term)
+                vim.api.nvim_buf_set_keymap(term.bufnr, "n", "<Esc>", "<cmd>close<cr>", {noremap = true, silent = true})
+                vim.api.nvim_buf_set_keymap(
+                    term.bufnr,
+                    "t",
+                    "<Esc>",
+                    "<c-\\><c-n><cmd>close<cr><c-w><c-p>",
+                    {noremap = true, silent = true}
+                )
+                vim.api.nvim_buf_set_keymap(term.bufnr, "t", "<C-x>", "<c-\\><c-n>", {noremap = true, silent = true})
+                vim.wo.cursorcolumn = false
+                vim.wo.cursorline = false
+                vim.cmd("startinsert!")
+                vim.api.nvim_exec([[exe "normal \<C-W>\="]], true)
+            end,
+            on_close = function()
+                vim.cmd("quit!")
+            end
+        }
+    )
+    local terminal_two =
+        require("toggleterm.terminal").Terminal:new(
+        {
+            count = 2,
+            direction = "horizontal",
+            on_open = function(term)
+                vim.api.nvim_buf_set_keymap(term.bufnr, "n", "<Esc>", "<cmd>close<cr>", {noremap = true, silent = true})
+                vim.api.nvim_buf_set_keymap(
+                    term.bufnr,
+                    "t",
+                    "<Esc>",
+                    "<c-\\><c-n><cmd>close<cr><c-w><c-p>",
+                    {noremap = true, silent = true}
+                )
+                vim.api.nvim_buf_set_keymap(term.bufnr, "t", "<C-x>", "<c-\\><c-n>", {noremap = true, silent = true})
+                vim.wo.cursorcolumn = false
+                vim.wo.cursorline = false
+                vim.cmd("startinsert!")
+                vim.api.nvim_exec([[exe "normal \<C-W>\="]], true)
+            end,
+            on_close = function()
+                vim.cmd("quit!")
+            end
+        }
+    )
+    local terminal_three =
+        require("toggleterm.terminal").Terminal:new(
+        {
+            count = 3,
+            direction = "horizontal",
+            on_open = function(term)
+                vim.api.nvim_buf_set_keymap(term.bufnr, "n", "<Esc>", "<cmd>close<cr>", {noremap = true, silent = true})
+                vim.api.nvim_buf_set_keymap(
+                    term.bufnr,
+                    "t",
+                    "<Esc>",
+                    "<c-\\><c-n><cmd>close<cr><c-w><c-p>",
+                    {noremap = true, silent = true}
+                )
+                vim.api.nvim_buf_set_keymap(term.bufnr, "t", "<C-x>", "<c-\\><c-n>", {noremap = true, silent = true})
+                vim.wo.cursorcolumn = false
+                vim.wo.cursorline = false
+                vim.cmd("startinsert!")
+                vim.api.nvim_exec([[exe "normal \<C-W>\="]], true)
+            end,
+            on_close = function()
+                vim.cmd("quit!")
+            end
+        }
+    )
+    function _G.toggleterm_float_toggle()
+        terminal_float:toggle()
+    end
+    function _G.toggleterm_one_toggle()
+        terminal_one:toggle()
+    end
+    function _G.toggleterm_two_toggle()
+        terminal_two:toggle()
+    end
+    function _G.toggleterm_three_toggle()
+        terminal_three:toggle()
+    end
+    vim.cmd("command! TTFloat lua _G.toggleterm_float_toggle()")
+    vim.cmd("command! TTOne lua _G.toggleterm_one_toggle()")
+    vim.cmd("command! TTTwo lua _G.toggleterm_two_toggle()")
+    vim.cmd("command! TTThree lua _G.toggleterm_three_toggle()")
 end
 
 function config.twilight()

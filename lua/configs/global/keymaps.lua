@@ -1,10 +1,14 @@
 local keymaps = {}
 
 keymaps["normal"] = {
+    {"<F1>", ":TTOne<CR>"}, -- Toggleterm one open
+    {"<F2>", ":TTTwo<CR>"}, -- Toggleterm two open
+    {"<F3>", ":TTThree<CR>"}, -- Toggleterm three open
+    {"<F4>", ":TTFloat<CR>"}, -- Toggleterm float open
+    {"<F5>", ":UndotreeToggle<CR>"}, -- UndoTree toggle
     {"<F11>", ":LvimHelper<CR>"}, -- LvimHelper
     {"<C-space>", ":CtrlSpace<CR>"}, -- CtrlSpace
     {"<Esc>", "<Esc>:noh<CR>"}, -- Remove highlight after search
-    {"<F5>", ":UndotreeToggle<CR>"}, -- UndoTree toggle
     {"<C-c>n", ":e %:h/filename<CR>"}, -- Create new file in current directory
     {"<C-s>", ":w<CR>"}, -- Save
     {"<C-c>a", ":wa<CR>"}, -- Save all
@@ -22,7 +26,6 @@ keymaps["normal"] = {
     {"<C-Up>", ":resize -2<CR>"}, -- Resize height -
     {"<C-Down>", ":resize +2<CR>"}, -- Resize height +
     {"<S-x>", ":NvimTreeToggle<CR>"}, -- Nvim tree explorer
-    {"<S-l>", ":FloatermNew lazygit<CR>"}, -- Lazygit
     {"<S-m>", ":MarkdownPreviewToggle<CR>"}, -- Markdown preview toggle
     {"<S-n>", ":GitSignsNextHunk<CR>"}, -- Git signs next hunk
     {"<S-p>", ":GitSignsPrevHunk<CR>"}, -- Git signs prev hunk

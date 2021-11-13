@@ -5,23 +5,19 @@ Normal mode
 | Key       | Action                       | Description                 |
 | --------- | ---------------------------- | --------------------------- |
 | --------- | ---------------------------- | --------------------------- |
-| <F11>     | :LvimHelper<CR>              | LvimHelper                  |
-| --------- | ---------------------------- | --------------------------- |
 | <C-space> | :CtrlSpace<CR>               | CtrlSpace                   |
 | --------- | ---------------------------- | --------------------------- |
-| <Esc>     | <Esc>:noh<CR>                | Remove highlight            |
+| <F1>      | :TTOne<CR>                   | Toggleterm one open         |
 | --------- | ---------------------------- | --------------------------- |
-| <F1>      | :FloatermToggle<CR>          | Floaterm toggle             |
+| <F2>      | :TTTwo<CR>                   | Toggleterm two open         |
 | --------- | ---------------------------- | --------------------------- |
-| <F2>      | :FloatermPrev<CR>            | Floaterm prev               |
+| <F3>      | :TTThree<CR>                 | Toggleterm three open       |
 | --------- | ---------------------------- | --------------------------- |
-| <F3>      | :FloatermNext<CR>            | Floaterm next               |
+| <F4>      | :TTFloat<CR>                 | Toggleterm float open       |
 | --------- | ---------------------------- | --------------------------- |
-| <F4>      | :FloatermNew<CR>             | Floaterm new                |
+| <F5>      | :UndotreeToggle<CR>          | Undotree toggle             |
 | --------- | ---------------------------- | --------------------------- |
-| <F12>     | :FloatermKill<CR>            | Floaterm kill               |
-| --------- | ---------------------------- | --------------------------- |
-| <F5>      | :UndotreeToggle<CR>          | UndoTree toggle             |
+| <F11>     | :LvimHelper<CR>              | LvimHelper                  |
 | --------- | ---------------------------- | --------------------------- |
 | <C-c>n    | :e %:h/filename<CR>          | Create new file             |
 | --------- | ---------------------------- | --------------------------- |
