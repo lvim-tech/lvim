@@ -85,7 +85,7 @@ M.config = {
         eslint = {
             sourceName = "eslint",
             command = "eslint",
-            rootPatterns = {".eslintrc", ".eslintrc.js"},
+            rootPatterns = {".eslintrc", ".eslintrc.js", ".package.json"},
             debounce = 100,
             args = {
                 "--stdin",
