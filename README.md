@@ -21,7 +21,7 @@
 - Linters
 - Autoformat
 - Custom settings for projects
-- 58 plugins
+- 62 plugins
 - Loading time - ~065.000
 
 ---
@@ -36,8 +36,6 @@ For detail info see [wiki](https://github.com/lvim-tech/lvim/wiki) - `6500+` lin
 
 ## Requirements
 
-### Base
-
 - [neovim >=0.5.0](https://github.com/neovim/neovim/wiki/Installing-Neovim)
 - [pynvim](https://github.com/neovim/pynvim)
 - [neovim-remote](https://github.com/mhinz/neovim-remote)
@@ -46,13 +44,7 @@ For detail info see [wiki](https://github.com/lvim-tech/lvim/wiki) - `6500+` lin
 - [fzf](https://github.com/junegunn/fzf)
 - [rsync](https://github.com/WayneD/rsync)
 
-### External apps
-
-- [lazygit](https://github.com/jesseduffield/lazygit)
-- [lazynpm](https://github.com/jesseduffield/lazynpm)
-- [lazydocker](https://github.com/jesseduffield/lazydocker)
-
-## Current version - 1.0.0
+## Current version - 1.1.0
 
 Install:
 
