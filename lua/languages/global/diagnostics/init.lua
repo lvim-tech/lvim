@@ -22,6 +22,7 @@ M.config = {
         -- "dart",
         "go",
         "lua",
+        "markdown",
         "php",
         "python",
         -- "rust",
@@ -343,6 +344,7 @@ M.config = {
         typescriptreact = "prettier",
         vue = "prettier",
         lua = "luafmt",
+        markdown = "prettier",
         python = "autopep8",
         vim = "prettier",
         sh = "shfmt"
