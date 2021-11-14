@@ -1,9 +1,6 @@
 -- Install Lsp server
 -- :LspInstall vuels
 
--- Install debugger
--- :DIInstall python
-
 local global = require("core.global")
 local languages_setup = require("languages.global.utils")
 local nvim_lsp_util = require("lspconfig/util")
