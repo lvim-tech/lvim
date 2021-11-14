@@ -1,5 +1,5 @@
 -- Install Lsp server
--- :LspInstall vuels
+-- :LspInstall volar
 
 local global = require("core.global")
 local languages_setup = require("languages.global.utils")
