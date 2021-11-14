@@ -98,36 +98,6 @@ function config.nvim_cmp()
     )
 end
 
-function config.lspkind_nvim()
-    require("lspkind").init(
-        {
-            with_text = true,
-            symbol_map = {
-                Text = " ",
-                Method = "",
-                Function = "",
-                Constructor = "",
-                Variable = "[]",
-                Class = " ",
-                Interface = "ﰮ",
-                Module = "",
-                Property = "襁",
-                Unit = "",
-                Value = "",
-                Enum = "練",
-                Keyword = "",
-                Snippet = "",
-                Color = "",
-                File = "",
-                Folder = "",
-                EnumMember = "",
-                Constant = "",
-                Struct = ""
-            }
-        }
-    )
-end
-
 function config.emmet_vim()
     vim.g.user_emmet_complete_tag = 0
     vim.g.user_emmet_install_global = 0

@@ -413,14 +413,6 @@ modules["hrsh7th/vim-vsnip"] = {
     event = "InsertEnter"
 }
 
-modules["onsails/lspkind-nvim"] = {
-    event = {
-        "BufRead",
-        "BufNewFile"
-    },
-    config = completion_config.lspkind_nvim
-}
-
 modules["mattn/emmet-vim"] = {
     event = "InsertEnter",
     config = completion_config.emmet_vim
