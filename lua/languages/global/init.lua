@@ -22,6 +22,7 @@ M.filetypes = {
     },
     ["dart"] = {"dart"},
     ["go"] = {"go", "gomod"},
+    ["graphql"] = {"graphql"},
     ["html"] = {"html"},
     ["java"] = {"java"},
     ["json"] = {"json"},
