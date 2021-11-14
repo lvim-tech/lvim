@@ -3,6 +3,12 @@ local funcs = require("core.funcs")
 local M = {}
 
 M.filetypes = {
+    ["angular"] = {
+        "typescript",
+        "html",
+        "typescriptreact",
+        "typescript.tsx"
+    },
     ["cpp"] = {
         "c",
         "cpp",
@@ -45,27 +51,22 @@ M.setup = function()
                 if global["languages"][language] ~= nil then
                     if global["languages"][language]["project_root_path"] == project_root_path then
                         -- nothing
-                        return
                     else
                         if funcs.file_exists(project_root_path .. "/lvim/" .. language .. ".lua") then
                             M.kill_server(language)
                             M.pre_init_language(language, project_root_path, "custom")
                             M.init_language(language, project_root_path)
-                            return
                         elseif global["languages"][language]["lsp_type"] == "global" then
                             -- nothing
-                            return
                         else
                             M.kill_server(language)
                             M.pre_init_language(language, project_root_path, "global")
                             M.init_language(language, project_root_path)
-                            return
                         end
                     end
                 else
                     M.pre_init_language(language, project_root_path, "global")
                     M.init_language(language, project_root_path)
-                    return
                 end
             end
         end
