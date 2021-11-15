@@ -2,7 +2,7 @@ local config = {}
 
 function config.nvim_lspconfig()
     require("languages.global.utils").setup_diagnostic()
-    require("languages.global.diagnostics").init_diagnosticls()
+    require("languages.global.diagnosticls").init_diagnosticls()
     -- LSP buf
     vim.cmd("command! LspAddToWorkspaceFolder lua vim.lsp.buf.add_workspace_folder()")
     vim.cmd("command! LspListWorkspaceFolders lua vim.lsp.buf.list_workspace_folders()")
