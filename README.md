@@ -1,8 +1,8 @@
 # LVIM IDE
 
-![LVIM IDE](https://github.com/lvim-tech/lvim/blob/master/media/lvim-ide-logo.png)
+![LVIM IDE](https://github.com/lvim-tech/lvim/blob/development/media/lvim-ide-logo.png)
 
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/lvim-tech/lvim/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/lvim-tech/lvim/blob/development/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/lvim-tech/lvim.svg?style=social&label=Star)](https://github.com/lvim-tech/lvim/stargazers/)
 [![Requires](https://img.shields.io/badge/requires-nvim%200.5%2B-9cf?logo=neovim)](https://neovim.io//)
 [![GitHub contributors](https://img.shields.io/github/contributors/lvim-tech/lvim.svg)](https://github.com/lvim-tech/lvim/graphs/contributors/)
@@ -26,7 +26,7 @@
 
 ---
 
-![lvim-logo](https://github.com/lvim-tech/lvim/blob/master/media/lvim-ide-screenshot.png)
+![lvim-logo](https://github.com/lvim-tech/lvim/blob/development/media/lvim-ide-screenshot.png)
 
 ---
 
