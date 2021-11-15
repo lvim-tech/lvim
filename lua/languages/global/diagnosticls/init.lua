@@ -79,7 +79,7 @@ M.config = {
                 warning = "warning"
             }
         },
-        -- javascript, typescript, javascriptreact, typescriptreact
+        -- javascript, typescript, javascriptreact, typescriptreact, vue
         -- https://github.com/eslint/eslint
         -- https://eslint.org
         -- INSTALL: npm install -g eslint
@@ -363,7 +363,7 @@ M.config = {
             isStderr = false,
             isStdout = true
         },
-        -- javascript, typescript, javascriptreact, typescriptreact
+        -- javascript, typescript, javascriptreact, typescriptreact, vue
         -- https://prettier.io
         -- INSTALL: npm install -g prettier
         prettier = {

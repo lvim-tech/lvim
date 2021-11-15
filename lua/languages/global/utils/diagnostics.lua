@@ -1,5 +1,3 @@
--- Much of this code is copied from nvim source directly, with minor modifications & simplifications.
-
 local api = vim.api
 local util = vim.lsp.util
 local diagnostics = vim.lsp.diagnostic
