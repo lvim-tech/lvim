@@ -38,8 +38,3 @@ luac.out
 *.i*86
 *.x86_64
 *.hex
-
-.git/cs_files
-.git/cs_workspaces
-cs_files
-cs_workspaces
