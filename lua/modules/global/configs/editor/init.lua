@@ -271,10 +271,10 @@ function config.suda()
 end
 
 function config.hop()
-    require('hop').setup ()
-    vim.api.nvim_set_keymap('n', 'f', "<cmd>HopWord<cr>", {})
-    vim.api.nvim_set_keymap('n', 't', "<cmd>HopChar1<cr>", {})
-    vim.api.nvim_set_keymap('n', 'T', "<cmd>HopChar2<cr>", {})
+    require("hop").setup()
+    vim.api.nvim_set_keymap("n", "s", "<cmd>HopWord<cr>", {})
+    vim.api.nvim_set_keymap("n", "[", "<cmd>HopChar1<cr>", {})
+    vim.api.nvim_set_keymap("n", "]", "<cmd>HopChar2<cr>", {})
 end
 
 return config
