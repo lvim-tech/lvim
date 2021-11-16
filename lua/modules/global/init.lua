@@ -192,6 +192,15 @@ modules["kenn7/vim-arsync"] = {
     }
 }
 
+modules["phaazon/hop.nvim"] = {
+    event = {
+        "BufRead",
+        "BufNewFile"
+    },
+    branch = "v1",
+    config = editor_config.hop
+}
+
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Version control ----------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
