@@ -1,11 +1,20 @@
 -- Install Lsp server
+-- :LspInstall tsserver
+
+-- Install Lsp server
 -- :LspInstall angularls
+
+-- Install debugger
+-- :DIInstall jsnode
 
 local global = require("core.global")
 local languages_setup = require("languages.global.utils")
+local funcs = require("core.funcs")
 local nvim_lsp_util = require("lspconfig/util")
 local lsp_signature = require("lsp_signature")
 local default_debouce_time = 150
+local dap_install = require("dap-install")
+local dap = require("dap")
 
 local language_configs = {}
 
@@ -50,6 +59,43 @@ language_configs["lsp"] = function()
         }
     end
     languages_setup.setup_lsp("tsserver", start_tsserver)
+end
+
+language_configs["dap"] = function()
+    if funcs.dir_exists(global.lsp_path .. "dapinstall/jsnode/") ~= true then
+        vim.cmd("DIInstall jsnode")
+    end
+    dap_install.config("jsnode", {})
+    dap.configurations.javascript = {
+        {
+            type = "node2",
+            request = "launch",
+            name = "Launch",
+            program = function()
+                return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+            end,
+            cwd = "${workspaceFolder}",
+            outFiles = {"${workspaceRoot}/dist/js/*"},
+            sourceMaps = true,
+            protocol = "inspector",
+            console = "integratedTerminal"
+        }
+    }
+    dap.configurations.typescript = {
+        {
+            type = "node2",
+            request = "launch",
+            name = "Launch",
+            program = function()
+                return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+            end,
+            cwd = "${workspaceFolder}",
+            outFiles = {"${workspaceRoot}/dist/js/*"},
+            sourceMaps = true,
+            protocol = "inspector",
+            console = "integratedTerminal"
+        }
+    }
 end
 
 return language_configs
