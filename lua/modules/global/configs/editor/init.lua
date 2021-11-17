@@ -270,4 +270,11 @@ function config.suda()
     vim.g.suda_smart_edit = 1
 end
 
+function config.hop()
+    require("hop").setup()
+    vim.api.nvim_set_keymap("n", "s", "<cmd>HopWord<cr>", {})
+    vim.api.nvim_set_keymap("n", "[", "<cmd>HopChar1<cr>", {})
+    vim.api.nvim_set_keymap("n", "]", "<cmd>HopChar2<cr>", {})
+end
+
 return config
