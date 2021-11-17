@@ -3,12 +3,6 @@ local funcs = require("core.funcs")
 local M = {}
 
 M.filetypes = {
-    -- ["angular"] = {
-    --     "typescript",
-    --     "html",
-    --     "typescriptreact",
-    --     "typescript.tsx"
-    -- },
     ["cpp"] = {
         "c",
         "cpp",
