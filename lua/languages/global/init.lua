@@ -3,12 +3,12 @@ local funcs = require("core.funcs")
 local M = {}
 
 M.filetypes = {
-    ["angular"] = {
-        "typescript",
-        "html",
-        "typescriptreact",
-        "typescript.tsx"
-    },
+    -- ["angular"] = {
+    --     "typescript",
+    --     "html",
+    --     "typescriptreact",
+    --     "typescript.tsx"
+    -- },
     ["cpp"] = {
         "c",
         "cpp",
@@ -49,28 +49,37 @@ M.setup = function()
     for language, v in pairs(M.filetypes) do
         for _, v2 in pairs(v) do
             if v2 == filetype then
-                if global["languages"][language] ~= nil then
-                    if global["languages"][language]["project_root_path"] == project_root_path then
-                        -- nothing
-                    else
-                        if funcs.file_exists(project_root_path .. "/lvim/" .. language .. ".lua") then
-                            M.kill_server(language)
-                            M.pre_init_language(language, project_root_path, "custom")
-                            M.init_language(language, project_root_path)
-                        elseif global["languages"][language]["lsp_type"] == "global" then
-                            -- nothing
-                        else
-                            M.kill_server(language)
-                            M.pre_init_language(language, project_root_path, "global")
-                            M.init_language(language, project_root_path)
-                        end
-                    end
+                if funcs.file_exists(project_root_path .. "/angular.json") then
+                    M.start_language("angular", project_root_path)
+                    M.start_language("jsts", project_root_path)
                 else
-                    M.pre_init_language(language, project_root_path, "global")
-                    M.init_language(language, project_root_path)
+                    M.start_language(language, project_root_path)
                 end
             end
         end
+    end
+end
+
+M.start_language = function(language, project_root_path)
+    if global["languages"][language] ~= nil then
+        if global["languages"][language]["project_root_path"] == project_root_path then
+            -- nothing
+        else
+            if funcs.file_exists(project_root_path .. "/lvim/" .. language .. ".lua") then
+                M.kill_server(language)
+                M.pre_init_language(language, project_root_path, "custom")
+                M.init_language(language, project_root_path)
+            elseif global["languages"][language]["lsp_type"] == "global" then
+                -- nothing
+            else
+                M.kill_server(language)
+                M.pre_init_language(language, project_root_path, "global")
+                M.init_language(language, project_root_path)
+            end
+        end
+    else
+        M.pre_init_language(language, project_root_path, "global")
+        M.init_language(language, project_root_path)
     end
 end
 
@@ -102,7 +111,6 @@ M.init_language = function(language, project_root_path)
     for _, func in pairs(language_configs) do
         func()
     end
-    vim.cmd("e")
 end
 
 return M
