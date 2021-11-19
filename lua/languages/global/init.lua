@@ -59,10 +59,10 @@ M.setup = function()
     for language, v in pairs(M.filetypes) do
         for _, v2 in pairs(v) do
             if v2 == filetype then
-                if funcs.file_exists(project_root_path .. "/angular.json") then
+                if language == "jsts" and funcs.file_exists(project_root_path .. "/angular.json") then
                     M.start_language("angular", project_root_path)
                     M.start_language("jsts", project_root_path)
-                elseif funcs.file_exists(project_root_path .. "/ember-cli-build.js") then
+                elseif language == "jsts" and funcs.file_exists(project_root_path .. "/ember-cli-build.js") then
                     M.start_language("ember", project_root_path)
                     M.start_language("jsts", project_root_path)
                 else
@@ -77,6 +77,7 @@ M.start_language = function(language, project_root_path)
     if global["languages"][language] ~= nil then
         if global["languages"][language]["project_root_path"] == project_root_path then
             -- nothing
+            return
         else
             if funcs.file_exists(project_root_path .. "/lvim/" .. language .. ".lua") then
                 M.kill_server(language)
@@ -84,6 +85,7 @@ M.start_language = function(language, project_root_path)
                 M.init_language(language, project_root_path)
             elseif global["languages"][language]["lsp_type"] == "global" then
                 -- nothing
+                return
             else
                 M.kill_server(language)
                 M.pre_init_language(language, project_root_path, "global")
