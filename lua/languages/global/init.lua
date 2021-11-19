@@ -3,18 +3,29 @@ local funcs = require("core.funcs")
 local M = {}
 
 M.filetypes = {
+    ["clojure"] = {
+        "clojure",
+        "edn"
+    },
     ["cpp"] = {
         "c",
         "cpp",
         "objc",
         "objcpp"
     },
+    ["cmake"] = {"cmake"},
     ["css"] = {
         "css",
         "scss",
         "less"
     },
     ["dart"] = {"dart"},
+    ["elixir"] = {
+        "elixir",
+        "eelixir"
+    },
+    ["erlang"] = {"erlang"},
+    ["fortran"] = {"fortran"},
     ["go"] = {"go", "gomod"},
     ["graphql"] = {"graphql"},
     ["html"] = {"html"},
@@ -26,12 +37,17 @@ M.filetypes = {
         "javascriptreact",
         "typescriptreact"
     },
+    ["kotlin"] = {"kotlin"},
     ["lua"] = {"lua"},
     ["php"] = {"php"},
     ["python"] = {"python"},
     ["ruby"] = {"ruby"},
     ["rust"] = {"rust"},
     ["shell"] = {"sh"},
+    ["sql"] = {
+        "sql",
+        "mysql"
+    },
     ["vim"] = {"vim"},
     ["vue"] = {"vue"},
     ["yaml"] = {"yaml"}
@@ -45,6 +61,9 @@ M.setup = function()
             if v2 == filetype then
                 if funcs.file_exists(project_root_path .. "/angular.json") then
                     M.start_language("angular", project_root_path)
+                    M.start_language("jsts", project_root_path)
+                elseif funcs.file_exists(project_root_path .. "/ember-cli-build.js") then
+                    M.start_language("ember", project_root_path)
                     M.start_language("jsts", project_root_path)
                 else
                     M.start_language(language, project_root_path)
