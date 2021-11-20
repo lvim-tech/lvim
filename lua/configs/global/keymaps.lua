@@ -7,7 +7,7 @@ keymaps["normal"] = {
     {"<F4>", ":TTFloat<CR>"}, -- Toggleterm float open
     {"<F5>", ":UndotreeToggle<CR>"}, -- UndoTree toggle
     {"<F11>", ":LvimHelper<CR>"}, -- LvimHelper
-    {"<C-space>", ":CtrlSpace<CR>"}, -- CtrlSpace
+    {"<space><space>", ":CtrlSpace<CR>"}, -- CtrlSpace
     {"<Esc>", "<Esc>:noh<CR>"}, -- Remove highlight after search
     {"<C-c>n", ":e %:h/filename<CR>"}, -- Create new file in current directory
     {"<C-s>", ":w<CR>"}, -- Save
@@ -16,6 +16,8 @@ keymaps["normal"] = {
     {"<C-c>x", "<C-w>c"}, -- Close current window
     {"<C-c>o", "<C-w>o"}, -- Close other windows
     {"<C-c>d", ":bdelete<CR>"}, -- BDelete
+    {"<C-n>", ":bnext<CR>"}, -- Next buffer
+    {"<C-p>", ":bprevious<CR>"}, -- Previews buffer
     {"<C-c>b", ":GitBlameToggle<CR>"}, -- Git blame toggle
     {"<C-h>", "<C-w>h"}, -- Move to window left
     {"<C-l>", "<C-w>l"}, -- Move to window right
