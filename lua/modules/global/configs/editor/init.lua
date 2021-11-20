@@ -256,8 +256,6 @@ function config.neoscroll()
                 "<C-d>",
                 "<C-b>",
                 "<C-f>",
-                "gg",
-                "G",
                 "zt",
                 "zz",
                 "zb"
