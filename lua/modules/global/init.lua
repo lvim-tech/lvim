@@ -276,6 +276,30 @@ modules["williamboman/nvim-lsp-installer"] = {
     config = languages_config.nvim_lsp_installer
 }
 
+modules["simrat39/rust-tools.nvim"] = {
+    filetypes = "rust",
+    requires = {
+        "neovim/nvim-lspconfig",
+        "nvim-lua/popup.nvim",
+        "nvim-lua/plenary.nvim",
+        "mfussenegger/nvim-dap",
+        "nvim-telescope/telescope.nvim"
+    }
+}
+
+modules["akinsho/flutter-tools.nvim"] = {
+    filetypes = "dart",
+    requires = "nvim-lua/plenary.nvim"
+}
+
+modules["jose-elias-alvarez/nvim-lsp-ts-utils"] = {
+    filetypes = {"javascript", "javascriptreact", "typescript", "typescriptreact"},
+    requires = {
+        "neovim/nvim-lspconfig",
+        "nvim-lua/plenary.nvim"
+    }
+}
+
 modules["michaelb/sniprun"] = {
     requires = "neovim/nvim-lspconfig",
     run = "bash ./install.sh",

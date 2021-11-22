@@ -9,6 +9,7 @@ function config.telescope()
     local telescope = require("telescope")
     telescope.load_extension "fzf"
     telescope.load_extension "media_files"
+    telescope.load_extension "flutter"
     telescope.setup {
         defaults = {
             prompt_prefix = "   ",

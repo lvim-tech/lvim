@@ -28,6 +28,13 @@ language_configs["lsp"] = function()
                 vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
                 lsp_signature.on_attach(languages_setup.config_lsp_signature)
                 languages_setup.document_highlight(client)
+                local ts_utils = require("nvim-lsp-ts-utils")
+                ts_utils.setup(
+                    {
+                        debug = true
+                    }
+                )
+                ts_utils.setup_client(client)
             end,
             capabilities = languages_setup.get_capabilities(),
             root_dir = function(fname)

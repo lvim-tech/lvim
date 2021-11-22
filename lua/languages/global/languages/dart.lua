@@ -7,7 +7,6 @@
 local global = require("core.global")
 local funcs = require("core.funcs")
 local languages_utils = require("languages.global.utils")
-local nvim_lsp = require("lspconfig")
 local nvim_lsp_util = require("lspconfig/util")
 local lsp_signature = require("lsp_signature")
 local default_debouce_time = 150
@@ -17,57 +16,53 @@ local dap = require("dap")
 local language_configs = {}
 
 language_configs["lsp"] = function()
-    local find_dart_sdk_root_path = function()
-        if os.getenv "FLUTTER_SDK" then
-            local flutter_path = os.getenv "FLUTTER_SDK"
-            return nvim_lsp_util.path.join(flutter_path, "cache", "dart-sdk", "bin", "dart")
-        elseif vim.fn["executable"] "flutter" == 1 then
-            local flutter_path = vim.fn["resolve"](vim.fn["exepath"] "flutter")
-            local flutter_bin = vim.fn["fnamemodify"](flutter_path, ":h")
-            return nvim_lsp_util.path.join(flutter_bin, "cache", "dart-sdk", "bin", "dart")
-        elseif vim.fn["executable"] "dart" == 1 then
-            return vim.fn["resolve"](vim.fn["exepath"] "dart")
-        else
-            return ""
-        end
-    end
-    local analysis_server_snapshot_path = function()
-        local dart_sdk_root_path = vim.fn["fnamemodify"](find_dart_sdk_root_path(), ":h")
-        local snapshot = nvim_lsp_util.path.join(dart_sdk_root_path, "snapshots", "analysis_server.dart.snapshot")
-        return snapshot
-    end
-    nvim_lsp.dartls.setup {
-        cmd = {
-            "dart",
-            analysis_server_snapshot_path(),
-            "--lsp"
+    require("flutter-tools").setup {
+        ui = {
+            border = "single"
         },
-        flags = {
-            debounce_text_changes = default_debouce_time
+        debugger = {
+            enabled = true
         },
-        autostart = true,
-        filetypes = {"dart"},
-        on_attach = function(client, bufnr)
-            table.insert(global["languages"]["dart"]["pid"], client.rpc.pid)
-            if client.resolved_capabilities.document_formatting then
-                vim.api.nvim_exec(
-                    [[
-                    augroup LspAutocommands
-                        autocmd! * <buffer>
-                        autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()
-                    augroup END
-                    ]],
-                    true
-                )
+        fvm = false,
+        widget_guides = {
+            enabled = false
+        },
+        closing_tags = {
+            highlight = "Comment",
+            prefix = "",
+            enabled = true
+        },
+        outline = {
+            open_cmd = "60vnew"
+        },
+        lsp = {
+            flags = {
+                debounce_text_changes = default_debouce_time
+            },
+            autostart = true,
+            filetypes = {"dart"},
+            on_attach = function(client, bufnr)
+                table.insert(global["languages"]["dart"]["pid"], client.rpc.pid)
+                if client.resolved_capabilities.document_formatting then
+                    vim.api.nvim_exec(
+                        [[
+                        augroup LspAutocommands
+                            autocmd! * <buffer>
+                            autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()
+                        augroup END
+                        ]],
+                        true
+                    )
+                end
+                vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+                lsp_signature.on_attach(languages_utils.config_lsp_signature)
+                languages_utils.document_highlight(client)
+            end,
+            capabilities = languages_utils.get_capabilities(),
+            root_dir = function(fname)
+                return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
             end
-            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-            lsp_signature.on_attach(languages_utils.config_lsp_signature)
-            languages_utils.document_highlight(client)
-        end,
-        capabilities = languages_utils.get_capabilities(),
-        root_dir = function(fname)
-            return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
-        end
+        }
     }
 end
 
