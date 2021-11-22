@@ -144,6 +144,12 @@ modules["MattesGroeger/vim-bookmarks"] = {
     config = editor_config.vim_bookmarks
 }
 
+modules["ton/vim-bufsurf"] = {
+    event = {
+        "BufRead"
+    }
+}
+
 modules["kkoomen/vim-doge"] = {
     cmd = {
         "DogeGenerate",

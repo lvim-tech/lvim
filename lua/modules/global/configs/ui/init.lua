@@ -186,8 +186,8 @@ function config.which_key()
         e = {"<Cmd>NvimTreeToggle<CR>", "NvimTree toggle"},
         b = {
             name = "Buffers",
-            n = {"<Cmd>bnext<CR>", "Next buffer"},
-            p = {"<Cmd>bprevious<CR>", "Prev buffer"},
+            n = {"<Cmd>BufSurfForward<CR>", "Next buffer"},
+            p = {"<Cmd>BufSurfBack<CR>", "Prev buffer"},
             l = {"<Cmd>Telescope buffers<CR>", "List buffers"}
         },
         d = {

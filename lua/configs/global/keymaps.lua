@@ -16,8 +16,8 @@ keymaps["normal"] = {
     {"<C-c>x", "<C-w>c"}, -- Close current window
     {"<C-c>o", "<C-w>o"}, -- Close other windows
     {"<C-c>d", ":bdelete<CR>"}, -- BDelete
-    {"<C-n>", ":bnext<CR>"}, -- Next buffer
-    {"<C-p>", ":bprevious<CR>"}, -- Previews buffer
+    {"<C-n>", ":BufSurfForward<CR>"}, -- Next buffer
+    {"<C-p>", ":BufSurfBack<CR>"}, -- Previews buffer
     {"<C-c>b", ":GitBlameToggle<CR>"}, -- Git blame toggle
     {"<C-h>", "<C-w>h"}, -- Move to window left
     {"<C-l>", "<C-w>l"}, -- Move to window right
@@ -27,10 +27,10 @@ keymaps["normal"] = {
     {"<C-Right>", ":vertical resize +2<CR>"}, -- Resize width +
     {"<C-Up>", ":resize -2<CR>"}, -- Resize height -
     {"<C-Down>", ":resize +2<CR>"}, -- Resize height +
+    {"<C-]>", ":GitSignsNextHunk<CR>"}, -- Git signs next hunk
+    {"<C-[>", ":GitSignsPrevHunk<CR>"}, -- Git signs prev hunk
     {"<S-x>", ":NvimTreeToggle<CR>"}, -- Nvim tree explorer
     {"<S-m>", ":MarkdownPreviewToggle<CR>"}, -- Markdown preview toggle
-    {"<S-n>", ":GitSignsNextHunk<CR>"}, -- Git signs next hunk
-    {"<S-p>", ":GitSignsPrevHunk<CR>"}, -- Git signs prev hunk
     {"<S-u>", ":GitSignsPreviewHunk<CR>"}, -- Git signs preview hunk
     {"<A-,>", ":Telescope find_files<CR>"}, -- Search files with Telescope
     {"<A-.>", ":Telescope live_grep<CR>"}, -- Search word with Telescope
