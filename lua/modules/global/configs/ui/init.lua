@@ -428,6 +428,12 @@ function config.lualine()
     local function ins_right(component)
         table.insert(lualine_config.sections.lualine_x, component)
     end
+    local function ins_left_inactive_b(component)
+        table.insert(lualine_config.inactive_sections.lualine_b, component)
+    end
+    local function ins_left_inactive_c(component)
+        table.insert(lualine_config.inactive_sections.lualine_c, component)
+    end
     ins_left_a {
         function()
             local alias = {
@@ -625,6 +631,25 @@ function config.lualine()
             bg = colors.darkbg
         },
         cond = nil
+    }
+    ins_left_inactive_b {
+        "filetype",
+        colored = false,
+        icon_only = false,
+        color = {
+            fg = colors.color_07,
+            gui = "bold"
+        }
+    }
+    ins_left_inactive_c {
+        "filename",
+        cond = conditions.buffer_not_empty,
+        color = {
+            fg = colors.color_02,
+            gui = "bold"
+        },
+        path = 0,
+        shorting_target = 20
     }
     lualine.setup(lualine_config)
 end
