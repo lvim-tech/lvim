@@ -27,11 +27,11 @@ keymaps["normal"] = {
     {"<C-Right>", ":vertical resize +2<CR>"}, -- Resize width +
     {"<C-Up>", ":resize -2<CR>"}, -- Resize height -
     {"<C-Down>", ":resize +2<CR>"}, -- Resize height +
-    {"<C-]>", ":GitSignsNextHunk<CR>"}, -- Git signs next hunk
-    {"<C-[>", ":GitSignsPrevHunk<CR>"}, -- Git signs prev hunk
+    {"<S-Right>", ":GitSignsNextHunk<CR>"}, -- Git signs next hunk
+    {"<S-Left>", ":GitSignsPrevHunk<CR>"}, -- Git signs prev hunk
+    {"<S-u>", ":GitSignsPreviewHunk<CR>"}, -- Git signs preview hunk
     {"<S-x>", ":NvimTreeToggle<CR>"}, -- Nvim tree explorer
     {"<S-m>", ":MarkdownPreviewToggle<CR>"}, -- Markdown preview toggle
-    {"<S-u>", ":GitSignsPreviewHunk<CR>"}, -- Git signs preview hunk
     {"<A-,>", ":Telescope find_files<CR>"}, -- Search files with Telescope
     {"<A-.>", ":Telescope live_grep<CR>"}, -- Search word with Telescope
     {"<A-j>", ":AnyJump<CR>"}, -- Any jump

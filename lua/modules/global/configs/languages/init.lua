@@ -326,4 +326,8 @@ function config.crates()
     vim.cmd('command! CratesHidePopup lua require("crates").hide_popup()')
 end
 
+function config.pubspec_assist()
+    require("pubspec-assist").setup()
+end
+
 return config

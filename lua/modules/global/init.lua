@@ -398,6 +398,19 @@ modules["Saecki/crates.nvim"] = {
     config = languages_config.crates
 }
 
+modules["akinsho/pubspec-assist.nvim"] = {
+    requires = "nvim-lua/plenary.nvim",
+    event = "BufRead pubspec.yaml",
+    rocks = {
+        "semver",
+        {
+            "lyaml",
+            server = "http://rocks.moonscript.org"
+        }
+    },
+    config = languages_config.pubspec_assist
+}
+
 modules["iamcco/markdown-preview.nvim"] = {
     event = {
         "VimEnter",

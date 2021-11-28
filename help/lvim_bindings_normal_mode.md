@@ -55,9 +55,11 @@ Normal mode
 | -------------- | ---------------------------- | --------------------------- |
 | <C-Down>       | :resize +2<CR>               | Resize height +             |
 | -------------- | ---------------------------- | --------------------------- |
-| <C-]>          | :GitSignsNextHunk<CR>        | Git signs next hunk         |
+| <S-Right>      | :GitSignsNextHunk<CR>        | Git signs next hunk         |
 | -------------- | ---------------------------- | --------------------------- |
-| <C-[>          | :GitSignsPrevHunk<CR>        | Git signs prev hunk         |
+| <S-Left>       | :GitSignsPrevHunk<CR>        | Git signs prev hunk         |
+| -------------- | ---------------------------- | --------------------------- |
+| <S-u>          | :GitSignsPreviewHunk<CR>     | Git signs preview hunk      |
 | -------------- | ---------------------------- | --------------------------- |
 | <S-x>          | :NvimTreeToggle<CR>          | NvimTree explorer           |
 | -------------- | ---------------------------- | --------------------------- |
