@@ -30,7 +30,7 @@
 
 ---
 
-For detail info see [wiki](https://github.com/lvim-tech/lvim/wiki) - `6500+` lines of istructions and code
+For detail info see [wiki](https://github.com/lvim-tech/lvim/wiki) - `6500+` lines of instructions and code
 
 ## [YouTube](https://www.youtube.com/channel/UCSV5_UXKLl1JDZbQaYWuFKQ) channel
 
