@@ -525,7 +525,7 @@ function config.lualine()
     ins_right {
         "diagnostics",
         sources = {
-            "nvim_lsp"
+            "nvim_diagnostic"
         },
         symbols = {
             error = " ",
