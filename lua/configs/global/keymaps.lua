@@ -49,7 +49,7 @@ keymaps["normal"] = {
     {"<A-r>", ":LspRename<CR>"}, -- Lsp rename
     {"<A-n>", ":LspGoToNext<CR>"}, -- Lsp go to next
     {"<A-p>", ":LspGoToPrev<CR>"}, -- Lsp go to prev
-    {"<A-e>", ":LspTroubleToggle<CR>"}, -- Lsp trouble toggle
+    {"<A-e>", ":TroubleToggle<CR>"}, -- Trouble toggle
     {"<A-/>", ":CommentToggle<CR>"}, -- Comment toggle
     {"<A-*>", ":LspVirtualTextToggle<CR>"}, -- Lsp virtual text toggle
     {"<A-1>", "<Cmd>DapToggleBreakpoint<CR>"}, -- Toggle breakpoint

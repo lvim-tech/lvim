@@ -343,9 +343,9 @@ modules["pechorin/any-jump.vim"] = {
     config = languages_config.any_jump
 }
 
-modules["folke/lsp-trouble.nvim"] = {
+modules["folke/trouble.nvim"] = {
     requires = "kyazdani42/nvim-web-devicons",
-    config = languages_config.lsp_trouble
+    config = languages_config.trouble
 }
 
 modules["simrat39/symbols-outline.nvim"] = {

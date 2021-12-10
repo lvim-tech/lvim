@@ -106,11 +106,11 @@ function config.any_jump()
     vim.g.any_jump_list_numbers = 1
 end
 
-function config.lsp_trouble()
+function config.trouble()
     require("trouble").setup {
         height = 12,
-        mode = "lsp_document_diagnostics",
-        use_lsp_diagnostic_signs = true,
+        mode = "document_diagnostics",
+        use_diagnostic_signs = true,
         signs = {
             error = "",
             warning = "",
