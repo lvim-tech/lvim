@@ -292,6 +292,11 @@ modules["akinsho/flutter-tools.nvim"] = {
     requires = "nvim-lua/plenary.nvim"
 }
 
+modules["Neevash/awesome-flutter-snippets"] = {
+    filetypes = "dart",
+    after = "vim-vsnip"
+}
+
 modules["jose-elias-alvarez/nvim-lsp-ts-utils"] = {
     filetypes = {"javascript", "javascriptreact", "typescript", "typescriptreact"},
     requires = {
