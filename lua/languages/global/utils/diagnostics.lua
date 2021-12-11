@@ -104,23 +104,12 @@ local function open_floating_preview(contents, syntax)
     return floating_bufnr, floating_winnr
 end
 
-local floating_severity_highlight_name
-
-if vim.fn.has "nvim-0.5.1" > 0 then
-    floating_severity_highlight_name = {
-        [DiagnosticSeverity.Error] = "DiagnosticFloatingError",
-        [DiagnosticSeverity.Warning] = "DiagnosticFloatingWarn",
-        [DiagnosticSeverity.Information] = "DiagnosticFloatingInfo",
-        [DiagnosticSeverity.Hint] = "DiagnosticFloatingHint"
-    }
-else
-    floating_severity_highlight_name = {
-        [DiagnosticSeverity.Error] = "LspDiagnosticsFloatingError",
-        [DiagnosticSeverity.Warning] = "LspDiagnosticsFloatingWarn",
-        [DiagnosticSeverity.Information] = "LspDiagnosticsFloatingInfo",
-        [DiagnosticSeverity.Hint] = "LspDiagnosticsFloatingHint"
-    }
-end
+local floating_severity_highlight_name = {
+    [DiagnosticSeverity.Error] = "DiagnosticFloatingError",
+    [DiagnosticSeverity.Warning] = "DiagnosticFloatingWarn",
+    [DiagnosticSeverity.Information] = "DiagnosticFloatingInfo",
+    [DiagnosticSeverity.Hint] = "DiagnosticFloatingHint"
+}
 
 M.show_line_diagnostics = function(bufnr, line_nr, client_id)
     bufnr = bufnr or 0
@@ -144,9 +133,7 @@ M.show_line_diagnostics = function(bufnr, line_nr, client_id)
         end
     end
     local popup_bufnr, winnr = open_floating_preview(lines, "plaintext")
-
     api.nvim_buf_set_option(popup_bufnr, "buftype", "prompt")
-
     for i, hi in ipairs(highlights) do
         local prefixlen, hiname = unpack(hi)
         api.nvim_buf_add_highlight(

@@ -45,131 +45,45 @@ M.setup_diagnostic = function(custom_config_diagnostic)
     else
         local_config_diagnostic = M.config_diagnostic
     end
-    if vim.fn.has "nvim-0.5.1" > 0 then
-        vim.lsp.handlers["textDocument/publishDiagnostics"] = function(_, result, ctx)
-            local uri = result.uri
-            local bufnr = vim.uri_to_bufnr(uri)
-            if not bufnr then
-                return
-            end
-            local diagnostics = result.diagnostics
-            local ok, vim_diag = pcall(require, "vim.diagnostic")
-            if ok then
-                for i, diagnostic in ipairs(diagnostics) do
-                    local rng = diagnostic.range
-                    diagnostics[i].lnum = rng["start"].line
-                    diagnostics[i].end_lnum = rng["end"].line
-                    diagnostics[i].col = rng["start"].character
-                    diagnostics[i].end_col = rng["end"].character
-                end
-                local namespace = vim.lsp.diagnostic.get_namespace(ctx.client_id)
-                vim_diag.set(namespace, bufnr, diagnostics, local_config_diagnostic)
-                if not vim.api.nvim_buf_is_loaded(bufnr) then
-                    return
-                end
-                vim.fn.sign_define(
-                    "DiagnosticSignError",
-                    {
-                        texthl = "DiagnosticSignError",
-                        text = M.icons.error,
-                        numhl = "DiagnosticSignError"
-                    }
-                )
-                vim.fn.sign_define(
-                    "DiagnosticSignWarn",
-                    {
-                        texthl = "DiagnosticSignWarn",
-                        text = M.icons.warn,
-                        numhl = "DiagnosticSignWarn"
-                    }
-                )
-                vim.fn.sign_define(
-                    "DiagnosticSignHint",
-                    {
-                        texthl = "DiagnosticSignHint",
-                        text = M.icons.hint,
-                        numhl = "DiagnosticSignHint"
-                    }
-                )
-                vim.fn.sign_define(
-                    "DiagnosticSignInfo",
-                    {
-                        texthl = "DiagnosticSignInfo",
-                        text = M.icons.info,
-                        numhl = "DiagnosticSignInfo"
-                    }
-                )
-                vim_diag.show(namespace, bufnr, diagnostics, local_config_diagnostic)
-            else
-                vim.lsp.diagnostic.save(diagnostics, bufnr, ctx.client_id)
-                if not vim.api.nvim_buf_is_loaded(bufnr) then
-                    return
-                end
-                vim.fn.sign_define(
-                    "LspDiagnosticsSignError",
-                    {
-                        texthl = "DiagnosticSignError",
-                        text = M.icons.error,
-                        numhl = "DiagnosticSignError"
-                    }
-                )
-                vim.fn.sign_define(
-                    "LspDiagnosticsSignWarning",
-                    {
-                        texthl = "DiagnosticSignWarn",
-                        text = M.icons.warn,
-                        numhl = "DiagnosticSignWarn"
-                    }
-                )
-                vim.fn.sign_define(
-                    "LspDiagnosticsSignHint",
-                    {
-                        texthl = "DiagnosticSignHint",
-                        text = M.icons.hint,
-                        numhl = "DiagnosticSignHint"
-                    }
-                )
-                vim.fn.sign_define(
-                    "LspDiagnosticsSignInformation",
-                    {
-                        texthl = "DiagnosticSignInfo",
-                        text = M.icons.info,
-                        numhl = "DiagnosticSignInfo"
-                    }
-                )
-                vim.lsp.diagnostic.display(diagnostics, bufnr, ctx.client_id, local_config_diagnostic)
-            end
+    vim.lsp.handlers["textDocument/publishDiagnostics"] = function(_, result, ctx)
+        local uri = result.uri
+        local bufnr = vim.uri_to_bufnr(uri)
+        if not bufnr then
+            return
         end
-    else
-        vim.lsp.handlers["textDocument/publishDiagnostics"] = function(_, _, params, client_id, _)
-            local uri = params.uri
-            local bufnr = vim.uri_to_bufnr(uri)
-            if not bufnr then
-                return
+        local diagnostics = result.diagnostics
+        local ok, vim_diag = pcall(require, "vim.diagnostic")
+        if ok then
+            for i, diagnostic in ipairs(diagnostics) do
+                local rng = diagnostic.range
+                diagnostics[i].lnum = rng["start"].line
+                diagnostics[i].end_lnum = rng["end"].line
+                diagnostics[i].col = rng["start"].character
+                diagnostics[i].end_col = rng["end"].character
             end
-            local diagnostics = params.diagnostics
-            vim.lsp.diagnostic.save(diagnostics, bufnr, client_id)
+            local namespace = vim.lsp.diagnostic.get_namespace(ctx.client_id)
+            vim_diag.set(namespace, bufnr, diagnostics, local_config_diagnostic)
             if not vim.api.nvim_buf_is_loaded(bufnr) then
                 return
             end
             vim.fn.sign_define(
-                "LspDiagnosticsSignError",
+                "DiagnosticSignError",
                 {
-                    texthl = "LspDiagnosticsSignError",
+                    texthl = "DiagnosticSignError",
                     text = M.icons.error,
-                    numhl = "LspDiagnosticsSignError"
+                    numhl = "DiagnosticSignError"
                 }
             )
             vim.fn.sign_define(
-                "LspDiagnosticsSignWarning",
+                "DiagnosticSignWarn",
                 {
-                    texthl = "LspDiagnosticsSignWarning",
+                    texthl = "DiagnosticSignWarn",
                     text = M.icons.warn,
-                    numhl = "LspDiagnosticsSignWarning"
+                    numhl = "DiagnosticSignWarn"
                 }
             )
             vim.fn.sign_define(
-                "LspDiagnosticsSignHint",
+                "DiagnosticSignHint",
                 {
                     texthl = "DiagnosticSignHint",
                     text = M.icons.hint,
@@ -177,14 +91,14 @@ M.setup_diagnostic = function(custom_config_diagnostic)
                 }
             )
             vim.fn.sign_define(
-                "LspDiagnosticsSignInformation",
+                "DiagnosticSignInfo",
                 {
-                    texthl = "DiagnosticSignInformation",
+                    texthl = "DiagnosticSignInfo",
                     text = M.icons.info,
-                    numhl = "DiagnosticSignInformation"
+                    numhl = "DiagnosticSignInfo"
                 }
             )
-            vim.lsp.diagnostic.display(diagnostics, bufnr, client_id, local_config_diagnostic)
+            vim_diag.show(namespace, bufnr, diagnostics, local_config_diagnostic)
         end
     end
 end

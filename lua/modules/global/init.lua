@@ -96,15 +96,7 @@ modules["vim-ctrlspace/vim-ctrlspace"] = {
     cmd = "CtrlSpace"
 }
 
-local commit
-if 1 ~= vim.fn.has "nvim-0.5.1" then
-    commit = "02a02f7bcdfb1f207de6649c00701ee1fe13a420"
-else
-    commit = nil
-end
-
 modules["nvim-telescope/telescope.nvim"] = {
-    commit = commit,
     requires = {
         {
             "nvim-telescope/telescope-fzf-native.nvim",
