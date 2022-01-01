@@ -279,6 +279,11 @@ modules["simrat39/rust-tools.nvim"] = {
     }
 }
 
+modules["ray-x/go.nvim"] = {
+    filetypes = "go",
+    config = languages_config.go
+}
+
 modules["akinsho/flutter-tools.nvim"] = {
     filetypes = "dart",
     requires = "nvim-lua/plenary.nvim"
