@@ -93,4 +93,12 @@ M.set_window_path = function()
     vim.api.nvim_command("silent :lcd " .. path)
 end
 
+M.load_telescope_browser = function()
+    require("telescope").extensions.file_browser.file_browser()
+end
+
+M.load_telescope_bookmarks = function()
+    require("telescope").extensions.bookmarks.bookmarks()
+end
+
 return M

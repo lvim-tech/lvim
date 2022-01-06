@@ -96,6 +96,8 @@ modules["vim-ctrlspace/vim-ctrlspace"] = {
     cmd = "CtrlSpace"
 }
 
+modules["tyru/open-browser.vim"] = {}
+
 modules["nvim-telescope/telescope.nvim"] = {
     requires = {
         {
@@ -104,9 +106,14 @@ modules["nvim-telescope/telescope.nvim"] = {
         },
         {
             "nvim-telescope/telescope-media-files.nvim"
+        },
+        {
+            "nvim-telescope/telescope-file-browser.nvim"
+        },
+        {
+            "dhruvmanila/telescope-bookmarks.nvim"
         }
     },
-    cmd = "Telescope",
     config = editor_config.telescope
 }
 
@@ -126,8 +133,7 @@ modules["windwp/nvim-spectre"] = {
     config = editor_config.nvim_spectre
 }
 
-modules["terrortylor/nvim-comment"] = {
-    cmd = "CommentToggle",
+modules["numToStr/Comment.nvim"] = {
     config = editor_config.nvim_comment
 }
 

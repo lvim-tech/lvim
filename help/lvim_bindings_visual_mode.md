@@ -18,5 +18,3 @@ Visual mode
 | J     | :move \'>+1<CR>gv-gv | Move down       |
 | ----- | -------------------- | --------------- |
 | <A-j> | :AnyJumpVisual<CR>   | Any jump visual |
-| ----- | -------------------- | --------------- |
-| <A-/> | :CommentToggle<CR>   | Comment toggle  |

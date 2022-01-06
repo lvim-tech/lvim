@@ -50,7 +50,7 @@ keymaps["normal"] = {
     {"<A-n>", ":LspGoToNext<CR>"}, -- Lsp go to next
     {"<A-p>", ":LspGoToPrev<CR>"}, -- Lsp go to prev
     {"<A-e>", ":TroubleToggle<CR>"}, -- Trouble toggle
-    {"<A-/>", ":CommentToggle<CR>"}, -- Comment toggle
+    {"<A-/>", ":TelescopeBrowser<CR>"}, -- Telescope browser
     {"<A-*>", ":LspVirtualTextToggle<CR>"}, -- Lsp virtual text toggle
     {"<A-1>", "<Cmd>DapToggleBreakpoint<CR>"}, -- Toggle breakpoint
     {"<A-2>", "<Cmd>DapStartContinue<CR>"}, -- Start / continue

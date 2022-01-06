@@ -12,17 +12,17 @@
 
 ## LVIM IDE is a modular Neovim configuration written in LUA with full customization
 
--   Now support Neovim 0.6.0, 0.7.0+
--   Add or remove plugins, rewrite all plugins
--   Add or remove settings, rewrite all settings
--   Dynamic LSP activation
--   Dynamic debugging activation - Dap
--   Automaticaly install of the lsp servers and dap
--   Linters
--   Autoformat
--   Custom settings for projects
--   70 plugins
--   Loading time - ~065.000
+- Now support Neovim 0.6.0, 0.7.0+
+- Add or remove plugins, rewrite all plugins
+- Add or remove settings, rewrite all settings
+- Dynamic LSP activation
+- Dynamic debugging activation - Dap
+- Automaticaly install of the lsp servers and dap
+- Linters
+- Autoformat
+- Custom settings for projects
+- 73 plugins
+- Loading time - ~086.000
 
 ---
 
@@ -36,13 +36,13 @@ For detail info see [wiki](https://github.com/lvim-tech/lvim/wiki) - `6500+` lin
 
 ## Requirements
 
--   [neovim >=0.6.0](https://github.com/neovim/neovim/wiki/Installing-Neovim)
--   [pynvim](https://github.com/neovim/pynvim)
--   [neovim-remote](https://github.com/mhinz/neovim-remote)
--   [nodejs](https://nodejs.org/en/)
--   [ripgrep](https://github.com/BurntSushi/ripgrep)
--   [fzf](https://github.com/junegunn/fzf)
--   [rsync](https://github.com/WayneD/rsync)
+- [neovim >=0.6.0](https://github.com/neovim/neovim/wiki/Installing-Neovim)
+- [pynvim](https://github.com/neovim/pynvim)
+- [neovim-remote](https://github.com/mhinz/neovim-remote)
+- [nodejs](https://nodejs.org/en/)
+- [ripgrep](https://github.com/BurntSushi/ripgrep)
+- [fzf](https://github.com/junegunn/fzf)
+- [rsync](https://github.com/WayneD/rsync)
 
 ## Current version - 1.3.0
 

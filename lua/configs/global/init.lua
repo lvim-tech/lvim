@@ -81,6 +81,8 @@ end
 configs["commands_global"] = function()
     vim.cmd('command! SetGlobalPath lua require("core.funcs").set_global_path()')
     vim.cmd('command! SetWindowPath lua require("core.funcs").set_window_path()')
+    vim.cmd('command! TelescopeBrowser lua require("core.funcs").load_telescope_browser()')
+    vim.cmd('command! TelescopeBookmarks lua require("core.funcs").load_telescope_bookmarks()')
 end
 
 configs["keymaps_global"] = function()

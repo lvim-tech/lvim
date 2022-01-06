@@ -1,14 +1,10 @@
 local config = {}
 
 function config.telescope()
-    if not packer_plugins["telescope.nvim"].loaded then
-        vim.cmd [[packadd telescope.nvim]]
-        vim.cmd [[packadd telescope-fzf-native.nvim]]
-        vim.cmd [[packadd telescope-media-files.nvim]]
-    end
     local telescope = require("telescope")
     telescope.load_extension "fzf"
     telescope.load_extension "media_files"
+    telescope.load_extension "file_browser"
     telescope.load_extension "flutter"
     telescope.setup {
         defaults = {
@@ -80,7 +76,14 @@ function config.telescope()
             media_files = {
                 filetypes = {"png", "webp", "jpg", "jpeg"},
                 find_cmd = "rg"
-            }
+            },
+            file_browser = {
+                theme = "ivy"
+            },
+            bookmarks = {
+                selected_browser = "brave",
+                url_open_plugin = "open_browser"
+            },
         }
     }
 end
@@ -179,7 +182,8 @@ function config.nvim_spectre()
 end
 
 function config.nvim_comment()
-    require("nvim_comment").setup()
+    -- require("nvim_comment").setup()
+    require('Comment').setup()
 end
 
 function config.vim_bookmarks()

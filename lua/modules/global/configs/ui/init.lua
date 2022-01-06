@@ -22,7 +22,7 @@ function config.dashboard_nvim()
         },
         b = {
             description = {"     File explorer            "},
-            command = "Telescope file_browser"
+            command = "TelescopeBrowser"
         },
         c = {
             description = {"     Search file              "},
@@ -33,14 +33,18 @@ function config.dashboard_nvim()
             command = "Telescope live_grep"
         },
         e = {
+            description = {"     Browser bookmarks        "},
+            command = ":TelescopeBookmarks"
+        },
+        f = {
             description = {"     Help                     "},
             command = ":LvimHelper"
         },
-        f = {
+        g = {
             description = {"     Settings                 "},
             command = ":e ~/.config/nvim/lua/configs/global/lvim.lua"
         },
-        g = {
+        h = {
             description = {"     Readme                   "},
             command = ":e ~/.config/nvim/README.md"
         }
