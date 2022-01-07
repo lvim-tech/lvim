@@ -332,7 +332,7 @@ function config.lualine()
         color_04 = "#F2994B",
         color_05 = "#1C9898",
         color_06 = "#25B8A5",
-        color_07 = "#56adb7",
+        color_07 = "#90c1a3",
         color_08 = "#F05F4E"
     }
     local conditions = {

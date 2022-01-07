@@ -5,7 +5,7 @@ function config.tabby()
 
     local hl_tabline = {
         color_01 = "#252A34",
-        color_02 = "#56adb7"
+        color_02 = "#90c1a3"
     }
 
     local components = function()
