@@ -460,7 +460,7 @@ function config.lualine()
             }
             local vim_mode = vim.fn.mode()
             vim.api.nvim_command("hi! LualineMode guifg=" .. mode_color[vim.fn.mode()] .. " guibg=" .. colors.bg)
-            return alias[vim_mode] .. " "
+            return  "   " .. alias[vim_mode]
         end,
         color = "LualineMode",
         padding = {right = 1}

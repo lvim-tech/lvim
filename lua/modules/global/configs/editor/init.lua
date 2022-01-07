@@ -5,7 +5,8 @@ function config.tabby()
 
     local hl_tabline = {
         color_01 = "#252A34",
-        color_02 = "#90c1a3"
+        color_02 = "#90c1a3",
+        color_03 = "#79a88b"
     }
 
     local components = function()
@@ -13,10 +14,10 @@ function config.tabby()
             {
                 type = "text",
                 text = {
-                    "   ",
+                    "    ",
                     hl = {
                         fg = hl_tabline.color_01,
-                        bg = hl_tabline.color_02
+                        bg = hl_tabline.color_03
                     }
                 }
             }
@@ -31,17 +32,17 @@ function config.tabby()
                         type = "tab",
                         tabid = tabid,
                         label = {
-                            "  " .. vim.api.nvim_tabpage_get_number(tabid) .. " ",
-                            hl = {fg = hl_tabline.color_02, bg = hl_tabline.color_01, style = "bold"}
+                            "  " .. vim.api.nvim_tabpage_get_number(tabid) .. "  ",
+                            hl = {fg = hl_tabline.color_02, bg = hl_tabline.color_01}
                         }
                     }
                 )
                 local wins = util.tabpage_list_wins(current_tab)
                 local top_win = vim.api.nvim_tabpage_get_win(current_tab)
                 for _, winid in ipairs(wins) do
-                    local icon = "   "
+                    local icon = " "
                     if winid == top_win then
-                        icon = "  "
+                        icon = " "
                     end
                     local bufid = vim.api.nvim_win_get_buf(winid)
                     local buf_name = vim.api.nvim_buf_get_name(bufid)
@@ -50,7 +51,7 @@ function config.tabby()
                         {
                             type = "win",
                             winid = winid,
-                            label = icon .. vim.fn.fnamemodify(buf_name, ":~:.") .. " "
+                            label = icon .. vim.fn.fnamemodify(buf_name, ":~:.") .. "  "
                         }
                     )
                 end
@@ -61,8 +62,8 @@ function config.tabby()
                         type = "tab",
                         tabid = tabid,
                         label = {
-                            "  " .. vim.api.nvim_tabpage_get_number(tabid) .. " ",
-                            hl = {fg = hl_tabline.color_01, bg = hl_tabline.color_02, style = "bold"}
+                            "  " .. vim.api.nvim_tabpage_get_number(tabid) .. "  ",
+                            hl = {fg = hl_tabline.color_01, bg = hl_tabline.color_02}
                         }
                     }
                 )
