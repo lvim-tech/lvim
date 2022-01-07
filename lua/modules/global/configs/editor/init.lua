@@ -1,5 +1,85 @@
 local config = {}
 
+function config.tabby()
+    local util = require("tabby.util")
+
+    local hl_tabline = {
+        color_01 = "#252A34",
+        color_02 = "#56adb7"
+    }
+
+    local components = function()
+        local coms = {
+            {
+                type = "text",
+                text = {
+                    "   ",
+                    hl = {
+                        fg = hl_tabline.color_01,
+                        bg = hl_tabline.color_02
+                    }
+                }
+            }
+        }
+        local tabs = vim.api.nvim_list_tabpages()
+        local current_tab = vim.api.nvim_get_current_tabpage()
+        for _, tabid in ipairs(tabs) do
+            if tabid == current_tab then
+                table.insert(
+                    coms,
+                    {
+                        type = "tab",
+                        tabid = tabid,
+                        label = {
+                            "  " .. vim.api.nvim_tabpage_get_number(tabid) .. " ",
+                            hl = {fg = hl_tabline.color_02, bg = hl_tabline.color_01, style = "bold"}
+                        }
+                    }
+                )
+                local wins = util.tabpage_list_wins(current_tab)
+                local top_win = vim.api.nvim_tabpage_get_win(current_tab)
+                for _, winid in ipairs(wins) do
+                    local icon = "   "
+                    if winid == top_win then
+                        icon = "  "
+                    end
+                    local bufid = vim.api.nvim_win_get_buf(winid)
+                    local buf_name = vim.api.nvim_buf_get_name(bufid)
+                    table.insert(
+                        coms,
+                        {
+                            type = "win",
+                            winid = winid,
+                            label = icon .. vim.fn.fnamemodify(buf_name, ":~:.") .. " "
+                        }
+                    )
+                end
+            else
+                table.insert(
+                    coms,
+                    {
+                        type = "tab",
+                        tabid = tabid,
+                        label = {
+                            "  " .. vim.api.nvim_tabpage_get_number(tabid) .. " ",
+                            hl = {fg = hl_tabline.color_01, bg = hl_tabline.color_02, style = "bold"}
+                        }
+                    }
+                )
+            end
+        end
+        table.insert(coms, {type = "text", text = {" ", hl = {bg = hl_tabline.color_01}}})
+
+        return coms
+    end
+
+    require("tabby").setup(
+        {
+            components = components
+        }
+    )
+end
+
 function config.telescope()
     local telescope = require("telescope")
     telescope.load_extension "fzf"
@@ -83,7 +163,7 @@ function config.telescope()
             bookmarks = {
                 selected_browser = "brave",
                 url_open_plugin = "open_browser"
-            },
+            }
         }
     }
 end
@@ -182,8 +262,7 @@ function config.nvim_spectre()
 end
 
 function config.nvim_comment()
-    -- require("nvim_comment").setup()
-    require('Comment').setup()
+    require("Comment").setup()
 end
 
 function config.vim_bookmarks()

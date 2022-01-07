@@ -96,6 +96,10 @@ modules["vim-ctrlspace/vim-ctrlspace"] = {
     cmd = "CtrlSpace"
 }
 
+modules["nanozuki/tabby.nvim"] = {
+    config = editor_config.tabby
+}
+
 modules["tyru/open-browser.vim"] = {}
 
 modules["nvim-telescope/telescope.nvim"] = {
