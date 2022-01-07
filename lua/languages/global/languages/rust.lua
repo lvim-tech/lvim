@@ -34,35 +34,38 @@ language_configs["lsp"] = function()
                             }
                         }
                     },
-                    server = {
-                        cmd = requested_server._default_options.cmd,
-                        flags = {
-                            debounce_text_changes = default_debouce_time
-                        },
-                        autostart = true,
-                        filetypes = {"rust"},
-                        on_attach = function(client, bufnr)
-                            table.insert(global["languages"]["rust"]["pid"], client.rpc.pid)
-                            if client.resolved_capabilities.document_formatting then
-                                vim.api.nvim_exec(
-                                    [[
+                    server = vim.tbl_deep_extend(
+                        "force",
+                        requested_server:get_default_options(),
+                        {
+                            flags = {
+                                debounce_text_changes = default_debouce_time
+                            },
+                            autostart = true,
+                            filetypes = {"rust"},
+                            on_attach = function(client, bufnr)
+                                table.insert(global["languages"]["rust"]["pid"], client.rpc.pid)
+                                if client.resolved_capabilities.document_formatting then
+                                    vim.api.nvim_exec(
+                                        [[
                     augroup LspAutocommands
                         autocmd! * <buffer>
                         autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()
                     augroup END
                     ]],
-                                    true
-                                )
+                                        true
+                                    )
+                                end
+                                vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+                                lsp_signature.on_attach(languages_setup.config_lsp_signature)
+                                languages_setup.document_highlight(client)
+                            end,
+                            capabilities = languages_setup.get_capabilities(),
+                            root_dir = function(fname)
+                                return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
                             end
-                            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-                            lsp_signature.on_attach(languages_setup.config_lsp_signature)
-                            languages_setup.document_highlight(client)
-                        end,
-                        capabilities = languages_setup.get_capabilities(),
-                        root_dir = function(fname)
-                            return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
-                        end
-                    },
+                        }
+                    ),
                     dap = {
                         adapter = require("rust-tools.dap").get_codelldb_adapter(
                             global.lsp_path .. "dapinstall/codelldb/extension/adapter/codelldb",
