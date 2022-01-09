@@ -58,9 +58,9 @@ modules["akinsho/toggleterm.nvim"] = {
     config = ui_config.toggleterm
 }
 
-modules["folke/twilight.nvim"] = {
-    cmd = "Twilight",
-    config = ui_config.twilight
+modules["folke/zen-mode.nvim"] = {
+    cmd = "ZenMode",
+    config = ui_config.zen_mode
 }
 
 modules["lukas-reineke/indent-blankline.nvim"] = {

@@ -460,7 +460,7 @@ function config.lualine()
             }
             local vim_mode = vim.fn.mode()
             vim.api.nvim_command("hi! LualineMode guifg=" .. mode_color[vim.fn.mode()] .. " guibg=" .. colors.bg)
-            return  "   " .. alias[vim_mode]
+            return "   " .. alias[vim_mode]
         end,
         color = "LualineMode",
         padding = {right = 1}
@@ -764,8 +764,8 @@ function config.toggleterm()
     vim.cmd("command! TTThree lua _G.toggleterm_three_toggle()")
 end
 
-function config.twilight()
-    require("twilight").setup {}
+function config.zen_mode()
+    require("zen-mode").setup {}
 end
 
 function config.indent_blankline()
