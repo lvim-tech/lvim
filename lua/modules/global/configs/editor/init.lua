@@ -9,6 +9,24 @@ function config.tabby()
         color_03 = "#79a88b"
     }
 
+    local get_var = function(tab_number)
+        local s, v =
+            pcall(
+            function()
+                return vim.api.nvim_eval("ctrlspace#util#Gettabvar(" .. tab_number .. ", 'CtrlSpaceLabel')")
+            end
+        )
+        if s then
+            if v == "" then
+                return tab_number
+            else
+                return v
+            end
+        else
+            return tab_number
+        end
+    end
+
     local components = function()
         local coms = {
             {
@@ -24,7 +42,10 @@ function config.tabby()
         }
         local tabs = vim.api.nvim_list_tabpages()
         local current_tab = vim.api.nvim_get_current_tabpage()
+        local name_of_buf
         for _, tabid in ipairs(tabs) do
+            local tab_number = vim.api.nvim_tabpage_get_number(tabid)
+            name_of_buf = get_var(tab_number)
             if tabid == current_tab then
                 table.insert(
                     coms,
@@ -32,7 +53,7 @@ function config.tabby()
                         type = "tab",
                         tabid = tabid,
                         label = {
-                            "  " .. vim.api.nvim_tabpage_get_number(tabid) .. "  ",
+                            "  " .. name_of_buf .. "  ",
                             hl = {fg = hl_tabline.color_02, bg = hl_tabline.color_01}
                         }
                     }
@@ -62,7 +83,7 @@ function config.tabby()
                         type = "tab",
                         tabid = tabid,
                         label = {
-                            "  " .. vim.api.nvim_tabpage_get_number(tabid) .. "  ",
+                            "  " .. name_of_buf .. "  ",
                             hl = {fg = hl_tabline.color_01, bg = hl_tabline.color_02}
                         }
                     }
