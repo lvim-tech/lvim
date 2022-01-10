@@ -9,7 +9,7 @@ function config.tabby()
         color_03 = "#79a88b"
     }
 
-    local get_var = function(tab_number)
+    local get_tab_label = function(tab_number)
         local s, v =
             pcall(
             function()
@@ -45,7 +45,7 @@ function config.tabby()
         local name_of_buf
         for _, tabid in ipairs(tabs) do
             local tab_number = vim.api.nvim_tabpage_get_number(tabid)
-            name_of_buf = get_var(tab_number)
+            name_of_buf = get_tab_label(tab_number)
             if tabid == current_tab then
                 table.insert(
                     coms,

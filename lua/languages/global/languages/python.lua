@@ -17,7 +17,6 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     local function start_pyright(server)
-        print("azz")
         server:setup {
             flags = {
                 debounce_text_changes = default_debouce_time
