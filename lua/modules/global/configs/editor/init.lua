@@ -20,10 +20,10 @@ function config.tabby()
             if v == "" then
                 return tab_number
             else
-                return v
+                return tab_number .. ": " .. v
             end
         else
-            return tab_number
+            return tab_number .. ": " .. v
         end
     end
 

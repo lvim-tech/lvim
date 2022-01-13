@@ -24,6 +24,8 @@ keymaps["normal"] = {
     {"<C-j>", "<C-w>j"}, -- Move to window down
     {"<C-k>", "<C-w>k"}, -- Move to window up
     {"<C-m>", ":Zoom<CR>"}, -- Move to window up
+    {"tn", ":tabn<CR>"}, -- Tab next
+    {"tp", ":tabp<CR>"}, -- Tab prev
     {"tt", ":Telescope tmux sessions<CR>"}, -- Telescope tmux session
     {"<C-Left>", ":vertical resize -2<CR>"}, -- Resize width -
     {"<C-Right>", ":vertical resize +2<CR>"}, -- Resize width +
