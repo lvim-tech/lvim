@@ -21,7 +21,7 @@
 -   Linters
 -   Autoformat
 -   Custom settings for projects
--   75 plugins
+-   78 plugins
 -   Loading time - ~086.000
 
 ---
@@ -44,19 +44,10 @@ For detail info see [wiki](https://github.com/lvim-tech/lvim/wiki) - `6500+` lin
 -   [fzf](https://github.com/junegunn/fzf)
 -   [rsync](https://github.com/WayneD/rsync)
 
-## Current version - 1.4.4
+## Current version - 1.4.5
 
 Install:
 
 ```bash
-git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
-```
-
-> Important: If you installed the LVIM IDE before version 1.0.0 - I recommend a clean installation
-
-```bash
-rm -rf ~/.config/nvim
-rm -rf ~/.cache/nvim
-rm -rf ~/.local/share/nvim
 git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 ```
