@@ -48,6 +48,10 @@ modules["nvim-lualine/lualine.nvim"] = {
     config = ui_config.lualine
 }
 
+modules["is0n/fm-nvim"] = {
+    config = ui_config.fm
+}
+
 modules["akinsho/toggleterm.nvim"] = {
     cmd = {
         "TTFloat",

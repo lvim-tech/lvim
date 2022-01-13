@@ -639,6 +639,21 @@ function config.lualine()
     lualine.setup(lualine_config)
 end
 
+function config.fm()
+    require("fm-nvim").setup {
+        ui = {
+            float = {
+                border = "single",
+                height = 1,
+                width = 1
+            }
+        },
+        cmds = {
+            vifm_cmd = "vifmrun"
+        }
+    }
+end
+
 function config.toggleterm()
     local terminal_float =
         require("toggleterm.terminal").Terminal:new(
