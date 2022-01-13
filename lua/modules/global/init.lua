@@ -120,9 +120,16 @@ modules["nvim-telescope/telescope.nvim"] = {
         },
         {
             "dhruvmanila/telescope-bookmarks.nvim"
+        },
+        {
+            "camgraff/telescope-tmux.nvim"
         }
     },
     config = editor_config.telescope
+}
+
+modules["jpalardy/vim-slime"] = {
+    config = editor_config.vim_slime
 }
 
 modules["windwp/nvim-spectre"] = {
