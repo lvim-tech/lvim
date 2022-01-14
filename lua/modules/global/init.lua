@@ -105,7 +105,8 @@ modules["vim-ctrlspace/vim-ctrlspace"] = {
 }
 
 modules["nanozuki/tabby.nvim"] = {
-    config = editor_config.tabby
+    config = editor_config.tabby,
+    after = "vim-ctrlspace"
 }
 
 modules["tyru/open-browser.vim"] = {}
@@ -133,6 +134,10 @@ modules["nvim-telescope/telescope.nvim"] = {
 }
 
 modules["jpalardy/vim-slime"] = {
+    event = {
+        "BufRead",
+        "BufNewFile"
+    },
     config = editor_config.vim_slime
 }
 
