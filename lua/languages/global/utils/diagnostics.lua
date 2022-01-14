@@ -100,7 +100,10 @@ local function open_floating_preview(contents, syntax)
     api.nvim_buf_set_lines(floating_bufnr, 0, -1, true, contents)
     api.nvim_buf_set_option(floating_bufnr, "modifiable", false)
     api.nvim_buf_set_option(floating_bufnr, "bufhidden", "wipe")
-    util.close_preview_autocmd({"CursorMoved", "CursorMovedI", "BufHidden", "InsertCharPre"}, floating_winnr)
+    api.nvim_command(
+        "autocmd CursorMoved,CursorMovedI,BufHidden,InsertCharPre <buffer> ++once lua pcall(vim.api.nvim_win_close, " ..
+            floating_winnr .. ", true)"
+    )
     return floating_bufnr, floating_winnr
 end
 
@@ -158,7 +161,7 @@ M.goto_next = function(opts)
         },
         opts or {}
     )
-    vim.lsp.diagnostic.goto_next(opts)
+    vim.diagnostic.goto_next(opts)
     local win_id = opts.win_id or vim.api.nvim_get_current_win()
     vim.schedule(
         function()
@@ -177,7 +180,7 @@ M.goto_prev = function(opts)
         },
         opts or {}
     )
-    vim.lsp.diagnostic.goto_prev(opts)
+    vim.diagnostic.goto_prev(opts)
     local win_id = opts.win_id or vim.api.nvim_get_current_win()
     vim.schedule(
         function()
