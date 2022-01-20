@@ -110,7 +110,7 @@ M.set = function()
         linebreak = true,
         colorcolumn = "80",
         foldenable = true,
-        conceallevel = 2,
+        conceallevel = 0,
         concealcursor = "niv"
     }
     funcs.options_set(set_opt)

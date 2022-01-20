@@ -647,9 +647,6 @@ function config.fm()
                 height = 1,
                 width = 1
             }
-        },
-        cmds = {
-            vifm_cmd = "vifmrun"
         }
     }
 end

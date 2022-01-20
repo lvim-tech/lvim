@@ -48,7 +48,8 @@ modules["nvim-lualine/lualine.nvim"] = {
     config = ui_config.lualine
 }
 
-modules["is0n/fm-nvim"] = {
+modules["lvim-tech/fm-nvim"] = {
+    commit = "fix_dir",
     config = ui_config.fm
 }
 
