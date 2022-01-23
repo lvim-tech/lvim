@@ -241,13 +241,6 @@ modules["TimUntersberger/neogit"] = {
     config = version_control_config.neogit
 }
 
-modules["tpope/vim-fugitive"] = {
-    event = {
-        "BufRead",
-        "BufNewFile"
-    }
-}
-
 modules["lewis6991/gitsigns.nvim"] = {
     requires = "nvim-lua/plenary.nvim",
     event = {
