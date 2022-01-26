@@ -38,6 +38,10 @@ M.filetypes = {
         "typescriptreact"
     },
     ["kotlin"] = {"kotlin"},
+    ["latex"] = {
+        "bib",
+        "tex"
+    },
     ["lua"] = {"lua"},
     ["php"] = {"php"},
     ["python"] = {"python"},

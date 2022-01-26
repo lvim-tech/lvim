@@ -87,6 +87,9 @@ function config.nvim_cmp()
                 },
                 {
                     name = "crates"
+                },
+                {
+                    name = "latex_symbols"
                 }
             },
             snippet = {

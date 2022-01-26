@@ -466,6 +466,10 @@ modules["hrsh7th/nvim-cmp"] = {
         {
             "hrsh7th/cmp-path",
             after = "nvim-cmp"
+        },
+        {
+            "kdheepak/cmp-latex-symbols",
+            after = "nvim-cmp"
         }
     },
     event = {
