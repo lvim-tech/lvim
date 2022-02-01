@@ -53,7 +53,7 @@ configs["events_global"] = function()
                 {"FileType", "Outline", "setlocal colorcolumn=0 nocursorcolumn"},
                 {"FileType", "VimspectorPrompt", "setlocal colorcolumn=0 nocursorcolumn"},
                 {"FileType", "git", "setlocal colorcolumn=0 nocursorcolumn"},
-                {"FileType", "packer", "setlocal colorcolumn=0 nocursorcolumn"},
+                {"FileType", "packer", "setlocal colorcolumn=0 nocursorcolumn winhighlight=Normal:OverwriteNormal,NormalNC:OverwriteNormal"},
                 {"FileType", "dapui_scopes", "setlocal colorcolumn=0 nocursorcolumn"},
                 {
                     "FileType",
@@ -62,7 +62,8 @@ configs["events_global"] = function()
                 },
                 {"FileType", "dapui_stacks", "setlocal colorcolumn=0 nocursorcolumn"},
                 {"FileType", "dapui_watches", "setlocal colorcolumn=0 nocursorcolumn"},
-                {"FileType", "NeogitStatus", "setlocal colorcolumn=0 nocursorcolumn"}
+                {"FileType", "NeogitStatus", "setlocal colorcolumn=0 nocursorcolumn"},
+                {"FileType", "lsp-installer", "setlocal winhighlight=Normal:OverwriteNormal,NormalNC:OverwriteNormal"}
             }
         }
     )

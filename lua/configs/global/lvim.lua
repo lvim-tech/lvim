@@ -84,8 +84,8 @@ M.global = function()
         cursorcolumn = true,
         showbreak = " ↳  ",
         listchars = "tab:»·,nbsp:+,trail:·,extends:→,precedes:←",
-        pumblend = 10,
-        winblend = 10
+        pumblend = 0,
+        winblend = 0
     }
     funcs.options_global(global_opt)
 end

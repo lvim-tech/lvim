@@ -107,9 +107,9 @@ M.document_highlight = function(client)
     if client.resolved_capabilities.document_highlight then
         vim.api.nvim_exec(
             [[
-            hi LspReferenceRead cterm=bold guibg=#41495A
-            hi LspReferenceText cterm=bold guibg=#41495A
-            hi LspReferenceWrite cterm=bold guibg=#41495A
+            hi LspReferenceRead cterm=bold guibg=#46555A
+            hi LspReferenceText cterm=bold guibg=#46555A
+            hi LspReferenceWrite cterm=bold guibg=#46555A
             augroup lsp_document_highlight
                 autocmd! * <buffer>
                 autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()

@@ -4,9 +4,8 @@ function config.tabby()
     local util = require("tabby.util")
 
     local hl_tabline = {
-        color_01 = "#252A34",
-        color_02 = "#90c1a3",
-        color_03 = "#79a88b"
+        color_01 = "#272F35",
+        color_02 = "#A7C080"
     }
 
     local get_tab_label = function(tab_number)
@@ -35,7 +34,7 @@ function config.tabby()
                     "    ",
                     hl = {
                         fg = hl_tabline.color_01,
-                        bg = hl_tabline.color_03
+                        bg = hl_tabline.color_02
                     }
                 }
             }
@@ -112,21 +111,24 @@ function config.telescope()
     telescope.setup {
         defaults = {
             prompt_prefix = "   ",
-            selection_caret = " ",
+            selection_caret = "  ",
             entry_prefix = "  ",
-            initial_mode = "normal",
+            initial_mode = "insert",
             selection_strategy = "reset",
-            sorting_strategy = "descending",
+            sorting_strategy = "ascending",
             layout_strategy = "horizontal",
             layout_config = {
-                width = 0.85,
-                preview_cutoff = 120,
                 horizontal = {
-                    mirror = false
+                    prompt_position = "top",
+                    preview_width = 0.55,
+                    results_width = 0.8,
                 },
                 vertical = {
-                    mirror = false
-                }
+                    mirror = false,
+                },
+                width = 0.95,
+                height = 0.90,
+                preview_cutoff = 120,
             },
             vimgrep_arguments = {
                 "rg",

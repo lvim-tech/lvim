@@ -323,12 +323,12 @@ end
 function config.lualine()
     local lualine = require "lualine"
     local colors = {
-        bg = "#252A34",
-        darkbg = "#1E222A",
+        bg = "#272F35",
+        darkbg = "#272F35",
         fg = "#D9DA9E",
         color_01 = "#E6B673",
         color_02 = "#00839F",
-        color_03 = "#98c379",
+        color_03 = "#A7C080",
         color_04 = "#F2994B",
         color_05 = "#1C9898",
         color_06 = "#25B8A5",
@@ -644,8 +644,10 @@ function config.fm()
         ui = {
             float = {
                 border = "single",
-                height = 1,
-                width = 1
+                float_hl  = "NormalFloat",
+                border_hl = "FloatBorder",
+                height = 0.95,
+                width = 0.99
             }
         },
         cmds = {
@@ -655,6 +657,8 @@ function config.fm()
 end
 
 function config.toggleterm()
+    local width = vim.o.columns * 0.5
+    local height = vim.o.lines * 0.5
     local terminal_float =
         require("toggleterm.terminal").Terminal:new(
         {
@@ -662,10 +666,12 @@ function config.toggleterm()
             direction = "float",
             float_opts = {
                 border = "single",
-                winblend = 3,
+                winblend = 0,
+                width = vim.o.columns - 20,
+                height = vim.o.lines - 9,
                 highlights = {
                     border = "FloatBorder",
-                    background = "Normal"
+                    background = "NormalFloat"
                 }
             },
             on_open = function(term)
