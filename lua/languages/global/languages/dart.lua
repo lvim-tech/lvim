@@ -21,7 +21,7 @@ language_configs["lsp"] = function()
             border = "single"
         },
         debugger = {
-            enabled = true
+            enabled = false
         },
         fvm = false,
         widget_guides = {
@@ -91,7 +91,7 @@ language_configs["dap"] = function()
     dap.configurations.dart = {
         {
             type = "dart",
-            name = "Launch flutter",
+            name = "Launch",
             request = "launch",
             dartSdkPath = dart_path,
             flutterSdkPath = dart_path,

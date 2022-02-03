@@ -12,6 +12,8 @@ local lsp_signature = require("lsp_signature")
 local default_debouce_time = 150
 local lsp_installer_servers = require("nvim-lsp-installer/servers")
 local server_available, requested_server = lsp_installer_servers.get_server("rust_analyzer")
+local dap_install = require("dap-install")
+local dap = require("dap")
 
 local language_configs = {}
 
@@ -65,13 +67,7 @@ language_configs["lsp"] = function()
                                 return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
                             end
                         }
-                    ),
-                    dap = {
-                        adapter = require("rust-tools.dap").get_codelldb_adapter(
-                            global.lsp_path .. "dapinstall/codelldb/extension/adapter/codelldb",
-                            global.lsp_path .. "dapinstall/codelldb/extension/lldb/lib/liblldb.so"
-                        )
-                    }
+                    )
                 }
             )
         end
@@ -80,9 +76,30 @@ language_configs["lsp"] = function()
 end
 
 language_configs["dap"] = function()
-    if funcs.dir_exists(global.lsp_path .. "dapinstall/codelldb/") ~= true then
-        vim.cmd("DIInstall codelldb")
+    if funcs.dir_exists(global.lsp_path .. "dapinstall/ccppr_lldb/") ~= true then
+        vim.cmd("DIInstall ccppr_lldb")
     end
+    dap_install.config("ccppr_lldb", {})
+    dap.configurations.rust = {
+        {
+            type = "cpp",
+            request = "launch",
+            name = "Launch",
+            program = function()
+                return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+            end,
+            args = {},
+            cwd = "${workspaceFolder}",
+            env = function()
+                local variables = {}
+                for k, v in pairs(vim.fn.environ()) do
+                    table.insert(variables, string.format("%s=%s", k, v))
+                end
+                return variables
+            end,
+            stopOnEntry = false
+        }
+    }
 end
 
 return language_configs

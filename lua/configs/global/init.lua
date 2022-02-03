@@ -56,7 +56,7 @@ configs["events_global"] = function()
                 {
                     "FileType",
                     "packer",
-                    "setlocal colorcolumn=0 nocursorcolumn winhighlight=Normal:OverwriteNormal,NormalNC:OverwriteNormal"
+                    "setlocal colorcolumn=0 nocursorcolumn"
                 },
                 {"FileType", "dapui_scopes", "setlocal colorcolumn=0 nocursorcolumn"},
                 {
@@ -67,7 +67,7 @@ configs["events_global"] = function()
                 {"FileType", "dapui_stacks", "setlocal colorcolumn=0 nocursorcolumn"},
                 {"FileType", "dapui_watches", "setlocal colorcolumn=0 nocursorcolumn"},
                 {"FileType", "NeogitStatus", "setlocal colorcolumn=0 nocursorcolumn"},
-                {"FileType", "lsp-installer", "setlocal winhighlight=Normal:OverwriteNormal,NormalNC:OverwriteNormal"}
+                -- {"FileType", "lsp-installer", "setlocal winhighlight=Normal:OverwriteNormal,NormalNC:OverwriteNormal"}
             }
         }
     )
