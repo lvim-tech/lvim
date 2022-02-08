@@ -40,8 +40,8 @@ keymaps["normal"] = {
     {"<A-.>", ":Telescope live_grep<CR>"}, -- Search word with Telescope
     {"<A-j>", ":AnyJump<CR>"}, -- Any jump
     {"<A-v>", ":SymbolsOutline<CR>"}, -- Symbols outline
-    {"<A-[>", ":foldopen<CR>"}, -- Fold open
-    {"<A-]>", ":foldclose<CR>"}, -- Fold close
+    {"<A-[>", ":foldopen<CR>:IndentBlanklineRefresh<CR>"}, -- Fold open
+    {"<A-]>", ":foldclose<CR>:IndentBlanklineRefresh<CR>"}, -- Fold close
     {"<A-/>", ":CommentToggle<CR>"}, -- Comment toggle
     {"<A-f>", ":LspFormatting<CR>"}, -- Lsp format code
     {"<A-t>", ":LspCodeAction<CR>"}, -- Lsp action
@@ -65,7 +65,9 @@ keymaps["normal"] = {
     {"<A-7>", "<Cmd>DapDown<CR>"}, -- Down
     {"<A-8>", "<Cmd>DapUIClose<CR>"}, -- UI close
     {"<A-9>", "<Cmd>DapRestart<CR>"}, -- Restart
-    {"<A-0>", "<Cmd>DapToggleRepl<CR>"} -- Toggle Repl
+    {"<A-0>", "<Cmd>DapToggleRepl<CR>"}, -- Toggle Repl
+    {"za", "za:IndentBlanklineRefresh<CR>"}, -- Restart
+    {"zc", "zc:IndentBlanklineRefresh<CR>"}, -- Restart
 }
 
 keymaps["visual"] = {

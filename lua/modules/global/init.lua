@@ -244,7 +244,12 @@ modules["folke/todo-comments.nvim"] = {
 }
 
 modules["anuvyklack/pretty-fold.nvim"] = {
-    config = editor_config.pretty_fold
+    config = editor_config.pretty_fold,
+    event = {
+        "VimEnter",
+        "BufRead",
+        "BufNewFile"
+    }
 }
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
