@@ -1,7 +1,19 @@
 local config = {}
 
 function config.nvim_cmp()
-    local cmp = require("cmp")
+    local cmp_status_ok, cmp = pcall(require, "cmp")
+    if not cmp_status_ok then
+        return
+    end
+    local snip_status_ok, luasnip = pcall(require, "luasnip")
+    if not snip_status_ok then
+        return
+    end
+    require("luasnip.loaders.from_vscode").lazy_load()
+    local check_backspace = function()
+        local col = vim.fn.col "." - 1
+        return col == 0 or vim.fn.getline("."):sub(col, col):match "%s"
+    end
     local lsp_symbols = {
         Text = "   (Text) ",
         Method = "   (Method)",
@@ -31,6 +43,11 @@ function config.nvim_cmp()
     }
     cmp.setup(
         {
+            snippet = {
+                expand = function(args)
+                    luasnip.lsp_expand(args.body)
+                end
+            },
             mapping = {
                 ["<C-p>"] = cmp.mapping.select_prev_item(),
                 ["<C-n>"] = cmp.mapping.select_next_item(),
@@ -45,18 +62,32 @@ function config.nvim_cmp()
                     }
                 ),
                 ["<Tab>"] = cmp.mapping(
-                    cmp.mapping.select_next_item(),
-                    {
-                        "i",
-                        "s"
-                    }
+                    function(fallback)
+                        if cmp.visible() then
+                            cmp.select_next_item()
+                        elseif luasnip.expandable() then
+                            luasnip.expand()
+                        elseif luasnip.expand_or_jumpable() then
+                            luasnip.expand_or_jump()
+                        elseif check_backspace() then
+                            fallback()
+                        else
+                            fallback()
+                        end
+                    end,
+                    {"i", "s"}
                 ),
                 ["<S-Tab>"] = cmp.mapping(
-                    cmp.mapping.select_prev_item(),
-                    {
-                        "i",
-                        "s"
-                    }
+                    function(fallback)
+                        if cmp.visible() then
+                            cmp.select_prev_item()
+                        elseif luasnip.jumpable(-1) then
+                            luasnip.jump(-1)
+                        else
+                            fallback()
+                        end
+                    end,
+                    {"i", "s"}
                 )
             },
             formatting = {
@@ -64,10 +95,10 @@ function config.nvim_cmp()
                     item.kind = lsp_symbols[item.kind]
                     item.menu =
                         ({
+                        luasnip = "[Snippet]",
                         nvim_lsp = "[LSP]",
                         buffer = "[Buffer]",
-                        path = "[Path]",
-                        vsnip = "[VSnip]"
+                        path = "[Path]"
                     })[entry.source.name]
                     return item
                 end
@@ -77,7 +108,7 @@ function config.nvim_cmp()
                     name = "nvim_lsp"
                 },
                 {
-                    name = "vsnip"
+                    name = "luasnip"
                 },
                 {
                     name = "path"
@@ -91,12 +122,28 @@ function config.nvim_cmp()
                 {
                     name = "latex_symbols"
                 }
-            },
-            snippet = {
-                expand = function(args)
-                    vim.fn["vsnip#anonymous"](args.body)
-                end
             }
+        }
+    )
+    cmp.setup.cmdline(
+        "/",
+        {
+            sources = {
+                {name = "buffer"}
+            }
+        }
+    )
+    cmp.setup.cmdline(
+        ":",
+        {
+            sources = cmp.config.sources(
+                {
+                    {name = "path"}
+                },
+                {
+                    {name = "cmdline"}
+                }
+            )
         }
     )
 end

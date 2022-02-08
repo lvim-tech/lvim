@@ -229,11 +229,6 @@ modules["phaazon/hop.nvim"] = {
     config = editor_config.hop
 }
 
-modules["abecodes/tabout.nvim"] = {
-    after = {"nvim-treesitter"},
-    config = editor_config.tabout
-}
-
 modules["folke/todo-comments.nvim"] = {
     requires = "nvim-lua/plenary.nvim",
     event = {
@@ -333,11 +328,6 @@ modules["ray-x/go.nvim"] = {
 modules["akinsho/flutter-tools.nvim"] = {
     filetypes = "dart",
     requires = "nvim-lua/plenary.nvim"
-}
-
-modules["Neevash/awesome-flutter-snippets"] = {
-    filetypes = "dart",
-    after = "vim-vsnip"
 }
 
 modules["jose-elias-alvarez/nvim-lsp-ts-utils"] = {
@@ -479,11 +469,15 @@ modules["hrsh7th/nvim-cmp"] = {
             "hrsh7th/cmp-nvim-lsp"
         },
         {
-            "hrsh7th/cmp-vsnip",
+            "saadparwaiz1/cmp_luasnip",
             after = "nvim-cmp"
         },
         {
             "hrsh7th/cmp-buffer",
+            after = "nvim-cmp"
+        },
+        {
+            "hrsh7th/cmp-cmdline",
             after = "nvim-cmp"
         },
         {
@@ -503,18 +497,17 @@ modules["hrsh7th/nvim-cmp"] = {
     config = completion_config.nvim_cmp
 }
 
-modules["hrsh7th/vim-vsnip"] = {
+modules["L3MON4D3/LuaSnip"] = {
     requires = {
         {
-            "hrsh7th/vim-vsnip-integ",
-            after = "vim-vsnip"
-        },
-        {
             "rafamadriz/friendly-snippets",
-            after = "vim-vsnip"
+            after = "LuaSnip"
         }
-    },
-    event = "InsertEnter"
+    }
+}
+
+modules["Neevash/awesome-flutter-snippets"] = {
+    filetypes = "dart"
 }
 
 modules["mattn/emmet-vim"] = {

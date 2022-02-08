@@ -24,15 +24,12 @@ keymaps["normal"] = {
     {"<C-j>", "<C-w>j"}, -- Move to window down
     {"<C-k>", "<C-w>k"}, -- Move to window up
     {"<C-z>", ":Zoom<CR>"}, -- Move to window up
-    {"tn", ":tabn<CR>"}, -- Tab next
-    {"tp", ":tabp<CR>"}, -- Tab prev
-    {"tt", ":Telescope tmux sessions<CR>"}, -- Telescope tmux session
     {"<C-Left>", ":vertical resize -2<CR>"}, -- Resize width -
     {"<C-Right>", ":vertical resize +2<CR>"}, -- Resize width +
     {"<C-Up>", ":resize -2<CR>"}, -- Resize height -
     {"<C-Down>", ":resize +2<CR>"}, -- Resize height +
-    {"<S-Right>", ":GitSignsNextHunk<CR>"}, -- Git signs next hunk
-    {"<S-Left>", ":GitSignsPrevHunk<CR>"}, -- Git signs prev hunk
+    {"<C-]>", ":GitSignsNextHunk<CR>"}, -- Git signs next hunk
+    {"<C-[>", ":GitSignsPrevHunk<CR>"}, -- Git signs prev hunk
     {"<S-u>", ":GitSignsPreviewHunk<CR>"}, -- Git signs preview hunk
     {"<S-x>", ":NvimTreeToggle<CR>"}, -- Nvim tree explorer
     {"<S-m>", ":MarkdownPreviewToggle<CR>"}, -- Markdown preview toggle
@@ -66,6 +63,9 @@ keymaps["normal"] = {
     {"<A-8>", "<Cmd>DapUIClose<CR>"}, -- UI close
     {"<A-9>", "<Cmd>DapRestart<CR>"}, -- Restart
     {"<A-0>", "<Cmd>DapToggleRepl<CR>"}, -- Toggle Repl
+    {"tn", ":tabn<CR>"}, -- Tab next
+    {"tp", ":tabp<CR>"}, -- Tab prev
+    {"tt", ":Telescope tmux sessions<CR>"}, -- Telescope tmux session
     {"zo", "zo:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
     {"zO", "zO:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
     {"zc", "zc:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
@@ -78,7 +78,7 @@ keymaps["normal"] = {
     {"zm", "zm:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
     {"zM", "zM:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
     {"zr", "zr:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
-    {"zR", "zR:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
+    {"zR", "zR:IndentBlanklineRefresh<CR>"} -- Fix indent + fold lines
 }
 
 keymaps["visual"] = {
