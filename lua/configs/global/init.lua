@@ -50,7 +50,11 @@ configs["events_global"] = function()
                 {"FileType", "help", "setlocal colorcolumn=0 nocursorcolumn"},
                 {"FileType", "dashboard", "setlocal nowrap"},
                 {"FileType", "Trouble", "setlocal colorcolumn=0 nocursorcolumn"},
-                {"FileType", "Outline", "setlocal colorcolumn=0 nocursorcolumn winhighlight=Normal:OverwriteNormal,NormalNC:OverwriteNormal"},
+                {
+                    "FileType",
+                    "Outline",
+                    "setlocal colorcolumn=0 nocursorcolumn winhighlight=Normal:OverwriteNormal,NormalNC:OverwriteNormal"
+                },
                 {"FileType", "git", "setlocal colorcolumn=0 nocursorcolumn"},
                 {
                     "FileType",
