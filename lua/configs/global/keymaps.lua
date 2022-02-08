@@ -66,8 +66,19 @@ keymaps["normal"] = {
     {"<A-8>", "<Cmd>DapUIClose<CR>"}, -- UI close
     {"<A-9>", "<Cmd>DapRestart<CR>"}, -- Restart
     {"<A-0>", "<Cmd>DapToggleRepl<CR>"}, -- Toggle Repl
-    {"za", "za:IndentBlanklineRefresh<CR>"}, -- Restart
-    {"zc", "zc:IndentBlanklineRefresh<CR>"}, -- Restart
+    {"zo", "zo:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
+    {"zO", "zO:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
+    {"zc", "zc:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
+    {"zC", "zC:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
+    {"za", "za:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
+    {"zA", "zA:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
+    {"zv", "zv:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
+    {"zx", "zx:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
+    {"zX", "zX:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
+    {"zm", "zm:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
+    {"zM", "zM:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
+    {"zr", "zr:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
+    {"zR", "zR:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
 }
 
 keymaps["visual"] = {
