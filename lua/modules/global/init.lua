@@ -229,6 +229,24 @@ modules["phaazon/hop.nvim"] = {
     config = editor_config.hop
 }
 
+modules["abecodes/tabout.nvim"] = {
+    after = {"nvim-treesitter"},
+    config = editor_config.tabout
+}
+
+modules["folke/todo-comments.nvim"] = {
+    requires = "nvim-lua/plenary.nvim",
+    event = {
+        "BufRead",
+        "BufNewFile"
+    },
+    config = editor_config.todo_comments
+}
+
+modules["anuvyklack/pretty-fold.nvim"] = {
+    config = editor_config.pretty_fold
+}
+
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Version control ----------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

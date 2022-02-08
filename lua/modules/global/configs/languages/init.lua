@@ -125,7 +125,8 @@ end
 function config.symbols_outline()
     require("symbols-outline").setup {
         highlight_hovered_item = true,
-        show_guides = true
+        show_guides = true,
+        preview_bg_highlight = "Float"
     }
 end
 

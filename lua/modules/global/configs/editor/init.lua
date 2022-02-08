@@ -388,4 +388,73 @@ function config.hop()
     vim.api.nvim_set_keymap("n", "]", "<cmd>HopChar2<cr>", {})
 end
 
+function config.tabout()
+    require("tabout").setup(
+        {
+            tabkey = "",
+            backwards_tabkey = ""
+        }
+    )
+    local function replace_keycodes(str)
+        return vim.api.nvim_replace_termcodes(str, true, true, true)
+    end
+    function _G.tab_binding()
+        if vim.fn.pumvisible() ~= 0 then
+            return replace_keycodes("<C-n>")
+        elseif vim.fn["vsnip#available"](1) ~= 0 then
+            return replace_keycodes("<Plug>(vsnip-expand-or-jump)")
+        else
+            return replace_keycodes("<Plug>(Tabout)")
+        end
+    end
+    function _G.s_tab_binding()
+        if vim.fn.pumvisible() ~= 0 then
+            return replace_keycodes("<C-p>")
+        elseif vim.fn["vsnip#jumpable"](-1) ~= 0 then
+            return replace_keycodes("<Plug>(vsnip-jump-prev)")
+        else
+            return replace_keycodes("<Plug>(TaboutBack)")
+        end
+    end
+    vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_binding()", {expr = true})
+    vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_binding()", {expr = true})
+end
+
+function config.todo_comments()
+    require("todo-comments").setup {
+        colors = {
+            error = {"#F05F4E", "#F05F4E"},
+            warning = {"#F2994B", "#F2994B"},
+            info = {"#A7C080", "#A7C080"},
+            hint = {"#FF7A66", "#FF7A66"},
+            default = {"#90c1a3", "#90c1a3"}
+        }
+    }
+end
+
+function config.pretty_fold()
+    require("pretty-fold").setup {
+        keep_indentation = false,
+        fill_char = "─",
+        sections = {
+            left = {
+                "  ",
+                function()
+                    return string.rep(" ", vim.v.foldlevel)
+                end,
+                " ─┤",
+                "content",
+                "├"
+            },
+            right = {
+                "┤ ",
+                "number_of_folded_lines",
+                ": ",
+                "percentage",
+                " ├─     "
+            }
+        }
+    }
+end
+
 return config
