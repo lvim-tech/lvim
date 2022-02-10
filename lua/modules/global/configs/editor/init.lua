@@ -102,6 +102,14 @@ function config.tabby()
 end
 
 function config.telescope()
+    local loader = require("packer").loader
+    if not packer_plugins["telescope-fzf-native.nvim"].loaded then
+        loader(
+            "telescope-fzf-native.nvim" ..
+                " telescope-media-files.nvim" ..
+                    " telescope-file-browser.nvim" .. " telescope-bookmarks.nvim" .. " telescope-tmux.nvim"
+        )
+    end
     local telescope = require("telescope")
     telescope.load_extension "fzf"
     telescope.load_extension "media_files"

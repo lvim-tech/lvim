@@ -73,7 +73,6 @@ modules["oberblastmeister/zoom.nvim"] = {
 
 modules["lukas-reineke/indent-blankline.nvim"] = {
     event = {
-        "VimEnter",
         "BufRead",
         "BufNewFile"
     },
@@ -109,25 +108,35 @@ modules["nanozuki/tabby.nvim"] = {
     after = "vim-ctrlspace"
 }
 
-modules["tyru/open-browser.vim"] = {}
+modules["tyru/open-browser.vim"] = {
+    event = {
+        "BufRead",
+        "BufNewFile"
+    },
+}
 
 modules["nvim-telescope/telescope.nvim"] = {
     requires = {
         {
             "nvim-telescope/telescope-fzf-native.nvim",
-            run = "make"
+            run = "make",
+            opt = true
         },
         {
-            "nvim-telescope/telescope-media-files.nvim"
+            "nvim-telescope/telescope-media-files.nvim",
+            opt = true
         },
         {
-            "nvim-telescope/telescope-file-browser.nvim"
+            "nvim-telescope/telescope-file-browser.nvim",
+            opt = true
         },
         {
-            "dhruvmanila/telescope-bookmarks.nvim"
+            "dhruvmanila/telescope-bookmarks.nvim",
+            opt = true
         },
         {
-            "camgraff/telescope-tmux.nvim"
+            "camgraff/telescope-tmux.nvim",
+            opt = true
         }
     },
     config = editor_config.telescope
@@ -158,6 +167,9 @@ modules["windwp/nvim-spectre"] = {
 }
 
 modules["numToStr/Comment.nvim"] = {
+    event = {
+        "CursorMoved"
+    },
     config = editor_config.nvim_comment
 }
 
@@ -274,10 +286,13 @@ modules["f-person/git-blame.nvim"] = {
 }
 
 modules["sindrets/diffview.nvim"] = {
-    event = {
-        "BufRead",
-        "BufNewFile"
-    }
+    cmd = {
+        "DiffviewOpen",
+        "DiffviewFileHistory",
+        "DiffviewFocusFiles",
+        "DiffviewToggleFiles",
+        "DiffviewRefresh",
+    },
 }
 
 modules["mbbill/undotree"] = {
@@ -450,9 +465,8 @@ modules["akinsho/pubspec-assist.nvim"] = {
 }
 
 modules["iamcco/markdown-preview.nvim"] = {
-    event = {
-        "VimEnter",
-        "BufReadPre"
+    cmd = {
+        "MarkdownPreview"
     },
     run = "cd app && yarn install"
 }

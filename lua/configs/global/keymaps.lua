@@ -35,11 +35,11 @@ keymaps["normal"] = {
     {"<S-m>", ":MarkdownPreviewToggle<CR>"}, -- Markdown preview toggle
     {"<A-,>", ":Telescope find_files<CR>"}, -- Search files with Telescope
     {"<A-.>", ":Telescope live_grep<CR>"}, -- Search word with Telescope
+    {"<A-/>", ":TelescopeBrowser<CR>"}, -- Telescope browser
     {"<A-j>", ":AnyJump<CR>"}, -- Any jump
     {"<A-v>", ":SymbolsOutline<CR>"}, -- Symbols outline
     {"<A-[>", ":foldopen<CR>:IndentBlanklineRefresh<CR>"}, -- Fold open
     {"<A-]>", ":foldclose<CR>:IndentBlanklineRefresh<CR>"}, -- Fold close
-    {"<A-/>", ":CommentToggle<CR>"}, -- Comment toggle
     {"<A-f>", ":LspFormatting<CR>"}, -- Lsp format code
     {"<A-t>", ":LspCodeAction<CR>"}, -- Lsp action
     {"<A-s>", ":Spectre<CR>"}, -- Replace in multiple files
@@ -51,7 +51,6 @@ keymaps["normal"] = {
     {"<A-n>", ":LspGoToNext<CR>"}, -- Lsp go to next
     {"<A-p>", ":LspGoToPrev<CR>"}, -- Lsp go to prev
     {"<A-e>", ":TroubleToggle<CR>"}, -- Trouble toggle
-    {"<A-/>", ":TelescopeBrowser<CR>"}, -- Telescope browser
     {"<A-*>", ":LspVirtualTextToggle<CR>"}, -- Lsp virtual text toggle
     {"<A-1>", "<Cmd>DapToggleBreakpoint<CR>"}, -- Toggle breakpoint
     {"<A-2>", "<Cmd>DapStartContinue<CR>"}, -- Start / continue
