@@ -112,7 +112,7 @@ modules["tyru/open-browser.vim"] = {
     event = {
         "BufRead",
         "BufNewFile"
-    },
+    }
 }
 
 modules["nvim-telescope/telescope.nvim"] = {
@@ -291,8 +291,8 @@ modules["sindrets/diffview.nvim"] = {
         "DiffviewFileHistory",
         "DiffviewFocusFiles",
         "DiffviewToggleFiles",
-        "DiffviewRefresh",
-    },
+        "DiffviewRefresh"
+    }
 }
 
 modules["mbbill/undotree"] = {

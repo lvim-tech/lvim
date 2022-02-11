@@ -28,9 +28,6 @@ keymaps["normal"] = {
     {"<C-Right>", ":vertical resize +2<CR>"}, -- Resize width +
     {"<C-Up>", ":resize -2<CR>"}, -- Resize height -
     {"<C-Down>", ":resize +2<CR>"}, -- Resize height +
-    {"<C-]>", ":GitSignsNextHunk<CR>"}, -- Git signs next hunk
-    {"<C-[>", ":GitSignsPrevHunk<CR>"}, -- Git signs prev hunk
-    {"<S-u>", ":GitSignsPreviewHunk<CR>"}, -- Git signs preview hunk
     {"<S-x>", ":NvimTreeToggle<CR>"}, -- Nvim tree explorer
     {"<S-m>", ":MarkdownPreviewToggle<CR>"}, -- Markdown preview toggle
     {"<A-,>", ":Telescope find_files<CR>"}, -- Search files with Telescope
@@ -38,8 +35,9 @@ keymaps["normal"] = {
     {"<A-/>", ":TelescopeBrowser<CR>"}, -- Telescope browser
     {"<A-j>", ":AnyJump<CR>"}, -- Any jump
     {"<A-v>", ":SymbolsOutline<CR>"}, -- Symbols outline
-    {"<A-[>", ":foldopen<CR>:IndentBlanklineRefresh<CR>"}, -- Fold open
-    {"<A-]>", ":foldclose<CR>:IndentBlanklineRefresh<CR>"}, -- Fold close
+    {"<A-]>", ":GitSignsNextHunk<CR>"}, -- Git signs next hunk
+    {"<A-[>", ":GitSignsPrevHunk<CR>"}, -- Git signs prev hunk
+    {"<A-;>", ":GitSignsPreviewHunk<CR>"}, -- Git signs preview hunk
     {"<A-f>", ":LspFormatting<CR>"}, -- Lsp format code
     {"<A-t>", ":LspCodeAction<CR>"}, -- Lsp action
     {"<A-s>", ":Spectre<CR>"}, -- Replace in multiple files
