@@ -48,6 +48,7 @@ M.filetypes = {
     ["php"] = {"php"},
     ["python"] = {"python"},
     ["ruby"] = {"ruby"},
+    ["r"] = {"r", "rmd"},
     ["rust"] = {"rust"},
     ["shell"] = {"sh"},
     ["sql"] = {
