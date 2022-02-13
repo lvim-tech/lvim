@@ -28,6 +28,7 @@ M.filetypes = {
     ["fortran"] = {"fortran"},
     ["go"] = {"go", "gomod"},
     ["graphql"] = {"graphql"},
+    ["groovy"] = {"groovy"},
     ["html"] = {"html"},
     ["java"] = {"java"},
     ["json"] = {"json"},
