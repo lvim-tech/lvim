@@ -51,7 +51,17 @@ language_configs["dap"] = function()
             program = function()
                 return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
             end,
-            pythonPath = "python3"
+            pythonPath = function()
+                local venv_path = os.getenv("VIRTUAL_ENV")
+                if venv_path then
+                    return venv_path .. "/bin/python"
+                end
+                if vim.fn.executable(global.lsp_path .. "dapinstall/python/" .. "bin/python") == 1 then
+                    return global.lsp_path .. "dapinstall/python/" .. "bin/python"
+                else
+                    return "python"
+                end
+            end
         }
     }
 end
