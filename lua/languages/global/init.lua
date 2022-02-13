@@ -7,13 +7,17 @@ M.filetypes = {
         "clojure",
         "edn"
     },
+    ["cmake"] = {"cmake"},
     ["cpp"] = {
         "c",
         "cpp",
         "objc",
         "objcpp"
     },
-    ["cmake"] = {"cmake"},
+    ["cs"] = {
+        "cs",
+        "vb"
+    },
     ["css"] = {
         "css",
         "scss",
