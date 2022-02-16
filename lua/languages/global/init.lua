@@ -23,6 +23,7 @@ M.filetypes = {
         "scss",
         "less"
     },
+    ["d"] = {"d"},
     ["dart"] = {"dart"},
     ["elixir"] = {
         "elixir",
