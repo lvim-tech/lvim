@@ -92,6 +92,7 @@ function config.nvim_tree()
             timeout = 5000
         },
         view = {
+            width = 33,
             auto_resize = true
         }
     }
@@ -644,7 +645,7 @@ function config.fm()
         ui = {
             float = {
                 border = "single",
-                float_hl  = "NormalFloat",
+                float_hl = "NormalFloat",
                 border_hl = "FloatBorder",
                 height = 0.95,
                 width = 0.99
@@ -657,8 +658,6 @@ function config.fm()
 end
 
 function config.toggleterm()
-    local width = vim.o.columns * 0.5
-    local height = vim.o.lines * 0.5
     local terminal_float =
         require("toggleterm.terminal").Terminal:new(
         {

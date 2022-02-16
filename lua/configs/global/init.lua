@@ -53,7 +53,7 @@ configs["events_global"] = function()
                 {
                     "FileType",
                     "Outline",
-                    "setlocal colorcolumn=0 nocursorcolumn winhighlight=Normal:OverwriteNormal,NormalNC:OverwriteNormal"
+                    "setlocal colorcolumn=0 nocursorcolumn"
                 },
                 {"FileType", "git", "setlocal colorcolumn=0 nocursorcolumn"},
                 {
