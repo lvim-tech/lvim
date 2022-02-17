@@ -137,6 +137,14 @@ modules["nvim-telescope/telescope.nvim"] = {
     config = editor_config.telescope
 }
 
+modules["jpalardy/vim-slime"] = {
+    event = {
+        "BufRead",
+        "BufNewFile"
+    },
+    config = editor_config.vim_slime
+}
+
 modules["windwp/nvim-spectre"] = {
     cmd = "Spectre",
     requires = {
