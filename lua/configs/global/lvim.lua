@@ -82,7 +82,6 @@ M.global = function()
         foldmethod = "indent",
         cursorline = true,
         cursorcolumn = true,
-        showbreak = " ↳  ",
         listchars = "tab:»·,nbsp:+,trail:·,extends:→,precedes:←",
         pumblend = 0,
         winblend = 0
