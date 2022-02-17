@@ -90,6 +90,7 @@ configs["commands_global"] = function()
     vim.cmd('command! SetWindowPath lua require("core.funcs").set_window_path()')
     vim.cmd('command! TelescopeBrowser lua require("core.funcs").load_telescope_browser()')
     vim.cmd('command! TelescopeBookmarks lua require("core.funcs").load_telescope_bookmarks()')
+    vim.g.gitblame_enabled = 0
 end
 
 configs["keymaps_global"] = function()

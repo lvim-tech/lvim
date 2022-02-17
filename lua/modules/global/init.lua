@@ -15,9 +15,7 @@ local ui_config = require("modules.global.configs.ui")
 
 modules["lvim-tech/lvim-colorscheme"] = {
     event = {
-        "VimEnter",
-        "BufRead",
-        "BufNewFile"
+        "VimEnter"
     },
     config = ui_config.lvim_colorscheme
 }
@@ -41,9 +39,7 @@ modules["folke/which-key.nvim"] = {
 modules["nvim-lualine/lualine.nvim"] = {
     requires = "kyazdani42/nvim-web-devicons",
     event = {
-        "VimEnter",
-        "BufRead",
-        "BufNewFile"
+        "BufWinEnter"
     },
     config = ui_config.lualine
 }
@@ -74,16 +70,15 @@ modules["oberblastmeister/zoom.nvim"] = {
 modules["lukas-reineke/indent-blankline.nvim"] = {
     event = {
         "BufRead",
-        "BufNewFile"
+        "BufReadPre"
     },
     config = ui_config.indent_blankline
 }
 
 modules["lvim-tech/lvim-focus"] = {
     event = {
-        "VimEnter",
         "BufRead",
-        "BufNewFile"
+        "BufReadPre"
     },
     config = ui_config.lvim_focus
 }
@@ -111,7 +106,7 @@ modules["nanozuki/tabby.nvim"] = {
 modules["tyru/open-browser.vim"] = {
     event = {
         "BufRead",
-        "BufNewFile"
+        "BufReadPre"
     }
 }
 
@@ -142,19 +137,8 @@ modules["nvim-telescope/telescope.nvim"] = {
     config = editor_config.telescope
 }
 
-modules["jpalardy/vim-slime"] = {
-    event = {
-        "BufRead",
-        "BufNewFile"
-    },
-    config = editor_config.vim_slime
-}
-
 modules["windwp/nvim-spectre"] = {
-    event = {
-        "BufRead",
-        "BufNewFile"
-    },
+    cmd = "Spectre",
     requires = {
         {
             "nvim-lua/popup.nvim"
@@ -180,7 +164,8 @@ modules["MattesGroeger/vim-bookmarks"] = {
 
 modules["ton/vim-bufsurf"] = {
     event = {
-        "BufRead"
+        "BufRead",
+        "BufReadPre"
     }
 }
 
@@ -204,7 +189,7 @@ modules["windwp/nvim-autopairs"] = {
 modules["norcalli/nvim-colorizer.lua"] = {
     event = {
         "BufRead",
-        "BufNewFile"
+        "BufReadPre"
     },
     config = editor_config.nvim_colorize
 }
@@ -212,7 +197,7 @@ modules["norcalli/nvim-colorizer.lua"] = {
 modules["karb94/neoscroll.nvim"] = {
     event = {
         "BufRead",
-        "BufNewFile"
+        "BufReadPre"
     },
     config = editor_config.neoscroll
 }
@@ -220,7 +205,7 @@ modules["karb94/neoscroll.nvim"] = {
 modules["lambdalisue/suda.vim"] = {
     event = {
         "BufRead",
-        "BufNewFile"
+        "BufReadPre"
     },
     config = editor_config.suda
 }
@@ -228,14 +213,14 @@ modules["lambdalisue/suda.vim"] = {
 modules["kenn7/vim-arsync"] = {
     event = {
         "BufRead",
-        "BufNewFile"
+        "BufReadPre"
     }
 }
 
 modules["phaazon/hop.nvim"] = {
     event = {
         "BufRead",
-        "BufNewFile"
+        "BufReadPre"
     },
     branch = "v1",
     config = editor_config.hop
@@ -245,7 +230,7 @@ modules["folke/todo-comments.nvim"] = {
     requires = "nvim-lua/plenary.nvim",
     event = {
         "BufRead",
-        "BufNewFile"
+        "BufReadPre"
     },
     config = editor_config.todo_comments
 }
@@ -253,9 +238,9 @@ modules["folke/todo-comments.nvim"] = {
 modules["anuvyklack/pretty-fold.nvim"] = {
     config = editor_config.pretty_fold,
     event = {
-        "VimEnter",
+        -- "VimEnter",
         "BufRead",
-        "BufNewFile"
+        "BufReadPre"
     }
 }
 
@@ -276,13 +261,17 @@ modules["lewis6991/gitsigns.nvim"] = {
     event = {
         "BufRead",
         "BufReadPost",
-        "BufNewFile"
+        "BufReadPre"
     },
     config = version_control_config.gitsigns
 }
 
 modules["f-person/git-blame.nvim"] = {
-    config = version_control_config.git_blame
+    event = {
+        "BufRead",
+        "BufReadPost",
+        "BufReadPre"
+    }
 }
 
 modules["sindrets/diffview.nvim"] = {
@@ -298,7 +287,7 @@ modules["sindrets/diffview.nvim"] = {
 modules["mbbill/undotree"] = {
     event = {
         "BufRead",
-        "BufNewFile"
+        "BufReadPre"
     },
     cmd = "UndotreeToggle"
 }
@@ -311,10 +300,10 @@ local languages_config = require("modules.global.configs.languages")
 
 modules["neovim/nvim-lspconfig"] = {
     event = {
-        "VimEnter",
+        -- "VimEnter",
         "BufWinEnter",
         "BufRead",
-        "BufNewFile"
+        "BufReadPre"
     },
     config = languages_config.nvim_lspconfig
 }
@@ -369,15 +358,9 @@ modules["michaelb/sniprun"] = {
 modules["ray-x/lsp_signature.nvim"] = {}
 
 modules["nvim-treesitter/nvim-treesitter"] = {
-    requires = {
-        {
-            "nvim-treesitter/playground",
-            after = "nvim-treesitter"
-        }
-    },
     event = {
         "BufRead",
-        "BufNewFile"
+        "BufReadPre"
     },
     run = ":TSUpdate",
     config = languages_config.nvim_treesitter
@@ -386,7 +369,7 @@ modules["nvim-treesitter/nvim-treesitter"] = {
 modules["pechorin/any-jump.vim"] = {
     event = {
         "BufRead",
-        "BufNewFile"
+        "BufReadPre"
     },
     config = languages_config.any_jump
 }
@@ -404,7 +387,7 @@ modules["simrat39/symbols-outline.nvim"] = {
 modules["rcarriga/nvim-dap-ui"] = {
     event = {
         "BufRead",
-        "BufNewFile"
+        "BufReadPre"
     },
     requires = {
         "mfussenegger/nvim-dap",
@@ -505,7 +488,7 @@ modules["hrsh7th/nvim-cmp"] = {
     },
     event = {
         "BufRead",
-        "BufNewFile",
+        "BufReadPre",
         "InsertEnter"
     },
     config = completion_config.nvim_cmp

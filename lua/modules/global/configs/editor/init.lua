@@ -201,10 +201,6 @@ function config.telescope()
     }
 end
 
-function config.vim_slime()
-    vim.g.slime_target = "tmux"
-end
-
 function config.nvim_spectre()
     vim.cmd("command! Spectre lua require('spectre').open()")
     require("spectre").setup(
