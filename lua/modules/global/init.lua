@@ -194,6 +194,13 @@ modules["windwp/nvim-autopairs"] = {
     config = editor_config.nvim_autopairs
 }
 
+modules["tpope/vim-surround"] = {
+    event = {
+        "BufRead",
+        "BufReadPre"
+    }
+}
+
 modules["norcalli/nvim-colorizer.lua"] = {
     event = {
         "BufRead",
