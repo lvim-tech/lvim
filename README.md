@@ -21,8 +21,8 @@
 -   Linters
 -   Autoformat
 -   Custom settings for projects
--   78 plugins
--   Loading time - ~086.000
+-   81 plugins
+-   Loading time - ~092.000
 
 ---
 
