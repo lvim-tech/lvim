@@ -9,8 +9,8 @@ keymaps["normal"] = {
     {"<F11>", ":LvimHelper<CR>"}, -- LvimHelper
     {"<space><space>", ":CtrlSpace<CR>"}, -- CtrlSpace
     {"<Esc>", "<Esc>:noh<CR>"}, -- Remove highlight after search
-    {"<C-c>n", ":e %:h/filename<CR>"}, -- Create new file in current directory
-    {"<C-s>", ":w<CR>"}, -- Save
+    {"<C-c>n", ":enew<CR>"}, -- Create empty buffer
+    {"<C-c>s", ":w<CR>"}, -- Save
     {"<C-c>a", ":wa<CR>"}, -- Save all
     {"<C-c>e", ":qa!<CR>"}, -- Close all, exit nvim
     {"<C-c>x", "<C-w>c"}, -- Close current window
