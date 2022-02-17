@@ -138,10 +138,6 @@ modules["nvim-telescope/telescope.nvim"] = {
 }
 
 modules["jpalardy/vim-slime"] = {
-    event = {
-        "BufRead",
-        "BufNewFile"
-    },
     config = editor_config.vim_slime
 }
 
