@@ -246,7 +246,12 @@ function config.which_key()
             p = {"<Cmd>BookmarkPrev<CR>", "Prev bookmark"}
         },
         f = {
-            name = "Fold",
+            name = "Find & Fold",
+            f = {"<Cmd>HopWord<CR>", "Hop Word"},
+            ["]"] = {"<Cmd>HopChar1<CR>", "Hop Char1"},
+            ["["] = {"<Cmd>HopChar2<CR>", "Hop Char2"},
+            l = {"<Cmd>HopLine<CR>", "Hop Line"},
+            s = {"<Cmd>HopLineStart<CR>", "Hop Line Start"},
             m = {"<Cmd>:set foldmethod=manual<CR>", "Manual (default)"},
             i = {"<Cmd>:set foldmethod=indent<CR>", "Indent"},
             e = {"<Cmd>:set foldmethod=expr<CR>", "Expr"},
