@@ -81,7 +81,7 @@ M.global = function()
         display = "lastline",
         foldmethod = "indent",
         cursorline = true,
-        listchars = "tab:»·,nbsp:+,trail:·,extends:→,precedes:←",
+        -- listchars = "tab:»·,nbsp:+,trail:·,extends:→,precedes:←",
         pumblend = 0,
         winblend = 0
     }
