@@ -63,8 +63,8 @@ modules["folke/zen-mode.nvim"] = {
     config = ui_config.zen_mode
 }
 
-modules["oberblastmeister/zoom.nvim"] = {
-    cmd = "Zoom"
+modules["nyngwang/NeoZoom.lua"] = {
+    cmd = "NeoZoomToggle"
 }
 
 modules["lukas-reineke/indent-blankline.nvim"] = {
