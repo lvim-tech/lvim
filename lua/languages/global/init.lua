@@ -62,6 +62,13 @@ M.filetypes = {
     },
     ["vim"] = {"vim"},
     ["vue"] = {"vue"},
+    ["xml"] = {
+        "xml",
+        "xsd",
+        "xsl",
+        "xslt",
+        "svg"
+    },
     ["yaml"] = {"yaml"}
 }
 
