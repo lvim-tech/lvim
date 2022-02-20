@@ -1,3 +1,3 @@
 globals = {
-    "vim"
+    "vim", "packer_plugins"
 }

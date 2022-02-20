@@ -34,7 +34,7 @@ language_configs["lsp"] = function()
                 Lua = {
                     completion = {keywordSnippet = "Disable"},
                     diagnostics = {
-                        globals = {"vim", "use"},
+                        globals = {"vim", "use", "packer_plugins"},
                         disable = {"lowercase-global"}
                     },
                     runtime = {version = "LuaJIT", path = vim.split(package.path, ";")},
