@@ -61,6 +61,7 @@ M.filetypes = {
         "mysql"
     },
     ["vim"] = {"vim"},
+    ["toml"] = {"toml"},
     ["vue"] = {"vue"},
     ["xml"] = {
         "xml",
