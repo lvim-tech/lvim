@@ -21,8 +21,8 @@
 -   Linters
 -   Autoformat
 -   Custom settings for projects
--   81 plugins
--   Loading time - ~092.000
+-   83 plugins
+-   Loading time - ~078.000
 
 ---
 
@@ -44,7 +44,7 @@ For detail info see [wiki](https://github.com/lvim-tech/lvim/wiki) - `6500+` lin
 -   [fzf](https://github.com/junegunn/fzf)
 -   [rsync](https://github.com/WayneD/rsync)
 
-## Current version - 1.5.1
+## Current version - 1.6.0
 
 Install:
 
