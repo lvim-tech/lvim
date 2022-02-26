@@ -312,7 +312,6 @@ local languages_config = require("modules.global.configs.languages")
 
 modules["neovim/nvim-lspconfig"] = {
     event = {
-        -- "VimEnter",
         "BufWinEnter",
         "BufRead",
         "BufReadPre"
@@ -326,7 +325,7 @@ modules["williamboman/nvim-lsp-installer"] = {
 }
 
 modules["simrat39/rust-tools.nvim"] = {
-    filetypes = "rust",
+    ft = "rust",
     requires = {
         "neovim/nvim-lspconfig",
         "nvim-lua/popup.nvim",
@@ -337,17 +336,17 @@ modules["simrat39/rust-tools.nvim"] = {
 }
 
 modules["ray-x/go.nvim"] = {
-    filetypes = "go",
+    ft = "go",
     config = languages_config.go
 }
 
 modules["akinsho/flutter-tools.nvim"] = {
-    filetypes = "dart",
+    ft = "dart",
     requires = "nvim-lua/plenary.nvim"
 }
 
 modules["jose-elias-alvarez/nvim-lsp-ts-utils"] = {
-    filetypes = {"javascript", "javascriptreact", "typescript", "typescriptreact"},
+    ft = {"javascript", "javascriptreact", "typescript", "typescriptreact"},
     requires = {
         "neovim/nvim-lspconfig",
         "nvim-lua/plenary.nvim"
@@ -467,7 +466,8 @@ modules["iamcco/markdown-preview.nvim"] = {
 }
 
 modules["lervag/vimtex"] = {
-    filetypes = "tex"
+    ft = "tex"
+}
 
 modules["nvim-orgmode/orgmode"] = {
     ft = "org",
@@ -528,7 +528,7 @@ modules["L3MON4D3/LuaSnip"] = {
 }
 
 modules["Neevash/awesome-flutter-snippets"] = {
-    filetypes = "dart"
+    ft = "dart"
 }
 
 modules["mattn/emmet-vim"] = {
