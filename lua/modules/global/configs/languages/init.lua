@@ -338,7 +338,7 @@ function config.orgmode()
     require("orgmode").setup_ts_grammar()
     require("orgmode").setup {
         org_agenda_files = "~/Org/**/*",
-        org_default_notes_file = "~/Org/refile.org"
+        org_default_notes_file = "~/Org/notes.org"
     }
 end
 
