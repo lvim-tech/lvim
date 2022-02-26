@@ -47,6 +47,8 @@ configs["events_global"] = function()
                 {"FileType", "cpp", "setlocal ts=2 sw=2"},
                 {"FileType", "objc", "setlocal ts=2 sw=2"},
                 {"FileType", "objcpp", "setlocal ts=2 sw=2"},
+                {"FileType", "org", "setlocal foldmethod=expr"},
+                {"FileType", "org", "setlocal foldexpr=nvim_treesitter#foldexpr()"},
                 {"FileType", "help", "setlocal colorcolumn=0 nocursorcolumn"},
                 {"FileType", "dashboard", "setlocal nowrap"},
                 {"FileType", "Trouble", "setlocal colorcolumn=0 nocursorcolumn"},

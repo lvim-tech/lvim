@@ -57,7 +57,9 @@ function config.nvim_treesitter()
     require("nvim-treesitter.configs").setup {
         ensure_installed = "all",
         highlight = {
-            enable = true
+            enable = true,
+            disable = {"org"},
+            additional_vim_regex_highlighting = {"org"}
         },
         indent = {
             enable = {
@@ -330,6 +332,20 @@ end
 
 function config.pubspec_assist()
     require("pubspec-assist").setup()
+end
+
+function config.orgmode()
+    require("orgmode").setup_ts_grammar()
+    require("orgmode").setup {
+        org_agenda_files = "~/Org/**/*",
+        org_default_notes_file = "~/Org/refile.org"
+    }
+end
+
+function config.org_bullets()
+    require("org-bullets").setup {
+        symbols = {"◉", "○", "✸"}
+    }
 end
 
 return config
