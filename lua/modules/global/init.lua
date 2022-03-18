@@ -96,18 +96,6 @@ modules["vim-ctrlspace/vim-ctrlspace"] = {
     cmd = "CtrlSpace"
 }
 
-modules["nanozuki/tabby.nvim"] = {
-    config = editor_config.tabby,
-    after = "vim-ctrlspace"
-}
-
-modules["tyru/open-browser.vim"] = {
-    event = {
-        "BufRead",
-        "BufReadPre"
-    }
-}
-
 modules["nvim-telescope/telescope.nvim"] = {
     requires = {
         {
@@ -133,6 +121,27 @@ modules["nvim-telescope/telescope.nvim"] = {
         }
     },
     config = editor_config.telescope
+}
+
+
+modules["nanozuki/tabby.nvim"] = {
+    config = editor_config.tabby,
+    after = "vim-ctrlspace"
+}
+
+modules["tyru/open-browser.vim"] = {
+    event = {
+        "BufRead",
+        "BufReadPre"
+    }
+}
+
+modules["lvim-tech/lvim-move"] = {
+    event = {
+        "BufRead",
+        "BufReadPre"
+    },
+    config = editor_config.lvim_move
 }
 
 modules["jpalardy/vim-slime"] = {
@@ -462,7 +471,7 @@ modules["iamcco/markdown-preview.nvim"] = {
 }
 
 modules["lervag/vimtex"] = {
-    ft = "tex"
+    config = languages_config.vimtex
 }
 
 modules["nvim-orgmode/orgmode"] = {

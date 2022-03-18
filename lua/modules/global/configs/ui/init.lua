@@ -388,7 +388,8 @@ function config.lualine()
                 "dapui_stacks",
                 "dapui_watches",
                 "ctrlspace"
-            }
+            },
+            globalstatus = 3
         },
         sections = {
             lualine_a = {},

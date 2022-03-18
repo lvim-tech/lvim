@@ -33,7 +33,7 @@ keymaps["normal"] = {
     {"<A-,>", ":Telescope find_files<CR>"}, -- Search files with Telescope
     {"<A-.>", ":Telescope live_grep<CR>"}, -- Search word with Telescope
     {"<A-/>", ":TelescopeBrowser<CR>"}, -- Telescope browser
-    {"<A-j>", ":AnyJump<CR>"}, -- Any jump
+    {"<A-u>", ":AnyJump<CR>"}, -- Any jump
     {"<A-v>", ":SymbolsOutline<CR>"}, -- Symbols outline
     {"<A-]>", ":GitSignsNextHunk<CR>"}, -- Git signs next hunk
     {"<A-[>", ":GitSignsPrevHunk<CR>"}, -- Git signs prev hunk
@@ -44,7 +44,7 @@ keymaps["normal"] = {
     {"<A-g>", ":LspReferences<CR>"}, -- Lsp references
     {"<A-d>", ":LspDefinition<CR>"}, -- Lsp definition
     {"<A-c>", ":LspDeclaration<CR>"}, -- Lsp declaration
-    {"<A-h>", ":LspHover<CR>"}, -- Lsp hover
+    {"<A-o>", ":LspHover<CR>"}, -- Lsp hover
     {"<A-r>", ":LspRename<CR>"}, -- Lsp rename
     {"<A-n>", ":LspGoToNext<CR>"}, -- Lsp go to next
     {"<A-p>", ":LspGoToPrev<CR>"}, -- Lsp go to prev
@@ -79,14 +79,9 @@ keymaps["normal"] = {
 }
 
 keymaps["visual"] = {
-    {"<", "<gv"}, -- Tab left
-    {">", ">gv"}, -- Tab right
     {"*", "<Esc>/\\%V"}, -- Visual search /
     {"#", "<Esc>?\\%V"}, -- Visual search ?
-    {"K", ":move '<-2<CR>gv-gv"}, -- Move up
-    {"J", ":move '>+1<CR>gv-gv"}, -- Move down
     {"<A-j>", ":AnyJumpVisual<CR>"}, -- Any jump visual
-    {"<A-/>", ":CommentToggle<CR>"} -- Comment toggle
 }
 
 return keymaps
