@@ -29,7 +29,7 @@ keymaps["normal"] = {
     {"<C-Up>", ":resize -2<CR>"}, -- Resize height -
     {"<C-Down>", ":resize +2<CR>"}, -- Resize height +
     {"<S-x>", ":NvimTreeToggle<CR>"}, -- Nvim tree explorer
-    {"<S-m>", ":MarkdownPreviewToggle<CR>"}, -- Markdown preview toggle
+    {"<S-m>", ":MarkdownPreview<CR>"}, -- Markdown preview
     {"<A-,>", ":Telescope find_files<CR>"}, -- Search files with Telescope
     {"<A-.>", ":Telescope live_grep<CR>"}, -- Search word with Telescope
     {"<A-/>", ":TelescopeBrowser<CR>"}, -- Telescope browser
@@ -81,7 +81,7 @@ keymaps["normal"] = {
 keymaps["visual"] = {
     {"*", "<Esc>/\\%V"}, -- Visual search /
     {"#", "<Esc>?\\%V"}, -- Visual search ?
-    {"<A-j>", ":AnyJumpVisual<CR>"}, -- Any jump visual
+    {"<A-j>", ":AnyJumpVisual<CR>"} -- Any jump visual
 }
 
 return keymaps
