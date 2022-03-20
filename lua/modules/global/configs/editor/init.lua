@@ -5,8 +5,7 @@ function config.telescope()
     if not packer_plugins["telescope-fzf-native.nvim"].loaded then
         loader(
             "telescope-fzf-native.nvim" ..
-                " telescope-media-files.nvim" ..
-                    " telescope-file-browser.nvim" .. " telescope-bookmarks.nvim" .. " telescope-tmux.nvim"
+                " telescope-media-files.nvim" .. " telescope-file-browser.nvim" .. " telescope-tmux.nvim"
         )
     end
     local telescope = require("telescope")
@@ -90,10 +89,6 @@ function config.telescope()
             },
             file_browser = {
                 theme = "ivy"
-            },
-            bookmarks = {
-                selected_browser = "brave",
-                url_open_plugin = "open_browser"
             }
         }
     }

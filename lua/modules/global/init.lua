@@ -112,10 +112,6 @@ modules["nvim-telescope/telescope.nvim"] = {
             opt = true
         },
         {
-            "dhruvmanila/telescope-bookmarks.nvim",
-            opt = true
-        },
-        {
             "camgraff/telescope-tmux.nvim",
             opt = true
         }
@@ -123,17 +119,9 @@ modules["nvim-telescope/telescope.nvim"] = {
     config = editor_config.telescope
 }
 
-
 modules["nanozuki/tabby.nvim"] = {
     config = editor_config.tabby,
     after = "vim-ctrlspace"
-}
-
-modules["tyru/open-browser.vim"] = {
-    event = {
-        "BufRead",
-        "BufReadPre"
-    }
 }
 
 modules["lvim-tech/lvim-move"] = {
@@ -463,11 +451,8 @@ modules["akinsho/pubspec-assist.nvim"] = {
     config = languages_config.pubspec_assist
 }
 
-modules["iamcco/markdown-preview.nvim"] = {
-    cmd = {
-        "MarkdownPreview"
-    },
-    run = "cd app && yarn install"
+modules["davidgranstrom/nvim-markdown-preview"] = {
+    ft = "markdown"
 }
 
 modules["lervag/vimtex"] = {

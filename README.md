@@ -4,7 +4,7 @@
 
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/lvim-tech/lvim/blob/production/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/lvim-tech/lvim.svg?style=social&label=Star)](https://github.com/lvim-tech/lvim/stargazers/)
-[![Requires](https://img.shields.io/badge/requires-nvim%200.6%2B-9cf?logo=neovim)](https://neovim.io//)
+[![Requires](https://img.shields.io/badge/requires-nvim%200.7%2B-9cf?logo=neovim)](https://neovim.io//)
 [![GitHub contributors](https://img.shields.io/github/contributors/lvim-tech/lvim.svg)](https://github.com/lvim-tech/lvim/graphs/contributors/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 [![GitHub issues](https://img.shields.io/github/issues/lvim-tech/lvim.svg)](https://github.com/lvim-tech/lvim/issues/)
@@ -21,7 +21,7 @@
 -   Linters
 -   Autoformat
 -   Custom settings for projects
--   84 plugins
+-   82 plugins
 -   Loading time - ~078.000
 
 ---
