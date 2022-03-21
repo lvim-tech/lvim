@@ -195,8 +195,8 @@ function config.tabby()
     )
 end
 
-function config.lvim_move()
-    require("lvim-move").setup()
+function config.nvim_gomove()
+    require("gomove").setup {}
 end
 
 function config.vim_slime()

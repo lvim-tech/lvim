@@ -81,7 +81,7 @@ keymaps["normal"] = {
 keymaps["visual"] = {
     {"*", "<Esc>/\\%V"}, -- Visual search /
     {"#", "<Esc>?\\%V"}, -- Visual search ?
-    {"<A-j>", ":AnyJumpVisual<CR>"} -- Any jump visual
+    {"<A-u>", ":AnyJumpVisual<CR>"} -- Any jump visual
 }
 
 return keymaps

@@ -11,10 +11,10 @@ Visual mode
 | -----          | --------------------         | ---------------             |
 | <A-u>          | :AnyJumpVisual<CR>           | Any jump visual             |
 | -------------- | ---------------------------- | --------------------------- |
-| <A-j>          | LvimMoveDownN                | Move line down              |
+| <A-j>          | MoveDown                     | Move selected down          |
 | -------------- | ---------------------------- | --------------------------- |
-| <A-k>          | LvimMoveUpN                  | Move line up                |
+| <A-k>          | MoveUp                       | Move selected up            |
 | -------------- | ---------------------------- | --------------------------- |
-| <A-h>          | LvimMoveLeftN                | Move line left              |
+| <A-h>          | MoveLeft                     | Move selected left          |
 | -------------- | ---------------------------- | --------------------------- |
-| <A-l>          | LvimMoveRightN               | Move line right             |
+| <A-l>          | MoveRight                    | Move selected right         |

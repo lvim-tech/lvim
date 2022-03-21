@@ -61,7 +61,7 @@ Normal mode
 | -------------- | ---------------------------- | --------------------------- |
 | <S-l>          | :FloatermNew lazygit<CR>     | Lazygit                     |
 | -------------- | ---------------------------- | --------------------------- |
-| <S-m>          | :MarkdownPreviewToggle<CR>   | Markdown preview toggle     |
+| <S-m>          | :MarkdownPreview<CR>         | Markdown preview            |
 | -------------- | ---------------------------- | --------------------------- |
 | <A-,>          | :Telescope find_files<CR>    | Search files with Telescope |
 | -------------- | ---------------------------- | --------------------------- |
@@ -103,13 +103,13 @@ Normal mode
 | -------------- | ---------------------------- | --------------------------- |
 | <A-\*>         | :LspVirtualTextToggle<CR>    | Lsp virtual text toggle     |
 | -------------- | ---------------------------- | --------------------------- |
-| <A-j>          | LvimMoveDownN                | Move line down              |
+| <A-j>          | MoveDown                     | Move line down              |
 | -------------- | ---------------------------- | --------------------------- |
-| <A-k>          | LvimMoveUpN                  | Move line up                |
+| <A-k>          | MoveUp                       | Move line up                |
 | -------------- | ---------------------------- | --------------------------- |
-| <A-h>          | LvimMoveLeftN                | Move line left              |
+| <A-h>          | MoveLeft                     | Move line left              |
 | -------------- | ---------------------------- | --------------------------- |
-| <A-l>          | LvimMoveRightN               | Move line right             |
+| <A-l>          | MoveRight                    | Move line right             |
 | -------------- | ---------------------------- | --------------------------- |
 | <A-1>          | <Cmd>DapToggleBreakpoint<CR> | Toggle breakpoint           |
 | -------------- | ---------------------------- | --------------------------- |
