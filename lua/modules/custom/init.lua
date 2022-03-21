@@ -47,16 +47,6 @@ local modules = {}
 --     config = editor_config.name_of_your_function
 -- }
 
-modules["wakatime/vim-wakatime"] = {}
-modules["lvim-tech/lvim-kbrd"] = {
-    config = function()
-        require("lvim-kbrd").setup()
-        local map = require("lvim-kbrd.utils").map
-        map("n", "<c-x>", ":LvimKbrdToggle<CR>", {silent = false})
-    end
-}
-modules["mattn/calendar-vim"] = {}
-
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Version control ----------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
