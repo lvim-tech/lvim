@@ -87,7 +87,19 @@ function config.gitsigns()
 end
 
 function config.git_blame()
-    vim.g.gitblame_enabled = 0
+    vim.g.gitblame_ignored_filetypes = {
+        "help",
+        "NvimTree",
+        "Trouble",
+        "Outline",
+        "git",
+        "dapui_scopes",
+        "dapui_breakpoints",
+        "dapui_stacks",
+        "dapui_watches",
+        "NeogitStatus",
+        "dashboard"
+    }
 end
 
 return config

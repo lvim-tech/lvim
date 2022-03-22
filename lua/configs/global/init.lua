@@ -77,9 +77,11 @@ configs["keymaps_global"] = function()
     funcs.keymaps("x", {noremap = false, silent = true}, keymaps.visual)
 end
 
-configs["indent_char_global"] = function()
+configs["common_global"] = function()
     vim.g.indent_blankline_char = "▏"
     vim.g.indentLine_char = "▏"
+    vim.g.gitblame_enabled = 0
+    vim.g.gitblame_highlight_group = "CursorLine"
 end
 
 configs["ctrlspace_pre_config_global"] = function()
