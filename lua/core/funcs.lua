@@ -1,29 +1,5 @@
 local M = {}
 
-M.augroups = function(definitions)
-    for group_name, definition in pairs(definitions) do
-        vim.api.nvim_command("augroup " .. group_name)
-        vim.api.nvim_command("autocmd!")
-        for _, def in ipairs(definition) do
-            local command = table.concat(vim.tbl_flatten {"autocmd", def}, " ")
-            vim.api.nvim_command(command)
-        end
-        vim.api.nvim_command("augroup END")
-    end
-end
-
-M.commands = function(commands)
-    for name, c in pairs(commands) do
-        local command
-        if c.buffer then
-            command = "command!-buffer"
-        else
-            command = "command!"
-        end
-        vim.cmd(command .. " -nargs=" .. c.nargs .. " " .. name .. " " .. c.cmd)
-    end
-end
-
 M.merge = function(a, b)
     if type(a) == "table" and type(b) == "table" then
         for k, v in pairs(b) do
@@ -91,14 +67,6 @@ end
 M.set_window_path = function()
     local path = M.change_path()
     vim.api.nvim_command("silent :lcd " .. path)
-end
-
-M.load_telescope_browser = function()
-    require("telescope").extensions.file_browser.file_browser()
-end
-
-M.load_telescope_bookmarks = function()
-    require("telescope").extensions.bookmarks.bookmarks()
 end
 
 return M

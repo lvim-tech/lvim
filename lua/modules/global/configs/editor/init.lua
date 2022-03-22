@@ -9,10 +9,6 @@ function config.telescope()
         )
     end
     local telescope = require("telescope")
-    telescope.load_extension "fzf"
-    telescope.load_extension "media_files"
-    telescope.load_extension "file_browser"
-    telescope.load_extension "tmux"
     telescope.setup {
         defaults = {
             prompt_prefix = "   ",
@@ -87,11 +83,13 @@ function config.telescope()
                 filetypes = {"png", "webp", "jpg", "jpeg"},
                 find_cmd = "rg"
             },
-            file_browser = {
-                theme = "ivy"
-            }
+            file_browser = {}
         }
     }
+    telescope.load_extension "fzf"
+    telescope.load_extension "media_files"
+    telescope.load_extension "file_browser"
+    telescope.load_extension "tmux"
 end
 
 function config.tabby()
@@ -195,8 +193,8 @@ function config.tabby()
     )
 end
 
-function config.nvim_gomove()
-    require("gomove").setup {}
+function config.lvim_move()
+    require("lvim-move").setup()
 end
 
 function config.vim_slime()

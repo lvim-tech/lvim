@@ -124,12 +124,12 @@ modules["nanozuki/tabby.nvim"] = {
     after = "vim-ctrlspace"
 }
 
-modules["booperlv/nvim-gomove"] = {
+modules["lvim-tech/lvim-move"] = {
     event = {
         "BufRead",
         "BufReadPre"
     },
-    config = editor_config.nvim_gomove
+    config = editor_config.lvim_move
 }
 
 modules["jpalardy/vim-slime"] = {
@@ -276,7 +276,8 @@ modules["f-person/git-blame.nvim"] = {
         "BufRead",
         "BufReadPost",
         "BufReadPre"
-    }
+    },
+    config = version_control_config.git_blame
 }
 
 modules["sindrets/diffview.nvim"] = {
@@ -319,6 +320,7 @@ modules["williamboman/nvim-lsp-installer"] = {
 
 modules["simrat39/rust-tools.nvim"] = {
     ft = "rust",
+    after = "telescope.nvim",
     requires = {
         "neovim/nvim-lspconfig",
         "nvim-lua/popup.nvim",

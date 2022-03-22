@@ -10,79 +10,59 @@ configs["vim_global"] = function()
 end
 
 configs["events_global"] = function()
-    funcs.augroups(
+    vim.api.nvim_create_autocmd(
+        "FileType",
         {
-            bufs = {
-                {
-                    "BufWinEnter",
-                    "*",
-                    "setlocal formatoptions-=c formatoptions-=r formatoptions-=o "
-                },
-                {
-                    "BufRead",
-                    "*",
-                    "setlocal formatoptions-=c formatoptions-=r formatoptions-=o "
-                },
-                {
-                    "BufNewFile",
-                    "*",
-                    "setlocal formatoptions-=c formatoptions-=r formatoptions-=o "
-                },
-                {"BufNewFile,BufRead", "*.ex", "set filetype=elixir"},
-                {"BufNewFile,BufRead", "*.exs", "set filetype=elixir"},
-                {"BufNewFile,BufRead", "*.graphql", "set filetype=graphql"},
-                {"BufWinEnter", "NvimTree", "setlocal colorcolumn=0 nocursorcolumn"}
+            pattern = {"dart", "ruby", "yaml", "c", "cpp", "objc", "objcpp"},
+            command = "setlocal ts=2 sw=2"
+        }
+    )
+    vim.api.nvim_create_autocmd(
+        "FileType",
+        {
+            pattern = {
+                "help",
+                "Trouble",
+                "Outline",
+                "git",
+                "dapui_scopes",
+                "dapui_breakpoints",
+                "dapui_stacks",
+                "dapui_watches",
+                "NeogitStatus"
             },
-            yank = {
-                {
-                    "TextYankPost",
-                    [[* silent! lua vim.highlight.on_yank({higroup='IncSearch', timeout=400})]]
-                }
-            },
-            ft = {
-                {"FileType", "dart", "setlocal ts=2 sw=2"},
-                {"FileType", "ruby", "setlocal ts=2 sw=2"},
-                {"FileType", "yaml", "setlocal ts=2 sw=2"},
-                {"FileType", "c", "setlocal ts=2 sw=2"},
-                {"FileType", "cpp", "setlocal ts=2 sw=2"},
-                {"FileType", "objc", "setlocal ts=2 sw=2"},
-                {"FileType", "objcpp", "setlocal ts=2 sw=2"},
-                {"FileType", "org", "setlocal foldmethod=expr"},
-                {"FileType", "org", "setlocal foldexpr=nvim_treesitter#foldexpr()"},
-                {"FileType", "help", "setlocal colorcolumn=0 nocursorcolumn"},
-                {"FileType", "dashboard", "setlocal nowrap"},
-                {"FileType", "Trouble", "setlocal colorcolumn=0 nocursorcolumn"},
-                {
-                    "FileType",
-                    "Outline",
-                    "setlocal colorcolumn=0 nocursorcolumn"
-                },
-                {"FileType", "git", "setlocal colorcolumn=0 nocursorcolumn"},
-                {
-                    "FileType",
-                    "packer",
-                    "setlocal colorcolumn=0 nocursorcolumn"
-                },
-                {"FileType", "dapui_scopes", "setlocal colorcolumn=0 nocursorcolumn"},
-                {
-                    "FileType",
-                    "dapui_breakpoints",
-                    "set colorcolumn=0 nocursorcolumn"
-                },
-                {"FileType", "dapui_stacks", "setlocal colorcolumn=0 nocursorcolumn"},
-                {"FileType", "dapui_watches", "setlocal colorcolumn=0 nocursorcolumn"},
-                {"FileType", "NeogitStatus", "setlocal colorcolumn=0 nocursorcolumn"}
-            }
+            command = "setlocal colorcolumn=0 nocursorcolumn"
+        }
+    )
+    vim.api.nvim_create_autocmd(
+        "FileType",
+        {
+            pattern = {"dashboard"},
+            command = "setlocal nowrap"
+        }
+    )
+    vim.api.nvim_create_autocmd(
+        "FileType",
+        {
+            pattern = {"org"},
+            command = "setlocal foldmethod=expr"
+        }
+    )
+    vim.api.nvim_create_autocmd(
+        "FileType",
+        {
+            pattern = {"org"},
+            command = "setlocal foldexpr=nvim_treesitter#foldexpr()"
         }
     )
 end
 
 configs["languages_global"] = function()
-    funcs.augroups(
+    vim.api.nvim_create_autocmd(
+        "BufWinEnter",
         {
-            languages_setup = {
-                {"BufWinEnter", "*", 'lua require("languages.global").setup()'}
-            }
+            pattern = "*",
+            command = 'lua require("languages.global").setup()'
         }
     )
 end
@@ -90,9 +70,6 @@ end
 configs["commands_global"] = function()
     vim.cmd('command! SetGlobalPath lua require("core.funcs").set_global_path()')
     vim.cmd('command! SetWindowPath lua require("core.funcs").set_window_path()')
-    vim.cmd('command! TelescopeBrowser lua require("core.funcs").load_telescope_browser()')
-    vim.cmd('command! TelescopeBookmarks lua require("core.funcs").load_telescope_bookmarks()')
-    vim.g.gitblame_enabled = 0
 end
 
 configs["keymaps_global"] = function()

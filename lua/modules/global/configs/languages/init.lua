@@ -334,19 +334,19 @@ function config.pubspec_assist()
     require("pubspec-assist").setup()
 end
 
+function config.vimtex()
+    vim.g.vimtex_view_method = 'zathura'
+    vim.g.latex_view_general_viewer = 'zathura'
+    vim.g.vimtex_compiler_progname = 'nvr'
+    vim.g.vimtex_compiler_callback_compiling = 'nvr'
+end
+
 function config.orgmode()
     require("orgmode").setup_ts_grammar()
     require("orgmode").setup {
         org_agenda_files = "~/Org/**/*",
         org_default_notes_file = "~/Org/notes.org"
     }
-end
-
-function config.vimtex()
-    vim.g.vimtex_view_method = 'zathura'
-    vim.g.latex_view_general_viewer = 'zathura'
-    vim.g.vimtex_compiler_progname = 'nvr'
-    vim.g.vimtex_compiler_callback_compiling = 'nvr'
 end
 
 function config.org_bullets()

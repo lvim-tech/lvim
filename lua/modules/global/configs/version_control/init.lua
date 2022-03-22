@@ -86,4 +86,8 @@ function config.gitsigns()
     vim.cmd("command! GitSignsBlameLine lua require('gitsigns').blame_line()")
 end
 
+function config.git_blame()
+    vim.g.gitblame_enabled = 0
+end
+
 return config
