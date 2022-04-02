@@ -19,6 +19,7 @@ keymaps["normal"] = {
     {"<C-n>", ":BufSurfForward<CR>"}, -- Next buffer
     {"<C-p>", ":BufSurfBack<CR>"}, -- Previews buffer
     {"<C-c>b", ":GitBlameToggle<CR>"}, -- Git blame toggle
+    {"<C-c>f", ":Vifm<CR>"}, -- Vifm file explorer
     {"<C-h>", "<C-w>h"}, -- Move to window left
     {"<C-l>", "<C-w>l"}, -- Move to window right
     {"<C-j>", "<C-w>j"}, -- Move to window down

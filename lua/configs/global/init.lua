@@ -1,6 +1,13 @@
 local funcs = require("core.funcs")
 local lvim = require("configs.global.lvim")
 local keymaps = require("configs.global.keymaps")
+local group =
+    vim.api.nvim_create_augroup(
+    "LvimIDE",
+    {
+        clear = true
+    }
+)
 
 local configs = {}
 
@@ -14,7 +21,8 @@ configs["events_global"] = function()
         "FileType",
         {
             pattern = {"dart", "ruby", "yaml", "c", "cpp", "objc", "objcpp"},
-            command = "setlocal ts=2 sw=2"
+            command = "setlocal ts=2 sw=2",
+            group = group
         }
     )
     vim.api.nvim_create_autocmd(
@@ -31,28 +39,32 @@ configs["events_global"] = function()
                 "dapui_watches",
                 "NeogitStatus"
             },
-            command = "setlocal colorcolumn=0 nocursorcolumn"
+            command = "setlocal colorcolumn=0 nocursorcolumn",
+            group = group
         }
     )
     vim.api.nvim_create_autocmd(
         "FileType",
         {
             pattern = {"dashboard"},
-            command = "setlocal nowrap"
+            command = "setlocal nowrap",
+            group = group
         }
     )
     vim.api.nvim_create_autocmd(
         "FileType",
         {
             pattern = {"org"},
-            command = "setlocal foldmethod=expr"
+            command = "setlocal foldmethod=expr",
+            group = group
         }
     )
     vim.api.nvim_create_autocmd(
         "FileType",
         {
             pattern = {"org"},
-            command = "setlocal foldexpr=nvim_treesitter#foldexpr()"
+            command = "setlocal foldexpr=nvim_treesitter#foldexpr()",
+            group = group
         }
     )
 end
@@ -62,7 +74,8 @@ configs["languages_global"] = function()
         "BufWinEnter",
         {
             pattern = "*",
-            command = 'lua require("languages.global").setup()'
+            command = 'lua require("languages.global").setup()',
+            group = group
         }
     )
 end
