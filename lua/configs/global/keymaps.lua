@@ -33,6 +33,7 @@ keymaps["normal"] = {
     {"<S-m>", ":MarkdownPreview<CR>"}, -- Markdown preview
     {"<A-,>", ":Telescope find_files<CR>"}, -- Search files with Telescope
     {"<A-.>", ":Telescope live_grep<CR>"}, -- Search word with Telescope
+    {"<A-b>", ":Telescope buffers<CR>"}, -- All buffers
     {"<A-/>", ":Telescope file_browser<CR>"}, -- Telescope browser
     {"<A-u>", ":AnyJump<CR>"}, -- Any jump
     {"<A-v>", ":SymbolsOutline<CR>"}, -- Symbols outline

@@ -56,6 +56,13 @@ modules["akinsho/toggleterm.nvim"] = {
 }
 
 modules["folke/zen-mode.nvim"] = {
+    requires = {
+        {
+            "folke/twilight.nvim",
+            config = ui_config.twilight,
+            after = "zen-mode.nvim"
+        }
+    },
     cmd = "ZenMode",
     config = ui_config.zen_mode
 }
