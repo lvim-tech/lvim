@@ -1,5 +1,11 @@
 local lsp_installer_servers = require("nvim-lsp-installer.servers")
 local global = require("core.global")
+local group_lsp_code_lens = vim.api.nvim_create_augroup("GroupLspCodeLens", {
+	clear = true,
+})
+local group_lsp_format = vim.api.nvim_create_augroup("GroupLspFormat", {
+	clear = true,
+})
 
 local M = {}
 
@@ -20,15 +26,6 @@ M.config_diagnostic = {
 	update_in_insert = true,
 	underline = true,
 	severity_sort = true,
-}
-
-M.config_lsp_signature = {
-	bind = true,
-	handler_opts = { border = "none" },
-	hint_prefix = "   ",
-	padding = " ",
-	zindex = 200,
-	transpancy = 0,
 }
 
 M.icons = {
@@ -106,6 +103,29 @@ M.document_highlight = function(client)
             ]],
 			false
 		)
+	end
+end
+
+M.document_formatting = function(client)
+	if client.resolved_capabilities.document_formatting then
+		vim.api.nvim_create_autocmd("BufWritePre", {
+			callback = function()
+				vim.lsp.buf.formatting_seq_sync()
+			end,
+			group = group_lsp_format,
+		})
+	end
+end
+
+M.codelens = function(client)
+	if client.resolved_capabilities.code_lens then
+		vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter", "TabEnter", "BufWritePost" }, {
+			callback = function()
+				vim.lsp.codelens.refresh()
+			end,
+			group = group_lsp_code_lens,
+			once = true,
+		})
 	end
 end
 

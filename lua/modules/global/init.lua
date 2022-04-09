@@ -81,11 +81,11 @@ modules["lukas-reineke/indent-blankline.nvim"] = {
 }
 
 modules["lvim-tech/lvim-focus"] = {
-	event = {
-		"BufRead",
-		"BufReadPre",
-	},
-	config = ui_config.lvim_focus,
+	-- event = {
+	-- 	"BufRead",
+	-- 	"BufReadPre",
+	-- },
+	-- config = ui_config.lvim_focus,
 }
 
 modules["lvim-tech/lvim-helper"] = {
@@ -325,7 +325,8 @@ modules["williamboman/nvim-lsp-installer"] = {
 	config = languages_config.nvim_lsp_installer,
 }
 
-modules["simrat39/rust-tools.nvim"] = {
+modules["lvim-tech/rust-tools.nvim"] = {
+	branch = "silent_aucommand_codelens",
 	ft = "rust",
 	after = "telescope.nvim",
 	requires = {
@@ -367,8 +368,6 @@ modules["michaelb/sniprun"] = {
 	},
 	config = languages_config.sniprun,
 }
-
-modules["ray-x/lsp_signature.nvim"] = {}
 
 modules["nvim-treesitter/nvim-treesitter"] = {
 	event = {

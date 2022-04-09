@@ -40,14 +40,15 @@ keymaps["normal"] = {
 	{ "<A-]>", ":GitSignsNextHunk<CR>" }, -- Git signs next hunk
 	{ "<A-[>", ":GitSignsPrevHunk<CR>" }, -- Git signs prev hunk
 	{ "<A-;>", ":GitSignsPreviewHunk<CR>" }, -- Git signs preview hunk
-	{ "<A-f>", ":LspFormatting<CR>" }, -- Lsp format code
-	{ "<A-t>", ":LspCodeAction<CR>" }, -- Lsp action
 	{ "<A-s>", ":Spectre<CR>" }, -- Replace in multiple files
-	{ "<A-g>", ":LspReferences<CR>" }, -- Lsp references
-	{ "<A-d>", ":LspDefinition<CR>" }, -- Lsp definition
-	{ "<A-c>", ":LspDeclaration<CR>" }, -- Lsp declaration
-	{ "<A-o>", ":LspHover<CR>" }, -- Lsp hover
-	{ "<A-r>", ":LspRename<CR>" }, -- Lsp rename
+	{ "gf", ":LspFormatting<CR>" }, -- Lsp format code
+	{ "ga", ":LspCodeAction<CR>" }, -- Lsp action
+	{ "gl", ":LspCodeLens<CR>" }, -- Lsp code lens
+	{ "gR", ":LspReferences<CR>" }, -- Lsp references
+	{ "gd", ":LspDefinition<CR>" }, -- Lsp definition
+	{ "gD", ":LspDeclaration<CR>" }, -- Lsp declaration
+	{ "gh", ":LspHover<CR>" }, -- Lsp hover
+	{ "gr", ":LspRename<CR>" }, -- Lsp rename
 	{ "<A-n>", ":LspGoToNext<CR>" }, -- Lsp go to next
 	{ "<A-p>", ":LspGoToPrev<CR>" }, -- Lsp go to prev
 	{ "<A-e>", ":TroubleToggle<CR>" }, -- Trouble toggle
@@ -65,19 +66,19 @@ keymaps["normal"] = {
 	{ "tn", ":tabn<CR>" }, -- Tab next
 	{ "tp", ":tabp<CR>" }, -- Tab prev
 	{ "tt", ":Telescope tmux sessions<CR>" }, -- Telescope tmux session
-	-- {"zo", "zo:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
-	-- {"zO", "zO:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
-	-- {"zc", "zc:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
-	-- {"zC", "zC:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
-	-- {"za", "za:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
-	-- {"zA", "zA:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
-	-- {"zv", "zv:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
-	-- {"zx", "zx:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
-	-- {"zX", "zX:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
-	-- {"zm", "zm:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
-	-- {"zM", "zM:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
-	-- {"zr", "zr:IndentBlanklineRefresh<CR>"}, -- Fix indent + fold lines
-	-- {"zR", "zR:IndentBlanklineRefresh<CR>"} -- Fix indent + fold lines
+	{ "zo", "zo:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
+	{ "zO", "zO:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
+	{ "zc", "zc:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
+	{ "zC", "zC:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
+	{ "za", "za:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
+	{ "zA", "zA:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
+	{ "zv", "zv:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
+	{ "zx", "zx:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
+	{ "zX", "zX:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
+	{ "zm", "zm:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
+	{ "zM", "zM:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
+	{ "zr", "zr:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
+	{ "zR", "zR:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
 }
 
 keymaps["visual"] = {

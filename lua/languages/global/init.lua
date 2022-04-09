@@ -1,34 +1,17 @@
 local global = require("core.global")
 local funcs = require("core.funcs")
+
 local M = {}
 
 M.filetypes = {
-	["clojure"] = {
-		"clojure",
-		"edn",
-	},
+	["clojure"] = { "clojure", "edn" },
 	["cmake"] = { "cmake" },
-	["cpp"] = {
-		"c",
-		"cpp",
-		"objc",
-		"objcpp",
-	},
-	["cs"] = {
-		"cs",
-		"vb",
-	},
-	["css"] = {
-		"css",
-		"scss",
-		"less",
-	},
+	["cpp"] = { "c", "cpp", "objc", "objcpp" },
+	["cs"] = { "cs", "vb" },
+	["css"] = { "css", "scss", "less" },
 	["d"] = { "d" },
 	["dart"] = { "dart" },
-	["elixir"] = {
-		"elixir",
-		"eelixir",
-	},
+	["elixir"] = { "elixir", "eelixir" },
 	["erlang"] = { "erlang" },
 	["fortran"] = { "fortran" },
 	["go"] = { "go", "gomod" },
@@ -44,10 +27,7 @@ M.filetypes = {
 		"typescriptreact",
 	},
 	["kotlin"] = { "kotlin" },
-	["latex"] = {
-		"bib",
-		"tex",
-	},
+	["latex"] = { "bib", "tex" },
 	["lua"] = { "lua" },
 	["markdown"] = { "markdown" },
 	["php"] = { "php" },
@@ -56,20 +36,11 @@ M.filetypes = {
 	["r"] = { "r", "rmd" },
 	["rust"] = { "rust" },
 	["shell"] = { "sh" },
-	["sql"] = {
-		"sql",
-		"mysql",
-	},
+	["sql"] = { "sql", "mysql" },
 	["vim"] = { "vim" },
 	["toml"] = { "toml" },
 	["vue"] = { "vue" },
-	["xml"] = {
-		"xml",
-		"xsd",
-		"xsl",
-		"xslt",
-		"svg",
-	},
+	["xml"] = { "xml", "xsd", "xsl", "xslt", "svg" },
 	["yaml"] = { "yaml" },
 }
 
@@ -99,7 +70,7 @@ M.start_language = function(language, project_root_path)
 			-- nothing
 			return
 		else
-			if funcs.file_exists(project_root_path .. "/lvim/" .. language .. ".lua") then
+			if funcs.file_exists(project_root_path .. "/.lvim/" .. language .. ".lua") then
 				M.kill_server(language)
 				M.pre_init_language(language, project_root_path, "custom")
 				M.init_language(language, project_root_path)
@@ -137,8 +108,8 @@ end
 M.init_language = function(language, project_root_path)
 	local language_configs_global = dofile(global.languages_path .. language .. ".lua")
 	local language_configs
-	if funcs.file_exists(project_root_path .. "/lvim/" .. language .. ".lua") then
-		local language_configs_custom = dofile(project_root_path .. "/lvim/" .. language .. ".lua")
+	if funcs.file_exists(project_root_path .. "/.lvim/" .. language .. ".lua") then
+		local language_configs_custom = dofile(project_root_path .. "/.lvim/" .. language .. ".lua")
 		language_configs = funcs.merge(language_configs_global, language_configs_custom)
 	else
 		language_configs = language_configs_global

@@ -83,17 +83,21 @@ Normal mode
 | -------------- | ---------------------------- | --------------------------- |
 | <A-s>          | :Spectre<CR>                 | Replace in multiple files   |
 | -------------- | ---------------------------- | --------------------------- |
-| <A-f>          | :LspFormatting<CR>           | Lsp format code             |
+| gf             | :LspFormatting<CR>           | Lsp format code             |
 | -------------- | ---------------------------- | --------------------------- |
-| <A-t>          | :LspAction<CR>               | LspAction                   |
+| ga             | :LspAction<CR>               | Lsp action                  |
 | -------------- | ---------------------------- | --------------------------- |
-| <A-g>          | :LspReferences<CR>           | Lsp references              |
+| gl             | :LspCodeLens<CR>             | Lsp code lens               |
 | -------------- | ---------------------------- | --------------------------- |
-| <A-d>          | :LspDefinition<CR>           | Lsp definition              |
+| gR             | :LspReferences<CR>           | Lsp references              |
 | -------------- | ---------------------------- | --------------------------- |
-| <A-o>          | :LspHover<CR>                | Lsp hover                   |
+| gd             | :LspDefinition<CR>           | Lsp definition              |
 | -------------- | ---------------------------- | --------------------------- |
-| <A-r>          | :LspRename<CR>               | Lsp rename                  |
+| gD             | :LspDeclaration<CR>          | Lsp declaration             |
+| -------------- | ---------------------------- | --------------------------- |
+| gh             | :LspHover<CR>                | Lsp hover                   |
+| -------------- | ---------------------------- | --------------------------- |
+| gr             | :LspRename<CR>               | Lsp rename                  |
 | -------------- | ---------------------------- | --------------------------- |
 | <A-n>          | :LspGoToNext<CR>             | Lsp go to next              |
 | -------------- | ---------------------------- | --------------------------- |
