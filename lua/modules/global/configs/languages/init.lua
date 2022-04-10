@@ -52,7 +52,11 @@ function config.go()
 end
 
 function config.sniprun()
-	require("sniprun").setup()
+	require("sniprun").setup({
+		display = {
+			"Classic",
+		},
+	})
 end
 
 function config.nvim_treesitter()
