@@ -1,9 +1,9 @@
 local lsp_installer_servers = require("nvim-lsp-installer.servers")
 local global = require("core.global")
-local group_lsp_code_lens = vim.api.nvim_create_augroup("GroupLspCodeLens", {
+local group_lsp_format = vim.api.nvim_create_augroup("GroupLspFormat", {
 	clear = true,
 })
-local group_lsp_format = vim.api.nvim_create_augroup("GroupLspFormat", {
+local group_highlight = vim.api.nvim_create_augroup("GroupHighlight", {
 	clear = true,
 })
 
@@ -90,19 +90,18 @@ end
 
 M.document_highlight = function(client)
 	if client.resolved_capabilities.document_highlight then
-		vim.api.nvim_exec(
-			[[
-            hi LspReferenceRead cterm=bold guibg=#46555A
-            hi LspReferenceText cterm=bold guibg=#46555A
-            hi LspReferenceWrite cterm=bold guibg=#46555A
-            augroup lsp_document_highlight
-                autocmd! * <buffer>
-                autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-                autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-            augroup END
-            ]],
-			false
-		)
+		vim.api.nvim_create_autocmd("CursorHold", {
+			callback = function()
+				vim.lsp.buf.document_highlight()
+			end,
+			group = group_highlight,
+		})
+		vim.api.nvim_create_autocmd("CursorMoved", {
+			callback = function()
+				vim.lsp.buf.clear_references()
+			end,
+			group = group_highlight,
+		})
 	end
 end
 
