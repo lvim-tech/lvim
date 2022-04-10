@@ -117,18 +117,6 @@ M.document_formatting = function(client)
 	end
 end
 
-M.codelens = function(client)
-	if client.resolved_capabilities.code_lens then
-		vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter", "TabEnter", "BufWritePost" }, {
-			callback = function()
-				vim.lsp.codelens.refresh()
-			end,
-			group = group_lsp_code_lens,
-			once = true,
-		})
-	end
-end
-
 M.get_capabilities = function()
 	local capabilities = vim.lsp.protocol.make_client_capabilities()
 	capabilities.textDocument.completion.completionItem.snippetSupport = true

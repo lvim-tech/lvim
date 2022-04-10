@@ -43,7 +43,8 @@ keymaps["normal"] = {
 	{ "<A-s>", ":Spectre<CR>" }, -- Replace in multiple files
 	{ "gf", ":LspFormatting<CR>" }, -- Lsp format code
 	{ "ga", ":LspCodeAction<CR>" }, -- Lsp action
-	{ "gl", ":LspCodeLens<CR>" }, -- Lsp code lens
+	{ "gL", ":LspCodeLensRefresh<CR>" }, -- Lsp code lens refresh
+	{ "gl", ":LspCodeLensRun<CR>" }, -- Lsp code lens run
 	{ "gR", ":LspReferences<CR>" }, -- Lsp references
 	{ "gd", ":LspDefinition<CR>" }, -- Lsp definition
 	{ "gD", ":LspDeclaration<CR>" }, -- Lsp declaration

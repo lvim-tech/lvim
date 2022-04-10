@@ -27,7 +27,6 @@ language_configs["lsp"] = function()
 				vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 				languages_setup.document_highlight(client)
 				languages_setup.document_formatting(client)
-				languages_setup.codelens(client)
 			end,
 			capabilities = languages_setup.get_capabilities(),
 			settings = {
