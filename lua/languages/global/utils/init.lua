@@ -1,11 +1,5 @@
 local lsp_installer_servers = require("nvim-lsp-installer.servers")
 local global = require("core.global")
-local group_lsp_format = vim.api.nvim_create_augroup("GroupLspFormat", {
-	clear = true,
-})
-local group_highlight = vim.api.nvim_create_augroup("GroupHighlight", {
-	clear = true,
-})
 
 local M = {}
 
@@ -90,29 +84,18 @@ end
 
 M.document_highlight = function(client)
 	if client.resolved_capabilities.document_highlight then
-		vim.api.nvim_create_autocmd("CursorHold", {
-			callback = function()
-				vim.lsp.buf.document_highlight()
-			end,
-			group = group_highlight,
-		})
-		vim.api.nvim_create_autocmd("CursorMoved", {
-			callback = function()
-				vim.lsp.buf.clear_references()
-			end,
-			group = group_highlight,
-		})
+		vim.api.nvim_command("augroup LspHighlight")
+		vim.api.nvim_command("autocmd CursorHold *.* silent! :lua vim.lsp.buf.document_highlight()")
+		vim.api.nvim_command("autocmd CursorMoved *.* silent! :lua vim.lsp.buf.clear_references()")
+		vim.api.nvim_command("augroup END")
 	end
 end
 
 M.document_formatting = function(client)
 	if client.resolved_capabilities.document_formatting then
-		vim.api.nvim_create_autocmd("BufWritePre", {
-			callback = function()
-				vim.lsp.buf.formatting_seq_sync()
-			end,
-			group = group_lsp_format,
-		})
+		vim.api.nvim_command("augroup LspFormat")
+		vim.api.nvim_command("autocmd BufWritePre *.* silent! :lua vim.lsp.buf.formatting_seq_sync()")
+		vim.api.nvim_command("augroup END")
 	end
 end
 
