@@ -52,11 +52,7 @@ function config.go()
 end
 
 function config.sniprun()
-	require("sniprun").setup({
-		display = {
-			"Classic",
-		},
-	})
+	require("sniprun").setup()
 end
 
 function config.nvim_treesitter()
@@ -118,7 +114,7 @@ end
 function config.trouble()
 	require("trouble").setup({
 		height = 12,
-		mode = "document_diagnostics",
+		mode = "workspace_diagnostics",
 		use_diagnostic_signs = true,
 		signs = {
 			error = "",

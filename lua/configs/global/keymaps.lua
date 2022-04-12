@@ -8,7 +8,7 @@ keymaps["normal"] = {
 	{ "<F5>", ":UndotreeToggle<CR>" }, -- UndoTree toggle
 	{ "<F11>", ":LvimHelper<CR>" }, -- LvimHelper
 	{ "<space><space>", ":CtrlSpace<CR>" }, -- CtrlSpace
-	{ "<Esc>", "<Esc>:noh<CR>" }, -- Remove highlight after search
+	{ "<Esc>", "<Esc>:noh<CR>:SnipClose<CR>" }, -- Remove highlight after search
 	{ "<C-c>n", ":enew<CR>" }, -- Create empty buffer
 	{ "<C-c>s", ":w<CR>" }, -- Save
 	{ "<C-c>a", ":wa<CR>" }, -- Save all
