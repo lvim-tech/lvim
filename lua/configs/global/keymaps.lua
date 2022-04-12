@@ -50,6 +50,7 @@ keymaps["normal"] = {
 	{ "gD", ":LspDeclaration<CR>" }, -- Lsp declaration
 	{ "gh", ":LspHover<CR>" }, -- Lsp hover
 	{ "gr", ":LspRename<CR>" }, -- Lsp rename
+	{ "gs", ":SnipRun<CR>" }, -- Snip run
 	{ "<A-n>", ":LspGoToNext<CR>" }, -- Lsp go to next
 	{ "<A-p>", ":LspGoToPrev<CR>" }, -- Lsp go to prev
 	{ "<A-e>", ":TroubleToggle<CR>" }, -- Trouble toggle
@@ -86,6 +87,7 @@ keymaps["visual"] = {
 	{ "*", "<Esc>/\\%V" }, -- Visual search /
 	{ "#", "<Esc>?\\%V" }, -- Visual search ?
 	{ "<A-u>", ":AnyJumpVisual<CR>" }, -- Any jump visual
+	{ "gs", ":SnipRun<CR>" }, -- Snip run
 }
 
 return keymaps

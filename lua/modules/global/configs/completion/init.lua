@@ -95,10 +95,10 @@ function config.nvim_cmp()
 		},
 		sources = {
 			{
-				name = "nvim_lsp",
+				name = "luasnip",
 			},
 			{
-				name = "luasnip",
+				name = "nvim_lsp",
 			},
 			{
 				name = "path",

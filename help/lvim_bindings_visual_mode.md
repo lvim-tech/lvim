@@ -18,3 +18,5 @@ Visual mode
 | <A-h>          | MoveLeft                     | Move selected left          |
 | -------------- | ---------------------------- | --------------------------- |
 | <A-l>          | MoveRight                    | Move selected right         |
+| -------------- | ---------------------------- | --------------------------- |
+| gs             | :SnipRun<CR>                 | Snip run                    |
