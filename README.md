@@ -30,7 +30,7 @@
 
 ---
 
-For detail info see [wiki](https://github.com/lvim-tech/lvim/wiki) - `6500+` lines of instructions and code
+For key bindings - press `F11`
 
 ## [YouTube](https://www.youtube.com/channel/UCSV5_UXKLl1JDZbQaYWuFKQ) channel
 
