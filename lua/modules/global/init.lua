@@ -409,6 +409,7 @@ modules["rcarriga/nvim-dap-ui"] = {
 }
 
 modules["Pocco81/DAPInstall.nvim"] = {
+	branch = "dev",
 	event = "BufWinEnter",
 	config = languages_config.dapinstall,
 }
