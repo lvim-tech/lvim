@@ -376,7 +376,6 @@ end
 
 function config.pretty_fold()
 	require("pretty-fold").setup({
-		keep_indentation = true,
 		fill_char = "─",
 		sections = {
 			left = {
@@ -385,13 +384,19 @@ function config.pretty_fold()
 			right = {
 				"┤ ",
 				"number_of_folded_lines",
-				": ",
-				"percentage",
 				" ├─",
 			},
 		},
 	})
 	require("pretty-fold.preview").setup()
+	local keymap_amend = require("keymap-amend")
+	local mapping = require("pretty-fold.preview").mapping
+	keymap_amend("n", "zp", function()
+		if vim.fn.foldclosed(".") > -1 then
+			mapping.show_close_preview_open_fold()
+			vim.cmd("IndentBlanklineRefresh")
+		end
+	end)
 end
 
 return config

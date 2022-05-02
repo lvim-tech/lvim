@@ -81,11 +81,11 @@ modules["lukas-reineke/indent-blankline.nvim"] = {
 }
 
 modules["lvim-tech/lvim-focus"] = {
-	-- event = {
-	-- 	"BufRead",
-	-- 	"BufReadPre",
-	-- },
-	-- config = ui_config.lvim_focus,
+	event = {
+		"BufRead",
+		"BufReadPre",
+	},
+	config = ui_config.lvim_focus,
 }
 
 modules["lvim-tech/lvim-helper"] = {
@@ -249,6 +249,7 @@ modules["folke/todo-comments.nvim"] = {
 }
 
 modules["anuvyklack/pretty-fold.nvim"] = {
+	requires = "anuvyklack/nvim-keymap-amend",
 	event = {
 		"BufRead",
 		"BufReadPre",
@@ -325,8 +326,7 @@ modules["williamboman/nvim-lsp-installer"] = {
 	config = languages_config.nvim_lsp_installer,
 }
 
-modules["lvim-tech/rust-tools.nvim"] = {
-	branch = "silent_aucommand_codelens",
+modules["simrat39/rust-tools.nvim"] = {
 	ft = "rust",
 	after = "telescope.nvim",
 	requires = {

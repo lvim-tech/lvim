@@ -79,21 +79,8 @@ function config.nvim_tree()
 	}
 	require("nvim-tree").setup({
 		update_cwd = true,
-		update_to_buf_dir = {
-			enable = true,
-			auto_open = true,
-		},
 		update_focused_file = {
 			enable = true,
-		},
-		git = {
-			enable = true,
-			ignore = true,
-			timeout = 5000,
-		},
-		view = {
-			width = 33,
-			auto_resize = true,
 		},
 	})
 end
@@ -378,6 +365,7 @@ function config.lualine()
 			lualine_y = {},
 			lualine_z = {},
 		},
+		extensions = { "nvim-tree", "symbols-outline", "toggleterm", "quickfix" },
 	}
 	local function ins_left_a(component)
 		table.insert(lualine_config.sections.lualine_a, component)
