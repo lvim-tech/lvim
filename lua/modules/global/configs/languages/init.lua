@@ -51,6 +51,10 @@ function config.go()
 	require("go").setup({})
 end
 
+function config.trld()
+	require("trld").setup()
+end
+
 function config.sniprun()
 	require("sniprun").setup()
 end

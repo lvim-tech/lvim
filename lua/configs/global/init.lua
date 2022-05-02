@@ -7,6 +7,8 @@ local group = vim.api.nvim_create_augroup("LvimIDE", {
 
 local configs = {}
 
+configs["group"] = group
+
 configs["vim_global"] = function()
 	lvim.global()
 	lvim.set()

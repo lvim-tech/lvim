@@ -1,5 +1,6 @@
 local lsp_installer_servers = require("nvim-lsp-installer.servers")
 local global = require("core.global")
+local configs = require("configs.global")
 
 local M = {}
 
@@ -83,19 +84,52 @@ M.setup_diagnostic = function(custom_config_diagnostic)
 end
 
 M.document_highlight = function(client)
-	if client.resolved_capabilities.document_highlight then
-		vim.api.nvim_command("augroup LspHighlight")
-		vim.api.nvim_command("autocmd CursorHold *.* silent! :lua vim.lsp.buf.document_highlight()")
-		vim.api.nvim_command("autocmd CursorMoved *.* silent! :lua vim.lsp.buf.clear_references()")
-		vim.api.nvim_command("augroup END")
+	local function highlight()
+		vim.api.nvim_create_autocmd("CursorHold", {
+			pattern = "*",
+			callback = function()
+				vim.lsp.buf.document_highlight()
+			end,
+			group = configs.group,
+		})
+		vim.api.nvim_create_autocmd("CursorMoved", {
+			pattern = "*",
+			callback = function()
+				vim.lsp.buf.clear_references()
+			end,
+			group = configs.group,
+		})
+	end
+	if vim.fn.has("nvim-0.8") == 1 then
+		if client.server_capabilities.documentHighlightProvider then
+			highlight()
+		end
+	else
+		if client.resolved_capabilities.document_highlight then
+			highlight()
+		end
 	end
 end
 
 M.document_formatting = function(client)
-	if client.resolved_capabilities.document_formatting then
-		vim.api.nvim_command("augroup LspFormat")
-		vim.api.nvim_command("autocmd BufWritePre *.* silent! :lua vim.lsp.buf.formatting_seq_sync()")
-		vim.api.nvim_command("augroup END")
+	-- vim.pretty_print(client.server_capabilities)
+	local function formatt()
+		vim.api.nvim_create_autocmd("BufWritePre", {
+			pattern = "*",
+			callback = function()
+				vim.lsp.buf.formatting_seq_sync()
+			end,
+			group = configs.group,
+		})
+	end
+	if vim.fn.has("nvim-0.8") == 1 then
+		if client.server_capabilities.documentFormattingProvider then
+			formatt()
+		end
+	else
+		if client.resolved_capabilities.document_formatting then
+			formatt()
+		end
 	end
 end
 

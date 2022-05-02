@@ -426,17 +426,7 @@ function M.init_diagnosticls()
 			autostart = true,
 			filetypes = M.config.lsp_filetypes,
 			on_attach = function(client)
-				if client.resolved_capabilities.document_formatting then
-					vim.api.nvim_exec(
-						[[
-                            augroup LspAutocommands
-                                autocmd! * <buffer>
-                                autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()
-                            augroup END
-                        ]],
-						true
-					)
-				end
+				languages_setup.document_formatting(client)
 			end,
 			init_options = {
 				filetypes = M.config.linters_filetypes,

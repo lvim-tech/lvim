@@ -356,6 +356,14 @@ modules["jose-elias-alvarez/nvim-lsp-ts-utils"] = {
 	},
 }
 
+modules["Mofiqul/trld.nvim"] = {
+	event = {
+		"BufRead",
+		"BufReadPre",
+	},
+	config = languages_config.trld,
+}
+
 modules["michaelb/sniprun"] = {
 	requires = "neovim/nvim-lspconfig",
 	run = "bash ./install.sh",

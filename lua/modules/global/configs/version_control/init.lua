@@ -65,16 +65,6 @@ function config.gitsigns()
 			noremap = true,
 			buffer = true,
 		},
-		watch_index = { interval = 1000, follow_files = true },
-		current_line_blame = false,
-		current_line_blame_delay = 1000,
-		current_line_blame_position = "eol",
-		sign_priority = 6,
-		update_debounce = 100,
-		status_formatter = nil,
-		word_diff = false,
-		use_decoration_api = true,
-		use_internal_diff = true,
 	})
 	vim.cmd("command! GitSignsPreviewHunk lua require('gitsigns').preview_hunk()")
 	vim.cmd("command! GitSignsNextHunk lua require('gitsigns').next_hunk()")
