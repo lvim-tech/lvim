@@ -1,7 +1,7 @@
 local M = {}
 
 M.setup = function()
-	-- Your settings
+    -- Your settings
 end
 
 return M

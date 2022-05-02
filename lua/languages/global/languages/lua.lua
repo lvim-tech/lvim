@@ -15,68 +15,69 @@ local dap = require("dap")
 local language_configs = {}
 
 language_configs["lsp"] = function()
-	local function start_sumneko_lua(server)
-		server:setup({
-			flags = {
-				debounce_text_changes = default_debouce_time,
-			},
-			autostart = true,
-			filetypes = { "lua" },
-			on_attach = function(client, bufnr)
-				table.insert(global["languages"]["lua"]["pid"], client.rpc.pid)
-				vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-				languages_setup.document_highlight(client)
-				languages_setup.document_formatting(client)
-			end,
-			capabilities = languages_setup.get_capabilities(),
-			settings = {
-				Lua = {
-					completion = { keywordSnippet = "Disable" },
-					diagnostics = {
-						globals = { "vim", "use", "packer_plugins" },
-						disable = { "lowercase-global" },
-					},
-					runtime = { version = "LuaJIT", path = vim.split(package.path, ";") },
-					workspace = {
-						library = {
-							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
-							[vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
-						},
-					},
-				},
-			},
-			root_dir = function(fname)
-				return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
-			end,
-		})
-	end
-	languages_setup.setup_lsp("sumneko_lua", start_sumneko_lua)
+    local function start_sumneko_lua(server)
+        server:setup({
+            flags = {
+                debounce_text_changes = default_debouce_time,
+            },
+            autostart = true,
+            filetypes = { "lua" },
+            on_attach = function(client, bufnr)
+                table.insert(global["languages"]["lua"]["pid"], client.rpc.pid)
+                vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+                languages_setup.document_highlight(client)
+                languages_setup.document_formatting(client)
+            end,
+            capabilities = languages_setup.get_capabilities(),
+            settings = {
+                Lua = {
+                    completion = { keywordSnippet = "Disable" },
+                    diagnostics = {
+                        globals = { "vim", "use", "packer_plugins" },
+                        disable = { "lowercase-global" },
+                    },
+                    runtime = { version = "LuaJIT", path = vim.split(package.path, ";") },
+                    workspace = {
+                        library = {
+                            [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+                            [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
+                        },
+                    },
+                },
+            },
+            root_dir = function(fname)
+                return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
+            end,
+        })
+    end
+
+    languages_setup.setup_lsp("sumneko_lua", start_sumneko_lua)
 end
 
 language_configs["dap"] = function()
-	if funcs.dir_exists(global.lsp_path .. "dapinstall/lua/") ~= true then
-		vim.cmd("DIInstall lua")
-	end
-	dap_install.config("lua", {})
-	dap.configurations.lua = {
-		{
-			type = "nlua",
-			request = "attach",
-			name = "Attach to running Neovim instance",
-			host = function()
-				local value = vim.fn.input("Host [127.0.0.1]: ")
-				if value ~= "" then
-					return value
-				end
-				return "127.0.0.1"
-			end,
-			port = function()
-				local val = tonumber(vim.fn.input("Port: "))
-				assert(val, "Please provide a port number")
-				return val
-			end,
-		},
-	}
+    if funcs.dir_exists(global.lsp_path .. "dapinstall/lua/") ~= true then
+        vim.cmd("DIInstall lua")
+    end
+    dap_install.config("lua", {})
+    dap.configurations.lua = {
+        {
+            type = "nlua",
+            request = "attach",
+            name = "Attach to running Neovim instance",
+            host = function()
+                local value = vim.fn.input("Host [127.0.0.1]: ")
+                if value ~= "" then
+                    return value
+                end
+                return "127.0.0.1"
+            end,
+            port = function()
+                local val = tonumber(vim.fn.input("Port: "))
+                assert(val, "Please provide a port number")
+                return val
+            end,
+        },
+    }
 end
 
 return language_configs
