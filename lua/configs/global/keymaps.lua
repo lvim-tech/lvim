@@ -51,6 +51,7 @@ keymaps["normal"] = {
     { "gh", ":LspHover<CR>" }, -- Lsp hover
     { "gr", ":LspRename<CR>" }, -- Lsp rename
     { "gs", ":SnipRun<CR>" }, -- Snip run
+    { "gp", ":hardcopy<CR>" }, -- Print file
     { "<A-n>", ":LspGoToNext<CR>" }, -- Lsp go to next
     { "<A-p>", ":LspGoToPrev<CR>" }, -- Lsp go to prev
     { "<A-e>", ":TroubleToggle<CR>" }, -- Trouble toggle
