@@ -15,7 +15,7 @@ local dap = require("dap")
 local language_configs = {}
 
 language_configs["lsp"] = function()
-    local function start_clangd(server)
+    local function start_server(server)
         server:setup({
             flags = {
                 debounce_text_changes = default_debouce_time,
@@ -35,7 +35,7 @@ language_configs["lsp"] = function()
         })
     end
 
-    languages_setup.setup_lsp("clangd", start_clangd)
+    languages_setup.setup_lsp("clangd", start_server)
 end
 
 language_configs["dap"] = function()

@@ -1,5 +1,5 @@
 -- Install Lsp server
--- :LspInstall zeta_note
+-- :LspInstall eslint
 
 local global = require("core.global")
 local languages_setup = require("languages.global.utils")
@@ -15,9 +15,17 @@ language_configs["lsp"] = function()
                 debounce_text_changes = default_debouce_time,
             },
             autostart = true,
-            filetypes = { "markdown" },
+            filetypes = {
+                "javascript",
+                "javascriptreact",
+                "javascript.jsx",
+                "typescript",
+                "typescriptreact",
+                "typescript.tsx",
+                "vue",
+            },
             on_attach = function(client, bufnr)
-                table.insert(global["languages"]["markdown"]["pid"], client.rpc.pid)
+                table.insert(global["languages"]["_eslint"]["pid"], client.rpc.pid)
                 vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
                 languages_setup.document_highlight(client)
                 languages_setup.document_formatting(client)
@@ -29,7 +37,7 @@ language_configs["lsp"] = function()
         })
     end
 
-    languages_setup.setup_lsp("zeta_note", start_server)
+    languages_setup.setup_lsp("eslint", start_server)
 end
 
 return language_configs

@@ -537,9 +537,4 @@ modules["Neevash/awesome-flutter-snippets"] = {
     ft = "dart",
 }
 
-modules["mattn/emmet-vim"] = {
-    event = "InsertEnter",
-    config = completion_config.emmet_vim,
-}
-
 return modules

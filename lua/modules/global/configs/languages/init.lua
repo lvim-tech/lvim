@@ -22,8 +22,13 @@ function config.nvim_lspconfig()
     vim.cmd("command! LspImplementation lua vim.lsp.buf.implementation()")
     vim.cmd("command! LspIncomingCalls lua vim.lsp.buf.incoming_calls()")
     vim.cmd("command! LspOutgoingCalls lua vim.lsp.buf.outgoing_calls()")
-    vim.cmd("command! LspFormatting lua vim.lsp.buf.formatting()")
-    vim.cmd("command! LspRangeFormatting lua vim.lsp.buf.range_formatting()")
+    if vim.fn.has("nvim-0.8") == 1 then
+        vim.cmd("command! LspFormatting lua vim.lsp.buf.format {async = true}")
+        -- vim.cmd("command! LspRangeFormatting lua vim.lsp.buf.range_format {async = true}")
+    else
+        vim.cmd("command! LspFormatting lua vim.lsp.buf.formatting()")
+        -- vim.cmd("command! LspRangeFormatting lua vim.lsp.buf.range_formatting)")
+    end
     vim.cmd("command! LspFormattingSync lua vim.lsp.buf.formatting_sync()")
     vim.cmd("command! LspHover lua vim.lsp.buf.hover()")
     vim.cmd("command! LspRename lua vim.lsp.buf.rename()")

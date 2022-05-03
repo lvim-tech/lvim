@@ -6,109 +6,31 @@ local M = {}
 
 M.config = {
     lsp_filetypes = {
-        "css",
-        "scss",
-        "less",
-        "javascript",
-        "typescript",
-        "javascriptreact",
-        "typescriptreact",
         "html",
         "json",
         "c",
         "cpp",
         "objc",
         "objcpp",
-        -- "dart",
-        "go",
+        "less",
         "lua",
         "markdown",
-        "php",
         "python",
-        -- "rust",
         "sh",
         "vim",
-        "vue",
     },
     linters_filetypes = {
-        css = "stylelint",
-        scss = "stylelint",
-        less = "stylelint",
-        javascript = "eslint",
-        typescript = "eslint",
-        javascriptreact = "eslint",
-        typescriptreact = "eslint",
-        vue = "eslint",
         html = "tidy",
         c = "cpplint",
         cpp = "cpplint",
         objc = "cpplint",
         objcpp = "cpplint",
-        go = "golangcilint",
         lua = "luacheck",
-        php = "phpstan",
         python = "pylint",
         vim = "vint",
         sh = "shellcheck",
     },
     linters = {
-        --- css, scss, less
-        -- https://github.com/stylelint/stylelint
-        -- https://github.com/bjankord/stylelint-config-sass-guidelines
-        -- INSTALL: npm install -g stylelint stylelint-config-sass-guidelines
-        stylelint = {
-            sourceName = "stylelint",
-            command = "stylelint",
-            rootPatterns = { ".stylelintrc", ".stylelintrc.json" },
-            debounce = 100,
-            args = {
-                "--formatter",
-                "json",
-                "--stdin-filename",
-                "%filepath",
-            },
-            parseJson = {
-                errorsRoot = "[0].warnings",
-                line = "line",
-                column = "column",
-                message = "${text}",
-                security = "severity",
-            },
-            securities = {
-                error = "error",
-                warning = "warning",
-            },
-        },
-        -- javascript, typescript, javascriptreact, typescriptreact, vue
-        -- https://github.com/eslint/eslint
-        -- https://eslint.org
-        -- INSTALL: npm install -g eslint
-        eslint = {
-            sourceName = "eslint",
-            command = "eslint",
-            rootPatterns = { ".eslintrc", ".eslintrc.js", ".package.json" },
-            debounce = 100,
-            args = {
-                "--stdin",
-                "--stdin-filename",
-                "%filepath",
-                "--format",
-                "json",
-            },
-            parseJson = {
-                errorsRoot = "[0].messages",
-                line = "line",
-                column = "column",
-                endLine = "endLine",
-                endColumn = "endColumn",
-                message = "${message} [${ruleId}]",
-                security = "severity",
-            },
-            securities = {
-                [1] = "error",
-                [2] = "warning",
-            },
-        },
         --- html
         -- https://github.com/htacg/tidy-html5
         -- https://www.html-tidy.org
@@ -162,25 +84,6 @@ M.config = {
                 },
             },
         },
-        -- go
-        -- https://github.com/golangci/golangci-lint
-        -- https://golangci-lint.run
-        -- INSTALL INSTRUCTION: https://golangci-lint.run/usage/install/#local-installation
-        golangcilint = {
-            command = "golangci-lint",
-            rootPatterns = { ".golangci.yml", ".golangci.yaml", ".golangci.toml", ".golangci.json" },
-            debounce = 100,
-            args = { "run", "--out-format", "json" },
-            sourceName = "golangci-lint",
-            parseJson = {
-                sourceName = "Pos.Filename",
-                sourceNameFilter = true,
-                errorsRoot = "Issues",
-                line = "Pos.Line",
-                column = "Pos.Column",
-                message = "${Text} [${FromLinter}]",
-            },
-        },
         -- lua
         -- https://github.com/mpeterv/luacheck
         -- https://luacheck.readthedocs.io/en/stable
@@ -213,34 +116,6 @@ M.config = {
             securities = {
                 W = "warning",
                 E = "error",
-            },
-        },
-        -- php
-        -- https://github.com/phpstan/phpstan
-        -- https://phpstan.org
-        -- INSTALL INSTRUCTION: https://phpstan.org/user-guide/getting-started
-        -- INSTALL: composer require --dev phpstan/phpstan
-        phpstan = {
-            sourceName = "phpstan",
-            command = "vendor/bin/phpstan",
-            debounce = 100,
-            rootPatterns = { "composer.json", "composer.lock", "vendor" },
-            args = {
-                "analyze",
-                "--error-format",
-                "raw",
-                "--no-progress",
-                "%file",
-            },
-            offsetLine = 0,
-            offsetColumn = 0,
-            formatLines = 1,
-            formatPattern = {
-                "^[^:]+:(\\d+):(.*)(\\r|\\n)*$",
-                {
-                    line = 1,
-                    message = 2,
-                },
             },
         },
         -- python
@@ -331,18 +206,8 @@ M.config = {
         },
     },
     format_filetypes = {
-        css = "stylelint",
-        scss = "stylelint",
-        less = "stylelint",
         html = "prettier",
         json = "prettier",
-        -- dart = "dartfmt",
-        -- go = "gofmt",
-        javascript = "prettier",
-        typescript = "prettier",
-        javascriptreact = "prettier",
-        typescriptreact = "prettier",
-        vue = "prettier",
         lua = "stylua",
         markdown = "prettier",
         python = "autopep8",
@@ -350,20 +215,7 @@ M.config = {
         sh = "shfmt",
     },
     formatters = {
-        --- css, scss, less
-        -- https://github.com/stylelint/stylelint
-        -- https://github.com/bjankord/stylelint-config-sass-guidelines
-        -- INSTALL: npm install -g stylelint stylelint-config-sass-guidelines
-        stylelint = {
-            command = "stylelint",
-            rootPatterns = { ".stylelintrc", ".stylelintrc.json" },
-            args = {
-                "--fix",
-            },
-            isStderr = false,
-            isStdout = true,
-        },
-        -- javascript, typescript, javascriptreact, typescriptreact, vue
+        -- html, json
         -- https://prettier.io
         -- INSTALL: npm install -g prettier
         prettier = {
@@ -374,20 +226,6 @@ M.config = {
             isStderr = false,
             doesWriteToFile = false,
         },
-        -- dart
-        -- https://github.com/dart-lang/dart_style
-        -- INSTALL: see instruction
-        dartfmt = {
-            command = "dartfmt",
-            args = { "--fix" },
-        },
-        -- go
-        -- https://pkg.go.dev/cmd/gofmt
-        -- INSTALL: see instruction
-        gofmt = {
-            command = "gofmt",
-            args = { "-s" },
-        },
         -- lua
         -- https://github.com/JohnnyMorganz/StyLua
         -- INSTALL: cargo install stylua
@@ -395,11 +233,6 @@ M.config = {
             command = "stylua",
             args = { "--search-parent-directories", "--stdin-filepath", "%filepath", "--", "-" },
         },
-        -- ================================================================== --
-        -- php
-        -- intelephense support format
-        -- https://intelephense.com/
-        -- ================================================================== --
         -- python
         -- https://github.com/hhatto/autopep8
         -- https://pypi.org/project/autopep8
@@ -418,7 +251,7 @@ M.config = {
 }
 
 function M.init_diagnosticls()
-    local function start_diagnosticls(server)
+    local function start_server(server)
         server:setup({
             flags = {
                 debounce_text_changes = default_debouce_time,
@@ -440,7 +273,7 @@ function M.init_diagnosticls()
         })
     end
 
-    languages_setup.setup_lsp("diagnosticls", start_diagnosticls)
+    languages_setup.setup_lsp("diagnosticls", start_server)
 end
 
 return M

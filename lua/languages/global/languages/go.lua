@@ -15,7 +15,7 @@ local dap = require("dap")
 local language_configs = {}
 
 language_configs["lsp"] = function()
-    local function start_gopls(server)
+    local function start_server(server)
         server:setup({
             flags = {
                 debounce_text_changes = default_debouce_time,
@@ -35,7 +35,8 @@ language_configs["lsp"] = function()
         })
     end
 
-    languages_setup.setup_lsp("gopls", start_gopls)
+    languages_setup.setup_lsp("gopls", start_server)
+    languages_setup.setup_lsp("golangci_lint_ls", start_server)
 end
 
 language_configs["dap"] = function()

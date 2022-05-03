@@ -15,7 +15,7 @@ local dap = require("dap")
 local language_configs = {}
 
 language_configs["lsp"] = function()
-    local function start_sumneko_lua(server)
+    local function start_server(server)
         server:setup({
             flags = {
                 debounce_text_changes = default_debouce_time,
@@ -51,7 +51,7 @@ language_configs["lsp"] = function()
         })
     end
 
-    languages_setup.setup_lsp("sumneko_lua", start_sumneko_lua)
+    languages_setup.setup_lsp("sumneko_lua", start_server)
 end
 
 language_configs["dap"] = function()

@@ -1,5 +1,5 @@
 -- Install Lsp server
--- :LspInstall zeta_note
+-- :LspInstall stylelint_lsp
 
 local global = require("core.global")
 local languages_setup = require("languages.global.utils")
@@ -15,21 +15,34 @@ language_configs["lsp"] = function()
                 debounce_text_changes = default_debouce_time,
             },
             autostart = true,
-            filetypes = { "markdown" },
+            filetypes = {
+                "css",
+                "less",
+                "postcss",
+                "sass",
+                "scss",
+                "sugarss",
+            },
             on_attach = function(client, bufnr)
-                table.insert(global["languages"]["markdown"]["pid"], client.rpc.pid)
+                table.insert(global["languages"]["_stylelint"]["pid"], client.rpc.pid)
                 vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
                 languages_setup.document_highlight(client)
                 languages_setup.document_formatting(client)
             end,
             capabilities = languages_setup.get_capabilities(),
+            settings = {
+                stylelintplus = {
+                    autoFixOnSave = true,
+                    autoFixOnFormat = true,
+                },
+            },
             root_dir = function(fname)
                 return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
             end,
         })
     end
 
-    languages_setup.setup_lsp("zeta_note", start_server)
+    languages_setup.setup_lsp("stylelint_lsp", start_server)
 end
 
 return language_configs

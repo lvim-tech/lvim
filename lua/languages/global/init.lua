@@ -4,6 +4,24 @@ local funcs = require("core.funcs")
 local M = {}
 
 M.filetypes = {
+    ["_emmet"] = { "html", "css", "typescriptreact", "javascriptreact" },
+    ["_stylelint"] = {
+        "css",
+        "less",
+        "postcss",
+        "sass",
+        "scss",
+        "sugarss",
+    },
+    ["_eslint"] = {
+        "javascript",
+        "javascriptreact",
+        "javascript.jsx",
+        "typescript",
+        "typescriptreact",
+        "typescript.tsx",
+        "vue",
+    },
     ["clojure"] = { "clojure", "edn" },
     ["cmake"] = { "cmake" },
     ["cpp"] = { "c", "cpp", "objc", "objcpp" },
@@ -20,12 +38,7 @@ M.filetypes = {
     ["html"] = { "html" },
     ["java"] = { "java" },
     ["json"] = { "json" },
-    ["jsts"] = {
-        "javascript",
-        "typescript",
-        "javascriptreact",
-        "typescriptreact",
-    },
+    ["jsts"] = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
     ["kotlin"] = { "kotlin" },
     ["latex"] = { "bib", "tex" },
     ["lua"] = { "lua" },

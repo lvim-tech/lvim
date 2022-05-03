@@ -17,7 +17,7 @@ local dap = require("dap")
 local language_configs = {}
 
 language_configs["lsp"] = function()
-    local function start_rust_analyzer()
+    local function start_server()
         if server_available then
             require("rust-tools").setup({
                 tools = {
@@ -55,7 +55,7 @@ language_configs["lsp"] = function()
         end
     end
 
-    start_rust_analyzer()
+    start_server()
 end
 
 language_configs["dap"] = function()

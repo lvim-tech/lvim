@@ -9,7 +9,7 @@ local default_debouce_time = 150
 local language_configs = {}
 
 language_configs["lsp"] = function()
-    local function start_ltex(server)
+    local function start_server(server)
         server:setup({
             flags = {
                 debounce_text_changes = default_debouce_time,
@@ -34,7 +34,7 @@ language_configs["lsp"] = function()
         })
     end
 
-    languages_setup.setup_lsp("ltex", start_ltex)
+    languages_setup.setup_lsp("ltex", start_server)
 end
 
 return language_configs
