@@ -173,4 +173,16 @@ M.goto_prev = function(opts)
     end)
 end
 
+M.line = function(opts)
+    opts = vim.tbl_deep_extend("error", {
+        enable_popup = false,
+    }, opts or {})
+    vim.diagnostic.open_float(opts)
+    local win_id = opts.win_id or vim.api.nvim_get_current_win()
+    vim.schedule(function()
+        M.show_line_diagnostics(vim.api.nvim_win_get_buf(win_id))
+        -- vim.cmd([[silent! LvimRestoreEnableCurrent]])
+    end)
+end
+
 return M

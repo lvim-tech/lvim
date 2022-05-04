@@ -54,6 +54,7 @@ keymaps["normal"] = {
     { "gp", ":hardcopy<CR>" }, -- Print file
     { "<A-n>", ":LspGoToNext<CR>" }, -- Lsp go to next
     { "<A-p>", ":LspGoToPrev<CR>" }, -- Lsp go to prev
+    { "<A-c>", ":LspLine<CR>" }, -- Lsp current line
     { "<A-e>", ":TroubleToggle<CR>" }, -- Trouble toggle
     { "<A-*>", ":LspVirtualTextToggle<CR>" }, -- Lsp virtual text toggle
     { "<A-1>", "<Cmd>DapToggleBreakpoint<CR>" }, -- Toggle breakpoint

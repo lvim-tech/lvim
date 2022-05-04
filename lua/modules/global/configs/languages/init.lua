@@ -34,6 +34,7 @@ function config.nvim_lspconfig()
     vim.cmd("command! LspRename lua vim.lsp.buf.rename()")
     vim.cmd("command! LspSignatureHelp lua vim.lsp.buf.signature_help()")
     -- LSP diagnostic
+    vim.cmd("command! LspLine lua require('languages.global.utils.diagnostics').line()")
     vim.cmd("command! LspGoToNext lua require('languages.global.utils.diagnostics').goto_next()")
     vim.cmd("command! LspGoToPrev lua require('languages.global.utils.diagnostics').goto_prev()")
     -- Virtual text toggle
