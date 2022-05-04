@@ -49,6 +49,7 @@ keymaps["normal"] = {
     { "gd", ":LspDefinition<CR>" }, -- Lsp definition
     { "gD", ":LspDeclaration<CR>" }, -- Lsp declaration
     { "gh", ":LspHover<CR>" }, -- Lsp hover
+    { "gH", ":LspSignatureHelp<CR>" }, -- Lsp signature help
     { "gr", ":LspRename<CR>" }, -- Lsp rename
     { "gs", ":SnipRun<CR>" }, -- Snip run
     { "gp", ":hardcopy<CR>" }, -- Print file
