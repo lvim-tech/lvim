@@ -43,6 +43,7 @@ M.filetypes = {
     ["latex"] = { "bib", "tex" },
     ["lua"] = { "lua" },
     ["markdown"] = { "markdown" },
+    ["perl"] = { "perl" },
     ["php"] = { "php" },
     ["python"] = { "python" },
     ["ruby"] = { "ruby" },
