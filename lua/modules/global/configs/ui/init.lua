@@ -15,6 +15,7 @@ function config.dashboard_nvim()
     }
     vim.g.dashboard_preview_file_height = 12
     vim.g.dashboard_preview_file_width = 80
+    vim.g.dashboard_custom_footer = {}
     vim.g.dashboard_custom_section = {
         a = {
             description = { "     Projects                 " },
@@ -22,7 +23,7 @@ function config.dashboard_nvim()
         },
         b = {
             description = { "     File explorer            " },
-            command = "TelescopeBrowser",
+            command = "Telescope file_browser",
         },
         c = {
             description = { "     Search file              " },
