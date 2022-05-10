@@ -192,12 +192,12 @@ modules["windwp/nvim-autopairs"] = {
     config = editor_config.nvim_autopairs,
 }
 
-modules["ur4ltz/surround.nvim"] = {
+modules["kylechui/nvim-surround"] = {
     event = {
         "BufRead",
         "BufReadPre",
     },
-    config = editor_config.surround,
+    config = editor_config.nvim_surround,
 }
 
 modules["norcalli/nvim-colorizer.lua"] = {
