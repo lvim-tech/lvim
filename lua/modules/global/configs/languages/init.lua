@@ -1,6 +1,9 @@
 local config = {}
 
-function config.nvim_lspconfig()
+--[[ function config.nvim_lspconfig()
+end ]]
+
+function config.nvim_lsp_installer()
     -- LSP buf
     vim.cmd("command! LspAddToWorkspaceFolder lua vim.lsp.buf.add_workspace_folder()")
     vim.cmd("command! LspListWorkspaceFolders lua vim.lsp.buf.list_workspace_folders()")
@@ -37,10 +40,50 @@ function config.nvim_lspconfig()
     vim.cmd("command! LspGoToPrev lua require('languages.global.utils.diagnostics').goto_prev()")
     -- Virtual text toggle
     vim.cmd("command! LspVirtualTextToggle lua require('languages.global.utils').toggle_virtual_text()")
-end
-
-function config.nvim_lsp_installer()
     require("nvim-lsp-installer").setup({
+        ensure_installed = {
+            "emmet_ls",
+            "eslint",
+            "stylelint_lsp",
+            "angularls",
+            "clojure_lsp",
+            "cmake",
+            "clangd",
+            "omnisharp",
+            "cssls",
+            "serve_d",
+            "elixirls",
+            "ember",
+            "erlangls",
+            "fortls",
+            "gopls",
+            "golangci_lint_ls",
+            "graphql",
+            "groovyls",
+            "html",
+            "jdtls",
+            "jsonls",
+            "tsserver",
+            "kotlin_language_server",
+            "ltex",
+            "sumneko_lua",
+            "zeta_note",
+            "perlnavigator",
+            "intelephense",
+            "phpactor",
+            "pyright",
+            "r_language_server",
+            "solargraph",
+            "rust_analyzer",
+            "bashls",
+            "sqls",
+            "taplo",
+            "vimls",
+            "volar",
+            "lemminx",
+            "yamlls",
+        },
+        automatic_installation = true,
         ui = {
             icons = {
                 server_installed = "",

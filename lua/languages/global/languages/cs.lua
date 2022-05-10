@@ -12,7 +12,7 @@ local dap = require("dap")
 local language_configs = {}
 
 language_configs["lsp"] = function()
-    languages_setup.setup_lsp("omnisharp", {
+    local server_setup = {
         flags = {
             debounce_text_changes = default_debouce_time,
         },
@@ -28,7 +28,8 @@ language_configs["lsp"] = function()
         root_dir = function(fname)
             return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
         end,
-    })
+    }
+    languages_setup.setup_lsp("omnisharp", server_setup)
 end
 
 language_configs["dap"] = function()

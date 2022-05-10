@@ -192,12 +192,12 @@ modules["windwp/nvim-autopairs"] = {
     config = editor_config.nvim_autopairs,
 }
 
-modules["kylechui/nvim-surround"] = {
+modules["ur4ltz/surround.nvim"] = {
     event = {
         "BufRead",
         "BufReadPre",
     },
-    config = editor_config.nvim_surround,
+    config = editor_config.surround,
 }
 
 modules["norcalli/nvim-colorizer.lua"] = {
@@ -312,15 +312,6 @@ modules["mbbill/undotree"] = {
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 local languages_config = require("modules.global.configs.languages")
-
-modules["neovim/nvim-lspconfig"] = {
-    event = {
-        "BufWinEnter",
-        "BufRead",
-        "BufReadPre",
-    },
-    config = languages_config.nvim_lspconfig,
-}
 
 modules["williamboman/nvim-lsp-installer"] = {
     requires = "neovim/nvim-lspconfig",
