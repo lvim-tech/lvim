@@ -1,5 +1,5 @@
 if vim.fn.has("nvim-0.7") == 1 then
-	require("core")
+    require("core")
 else
-	print("LVIM IDE required Neovim >= 0.7.0")
+    print("LVIM IDE required Neovim >= 0.7.0")
 end

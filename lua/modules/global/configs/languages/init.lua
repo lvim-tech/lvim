@@ -1,8 +1,6 @@
 local config = {}
 
 function config.nvim_lspconfig()
-    require("languages.global.utils").setup_diagnostic()
-    require("languages.global.diagnosticls").init_diagnosticls()
     -- LSP buf
     vim.cmd("command! LspAddToWorkspaceFolder lua vim.lsp.buf.add_workspace_folder()")
     vim.cmd("command! LspListWorkspaceFolders lua vim.lsp.buf.list_workspace_folders()")
@@ -42,7 +40,7 @@ function config.nvim_lspconfig()
 end
 
 function config.nvim_lsp_installer()
-    require("nvim-lsp-installer").settings({
+    require("nvim-lsp-installer").setup({
         ui = {
             icons = {
                 server_installed = "",
@@ -51,6 +49,8 @@ function config.nvim_lsp_installer()
             },
         },
     })
+    require("languages.global.utils").setup_diagnostic()
+    require("languages.global.diagnosticls").init_diagnosticls()
 end
 
 function config.go()

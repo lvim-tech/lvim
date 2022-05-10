@@ -192,11 +192,12 @@ modules["windwp/nvim-autopairs"] = {
     config = editor_config.nvim_autopairs,
 }
 
-modules["tpope/vim-surround"] = {
+modules["kylechui/nvim-surround"] = {
     event = {
         "BufRead",
         "BufReadPre",
     },
+    config = editor_config.nvim_surround,
 }
 
 modules["norcalli/nvim-colorizer.lua"] = {
@@ -323,6 +324,11 @@ modules["neovim/nvim-lspconfig"] = {
 
 modules["williamboman/nvim-lsp-installer"] = {
     requires = "neovim/nvim-lspconfig",
+    event = {
+        "BufWinEnter",
+        "BufRead",
+        "BufReadPre",
+    },
     config = languages_config.nvim_lsp_installer,
 }
 
