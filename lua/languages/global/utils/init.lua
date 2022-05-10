@@ -1,18 +1,10 @@
-local lsp_installer_servers = require("nvim-lsp-installer.servers")
+local lspconfig = require("lspconfig")
 local global = require("core.global")
 
 local M = {}
 
-M.setup_lsp = function(server_name, start_fn)
-    local ok, server = lsp_installer_servers.get_server(server_name)
-    if ok then
-        server:on_ready(start_fn)
-        if not server:is_installed() then
-            server:install()
-        end
-    else
-        print("Error starting lsp server " .. server_name)
-    end
+M.setup_lsp = function(server_name, server_config)
+    lspconfig[server_name].setup(server_config)
 end
 
 M.config_diagnostic = {

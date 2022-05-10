@@ -251,29 +251,26 @@ M.config = {
 }
 
 function M.init_diagnosticls()
-    local function start_server(server)
-        server:setup({
-            flags = {
-                debounce_text_changes = default_debouce_time,
-            },
-            autostart = true,
-            filetypes = M.config.lsp_filetypes,
-            on_attach = function(client)
-                languages_setup.document_formatting(client)
-            end,
-            init_options = {
-                filetypes = M.config.linters_filetypes,
-                linters = M.config.linters,
-                formatFiletypes = M.config.format_filetypes,
-                formatters = M.config.formatters,
-            },
-            root_dir = function(fname)
-                return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
-            end,
-        })
-    end
-
-    languages_setup.setup_lsp("diagnosticls", start_server)
+    local server_setup = {
+        flags = {
+            debounce_text_changes = default_debouce_time,
+        },
+        autostart = true,
+        filetypes = M.config.lsp_filetypes,
+        on_attach = function(client)
+            languages_setup.document_formatting(client)
+        end,
+        init_options = {
+            filetypes = M.config.linters_filetypes,
+            linters = M.config.linters,
+            formatFiletypes = M.config.format_filetypes,
+            formatters = M.config.formatters,
+        },
+        root_dir = function(fname)
+            return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
+        end,
+    }
+    languages_setup.setup_lsp("diagnosticls", server_setup)
 end
 
 return M

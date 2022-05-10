@@ -333,6 +333,15 @@ function config.nvim_autopairs()
     })
 end
 
+function config.nvim_surround()
+    local map = vim.keymap.set
+    local surround = require("nvim-surround")
+    map("n", "ys", surround.insert_surround)
+    map("n", "ds", surround.delete_surround)
+    map("n", "cs", surround.change_surround)
+    map("x", "S", surround.insert_surround)
+end
+
 function config.nvim_colorize()
     require("colorizer").setup({
         "*",
