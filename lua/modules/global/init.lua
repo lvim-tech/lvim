@@ -67,8 +67,8 @@ modules["folke/zen-mode.nvim"] = {
     config = ui_config.zen_mode,
 }
 
-modules["lvim-tech/NeoZoom.lua"] = {
-    branch = "feat/close_temp_tab",
+modules["nyngwang/NeoZoom.lua"] = {
+    config = ui_config.neozoom_lua,
     cmd = "NeoZoomToggle",
 }
 

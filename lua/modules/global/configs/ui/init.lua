@@ -737,6 +737,13 @@ function config.zen_mode()
     })
 end
 
+function config.neozoom_lua()
+    require("neo-zoom").setup({})
+    vim.keymap.set("n", "<C-z>", function()
+        vim.cmd("NeoZoomToggle")
+    end, NOREF_NOERR_TRUNC)
+end
+
 function config.twilight()
     require("twilight").setup({
         dimming = {
