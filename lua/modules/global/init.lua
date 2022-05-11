@@ -202,10 +202,6 @@ modules["windwp/nvim-ts-autotag"] = {
 
 modules["kylechui/nvim-surround"] = {
     after = "nvim-treesitter",
-    event = {
-        "BufRead",
-        "BufReadPre",
-    },
     config = editor_config.nvim_surround,
 }
 

@@ -1,8 +1,5 @@
 local config = {}
 
---[[ function config.nvim_lspconfig()
-end ]]
-
 function config.nvim_lsp_installer()
     -- LSP buf
     vim.cmd("command! LspAddToWorkspaceFolder lua vim.lsp.buf.add_workspace_folder()")
@@ -111,16 +108,6 @@ end
 function config.nvim_treesitter()
     require("nvim-treesitter.configs").setup({
         ensure_installed = "all",
-        highlight = {
-            enable = true,
-            disable = { "org" },
-            additional_vim_regex_highlighting = { "org" },
-        },
-        indent = {
-            enable = {
-                "javascriptreact",
-            },
-        },
         playground = {
             enable = true,
             disable = {},
@@ -139,17 +126,30 @@ function config.nvim_treesitter()
                 show_help = "?",
             },
         },
+        highlight = {
+            enable = true,
+            disable = { "org" },
+            additional_vim_regex_highlighting = { "org" },
+        },
+        indent = {
+            enable = true,
+            disable = { "html" },
+        },
         autopairs = {
             enable = true,
+            disable = { "html" },
         },
         autotag = {
             enable = true,
+            disable = { "html" },
         },
         rainbow = {
             enable = true,
+            disable = { "html" },
         },
         context_commentstring = {
             enable = true,
+            disable = { "html" },
             config = {
                 javascriptreact = {
                     style_element = "{/*%s*/}",
