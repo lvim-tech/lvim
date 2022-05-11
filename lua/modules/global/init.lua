@@ -192,7 +192,16 @@ modules["windwp/nvim-autopairs"] = {
     config = editor_config.nvim_autopairs,
 }
 
+modules["windwp/nvim-ts-autotag"] = {
+    after = {
+        "nvim-treesitter",
+        "nvim-cmp",
+    },
+    config = editor_config.nvim_ts_autotag,
+}
+
 modules["kylechui/nvim-surround"] = {
+    after = "nvim-treesitter",
     event = {
         "BufRead",
         "BufReadPre",

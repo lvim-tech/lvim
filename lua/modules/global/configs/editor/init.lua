@@ -333,6 +333,10 @@ function config.nvim_autopairs()
     })
 end
 
+function nvim_ts_autotag()
+    require("nvim-ts-autotag").setup()
+end
+
 function config.nvim_surround()
     local map = vim.keymap.set
     local surround = require("nvim-surround")
