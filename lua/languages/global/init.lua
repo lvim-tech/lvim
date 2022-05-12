@@ -56,6 +56,7 @@ M.filetypes = {
     ["vue"] = { "vue" },
     ["xml"] = { "xml", "xsd", "xsl", "xslt", "svg" },
     ["yaml"] = { "yaml" },
+    ["zig"] = { "zig", "zir" },
 }
 
 M.setup = function()

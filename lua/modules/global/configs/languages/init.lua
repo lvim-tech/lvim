@@ -79,6 +79,7 @@ function config.nvim_lsp_installer()
             "volar",
             "lemminx",
             "yamlls",
+            "zls",
         },
         automatic_installation = true,
         ui = {
