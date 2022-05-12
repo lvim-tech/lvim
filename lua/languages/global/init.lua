@@ -39,6 +39,7 @@ M.filetypes = {
     ["java"] = { "java" },
     ["json"] = { "json" },
     ["jsts"] = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
+    ["julia"] = { "julia" },
     ["kotlin"] = { "kotlin" },
     ["latex"] = { "bib", "tex" },
     ["lua"] = { "lua" },

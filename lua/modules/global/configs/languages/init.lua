@@ -61,6 +61,7 @@ function config.nvim_lsp_installer()
             "jdtls",
             "jsonls",
             "tsserver",
+            "julials",
             "kotlin_language_server",
             "ltex",
             "sumneko_lua",
