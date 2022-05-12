@@ -50,6 +50,7 @@ function config.nvim_lsp_installer()
             "cssls",
             "serve_d",
             "elixirls",
+            "elmls",
             "ember",
             "erlangls",
             "fortls",

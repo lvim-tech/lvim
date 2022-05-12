@@ -30,6 +30,7 @@ M.filetypes = {
     ["d"] = { "d" },
     ["dart"] = { "dart" },
     ["elixir"] = { "elixir", "eelixir" },
+    ["elm"] = { "elm" },
     ["erlang"] = { "erlang" },
     ["fortran"] = { "fortran" },
     ["go"] = { "go", "gomod" },
