@@ -122,6 +122,10 @@ modules["nvim-telescope/telescope.nvim"] = {
             "camgraff/telescope-tmux.nvim",
             opt = true,
         },
+        {
+            "nvim-telescope/telescope-ui-select.nvim",
+            opt = true,
+        },
     },
     config = editor_config.telescope,
 }
