@@ -59,8 +59,8 @@ configs["languages_global"] = function()
 end
 
 configs["commands_global"] = function()
-    vim.cmd('command! SetGlobalPath lua require("core.funcs").set_global_path()')
-    vim.cmd('command! SetWindowPath lua require("core.funcs").set_window_path()')
+    vim.api.nvim_create_user_command("SetGlobalPath", 'lua require("core.funcs").set_global_path()', {})
+    vim.api.nvim_create_user_command("SetWindowPath", 'lua require("core.funcs").set_window_path()', {})
 end
 
 configs["keymaps_global"] = function()

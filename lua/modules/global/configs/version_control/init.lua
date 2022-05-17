@@ -66,14 +66,14 @@ function config.gitsigns()
             buffer = true,
         },
     })
-    vim.cmd("command! GitSignsPreviewHunk lua require('gitsigns').preview_hunk()")
-    vim.cmd("command! GitSignsNextHunk lua require('gitsigns').next_hunk()")
-    vim.cmd("command! GitSignsPrevHunk lua require('gitsigns').prev_hunk()")
-    vim.cmd("command! GitSignsStageHunk lua require('gitsigns').stage_hunk()")
-    vim.cmd("command! GitSignsUndoStageHunk lua require('gitsigns').undo_stage_hunk()")
-    vim.cmd("command! GitSignsResetHunk lua require('gitsigns').reset_hunk()")
-    vim.cmd("command! GitSignsResetBuffer lua require('gitsigns').reset_buffer()")
-    vim.cmd("command! GitSignsBlameLine lua require('gitsigns').blame_line()")
+    vim.api.nvim_create_user_command("GitSignsPreviewHunk", "lua require('gitsigns').preview_hunk()", {})
+    vim.api.nvim_create_user_command("GitSignsNextHunk", "lua require('gitsigns').next_hunk()", {})
+    vim.api.nvim_create_user_command("GitSignsPrevHunk", "lua require('gitsigns').prev_hunk()", {})
+    vim.api.nvim_create_user_command("GitSignsStageHunk", "lua require('gitsigns').stage_hunk()", {})
+    vim.api.nvim_create_user_command("GitSignsUndoStageHunk", "lua require('gitsigns').undo_stage_hunk()", {})
+    vim.api.nvim_create_user_command("GitSignsResetHunk", "lua require('gitsigns').reset_hunk()", {})
+    vim.api.nvim_create_user_command("GitSignsResetBuffer", "lua require('gitsigns').reset_buffer()", {})
+    vim.api.nvim_create_user_command("GitSignsBlameLine", "lua require('gitsigns').blame_line()", {})
 end
 
 function config.git_blame()

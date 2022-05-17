@@ -17,7 +17,7 @@
 -   Add or remove settings, rewrite all settings
 -   Dynamic LSP activation
 -   Dynamic debugging activation - Dap
--   Automaticaly install of the lsp servers and dap
+-   Autoinstall the LSP servers and dap
 -   Linters
 -   Autoformat
 -   Custom settings for projects
@@ -28,7 +28,7 @@
 
 ---
 
-For key bindings - press `F11`
+For keybindings - press `F11`.
 
 ## [YouTube](https://www.youtube.com/channel/UCSV5_UXKLl1JDZbQaYWuFKQ) channel
 

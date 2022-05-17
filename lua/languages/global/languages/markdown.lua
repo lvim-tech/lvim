@@ -26,7 +26,7 @@ language_configs["lsp"] = function()
             return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
         end,
     }
-    languages_setup.setup_lsp("zeta_note", server_setup)
+    languages_setup.setup_lsp("grammarly", server_setup)
 end
 
 return language_configs

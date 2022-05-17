@@ -702,23 +702,19 @@ function config.toggleterm()
     function _G.toggleterm_float_toggle()
         terminal_float:toggle()
     end
-
     function _G.toggleterm_one_toggle()
         terminal_one:toggle()
     end
-
     function _G.toggleterm_two_toggle()
         terminal_two:toggle()
     end
-
     function _G.toggleterm_three_toggle()
         terminal_three:toggle()
     end
-
-    vim.cmd("command! TTFloat lua _G.toggleterm_float_toggle()")
-    vim.cmd("command! TTOne lua _G.toggleterm_one_toggle()")
-    vim.cmd("command! TTTwo lua _G.toggleterm_two_toggle()")
-    vim.cmd("command! TTThree lua _G.toggleterm_three_toggle()")
+    vim.api.nvim_create_user_command("TTFloat", "lua _G.toggleterm_float_toggle()", {})
+    vim.api.nvim_create_user_command("TTOne", "lua _G.toggleterm_one_toggle()", {})
+    vim.api.nvim_create_user_command("TTTwo", "lua _G.toggleterm_two_toggle()", {})
+    vim.api.nvim_create_user_command("TTThree", "lua _G.toggleterm_three_toggle()", {})
 end
 
 function config.zen_mode()

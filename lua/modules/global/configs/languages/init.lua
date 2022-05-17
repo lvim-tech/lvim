@@ -2,41 +2,48 @@ local config = {}
 
 function config.nvim_lsp_installer()
     -- LSP buf
-    vim.cmd("command! LspAddToWorkspaceFolder lua vim.lsp.buf.add_workspace_folder()")
-    vim.cmd("command! LspListWorkspaceFolders lua vim.lsp.buf.list_workspace_folders()")
-    vim.cmd("command! LspRemoveWorkspaceFolder lua vim.lsp.buf.remove_workspace_folder()")
-    vim.cmd("command! LspWorkspaceSymbol lua vim.lsp.buf.workspace_symbol()")
-    vim.cmd("command! LspDocumentSymbol lua vim.lsp.buf.document_symbol()")
-    vim.cmd("command! LspReferences lua vim.lsp.buf.references()")
-    vim.cmd("command! LspClearReferences lua vim.lsp.buf.clear_references()")
-    vim.cmd("command! LspCodeAction lua vim.lsp.buf.code_action()")
-    vim.cmd("command! LspRangeCodeAction lua vim.lsp.buf.range_code_action()")
-    vim.cmd("command! LspCodeLensRefresh lua vim.lsp.codelens.refresh()")
-    vim.cmd("command! LspCodeLensRun lua vim.lsp.codelens.run()")
-    vim.cmd("command! LspDeclaration lua vim.lsp.buf.declaration()")
-    vim.cmd("command! LspDefinition lua vim.lsp.buf.definition()")
-    vim.cmd("command! LspTypeDefinition lua vim.lsp.buf.type_definition()")
-    vim.cmd("command! LspDocumentHighlight lua vim.lsp.buf.document_highlight()")
-    vim.cmd("command! LspImplementation lua vim.lsp.buf.implementation()")
-    vim.cmd("command! LspIncomingCalls lua vim.lsp.buf.incoming_calls()")
-    vim.cmd("command! LspOutgoingCalls lua vim.lsp.buf.outgoing_calls()")
+
+    vim.api.nvim_create_user_command("DapToggleBreakpoint", 'lua require("dap").toggle_breakpoint()', {})
+
+    vim.api.nvim_create_user_command("LspAddToWorkspaceFolder", "lua vim.lsp.buf.add_workspace_folder()", {})
+    vim.api.nvim_create_user_command("LspListWorkspaceFolders", "lua vim.lsp.buf.list_workspace_folders()", {})
+    vim.api.nvim_create_user_command("LspRemoveWorkspaceFolder", "lua vim.lsp.buf.remove_workspace_folder()", {})
+    vim.api.nvim_create_user_command("LspWorkspaceSymbol", "lua vim.lsp.buf.workspace_symbol()", {})
+    vim.api.nvim_create_user_command("LspDocumentSymbol", "lua vim.lsp.buf.document_symbol()", {})
+    vim.api.nvim_create_user_command("LspReferences", "lua vim.lsp.buf.references()", {})
+    vim.api.nvim_create_user_command("LspClearReferences", "lua vim.lsp.buf.clear_references()", {})
+    vim.api.nvim_create_user_command("LspCodeAction", "lua vim.lsp.buf.code_action()", {})
+    vim.api.nvim_create_user_command("LspRangeCodeAction", "lua vim.api.nvim_create_user_command()", {})
+    vim.api.nvim_create_user_command("LspCodeLensRefresh", "lua vim.lsp.codelens.refresh()", {})
+    vim.api.nvim_create_user_command("LspCodeLensRun", "lua vim.lsp.codelens.run()", {})
+    vim.api.nvim_create_user_command("LspDeclaration", "lua vim.lsp.buf.declaration()", {})
+    vim.api.nvim_create_user_command("LspDefinition", "lua vim.lsp.buf.definition()", {})
+    vim.api.nvim_create_user_command("LspTypeDefinition", "lua vim.lsp.buf.type_definition()", {})
+    vim.api.nvim_create_user_command("LspDocumentHighlight", "lua vim.lsp.buf.document_highlight()", {})
+    vim.api.nvim_create_user_command("LspImplementation", "lua vim.lsp.buf.implementation()", {})
+    vim.api.nvim_create_user_command("LspIncomingCalls", "lua vim.lsp.buf.incoming_calls()", {})
+    vim.api.nvim_create_user_command("LspOutgoingCalls", "lua vim.lsp.buf.outgoing_calls()", {})
     if vim.fn.has("nvim-0.8") == 1 then
-        vim.cmd("command! LspFormatting lua vim.lsp.buf.format {async = true}")
+        vim.api.nvim_create_user_command("LspFormatting", "lua vim.lsp.buf.format {async = true}", {})
         -- vim.cmd("command! LspRangeFormatting lua vim.lsp.buf.range_format {async = true}")
     else
-        vim.cmd("command! LspFormatting lua vim.lsp.buf.formatting()")
+        vim.api.nvim_create_user_command("LspFormatting", "lua vim.lsp.buf.formatting()", {})
         -- vim.cmd("command! LspRangeFormatting lua vim.lsp.buf.range_formatting)")
     end
-    vim.cmd("command! LspFormattingSync lua vim.lsp.buf.formatting_sync()")
-    vim.cmd("command! LspHover lua vim.lsp.buf.hover()")
-    vim.cmd("command! LspRename lua vim.lsp.buf.rename()")
-    vim.cmd("command! LspSignatureHelp lua vim.lsp.buf.signature_help()")
+    vim.api.nvim_create_user_command("LspFormattingSync", "lua vim.lsp.buf.formatting_sync()", {})
+    vim.api.nvim_create_user_command("LspHover", "lua vim.lsp.buf.hover()", {})
+    vim.api.nvim_create_user_command("LspRename", "lua vim.lsp.buf.rename()", {})
+    vim.api.nvim_create_user_command("LspSignatureHelp", "lua vim.lsp.buf.signature_help()", {})
     -- LSP diagnostic
-    vim.cmd("command! LspLine lua require('languages.global.utils.diagnostics').line()")
-    vim.cmd("command! LspGoToNext lua require('languages.global.utils.diagnostics').goto_next()")
-    vim.cmd("command! LspGoToPrev lua require('languages.global.utils.diagnostics').goto_prev()")
+    vim.api.nvim_create_user_command("LspLine", "lua require('languages.global.utils.diagnostics').line()", {})
+    vim.api.nvim_create_user_command("LspGoToNext", "lua require('languages.global.utils.diagnostics').goto_next()", {})
+    vim.api.nvim_create_user_command("LspGoToPrev", "lua require('languages.global.utils.diagnostics').goto_prev()", {})
     -- Virtual text toggle
-    vim.cmd("command! LspVirtualTextToggle lua require('languages.global.utils').toggle_virtual_text()")
+    vim.api.nvim_create_user_command(
+        "LspVirtualTextToggle",
+        "lua require('languages.global.utils').toggle_virtual_text()",
+        {}
+    )
     require("nvim-lsp-installer").setup({
         ensure_installed = {
             "emmet_ls",
@@ -66,7 +73,7 @@ function config.nvim_lsp_installer()
             "kotlin_language_server",
             "ltex",
             "sumneko_lua",
-            "zeta_note",
+            "grammarly",
             "perlnavigator",
             "intelephense",
             "phpactor",
@@ -278,20 +285,24 @@ function config.nvim_dap_ui()
         linehl = "",
         numhl = "",
     })
-    vim.cmd('command! DapToggleBreakpoint lua require"dap".toggle_breakpoint()')
-    vim.cmd('command! DapStartContinue lua require"dap".continue()')
-    vim.cmd('command! DapStepInto lua require"dap".step_into()')
-    vim.cmd('command! DapStepOver lua require"dap".step_over()')
-    vim.cmd('command! DapStepOut lua require"dap".step_out()')
-    vim.cmd('command! DapUp lua require"dap".up()')
-    vim.cmd('command! DapDown lua require"dap".down()')
-    vim.cmd('command! DapPause lua require"dap".pause()')
-    vim.cmd('command! DapClose lua require"dap".close()')
-    vim.cmd('command! DapDisconnect lua require"dap".disconnect()')
-    vim.cmd('command! DapRestart lua require"dap".restart()')
-    vim.cmd('command! DapToggleRepl lua require"dap".repl.toggle()')
-    vim.cmd('command! DapGetSession lua require"dap".session()')
-    vim.cmd('command! DapUIClose lua require"dap".close(); require"dap".disconnect(); require"dapui".close()')
+    vim.api.nvim_create_user_command("DapToggleBreakpoint", 'lua require("dap").toggle_breakpoint()', {})
+    vim.api.nvim_create_user_command("DapStartContinue", 'lua require"dap".continue()', {})
+    vim.api.nvim_create_user_command("DapStepInto", 'lua require"dap".step_into()', {})
+    vim.api.nvim_create_user_command("DapStepOver", 'lua require"dap".step_over()', {})
+    vim.api.nvim_create_user_command("DapStepOut", 'lua require"dap".step_out()', {})
+    vim.api.nvim_create_user_command("DapUp", 'lua require"dap".up()', {})
+    vim.api.nvim_create_user_command("DapDown", 'lua require"dap".down()', {})
+    vim.api.nvim_create_user_command("DapPause", 'lua require"dap".pause()', {})
+    vim.api.nvim_create_user_command("DapClose", 'lua require"dap".close()', {})
+    vim.api.nvim_create_user_command("DapDisconnect", 'lua require"dap".disconnect()', {})
+    vim.api.nvim_create_user_command("DapRestart", 'lua require"dap".restart()', {})
+    vim.api.nvim_create_user_command("DapToggleRepl", 'lua require"dap".repl.toggle()', {})
+    vim.api.nvim_create_user_command("DapGetSession", 'lua require"dap".session()', {})
+    vim.api.nvim_create_user_command(
+        "DapUIClose",
+        'lua require"dap".close(); require"dap".disconnect(); require"dapui".close()',
+        {}
+    )
 end
 
 function config.dapinstall()
@@ -336,21 +347,21 @@ end
 
 function config.crates()
     require("crates").setup()
-    vim.cmd('command! CratesUpdate lua require("crates").update()')
-    vim.cmd('command! CratesReload lua require("crates").reload()')
-    vim.cmd('command! CratesHide lua require("crates").hide()')
-    vim.cmd('command! CratesToggle lua require("crates").toggle()')
-    vim.cmd('command! CratesUpdateCrate lua require("crates").update_crate()')
-    vim.cmd('command! CratesUpdateCrates lua require("crates").update_crates()')
-    vim.cmd('command! CratesUpdateAllCrates lua require("crates").update_all_crates()')
-    vim.cmd('command! CratesUpgradeCrate lua require("crates").upgrade_crate()')
-    vim.cmd('command! CratesUpgradeCrates lua require("crates").upgrade_crates()')
-    vim.cmd('command! CratesUpgradeAllCrates lua require("crates").upgrade_all_crates()')
-    vim.cmd('command! CratesShowPopup lua require("crates").show_popup()')
-    vim.cmd('command! CratesShowVersionsPopup lua require("crates").show_versions_popup()')
-    vim.cmd('command! CratesShowFeaturesPopup lua require("crates").show_features_popup()')
-    vim.cmd('command! CratesFocusPopup lua require("crates").focus_popup()')
-    vim.cmd('command! CratesHidePopup lua require("crates").hide_popup()')
+    vim.api.nvim_create_user_command("CratesUpdate", "lua require('crates').update()", {})
+    vim.api.nvim_create_user_command("CratesReload", "lua require('crates').reload()", {})
+    vim.api.nvim_create_user_command("CratesHide", "lua require('crates').hide()", {})
+    vim.api.nvim_create_user_command("CratesToggle", "lua require('crates').toggle()", {})
+    vim.api.nvim_create_user_command("CratesUpdateCrate", "lua require('crates').update_crate()", {})
+    vim.api.nvim_create_user_command("CratesUpdateCrates", "lua require('crates').update_crates()", {})
+    vim.api.nvim_create_user_command("CratesUpdateAllCrates", "lua require('crates').update_all_crates()", {})
+    vim.api.nvim_create_user_command("CratesUpgradeCrate", "lua require('crates').upgrade_crate()", {})
+    vim.api.nvim_create_user_command("CratesUpgradeCrates", "lua require('crates').upgrade_crates()", {})
+    vim.api.nvim_create_user_command("CratesUpgradeAllCrates", "lua require('crates').upgrade_all_crates()", {})
+    vim.api.nvim_create_user_command("CratesShowPopup", "lua require('crates').show_popup()", {})
+    vim.api.nvim_create_user_command("CratesShowVersionsPopup", "lua require('crates').show_versions_popup()", {})
+    vim.api.nvim_create_user_command("CratesShowFeaturesPopup", "lua require('crates').show_features_popup()", {})
+    vim.api.nvim_create_user_command("CratesFocusPopup", "lua require('crates').focus_popup()", {})
+    vim.api.nvim_create_user_command("CratesHidePopup", "lua require('crates').hide_popup()", {})
 end
 
 function config.pubspec_assist()
