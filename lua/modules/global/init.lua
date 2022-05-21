@@ -80,13 +80,13 @@ modules["lukas-reineke/indent-blankline.nvim"] = {
     config = ui_config.indent_blankline,
 }
 
-modules["lvim-tech/lvim-focus"] = {
+--[[ modules["lvim-tech/lvim-focus"] = {
     event = {
         "BufRead",
         "BufReadPre",
     },
     config = ui_config.lvim_focus,
-}
+} ]]
 
 modules["lvim-tech/lvim-helper"] = {
     cmd = "LvimHelper",
