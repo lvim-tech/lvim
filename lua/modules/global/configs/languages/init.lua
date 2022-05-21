@@ -111,6 +111,11 @@ function config.trld()
     require("trld").setup()
 end
 
+function config.popfix()
+    vim.ui.input = require("core.ui.input")
+    vim.ui.select = require("core.ui.select")
+end
+
 function config.sniprun()
     require("sniprun").setup()
 end

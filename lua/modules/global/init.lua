@@ -122,10 +122,6 @@ modules["nvim-telescope/telescope.nvim"] = {
             "camgraff/telescope-tmux.nvim",
             opt = true,
         },
-        {
-            "nvim-telescope/telescope-ui-select.nvim",
-            opt = true,
-        },
     },
     config = editor_config.telescope,
 }
@@ -368,6 +364,14 @@ modules["Mofiqul/trld.nvim"] = {
         "BufReadPre",
     },
     config = languages_config.trld,
+}
+
+modules["RishabhRD/popfix"] = {
+    event = {
+        "BufRead",
+        "BufReadPre",
+    },
+    config = languages_config.popfix,
 }
 
 modules["michaelb/sniprun"] = {

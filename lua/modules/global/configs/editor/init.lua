@@ -8,7 +8,6 @@ function config.telescope()
             .. " telescope-media-files.nvim"
             .. " telescope-file-browser.nvim"
             .. " telescope-tmux.nvim"
-            .. " telescope-ui-select.nvim"
         )
     end
     local telescope = require("telescope")
@@ -93,7 +92,6 @@ function config.telescope()
     telescope.load_extension("media_files")
     telescope.load_extension("file_browser")
     telescope.load_extension("tmux")
-    telescope.load_extension("ui-select")
 end
 
 function config.tabby()
@@ -192,7 +190,7 @@ function config.vim_slime()
 end
 
 function config.nvim_spectre()
-    vim.cmd("command! Spectre lua require('spectre').open()")
+    vim.api.nvim_create_user_command("Spectre", "lua require('spectre').open()", {})
     require("spectre").setup({
         color_devicons = true,
         line_sep_start = "-----------------------------------------",

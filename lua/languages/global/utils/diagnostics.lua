@@ -157,7 +157,6 @@ M.goto_next = function(opts)
     local win_id = opts.win_id or vim.api.nvim_get_current_win()
     vim.schedule(function()
         M.show_line_diagnostics(vim.api.nvim_win_get_buf(win_id))
-        -- vim.cmd([[silent! LvimRestoreEnableCurrent]])
     end)
 end
 
