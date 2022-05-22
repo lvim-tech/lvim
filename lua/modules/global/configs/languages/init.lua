@@ -174,6 +174,47 @@ function config.nvim_treesitter()
     })
 end
 
+function config.nvim_gps()
+    local status_ok, gps = pcall(require, "nvim-gps")
+    if not status_ok then
+        return
+    end
+    local icons = require("core.ui.icons")
+    gps.setup({
+        disable_icons = false,
+        icons = {
+            ["class-name"] = "%#WinBar#" .. icons.kind.Class .. " " .. "%*" .. "",
+            ["function-name"] = "%#WinBar#" .. icons.kind.Function .. " " .. "%*" .. "",
+            ["method-name"] = "%#WinBar#" .. icons.kind.Method .. " " .. "%*" .. "",
+            ["container-name"] = "%#WinBar#" .. icons.type.Object .. " " .. "%*" .. "",
+            ["tag-name"] = "%#WinBar#" .. icons.misc.Tag .. " " .. "%*" .. " ",
+            ["mapping-name"] = "%#WinBar#" .. icons.type.Object .. " " .. "%*" .. "",
+            ["sequence-name"] = "%#WinBar#" .. icons.type.Array .. " " .. "%*" .. "",
+            ["null-name"] = "%#WinBar#" .. icons.kind.Field .. " " .. "%*" .. "",
+            ["integer-name"] = "%#WinBar#" .. icons.type.Number .. " " .. "%*" .. "",
+            ["float-name"] = "%#WinBar#" .. icons.type.Number .. " " .. "%*" .. "",
+            ["string-name"] = "%#WinBar#" .. icons.type.String .. " " .. "%*" .. "",
+            ["array-name"] = "%#WinBar#" .. icons.type.Array .. " " .. "%*" .. "",
+            ["object-name"] = "%#WinBar#" .. icons.type.Object .. " " .. "%*" .. "",
+            ["number-name"] = "%#WinBar#" .. icons.type.Number .. " " .. "%*" .. "",
+            ["table-name"] = "%#WinBar#" .. icons.ui.Table .. " " .. "%*" .. "",
+            ["date-name"] = "%#WinBar#" .. icons.ui.Calendar .. " " .. "%*" .. "",
+            ["date-time-name"] = "%#WinBar#" .. icons.ui.Table .. " " .. "%*" .. "",
+            ["inline-table-name"] = "%#WinBar#" .. icons.ui.Calendar .. " " .. "%*" .. "",
+            ["time-name"] = "%#WinBar#" .. icons.misc.Watch .. " " .. "%*" .. "",
+            ["module-name"] = "%#WinBar#" .. icons.kind.Module .. " " .. "%*" .. "",
+        },
+        separator = " " .. icons.ui.ChevronRight .. " ",
+        depth = 0,
+        depth_limit_indicator = "..",
+    })
+    vim.api.nvim_create_autocmd({ "CursorMoved", "BufWinEnter", "BufFilePost" }, {
+        callback = function()
+            vim.opt_local.winbar = require("core.ui.winbar").gps_treesitter()
+        end,
+    })
+end
+
 function config.any_jump()
     vim.g.any_jump_disable_default_keybindings = 1
     vim.g.any_jump_list_numbers = 1

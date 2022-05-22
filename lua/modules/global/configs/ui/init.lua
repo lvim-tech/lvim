@@ -702,15 +702,19 @@ function config.toggleterm()
     function _G.toggleterm_float_toggle()
         terminal_float:toggle()
     end
+
     function _G.toggleterm_one_toggle()
         terminal_one:toggle()
     end
+
     function _G.toggleterm_two_toggle()
         terminal_two:toggle()
     end
+
     function _G.toggleterm_three_toggle()
         terminal_three:toggle()
     end
+
     vim.api.nvim_create_user_command("TTFloat", "lua _G.toggleterm_float_toggle()", {})
     vim.api.nvim_create_user_command("TTOne", "lua _G.toggleterm_one_toggle()", {})
     vim.api.nvim_create_user_command("TTTwo", "lua _G.toggleterm_two_toggle()", {})
@@ -794,10 +798,6 @@ function config.indent_blankline()
             "nofile",
         },
     })
-end
-
-function config.lvim_focus()
-    require("lvim-focus").setup()
 end
 
 function config.lvim_helper()

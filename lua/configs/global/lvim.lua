@@ -107,7 +107,6 @@ M.set = function()
         breakindentopt = "shift:2,min:20",
         linebreak = true,
         foldenable = true,
-        conceallevel = 2,
         concealcursor = "niv",
     }
     funcs.options_set(set_opt)

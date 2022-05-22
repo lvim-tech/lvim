@@ -80,14 +80,6 @@ modules["lukas-reineke/indent-blankline.nvim"] = {
     config = ui_config.indent_blankline,
 }
 
---[[ modules["lvim-tech/lvim-focus"] = {
-    event = {
-        "BufRead",
-        "BufReadPre",
-    },
-    config = ui_config.lvim_focus,
-} ]]
-
 modules["lvim-tech/lvim-helper"] = {
     cmd = "LvimHelper",
     config = ui_config.lvim_helper,
@@ -388,13 +380,17 @@ modules["michaelb/sniprun"] = {
 }
 
 modules["nvim-treesitter/nvim-treesitter"] = {
-    event = {
-        "BufRead",
-        "BufReadPre",
-    },
     run = ":TSUpdate",
     config = languages_config.nvim_treesitter,
 }
+
+if vim.fn.has("nvim-0.8") == 1 then
+    modules["SmiteshP/nvim-gps"] = {
+        requires = "nvim-treesitter/nvim-treesitter",
+        after = "nvim-cmp",
+        config = languages_config.nvim_gps,
+    }
+end
 
 modules["pechorin/any-jump.vim"] = {
     event = {
