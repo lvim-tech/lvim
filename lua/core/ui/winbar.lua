@@ -40,16 +40,16 @@ M.filename = function()
 end
 
 M.gps_treesitter = function()
+    local retval = M.filename()
     local status_ok, gps_location = pcall(gps.get_location, {})
     if not status_ok then
-        return
+        return retval
     end
     if not gps.is_available() then
-        return
+        return retval
     end
-    local retval = M.filename()
     if gps_location == "error" then
-        return ""
+        return retval
     else
         if not isempty(gps_location) then
             return retval .. " " .. icons.ui.ChevronRight .. " " .. gps_location
