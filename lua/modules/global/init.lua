@@ -366,6 +366,14 @@ modules["RishabhRD/popfix"] = {
     config = languages_config.popfix,
 }
 
+modules["kosayoda/nvim-lightbulb"] = {
+    event = {
+        "BufRead",
+        "BufReadPre",
+    },
+    config = languages_config.nvim_lightbulb,
+}
+
 modules["michaelb/sniprun"] = {
     requires = "neovim/nvim-lspconfig",
     run = "bash ./install.sh",

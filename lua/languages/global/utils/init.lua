@@ -15,10 +15,10 @@ M.config_diagnostic = {
 }
 
 M.icons = {
-    error = "",
-    warn = "",
-    hint = "",
-    info = "",
+    error = " ",
+    warn = " ",
+    hint = " ",
+    info = " ",
 }
 
 M.setup_diagnostic = function(custom_config_diagnostic)

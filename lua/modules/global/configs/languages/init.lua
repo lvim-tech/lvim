@@ -116,6 +116,24 @@ function config.popfix()
     vim.ui.select = require("core.ui.select")
 end
 
+function config.nvim_lightbulb()
+    require("nvim-lightbulb").setup({
+        sign = {
+            enabled = true,
+            priority = 10,
+        },
+        virtual_text = {
+            enabled = true,
+            text = "",
+            hl_mode = "combine",
+        },
+        autocmd = {
+            enabled = true,
+        },
+    })
+    vim.fn.sign_define("LightBulbSign", { text = " ▎", texthl = "LightBulb", linehl = "", numhl = "" })
+end
+
 function config.sniprun()
     require("sniprun").setup()
 end
