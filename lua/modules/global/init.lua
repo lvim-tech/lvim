@@ -123,12 +123,12 @@ modules["nanozuki/tabby.nvim"] = {
     after = "vim-ctrlspace",
 }
 
-modules["lvim-tech/lvim-move"] = {
+modules["booperlv/nvim-gomove"] = {
     event = {
         "BufRead",
         "BufReadPre",
     },
-    config = editor_config.lvim_move,
+    config = editor_config.nvim_gomove,
 }
 
 modules["jpalardy/vim-slime"] = {
