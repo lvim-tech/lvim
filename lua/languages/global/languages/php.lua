@@ -33,7 +33,6 @@ language_configs["lsp"] = function()
         end,
     }
     languages_setup.setup_lsp("intelephense", server_setup)
-    languages_setup.setup_lsp("phpactor", server_setup)
 end
 
 language_configs["dap"] = function()
