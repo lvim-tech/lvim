@@ -126,6 +126,7 @@ function config.tabby()
                     hl = {
                         fg = hl_tabline.color_01,
                         bg = hl_tabline.color_02,
+                        style = "bold",
                     },
                 },
             },
@@ -142,7 +143,7 @@ function config.tabby()
                     tabid = tabid,
                     label = {
                         "  " .. name_of_buf .. "  ",
-                        hl = { fg = hl_tabline.color_02, bg = hl_tabline.color_01 },
+                        hl = { fg = hl_tabline.color_02, bg = hl_tabline.color_01, style = "bold" },
                     },
                 })
                 local wins = util.tabpage_list_wins(current_tab)
@@ -166,12 +167,12 @@ function config.tabby()
                     tabid = tabid,
                     label = {
                         "  " .. name_of_buf .. "  ",
-                        hl = { fg = hl_tabline.color_01, bg = hl_tabline.color_02 },
+                        hl = { fg = hl_tabline.color_01, bg = hl_tabline.color_02, style = "bold" },
                     },
                 })
             end
         end
-        table.insert(coms, { type = "text", text = { " ", hl = { bg = hl_tabline.color_01 } } })
+        table.insert(coms, { type = "text", text = { " ", hl = { bg = hl_tabline.color_01, style = "bold" } } })
 
         return coms
     end
