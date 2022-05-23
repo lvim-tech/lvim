@@ -387,7 +387,7 @@ modules["nvim-treesitter/nvim-treesitter"] = {
 if vim.fn.has("nvim-0.8") == 1 then
     modules["SmiteshP/nvim-gps"] = {
         requires = "nvim-treesitter/nvim-treesitter",
-        after = "nvim-cmp",
+        after = { "nvim-treesitter", "nvim-cmp" },
         config = languages_config.nvim_gps,
     }
 end
