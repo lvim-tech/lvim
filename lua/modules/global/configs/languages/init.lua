@@ -93,9 +93,9 @@ function config.nvim_lsp_installer()
         automatic_installation = true,
         ui = {
             icons = {
-                server_installed = "",
-                server_pending = "",
-                server_uninstalled = "",
+                server_installed = " ",
+                server_pending = " ",
+                server_uninstalled = " ",
             },
         },
     })
@@ -256,13 +256,6 @@ function config.nvim_gps()
                 vim.opt_local.winbar = nil
                 return
             end
-            --[[ local value = require("core.ui.winbar").gps_treesitter()
-
-            if value == nil then
-                value = require("core.ui.winbar").filename()
-            end
-
-            vim.opt_local.winbar = value ]]
             vim.opt_local.winbar = require("core.ui.winbar").gps_treesitter()
         end,
     })
