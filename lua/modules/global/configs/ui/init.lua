@@ -60,22 +60,22 @@ function config.nvim_tree()
         folder_arrows = 0,
     }
     vim.g.nvim_tree_icons = {
-        default = " ",
-        symlink = " ",
+        default = "",
+        symlink = "",
         git = {
-            unstaged = " ",
-            staged = " ",
-            unmerged = " ",
-            renamed = "➜ ",
-            untracked = " ",
-            ignored = "◌ ",
+            unstaged = "",
+            staged = "",
+            unmerged = "",
+            renamed = "➜",
+            untracked = "",
+            ignored = "◌",
         },
         folder = {
-            default = " ",
-            open = " ",
-            empty = " ",
-            empty_open = " ",
-            symlink = " ",
+            default = "",
+            open = "",
+            empty = "",
+            empty_open = "",
+            symlink = "",
         },
     }
     require("nvim-tree").setup({
