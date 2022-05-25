@@ -475,12 +475,6 @@ function config.heirline_nvim()
                 return
             end
             local file_size = require("core.funcs").file_size(fsize)
-            -- local suffix = { "b", "k", "M", "G", "T", "P", "E" }
-            -- local i = math.floor((math.log(fsize) / math.log(1024)))
-            -- local size_suffix = suffix[i]
-            -- if size_suffix == nil then
-            --     size_suffix = "b"
-            -- end
             return "  " .. file_size
         end,
         hl = { fg = colors.orange },
@@ -632,7 +626,6 @@ function config.heirline_nvim()
     local ScrollBar = {
         static = {
             sbar = { "█", "▇", "▆", "▅", "▄", "▃", "▂", "▁" },
-            -- sbar = { '🭶', '🭷', '🭸', '🭹', '🭺', '🭻' }
         },
         provider = function(self)
             local curr_line = vim.api.nvim_win_get_cursor(0)[1]
