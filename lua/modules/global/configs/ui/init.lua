@@ -626,7 +626,7 @@ function config.heirline_nvim()
         condition = function()
             return vim.wo.spell
         end,
-        provider = "SPELL  ",
+        provider = "  SPELL",
         hl = { bold = true, fg = colors.orange },
     }
     local ScrollBar = {
