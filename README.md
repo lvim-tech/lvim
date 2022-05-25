@@ -34,6 +34,8 @@ For keybindings - press `F11`.
 
 ## Requirements
 
+### Base
+
 -   [neovim >=0.7.0](https://github.com/neovim/neovim/wiki/Installing-Neovim)
 -   [pynvim](https://github.com/neovim/pynvim)
 -   [neovim-remote](https://github.com/mhinz/neovim-remote)
@@ -41,8 +43,21 @@ For keybindings - press `F11`.
 -   [ripgrep](https://github.com/BurntSushi/ripgrep)
 -   [fzf](https://github.com/junegunn/fzf)
 -   [rsync](https://github.com/WayneD/rsync)
+-   [lazygit](https://github.com/jesseduffield/lazygit)
 
-## Current version - 1.7.0
+### Linters and Formatters
+
+-   [tidy-html5](https://github.com/htacg/tidy-html5)
+-   [cpplint](https://github.com/cpplint/cpplint)
+-   [luacheck](https://github.com/mpeterv/luacheck)
+-   [pylint](https://github.com/PyCQA/pylint)
+-   [vint](https://github.com/Vimjas/vint)
+-   [shellcheck](https://github.com/koalaman/shellcheck)
+-   [prettier](https://github.com/prettier/prettier)
+-   [stylua](https://github.com/JohnnyMorganz/StyLua)
+-   [autopep8](https://github.com/hhatto/autopep8)
+
+## Current version - 1.7.2
 
 Install:
 
