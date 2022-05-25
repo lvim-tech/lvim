@@ -422,7 +422,7 @@ function config.heirline_nvim()
         provider = function(self)
             local is_filename = vim.fn.fnamemodify(self.filename, ":.")
             if is_filename ~= "" then
-                return self.icon and self.icon
+                return self.icon and self.icon .. " "
             end
         end,
         hl = function()
@@ -469,14 +469,19 @@ function config.heirline_nvim()
     }
     local FileSize = {
         provider = function()
-            local suffix = { "b", "k", "M", "G", "T", "P", "E" }
             local fsize = vim.fn.getfsize(vim.api.nvim_buf_get_name(0))
             fsize = (fsize < 0 and 0) or fsize
             if fsize <= 0 then
                 return
             end
-            local i = math.floor((math.log(fsize) / math.log(1024)))
-            return "  " .. string.format("%.2g%s", fsize / math.pow(1024, i), suffix[i])
+            local file_size = require("core.funcs").file_size(fsize)
+            -- local suffix = { "b", "k", "M", "G", "T", "P", "E" }
+            -- local i = math.floor((math.log(fsize) / math.log(1024)))
+            -- local size_suffix = suffix[i]
+            -- if size_suffix == nil then
+            --     size_suffix = "b"
+            -- end
+            return "  " .. file_size
         end,
         hl = { fg = colors.orange },
     }
@@ -660,7 +665,6 @@ function config.heirline_nvim()
         init = utils.pick_child_on_condition,
         {
             ViMode,
-            -- Separator,
             WorkDir,
             FileNameBlock,
             Git,
