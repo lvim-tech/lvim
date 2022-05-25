@@ -225,39 +225,6 @@ function config.nvim_gps()
         depth = 0,
         depth_limit_indicator = "..",
     })
-    vim.api.nvim_create_autocmd({ "CursorMoved", "BufWinEnter", "BufFilePost" }, {
-        callback = function()
-            local filetype_exclude = {
-                "ctrlspace",
-                "packer",
-                "undotree",
-                "diff",
-                "Outline",
-                "NvimTree",
-                "LvimHelper",
-                "floaterm",
-                "toggleterm",
-                "Trouble",
-                "dashboard",
-                "vista",
-                "spectre_panel",
-                "DiffviewFiles",
-                "flutterToolsOutline",
-                "log",
-                "qf",
-                "dapui_scopes",
-                "dapui_breakpoints",
-                "dapui_stacks",
-                "dapui_watches",
-                "calendar",
-            }
-            if vim.tbl_contains(filetype_exclude, vim.bo.filetype) then
-                vim.opt_local.winbar = nil
-                return
-            end
-            vim.opt_local.winbar = require("core.ui.winbar").gps_treesitter()
-        end,
-    })
 end
 
 function config.any_jump()

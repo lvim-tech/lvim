@@ -33,12 +33,9 @@ modules["folke/which-key.nvim"] = {
     config = ui_config.which_key,
 }
 
-modules["nvim-lualine/lualine.nvim"] = {
-    requires = "kyazdani42/nvim-web-devicons",
-    event = {
-        "BufWinEnter",
-    },
-    config = ui_config.lualine,
+modules["rebelot/heirline.nvim"] = {
+    after = { "lvim-colorscheme", "nvim-gps" },
+    config = ui_config.heirline_nvim,
 }
 
 modules["is0n/fm-nvim"] = {
@@ -392,13 +389,11 @@ modules["nvim-treesitter/nvim-treesitter"] = {
     config = languages_config.nvim_treesitter,
 }
 
-if vim.fn.has("nvim-0.8") == 1 then
-    modules["SmiteshP/nvim-gps"] = {
-        requires = "nvim-treesitter/nvim-treesitter",
-        after = { "nvim-treesitter", "nvim-cmp" },
-        config = languages_config.nvim_gps,
-    }
-end
+modules["SmiteshP/nvim-gps"] = {
+    requires = "nvim-treesitter/nvim-treesitter",
+    after = { "nvim-treesitter", "nvim-cmp" },
+    config = languages_config.nvim_gps,
+}
 
 modules["pechorin/any-jump.vim"] = {
     event = {

@@ -69,4 +69,36 @@ M.set_window_path = function()
     vim.api.nvim_command("silent :lcd " .. path)
 end
 
+M.get_highlight = function(hlname)
+    local hl = vim.api.nvim_get_hl_by_name(hlname, true)
+    setmetatable(hl, {
+        __index = function(t, k)
+            if k == "fg" then
+                return t.foreground
+            elseif k == "bg" then
+                return t.background
+            elseif k == "sp" then
+                return t.special
+            else
+                return rawget(t, k)
+            end
+        end,
+    })
+    return hl
+end
+
+_G.LVIM_COLORS = function()
+    return {
+        green = M.get_highlight("CursorLineNr").fg,
+        red = M.get_highlight("DiagnosticError").fg,
+        orange = M.get_highlight("DiagnosticWarn").fg,
+        yellow = M.get_highlight("DiagnosticInfo").fg,
+        blue = M.get_highlight("DiagnosticHint").fg,
+        status_line_bg = M.get_highlight("StatusLine").bg,
+        status_line_fg = M.get_highlight("StatusLine").fg,
+        status_line_nc_bg = M.get_highlight("StatusLineNC").bg,
+        status_line_nc_fg = M.get_highlight("StatusLineNC").fg,
+    }
+end
+
 return M

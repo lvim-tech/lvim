@@ -60,22 +60,22 @@ function config.nvim_tree()
         folder_arrows = 0,
     }
     vim.g.nvim_tree_icons = {
-        default = "",
-        symlink = "",
+        default = " ",
+        symlink = " ",
         git = {
-            unstaged = "",
-            staged = "",
-            unmerged = "",
-            renamed = "➜",
-            untracked = "",
-            ignored = "◌",
+            unstaged = " ",
+            staged = " ",
+            unmerged = " ",
+            renamed = "➜ ",
+            untracked = " ",
+            ignored = "◌ ",
         },
         folder = {
-            default = "",
-            open = "",
-            empty = "",
-            empty_open = "",
-            symlink = "",
+            default = " ",
+            open = " ",
+            empty = " ",
+            empty_open = " ",
+            symlink = " ",
         },
     }
     require("nvim-tree").setup({
@@ -311,275 +311,478 @@ function config.which_key()
     which_key.register(vmappings, vopts)
 end
 
-function config.lualine()
-    local lualine = require("lualine")
-    local colors = {
-        bg = "#272F35",
-        darkbg = "#272F35",
-        fg = "#D9DA9E",
-        color_01 = "#E6B673",
-        color_02 = "#00839F",
-        color_03 = "#A7C080",
-        color_04 = "#F2994B",
-        color_05 = "#1C9898",
-        color_06 = "#25B8A5",
-        color_07 = "#90c1a3",
-        color_08 = "#F05F4E",
+function config.heirline_nvim()
+    local function isempty(s)
+        return s == nil or s == ""
+    end
+
+    local conditions = require("heirline.conditions")
+    local utils = require("heirline.utils")
+    local colors = LVIM_COLORS()
+    local Space = { provider = "  " }
+    local Align = { provider = "%=" }
+    local ViMode = {
+        init = function(self)
+            self.mode = vim.fn.mode(1)
+        end,
+        static = {
+            mode_names = {
+                n = "N",
+                no = "N?",
+                nov = "N?",
+                noV = "N?",
+                ["no\22"] = "N?",
+                niI = "Ni",
+                niR = "Nr",
+                niV = "Nv",
+                nt = "Nt",
+                v = "V",
+                vs = "Vs",
+                V = "V_",
+                Vs = "Vs",
+                ["\22"] = "^V",
+                ["\22s"] = "^V",
+                s = "S",
+                S = "S_",
+                ["\19"] = "^S",
+                i = "I",
+                ic = "Ic",
+                ix = "Ix",
+                R = "R",
+                Rc = "Rc",
+                Rx = "Rx",
+                Rv = "Rv",
+                Rvc = "Rv",
+                Rvx = "Rv",
+                c = "C",
+                cv = "Ex",
+                r = "...",
+                rm = "M",
+                ["r?"] = "?",
+                ["!"] = "!",
+                t = "T",
+            },
+            mode_colors = {
+                n = colors.green,
+                i = colors.red,
+                v = colors.orange,
+                V = colors.orange,
+                ["\22"] = colors.orange,
+                c = colors.orange,
+                s = colors.purple,
+                S = colors.purple,
+                ["\19"] = colors.purple,
+                R = colors.orange,
+                r = colors.orange,
+                ["!"] = colors.red,
+                t = colors.red,
+            },
+        },
+        provider = function(self)
+            return "   %(" .. self.mode_names[self.mode] .. "%)"
+        end,
+        hl = function(self)
+            local mode = self.mode:sub(1, 1)
+            return { fg = self.mode_colors[mode], bold = true }
+        end,
     }
-    local conditions = {
-        buffer_not_empty = function()
-            return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
-        end,
-        hide_in_width = function()
-            return vim.fn.winwidth(0) > 120
-        end,
-        check_git_workspace = function()
-            local filepath = vim.fn.expand("%:p:h")
-            local gitdir = vim.fn.finddir(".git", filepath .. ";")
-            return gitdir and #gitdir > 0 and #gitdir < #filepath
+    local FileNameBlock = {
+        init = function(self)
+            self.filename = vim.api.nvim_buf_get_name(0)
         end,
     }
-    local lualine_config = {
-        options = {
-            component_separators = "",
-            section_separators = "",
-            theme = {
-                normal = {
-                    a = { fg = colors.bg, bg = colors.bg },
-                    b = { fg = colors.bg, bg = colors.bg },
-                    c = { fg = colors.bg, bg = colors.bg },
-                    x = { fg = colors.bg, bg = colors.bg },
-                    y = { fg = colors.bg, bg = colors.bg },
-                    z = { fg = colors.bg, bg = colors.bg },
-                },
-            },
-            globalstatus = 3,
-        },
-        sections = {
-            lualine_a = {},
-            lualine_b = {},
-            lualine_c = {},
-            lualine_x = {},
-            lualine_y = {},
-            lualine_z = {},
-        },
-        extensions = { "nvim-tree", "symbols-outline", "toggleterm", "quickfix" },
+    local WorkDir = {
+        provider = function(self)
+            self.icon = "    "
+            local cwd = vim.fn.getcwd(0)
+            self.cwd = vim.fn.fnamemodify(cwd, ":~")
+        end,
+        hl = { fg = colors.blue, bold = true },
+        utils.make_flexible_component(1, {
+            provider = function(self)
+                local trail = self.cwd:sub(-1) == "/" and "" or "/"
+                return self.icon .. self.cwd .. trail
+            end,
+        }, {
+            provider = function(self)
+                local cwd = vim.fn.pathshorten(self.cwd)
+                local trail = self.cwd:sub(-1) == "/" and "" or "/"
+                return self.icon .. cwd .. trail
+            end,
+        }, {
+            provider = "",
+        }),
     }
-    local function ins_left_a(component)
-        table.insert(lualine_config.sections.lualine_a, component)
-    end
-
-    local function ins_left_b(component)
-        table.insert(lualine_config.sections.lualine_b, component)
-    end
-
-    local function ins_left_c(component)
-        table.insert(lualine_config.sections.lualine_c, component)
-    end
-
-    local function ins_right(component)
-        table.insert(lualine_config.sections.lualine_x, component)
-    end
-
-    ins_left_a({
-        function()
-            local alias = {
-                n = "NORMAL",
-                v = "VISUAL",
-                V = "V-LINE",
-                [""] = "V-BLOCK",
-                s = "SELECT",
-                S = "S-LINE",
-                [""] = "S-BLOCK",
-                i = "INSERT",
-                R = "REPLACE",
-                c = "COMMAND",
-                r = "PROMPT",
-                ["!"] = "EXTERNAL",
-                t = "TERMINAL",
-            }
-            local mode_color = {
-                n = colors.color_03,
-                i = colors.color_08,
-                v = colors.color_04,
-                [""] = colors.color_04,
-                V = colors.color_04,
-                c = colors.color_06,
-                no = colors.color_08,
-                s = colors.color_04,
-                S = colors.color_04,
-                [""] = colors.color_04,
-                ic = colors.color_01,
-                R = colors.color_05,
-                Rv = colors.color_05,
-                cv = colors.color_08,
-                ce = colors.color_08,
-                r = colors.color_02,
-                rm = colors.color_02,
-                ["r?"] = colors.color_02,
-                ["!"] = colors.color_08,
-                t = colors.color_08,
-            }
-            local vim_mode = vim.fn.mode()
-            vim.api.nvim_command("hi! LualineMode guifg=" .. mode_color[vim.fn.mode()] .. " guibg=" .. colors.bg)
-            return "   " .. alias[vim_mode]
+    local FileIcon = {
+        init = function(self)
+            local filename = self.filename
+            local extension = vim.fn.fnamemodify(filename, ":e")
+            self.icon = require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
         end,
-        color = "LualineMode",
-        padding = { right = 1 },
-    })
-    ins_left_b({
-        "filetype",
-        colored = false,
-        icon_only = false,
-        color = {
-            fg = colors.color_07,
-            gui = "bold",
-        },
-    })
-    ins_left_c({
-        "filename",
-        cond = conditions.buffer_not_empty,
-        color = {
-            fg = colors.color_02,
-            gui = "bold",
-        },
-        path = 2,
-        shorting_target = 20,
-    })
-    ins_left_c({
-        "diff",
-        symbols = {
-            added = "   ",
-            modified = "  ",
-            removed = "  ",
-        },
-        diff_color = {
-            added = {
-                fg = colors.color_03,
-            },
-            modified = {
-                fg = colors.color_04,
-            },
-            removed = {
-                fg = colors.color_08,
-            },
-        },
-    })
-    ins_left_c({
-        "branch",
-        icon = " ",
-        color = {
-            fg = colors.color_05,
-            gui = "bold",
-        },
-        cond = conditions.hide_in_width,
-    })
-    ins_left_c({
-        function()
-            local package = require("package-info")
-            return package.get_status()
+        provider = function(self)
+            local is_filename = vim.fn.fnamemodify(self.filename, ":.")
+            if is_filename ~= "" then
+                return self.icon and self.icon
+            end
         end,
-        padding = {
-            left = 0,
-            right = 0,
-        },
-        color = {
-            fg = colors.color_05,
-        },
-        cond = nil,
-    })
-    ins_right({
-        "diagnostics",
-        sources = {
-            "nvim_diagnostic",
-        },
-        symbols = {
-            error = " ",
-            warn = " ",
-            hint = " ",
-            info = " ",
-        },
-        diagnostics_color = {
-            error = {
-                fg = colors.color_08,
-            },
-            warn = {
-                fg = colors.color_04,
-            },
-            hint = {
-                fg = colors.color_07,
-            },
-            info = {
-                fg = colors.color_07,
-            },
-        },
-    })
-    ins_right({
-        function(msg)
-            msg = msg or ""
-            local buf_clients = vim.lsp.buf_get_clients()
-            if next(buf_clients) == nil then
-                if type(msg) == "boolean" or #msg == 0 then
-                    return ""
+        hl = function()
+            return { fg = colors.blue }
+        end,
+    }
+    local FileName = {
+        provider = function(self)
+            local filename = vim.fn.fnamemodify(self.filename, ":.")
+            if filename == "" then
+                return
+            end
+            if not conditions.width_percent_below(#filename, 0.25) then
+                filename = vim.fn.pathshorten(filename)
+            end
+            return filename .. " "
+        end,
+        hl = { fg = colors.blue, bold = true },
+    }
+    local FileFlags = {
+        {
+            provider = function()
+                if vim.bo.modified then
+                    return "  "
                 end
-                return msg
+            end,
+            hl = { fg = colors.red },
+        },
+        {
+            provider = function()
+                if not vim.bo.modifiable or vim.bo.readonly then
+                    return "  "
+                end
+            end,
+            hl = { fg = colors.red },
+        },
+    }
+    local FileNameModifer = {
+        hl = function()
+            if vim.bo.modified then
+                return { fg = colors.blue, bold = true, force = true }
             end
-            local buf_client_names = {}
-            for _, client in pairs(buf_clients) do
-                table.insert(buf_client_names, client.name)
+        end,
+    }
+    local FileSize = {
+        provider = function()
+            local suffix = { "b", "k", "M", "G", "T", "P", "E" }
+            local fsize = vim.fn.getfsize(vim.api.nvim_buf_get_name(0))
+            fsize = (fsize < 0 and 0) or fsize
+            if fsize <= 0 then
+                return
             end
-            return table.concat(buf_client_names, ", ")
+            local i = math.floor((math.log(fsize) / math.log(1024)))
+            return "  " .. string.format("%.2g%s", fsize / math.pow(1024, i), suffix[i])
         end,
-        icon = " ",
-        cond = conditions.hide_in_width,
-        color = {
-            fg = colors.color_02,
-            gui = "bold",
-        },
-    })
-    ins_right({
-        "o:encoding",
-        fmt = string.upper,
-        cond = conditions.hide_in_width,
-        color = {
-            fg = colors.color_03,
-            gui = "bold",
-        },
-    })
-    ins_right({
-        "fileformat",
-        fmt = string.upper,
-        cond = conditions.hide_in_width,
-        icons_enabled = true,
-        padding = {
-            left = 0,
-            right = 2,
-        },
-        color = {
-            fg = colors.color_03,
-            gui = "bold",
-        },
-    })
-    ins_right({
-        function()
-            local current_line = vim.fn.line(".")
-            local total_lines = vim.fn.line("$")
-            local chars = { "█", "▇", "▆", "▅", "▄", "▃", "▂", "▁" }
-            local line_ratio = current_line / total_lines
-            local index = math.ceil(line_ratio * #chars)
-            return chars[index]
+        hl = { fg = colors.orange },
+    }
+    FileNameBlock = utils.insert(
+        FileNameBlock,
+        utils.insert(FileNameModifer, FileName),
+        FileIcon,
+        FileSize,
+        unpack(FileFlags),
+        { provider = "%<" }
+    )
+    local Git = {
+        condition = conditions.is_git_repo,
+        init = function(self)
+            self.status_dict = vim.b.gitsigns_status_dict
+            self.has_changes = self.status_dict.added ~= 0
+                or self.status_dict.removed ~= 0
+                or self.status_dict.changed ~= 0
         end,
-        padding = {
-            left = 0,
-            right = 0,
+        hl = { fg = colors.orange },
+        {
+            provider = "  ",
         },
-        color = {
-            fg = colors.color_08,
-            bg = colors.darkbg,
+        {
+            provider = function(self)
+                return " " .. self.status_dict.head .. " "
+            end,
+            hl = { bold = true },
         },
-        cond = nil,
-    })
-    lualine.setup(lualine_config)
+        {
+            provider = function(self)
+                local count = self.status_dict.added or 0
+                return count > 0 and ("  " .. count)
+            end,
+            hl = { fg = colors.green },
+        },
+        {
+            provider = function(self)
+                local count = self.status_dict.removed or 0
+                return count > 0 and ("  " .. count)
+            end,
+            hl = { fg = colors.red },
+        },
+        {
+            provider = function(self)
+                local count = self.status_dict.changed or 0
+                return count > 0 and ("  " .. count)
+            end,
+            hl = { fg = colors.orange },
+        },
+    }
+    local Diagnostics = {
+        condition = conditions.has_diagnostics,
+        static = {
+            error_icon = " ",
+            warn_icon = " ",
+            info_icon = " ",
+            hint_icon = " ",
+        },
+        init = function(self)
+            self.errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
+            self.warnings = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
+            self.hints = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
+            self.info = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
+        end,
+        {
+            provider = function(self)
+                return self.errors > 0 and (self.error_icon .. self.errors .. " ")
+            end,
+            hl = { fg = colors.red },
+        },
+        {
+            provider = function(self)
+                return self.warnings > 0 and (self.warn_icon .. self.warnings .. " ")
+            end,
+            hl = { fg = colors.orange },
+        },
+        {
+            provider = function(self)
+                return self.info > 0 and (self.info_icon .. self.info .. " ")
+            end,
+            hl = { fg = colors.yellow },
+        },
+        {
+            provider = function(self)
+                return self.hints > 0 and (self.hint_icon .. self.hints)
+            end,
+            hl = { fg = colors.blue },
+        },
+    }
+    local LSPActive = {
+        condition = conditions.lsp_attached,
+        provider = function()
+            local names = {}
+            for _, server in pairs(vim.lsp.buf_get_clients(0)) do
+                table.insert(names, server.name)
+            end
+            return "  " .. table.concat(names, ", ")
+        end,
+        hl = { fg = colors.blue, bold = true },
+    }
+    local _LSPActive = {
+        condition = conditions.lsp_attached,
+        provider = function()
+            return "  "
+        end,
+        hl = { fg = colors.orange, bold = true },
+    }
+    local FileType = {
+        provider = function()
+            local filetype = vim.bo.filetype
+            if filetype ~= "" then
+                return string.upper(filetype)
+            end
+        end,
+        hl = { fg = colors.type, bold = true },
+    }
+    local FileEncoding = {
+        provider = function()
+            local enc = vim.opt.fileencoding:get()
+            if enc ~= "" then
+                return " " .. enc:upper()
+            end
+        end,
+        hl = { fg = colors.yellow, bold = true },
+    }
+    local FileFormat = {
+        provider = function()
+            local format = vim.bo.fileformat
+            if format ~= "" then
+                local symbols = {
+                    unix = " ",
+                    dos = " ",
+                    mac = " ",
+                }
+                return symbols[format]
+            end
+        end,
+        hl = { fg = colors.yellow, bold = true },
+    }
+    local Spell = {
+        condition = function()
+            return vim.wo.spell
+        end,
+        provider = "SPELL  ",
+        hl = { bold = true, fg = colors.orange },
+    }
+    local ScrollBar = {
+        static = {
+            sbar = { "█", "▇", "▆", "▅", "▄", "▃", "▂", "▁" },
+            -- sbar = { '🭶', '🭷', '🭸', '🭹', '🭺', '🭻' }
+        },
+        provider = function(self)
+            local curr_line = vim.api.nvim_win_get_cursor(0)[1]
+            local lines = vim.api.nvim_buf_line_count(0)
+            local i = math.floor((curr_line - 1) / lines * #self.sbar) + 1
+            return "  " .. self.sbar[i]
+        end,
+        hl = { fg = colors.red },
+    }
+    local StatusLines = {
+        hl = function()
+            if conditions.is_active() then
+                return {
+                    fg = colors.status_line_fg,
+                    bg = colors.status_line_bg,
+                }
+            else
+                return {
+                    fg = colors.status_line_nc_fg,
+                    bg = colors.status_line_nc_bg,
+                }
+            end
+        end,
+        static = {
+            mode_color = function(self)
+                local mode = conditions.is_active() and vim.fn.mode() or "n"
+                return self.mode_colors[mode]
+            end,
+        },
+        init = utils.pick_child_on_condition,
+        {
+            ViMode,
+            -- Separator,
+            WorkDir,
+            FileNameBlock,
+            Git,
+            Align,
+            Diagnostics,
+            LSPActive,
+            _LSPActive,
+            FileType,
+            FileEncoding,
+            FileFormat,
+            Spell,
+            ScrollBar,
+        },
+    }
+    local TerminalName = {
+        provider = function()
+            local tname, _ = vim.api.nvim_buf_get_name(0):gsub(".*:", "")
+            return " " .. tname
+        end,
+        hl = { fg = colors.blue, bold = true },
+    }
+    local File = {
+        provider = function()
+            local filename = vim.fn.expand("%:t")
+            local extension = ""
+            local file_icon = ""
+            local file_icon_color = ""
+            local default_file_icon = ""
+            local default_file_icon_color = ""
+            if not isempty(filename) then
+                extension = vim.fn.expand("%:e")
+                local default = false
+                if isempty(extension) then
+                    extension = ""
+                    default = true
+                end
+                file_icon, file_icon_color = require("nvim-web-devicons").get_icon_color(
+                    filename,
+                    extension,
+                    { default = default }
+                )
+                local hl_group = "FileIconColor" .. extension
+                vim.api.nvim_set_hl(0, hl_group, { fg = file_icon_color })
+                if file_icon == nil then
+                    file_icon = default_file_icon
+                    file_icon_color = default_file_icon_color
+                end
+                return " " .. "%#" .. hl_group .. "#" .. file_icon .. "%*" .. " " .. filename
+            end
+        end,
+    }
+    local Gps = {
+        condition = require("nvim-gps").is_available,
+        provider = function()
+            local status_ok, gps_location = pcall(require("nvim-gps").get_location, {})
+            if not status_ok then
+                return
+            end
+            if not isempty(gps_location) then
+                return " ➤ " .. gps_location:gsub(" > ", " ➤ ")
+            end
+        end,
+        hl = { fg = colors.gray },
+    }
+    local WinBars = {
+        init = utils.pick_child_on_condition,
+        {
+            condition = function()
+                return conditions.buffer_matches({
+                    buftype = { "nofile", "prompt", "help", "quickfix" },
+                    filetype = {
+                        "^git.*",
+                        "ctrlspace",
+                        "packer",
+                        "undotree",
+                        "diff",
+                        "Outline",
+                        "NvimTree",
+                        "LvimHelper",
+                        "floaterm",
+                        "Trouble",
+                        "dashboard",
+                        "vista",
+                        "spectre_panel",
+                        "DiffviewFiles",
+                        "flutterToolsOutline",
+                        "log",
+                        "qf",
+                        "dapui_scopes",
+                        "dapui_breakpoints",
+                        "dapui_stacks",
+                        "dapui_watches",
+                        "calendar",
+                    },
+                })
+            end,
+            provider = "",
+        },
+        {
+            condition = function()
+                return conditions.buffer_matches({ buftype = { "terminal" } })
+            end,
+            {
+                FileType,
+                Space,
+                TerminalName,
+            },
+        },
+        {
+            condition = function()
+                return not conditions.is_active()
+            end,
+            {
+                File,
+            },
+        },
+        {
+            File,
+            Gps,
+        },
+    }
+    require("heirline").setup(StatusLines, WinBars)
 end
 
 function config.fm()

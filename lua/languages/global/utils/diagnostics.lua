@@ -105,10 +105,10 @@ local function open_floating_preview(contents, syntax)
 end
 
 local floating_severity_highlight_name = {
-    [DiagnosticSeverity.Error] = "DiagnosticFloatingError",
-    [DiagnosticSeverity.Warning] = "DiagnosticFloatingWarn",
-    [DiagnosticSeverity.Information] = "DiagnosticFloatingInfo",
-    [DiagnosticSeverity.Hint] = "DiagnosticFloatingHint",
+    [DiagnosticSeverity.Error] = "DiagnosticError",
+    [DiagnosticSeverity.Warning] = "DiagnosticWarn",
+    [DiagnosticSeverity.Information] = "DiagnosticInfo",
+    [DiagnosticSeverity.Hint] = "DiagnosticHint",
 }
 
 M.show_line_diagnostics = function(bufnr, line_nr, client_id)
