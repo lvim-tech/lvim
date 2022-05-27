@@ -115,6 +115,10 @@ modules["nvim-telescope/telescope.nvim"] = {
     config = editor_config.telescope,
 }
 
+modules["gelguy/wilder.nvim"] = {
+    config = editor_config.whilder,
+}
+
 modules["nanozuki/tabby.nvim"] = {
     config = editor_config.tabby,
     after = "vim-ctrlspace",
@@ -510,10 +514,6 @@ modules["hrsh7th/nvim-cmp"] = {
         },
         {
             "hrsh7th/cmp-buffer",
-            after = "nvim-cmp",
-        },
-        {
-            "hrsh7th/cmp-cmdline",
             after = "nvim-cmp",
         },
         {

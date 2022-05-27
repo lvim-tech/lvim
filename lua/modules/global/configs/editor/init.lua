@@ -94,6 +94,40 @@ function config.telescope()
     telescope.load_extension("tmux")
 end
 
+function config.whilder()
+    local wilder = require("wilder")
+    wilder.setup({ modes = { ":", "/", "?" } })
+    wilder.set_option("pipeline", {
+        wilder.branch(
+            wilder.cmdline_pipeline({
+                language = "python",
+                fuzzy = 1,
+            }),
+            wilder.python_search_pipeline({
+                pattern = wilder.python_fuzzy_pattern(),
+                sorter = wilder.python_difflib_sorter(),
+                engine = "re",
+            })
+        ),
+    })
+    wilder.set_option(
+        "renderer",
+        wilder.popupmenu_renderer({
+            --[[ highlighter = {
+                wilder.lua_pcre2_highlighter(), -- requires `luarocks install pcre2`
+                wilder.lua_fzy_highlighter(), -- requires fzy-lua-native vim plugin found
+                -- at https://github.com/romgrk/fzy-lua-native
+            },
+            highlights = {
+                accent = wilder.make_hl("WilderAccent", "Pmenu", { { a = 1 }, { a = 1 }, { foreground = "#f4468f" } }),
+            }, ]]
+            highlighter = wilder.basic_highlighter(),
+            left = { " ", wilder.popupmenu_devicons() },
+            right = { " ", wilder.popupmenu_scrollbar() },
+        })
+    )
+end
+
 function config.tabby()
     local util = require("tabby.util")
 
