@@ -53,35 +53,61 @@ function config.dashboard_nvim()
 end
 
 function config.nvim_tree()
-    vim.g.nvim_tree_show_icons = {
-        git = 1,
-        folders = 1,
-        files = 1,
-        folder_arrows = 0,
-    }
-    vim.g.nvim_tree_icons = {
-        default = "",
-        symlink = "",
-        git = {
-            unstaged = "",
-            staged = "",
-            unmerged = "",
-            renamed = "➜",
-            untracked = "",
-            ignored = "◌",
-        },
-        folder = {
-            default = "",
-            open = "",
-            empty = "",
-            empty_open = "",
-            symlink = "",
-        },
-    }
     require("nvim-tree").setup({
         update_cwd = true,
         update_focused_file = {
             enable = true,
+        },
+        renderer = {
+            add_trailing = false,
+            group_empty = false,
+            highlight_git = false,
+            highlight_opened_files = "none",
+            root_folder_modifier = ":~",
+            indent_markers = {
+                enable = false,
+                icons = {
+                    corner = "└ ",
+                    edge = "│ ",
+                    none = "  ",
+                },
+            },
+            icons = {
+                webdev_colors = true,
+                git_placement = "before",
+                padding = " ",
+                symlink_arrow = " ➛ ",
+                show = {
+                    file = true,
+                    folder = true,
+                    folder_arrow = true,
+                    git = true,
+                },
+                glyphs = {
+                    default = "",
+                    symlink = "",
+                    folder = {
+                        arrow_closed = "",
+                        arrow_open = "",
+                        default = "",
+                        open = "",
+                        empty = "",
+                        empty_open = "",
+                        symlink = "",
+                        symlink_open = "",
+                    },
+                    git = {
+                        unstaged = "",
+                        staged = "",
+                        unmerged = "",
+                        renamed = "➜",
+                        untracked = "",
+                        deleted = "",
+                        ignored = "◌",
+                    },
+                },
+            },
+            special_files = { "Cargo.toml", "Makefile", "README.md", "readme.md" },
         },
     })
 end
@@ -561,7 +587,7 @@ function config.heirline_nvim()
         },
         {
             provider = function(self)
-                return self.hints > 0 and (self.hint_icon .. self.hints)
+                return self.hints > 0 and (self.hint_icon .. self.hints .. " ")
             end,
             hl = { fg = colors.blue },
         },
