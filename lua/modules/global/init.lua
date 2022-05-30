@@ -77,6 +77,11 @@ modules["lukas-reineke/indent-blankline.nvim"] = {
     config = ui_config.indent_blankline,
 }
 
+modules["lvim-tech/lvim-focus"] = {
+    after = "lvim-colorscheme",
+    config = ui_config.lvim_focus,
+}
+
 modules["lvim-tech/lvim-helper"] = {
     cmd = "LvimHelper",
     config = ui_config.lvim_helper,

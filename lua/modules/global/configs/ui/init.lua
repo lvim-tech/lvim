@@ -1035,6 +1035,10 @@ function config.indent_blankline()
     })
 end
 
+function config.lvim_focus()
+    require("lvim-focus").setup()
+end
+
 function config.lvim_helper()
     local global = require("core.global")
     require("lvim-helper").setup({
