@@ -130,7 +130,7 @@ function config.nvim_lightbulb()
             enabled = true,
         },
     })
-    vim.fn.sign_define("LightBulbSign", { text = " ▎", texthl = "LightBulb", linehl = "", numhl = "" })
+    vim.fn.sign_define("LightBulbSign", { text = "", texthl = "LightBulb", linehl = "", numhl = "" })
 end
 
 function config.sniprun()

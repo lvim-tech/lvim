@@ -124,7 +124,7 @@ function config.tabby()
     local util = require("tabby.util")
 
     local hl_tabline = {
-        color_01 = "#272F35",
+        color_01 = "#242B30",
         color_02 = "#A7C080",
     }
 

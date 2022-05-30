@@ -726,9 +726,9 @@ function config.heirline_nvim()
                     { default = default }
                 )
                 local hl_group1 = "FileIconColor" .. extension
-                vim.api.nvim_set_hl(0, hl_group1, { fg = file_icon_color })
+                vim.api.nvim_set_hl(0, hl_group1, { fg = file_icon_color, bg = colors.status_line_bg, bold = true })
                 local hl_group2 = "FileTextColor"
-                vim.api.nvim_set_hl(0, hl_group2, { fg = colors.green, bold = true })
+                vim.api.nvim_set_hl(0, hl_group2, { fg = colors.green, bg = colors.status_line_bg, bold = true })
                 if file_icon == nil then
                     file_icon = default_file_icon
                     file_icon_color = default_file_icon_color
@@ -758,7 +758,7 @@ function config.heirline_nvim()
                 return " ➤ " .. gps_location:gsub(" > ", " ➤ ")
             end
         end,
-        hl = { fg = colors.green },
+        hl = { fg = colors.green, bg = colors.status_line_bg, bold = true },
     }
     local WinBars = {
         init = utils.pick_child_on_condition,
