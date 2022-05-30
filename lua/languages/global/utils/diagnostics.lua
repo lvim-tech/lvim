@@ -92,7 +92,7 @@ local function open_floating_preview(contents, syntax)
     if syntax == "markdown" then
         api.nvim_win_set_option(floating_winnr, "conceallevel", 2)
     end
-    api.nvim_win_set_option(floating_winnr, "winblend", 0)
+    api.nvim_win_set_option(floating_winnr, "winblend", 10)
     api.nvim_buf_set_lines(floating_bufnr, 0, -1, true, contents)
     api.nvim_buf_set_option(floating_bufnr, "modifiable", false)
     api.nvim_buf_set_option(floating_bufnr, "bufhidden", "wipe")
