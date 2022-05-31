@@ -21,6 +21,7 @@ configs["events_global"] = function()
     vim.api.nvim_create_autocmd("FileType", {
         pattern = {
             "help",
+            "calendar",
             "Trouble",
             "Outline",
             "git",
@@ -30,7 +31,7 @@ configs["events_global"] = function()
             "dapui_watches",
             "NeogitStatus",
         },
-        command = "setlocal colorcolumn=0 nocursorcolumn",
+        command = "setlocal nonumber norelativenumber colorcolumn=0 nocursorcolumn",
         group = group,
     })
     vim.api.nvim_create_autocmd("FileType", {
