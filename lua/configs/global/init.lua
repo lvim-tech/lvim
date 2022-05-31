@@ -48,6 +48,13 @@ configs["events_global"] = function()
         command = "setlocal foldexpr=nvim_treesitter#foldexpr()",
         group = group,
     })
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "ctrlspace" },
+        callback = function()
+            vim.api.nvim_win_set_option(0, "winhighlight", "SignColumn:LvimFocusNormal")
+        end,
+        group = group,
+    })
 end
 
 configs["languages_global"] = function()
