@@ -34,18 +34,14 @@ function config.dashboard_nvim()
             command = "Telescope live_grep",
         },
         e = {
-            description = { "     Browser bookmarks        " },
-            command = ":TelescopeBookmarks",
-        },
-        f = {
             description = { "     Help                     " },
             command = ":LvimHelper",
         },
-        g = {
+        f = {
             description = { "     Settings                 " },
             command = ":e ~/.config/nvim/lua/configs/global/lvim.lua",
         },
-        h = {
+        g = {
             description = { "     Readme                   " },
             command = ":e ~/.config/nvim/README.md",
         },
