@@ -73,7 +73,7 @@ function config.nvim_lsp_installer()
             "kotlin_language_server",
             "ltex",
             "sumneko_lua",
-            "grammarly",
+            "zk",
             "perlnavigator",
             "intelephense",
             "pyright",
