@@ -9,20 +9,30 @@ local function isempty(s)
     return s == nil or s == ""
 end
 
-M.winbar_filetype_exclude = {
-    "help",
+local buftype = { "nofile", "prompt", "help", "quickfix" }
+local filetype = {
+    "^git.*",
     "ctrlspace",
-    "startify",
-    "dashboard",
     "packer",
-    "neogitstatus",
-    "NvimTree",
-    "Trouble",
-    "alpha",
-    "lir",
+    "undotree",
+    "diff",
     "Outline",
+    "NvimTree",
+    "LvimHelper",
+    "floaterm",
+    "Trouble",
+    "dashboard",
+    "vista",
     "spectre_panel",
-    "toggleterm",
+    "DiffviewFiles",
+    "flutterToolsOutline",
+    "log",
+    "qf",
+    "dapui_scopes",
+    "dapui_breakpoints",
+    "dapui_stacks",
+    "dapui_watches",
+    "calendar",
 }
 
 local colors = _G.LVIM_COLORS()
@@ -70,7 +80,7 @@ M.filename = function()
 end
 
 local excludes = function()
-    if vim.tbl_contains(M.winbar_filetype_exclude, vim.bo.filetype) then
+    if vim.tbl_contains(filetype, vim.bo.filetype) or vim.tbl_contains(buftype, vim.bo.buftype) then
         vim.opt_local.winbar = nil
         return true
     end
