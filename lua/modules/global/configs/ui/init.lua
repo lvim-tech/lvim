@@ -813,7 +813,7 @@ function config.heirline_nvim()
             Gps,
         },
     }
-    require("heirline").setup(StatusLines, WinBars)
+    require("heirline").setup(StatusLines)
 end
 
 function config.fm()

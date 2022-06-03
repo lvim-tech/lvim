@@ -225,6 +225,11 @@ function config.nvim_gps()
         depth = 0,
         depth_limit_indicator = "..",
     })
+    vim.api.nvim_create_autocmd({ "CursorMoved", "BufWinEnter", "VimEnter", "BufFilePost" }, {
+        callback = function()
+            vim.opt_local.winbar = require("core.ui.winbar").gps_treesitter()
+        end,
+    })
 end
 
 function config.any_jump()
