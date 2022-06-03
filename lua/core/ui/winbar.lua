@@ -13,6 +13,7 @@ local buftype = { "nofile", "prompt", "help", "quickfix" }
 local filetype = {
     "^git.*",
     "ctrlspace",
+    "ctrlspacesearch",
     "packer",
     "undotree",
     "diff",
@@ -80,7 +81,7 @@ M.filename = function()
 end
 
 local excludes = function()
-    if vim.tbl_contains(filetype, vim.bo.filetype) or vim.tbl_contains(buftype, vim.bo.buftype) then
+    if vim.tbl_contains(filetype, vim.bo.filetype) then
         vim.opt_local.winbar = nil
         return true
     end
