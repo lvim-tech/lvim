@@ -84,14 +84,14 @@ M.global = function()
         listchars = "tab:»·,nbsp:+,trail:·,extends:→,precedes:←",
         pumblend = 10,
         winblend = 10,
+        number = true,
+        relativenumber = false,
     }
     funcs.options_global(global_opt)
 end
 
 M.set = function()
     local set_opt = {
-        number = true,
-        relativenumber = true,
         nocompatible = true,
         wrap = true,
         cmdheight = 1,
