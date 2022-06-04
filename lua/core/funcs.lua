@@ -1,32 +1,27 @@
 local M = {}
 
-M.merge = function(a, b)
-    if type(a) == "table" and type(b) == "table" then
-        for k, v in pairs(b) do
-            if type(v) == "table" and type(a[k] or false) == "table" then
-                M.merge(a[k], v)
+M.merge = function(tbl1, tbl2)
+    if type(tbl1) == "table" and type(tbl2) == "table" then
+        for k, v in pairs(tbl2) do
+            if type(v) == "table" and type(tbl1[k] or false) == "table" then
+                M.merge(tbl1[k], v)
             else
-                a[k] = v
+                tbl1[k] = v
             end
         end
     end
-    return a
+    return tbl1
 end
 
-M.options_global = function(options)
-    for name, value in pairs(options) do
-        vim.o[name] = value
+M.sort = function(tbl)
+    local arr = {}
+    for key, value in pairs(tbl) do
+        arr[#arr + 1] = { key, value }
     end
-end
-
-M.options_set = function(options)
-    for k, v in pairs(options) do
-        if v == true or v == false then
-            vim.cmd("set " .. k)
-        else
-            vim.cmd("set " .. k .. "=" .. v)
-        end
+    for ix, value in ipairs(arr) do
+        tbl[ix] = value
     end
+    return tbl
 end
 
 M.keymaps = function(mode, opts, keymaps)
@@ -36,9 +31,10 @@ M.keymaps = function(mode, opts, keymaps)
 end
 
 M.configs = function()
-    local global_configs = require("configs.global")
-    local custom_configs = require("configs.custom")
-    local configs = M.merge(global_configs, custom_configs)
+    local base_configs = require("configs.base")
+    local user_configs = require("configs.user")
+    local unsort_configs = M.merge(base_configs, user_configs)
+    local configs = M.sort(unsort_configs)
     for _, func in pairs(configs) do
         if type(func) == "function" then
             func()
@@ -105,7 +101,6 @@ M.file_size = function(size, options)
     local ceil = (o.base > 2) and 1000 or 1024
     local negative = (size < 0)
     if negative then
-        -- Flipping a negative number to determine the size
         size = -size
     end
     local result
@@ -121,14 +116,12 @@ M.file_size = function(size, options)
         if o.exponent > 8 then
             o.exponent = 8
         end
-
         local val
         if o.base == 2 then
             val = size / math.pow(2, o.exponent * 10)
         else
             val = size / math.pow(1000, o.exponent)
         end
-
         if o.bits then
             val = val * 8
             if val > ceil then

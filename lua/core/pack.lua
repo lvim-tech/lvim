@@ -11,9 +11,9 @@ Packer.__index = Packer
 
 function Packer:load_plugins()
     self.repos = {}
-    local global_modules = require("modules.global")
-    local custom_modules = require("modules.custom")
-    local modules = funcs.merge(global_modules, custom_modules)
+    local base_modules = require("modules.base")
+    local user_modules = require("modules.user")
+    local modules = funcs.merge(base_modules, user_modules)
     for repo, conf in pairs(modules) do
         if conf ~= false then
             self.repos[#self.repos + 1] = vim.tbl_extend("force", { repo }, conf)

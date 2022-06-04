@@ -30,6 +30,13 @@
 
 For keybindings - press `F11`.
 
+## BREAKING CHANGES
+
+New structure for `modules`, `configs` and `languages`
+
+-   `base` folder - initial configs
+-   `user` folder - user's configs
+
 ## [YouTube](https://www.youtube.com/channel/UCSV5_UXKLl1JDZbQaYWuFKQ) channel
 
 ## Requirements
@@ -57,7 +64,7 @@ For keybindings - press `F11`.
 -   [stylua](https://github.com/JohnnyMorganz/StyLua)
 -   [autopep8](https://github.com/hhatto/autopep8)
 
-## Current version - 1.7.2
+## Current version - 1.7.5
 
 Install:
 

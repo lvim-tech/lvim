@@ -21,8 +21,8 @@ function global:load_variables()
     self.modules_path = vim_path .. "/lua/modules"
     self.global_config = vim_path .. "/lua/config/global/"
     self.custom_config = vim_path .. "/lua/config/custom/"
-    self.languages_path = vim_path .. "/lua/languages/global/languages/"
-    self.lsp_languages = vim_path .. "/lua/lsp/languages/"
+    self.languages_path = vim_path .. "/lua/languages/base/languages/"
+    --self.lsp_languages = vim_path .. "/lua/lsp/languages/"
     self.home = home
     self.data_path = string.format("%s/site/", vim.fn.stdpath("data"))
     self.lsp_path = string.format("%s/", vim.fn.stdpath("data"))
