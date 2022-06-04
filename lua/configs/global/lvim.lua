@@ -85,7 +85,7 @@ M.global = function()
         pumblend = 10,
         winblend = 10,
         number = true,
-        relativenumber = false,
+        relativenumber = true,
     }
     funcs.options_global(global_opt)
 end
