@@ -225,11 +225,49 @@ function config.nvim_gps()
         depth = 0,
         depth_limit_indicator = "..",
     })
+    local buftype = { "nofile", "prompt", "help", "quickfix" }
+    local filetype = {
+        "^git.*",
+        "ctrlspace",
+        "ctrlspace_help",
+        "packer",
+        "undotree",
+        "diff",
+        "Outline",
+        "NvimTree",
+        "LvimHelper",
+        "floaterm",
+        "Trouble",
+        "dashboard",
+        "vista",
+        "spectre_panel",
+        "DiffviewFiles",
+        "flutterToolsOutline",
+        "log",
+        "qf",
+        "dapui_scopes",
+        "dapui_breakpoints",
+        "dapui_stacks",
+        "dapui_watches",
+        "calendar",
+    }
+    local excludes = function()
+        if vim.tbl_contains(filetype, vim.bo.filetype) or vim.tbl_contains(buftype, vim.bo.buftype) then
+            vim.o.winbar = nil
+            return true
+        end
+        return false
+    end
     if vim.fn.has("nvim-0.8") == 1 then
-        vim.api.nvim_create_autocmd({ "CursorMoved", "BufWinEnter", "BufFilePost" }, {
+        vim.api.nvim_create_autocmd({ "BufWinEnter", "CursorMoved" }, {
             callback = function()
-                vim.opt_local.winbar = require("core.ui.winbar").gps_treesitter()
+                if excludes() then
+                    vim.opt_local.winbar = nil
+                else
+                    vim.opt_local.winbar = require("core.ui.winbar").gps_treesitter()
+                end
             end,
+            group = "LvimIDE",
         })
     end
 end

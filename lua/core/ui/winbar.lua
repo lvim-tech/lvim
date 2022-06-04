@@ -9,33 +9,6 @@ local function isempty(s)
     return s == nil or s == ""
 end
 
-local buftype = { "nofile", "prompt", "help", "quickfix" }
-local filetype = {
-    "^git.*",
-    "ctrlspace",
-    "ctrlspacesearch",
-    "packer",
-    "undotree",
-    "diff",
-    "Outline",
-    "NvimTree",
-    "LvimHelper",
-    "floaterm",
-    "Trouble",
-    "dashboard",
-    "vista",
-    "spectre_panel",
-    "DiffviewFiles",
-    "flutterToolsOutline",
-    "log",
-    "qf",
-    "dapui_scopes",
-    "dapui_breakpoints",
-    "dapui_stacks",
-    "dapui_watches",
-    "calendar",
-}
-
 local colors = _G.LVIM_COLORS()
 local hl_group_1 = "FileTextColor"
 vim.api.nvim_set_hl(0, hl_group_1, { fg = colors.green, bg = colors.status_line_bg, bold = true })
@@ -80,18 +53,7 @@ M.filename = function()
     end
 end
 
-local excludes = function()
-    if vim.tbl_contains(filetype, vim.bo.filetype) then
-        vim.opt_local.winbar = nil
-        return true
-    end
-    return false
-end
-
 M.gps_treesitter = function()
-    if excludes() then
-        return
-    end
     local retval = M.filename()
     local status_ok, gps_location = pcall(gps.get_location, {})
     if not status_ok then
