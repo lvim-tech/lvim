@@ -14,7 +14,7 @@ language_configs["lsp"] = function()
             debounce_text_changes = default_debouce_time,
         },
         autostart = true,
-        filetypes = { "markdown" },
+        filetypes = { "markdown", "vimwiki", "telekasten" },
         on_attach = function(client, bufnr)
             table.insert(global["languages"]["markdown"]["pid"], client.rpc.pid)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
