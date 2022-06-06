@@ -94,8 +94,6 @@ M.global = function()
     vim.opt.relativenumber = true
     vim.opt.foldenable = true
     vim.opt.signcolumn = "yes"
-    -- vim.opt.conceallevel = 1
-    vim.opt.concealcursor = "niv"
     vim.opt.foldmethod = "indent"
     vim.opt.cursorline = true
 end

@@ -468,7 +468,7 @@ function config.heirline_nvim()
         {
             provider = function()
                 if vim.bo.modified then
-                    return "  "
+                    return "  "
                 end
             end,
             hl = { fg = colors.red },

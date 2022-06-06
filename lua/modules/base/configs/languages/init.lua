@@ -160,8 +160,6 @@ function config.nvim_treesitter()
         },
         highlight = {
             enable = true,
-            disable = { "org" },
-            additional_vim_regex_highlighting = { "org" },
         },
         indent = {
             enable = true,
@@ -440,20 +438,6 @@ function config.vimtex()
     vim.g.vimtex_compiler_progname = "nvr"
     vim.g.vimtex_compiler_callback_compiling = "nvr"
     vim.g.vimtex_quickfix_open_on_warning = 0
-end
-
-function config.orgmode()
-    require("orgmode").setup_ts_grammar()
-    require("orgmode").setup({
-        org_agenda_files = "~/Org/**/*",
-        org_default_notes_file = "~/Org/notes.org",
-    })
-end
-
-function config.org_bullets()
-    require("org-bullets").setup({
-        symbols = { "◉", "○", "✸" },
-    })
 end
 
 return config

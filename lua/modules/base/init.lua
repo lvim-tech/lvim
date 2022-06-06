@@ -493,15 +493,6 @@ modules["lervag/vimtex"] = {
     config = languages_config.vimtex,
 }
 
-modules["nvim-orgmode/orgmode"] = {
-    ft = "org",
-    config = languages_config.orgmode,
-}
-modules["akinsho/org-bullets.nvim"] = {
-    ft = "org",
-    config = languages_config.org_bullets,
-}
-
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Completion ---------------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

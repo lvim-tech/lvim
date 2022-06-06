@@ -85,35 +85,34 @@ function config.nvim_cmp()
             format = function(entry, item)
                 item.kind = lsp_symbols[item.kind]
                 item.menu = ({
-                    luasnip = "[Snippet]",
                     nvim_lsp = "[LSP]",
+                    luasnip = "[Snippet]",
                     buffer = "[Buffer]",
                     path = "[Path]",
+                    crates = "[Crates]",
+                    latex_symbols = "[LaTex]",
                 })[entry.source.name]
                 return item
             end,
         },
         sources = {
             {
-                name = "luasnip",
-            },
-            {
                 name = "nvim_lsp",
             },
             {
-                name = "path",
+                name = "luasnip",
             },
             {
                 name = "buffer",
+            },
+            {
+                name = "path",
             },
             {
                 name = "crates",
             },
             {
                 name = "latex_symbols",
-            },
-            {
-                name = "orgmode",
             },
         },
     })
