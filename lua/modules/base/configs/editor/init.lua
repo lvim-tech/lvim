@@ -8,6 +8,7 @@ function config.telescope()
             .. " telescope-media-files.nvim"
             .. " telescope-file-browser.nvim"
             .. " telescope-tmux.nvim"
+            .. " howdoi.nvim"
         )
     end
     local telescope = require("telescope")
@@ -92,6 +93,7 @@ function config.telescope()
     telescope.load_extension("media_files")
     telescope.load_extension("file_browser")
     telescope.load_extension("tmux")
+    telescope.load_extension("howdoi")
 end
 
 function config.whilder()

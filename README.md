@@ -30,13 +30,6 @@
 
 For keybindings - press `F11`.
 
-## BREAKING CHANGES
-
-New structure for `modules`, `configs` and `languages`
-
--   `base` folder - initial configs
--   `user` folder - user's configs
-
 ## [YouTube](https://www.youtube.com/channel/UCSV5_UXKLl1JDZbQaYWuFKQ) channel
 
 ## Requirements
@@ -51,6 +44,7 @@ New structure for `modules`, `configs` and `languages`
 -   [fzf](https://github.com/junegunn/fzf)
 -   [rsync](https://github.com/WayneD/rsync)
 -   [lazygit](https://github.com/jesseduffield/lazygit)
+-   [howdoi](https://github.com/gleitz/howdoi)
 
 ### Linters and Formatters
 

@@ -71,6 +71,7 @@ keymaps["normal"] = {
     { "<A-0>", "<Cmd>DapToggleRepl<CR>" }, -- Toggle Repl
     { "tn", ":tabn<CR>" }, -- Tab next
     { "tp", ":tabp<CR>" }, -- Tab prev
+    { "th", ":Telescope howdoi<CR>" }, -- Tab prev
     { "tt", ":Telescope tmux sessions<CR>" }, -- Telescope tmux session
     { "zo", "zo:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
     { "zO", "zO:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
