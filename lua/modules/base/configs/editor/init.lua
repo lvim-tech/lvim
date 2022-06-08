@@ -429,6 +429,7 @@ function config.pretty_fold()
                 " ├─",
             },
         },
+        ft_ignore = { "org" },
     })
     require("pretty-fold.preview").setup()
     local keymap_amend = require("keymap-amend")

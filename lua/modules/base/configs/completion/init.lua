@@ -114,6 +114,9 @@ function config.nvim_cmp()
             {
                 name = "latex_symbols",
             },
+            {
+                name = "orgmode",
+            },
         },
     })
 end

@@ -903,6 +903,7 @@ function config.indent_blankline()
             "git",
             "TelescopePrompt",
             "undotree",
+            "org",
             "flutterToolsOutline",
         },
         buftype_exclude = {

@@ -95,6 +95,7 @@ M.global = function()
     vim.opt.foldenable = true
     vim.opt.signcolumn = "yes"
     vim.opt.conceallevel = 2
+    vim.opt.concealcursor = "nc"
     vim.opt.foldmethod = "indent"
     vim.opt.cursorline = true
 end
