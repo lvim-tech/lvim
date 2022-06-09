@@ -189,6 +189,25 @@ function config.nvim_treesitter()
     })
 end
 
+function config.nvim_treesitter_contex()
+    require("treesitter-context").setup({
+        enable = true,
+        max_lines = 10,
+        patterns = {
+            default = {
+                "class",
+                "function",
+                "method",
+                "for",
+                "while",
+                "if",
+                "switch",
+                "case",
+            },
+        },
+    })
+end
+
 function config.nvim_gps()
     local status_ok, gps = pcall(require, "nvim-gps")
     if not status_ok then

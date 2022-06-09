@@ -387,6 +387,11 @@ modules["nvim-treesitter/nvim-treesitter"] = {
     config = languages_config.nvim_treesitter,
 }
 
+modules["nvim-treesitter/nvim-treesitter-context"] = {
+    after = "nvim-treesitter",
+    config = languages_config.nvim_treesitter_contex,
+}
+
 modules["SmiteshP/nvim-gps"] = {
     requires = "nvim-treesitter/nvim-treesitter",
     after = { "nvim-treesitter", "nvim-cmp" },
