@@ -96,32 +96,6 @@ function config.telescope()
     telescope.load_extension("howdoi")
 end
 
-function config.whilder()
-    local wilder = require("wilder")
-    wilder.setup({ modes = { ":", "/", "?" } })
-    wilder.set_option("pipeline", {
-        wilder.branch(
-            wilder.cmdline_pipeline({
-                language = "python",
-                fuzzy = 1,
-            }),
-            wilder.python_search_pipeline({
-                pattern = wilder.python_fuzzy_pattern(),
-                sorter = wilder.python_difflib_sorter(),
-                engine = "re",
-            })
-        ),
-    })
-    wilder.set_option(
-        "renderer",
-        wilder.popupmenu_renderer({
-            highlighter = wilder.basic_highlighter(),
-            left = { " ", wilder.popupmenu_devicons() },
-            right = { " ", wilder.popupmenu_scrollbar() },
-        })
-    )
-end
-
 function config.tabby()
     local util = require("tabby.util")
 
@@ -201,7 +175,6 @@ function config.tabby()
             end
         end
         table.insert(coms, { type = "text", text = { " ", hl = { bg = hl_tabline.color_01, style = "bold" } } })
-
         return coms
     end
 
