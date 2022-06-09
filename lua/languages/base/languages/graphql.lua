@@ -12,7 +12,7 @@ local language_configs = {}
 language_configs["lsp"] = function()
     local server_setup = {
         flags = {
-            debounce_text_changes = default_debouce_time
+            debounce_text_changes = default_debouce_time,
         },
         autostart = true,
         filetypes = { "graphql" },
@@ -20,12 +20,13 @@ language_configs["lsp"] = function()
             table.insert(global["languages"]["graphql"]["pid"], client.rpc.pid)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             lsp_signature.on_attach(languages_setup.config_lsp_signature)
-            languages_setup.document_highlight(client)
+            languages_setup.document_highlight(client, bufnr)
+            languages_setup.document_formatting(client, bufnr)
         end,
         capabilities = languages_setup.get_capabilities(),
         root_dir = function(fname)
             return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
-        end
+        end,
     }
     languages_setup.setup_lsp("graphql", server_setup)
 end

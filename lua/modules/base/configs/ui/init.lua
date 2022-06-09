@@ -917,6 +917,46 @@ function config.lvim_focus()
     require("lvim-focus").setup()
 end
 
+function config.nvim_notify()
+    local notify = require("notify")
+    notify.setup({
+        icons = {
+            DEBUG = " ",
+            ERROR = " ",
+            INFO = " ",
+            TRACE = " ",
+            WARN = " ",
+        },
+        stages = "fade",
+        on_open = function(win)
+            if vim.api.nvim_win_is_valid(win) then
+                vim.api.nvim_win_set_config(win, { border = "single" })
+            end
+        end,
+    })
+    notify.print_history = function()
+        local color = {
+            DEBUG = "NotifyDEBUGTitle",
+            TRACE = "NotifyTRACETitle",
+            INFO = "NotifyINFOTitle",
+            WARN = "NotifyWARNTitle",
+            ERROR = "NotifyERRORTitle",
+        }
+        for _, m in ipairs(notify.history()) do
+            vim.api.nvim_echo({
+                { vim.fn.strftime("%FT%T", m.time), "Identifier" },
+                { " ", "Normal" },
+                { m.level, color[m.level] or "Title" },
+                { " ", "Normal" },
+                { table.concat(m.message, " "), "Normal" },
+            }, false, {})
+        end
+    end
+    vim.cmd([[command! Message :lua require('notify').print_history()<CR>]])
+    notify.title = "dsfsdf"
+    vim.notify = notify
+end
+
 function config.lvim_helper()
     local global = require("core.global")
     require("lvim-helper").setup({

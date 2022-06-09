@@ -257,8 +257,8 @@ function M.init_diagnosticls()
         },
         autostart = true,
         filetypes = M.config.lsp_filetypes,
-        on_attach = function(client)
-            languages_setup.document_formatting(client)
+        on_attach = function(client, bufnr)
+            languages_setup.document_formatting(client, bufnr)
         end,
         init_options = {
             filetypes = M.config.linters_filetypes,

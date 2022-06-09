@@ -24,8 +24,8 @@ language_configs["lsp"] = function()
         on_attach = function(client, bufnr)
             table.insert(global["languages"]["lua"]["pid"], client.rpc.pid)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-            languages_setup.document_highlight(client)
-            languages_setup.document_formatting(client)
+            languages_setup.document_highlight(client, bufnr)
+            languages_setup.document_formatting(client, bufnr)
         end,
         capabilities = languages_setup.get_capabilities(),
         settings = {

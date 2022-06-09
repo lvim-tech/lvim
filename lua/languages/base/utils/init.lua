@@ -74,40 +74,55 @@ M.setup_diagnostic = function(custom_config_diagnostic)
     end
 end
 
-M.document_highlight = function(client)
-    local function highlight()
-        vim.api.nvim_command("augroup LspHighlight")
-        vim.api.nvim_command("autocmd CursorHold *.* silent! :lua vim.lsp.buf.document_highlight()")
-        vim.api.nvim_command("autocmd CursorMoved *.* silent! :lua vim.lsp.buf.clear_references()")
-        vim.api.nvim_command("augroup END")
-    end
-
+M.document_highlight = function(client, bufnr)
     if vim.fn.has("nvim-0.8") == 1 then
         if client.server_capabilities.documentHighlightProvider then
-            highlight()
+            vim.api.nvim_create_autocmd("CursorHold", {
+                buffer = bufnr,
+                command = "lua vim.lsp.buf.document_highlight()",
+                group = "LvimIDE",
+            })
+            vim.api.nvim_create_autocmd("CursorMoved", {
+                buffer = bufnr,
+                command = "lua vim.lsp.buf.clear_references()",
+                group = "LvimIDE",
+            })
+        else
+            return
         end
     else
         if client.resolved_capabilities.document_highlight then
-            highlight()
+            vim.api.nvim_create_autocmd("CursorHold", {
+                buffer = bufnr,
+                command = "lua vim.lsp.buf.document_highlight()",
+                group = "LvimIDE",
+            })
+            vim.api.nvim_create_autocmd("CursorMoved", {
+                buffer = bufnr,
+                command = "lua vim.lsp.buf.clear_references()",
+                group = "LvimIDE",
+            })
         end
     end
 end
 
-M.document_formatting = function(client)
+M.document_formatting = function(client, bufnr)
     -- vim.pretty_print(client.server_capabilities)
-    local function formatt()
-        vim.api.nvim_command("augroup LspFormat")
-        vim.api.nvim_command("autocmd BufWritePre *.* silent! :lua vim.lsp.buf.formatting_seq_sync()")
-        vim.api.nvim_command("augroup END")
-    end
-
     if vim.fn.has("nvim-0.8") == 1 then
         if client.server_capabilities.documentFormattingProvider then
-            formatt()
+            vim.api.nvim_create_autocmd("BufWritePre", {
+                buffer = bufnr,
+                command = "lua vim.lsp.buf.format()",
+                group = "LvimIDE",
+            })
         end
     else
         if client.resolved_capabilities.document_formatting then
-            formatt()
+            vim.api.nvim_create_autocmd("BufWritePre", {
+                buffer = bufnr,
+                command = "lua vim.lsp.buf.formatting_seq_sync()",
+                group = "LvimIDE",
+            })
         end
     end
 end
