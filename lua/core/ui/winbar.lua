@@ -32,7 +32,7 @@ end
 
 local colors = _G.LVIM_COLORS()
 local hl_group_1 = "FileTextColor"
-vim.api.nvim_set_hl(0, hl_group_1, { fg = colors.green, bg = colors.status_line_bg, bold = true })
+vim.api.nvim_set_hl(0, hl_group_1, { fg = colors.color_01, bg = colors.status_line_bg, bold = true })
 
 local get_filename = function()
     local filename = vim.fn.expand("%:t")

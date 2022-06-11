@@ -17,9 +17,9 @@ modules["lvim-tech/lvim-colorscheme"] = {
     config = ui_config.lvim_colorscheme,
 }
 
-modules["glepnir/dashboard-nvim"] = {
+modules["goolord/alpha-nvim"] = {
     event = "VimEnter",
-    config = ui_config.dashboard_nvim,
+    config = ui_config.alpha_nvim,
 }
 
 modules["kyazdani42/nvim-tree.lua"] = {

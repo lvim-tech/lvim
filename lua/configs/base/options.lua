@@ -76,6 +76,7 @@ M.global = function()
     vim.opt.display = "lastline"
     vim.opt.showbreak = "↳  "
     vim.opt.listchars = "tab:»·,nbsp:+,trail:·,extends:→,precedes:←"
+    vim.opt.fillchars = "eob: "
     vim.opt.pumblend = 10
     vim.opt.winblend = 10
     vim.opt.undofile = true

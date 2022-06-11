@@ -106,6 +106,9 @@ function config.tabby()
 
     local get_tab_label = function(tab_number)
         local s, v = pcall(function()
+            if not packer_plugins["vim-ctrlspace"].loaded then
+                vim.cmd("packadd vim-ctrlspace")
+            end
             return vim.api.nvim_eval("ctrlspace#util#Gettabvar(" .. tab_number .. ", 'CtrlSpaceLabel')")
         end)
         if s then

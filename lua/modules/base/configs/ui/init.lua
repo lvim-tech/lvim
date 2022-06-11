@@ -4,48 +4,79 @@ function config.lvim_colorscheme()
     vim.cmd("colorscheme lvim")
 end
 
-function config.dashboard_nvim()
-    vim.g.dashboard_custom_header = {
-        "       888     Y88b      / 888      e    e             ",
-        "       888      Y88b    /  888     d8b  d8b            ",
-        "       888       Y88b  /   888    d888bdY88b           ",
-        "       888        Y888/    888   / Y88Y Y888b          ",
-        "       888         Y8/     888  /   YY   Y888b         ",
-        "       888____      Y      888 /          Y888b        ",
+function config.alpha_nvim()
+    local dashboard = require("alpha.themes.dashboard")
+    math.randomseed(os.time())
+
+    local function button(sc, txt, keybind, keybind_opts)
+        local b = dashboard.button(sc, txt, keybind, keybind_opts)
+        b.opts.hl = "AlphaButton"
+        b.opts.hl_shortcut = "AlphaButtonShortcut"
+        return b
+    end
+
+    local function footer()
+        local global = require("core.global")
+        local plugins = #vim.tbl_keys(packer_plugins)
+        local v = vim.version()
+        local datetime = os.date(" %d-%m-%Y   %H:%M:%S")
+        local platform
+        if global.os == "Linux" then
+            platform = " Linux"
+        elseif global.os == "macOS" then
+            platform = " macOS"
+        else
+            platform = ""
+        end
+        return string.format("  %d   v%d.%d.%d  %s  %s", plugins, v.major, v.minor, v.patch, platform, datetime)
+    end
+
+    dashboard.section.header.val = {
+        " 888     Y88b      / 888      e    e      ",
+        " 888      Y88b    /  888     d8b  d8b     ",
+        " 888       Y88b  /   888    d888bdY88b    ",
+        " 888        Y888/    888   / Y88Y Y888b   ",
+        " 888         Y8/     888  /   YY   Y888b  ",
+        " 888____      Y      888 /          Y888b ",
     }
-    vim.g.dashboard_preview_file_height = 12
-    vim.g.dashboard_preview_file_width = 80
-    vim.g.dashboard_custom_footer = {}
-    vim.g.dashboard_custom_section = {
-        a = {
-            description = { "     Projects                 " },
-            command = "CtrlSpace b",
-        },
-        b = {
-            description = { "     File explorer            " },
-            command = "Telescope file_browser",
-        },
-        c = {
-            description = { "     Search file              " },
-            command = "Telescope find_files",
-        },
-        d = {
-            description = { "     Search in files          " },
-            command = "Telescope live_grep",
-        },
-        e = {
-            description = { "     Help                     " },
-            command = ":LvimHelper",
-        },
-        f = {
-            description = { "     Settings                 " },
-            command = ":e ~/.config/nvim/lua/configs/global/lvim.lua",
-        },
-        g = {
-            description = { "     Readme                   " },
-            command = ":e ~/.config/nvim/README.md",
-        },
+    dashboard.section.header.opts.hl = "AlphaHeader"
+    dashboard.section.buttons.val = {
+        button("SPC SPC b", "  Projects", ":CtrlSpace b<CR>"),
+        button("A-/", "  File explorer", ":Telescope file_browser<CR>"),
+        button("A-,", "  Search file", ":Telescope find_files<CR>"),
+        button("A-.", "  Search in files", ":Telescope live_grep<CR>"),
+        button("F11", "  Help", ":LvimHelper<CR>"),
+        button("q", "  Quit", "<Cmd>qa<CR>"),
     }
+    dashboard.section.footer.val = footer()
+    dashboard.section.footer.opts.hl = "AlphaFooter"
+    table.insert(dashboard.config.layout, { type = "padding", val = 1 })
+    table.insert(dashboard.config.layout, {
+        type = "text",
+        val = require("alpha.fortune")(),
+        opts = {
+            position = "center",
+            hl = "AlphaQuote",
+        },
+    })
+    require("alpha").setup(dashboard.config)
+    vim.api.nvim_create_augroup("alpha_tabline", { clear = true })
+    vim.api.nvim_create_autocmd("FileType", {
+        group = "alpha_tabline",
+        pattern = "alpha",
+        command = "set showtabline=0 laststatus=0 noruler",
+    })
+    vim.api.nvim_create_autocmd("FileType", {
+        group = "alpha_tabline",
+        pattern = "alpha",
+        callback = function()
+            vim.api.nvim_create_autocmd("BufUnload", {
+                group = "alpha_tabline",
+                buffer = 0,
+                command = "set showtabline=2 ruler laststatus=3",
+            })
+        end,
+    })
 end
 
 function config.nvim_tree()
@@ -334,10 +365,6 @@ function config.which_key()
 end
 
 function config.heirline_nvim()
-    local function isempty(s)
-        return s == nil or s == ""
-    end
-
     local conditions = require("heirline.conditions")
     local utils = require("heirline.utils")
     local colors = LVIM_COLORS()
@@ -385,19 +412,19 @@ function config.heirline_nvim()
                 t = "T",
             },
             mode_colors = {
-                n = colors.green,
-                i = colors.red,
-                v = colors.orange,
-                V = colors.orange,
-                ["\22"] = colors.orange,
-                c = colors.orange,
+                n = colors.color_01,
+                i = colors.color_02,
+                v = colors.color_03,
+                V = colors.color_03,
+                ["\22"] = colors.color_03,
+                c = colors.color_03,
                 s = colors.purple,
                 S = colors.purple,
                 ["\19"] = colors.purple,
-                R = colors.orange,
-                r = colors.orange,
-                ["!"] = colors.red,
-                t = colors.red,
+                R = colors.color_03,
+                r = colors.color_03,
+                ["!"] = colors.color_02,
+                t = colors.color_02,
             },
         },
         provider = function(self)
@@ -419,7 +446,7 @@ function config.heirline_nvim()
             local cwd = vim.fn.getcwd(0)
             self.cwd = vim.fn.fnamemodify(cwd, ":~")
         end,
-        hl = { fg = colors.blue, bold = true },
+        hl = { fg = colors.color_05, bold = true },
         utils.make_flexible_component(1, {
             provider = function(self)
                 local trail = self.cwd:sub(-1) == "/" and "" or "/"
@@ -448,7 +475,7 @@ function config.heirline_nvim()
             end
         end,
         hl = function()
-            return { fg = colors.blue }
+            return { fg = colors.color_05 }
         end,
     }
     local FileName = {
@@ -462,7 +489,7 @@ function config.heirline_nvim()
             end
             return filename .. " "
         end,
-        hl = { fg = colors.blue, bold = true },
+        hl = { fg = colors.color_05, bold = true },
     }
     local FileFlags = {
         {
@@ -471,7 +498,7 @@ function config.heirline_nvim()
                     return "  "
                 end
             end,
-            hl = { fg = colors.red },
+            hl = { fg = colors.color_02 },
         },
         {
             provider = function()
@@ -479,13 +506,13 @@ function config.heirline_nvim()
                     return "  "
                 end
             end,
-            hl = { fg = colors.red },
+            hl = { fg = colors.color_02 },
         },
     }
     local FileNameModifer = {
         hl = function()
             if vim.bo.modified then
-                return { fg = colors.blue, bold = true, force = true }
+                return { fg = colors.color_05, bold = true, force = true }
             end
         end,
     }
@@ -499,7 +526,7 @@ function config.heirline_nvim()
             local file_size = require("core.funcs").file_size(fsize)
             return "  " .. file_size
         end,
-        hl = { fg = colors.orange },
+        hl = { fg = colors.color_03 },
     }
     FileNameBlock = utils.insert(
         FileNameBlock,
@@ -517,7 +544,7 @@ function config.heirline_nvim()
                 or self.status_dict.removed ~= 0
                 or self.status_dict.changed ~= 0
         end,
-        hl = { fg = colors.orange },
+        hl = { fg = colors.color_03 },
         {
             provider = "  ",
         },
@@ -532,21 +559,21 @@ function config.heirline_nvim()
                 local count = self.status_dict.added or 0
                 return count > 0 and ("  " .. count)
             end,
-            hl = { fg = colors.green },
+            hl = { fg = colors.color_01 },
         },
         {
             provider = function(self)
                 local count = self.status_dict.removed or 0
                 return count > 0 and ("  " .. count)
             end,
-            hl = { fg = colors.red },
+            hl = { fg = colors.color_02 },
         },
         {
             provider = function(self)
                 local count = self.status_dict.changed or 0
                 return count > 0 and ("  " .. count)
             end,
-            hl = { fg = colors.orange },
+            hl = { fg = colors.color_03 },
         },
     }
     local Diagnostics = {
@@ -567,25 +594,25 @@ function config.heirline_nvim()
             provider = function(self)
                 return self.errors > 0 and (self.error_icon .. self.errors .. " ")
             end,
-            hl = { fg = colors.red },
+            hl = { fg = colors.color_02 },
         },
         {
             provider = function(self)
                 return self.warnings > 0 and (self.warn_icon .. self.warnings .. " ")
             end,
-            hl = { fg = colors.orange },
+            hl = { fg = colors.color_03 },
         },
         {
             provider = function(self)
                 return self.info > 0 and (self.info_icon .. self.info .. " ")
             end,
-            hl = { fg = colors.yellow },
+            hl = { fg = colors.color_04 },
         },
         {
             provider = function(self)
                 return self.hints > 0 and (self.hint_icon .. self.hints .. " ")
             end,
-            hl = { fg = colors.blue },
+            hl = { fg = colors.color_05 },
         },
     }
     local LSPActive = {
@@ -597,14 +624,14 @@ function config.heirline_nvim()
             end
             return "  " .. table.concat(names, ", ")
         end,
-        hl = { fg = colors.blue, bold = true },
+        hl = { fg = colors.color_05, bold = true },
     }
     local _LSPActive = {
         condition = conditions.lsp_attached,
         provider = function()
             return "  "
         end,
-        hl = { fg = colors.orange, bold = true },
+        hl = { fg = colors.color_03, bold = true },
     }
     local FileType = {
         provider = function()
@@ -622,7 +649,7 @@ function config.heirline_nvim()
                 return " " .. enc:upper()
             end
         end,
-        hl = { fg = colors.yellow, bold = true },
+        hl = { fg = colors.color_04, bold = true },
     }
     local FileFormat = {
         provider = function()
@@ -636,14 +663,14 @@ function config.heirline_nvim()
                 return symbols[format]
             end
         end,
-        hl = { fg = colors.yellow, bold = true },
+        hl = { fg = colors.color_04, bold = true },
     }
     local Spell = {
         condition = function()
             return vim.wo.spell
         end,
         provider = "  SPELL",
-        hl = { bold = true, fg = colors.orange },
+        hl = { bold = true, fg = colors.color_03 },
     }
     local ScrollBar = {
         static = {
@@ -655,7 +682,7 @@ function config.heirline_nvim()
             local i = math.floor((curr_line - 1) / lines * #self.sbar) + 1
             return "  " .. self.sbar[i]
         end,
-        hl = { fg = colors.red },
+        hl = { fg = colors.color_02 },
     }
     local StatusLines = {
         hl = function()
@@ -953,7 +980,6 @@ function config.nvim_notify()
         end
     end
     vim.cmd([[command! Message :lua require('notify').print_history()<CR>]])
-    notify.title = "dsfsdf"
     vim.notify = notify
 end
 
