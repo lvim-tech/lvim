@@ -1,7 +1,7 @@
 local config = {}
 
 function config.lvim_colorscheme()
-    vim.g.lvim_sidebars = { "qf", "outline", "terminal", "packer", "calendar" }
+    vim.g.lvim_sidebars = { "qf", "Outline", "terminal", "packer", "calendar" }
     vim.cmd("colorscheme lvim")
 end
 
