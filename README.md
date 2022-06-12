@@ -24,7 +24,11 @@
 
 ---
 
-![LVIM SCREENSHOT](https://github.com/lvim-tech/lvim/blob/production/media/lvim-ide-screenshot.png)
+![LVIM SCREENSHOT](https://github.com/lvim-tech/lvim/blob/production/media/lvim-ide-screenshot_01.png)
+
+![LVIM SCREENSHOT](https://github.com/lvim-tech/lvim/blob/production/media/lvim-ide-screenshot_02.png)
+
+![LVIM SCREENSHOT](https://github.com/lvim-tech/lvim/blob/production/media/lvim-ide-screenshot_03.png)
 
 ---
 
