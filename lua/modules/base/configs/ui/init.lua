@@ -368,7 +368,6 @@ function config.heirline_nvim()
     local conditions = require("heirline.conditions")
     local utils = require("heirline.utils")
     local colors = LVIM_COLORS()
-    local Space = { provider = "  " }
     local Align = { provider = "%=" }
     local ViMode = {
         init = function(self)
@@ -640,7 +639,7 @@ function config.heirline_nvim()
                 return string.upper(filetype)
             end
         end,
-        hl = { fg = colors.type, bold = true },
+        hl = { fg = colors.color_03, bold = true },
     }
     local FileEncoding = {
         provider = function()
