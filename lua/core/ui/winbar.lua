@@ -80,7 +80,7 @@ local get_gps = function()
     end
 
     if not isempty(gps_location) then
-        return " ➤ " .. " " .. gps_location:gsub(" > ", " ➤ ")
+        return "➤ " .. gps_location:gsub(" > ", " ➤ ")
     else
         return ""
     end
