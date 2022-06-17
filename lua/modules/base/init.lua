@@ -1,17 +1,25 @@
 local modules = {}
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- SYSTEM -------------------------------------------------------
+-- UTILS -----------------------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 modules["nvim-lua/plenary.nvim"] = {}
-modules["nvim-lua/popup.nvim"] = {}
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- UI -----------------------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 local ui_config = require("modules.base.configs.ui")
+
+modules["nvim-lua/popup.nvim"] = {}
+
+modules["RishabhRD/popfix"] = {
+    event = {
+        "BufRead",
+    },
+    config = ui_config.popfix,
+}
 
 modules["lvim-tech/lvim-colorscheme"] = {
     config = ui_config.lvim_colorscheme,
@@ -358,13 +366,6 @@ modules["Mofiqul/trld.nvim"] = {
         "BufRead",
     },
     config = languages_config.trld,
-}
-
-modules["RishabhRD/popfix"] = {
-    event = {
-        "BufRead",
-    },
-    config = languages_config.popfix,
 }
 
 modules["kosayoda/nvim-lightbulb"] = {

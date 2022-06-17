@@ -1,5 +1,10 @@
 local config = {}
 
+function config.popfix()
+    vim.ui.input = require("modules.base.configs.ui.utils.input")
+    vim.ui.select = require("modules.base.configs.ui.utils.select")
+end
+
 function config.lvim_colorscheme()
     vim.g.lvim_sidebars = { "qf", "Outline", "terminal", "packer", "calendar" }
     vim.cmd("colorscheme lvim")
@@ -495,7 +500,7 @@ function config.heirline_nvim()
         {
             provider = function()
                 if vim.bo.modified then
-                    return "  "
+                    return " "
                 end
             end,
             hl = { fg = colors.color_02 },

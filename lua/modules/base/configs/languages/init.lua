@@ -2,9 +2,7 @@ local config = {}
 
 function config.nvim_lsp_installer()
     -- LSP buf
-
     vim.api.nvim_create_user_command("DapToggleBreakpoint", 'lua require("dap").toggle_breakpoint()', {})
-
     vim.api.nvim_create_user_command("LspAddToWorkspaceFolder", "lua vim.lsp.buf.add_workspace_folder()", {})
     vim.api.nvim_create_user_command("LspListWorkspaceFolders", "lua vim.lsp.buf.list_workspace_folders()", {})
     vim.api.nvim_create_user_command("LspRemoveWorkspaceFolder", "lua vim.lsp.buf.remove_workspace_folder()", {})
@@ -25,10 +23,8 @@ function config.nvim_lsp_installer()
     vim.api.nvim_create_user_command("LspOutgoingCalls", "lua vim.lsp.buf.outgoing_calls()", {})
     if vim.fn.has("nvim-0.8") == 1 then
         vim.api.nvim_create_user_command("LspFormatting", "lua vim.lsp.buf.format {async = true}", {})
-        -- vim.cmd("command! LspRangeFormatting lua vim.lsp.buf.range_format {async = true}")
     else
         vim.api.nvim_create_user_command("LspFormatting", "lua vim.lsp.buf.formatting()", {})
-        -- vim.cmd("command! LspRangeFormatting lua vim.lsp.buf.range_formatting)")
     end
     vim.api.nvim_create_user_command("LspFormattingSync", "lua vim.lsp.buf.formatting_sync()", {})
     vim.api.nvim_create_user_command("LspHover", "lua vim.lsp.buf.hover()", {})
@@ -108,11 +104,6 @@ end
 
 function config.trld()
     require("trld").setup()
-end
-
-function config.popfix()
-    vim.ui.input = require("core.ui.input")
-    vim.ui.select = require("core.ui.select")
 end
 
 function config.nvim_lightbulb()
@@ -213,7 +204,7 @@ function config.nvim_gps()
     if not status_ok then
         return
     end
-    local icons = require("core.ui.icons")
+    local icons = require("modules.base.configs.languages.utils.icons")
     local space = ""
     if vim.fn.has("mac") == 1 then
         space = " "
@@ -250,7 +241,7 @@ function config.nvim_gps()
     if vim.fn.has("nvim-0.8") == 1 then
         vim.api.nvim_create_autocmd({ "CursorMoved", "BufWinEnter", "BufFilePost", "InsertEnter", "BufWritePost" }, {
             callback = function()
-                require("core.ui.winbar").get_winbar()
+                require("modules.base.configs.languages.utils.winbar").get_winbar()
             end,
             group = "LvimIDE",
         })
