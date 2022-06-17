@@ -32,7 +32,7 @@ local customUIInput = function(opts, onConfirm)
         },
         mode = "cursor",
         prompt = {
-            border = false,
+            border = true,
             border_chars = {
                 TOP_LEFT = "",
                 TOP_RIGHT = "",
