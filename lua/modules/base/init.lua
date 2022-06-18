@@ -324,9 +324,7 @@ local languages_config = require("modules.base.configs.languages")
 modules["williamboman/nvim-lsp-installer"] = {
     requires = "neovim/nvim-lspconfig",
     event = {
-        -- "BufWinEnter",
         "BufRead",
-        -- "BufReadPre",
     },
     config = languages_config.nvim_lsp_installer,
 }
