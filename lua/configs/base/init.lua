@@ -74,9 +74,9 @@ end
 
 configs["base_ctrlspace_pre_config"] = function()
     vim.g.ctrlspace_use_tablineend = 1
-    vim.g.CtrlSpaceLoadLastWorkspaceOnStart = 1
-    vim.g.CtrlSpaceSaveWorkspaceOnSwitch = 1
-    vim.g.CtrlSpaceSaveWorkspaceOnExit = 1
+    vim.g.CtrlSpaceLoadLastWorkspaceOnStart = 0
+    vim.g.CtrlSpaceSaveWorkspaceOnSwitch = 0
+    vim.g.CtrlSpaceSaveWorkspaceOnExit = 0
     vim.g.CtrlSpaceUseTabline = 0
     vim.g.CtrlSpaceUseArrowsInTerm = 1
     vim.g.CtrlSpaceUseMouseAndArrowsInTerm = 1

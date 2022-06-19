@@ -138,7 +138,6 @@ modules["nvim-telescope/telescope.nvim"] = {
 
 modules["nanozuki/tabby.nvim"] = {
     config = editor_config.tabby,
-    -- after = "vim-ctrlspace",
 }
 
 modules["booperlv/nvim-gomove"] = {
