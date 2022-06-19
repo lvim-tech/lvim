@@ -39,6 +39,11 @@ configs["base_events"] = function()
         group = group,
     })
     vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "NvimTree" },
+        command = "setlocal foldmethod=indent",
+        group = group,
+    })
+    vim.api.nvim_create_autocmd("FileType", {
         pattern = { "ctrlspace" },
         callback = function()
             vim.api.nvim_win_set_option(0, "winhighlight", "SignColumn:LvimFocusNormal")
