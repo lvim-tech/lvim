@@ -151,6 +151,7 @@ function config.nvim_treesitter()
         },
         highlight = {
             enable = true,
+            additional_vim_regex_highlighting = { "org" },
         },
         indent = {
             enable = true,

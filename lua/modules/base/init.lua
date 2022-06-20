@@ -282,8 +282,6 @@ modules["lewis6991/gitsigns.nvim"] = {
     requires = "nvim-lua/plenary.nvim",
     event = {
         "BufRead",
-        -- "BufReadPost",
-        -- "BufReadPre",
     },
     config = version_control_config.gitsigns,
 }
@@ -291,8 +289,6 @@ modules["lewis6991/gitsigns.nvim"] = {
 modules["f-person/git-blame.nvim"] = {
     event = {
         "BufRead",
-        -- "BufReadPost",
-        -- "BufReadPre",
     },
     config = version_control_config.git_blame,
 }
@@ -518,7 +514,6 @@ modules["hrsh7th/nvim-cmp"] = {
     },
     event = {
         "BufRead",
-        -- "BufReadPre",
         "InsertEnter",
     },
     config = completion_config.nvim_cmp,
