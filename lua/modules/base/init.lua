@@ -32,6 +32,7 @@ modules["goolord/alpha-nvim"] = {
 
 modules["kyazdani42/nvim-tree.lua"] = {
     requires = "kyazdani42/nvim-web-devicons",
+    after = "popfix",
     cmd = "NvimTreeToggle",
     config = ui_config.nvim_tree,
 }

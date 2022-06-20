@@ -3,8 +3,7 @@ local popfix = require("popfix")
 local popupReference = nil
 
 local customUIInput = function(opts, onConfirm)
-    assert(popupReference == nil, "Busy in other LSP popup.")
-
+    assert(popupReference == nil, "Sorry")
     popupReference = popfix:new({
         close_on_bufleave = true,
         keymaps = {
@@ -32,6 +31,7 @@ local customUIInput = function(opts, onConfirm)
         },
         mode = "cursor",
         prompt = {
+            numbering = true,
             border = true,
             border_chars = {
                 TOP_LEFT = "",
@@ -41,7 +41,6 @@ local customUIInput = function(opts, onConfirm)
                 BOTTOM_LEFT = "",
                 BOTTOM_RIGHT = "",
             },
-            numbering = true,
             highlight = "UIPrompt",
             prompt_highlight = "UIPromptSelect",
             init_text = opts.default,

@@ -4,7 +4,6 @@ local popupReference = nil
 
 local calculatePopupWidth = function(entries)
     local result = 0
-
     for _, entry in pairs(entries) do
         if #entry > result then
             result = #entry
@@ -16,27 +15,20 @@ end
 
 local formatEntries = function(entries, formatter)
     local formatItem = formatter or tostring
-
     local results = {}
-
     for _, entry in pairs(entries) do
         table.insert(results, string.format("%s", formatItem(entry)))
     end
-
     return results
 end
 
 local customUISelect = function(entries, stuff, onUserChoice)
     assert(entries ~= nil and not vim.tbl_isempty(entries), "No entries available.")
-
-    assert(popupReference == nil, "Busy in other LSP popup.")
-
+    assert(popupReference == nil, "Sorry")
     local commitChoice = function(choiceIndex)
         onUserChoice(entries[choiceIndex], choiceIndex)
     end
-
     local formattedEntries = formatEntries(entries, stuff.format_item)
-
     popupReference = popfix:new({
         width = calculatePopupWidth(formattedEntries),
         height = #formattedEntries,
