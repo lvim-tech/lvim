@@ -73,15 +73,7 @@ local customUISelect = function(entries, stuff, onUserChoice)
         mode = "cursor",
         list = {
             numbering = true,
-            border = true,
-            border_chars = {
-                TOP_LEFT = "",
-                TOP_RIGHT = "",
-                MID_HORIZONTAL = "",
-                MID_VERTICAL = "",
-                BOTTOM_LEFT = "",
-                BOTTOM_RIGHT = "",
-            },
+            border = false,
             highlight = "UIPrompt",
             selection_highlight = "UIPromptSelect",
             matching_highlight = "UIPromptSelect",

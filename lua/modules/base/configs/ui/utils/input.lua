@@ -12,9 +12,7 @@ local customUIInput = function(opts, onConfirm)
                     popup:close(function(_, text)
                         onConfirm(text)
                     end)
-                    vim.schedule(function()
-                        popupReference = nil
-                    end)
+                    popupReference = nil
                 end,
                 ["<C-c>"] = function(popup)
                     popup:close()
@@ -34,15 +32,7 @@ local customUIInput = function(opts, onConfirm)
         mode = "cursor",
         prompt = {
             numbering = true,
-            border = true,
-            border_chars = {
-                TOP_LEFT = "",
-                TOP_RIGHT = "",
-                MID_HORIZONTAL = "",
-                MID_VERTICAL = "",
-                BOTTOM_LEFT = "",
-                BOTTOM_RIGHT = "",
-            },
+            border = false,
             highlight = "UIPrompt",
             prompt_highlight = "UIPromptSelect",
             init_text = opts.default,
