@@ -39,7 +39,9 @@ local customUISelect = function(entries, stuff, onUserChoice)
                     popup:close(function(sel)
                         commitChoice(sel)
                     end)
-                    popupReference = nil
+                    vim.schedule(function()
+                        popupReference = nil
+                    end)
                 end,
             },
             n = {
