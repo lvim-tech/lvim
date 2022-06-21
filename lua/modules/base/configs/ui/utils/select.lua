@@ -1,24 +1,38 @@
-local CustomSelect = require("nui.menu")
+local custom_select = require("nui.menu")
 local event = require("nui.utils.autocmd").event
-local popupReference = nil
+local popup_reference = nil
 
-local formatEntries = function(entries, formatter)
+local calculate_popup_width = function(entries, prompt)
+    local result = 0
+    for _, entry in pairs(entries) do
+        if #entry.text > result then
+            result = #entry.text
+        end
+    end
+    if #prompt > result then
+        result = #prompt
+    end
+    return result + 6
+end
+
+local format_entries = function(entries, formatter)
     local formatItem = formatter or tostring
     local results = {}
-    results[1] = CustomSelect.separator(" ")
+    results[1] = custom_select.separator(" ")
     for _, entry in pairs(entries) do
-        table.insert(results, CustomSelect.item(string.format("%s", formatItem(entry))))
+        table.insert(results, custom_select.item(string.format("%s", formatItem(entry))))
     end
     return results
 end
 
-local function nui_select(entries, stuff, onUserChoice)
+local function nui_select(entries, stuff, on_user_choice)
     assert(entries ~= nil and not vim.tbl_isempty(entries), "No entries available.")
-    assert(popupReference == nil, "Sorry")
+    assert(popup_reference == nil, "Sorry")
     local userChoice = function(choiceIndex)
-        onUserChoice(entries[choiceIndex["_index"] - 1])
+        on_user_choice(entries[choiceIndex["_index"] - 1])
     end
-    local formattedEntries = formatEntries(entries, stuff.format_item)
+    local formatted_entries = format_entries(entries, stuff.format_item)
+    vim.notify(vim.inspect(formatted_entries))
     local popup_options = {
         relative = "cursor",
         position = {
@@ -26,7 +40,8 @@ local function nui_select(entries, stuff, onUserChoice)
             col = 0,
         },
         size = {
-            height = #formattedEntries,
+            width = calculate_popup_width(formatted_entries, stuff.prompt or "Choice:"),
+            height = #formatted_entries,
         },
         border = {
             highlight = "NuiBorder",
@@ -40,19 +55,19 @@ local function nui_select(entries, stuff, onUserChoice)
             winhighlight = "Normal:NuiBody",
         },
     }
-    popupReference = CustomSelect(popup_options, {
-        lines = formattedEntries,
+    popup_reference = custom_select(popup_options, {
+        lines = formatted_entries,
         on_close = function()
-            popupReference = nil
+            popup_reference = nil
         end,
         on_submit = function(item)
             userChoice(item)
-            popupReference = nil
+            popup_reference = nil
         end,
     })
-    if popupReference ~= nil then
-        popupReference:mount()
-        popupReference:on(event.BufLeave, popupReference.menu_props.on_close, { once = true })
+    if popup_reference ~= nil then
+        popup_reference:mount()
+        popup_reference:on(event.BufLeave, popup_reference.menu_props.on_close, { once = true })
     end
 end
 

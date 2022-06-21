@@ -1,9 +1,9 @@
-local CustomInput = require("nui.input")
+local custom_input = require("nui.input")
 local event = require("nui.utils.autocmd").event
-local popupReference = nil
+local popup_reference = nil
 
-local function nui_input(opts, onConfirm)
-    assert(popupReference == nil, "Sorry")
+local function nui_input(opts, on_confirm)
+    assert(popup_reference == nil, "Sorry")
     local popup_options = {
         relative = "cursor",
         position = {
@@ -23,23 +23,23 @@ local function nui_input(opts, onConfirm)
             winhighlight = "Normal:NuiBody",
         },
     }
-    popupReference = CustomInput(popup_options, {
+    popup_reference = custom_input(popup_options, {
         prompt = "➤ ",
         default_value = opts.default or "Enter:",
         on_close = function()
-            popupReference = nil
+            popup_reference = nil
         end,
         on_submit = function(value)
-            onConfirm(value)
-            popupReference = nil
+            on_confirm(value)
+            popup_reference = nil
         end,
     })
-    if popupReference ~= nil then
-        popupReference:mount()
-        popupReference:map("n", "<esc>", popupReference.input_props.on_close, { noremap = true })
-        popupReference:map("n", "q", popupReference.input_props.on_close, { noremap = true })
-        popupReference:map("i", "<esc>", popupReference.input_props.on_close, { noremap = true })
-        popupReference:on(event.BufLeave, popupReference.input_props.on_close, { once = true })
+    if popup_reference ~= nil then
+        popup_reference:mount()
+        popup_reference:map("n", "<esc>", popup_reference.input_props.on_close, { noremap = true })
+        popup_reference:map("n", "q", popup_reference.input_props.on_close, { noremap = true })
+        popup_reference:map("i", "<esc>", popup_reference.input_props.on_close, { noremap = true })
+        popup_reference:on(event.BufLeave, popup_reference.input_props.on_close, { once = true })
     end
 end
 
