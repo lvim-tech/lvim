@@ -1,43 +1,48 @@
-local popfix = require("popfix")
-
+local CustomInput = require("nui.input")
+local event = require("nui.utils.autocmd").event
 local popupReference = nil
 
-local customUIInput = function(opts, onConfirm)
+local function nui_input(opts, onConfirm)
+    -- vim.notify(vim.inspect(opts))
     assert(popupReference == nil, "Sorry")
-    popupReference = popfix:new({
-        close_on_bufleave = true,
-        keymaps = {
-            i = {
-                ["<Cr>"] = function(popup)
-                    popup:close(function(_, text)
-                        onConfirm(text)
-                    end)
-                    popupReference = nil
-                end,
-                ["<C-c>"] = function(popup)
-                    popup:close()
-                    popupReference = nil
-                end,
-                ["<Esc>"] = function(popup)
-                    popup:close()
-                    popupReference = nil
-                end,
+
+    local popup_options = {
+        relative = "cursor",
+        position = {
+            row = 1,
+            col = 0,
+        },
+        size = 60,
+        border = {
+            highlight = "NuiBorder",
+            style = "single",
+            text = {
+                top = opts.prompt,
+                top_align = "center",
             },
         },
-        callbacks = {
-            close = function()
-                popupReference = nil
-            end,
+        win_options = {
+            winhighlight = "Normal:NuiBody",
         },
-        mode = "cursor",
-        prompt = {
-            numbering = true,
-            border = false,
-            highlight = "UIPrompt",
-            prompt_highlight = "UIPromptSelect",
-            init_text = opts.default,
-        },
+    }
+    popupReference = CustomInput(popup_options, {
+        prompt = "➤ ",
+        default_value = opts.default or "Enter:",
+        on_close = function()
+            popupReference = nil
+        end,
+        on_submit = function(value)
+            onConfirm(value)
+            popupReference = nil
+        end,
     })
+    if popupReference ~= nil then
+        popupReference:mount()
+        popupReference:map("n", "<esc>", popupReference.input_props.on_close, { noremap = true })
+        popupReference:map("n", "q", popupReference.input_props.on_close, { noremap = true })
+        popupReference:map("i", "<esc>", popupReference.input_props.on_close, { noremap = true })
+        popupReference:on(event.BufLeave, popupReference.input_props.on_close, { once = true })
+    end
 end
 
-return customUIInput
+return nui_input

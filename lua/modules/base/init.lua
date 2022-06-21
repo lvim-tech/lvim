@@ -14,10 +14,7 @@ local ui_config = require("modules.base.configs.ui")
 
 modules["nvim-lua/popup.nvim"] = {}
 
-modules["RishabhRD/popfix"] = {
-    event = {
-        "BufRead",
-    },
+modules["MunifTanjim/nui.nvim"] = {
     config = ui_config.popfix,
 }
 
@@ -32,7 +29,6 @@ modules["goolord/alpha-nvim"] = {
 
 modules["kyazdani42/nvim-tree.lua"] = {
     requires = "kyazdani42/nvim-web-devicons",
-    after = "popfix",
     cmd = "NvimTreeToggle",
     config = ui_config.nvim_tree,
 }
