@@ -19,7 +19,6 @@ local function nui_select(entries, stuff, onUserChoice)
         onUserChoice(entries[choiceIndex["_index"] - 1])
     end
     local formattedEntries = formatEntries(entries, stuff.format_item)
-
     local popup_options = {
         relative = "cursor",
         position = {

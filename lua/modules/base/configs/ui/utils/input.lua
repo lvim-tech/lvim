@@ -3,9 +3,7 @@ local event = require("nui.utils.autocmd").event
 local popupReference = nil
 
 local function nui_input(opts, onConfirm)
-    -- vim.notify(vim.inspect(opts))
     assert(popupReference == nil, "Sorry")
-
     local popup_options = {
         relative = "cursor",
         position = {
