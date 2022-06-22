@@ -32,7 +32,6 @@ local function nui_select(entries, stuff, on_user_choice)
         on_user_choice(entries[choiceIndex["_index"] - 1])
     end
     local formatted_entries = format_entries(entries, stuff.format_item)
-    vim.notify(vim.inspect(formatted_entries))
     local popup_options = {
         relative = "cursor",
         position = {
@@ -45,7 +44,7 @@ local function nui_select(entries, stuff, on_user_choice)
         },
         border = {
             highlight = "NuiBorder",
-            style = "single",
+            style = { " ", " ", " ", " ", " ", " ", " ", " " },
             text = {
                 top = stuff.prompt or "Choice:",
                 top_align = "center",

@@ -13,7 +13,7 @@ local function nui_input(opts, on_confirm)
         size = 60,
         border = {
             highlight = "NuiBorder",
-            style = "single",
+            style = { " ", " ", " ", " ", " ", " ", " ", " " },
             text = {
                 top = opts.prompt,
                 top_align = "center",
