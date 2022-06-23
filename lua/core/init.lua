@@ -5,6 +5,9 @@ if global == "unsuported" then
 else
     local funcs = require("core.funcs")
     local vim = vim
+    vim.g.mapleader = " "
+    vim.api.nvim_set_keymap("n", " ", "", { noremap = true })
+    vim.api.nvim_set_keymap("x", " ", "", { noremap = true })
     global["diagnostics"] = {}
     global["diagnostics"]["path"] = vim.fn.getcwd()
     global["diagnostics"]["method"] = "global"
