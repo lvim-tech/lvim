@@ -42,6 +42,7 @@ function config.nvim_lsp_installer()
     )
     require("nvim-lsp-installer").setup({
         ensure_installed = {
+            "diagnosticls",
             "emmet_ls",
             "eslint",
             "stylelint_lsp",

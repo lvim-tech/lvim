@@ -5,7 +5,6 @@
 -- :DIInstall lua
 
 local global = require("core.global")
-local funcs = require("core.funcs")
 local languages_setup = require("languages.base.utils")
 local nvim_lsp_util = require("lspconfig/util")
 local default_debouce_time = 150
@@ -52,9 +51,6 @@ language_configs["lsp"] = function()
 end
 
 language_configs["dap"] = function()
-    if funcs.dir_exists(global.lsp_path .. "dapinstall/lua/") ~= true then
-        vim.cmd("DIInstall lua")
-    end
     dap_install.config("lua", {})
     dap.configurations.lua = {
         {

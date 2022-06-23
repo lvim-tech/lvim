@@ -28,7 +28,9 @@ modules["goolord/alpha-nvim"] = {
 }
 
 modules["kyazdani42/nvim-tree.lua"] = {
-    requires = "kyazdani42/nvim-web-devicons",
+    requires = {
+        "kyazdani42/nvim-web-devicons",
+    },
     cmd = "NvimTreeToggle",
     config = ui_config.nvim_tree,
 }
@@ -189,6 +191,14 @@ modules["kkoomen/vim-doge"] = {
 }
 
 modules["windwp/nvim-autopairs"] = {
+    requires = {
+        {
+            "nvim-treesitter/nvim-treesitter",
+        },
+        {
+            "hrsh7th/nvim-cmp",
+        },
+    },
     after = {
         "nvim-treesitter",
         "nvim-cmp",
@@ -197,6 +207,14 @@ modules["windwp/nvim-autopairs"] = {
 }
 
 modules["windwp/nvim-ts-autotag"] = {
+    requires = {
+        {
+            "nvim-treesitter/nvim-treesitter",
+        },
+        {
+            "hrsh7th/nvim-cmp",
+        },
+    },
     after = {
         "nvim-treesitter",
         "nvim-cmp",
@@ -205,6 +223,9 @@ modules["windwp/nvim-ts-autotag"] = {
 }
 
 modules["kylechui/nvim-surround"] = {
+    requires = {
+        "nvim-treesitter/nvim-treesitter",
+    },
     after = "nvim-treesitter",
     config = editor_config.nvim_surround,
 }
@@ -248,7 +269,9 @@ modules["phaazon/hop.nvim"] = {
 }
 
 modules["folke/todo-comments.nvim"] = {
-    requires = "nvim-lua/plenary.nvim",
+    requires = {
+        "nvim-lua/plenary.nvim",
+    },
     event = {
         "BufRead",
     },
@@ -256,7 +279,9 @@ modules["folke/todo-comments.nvim"] = {
 }
 
 modules["anuvyklack/pretty-fold.nvim"] = {
-    requires = "anuvyklack/nvim-keymap-amend",
+    requires = {
+        "anuvyklack/nvim-keymap-amend",
+    },
     event = {
         "BufRead",
     },
@@ -270,13 +295,17 @@ modules["anuvyklack/pretty-fold.nvim"] = {
 local version_control_config = require("modules.base.configs.version_control")
 
 modules["TimUntersberger/neogit"] = {
-    requires = "nvim-lua/plenary.nvim",
+    requires = {
+        "nvim-lua/plenary.nvim",
+    },
     cmd = "Neogit",
     config = version_control_config.neogit,
 }
 
 modules["lewis6991/gitsigns.nvim"] = {
-    requires = "nvim-lua/plenary.nvim",
+    requires = {
+        "nvim-lua/plenary.nvim",
+    },
     event = {
         "BufRead",
     },
@@ -314,9 +343,8 @@ modules["mbbill/undotree"] = {
 local languages_config = require("modules.base.configs.languages")
 
 modules["williamboman/nvim-lsp-installer"] = {
-    requires = "neovim/nvim-lspconfig",
-    event = {
-        "BufRead",
+    requires = {
+        "neovim/nvim-lspconfig",
     },
     config = languages_config.nvim_lsp_installer,
 }
@@ -325,11 +353,21 @@ modules["simrat39/rust-tools.nvim"] = {
     ft = "rust",
     after = "telescope.nvim",
     requires = {
-        "neovim/nvim-lspconfig",
-        "nvim-lua/popup.nvim",
-        "nvim-lua/plenary.nvim",
-        "mfussenegger/nvim-dap",
-        "nvim-telescope/telescope.nvim",
+        {
+            "neovim/nvim-lspconfig",
+        },
+        {
+            "nvim-lua/popup.nvim",
+        },
+        {
+            "nvim-lua/plenary.nvim",
+        },
+        {
+            "mfussenegger/nvim-dap",
+        },
+        {
+            "nvim-telescope/telescope.nvim",
+        },
     },
 }
 
@@ -340,14 +378,20 @@ modules["ray-x/go.nvim"] = {
 
 modules["akinsho/flutter-tools.nvim"] = {
     ft = "dart",
-    requires = "nvim-lua/plenary.nvim",
+    requires = {
+        "nvim-lua/plenary.nvim",
+    },
 }
 
 modules["jose-elias-alvarez/nvim-lsp-ts-utils"] = {
     ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
     requires = {
-        "neovim/nvim-lspconfig",
-        "nvim-lua/plenary.nvim",
+        {
+            "neovim/nvim-lspconfig",
+        },
+        {
+            "nvim-lua/plenary.nvim",
+        },
     },
 }
 
@@ -366,7 +410,9 @@ modules["kosayoda/nvim-lightbulb"] = {
 }
 
 modules["michaelb/sniprun"] = {
-    requires = "neovim/nvim-lspconfig",
+    requires = {
+        "neovim/nvim-lspconfig",
+    },
     run = "bash ./install.sh",
     cmd = {
         "SnipRun",
@@ -379,17 +425,26 @@ modules["michaelb/sniprun"] = {
 }
 
 modules["nvim-treesitter/nvim-treesitter"] = {
-    run = ":TSUpdate",
     config = languages_config.nvim_treesitter,
 }
 
 modules["nvim-treesitter/nvim-treesitter-context"] = {
+    requires = {
+        "nvim-treesitter/nvim-treesitter",
+    },
     after = "nvim-treesitter",
     config = languages_config.nvim_treesitter_contex,
 }
 
 modules["SmiteshP/nvim-gps"] = {
-    requires = "nvim-treesitter/nvim-treesitter",
+    requires = {
+        {
+            "nvim-treesitter/nvim-treesitter",
+        },
+        {
+            "hrsh7th/nvim-cmp",
+        },
+    },
     after = { "nvim-treesitter", "nvim-cmp" },
     config = languages_config.nvim_gps,
 }
@@ -402,7 +457,9 @@ modules["pechorin/any-jump.vim"] = {
 }
 
 modules["folke/trouble.nvim"] = {
-    requires = "kyazdani42/nvim-web-devicons",
+    requires = {
+        "kyazdani42/nvim-web-devicons",
+    },
     config = languages_config.trouble,
 }
 
@@ -416,14 +473,18 @@ modules["rcarriga/nvim-dap-ui"] = {
         "BufRead",
     },
     requires = {
-        "mfussenegger/nvim-dap",
-        "jbyuki/one-small-step-for-vimkind",
+        {
+            "mfussenegger/nvim-dap",
+        },
+        {
+            "jbyuki/one-small-step-for-vimkind",
+        },
     },
     config = languages_config.nvim_dap_ui,
 }
 
-modules["Pocco81/DAPInstall.nvim"] = {
-    branch = "dev",
+modules["Pocco81/dap-buddy.nvim"] = {
+    commit = "24923c3819a450a772bb8f675926d530e829665f",
     event = "BufWinEnter",
     config = languages_config.dapinstall,
 }
@@ -450,19 +511,25 @@ modules["kristijanhusak/vim-dadbod-ui"] = {
 }
 
 modules["vuki656/package-info.nvim"] = {
-    requires = "MunifTanjim/nui.nvim",
+    requires = {
+        "MunifTanjim/nui.nvim",
+    },
     event = "BufRead package.json",
     config = languages_config.package_info,
 }
 
 modules["Saecki/crates.nvim"] = {
-    requires = "nvim-lua/plenary.nvim",
+    requires = {
+        "nvim-lua/plenary.nvim",
+    },
     event = "BufRead Cargo.toml",
     config = languages_config.crates,
 }
 
 modules["akinsho/pubspec-assist.nvim"] = {
-    requires = "nvim-lua/plenary.nvim",
+    requires = {
+        "nvim-lua/plenary.nvim",
+    },
     event = "BufRead pubspec.yaml",
     rocks = {
         {
