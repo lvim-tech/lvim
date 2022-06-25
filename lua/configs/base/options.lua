@@ -97,7 +97,7 @@ M.global = function()
     vim.opt.signcolumn = "yes"
     vim.opt.conceallevel = 2
     vim.opt.concealcursor = "nc"
-    vim.opt.foldmethod = "expr"
+    vim.opt.foldmethod = "indent"
     vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
     vim.opt.cursorline = true
 end
