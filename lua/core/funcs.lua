@@ -149,8 +149,7 @@ M.file_size = function(size, options)
     if negative then
         result[1] = -result[1]
     end
-    result[2] = o.suffixes[result[2]] or result[2]
-    result[2] = o.suffixes[result[2]] or result[2]
+    result[2] = o.suffixes[ result[2] ] or result[2]
     if o.output == "array" then
         return result
     elseif o.output == "exponent" then

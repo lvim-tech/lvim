@@ -104,7 +104,9 @@ function config.go()
 end
 
 function config.trld()
-    require("trld").setup()
+    require("trld").setup({
+        position = "bottom",
+    })
 end
 
 function config.nvim_lightbulb()
