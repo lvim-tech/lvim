@@ -35,6 +35,7 @@ function Packer:load_packer()
         git = { clone_timeout = 120 },
         disable_commands = true,
         display = display,
+        max_jobs = 50,
     })
     packer.reset()
     local use = packer.use
