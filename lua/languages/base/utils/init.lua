@@ -1,5 +1,5 @@
 local lspconfig = require("lspconfig")
-local global = require("core.global")
+local navic = require("nvim-navic")
 
 local M = {}
 
@@ -144,29 +144,10 @@ M.get_capabilities = function()
     return capabilities
 end
 
-M.toggle_virtual_text = function()
-    if global.virtual_text == "no" then
-        local config_diagnostic = {
-            virtual_text = {
-                prefix = "",
-                spacing = 4,
-            },
-            update_in_insert = true,
-            underline = true,
-            severity_sort = true,
-        }
-        M.setup_diagnostic(config_diagnostic)
-        if vim.api.nvim_buf_get_option(0, "modifiable") then
-            vim.cmd("w")
-        end
-        global.virtual_text = "yes"
-    else
-        M.setup_diagnostic()
-        if vim.api.nvim_buf_get_option(0, "modifiable") then
-            vim.cmd("w")
-        end
-        global.virtual_text = "no"
-    end
+M.set_winbar = function(client, bufnr)
+    vim.schedule(function()
+        navic.attach(client, bufnr)
+    end)
 end
 
 return M

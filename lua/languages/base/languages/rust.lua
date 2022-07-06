@@ -13,9 +13,9 @@ local lsp_installer_servers = require("nvim-lsp-installer/servers")
 local server_available, requested_server = lsp_installer_servers.get_server("rust_analyzer")
 local dap_install = require("dap-install")
 local dap = require("dap")
+local navic = require("nvim-navic")
 
 local language_configs = {}
-
 language_configs["lsp"] = function()
     local function start_server()
         if server_available then
@@ -45,6 +45,10 @@ language_configs["lsp"] = function()
                         vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
                         languages_setup.document_highlight(client, bufnr)
                         languages_setup.document_formatting(client, bufnr)
+                        -- languages_setup.winbar(client, bufnr)
+                        navic.attach(client, bufnr)
+                        vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
+                        -- pcall(vim.api.nvim_set_value, "winbar", value, { scope = "local" })
                     end,
                     capabilities = languages_setup.get_capabilities(),
                     root_dir = function(fname)

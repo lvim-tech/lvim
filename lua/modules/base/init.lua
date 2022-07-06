@@ -436,17 +436,13 @@ modules["nvim-treesitter/nvim-treesitter-context"] = {
     config = languages_config.nvim_treesitter_contex,
 }
 
-modules["SmiteshP/nvim-gps"] = {
+modules["SmiteshP/nvim-navic"] = {
     requires = {
         {
-            "nvim-treesitter/nvim-treesitter",
-        },
-        {
-            "hrsh7th/nvim-cmp",
+            "neovim/nvim-lspconfig",
         },
     },
-    after = { "nvim-treesitter", "nvim-cmp" },
-    config = languages_config.nvim_gps,
+    config = languages_config.nvim_navic,
 }
 
 modules["pechorin/any-jump.vim"] = {

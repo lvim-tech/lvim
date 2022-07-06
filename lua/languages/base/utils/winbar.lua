@@ -65,7 +65,7 @@ local get_filename = function()
 end
 
 local get_gps = function()
-    local status_gps_ok, gps = pcall(require, "nvim-gps")
+    local status_gps_ok, gps = pcall(require, "nvim-navic")
     if not status_gps_ok then
         return ""
     end
@@ -75,12 +75,12 @@ local get_gps = function()
         return ""
     end
 
-    if not gps.is_available() or gps_location == "error" then
+    if not gps.is_available() then
         return ""
     end
 
     if not isempty(gps_location) then
-        return "➤ " .. gps_location:gsub(" > ", " ➤ ")
+        return "➤ " .. gps_location
     else
         return ""
     end

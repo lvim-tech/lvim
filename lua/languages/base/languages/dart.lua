@@ -45,6 +45,7 @@ language_configs["lsp"] = function()
                 vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
                 languages_setup.document_highlight(client, bufnr)
                 languages_setup.document_formatting(client, bufnr)
+                languages_setup.set_winbar(client, bufnr)
             end,
             capabilities = languages_setup.get_capabilities(),
             root_dir = function(fname)
