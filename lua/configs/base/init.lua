@@ -52,6 +52,10 @@ configs["base_events"] = function()
     })
     if vim.fn.has("nvim-0.8") == 1 then
         vim.api.nvim_create_autocmd("FileType", {
+            pattern = {
+                "text",
+                "org",
+            },
             callback = function()
                 vim.opt_local.winbar = "%{%v:lua.require'languages.base.utils.file_name'.get_file_name()%}"
             end,
