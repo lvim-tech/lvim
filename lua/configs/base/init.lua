@@ -50,6 +50,37 @@ configs["base_events"] = function()
         end,
         group = group,
     })
+    if vim.fn.has("nvim-0.8") == 1 then
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = {
+                "^git.*",
+                "ctrlspace",
+                "ctrlspace_help",
+                "packer",
+                "undotree",
+                "diff",
+                "Outline",
+                "NvimTree",
+                "LvimHelper",
+                "floaterm",
+                "Trouble",
+                "dashboard",
+                "vista",
+                "spectre_panel",
+                "DiffviewFiles",
+                "flutterToolsOutline",
+                "log",
+                "qf",
+                "dapui_scopes",
+                "dapui_breakpoints",
+                "dapui_stacks",
+                "dapui_watches",
+                "calendar",
+            },
+            command = "setlocal winbar=",
+            group = group,
+        })
+    end
 end
 
 configs["base_languages"] = function()

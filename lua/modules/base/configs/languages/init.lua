@@ -209,18 +209,7 @@ function config.nvim_navic()
         highlight = true,
         separator = " ➤ ",
     })
-    if vim.fn.has("nvim-0.8") == 1 then
-        vim.g.navic_silence = true
-        vim.api.nvim_create_autocmd(
-            { "CursorMoved", "BufEnter", "WinEnter", "BufFilePost", "InsertEnter", "BufWritePost" },
-            {
-                callback = function()
-                    require("languages.base.utils.winbar").get_winbar()
-                end,
-                group = "LvimIDE",
-            }
-        )
-    end
+    vim.g.navic_silence = true
 end
 
 function config.any_jump()

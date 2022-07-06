@@ -10,7 +10,7 @@ local nvim_lsp_util = require("lspconfig/util")
 local default_debouce_time = 150
 local dap_install = require("dap-install")
 local dap = require("dap")
-
+-- local navic = require("nvim-navic")
 local language_configs = {}
 
 language_configs["lsp"] = function()

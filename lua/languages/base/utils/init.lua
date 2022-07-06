@@ -145,9 +145,10 @@ M.get_capabilities = function()
 end
 
 M.set_winbar = function(client, bufnr)
-    vim.schedule(function()
+    if vim.fn.has("nvim-0.8") == 1 then
         navic.attach(client, bufnr)
-    end)
+        vim.opt_local.winbar = "%{%v:lua.require'languages.base.utils.file_name'.get_file_name()%}  %{%v:lua.require'nvim-navic'.get_location()%}"
+    end
 end
 
 return M
