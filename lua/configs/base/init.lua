@@ -64,41 +64,39 @@ configs["base_events"] = function()
             { "CursorMoved", "BufWinEnter", "BufFilePost", "InsertEnter", "BufWritePost", "TabClosed" },
             {
                 callback = function()
-                    if
-                        vim.tbl_contains({
-                            "prompt",
-                            "nofile",
-                            "help",
-                            "quickfix",
-                        }, vim.bo.buftype)
+                    if vim.tbl_contains({
+                        "prompt",
+                        "nofile",
+                        "help",
+                        "quickfix",
+                    }, vim.bo.buftype)
                     then
                         vim.opt_local.winbar = nil
                     end
-                    if
-                        vim.tbl_contains({
-                            "ctrlspace",
-                            "ctrlspace_help",
-                            "packer",
-                            "undotree",
-                            "diff",
-                            "Outline",
-                            "NvimTree",
-                            "LvimHelper",
-                            "floaterm",
-                            "Trouble",
-                            "dashboard",
-                            "vista",
-                            "spectre_panel",
-                            "DiffviewFiles",
-                            "flutterToolsOutline",
-                            "log",
-                            "qf",
-                            "dapui_scopes",
-                            "dapui_breakpoints",
-                            "dapui_stacks",
-                            "dapui_watches",
-                            "calendar",
-                        }, vim.bo.filetype)
+                    if vim.tbl_contains({
+                        "ctrlspace",
+                        "ctrlspace_help",
+                        "packer",
+                        "undotree",
+                        "diff",
+                        "Outline",
+                        "NvimTree",
+                        "LvimHelper",
+                        "floaterm",
+                        "Trouble",
+                        "dashboard",
+                        "vista",
+                        "spectre_panel",
+                        "DiffviewFiles",
+                        "flutterToolsOutline",
+                        "log",
+                        "qf",
+                        "dapui_scopes",
+                        "dapui_breakpoints",
+                        "dapui_stacks",
+                        "dapui_watches",
+                        "calendar",
+                    }, vim.bo.filetype)
                     then
                         vim.opt_local.winbar = nil
                     end

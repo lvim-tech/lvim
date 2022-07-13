@@ -288,12 +288,6 @@ function config.which_key_nvim()
             n = { "<Cmd>Neogit<CR>", "Neogit" },
             l = { "<Cmd>Lazygit<CR>", "Lazygit" },
         },
-        m = {
-            name = "Bookmark",
-            t = { "<Cmd>BookmarkToggle<CR>", "Toggle bookmark" },
-            n = { "<Cmd>BookmarkNext<CR>", "Next bookmark" },
-            p = { "<Cmd>BookmarkPrev<CR>", "Prev bookmark" },
-        },
         f = {
             name = "Find & Fold",
             f = { "<Cmd>HopWord<CR>", "Hop Word" },
@@ -707,7 +701,7 @@ function config.heirline_nvim()
             local extension = vim.fn.expand("%:e")
             if not isempty(filename) then
                 local file_icon, file_icon_color =
-                    require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
+                require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
                 local hl_group_2 = "FileIconColor" .. extension
                 vim.api.nvim_set_hl(0, hl_group_2, { fg = file_icon_color, bg = colors.status_line_bg })
                 if isempty(file_icon) then

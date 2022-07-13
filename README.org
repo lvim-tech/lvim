@@ -4,7 +4,7 @@
 
   LVIM IDE is a modular Neovim configuration written in LUA with full customization
 
-  Current version - 2.0.0 (2022-07-13)
+  Current version - 2.0.1 (2022-07-13)
 
 **  SCREENSHOTS
 
@@ -559,12 +559,6 @@
                  R = { "<Cmd>GitSignsResetBuffer<CR>", "Reset buffer" },
                  n = { "<Cmd>Neogit<CR>", "Neogit" },
                  l = { "<Cmd>Lazygit<CR>", "Lazygit" },
-             },
-             m = {
-                 name = "Bookmark",
-                 t = { "<Cmd>BookmarkToggle<CR>", "Toggle bookmark" },
-                 n = { "<Cmd>BookmarkNext<CR>", "Next bookmark" },
-                 p = { "<Cmd>BookmarkPrev<CR>", "Prev bookmark" },
              },
              f = {
                  name = "Find & Fold",
