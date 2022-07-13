@@ -1,10 +1,169 @@
+local global = require("core.global")
+local funcs = require("core.funcs")
 local lspconfig = require("lspconfig")
-local navic = require("nvim-navic")
+local mason_registry = require("mason-registry")
+local select = require("languages.base.utils.select")
 
 local M = {}
 
-M.setup_lsp = function(server_name, server_config)
-    lspconfig[server_name].setup(server_config)
+M.setup_languages = function(packages_data)
+    local packages_to_install, lsp_to_start, ordered_keys
+
+    local function lsp_start()
+        for i = 1, #lsp_to_start do
+            lspconfig[lsp_to_start[i][1]].setup(lsp_to_start[i][2])
+        end
+    end
+
+    local function check_finish()
+        if next(packages_to_install) == nil then
+            for _, win in ipairs(vim.api.nvim_list_wins()) do
+                local config = vim.api.nvim_win_get_config(win)
+                if config.relative ~= "" then
+                    vim.api.nvim_win_close(win, false)
+                end
+                vim.defer_fn(function()
+                    vim.defer_fn(function()
+                        lsp_start()
+                    end, 1000)
+                    vim.defer_fn(function()
+                        global.install_proccess = false
+                        global.diagnosticls_ready = true
+                    end, 2000)
+                end, 100)
+            end
+        else
+            vim.defer_fn(function()
+                check_finish()
+            end, 100)
+        end
+    end
+
+    local function check_proccess(k)
+        vim.defer_fn(function()
+            if not mason_registry.is_installed(k) then
+                vim.defer_fn(function()
+                    check_proccess(k)
+                end, 1000)
+            else
+                local index = {}
+                for key, v in pairs(packages_to_install) do
+                    index[v] = key
+                end
+                packages_to_install[index[k]] = nil
+            end
+        end, 2000)
+    end
+
+    local function install_package()
+        if next(packages_to_install) ~= nil then
+            if global.lvim_packages == false then
+                vim.defer_fn(function()
+                    select({
+                        "Install for current buffer in stack",
+                        "Don't ask again",
+                        "Cancel",
+                    }, { prompt = "LVIM IDE need to install some packages" }, function(choice)
+                        if choice == "Install for current buffer in stack" then
+                            vim.defer_fn(function()
+                                for i = 1, #packages_to_install do
+                                    vim.cmd("MasonInstall " .. packages_to_install[i])
+                                    check_proccess(packages_to_install[i])
+                                end
+                            end, 1000)
+                            vim.defer_fn(function()
+                                if global.install_proccess then
+                                    check_finish()
+                                end
+                            end, 2000)
+                        elseif choice == "Don't ask again" then
+                            funcs.write_file(global.cache_path .. ".lvim_packages", "")
+                            vim.notify(
+                                "To enable ask again run command:\n:AskForPackagesFile\nand restart LVIM IDE",
+                                "error",
+                                {
+                                    timeout = 10000,
+                                    title = "LVIM IDE",
+                                }
+                            )
+                        elseif choice == "Cancel" then
+                            vim.notify("Need restart LVIM IDE to install packages for this filetype", "error", {
+                                timeout = 10000,
+                                title = "LVIM IDE",
+                            })
+                        end
+                    end)
+                end, 1000)
+            end
+        end
+    end
+
+    local function init(packages)
+        if global.install_proccess then
+            vim.defer_fn(function()
+                init(packages)
+            end, 1000)
+        else
+            packages_to_install = {}
+            lsp_to_start = {}
+            ordered_keys = {}
+            for k in pairs(packages) do
+                table.insert(ordered_keys, k)
+            end
+            table.sort(ordered_keys)
+            for i = 1, #ordered_keys do
+                local k, v = ordered_keys[i], packages[ordered_keys[i]]
+                if k == "dependencies" then
+                    for a = 1, #v do
+                        if not mason_registry.is_installed(v[a]) then
+                            global.install_proccess = true
+                            global.diagnosticls_ready = false
+                            table.insert(packages_to_install, v[a])
+                        end
+                    end
+                elseif k == "dap" then
+                    for a = 1, #v do
+                        if not mason_registry.is_installed(v[a]) then
+                            global.install_proccess = true
+                            table.insert(packages_to_install, v[a])
+                        end
+                    end
+                elseif k == "diagnostic-languageserver" then
+                    if not mason_registry.is_installed(k) then
+                        global.install_proccess = true
+                        table.insert(packages_to_install, k)
+                        table.insert(lsp_to_start, { v[1], v[2] })
+                    else
+                        if global.diagnosticls_ready then
+                            lspconfig[v[1]].setup(v[2])
+                            vim.cmd("LspStart " .. v[1])
+                        else
+                            global.install_proccess = true
+                            table.insert(lsp_to_start, { v[1], v[2] })
+                        end
+                    end
+                else
+                    if not mason_registry.is_installed(k) then
+                        global.install_proccess = true
+                        table.insert(packages_to_install, k)
+                        if v[1] ~= nil and v[2] ~= nil then
+                            table.insert(lsp_to_start, { v[1], v[2] })
+                        end
+                    else
+                        if v[1] ~= nil and v[2] ~= nil then
+                            lspconfig[v[1]].setup(v[2])
+                            vim.cmd("LspStart " .. v[1])
+                        end
+                    end
+                end
+            end
+            vim.schedule(function()
+                install_package()
+            end)
+        end
+    end
+
+    init(packages_data)
 end
 
 M.config_diagnostic = {
@@ -142,13 +301,6 @@ M.get_capabilities = function()
         capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
     end
     return capabilities
-end
-
-M.set_winbar = function(client, bufnr)
-    if vim.fn.has("nvim-0.8") == 1 then
-        navic.attach(client, bufnr)
-        vim.opt_local.winbar = "%{%v:lua.require'languages.base.utils.file_name'.get_file_name()%}  %{%v:lua.require'nvim-navic'.get_location()%}"
-    end
 end
 
 return M

@@ -1,5 +1,5 @@
 local uv, api = vim.loop, vim.api
-local vim_path = vim.fn.stdpath("config")
+local lvim_path = vim.fn.stdpath("config")
 local data_dir = string.format("%s/site/", vim.fn.stdpath("data"))
 local packer_compiled = data_dir .. "lua/packer_compiled.lua"
 local funcs = require("core.funcs")
@@ -54,15 +54,10 @@ function Packer:init_ensure_plugins()
         local cmd = "!git clone https://github.com/wbthomason/packer.nvim " .. packer_dir
         api.nvim_command(cmd)
         uv.fs_mkdir(data_dir .. "lua", 511, function()
-            assert("make compile path dir faield")
+            assert("Make compile path dir faield")
         end)
         self:load_packer()
         packer.sync()
-        packer.on_complete = vim.schedule_wrap(function()
-            vim.defer_fn(function()
-                vim.cmd([[LspInstallInfo]])
-            end, 100)
-        end)
     end
 end
 
@@ -90,7 +85,7 @@ end
 
 function plugins.auto_compile()
     local file = vim.fn.expand("%:p")
-    if not file:match(vim_path) then
+    if not file:match(lvim_path) then
         return
     end
 

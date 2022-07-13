@@ -1,43 +1,23 @@
--- Install Lsp server
--- :LspInstall omnisharp
-
 local global = require("core.global")
-local funcs = require("core.funcs")
 local languages_setup = require("languages.base.utils")
-local nvim_lsp_util = require("lspconfig/util")
-local default_debouce_time = 150
-local dap_install = require("dap-install")
+local omnisharp_config = require("languages.base.languages._configs").default_config({ "cs", "vb" }, "cs")
 local dap = require("dap")
 
 local language_configs = {}
 
 language_configs["lsp"] = function()
-    local server_setup = {
-        flags = {
-            debounce_text_changes = default_debouce_time,
-        },
-        autostart = true,
-        filetypes = { "cs", "vb" },
-        on_attach = function(client, bufnr)
-            table.insert(global["languages"]["cs"]["pid"], client.rpc.pid)
-            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-            languages_setup.document_highlight(client, bufnr)
-            languages_setup.document_formatting(client, bufnr)
-            languages_setup.set_winbar(client, bufnr)
-        end,
-        capabilities = languages_setup.get_capabilities(),
-        root_dir = function(fname)
-            return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
-        end,
-    }
-    languages_setup.setup_lsp("omnisharp", server_setup)
+    languages_setup.setup_languages({
+        ["dap"] = { "netcoredbg" },
+        ["omnisharp-roslyn"] = { "omnisharp", omnisharp_config },
+    })
 end
 
 language_configs["dap"] = function()
-    if funcs.dir_exists(global.lsp_path .. "dapinstall/dnetcs/") ~= true then
-        vim.cmd("DIInstall dnetcs")
-    end
-    dap_install.config("dnetcs", {})
+    dap.adapters.netcoredbg = {
+        type = "executable",
+        command = global.mason_path .. "packages/netcoredbg/netcoredbg",
+        args = { "--interpreter=vscode" },
+    }
     dap.configurations.cs = {
         {
             type = "netcoredbg",
@@ -45,7 +25,7 @@ language_configs["dap"] = function()
             name = "Launch",
             program = function()
                 return vim.fn.input(
-                    global.lsp_path .. "dapinstall/dnetcs/netcoredbg/ManagedPart.dll",
+                    global.mason_path .. "packages/netcoredbg/build/ManagedPart.dll",
                     vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
                 )
             end,

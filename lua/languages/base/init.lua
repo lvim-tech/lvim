@@ -3,7 +3,21 @@ local funcs = require("core.funcs")
 
 local M = {}
 
-M.filetypes = {
+M.file_types = {
+    ["_diagnosticls"] = {
+        "c",
+        "cpp",
+        "html",
+        "json",
+        "less",
+        "lua",
+        "markdown",
+        "objc",
+        "objcpp",
+        "python",
+        "sh",
+        "vim",
+    },
     ["_emmet"] = { "html", "css", "typescriptreact", "javascriptreact" },
     ["_stylelint"] = {
         "css",
@@ -22,6 +36,7 @@ M.filetypes = {
         "typescript.tsx",
         "vue",
     },
+    ["angular"] = { "typescript", "html", "typescriptreact", "typescript.tsx" },
     ["clojure"] = { "clojure", "edn" },
     ["cmake"] = { "cmake" },
     ["cpp"] = { "c", "cpp", "objc", "objcpp" },
@@ -31,6 +46,7 @@ M.filetypes = {
     ["dart"] = { "dart" },
     ["elixir"] = { "elixir", "eelixir" },
     ["elm"] = { "elm" },
+    ["ember"] = { "handlebars", "typescript", "javascript" },
     ["erlang"] = { "erlang" },
     ["fortran"] = { "fortran" },
     ["go"] = { "go", "gomod" },
@@ -44,7 +60,7 @@ M.filetypes = {
     ["kotlin"] = { "kotlin" },
     ["latex"] = { "bib", "tex" },
     ["lua"] = { "lua" },
-    ["markdown"] = { "markdown", "vimwiki", "telekasten" },
+    ["markdown"] = { "markdown" },
     ["perl"] = { "perl" },
     ["php"] = { "php" },
     ["python"] = { "python" },
@@ -64,18 +80,10 @@ M.filetypes = {
 M.setup = function()
     local filetype = vim.bo.filetype
     local project_root_path = vim.fn.getcwd()
-    for language, v in pairs(M.filetypes) do
+    for language, v in pairs(M.file_types) do
         for _, v2 in pairs(v) do
             if v2 == filetype then
-                if language == "jsts" and funcs.file_exists(project_root_path .. "/angular.json") then
-                    M.start_language("angular", project_root_path)
-                    M.start_language("jsts", project_root_path)
-                elseif language == "jsts" and funcs.file_exists(project_root_path .. "/ember-cli-build.js") then
-                    M.start_language("ember", project_root_path)
-                    M.start_language("jsts", project_root_path)
-                else
-                    M.start_language(language, project_root_path)
-                end
+                M.start_language(language, project_root_path)
             end
         end
     end
@@ -84,7 +92,6 @@ end
 M.start_language = function(language, project_root_path)
     if global["languages"][language] ~= nil then
         if global["languages"][language]["project_root_path"] == project_root_path then
-            -- nothing
             return
         else
             if funcs.file_exists(project_root_path .. "/.lvim/" .. language .. ".lua") then
@@ -123,7 +130,7 @@ M.kill_server = function(language)
 end
 
 M.init_language = function(language, project_root_path)
-    local language_configs_global = dofile(global.languages_path .. language .. ".lua")
+    local language_configs_global = dofile(global.lvim_path .. "/lua/languages/base/languages/" .. language .. ".lua")
     local language_configs
     if funcs.file_exists(project_root_path .. "/.lvim/" .. language .. ".lua") then
         local language_configs_custom = dofile(project_root_path .. "/.lvim/" .. language .. ".lua")

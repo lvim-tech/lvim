@@ -1,13 +1,13 @@
 local config = {}
 
-function config.popfix()
-    vim.ui.input = require("modules.base.configs.ui.utils.input")
-    vim.ui.select = require("modules.base.configs.ui.utils.select")
-end
-
 function config.lvim_colorscheme()
     vim.g.lvim_sidebars = { "qf", "Outline", "terminal", "packer", "calendar" }
     vim.cmd("colorscheme lvim")
+end
+
+function config.nui_nvim()
+    vim.ui.input = require("modules.base.configs.ui.utils.input")
+    vim.ui.select = require("modules.base.configs.ui.utils.select")
 end
 
 function config.alpha_nvim()
@@ -85,7 +85,7 @@ function config.alpha_nvim()
     })
 end
 
-function config.nvim_tree()
+function config.nvim_tree_lua()
     require("nvim-tree").setup({
         update_cwd = true,
         update_focused_file = {
@@ -145,7 +145,11 @@ function config.nvim_tree()
     })
 end
 
-function config.which_key()
+function config.dirbuf_nvim()
+    require("dirbuf").setup()
+end
+
+function config.which_key_nvim()
     local options = {
         plugins = {
             marks = true,
@@ -375,6 +379,7 @@ function config.heirline_nvim()
     local utils = require("heirline.utils")
     local colors = LVIM_COLORS()
     local Align = { provider = "%=" }
+    local Space = { provider = " " }
     local ViMode = {
         init = function(self)
             self.mode = vim.fn.mode(1)
@@ -689,6 +694,53 @@ function config.heirline_nvim()
         end,
         hl = { fg = colors.color_02 },
     }
+    local FileIconName = {
+        provider = function()
+            local function isempty(s)
+                return s == nil or s == ""
+            end
+
+            local hl_group_1 = "FileTextColor"
+            vim.api.nvim_set_hl(0, hl_group_1, { fg = colors.color_01, bg = colors.status_line_bg, bold = true })
+            local filename = vim.fn.expand("%:t")
+            local extension = vim.fn.expand("%:e")
+            if not isempty(filename) then
+                local file_icon, file_icon_color =
+                require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
+                local hl_group_2 = "FileIconColor" .. extension
+                vim.api.nvim_set_hl(0, hl_group_2, { fg = file_icon_color, bg = colors.status_line_bg })
+                if isempty(file_icon) then
+                    file_icon = ""
+                    file_icon_color = ""
+                end
+                return " "
+                    .. "%#"
+                    .. hl_group_2
+                    .. "#"
+                    .. file_icon
+                    .. "%*"
+                    .. " "
+                    .. "%#"
+                    .. hl_group_1
+                    .. "#"
+                    .. filename
+                    .. "%*"
+                    .. "  "
+            end
+        end,
+        hl = { fg = colors.color_02 },
+    }
+    local Navic = {
+        condition = require("nvim-navic").is_available,
+        provider = require("nvim-navic").get_location,
+    }
+    local TerminalName = {
+        provider = function()
+            local tname, _ = vim.api.nvim_buf_get_name(0):gsub(".*:", "")
+            return " " .. tname
+        end,
+        hl = { fg = colors.color_02, bold = true },
+    }
     local StatusLines = {
         hl = function()
             if conditions.is_active() then
@@ -726,10 +778,78 @@ function config.heirline_nvim()
             ScrollBar,
         },
     }
-    require("heirline").setup(StatusLines)
+
+    local WinBars = {
+        init = utils.pick_child_on_condition,
+        {
+            condition = function()
+                return conditions.buffer_matches({
+                    buftype = {
+                        "prompt",
+                        "help",
+                        "quickfix",
+                    },
+                    filetype = {
+                        "ctrlspace",
+                        "ctrlspace_help",
+                        "packer",
+                        "undotree",
+                        "diff",
+                        "Outline",
+                        "NvimTree",
+                        "LvimHelper",
+                        "floaterm",
+                        "Trouble",
+                        "dashboard",
+                        "vista",
+                        "spectre_panel",
+                        "DiffviewFiles",
+                        "flutterToolsOutline",
+                        "log",
+                        "qf",
+                        "dapui_scopes",
+                        "dapui_breakpoints",
+                        "dapui_stacks",
+                        "dapui_watches",
+                        "calendar",
+                    },
+                })
+            end,
+            init = function()
+                vim.opt_local.winbar = nil
+            end,
+        },
+        {
+            condition = function()
+                return conditions.buffer_matches({ buftype = { "terminal" } })
+            end,
+            {
+                FileType,
+                Space,
+                TerminalName,
+            },
+        },
+        {
+            condition = function()
+                return not conditions.is_active()
+            end,
+            {
+                FileIconName,
+            },
+        },
+        {
+            FileIconName,
+            Navic,
+        },
+    }
+    if vim.fn.has("nvim-0.8") == 1 then
+        require("heirline").setup(StatusLines, WinBars)
+    else
+        require("heirline").setup(StatusLines)
+    end
 end
 
-function config.fm()
+function config.fm_nvim()
     require("fm-nvim").setup({
         ui = {
             float = {
@@ -746,7 +866,7 @@ function config.fm()
     })
 end
 
-function config.toggleterm()
+function config.toggleterm_nvim()
     local terminal_float = require("toggleterm.terminal").Terminal:new({
         count = 4,
         direction = "float",
@@ -865,7 +985,7 @@ function config.toggleterm()
     vim.api.nvim_create_user_command("TTThree", "lua _G.toggleterm_three_toggle()", {})
 end
 
-function config.zen_mode()
+function config.zen_mode_nvim()
     require("zen-mode").setup({
         window = {
             options = {
@@ -881,14 +1001,7 @@ function config.zen_mode()
     })
 end
 
-function config.neozoom_lua()
-    require("neo-zoom").setup({})
-    vim.keymap.set("n", "<C-z>", function()
-        vim.cmd("NeoZoomToggle")
-    end, NOREF_NOERR_TRUNC)
-end
-
-function config.twilight()
+function config.twilight_nvim()
     require("twilight").setup({
         dimming = {
             alpha = 0.5,
@@ -896,7 +1009,14 @@ function config.twilight()
     })
 end
 
-function config.indent_blankline()
+function config.neozoom_lua()
+    require("neo-zoom").setup({})
+    vim.keymap.set("n", "<C-z>", function()
+        vim.cmd("NeoZoomToggle")
+    end, NOREF_NOERR_TRUNC)
+end
+
+function config.indent_blankline_nvim()
     require("indent_blankline").setup({
         char = "▏",
         show_first_indent_level = true,
@@ -945,10 +1065,6 @@ function config.indent_blankline()
     })
 end
 
-function config.lvim_focus()
-    require("lvim-focus").setup()
-end
-
 function config.nvim_notify()
     local notify = require("notify")
     notify.setup({
@@ -962,7 +1078,7 @@ function config.nvim_notify()
         stages = "fade",
         on_open = function(win)
             if vim.api.nvim_win_is_valid(win) then
-                vim.api.nvim_win_set_config(win, { border = "single" })
+                vim.api.nvim_win_set_config(win, { border = "single", zindex = 200 })
             end
         end,
     })
@@ -984,8 +1100,12 @@ function config.nvim_notify()
             }, false, {})
         end
     end
-    vim.cmd([[command! Message :lua require('notify').print_history()<CR>]])
+    vim.cmd("command! Message :lua require('notify').print_history()<CR>")
     vim.notify = notify
+end
+
+function config.lvim_focus()
+    require("lvim-focus").setup()
 end
 
 function config.lvim_helper()

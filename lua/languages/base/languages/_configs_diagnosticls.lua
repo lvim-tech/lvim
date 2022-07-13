@@ -1,34 +1,20 @@
+local global = require("core.global")
 local languages_setup = require("languages.base.utils")
 local nvim_lsp_util = require("lspconfig/util")
 local default_debouce_time = 150
-
 local M = {}
 
 M.config = {
-    lsp_filetypes = {
-        "html",
-        "json",
-        "c",
-        "cpp",
-        "objc",
-        "objcpp",
-        "less",
-        "lua",
-        "markdown",
-        "python",
-        "sh",
-        "vim",
-    },
     linters_filetypes = {
-        html = "tidy",
         c = "cpplint",
         cpp = "cpplint",
+        html = "tidy",
+        lua = "luacheck",
         objc = "cpplint",
         objcpp = "cpplint",
-        lua = "luacheck",
         python = "pylint",
-        vim = "vint",
         sh = "shellcheck",
+        vim = "vint",
     },
     linters = {
         --- html
@@ -64,6 +50,7 @@ M.config = {
         -- c, cpp, objc, objcpp
         -- https://github.com/cpplint/cpplint
         -- INSTALL: pip3 install cpplint
+        -- AUTOINSTALL !!!
         cpplint = {
             command = "cpplint",
             sourceName = "cpplint",
@@ -88,6 +75,7 @@ M.config = {
         -- https://github.com/mpeterv/luacheck
         -- https://luacheck.readthedocs.io/en/stable
         -- INSTALL: luarocks install luacheck
+        -- AUTOINSTALL !!!
         luacheck = {
             sourceName = "luacheck",
             command = "luacheck",
@@ -122,6 +110,7 @@ M.config = {
         -- https://github.com/PyCQA/pylint
         -- https://pylint.org
         -- INSTALL: pip3 install pylint
+        -- AUTOINSTALL !!!
         pylint = {
             sourceName = "pylint",
             command = "pylint",
@@ -159,6 +148,7 @@ M.config = {
         -- vim
         -- https://github.com/Vimjas/vint
         -- INSTALL: pip3 install vim-vint
+        -- AUTOINSTALL !!!
         vint = {
             sourceName = "vint",
             command = "vint",
@@ -180,44 +170,45 @@ M.config = {
         -- sh
         -- https://github.com/koalaman/shellcheck
         -- INSTALL INSTRUCTION: https://github.com/koalaman/shellcheck#installing
+        -- AUTOINSTALL !!!
         shellcheck = {
+            sourceName = "shellcheck",
             command = "shellcheck",
             debounce = 100,
-            args = {
-                "--format",
-                "json",
-                "-",
-            },
-            sourceName = "shellcheck",
-            parseJson = {
-                line = "line",
-                column = "column",
-                endLine = "endLine",
-                endColumn = "endColumn",
-                message = "${message} [${code}]",
-                security = "level",
+            args = { "--format=gcc", "-" },
+            offsetLine = 0,
+            offsetColumn = 0,
+            formatLines = 1,
+            formatPattern = {
+                "^[^:]+:(\\d+):(\\d+):\\s+([^:]+):\\s+(.*)$",
+                {
+                    line = 1,
+                    column = 2,
+                    message = 4,
+                    security = 3,
+                },
             },
             securities = {
                 error = "error",
                 warning = "warning",
-                info = "info",
-                style = "hint",
+                note = "info",
             },
         },
     },
-    format_filetypes = {
+    formatters_filetypes = {
         html = "prettier",
         json = "prettier",
         lua = "stylua",
         markdown = "prettier",
-        python = "autopep8",
-        vim = "prettier",
+        python = "black",
         sh = "shfmt",
+        vim = "prettier",
     },
     formatters = {
         -- html, json
         -- https://prettier.io
         -- INSTALL: npm install -g prettier
+        -- AUTOINSTALL !!!
         prettier = {
             command = "prettier",
             args = { "--stdin-filepath", "%filepath", "--single-quote", "--tab-width=4" },
@@ -229,6 +220,7 @@ M.config = {
         -- lua
         -- https://github.com/JohnnyMorganz/StyLua
         -- INSTALL: cargo install stylua
+        -- AUTOINSTALL !!!
         stylua = {
             command = "stylua",
             args = { "--search-parent-directories", "--stdin-filepath", "%filepath", "--", "-" },
@@ -237,40 +229,64 @@ M.config = {
         -- https://github.com/hhatto/autopep8
         -- https://pypi.org/project/autopep8
         -- INSTALL: pip3 install autopep8
-        autopep8 = {
-            command = "autopep8",
-            args = { "-", "--indent-size=4" },
+        -- AUTOINSTALL !!!
+        black = {
+            command = "black",
+            args = { "--quiet", "-" },
         },
         -- sh
         -- https://github.com/mvdan/sh
         -- INSTALL: go install mvdan.cc/sh/v3/cmd/shfmt@latest
+        -- AUTOINSTALL !!!
         shfmt = {
             command = "shfmt",
+            args = {
+                "-i",
+                "2",
+                "-bn",
+                "-ci",
+                "-sr",
+            },
         },
     },
 }
 
-function M.init_diagnosticls()
-    local server_setup = {
+M.default_config = function(file_types, pid_name)
+    return {
         flags = {
             debounce_text_changes = default_debouce_time,
         },
         autostart = true,
-        filetypes = M.config.lsp_filetypes,
-        on_attach = function(client, bufnr)
-            languages_setup.document_formatting(client, bufnr)
-        end,
+        filetypes = file_types,
         init_options = {
             filetypes = M.config.linters_filetypes,
             linters = M.config.linters,
-            formatFiletypes = M.config.format_filetypes,
+            formatFiletypes = M.config.formatters_filetypes,
             formatters = M.config.formatters,
         },
+        on_attach = function(client, bufnr)
+            client.offset_encoding = "utf-8"
+            table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
+            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+            languages_setup.document_highlight(client, bufnr)
+            languages_setup.document_formatting(client, bufnr)
+        end,
+        on_init = function(client, results)
+            if results.offsetEncoding then
+                client.offset_encoding = results.offsetEncoding
+            end
+
+            if client.config.settings then
+                client.notify("workspace/didChangeConfiguration", {
+                    settings = client.config.settings,
+                })
+            end
+        end,
+        capabilities = languages_setup.get_capabilities(),
         root_dir = function(fname)
             return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
         end,
     }
-    languages_setup.setup_lsp("diagnosticls", server_setup)
 end
 
 return M

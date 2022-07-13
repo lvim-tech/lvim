@@ -12,14 +12,14 @@ modules["nvim-lua/plenary.nvim"] = {}
 
 local ui_config = require("modules.base.configs.ui")
 
+modules["lvim-tech/lvim-colorscheme"] = {
+    config = ui_config.lvim_colorscheme,
+}
+
 modules["nvim-lua/popup.nvim"] = {}
 
 modules["MunifTanjim/nui.nvim"] = {
-    config = ui_config.popfix,
-}
-
-modules["lvim-tech/lvim-colorscheme"] = {
-    config = ui_config.lvim_colorscheme,
+    config = ui_config.nui_nvim,
 }
 
 modules["goolord/alpha-nvim"] = {
@@ -32,12 +32,17 @@ modules["kyazdani42/nvim-tree.lua"] = {
         "kyazdani42/nvim-web-devicons",
     },
     cmd = "NvimTreeToggle",
-    config = ui_config.nvim_tree,
+    config = ui_config.nvim_tree_lua,
+}
+
+modules["elihunter173/dirbuf.nvim"] = {
+    cmd = "Dirbuf",
+    config = ui_config.dirbuf_nvim,
 }
 
 modules["folke/which-key.nvim"] = {
     event = "BufWinEnter",
-    config = ui_config.which_key,
+    config = ui_config.which_key_nvim,
 }
 
 modules["rebelot/heirline.nvim"] = {
@@ -46,29 +51,30 @@ modules["rebelot/heirline.nvim"] = {
 }
 
 modules["is0n/fm-nvim"] = {
-    config = ui_config.fm,
+    config = ui_config.fm_nvim,
 }
 
 modules["akinsho/toggleterm.nvim"] = {
+    tag = "v2.*",
     cmd = {
         "TTFloat",
         "TTOne",
         "TTTwo",
         "TTThree",
     },
-    config = ui_config.toggleterm,
+    config = ui_config.toggleterm_nvim,
 }
 
 modules["folke/zen-mode.nvim"] = {
     requires = {
         {
             "folke/twilight.nvim",
-            config = ui_config.twilight,
+            config = ui_config.twilight_nvim,
             after = "zen-mode.nvim",
         },
     },
     cmd = "ZenMode",
-    config = ui_config.zen_mode,
+    config = ui_config.zen_mode_nvim,
 }
 
 modules["nyngwang/NeoZoom.lua"] = {
@@ -80,7 +86,7 @@ modules["lukas-reineke/indent-blankline.nvim"] = {
     event = {
         "BufRead",
     },
-    config = ui_config.indent_blankline,
+    config = ui_config.indent_blankline_nvim,
 }
 
 modules["rcarriga/nvim-notify"] = {
@@ -132,11 +138,11 @@ modules["nvim-telescope/telescope.nvim"] = {
             opt = true,
         },
     },
-    config = editor_config.telescope,
+    config = editor_config.telescope_nvim,
 }
 
 modules["nanozuki/tabby.nvim"] = {
-    config = editor_config.tabby,
+    config = editor_config.tabby_nvim,
 }
 
 modules["booperlv/nvim-gomove"] = {
@@ -167,7 +173,7 @@ modules["numToStr/Comment.nvim"] = {
     event = {
         "CursorMoved",
     },
-    config = editor_config.nvim_comment,
+    config = editor_config.comment_nvim,
 }
 
 modules["MattesGroeger/vim-bookmarks"] = {
@@ -234,21 +240,21 @@ modules["norcalli/nvim-colorizer.lua"] = {
     event = {
         "BufRead",
     },
-    config = editor_config.nvim_colorize,
+    config = editor_config.nvim_colorize_lua,
 }
 
 modules["declancm/cinnamon.nvim"] = {
     event = {
         "BufRead",
     },
-    config = editor_config.cinnamon,
+    config = editor_config.cinnamon_nvim,
 }
 
 modules["lambdalisue/suda.vim"] = {
     event = {
         "BufRead",
     },
-    config = editor_config.suda,
+    config = editor_config.suda_vim,
 }
 
 modules["kenn7/vim-arsync"] = {
@@ -264,8 +270,8 @@ modules["phaazon/hop.nvim"] = {
     event = {
         "BufRead",
     },
-    branch = "v1",
-    config = editor_config.hop,
+    branch = "v2",
+    config = editor_config.hop_nvim,
 }
 
 modules["folke/todo-comments.nvim"] = {
@@ -275,7 +281,7 @@ modules["folke/todo-comments.nvim"] = {
     event = {
         "BufRead",
     },
-    config = editor_config.todo_comments,
+    config = editor_config.todo_comments_nvim,
 }
 
 modules["anuvyklack/pretty-fold.nvim"] = {
@@ -285,7 +291,12 @@ modules["anuvyklack/pretty-fold.nvim"] = {
     event = {
         "BufRead",
     },
-    config = editor_config.pretty_fold,
+    config = editor_config.pretty_fold_nvim,
+}
+
+modules["renerocksai/calendar-vim"] = {
+    cmd = { "Calendar", "CalendarH", "CalendarT", "CalendarVR" },
+    config = editor_config.calendar_vim,
 }
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -309,14 +320,14 @@ modules["lewis6991/gitsigns.nvim"] = {
     event = {
         "BufRead",
     },
-    config = version_control_config.gitsigns,
+    config = version_control_config.gitsigns_nvim,
 }
 
 modules["f-person/git-blame.nvim"] = {
     event = {
         "BufRead",
     },
-    config = version_control_config.git_blame,
+    config = version_control_config.git_blame_nvim,
 }
 
 modules["sindrets/diffview.nvim"] = {
@@ -342,11 +353,12 @@ modules["mbbill/undotree"] = {
 
 local languages_config = require("modules.base.configs.languages")
 
-modules["williamboman/nvim-lsp-installer"] = {
+modules["williamboman/mason.nvim"] = {
     requires = {
         "neovim/nvim-lspconfig",
     },
-    config = languages_config.nvim_lsp_installer,
+    branch = "alpha",
+    config = languages_config.mason_nvim,
 }
 
 modules["simrat39/rust-tools.nvim"] = {
@@ -373,7 +385,7 @@ modules["simrat39/rust-tools.nvim"] = {
 
 modules["ray-x/go.nvim"] = {
     ft = "go",
-    config = languages_config.go,
+    config = languages_config.go_nvim,
 }
 
 modules["akinsho/flutter-tools.nvim"] = {
@@ -399,7 +411,7 @@ modules["Mofiqul/trld.nvim"] = {
     event = {
         "BufRead",
     },
-    config = languages_config.trld,
+    config = languages_config.trld_nvim,
 }
 
 modules["kosayoda/nvim-lightbulb"] = {
@@ -449,19 +461,19 @@ modules["pechorin/any-jump.vim"] = {
     event = {
         "BufRead",
     },
-    config = languages_config.any_jump,
+    config = languages_config.any_jump_nvim,
 }
 
 modules["folke/trouble.nvim"] = {
     requires = {
         "kyazdani42/nvim-web-devicons",
     },
-    config = languages_config.trouble,
+    config = languages_config.trouble_nvim,
 }
 
 modules["simrat39/symbols-outline.nvim"] = {
     cmd = "SymbolsOutline",
-    config = languages_config.symbols_outline,
+    config = languages_config.symbols_outline_nvim,
 }
 
 modules["rcarriga/nvim-dap-ui"] = {
@@ -477,12 +489,6 @@ modules["rcarriga/nvim-dap-ui"] = {
         },
     },
     config = languages_config.nvim_dap_ui,
-}
-
-modules["Pocco81/dap-buddy.nvim"] = {
-    commit = "24923c3819a450a772bb8f675926d530e829665f",
-    event = "BufWinEnter",
-    config = languages_config.dapinstall,
 }
 
 modules["kristijanhusak/vim-dadbod-ui"] = {
@@ -511,7 +517,7 @@ modules["vuki656/package-info.nvim"] = {
         "MunifTanjim/nui.nvim",
     },
     event = "BufRead package.json",
-    config = languages_config.package_info,
+    config = languages_config.package_info_nvim,
 }
 
 modules["Saecki/crates.nvim"] = {
@@ -519,7 +525,7 @@ modules["Saecki/crates.nvim"] = {
         "nvim-lua/plenary.nvim",
     },
     event = "BufRead Cargo.toml",
-    config = languages_config.crates,
+    config = languages_config.crates_nvim,
 }
 
 modules["akinsho/pubspec-assist.nvim"] = {
@@ -533,7 +539,7 @@ modules["akinsho/pubspec-assist.nvim"] = {
             server = "http://rocks.moonscript.org",
         },
     },
-    config = languages_config.pubspec_assist,
+    config = languages_config.pubspec_assist_nvim,
 }
 
 modules["davidgranstrom/nvim-markdown-preview"] = {
@@ -542,6 +548,21 @@ modules["davidgranstrom/nvim-markdown-preview"] = {
 
 modules["lervag/vimtex"] = {
     config = languages_config.vimtex,
+}
+
+modules["dhruvasagar/vim-table-mode"] = {
+    event = {
+        "BufRead",
+    },
+}
+
+modules["nvim-orgmode/orgmode"] = {
+    config = languages_config.orgmode,
+}
+
+modules["lvim-tech/lvim-org-utils"] = {
+    ft = "org",
+    config = languages_config.lvim_org_utils,
 }
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

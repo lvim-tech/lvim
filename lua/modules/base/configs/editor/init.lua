@@ -1,6 +1,6 @@
 local config = {}
 
-function config.telescope()
+function config.telescope_nvim()
     local loader = require("packer").loader
     if not packer_plugins["telescope-fzf-native.nvim"].loaded then
         loader(
@@ -96,14 +96,12 @@ function config.telescope()
     telescope.load_extension("howdoi")
 end
 
-function config.tabby()
+function config.tabby_nvim()
     local util = require("tabby.util")
-
     local hl_tabline = {
         color_01 = "#242B30",
         color_02 = "#A7C080",
     }
-
     local get_tab_label = function(tab_number)
         local s, v = pcall(function()
             if not packer_plugins["vim-ctrlspace"].loaded then
@@ -121,7 +119,6 @@ function config.tabby()
             return tab_number .. ": " .. v
         end
     end
-
     local components = function()
         local coms = {
             {
@@ -187,7 +184,7 @@ function config.tabby()
 end
 
 function config.nvim_gomove()
-    require("gomove").setup({})
+    require("gomove").setup()
 end
 
 function config.vim_slime()
@@ -285,7 +282,7 @@ function config.nvim_spectre()
     })
 end
 
-function config.nvim_comment()
+function config.comment_nvim()
     require("Comment").setup()
 end
 
@@ -338,20 +335,15 @@ function config.nvim_autopairs()
     })
 end
 
-function nvim_ts_autotag()
+function config.nvim_ts_autotag()
     require("nvim-ts-autotag").setup()
 end
 
 function config.nvim_surround()
-    local map = vim.keymap.set
-    local surround = require("nvim-surround")
-    map("n", "ys", surround.insert_surround)
-    map("n", "ds", surround.delete_surround)
-    map("n", "cs", surround.change_surround)
-    map("x", "S", surround.insert_surround)
+    require("nvim-surround").setup()
 end
 
-function config.nvim_colorize()
+function config.nvim_colorize_lua()
     require("colorizer").setup({
         "*",
     }, {
@@ -365,22 +357,22 @@ function config.nvim_colorize()
     })
 end
 
-function config.cinnamon()
+function config.cinnamon_nvim()
     require("cinnamon").setup({
         extra_keymaps = true,
         extended_keymaps = true,
     })
 end
 
-function config.suda()
+function config.suda_vim()
     vim.g.suda_smart_edit = 1
 end
 
-function config.hop()
+function config.hop_nvim()
     require("hop").setup()
 end
 
-function config.todo_comments()
+function config.todo_comments_nvim()
     require("todo-comments").setup({
         colors = {
             error = { "#F05F4E", "#F05F4E" },
@@ -392,7 +384,7 @@ function config.todo_comments()
     })
 end
 
-function config.pretty_fold()
+function config.pretty_fold_nvim()
     require("pretty-fold").setup({
         fill_char = "─",
         sections = {
@@ -416,6 +408,14 @@ function config.pretty_fold()
             vim.cmd("IndentBlanklineRefresh")
         end
     end)
+end
+
+function config.calendar_vim()
+    vim.g.calendar_diary_extension = ".org"
+    vim.g.calendar_diary = "~/Org/diary/"
+    vim.g.calendar_diary_path_pattern = "{YYYY}-{MM}-{DD}{EXT}"
+    vim.g.calendar_monday = 1
+    vim.g.calendar_weeknm = 1
 end
 
 return config

@@ -1,6 +1,6 @@
 local config = {}
 
-function config.nvim_lsp_installer()
+function config.mason_nvim()
     -- LSP buf
     vim.api.nvim_create_user_command("DapToggleBreakpoint", 'lua require("dap").toggle_breakpoint()', {})
     vim.api.nvim_create_user_command("LspAddToWorkspaceFolder", "lua vim.lsp.buf.add_workspace_folder()", {})
@@ -40,70 +40,23 @@ function config.nvim_lsp_installer()
         "lua require('languages.base.utils').toggle_virtual_text()",
         {}
     )
-    require("nvim-lsp-installer").setup({
-        ensure_installed = {
-            "diagnosticls",
-            "emmet_ls",
-            "eslint",
-            "stylelint_lsp",
-            "angularls",
-            "clojure_lsp",
-            "cmake",
-            "clangd",
-            "omnisharp",
-            "cssls",
-            "serve_d",
-            "elixirls",
-            "elmls",
-            "ember",
-            "erlangls",
-            "fortls",
-            "gopls",
-            "golangci_lint_ls",
-            "graphql",
-            "groovyls",
-            "html",
-            "jdtls",
-            "jsonls",
-            "tsserver",
-            "julials",
-            "kotlin_language_server",
-            "ltex",
-            "sumneko_lua",
-            "zk",
-            "perlnavigator",
-            "intelephense",
-            "pyright",
-            "r_language_server",
-            "solargraph",
-            "rust_analyzer",
-            "bashls",
-            "sqls",
-            "taplo",
-            "vimls",
-            "volar",
-            "lemminx",
-            "yamlls",
-            "zls",
-        },
-        automatic_installation = true,
+    require("mason").setup({
         ui = {
             icons = {
-                server_installed = " ",
-                server_pending = " ",
-                server_uninstalled = " ",
+                package_installed = " ",
+                package_pending = " ",
+                package_uninstalled = " ",
             },
         },
     })
     require("languages.base.utils").setup_diagnostic()
-    require("languages.base.diagnosticls").init_diagnosticls()
 end
 
-function config.go()
+function config.go_nvim()
     require("go").setup({})
 end
 
-function config.trld()
+function config.trld_nvim()
     require("trld").setup({
         position = "bottom",
     })
@@ -154,6 +107,7 @@ function config.nvim_treesitter()
         },
         highlight = {
             enable = true,
+            disable = { "markdown" },
             additional_vim_regex_highlighting = { "org" },
         },
         indent = {
@@ -212,12 +166,12 @@ function config.nvim_navic()
     vim.g.navic_silence = true
 end
 
-function config.any_jump()
+function config.any_jump_nvim()
     vim.g.any_jump_disable_default_keybindings = 1
     vim.g.any_jump_list_numbers = 1
 end
 
-function config.trouble()
+function config.trouble_nvim()
     require("trouble").setup({
         height = 12,
         mode = "workspace_diagnostics",
@@ -232,7 +186,7 @@ function config.trouble()
     })
 end
 
-function config.symbols_outline()
+function config.symbols_outline_nvim()
     require("symbols-outline").setup({
         highlight_hovered_item = true,
         show_guides = true,
@@ -369,7 +323,7 @@ function config.vim_dadbod_ui()
     vim.g.db_ui_auto_execute_table_helpers = true
 end
 
-function config.package_info()
+function config.package_info_nvim()
     require("package-info").setup({
         colors = {
             up_to_date = "#98c379",
@@ -378,7 +332,7 @@ function config.package_info()
     })
 end
 
-function config.crates()
+function config.crates_nvim()
     require("crates").setup()
     vim.api.nvim_create_user_command("CratesUpdate", "lua require('crates').update()", {})
     vim.api.nvim_create_user_command("CratesReload", "lua require('crates').reload()", {})
@@ -397,7 +351,7 @@ function config.crates()
     vim.api.nvim_create_user_command("CratesHidePopup", "lua require('crates').hide_popup()", {})
 end
 
-function config.pubspec_assist()
+function config.pubspec_assist_nvim()
     require("pubspec-assist").setup()
 end
 
@@ -407,6 +361,21 @@ function config.vimtex()
     vim.g.vimtex_compiler_progname = "nvr"
     vim.g.vimtex_compiler_callback_compiling = "nvr"
     vim.g.vimtex_quickfix_open_on_warning = 0
+end
+
+function config.orgmode()
+    require("orgmode").setup_ts_grammar()
+    require("orgmode").setup({
+        emacs_config = {
+            config_path = "$HOME/.emacs.d/early-init.el",
+        },
+        org_agenda_files = { "$HOME/Org/**/*" },
+        org_default_notes_file = "$HOME/Org/refile.org",
+    })
+end
+
+function config.lvim_org_utils()
+    require("lvim-org-utils").setup()
 end
 
 return config

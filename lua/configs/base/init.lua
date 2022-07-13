@@ -1,3 +1,4 @@
+local global = require("core.global")
 local funcs = require("core.funcs")
 local options = require("configs.base.options")
 local keymaps = require("configs.base.keymaps")
@@ -13,7 +14,15 @@ end
 
 configs["base_events"] = function()
     vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "dart", "ruby", "yaml", "c", "cpp", "objc", "objcpp" },
+        pattern = {
+            "dart",
+            "ruby",
+            "yaml",
+            "c",
+            "cpp",
+            "objc",
+            "objcpp",
+        },
         command = "setlocal ts=2 sw=2",
         group = group,
     })
@@ -51,52 +60,60 @@ configs["base_events"] = function()
         group = group,
     })
     if vim.fn.has("nvim-0.8") == 1 then
-        vim.api.nvim_create_autocmd("FileType", {
-            pattern = {
-                "text",
-                "org",
-            },
-            callback = function()
-                vim.opt_local.winbar = "%{%v:lua.require'languages.base.utils.file_name'.get_file_name()%}"
-            end,
-            group = group,
-        })
-        vim.api.nvim_create_autocmd("FileType", {
-            pattern = {
-                "^git.*",
-                "ctrlspace",
-                "ctrlspace_help",
-                "packer",
-                "undotree",
-                "diff",
-                "Outline",
-                "NvimTree",
-                "LvimHelper",
-                "floaterm",
-                "Trouble",
-                "dashboard",
-                "vista",
-                "spectre_panel",
-                "DiffviewFiles",
-                "flutterToolsOutline",
-                "log",
-                "qf",
-                "dapui_scopes",
-                "dapui_breakpoints",
-                "dapui_stacks",
-                "dapui_watches",
-                "calendar",
-            },
-            command = "setlocal winbar=",
-            group = group,
-        })
+        vim.api.nvim_create_autocmd(
+            { "CursorMoved", "BufWinEnter", "BufFilePost", "InsertEnter", "BufWritePost", "TabClosed" },
+            {
+                callback = function()
+                    if
+                        vim.tbl_contains({
+                            "prompt",
+                            "nofile",
+                            "help",
+                            "quickfix",
+                        }, vim.bo.buftype)
+                    then
+                        vim.opt_local.winbar = nil
+                    end
+                    if
+                        vim.tbl_contains({
+                            "ctrlspace",
+                            "ctrlspace_help",
+                            "packer",
+                            "undotree",
+                            "diff",
+                            "Outline",
+                            "NvimTree",
+                            "LvimHelper",
+                            "floaterm",
+                            "Trouble",
+                            "dashboard",
+                            "vista",
+                            "spectre_panel",
+                            "DiffviewFiles",
+                            "flutterToolsOutline",
+                            "log",
+                            "qf",
+                            "dapui_scopes",
+                            "dapui_breakpoints",
+                            "dapui_stacks",
+                            "dapui_watches",
+                            "calendar",
+                        }, vim.bo.filetype)
+                    then
+                        vim.opt_local.winbar = nil
+                    end
+                end,
+                group = "LvimIDE",
+            }
+        )
     end
 end
 
 configs["base_languages"] = function()
     vim.api.nvim_create_autocmd("BufWinEnter", {
-        pattern = "*",
-        command = 'lua require("languages.base").setup()',
+        callback = function()
+            require("languages.base").setup()
+        end,
         group = group,
     })
 end
@@ -149,6 +166,14 @@ configs["base_ctrlspace_pre_config"] = function()
         IM = " ",
         Dots = "ﳁ",
     }
+end
+
+configs["base_ask_packages"] = function()
+    local lvim_packages_file = global.cache_path .. ".lvim_packages"
+    if funcs.file_exists(lvim_packages_file) then
+        global.lvim_packages = true
+    end
+    vim.api.nvim_create_user_command("AskForPackagesFile", "lua require('core.funcs').delete_packages_file()", {})
 end
 
 return configs

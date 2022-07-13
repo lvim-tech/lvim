@@ -1,6 +1,6 @@
 local custom_select = require("nui.menu")
 local event = require("nui.utils.autocmd").event
-local popup_reference = nil
+local select_reference = nil
 
 local calculate_popup_width = function(entries, prompt)
     local result = 0
@@ -11,6 +11,9 @@ local calculate_popup_width = function(entries, prompt)
     end
     if #prompt > result then
         result = #prompt
+    end
+    if result < 60 then
+        result = 60
     end
     return result + 6
 end
@@ -25,19 +28,16 @@ local format_entries = function(entries, formatter)
     return results
 end
 
-local function nui_select(entries, stuff, on_user_choice)
+local function nui_select(entries, stuff, onUserChoice)
     assert(entries ~= nil and not vim.tbl_isempty(entries), "No entries available.")
-    assert(popup_reference == nil, "Sorry")
+    assert(select_reference == nil, "Sorry")
     local userChoice = function(choiceIndex)
-        on_user_choice(entries[choiceIndex["_index"] - 1])
+        onUserChoice(entries[choiceIndex["_index"] - 1])
     end
     local formatted_entries = format_entries(entries, stuff.format_item)
     local select_options = {
-        relative = "cursor",
-        position = {
-            row = 1,
-            col = 0,
-        },
+        relative = "editor",
+        position = "50%",
         size = {
             width = calculate_popup_width(formatted_entries, stuff.prompt or "Choice:"),
             height = #formatted_entries,
@@ -54,19 +54,22 @@ local function nui_select(entries, stuff, on_user_choice)
             winhighlight = "Normal:NuiBody",
         },
     }
-    popup_reference = custom_select(select_options, {
+    select_reference = custom_select(select_options, {
         lines = formatted_entries,
         on_close = function()
-            popup_reference = nil
+            select_reference = nil
         end,
         on_submit = function(item)
             userChoice(item)
-            popup_reference = nil
+            select_reference = nil
         end,
     })
-    if popup_reference ~= nil then
-        popup_reference:mount()
-        popup_reference:on(event.BufLeave, popup_reference.menu_props.on_close, { once = true })
+    if select_reference ~= nil then
+        if vim.bo.filetype == "ctrlspace" then
+            vim.cmd("bdelete")
+        end
+        select_reference:mount()
+        select_reference:on(event.BufLeave, select_reference.menu_props.on_close, { once = true })
     end
 end
 

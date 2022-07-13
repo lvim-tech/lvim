@@ -1,13 +1,13 @@
 local keymaps = {}
 
 keymaps["normal"] = {
+    { "<space><space>", ":CtrlSpace<CR>" }, -- CtrlSpace
     { "<F1>", ":TTOne<CR>" }, -- Toggleterm one open
     { "<F2>", ":TTTwo<CR>" }, -- Toggleterm two open
     { "<F3>", ":TTThree<CR>" }, -- Toggleterm three open
     { "<F4>", ":TTFloat<CR>" }, -- Toggleterm float open
     { "<F5>", ":UndotreeToggle<CR>" }, -- UndoTree toggle
     { "<F11>", ":LvimHelper<CR>" }, -- LvimHelper
-    { "<space><space>", ":CtrlSpace<CR>" }, -- CtrlSpace
     { "<Esc>", "<Esc>:noh<CR>:SnipClose<CR>" }, -- Remove highlight after search
     { "<C-c>n", ":enew<CR>" }, -- Create empty buffer
     { "<C-c>s", ":w<CR>" }, -- Save
@@ -54,6 +54,12 @@ keymaps["normal"] = {
     { "gr", ":LspRename<CR>" }, -- Lsp rename
     { "gs", ":SnipRun<CR>" }, -- Snip run
     { "gp", ":hardcopy<CR>" }, -- Print file
+    { "tn", ":tabn<CR>" }, -- Tab next
+    { "tp", ":tabp<CR>" }, -- Tab prev
+    { "tc", ":CalendarVR<CR>" }, -- Calendar
+    { "to", ":e ~/Org/notes/notes.org<CR>" }, -- Open org notes
+    { "th", ":Telescope howdoi<CR>" }, -- Telescope howdoi
+    { "tt", ":Telescope tmux sessions<CR>" }, -- Telescope tmux session
     { "<A-n>", ":LspGoToNext<CR>" }, -- Lsp go to next
     { "<A-p>", ":LspGoToPrev<CR>" }, -- Lsp go to prev
     { "<A-c>", ":LspLine<CR>" }, -- Lsp current line
@@ -69,10 +75,6 @@ keymaps["normal"] = {
     { "<A-8>", "<Cmd>DapUIClose<CR>" }, -- UI close
     { "<A-9>", "<Cmd>DapRestart<CR>" }, -- Restart
     { "<A-0>", "<Cmd>DapToggleRepl<CR>" }, -- Toggle Repl
-    { "tn", ":tabn<CR>" }, -- Tab next
-    { "tp", ":tabp<CR>" }, -- Tab prev
-    { "th", ":Telescope howdoi<CR>" }, -- Tab prev
-    { "tt", ":Telescope tmux sessions<CR>" }, -- Telescope tmux session
     { "zo", "zo:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
     { "zO", "zO:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
     { "zc", "zc:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines

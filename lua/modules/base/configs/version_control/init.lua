@@ -25,7 +25,7 @@ function config.neogit()
     })
 end
 
-function config.gitsigns()
+function config.gitsigns_nvim()
     require("gitsigns").setup({
         signs = {
             add = {
@@ -76,7 +76,7 @@ function config.gitsigns()
     vim.api.nvim_create_user_command("GitSignsBlameLine", "lua require('gitsigns').blame_line()", {})
 end
 
-function config.git_blame()
+function config.git_blame_nvim()
     vim.g.gitblame_ignored_filetypes = {
         "help",
         "NvimTree",

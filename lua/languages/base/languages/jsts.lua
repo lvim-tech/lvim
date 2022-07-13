@@ -1,79 +1,52 @@
--- Install Lsp server
--- :LspInstall tsserver
-
--- Install debugger
--- :DIInstall jsnode
-
 local global = require("core.global")
-local funcs = require("core.funcs")
 local languages_setup = require("languages.base.utils")
-local nvim_lsp_util = require("lspconfig/util")
-local default_debouce_time = 150
-local dap_install = require("dap-install")
+local tsserver_config = require("languages.base.languages._configs").jsts_config(
+    { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+    "jsts"
+)
 local dap = require("dap")
 
 local language_configs = {}
 
 language_configs["lsp"] = function()
-    local server_setup = {
-        flags = {
-            debounce_text_changes = default_debouce_time,
-        },
-        autostart = true,
-        filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-        on_attach = function(client, bufnr)
-            table.insert(global["languages"]["jsts"]["pid"], client.rpc.pid)
-            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-            languages_setup.document_highlight(client, bufnr)
-            languages_setup.document_formatting(client, bufnr)
-            languages_setup.set_winbar(client, bufnr)
-            local ts_utils = require("nvim-lsp-ts-utils")
-            ts_utils.setup({
-                debug = true,
-            })
-            ts_utils.setup_client(client)
-        end,
-        capabilities = languages_setup.get_capabilities(),
-        root_dir = function(fname)
-            return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
-        end,
-    }
-    languages_setup.setup_lsp("tsserver", server_setup)
+    languages_setup.setup_languages({
+        ["dap"] = { "chrome-debug-adapter" },
+        ["typescript-language-server"] = { "tsserver", tsserver_config },
+    })
 end
 
 language_configs["dap"] = function()
-    if funcs.dir_exists(global.lsp_path .. "dapinstall/jsnode/") ~= true then
-        vim.cmd("DIInstall jsnode")
-    end
-    dap_install.config("jsnode", {})
+    dap.adapters.chrome = {
+        type = "executable",
+        command = "node",
+        args = { global.mason_path .. "packages/chrome-debug-adapter/out/src/chromeDebug.js" },
+    }
     dap.configurations.javascript = {
         {
-            type = "node2",
-            request = "launch",
-            name = "Launch",
+            type = "chrome",
+            request = "attach",
             program = function()
                 return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
             end,
-            cwd = "${workspaceFolder}",
-            outFiles = { "${workspaceRoot}/dist/js/*" },
+            cwd = vim.fn.getcwd(),
             sourceMaps = true,
             protocol = "inspector",
-            console = "integratedTerminal",
+            port = 9222,
+            webRoot = "${workspaceFolder}",
         },
     }
     dap.configurations.typescript = {
         {
-            type = "node2",
-            request = "launch",
-            name = "Launch",
+            type = "chrome",
+            request = "attach",
             program = function()
                 return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
             end,
-            cwd = "${workspaceFolder}",
-            outFiles = { "${workspaceRoot}/dist/js/*" },
+            cwd = vim.fn.getcwd(),
             sourceMaps = true,
             protocol = "inspector",
-            console = "integratedTerminal",
+            port = 9222,
+            webRoot = "${workspaceFolder}",
         },
     }
 end

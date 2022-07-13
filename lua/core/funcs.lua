@@ -1,3 +1,5 @@
+local global = require("core.global")
+
 local M = {}
 
 M.merge = function(tbl1, tbl2)
@@ -49,6 +51,23 @@ end
 
 M.dir_exists = function(path)
     return M.file_exists(path)
+end
+
+M.write_file = function(f, content)
+    local file = io.open(f, "w")
+    if file ~= nil then
+        file:write(content)
+        file:close()
+    end
+end
+
+M.delete_file = function(f)
+    os.remove(f)
+end
+
+M.delete_packages_file = function()
+    local lvim_packages_file = global.cache_path .. ".lvim_packages"
+    os.remove(lvim_packages_file)
 end
 
 M.change_path = function()
@@ -149,7 +168,7 @@ M.file_size = function(size, options)
     if negative then
         result[1] = -result[1]
     end
-    result[2] = o.suffixes[ result[2] ] or result[2]
+    result[2] = o.suffixes[result[2]] or result[2]
     if o.output == "array" then
         return result
     elseif o.output == "exponent" then

@@ -1,46 +1,23 @@
--- Install Lsp server
--- :LspInstall pyright
-
--- Install debugger
--- :DIInstall python
-
 local global = require("core.global")
-local funcs = require("core.funcs")
 local languages_setup = require("languages.base.utils")
-local nvim_lsp_util = require("lspconfig/util")
-local default_debouce_time = 150
-local dap_install = require("dap-install")
+local pyright_config = require("languages.base.languages._configs").default_config({ "python" }, "python")
 local dap = require("dap")
 
 local language_configs = {}
 
 language_configs["lsp"] = function()
-    local server_setup = {
-        flags = {
-            debounce_text_changes = default_debouce_time,
-        },
-        autostart = true,
-        filetypes = { "python" },
-        on_attach = function(client, bufnr)
-            table.insert(global["languages"]["python"]["pid"], client.rpc.pid)
-            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-            languages_setup.document_highlight(client, bufnr)
-            languages_setup.document_formatting(client, bufnr)
-            languages_setup.set_winbar(client, bufnr)
-        end,
-        capabilities = languages_setup.get_capabilities(),
-        root_dir = function(fname)
-            return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
-        end,
-    }
-    languages_setup.setup_lsp("pyright", server_setup)
+    languages_setup.setup_languages({
+        ["dap"] = { "debugpy" },
+        ["pyright"] = { "pyright", pyright_config },
+    })
 end
 
 language_configs["dap"] = function()
-    if funcs.dir_exists(global.lsp_path .. "dapinstall/python/") ~= true then
-        vim.cmd("DIInstall python")
-    end
-    dap_install.config("python", {})
+    dap.adapters.python = {
+        type = "executable",
+        command = global.mason_path .. "packages/debugpy/venv/bin/python",
+        args = { "-m", "debugpy.adapter" },
+    }
     dap.configurations.python = {
         {
             type = "python",
@@ -54,8 +31,8 @@ language_configs["dap"] = function()
                 if venv_path then
                     return venv_path .. "/bin/python"
                 end
-                if vim.fn.executable(global.lsp_path .. "dapinstall/python/" .. "bin/python") == 1 then
-                    return global.lsp_path .. "dapinstall/python/" .. "bin/python"
+                if vim.fn.executable(global.mason_path .. "packages/debugpy/venv/" .. "bin/python") == 1 then
+                    return global.mason_path .. "packages/debugpy/venv/" .. "bin/python"
                 else
                     return "python"
                 end
