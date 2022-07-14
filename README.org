@@ -1948,8 +1948,8 @@
             line_sep = "-----------------------------------------",
             highlight = {
                 ui = "String",
-                search = "DiffChange",
-                replace = "DiffDelete",
+                search = "DiffAdd",
+                replace = "DiffChange",
             },
             mapping = {
                 ["delete_line"] = nil,

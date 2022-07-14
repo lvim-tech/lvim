@@ -5,10 +5,10 @@ function config.telescope_nvim()
     if not packer_plugins["telescope-fzf-native.nvim"].loaded then
         loader(
             "telescope-fzf-native.nvim"
-            .. " telescope-media-files.nvim"
-            .. " telescope-file-browser.nvim"
-            .. " telescope-tmux.nvim"
-            .. " howdoi.nvim"
+                .. " telescope-media-files.nvim"
+                .. " telescope-file-browser.nvim"
+                .. " telescope-tmux.nvim"
+                .. " howdoi.nvim"
         )
     end
     local telescope = require("telescope")
@@ -200,8 +200,8 @@ function config.nvim_spectre()
         line_sep = "-----------------------------------------",
         highlight = {
             ui = "String",
-            search = "DiffChange",
-            replace = "DiffDelete",
+            search = "DiffAdd",
+            replace = "DiffChange",
         },
         mapping = {
             ["delete_line"] = nil,
