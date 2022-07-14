@@ -880,6 +880,7 @@
                 info_icon = " ",
                 hint_icon = " ",
             },
+            update = { "DiagnosticChanged", "BufEnter" },
             init = function(self)
                 self.errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
                 self.warnings = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
@@ -913,6 +914,7 @@
         }
         local LSPActive = {
             condition = conditions.lsp_attached,
+            update = { "LspAttach", "LspDetach" },
             provider = function()
                 local names = {}
                 for _, server in pairs(vim.lsp.buf_get_clients(0)) do
@@ -924,6 +926,7 @@
         }
         local _LSPActive = {
             condition = conditions.lsp_attached,
+            update = { "LspAttach", "LspDetach" },
             provider = function()
                 return "  "
             end,
@@ -960,7 +963,7 @@
                 end
             end,
             hl = { fg = colors.color_04, bold = true },
-        }
+        }
         local Spell = {
             condition = function()
                 return vim.wo.spell
@@ -969,14 +972,13 @@
             hl = { bold = true, fg = colors.color_03 },
         }
         local ScrollBar = {
-            static = {
-                sbar = { "█", "▇", "▆", "▅", "▄", "▃", "▂", "▁" },
-            },
-            provider = function(self)
-                local curr_line = vim.api.nvim_win_get_cursor(0)[1]
-                local lines = vim.api.nvim_buf_line_count(0)
-                local i = math.floor((curr_line - 1) / lines * #self.sbar) + 1
-                return "  " .. self.sbar[i]
+            provider = function()
+                local current_line = vim.fn.line(".")
+                local total_lines = vim.fn.line("$")
+                local chars = { "█", "▇", "▆", "▅", "▄", "▃", "▂", "▁" }
+                local line_ratio = current_line / total_lines
+                local index = math.ceil(line_ratio * #chars)
+                return "  " .. chars[index]
             end,
             hl = { fg = colors.color_02 },
         }
@@ -992,7 +994,7 @@
                 local extension = vim.fn.expand("%:e")
                 if not isempty(filename) then
                     local file_icon, file_icon_color =
-                        require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
+                    require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
                     local hl_group_2 = "FileIconColor" .. extension
                     vim.api.nvim_set_hl(0, hl_group_2, { fg = file_icon_color, bg = colors.status_line_bg })
                     if isempty(file_icon) then

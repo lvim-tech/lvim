@@ -589,6 +589,7 @@ function config.heirline_nvim()
             info_icon = " ",
             hint_icon = " ",
         },
+        update = { "DiagnosticChanged", "BufEnter" },
         init = function(self)
             self.errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
             self.warnings = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
@@ -622,6 +623,7 @@ function config.heirline_nvim()
     }
     local LSPActive = {
         condition = conditions.lsp_attached,
+        update = { "LspAttach", "LspDetach" },
         provider = function()
             local names = {}
             for _, server in pairs(vim.lsp.buf_get_clients(0)) do
@@ -633,6 +635,7 @@ function config.heirline_nvim()
     }
     local _LSPActive = {
         condition = conditions.lsp_attached,
+        update = { "LspAttach", "LspDetach" },
         provider = function()
             return "  "
         end,
@@ -678,14 +681,13 @@ function config.heirline_nvim()
         hl = { bold = true, fg = colors.color_03 },
     }
     local ScrollBar = {
-        static = {
-            sbar = { "█", "▇", "▆", "▅", "▄", "▃", "▂", "▁" },
-        },
-        provider = function(self)
-            local curr_line = vim.api.nvim_win_get_cursor(0)[1]
-            local lines = vim.api.nvim_buf_line_count(0)
-            local i = math.floor((curr_line - 1) / lines * #self.sbar) + 1
-            return "  " .. self.sbar[i]
+        provider = function()
+            local current_line = vim.fn.line(".")
+            local total_lines = vim.fn.line("$")
+            local chars = { "█", "▇", "▆", "▅", "▄", "▃", "▂", "▁" }
+            local line_ratio = current_line / total_lines
+            local index = math.ceil(line_ratio * #chars)
+            return "  " .. chars[index]
         end,
         hl = { fg = colors.color_02 },
     }
