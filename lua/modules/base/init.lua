@@ -141,6 +141,11 @@ modules["nvim-telescope/telescope.nvim"] = {
     config = editor_config.telescope_nvim,
 }
 
+modules["kevinhwang91/nvim-bqf"] = {
+    ft = "qf",
+    config = editor_config.nvim_bqf,
+}
+
 modules["nanozuki/tabby.nvim"] = {
     config = editor_config.tabby_nvim,
 }

@@ -5,10 +5,10 @@ function config.telescope_nvim()
     if not packer_plugins["telescope-fzf-native.nvim"].loaded then
         loader(
             "telescope-fzf-native.nvim"
-                .. " telescope-media-files.nvim"
-                .. " telescope-file-browser.nvim"
-                .. " telescope-tmux.nvim"
-                .. " howdoi.nvim"
+            .. " telescope-media-files.nvim"
+            .. " telescope-file-browser.nvim"
+            .. " telescope-tmux.nvim"
+            .. " howdoi.nvim"
         )
     end
     local telescope = require("telescope")
@@ -94,6 +94,14 @@ function config.telescope_nvim()
     telescope.load_extension("file_browser")
     telescope.load_extension("tmux")
     telescope.load_extension("howdoi")
+end
+
+function config.nvim_bqf()
+    require("bqf").setup({
+        preview = {
+            border_chars = { "│", "│", "─", "─", "┌", "┐", "└", "┘", "█" },
+        },
+    })
 end
 
 function config.tabby_nvim()

@@ -4,7 +4,7 @@
 
   LVIM IDE is a modular Neovim configuration written in LUA with full customization
 
-  Current version - 2.0.06 (2022-07-14)
+  Current version - 2.0.11 (2022-07-15)
 
 **  SCREENSHOTS
 
@@ -1757,6 +1757,34 @@
     end
 
     #+end_src
+
+******   [[https://github.com/kevinhwang91/nvim-bqf][nvim-bqf]]
+
+        + INIT
+
+    #+begin_src lua
+
+    modules["kevinhwang91/nvim-bqf"] = {
+        ft = "qf",
+        config = editor_config.nvim_bqf,
+    }
+
+    #+end_src
+
+        + CONFIG
+
+    #+begin_src lua
+
+    function config.nvim_bqf()
+        require("bqf").setup({
+            preview = {
+                border_chars = { "│", "│", "─", "─", "┌", "┐", "└", "┘", "█" },
+            },
+        })
+    end
+
+    #+end_src
+
 
 ******   [[https://github.com/nanozuki/tabby.nvim][tabby.nvim]]
 
