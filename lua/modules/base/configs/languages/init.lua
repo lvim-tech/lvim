@@ -26,7 +26,6 @@ function config.mason_nvim()
     else
         vim.api.nvim_create_user_command("LspFormatting", "lua vim.lsp.buf.formatting()", {})
     end
-    vim.api.nvim_create_user_command("LspFormattingSync", "lua vim.lsp.buf.formatting_sync()", {})
     vim.api.nvim_create_user_command("LspHover", "lua vim.lsp.buf.hover()", {})
     vim.api.nvim_create_user_command("LspRename", "lua vim.lsp.buf.rename()", {})
     vim.api.nvim_create_user_command("LspSignatureHelp", "lua vim.lsp.buf.signature_help()", {})

@@ -530,8 +530,7 @@
                  t = { "<Cmd>LspTypeDefinition<CR>", "Type definition" },
                  R = { "<Cmd>LspReferences<CR>", "References" },
                  a = { "<Cmd>LspCodeAction<CR>", "Code action" },
-                 f = { "<Cmd>LspFormatting<CR>", "Formatting" },
-                 s = { "<Cmd>LspFormattingSync<CR>", "Sync formatting" },
+                 f = { "<Cmd>LspFormatting<CR>", "Format" },
                  S = {
                      name = "Symbol",
                      d = { "<Cmd>LspDocumentSymbol<CR>", "Document symbol" },
