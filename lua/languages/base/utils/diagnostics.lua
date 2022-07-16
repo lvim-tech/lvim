@@ -98,9 +98,15 @@ local function open_floating_preview(contents, syntax)
     api.nvim_buf_set_option(floating_bufnr, "bufhidden", "wipe")
     api.nvim_command(
         "autocmd CursorMoved,CursorMovedI,BufHidden,InsertCharPre <buffer> ++once lua pcall(vim.api.nvim_win_close, "
-        .. floating_winnr
-        .. ", true)"
+            .. floating_winnr
+            .. ", true)"
     )
+    vim.keymap.set("n", "q", function()
+        pcall(vim.api.nvim_win_close, floating_winnr, true)
+    end)
+    vim.keymap.set("n", "<esc>", function()
+        pcall(vim.api.nvim_win_close, floating_winnr, true)
+    end)
     return floating_bufnr, floating_winnr
 end
 
