@@ -4,7 +4,7 @@
 
   LVIM IDE is a modular Neovim configuration written in LUA with full customization
 
-  Current version - 2.0.12 (2022-07-16)
+  Current version - 2.0.15 (2022-07-16)
 
 **  SCREENSHOTS
 
@@ -2801,12 +2801,6 @@ function config.mason()
     vim.api.nvim_create_user_command("LspLine", "lua require('languages.base.utils.diagnostics').line()", {})
     vim.api.nvim_create_user_command("LspGoToNext", "lua require('languages.base.utils.diagnostics').goto_next()", {})
     vim.api.nvim_create_user_command("LspGoToPrev", "lua require('languages.base.utils.diagnostics').goto_prev()", {})
-    -- Virtual text toggle
-    vim.api.nvim_create_user_command(
-        "LspVirtualTextToggle",
-        "lua require('languages.base.utils').toggle_virtual_text()",
-        {}
-    )
     require("mason").setup({
         ui = {
             icons = {

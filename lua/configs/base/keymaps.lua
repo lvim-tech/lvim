@@ -64,7 +64,6 @@ keymaps["normal"] = {
     { "<A-p>", ":LspGoToPrev<CR>" }, -- Lsp go to prev
     { "<A-c>", ":LspLine<CR>" }, -- Lsp current line
     { "<A-e>", ":TroubleToggle<CR>" }, -- Trouble toggle
-    { "<A-*>", ":LspVirtualTextToggle<CR>" }, -- Lsp virtual text toggle
     { "<A-1>", "<Cmd>DapToggleBreakpoint<CR>" }, -- Toggle breakpoint
     { "<A-2>", "<Cmd>DapStartContinue<CR>" }, -- Start / continue
     { "<A-3>", "<Cmd>DapStepInto<CR>" }, -- Step into

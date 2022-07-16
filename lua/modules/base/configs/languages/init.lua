@@ -33,12 +33,6 @@ function config.mason_nvim()
     vim.api.nvim_create_user_command("LspLine", "lua require('languages.base.utils.diagnostics').line()", {})
     vim.api.nvim_create_user_command("LspGoToNext", "lua require('languages.base.utils.diagnostics').goto_next()", {})
     vim.api.nvim_create_user_command("LspGoToPrev", "lua require('languages.base.utils.diagnostics').goto_prev()", {})
-    -- Virtual text toggle
-    vim.api.nvim_create_user_command(
-        "LspVirtualTextToggle",
-        "lua require('languages.base.utils').toggle_virtual_text()",
-        {}
-    )
     require("mason").setup({
         ui = {
             icons = {
