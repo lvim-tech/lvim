@@ -104,9 +104,6 @@ local function open_floating_preview(contents, syntax)
     vim.keymap.set("n", "q", function()
         pcall(vim.api.nvim_win_close, floating_winnr, true)
     end)
-    vim.keymap.set("n", "<esc>", function()
-        pcall(vim.api.nvim_win_close, floating_winnr, true)
-    end)
     return floating_bufnr, floating_winnr
 end
 
