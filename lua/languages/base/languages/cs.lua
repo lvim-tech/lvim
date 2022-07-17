@@ -7,6 +7,7 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
+        ["language"] = "cs",
         ["dap"] = { "netcoredbg" },
         ["omnisharp-roslyn"] = { "omnisharp", omnisharp_config },
     })

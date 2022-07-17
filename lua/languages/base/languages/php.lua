@@ -7,6 +7,7 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
+        ["language"] = "php",
         ["dap"] = { "php-debug-adapter" },
         ["intelephense"] = { "intelephense", intelephense_config },
     })

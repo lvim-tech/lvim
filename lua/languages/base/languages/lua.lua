@@ -6,6 +6,7 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
+        ["language"] = "lua",
         ["lua-language-server"] = { "sumneko_lua", sumneko_lua_config },
     })
 end

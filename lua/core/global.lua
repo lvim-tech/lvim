@@ -24,13 +24,8 @@ function global:load_variables()
     self.home = home
     self.mason_path = string.format("%s/mason/", vim.fn.stdpath("data"))
     self.languages = {}
-    self.current_cwd = vim.fn.getcwd()
-    self.diagnostics = {}
-    self.virtual_text = "no"
-    self.pack_installer = nil
     self.lvim_packages = false
     self.install_proccess = false
-    self.diagnosticls_ready = true
 end
 
 global:load_variables()

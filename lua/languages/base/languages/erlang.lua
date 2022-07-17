@@ -5,6 +5,7 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
+        ["language"] = "erlang",
         ["erlang-ls"] = { "erlangls", erlangls_config },
     })
 end

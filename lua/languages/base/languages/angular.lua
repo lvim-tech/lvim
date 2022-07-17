@@ -9,6 +9,7 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
+        ["language"] = "angular",
         ["angular-language-server"] = { "angularls", angularls_config },
     })
 end

@@ -5,6 +5,7 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
+        ["language"] = "groovy",
         ["groovy-language-server"] = { "groovyls", clojure_lsp_config },
     })
 end

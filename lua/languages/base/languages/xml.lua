@@ -6,6 +6,7 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
+        ["language"] = "xml",
         ["lemminx"] = { "lemminx", lemminx_config },
     })
 end

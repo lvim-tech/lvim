@@ -5,6 +5,7 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
+        ["language"] = "vue",
         ["vue-language-server"] = { "volar", volar_config },
     })
 end

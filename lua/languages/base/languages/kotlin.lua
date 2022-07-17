@@ -5,6 +5,7 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
+        ["language"] = "kotlin",
         ["kotlin-language-server"] = { "kotlin_language_server", clojure_lsp_config },
     })
 end

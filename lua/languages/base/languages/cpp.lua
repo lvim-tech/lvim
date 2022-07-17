@@ -8,6 +8,7 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
+        ["language"] = "cpp",
         ["dap"] = { "cpptools" },
         ["clangd"] = { "clangd", clangd_config },
     })

@@ -6,6 +6,7 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
+        ["language"] = "css",
         ["css-lsp"] = { "cssls", cssls_config },
     })
 end

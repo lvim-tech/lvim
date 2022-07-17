@@ -5,6 +5,7 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
+        ["language"] = "julia",
         ["julia-lsp"] = { "julials", julials_config },
     })
 end

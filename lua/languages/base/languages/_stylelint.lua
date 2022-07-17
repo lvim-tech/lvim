@@ -12,6 +12,7 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
+        ["language"] = "stylelint",
         ["stylelint-lsp"] = { "stylelint_lsp", stylelint_lsp_config },
     })
 end

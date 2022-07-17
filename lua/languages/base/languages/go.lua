@@ -8,6 +8,7 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
+        ["language"] = "go",
         ["dap"] = { "delve" },
         ["gopls"] = { "gopls", gopls_config },
         ["golangci-lint-langserver"] = { "golangci_lint_ls", golangci_lint_ls_config },

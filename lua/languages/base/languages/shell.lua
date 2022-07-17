@@ -5,6 +5,7 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
+        ["language"] = "shell",
         ["bash-language-server"] = { "bashls", bashls_config },
     })
 end

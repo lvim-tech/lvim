@@ -13,6 +13,7 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
+        ["language"] = "eslint",
         ["eslint-lsp"] = { "eslint", eslint_config },
     })
 end

@@ -5,6 +5,7 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
+        ["language"] = "clojure",
         ["clojure-lsp"] = { "clojure_lsp", clojure_lsp_config },
     })
 end

@@ -5,6 +5,7 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
+        ["language"] = "d",
         ["serve-d"] = { "serve_d", serve_d_config },
     })
 end

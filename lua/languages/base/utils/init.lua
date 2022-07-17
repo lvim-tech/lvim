@@ -6,6 +6,9 @@ local select = require("languages.base.utils.select")
 
 local M = {}
 
+M.diagnosticls_ready = true
+M.current_language = ""
+
 M.setup_languages = function(packages_data)
     local packages_to_install, lsp_to_start, ordered_keys
 
@@ -28,7 +31,7 @@ M.setup_languages = function(packages_data)
                     end, 1000)
                     vim.defer_fn(function()
                         global.install_proccess = false
-                        global.diagnosticls_ready = true
+                        M.diagnosticls_ready = true
                     end, 2000)
                 end, 100)
             end
@@ -60,11 +63,11 @@ M.setup_languages = function(packages_data)
             if global.lvim_packages == false then
                 vim.defer_fn(function()
                     select({
-                        "Install for current buffer in stack",
-                        "Don't ask again",
+                        "Install packages for " .. M.current_language,
+                        "Don't ask me again",
                         "Cancel",
                     }, { prompt = "LVIM IDE need to install some packages" }, function(choice)
-                        if choice == "Install for current buffer in stack" then
+                        if choice == "Install packages for " .. M.current_language then
                             vim.defer_fn(function()
                                 for i = 1, #packages_to_install do
                                     vim.cmd("MasonInstall " .. packages_to_install[i])
@@ -76,7 +79,7 @@ M.setup_languages = function(packages_data)
                                     check_finish()
                                 end
                             end, 2000)
-                        elseif choice == "Don't ask again" then
+                        elseif choice == "Don't ask me again" then
                             funcs.write_file(global.cache_path .. ".lvim_packages", "")
                             vim.notify(
                                 "To enable ask again run command:\n:AskForPackagesFile\nand restart LVIM IDE",
@@ -107,17 +110,20 @@ M.setup_languages = function(packages_data)
             packages_to_install = {}
             lsp_to_start = {}
             ordered_keys = {}
+            M.current_language = ""
             for k in pairs(packages) do
                 table.insert(ordered_keys, k)
             end
             table.sort(ordered_keys)
             for i = 1, #ordered_keys do
                 local k, v = ordered_keys[i], packages[ordered_keys[i]]
-                if k == "dependencies" then
+                if k == "language" then
+                    M.current_language = v
+                elseif k == "dependencies" then
                     for a = 1, #v do
                         if not mason_registry.is_installed(v[a]) then
                             global.install_proccess = true
-                            global.diagnosticls_ready = false
+                            M.diagnosticls_ready = false
                             table.insert(packages_to_install, v[a])
                         end
                     end
@@ -134,7 +140,7 @@ M.setup_languages = function(packages_data)
                         table.insert(packages_to_install, k)
                         table.insert(lsp_to_start, { v[1], v[2] })
                     else
-                        if global.diagnosticls_ready then
+                        if M.diagnosticls_ready then
                             lspconfig[v[1]].setup(v[2])
                             vim.cmd("LspStart " .. v[1])
                         else

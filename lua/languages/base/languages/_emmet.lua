@@ -8,6 +8,7 @@ local language_configs = {}
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
+        ["language"] = "emmet",
         ["emmet-ls"] = { "emmet_ls", emmet_ls_config },
     })
 end
