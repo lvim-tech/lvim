@@ -4,7 +4,7 @@
 
   LVIM IDE is a modular Neovim configuration written in LUA with full customization
 
-  Current version - 2.0.15 (2022-07-16)
+  Current version - 2.0.16 (2022-07-11)
 
 **  SCREENSHOTS
 
@@ -163,7 +163,7 @@
     #+begin_src lua
 
     function config.lvim_colorscheme()
-        vim.g.lvim_sidebars = { "qf", "Outline", "terminal", "packer", "calendar" }
+        vim.g.lvim_sidebars = { "qf", "Outline", "terminal", "packer", "calendar", "spectre_panel", "Trouble", "ctrlspace" }
         vim.cmd("colorscheme lvim")
     end
 
