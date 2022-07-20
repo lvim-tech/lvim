@@ -146,7 +146,7 @@ function config.nvim_tree_lua()
 end
 
 function config.dirbuf_nvim()
-    require("dirbuf").setup()
+    require("dirbuf").setup({})
 end
 
 function config.which_key_nvim()

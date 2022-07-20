@@ -4,7 +4,7 @@
 
   LVIM IDE is a modular Neovim configuration written in LUA with full customization
 
-  Current version - 2.0.22 (2022-07-18)
+  Current version - 2.0.23 (2022-07-20)
 
 **  SCREENSHOTS
 
@@ -33,6 +33,7 @@
     * [[https://github.com/mhinz/neovim-remote][neovim-remote]]
     * [[https://nodejs.org/en/][nodejs]]
     * [[https://github.com/BurntSushi/ripgrep][ripgrep]]
+    * [[][sed]]
     * [[https://github.com/junegunn/fzf][fzf]]
     * [[https://github.com/WayneD/rsync][rsync]]
     * [[https://github.com/jesseduffield/lazygit][lazygit]]
@@ -40,7 +41,7 @@
     * [[https://github.com/htacg/tidy-html5][tidy-html5]]
     * [[https://git-scm.com/][git]]
     * [[https://curl.se/][curl]] or [[https://www.gnu.org/software/wget/][wget]]
-    * unzip, tar, gzip
+    * [[][unzip]], [[][tar]], [[][gzip]]
 
 **  INSTALL
 
