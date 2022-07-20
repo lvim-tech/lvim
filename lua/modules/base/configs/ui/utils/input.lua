@@ -14,7 +14,6 @@ local calculate_popup_width = function(default, prompt)
 end
 
 local function nui_input(opts, on_confirm)
-    vim.notify(vim.inspect(opts))
     assert(popup_reference == nil, "Sorry")
     local popup_options = {
         relative = "cursor",
