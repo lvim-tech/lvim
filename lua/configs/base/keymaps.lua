@@ -74,7 +74,7 @@ keymaps["normal"] = {
     { "<A-8>", "<Cmd>DapUIClose<CR>" }, -- UI close
     { "<A-9>", "<Cmd>DapRestart<CR>" }, -- Restart
     { "<A-0>", "<Cmd>DapToggleRepl<CR>" }, -- Toggle Repl
-    { "zo", "zo:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
+    { "zo", "zo:IndentBlanklineRefresh<cr>" }, -- Fix indent + fold lines
     { "zO", "zO:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
     { "zc", "zc:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
     { "zC", "zC:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines

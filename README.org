@@ -4,7 +4,7 @@
 
   LVIM IDE is a modular Neovim configuration written in LUA with full customization
 
-  Current version - 2.0.25 (2022-07-20)
+  Current version - 2.0.28 (2022-07-21)
 
 **  SCREENSHOTS
 
@@ -2466,6 +2466,7 @@ end
 ******   [[https://github.com/anuvyklack/pretty-fold.nvim][pretty-fold.nvim]]
 
         + REQUIRES:
+          *  [[https://github.com/anuvyklack/fold-preview.nvim][fold-preview.nvim]]
           *  [[https://github.com/anuvyklack/nvim-keymap-amend][nvim-keymap-amend]]
 
         + INIT
@@ -2474,7 +2475,12 @@ end
 
     modules["anuvyklack/pretty-fold.nvim"] = {
         requires = {
-            "anuvyklack/nvim-keymap-amend",
+            {
+                "anuvyklack/fold-preview.nvim",
+            },
+            {
+                "anuvyklack/keymap-amend.nvim",
+            },
         },
         event = {
             "BufRead",
@@ -2503,14 +2509,17 @@ end
             },
             ft_ignore = { "org" },
         })
-        require("pretty-fold.preview").setup()
-        local keymap_amend = require("keymap-amend")
-        local mapping = require("pretty-fold.preview").mapping
-        keymap_amend("n", "zp", function()
-            if vim.fn.foldclosed(".") > -1 then
-                mapping.show_close_preview_open_fold()
-                vim.cmd("IndentBlanklineRefresh")
-            end
+        require("fold-preview").setup()
+        local keymap = vim.keymap
+        keymap.amend = require("keymap-amend")
+        local map = require("fold-preview").mapping
+        keymap.amend("n", "h", function()
+            map.show_close_preview_open_fold()
+            vim.cmd("IndentBlanklineRefresh")
+        end)
+        keymap.amend("n", "l", function()
+            map.close_preview_without_defer()
+            vim.cmd("IndentBlanklineRefresh")
         end)
     end
 

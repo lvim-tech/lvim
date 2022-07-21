@@ -407,14 +407,13 @@ function config.pretty_fold_nvim()
         },
         ft_ignore = { "org" },
     })
-    require("pretty-fold.preview").setup()
-    local keymap_amend = require("keymap-amend")
-    local mapping = require("pretty-fold.preview").mapping
-    keymap_amend("n", "zp", function()
-        if vim.fn.foldclosed(".") > -1 then
-            mapping.show_close_preview_open_fold()
-            vim.cmd("IndentBlanklineRefresh")
-        end
+    require("fold-preview").setup()
+    local keymap = vim.keymap
+    keymap.amend = require("keymap-amend")
+    local map = require("fold-preview").mapping
+    keymap.amend("n", "zp", function()
+        map.show_close_preview_open_fold()
+        vim.cmd("IndentBlanklineRefresh")
     end)
 end
 
