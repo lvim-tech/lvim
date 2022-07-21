@@ -407,14 +407,16 @@ function config.pretty_fold_nvim()
         },
         ft_ignore = { "org" },
     })
-    require("fold-preview").setup()
-    local keymap = vim.keymap
-    keymap.amend = require("keymap-amend")
+    require("fold-preview").setup({
+        default_keybindings = false,
+    })
     local map = require("fold-preview").mapping
-    keymap.amend("n", "zp", function()
+    function _G.fold_preview()
         map.show_close_preview_open_fold()
         vim.cmd("IndentBlanklineRefresh")
-    end)
+    end
+
+    vim.api.nvim_create_user_command("FoldPreview", "lua _G.fold_preview()", {})
 end
 
 function config.calendar_vim()

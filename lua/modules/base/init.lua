@@ -291,12 +291,7 @@ modules["folke/todo-comments.nvim"] = {
 
 modules["anuvyklack/pretty-fold.nvim"] = {
     requires = {
-        {
-            "anuvyklack/fold-preview.nvim",
-        },
-        {
-            "anuvyklack/keymap-amend.nvim",
-        },
+        "anuvyklack/fold-preview.nvim",
     },
     event = {
         "BufRead",

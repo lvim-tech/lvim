@@ -4,7 +4,7 @@
 
   LVIM IDE is a modular Neovim configuration written in LUA with full customization
 
-  Current version - 2.0.28 (2022-07-21)
+  Current version - 2.0.29 (2022-07-21)
 
 **  SCREENSHOTS
 
@@ -2467,7 +2467,6 @@ end
 
         + REQUIRES:
           *  [[https://github.com/anuvyklack/fold-preview.nvim][fold-preview.nvim]]
-          *  [[https://github.com/anuvyklack/nvim-keymap-amend][nvim-keymap-amend]]
 
         + INIT
 
@@ -2475,12 +2474,7 @@ end
 
     modules["anuvyklack/pretty-fold.nvim"] = {
         requires = {
-            {
-                "anuvyklack/fold-preview.nvim",
-            },
-            {
-                "anuvyklack/keymap-amend.nvim",
-            },
+            "anuvyklack/fold-preview.nvim",
         },
         event = {
             "BufRead",
@@ -2509,18 +2503,16 @@ end
             },
             ft_ignore = { "org" },
         })
-        require("fold-preview").setup()
-        local keymap = vim.keymap
-        keymap.amend = require("keymap-amend")
+        require("fold-preview").setup({
+            default_keybindings = false,
+        })
         local map = require("fold-preview").mapping
-        keymap.amend("n", "h", function()
+        function _G.fold_preview()
             map.show_close_preview_open_fold()
             vim.cmd("IndentBlanklineRefresh")
-        end)
-        keymap.amend("n", "l", function()
-            map.close_preview_without_defer()
-            vim.cmd("IndentBlanklineRefresh")
-        end)
+        end
+
+        vim.api.nvim_create_user_command("FoldPreview", "lua _G.fold_preview()", {})
     end
 
     #+end_src
