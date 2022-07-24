@@ -362,7 +362,7 @@ modules["williamboman/mason.nvim"] = {
     requires = {
         "neovim/nvim-lspconfig",
     },
-    branch = "alpha",
+    branch = "main",
     config = languages_config.mason_nvim,
 }
 
