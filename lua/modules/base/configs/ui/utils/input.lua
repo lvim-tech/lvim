@@ -8,7 +8,7 @@ local calculate_popup_width = function(default, prompt)
         result = #prompt + 40
     end
     if default ~= nil then
-        if #default > result then
+        if #default + 40 > result then
             result = #default + 40
         end
     end

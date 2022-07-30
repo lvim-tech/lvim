@@ -3,14 +3,16 @@ local event = require("nui.utils.autocmd").event
 local popup_reference = nil
 
 local calculate_popup_width = function(entries, prompt)
-    local result = 0
+    local result = 6
     for _, entry in pairs(entries) do
-        if #entry.text > result then
-            result = #entry.text
+        if #entry.text + 6 > result then
+            result = #entry.text + 6
         end
     end
-    if #prompt > result then
-        result = #prompt
+    if #prompt ~= nil then
+        if #prompt + 6 > result then
+            result = #prompt + 6
+        end
     end
     return result + 6
 end
