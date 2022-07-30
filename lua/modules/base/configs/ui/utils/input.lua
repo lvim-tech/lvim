@@ -3,8 +3,10 @@ local event = require("nui.utils.autocmd").event
 local popup_reference = nil
 
 local calculate_popup_width = function(default, prompt)
-    local result = 0
-    result = #prompt
+    local result = 40
+    if prompt ~= nil then
+        result = #prompt + 40
+    end
     if default ~= nil then
         if #default > result then
             result = #default + 40
