@@ -780,6 +780,7 @@ function config.heirline_nvim()
             condition = function()
                 return conditions.buffer_matches({
                     buftype = {
+                        "nofile",
                         "prompt",
                         "help",
                         "quickfix",
@@ -838,7 +839,7 @@ function config.heirline_nvim()
         },
     }
     if vim.fn.has("nvim-0.8") == 1 then
-        require("heirline").setup(StatusLines, WinBars)
+        require("heirline").setup(StatusLines)
     else
         require("heirline").setup(StatusLines)
     end
