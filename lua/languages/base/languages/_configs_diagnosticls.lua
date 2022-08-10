@@ -265,7 +265,7 @@ M.default_config = function(file_types, pid_name)
             formatters = M.config.formatters,
         },
         on_attach = function(client, bufnr)
-            client.offset_encoding = "utf-8"
+            client.offset_encoding = "utf-16"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             languages_setup.document_highlight(client, bufnr)

@@ -17,7 +17,7 @@ M.default_config = function(file_types, pid_name)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
-            client.offset_encoding = "utf-8"
+            client.offset_encoding = "utf-16"
             if vim.fn.has("nvim-0.8") == 1 then
                 navic.attach(client, bufnr)
             end
@@ -41,7 +41,7 @@ M.without_winbar_config = function(file_types, pid_name)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
-            client.offset_encoding = "utf-8"
+            client.offset_encoding = "utf-16"
         end,
         capabilities = languages_setup.get_capabilities(),
         root_dir = function(fname)
@@ -62,7 +62,7 @@ M.jsts_config = function(file_types, pid_name)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
-            client.offset_encoding = "utf-8"
+            client.offset_encoding = "utf-16"
             if vim.fn.has("nvim-0.8") == 1 then
                 navic.attach(client, bufnr)
             end
@@ -91,7 +91,7 @@ M.angular_config = function(file_types, pid_name)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
-            client.offset_encoding = "utf-8"
+            client.offset_encoding = "utf-16"
         end,
         capabilities = languages_setup.get_capabilities(),
         root_dir = nvim_lsp_util.root_pattern("angular.json"),
@@ -110,7 +110,7 @@ M.ember_config = function(file_types, pid_name)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
-            client.offset_encoding = "utf-8"
+            client.offset_encoding = "utf-16"
         end,
         capabilities = languages_setup.get_capabilities(),
         root_dir = nvim_lsp_util.root_pattern("ember-cli-build.js"),
