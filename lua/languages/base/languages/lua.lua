@@ -1,5 +1,5 @@
 local languages_setup = require("languages.base.utils")
-local sumneko_lua_config = require("languages.base.languages._configs").default_config({ "lua" }, "lua")
+local sumneko_lua_config = require("languages.base.languages._configs").lua({ "lua" }, "lua")
 local dap = require("dap")
 
 local language_configs = {}

@@ -46,7 +46,11 @@ function config.mason_nvim()
 end
 
 function config.go_nvim()
-    require("go").setup({})
+    require("go").setup({
+        lsp_inlay_hints = {
+            enable = false,
+        },
+    })
 end
 
 function config.trld_nvim()
@@ -147,6 +151,14 @@ function config.nvim_treesitter_contex()
                 "case",
             },
         },
+    })
+end
+
+function config.lsp_inlayhints_nvim()
+    require("lsp-inlayhints").setup({
+        inlay_hints = {
+            highlight = "Comment",
+        }
     })
 end
 

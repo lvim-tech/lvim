@@ -826,8 +826,10 @@
         }
         FileNameBlock = utils.insert(
             FileNameBlock,
-            utils.insert(FileNameModifer, FileName),
+            Space,
+            Space,
             FileIcon,
+            utils.insert(FileNameModifer, FileName),
             FileSize,
             unpack(FileFlags),
             { provider = "%<" }
@@ -1001,10 +1003,9 @@
                         file_icon = ""
                         file_icon_color = ""
                     end
-                    return " "
-                        .. "%#"
+                    return "%#"
                         .. hl_group_2
-                        .. "#"
+                        .. "# "
                         .. file_icon
                         .. "%*"
                         .. " "
@@ -1073,6 +1074,7 @@
                 condition = function()
                     return conditions.buffer_matches({
                         buftype = {
+                            "nofile",
                             "prompt",
                             "help",
                             "quickfix",
@@ -2872,7 +2874,11 @@ end
     #+begin_src lua
 
     function config.go_nvim()
-        require("go").setup({})
+        require("go").setup({
+            lsp_inlay_hints = {
+                enable = false,
+            },
+        })
     end
 
     #+end_src
@@ -3136,6 +3142,41 @@ end
     end
 
     #+end_src
+
+******   [[https://github.com/lvimuser/lsp-inlayhints.nvim][lsp-inlayhints.nvim]]
+
+        + REQUIRES:
+          *  [[https://github.com/neovim/nvim-lspconfig][nvim-lspconfig]]
+
+        + INIT
+
+    #+begin_src lua
+
+    modules["lvimuser/lsp-inlayhints.nvim"] = {
+        requires = {
+            {
+                "neovim/nvim-lspconfig",
+            },
+        },
+        config = languages_config.lsp_inlayhints_nvim,
+    }
+
+    #+end_src
+
+        + CONFIG
+
+    #+begin_src lua
+
+    function config.lsp_inlayhints_nvim()
+        require("lsp-inlayhints").setup({
+            inlay_hints = {
+                highlight = "Comment",
+            }
+        })
+    end
+
+    #+end_src
+
 
 ******   [[https://github.com/SmiteshP/nvim-navic][nvim-navic]]
 

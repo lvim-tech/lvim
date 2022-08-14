@@ -534,8 +534,10 @@ function config.heirline_nvim()
     }
     FileNameBlock = utils.insert(
         FileNameBlock,
-        utils.insert(FileNameModifer, FileName),
+        Space,
+        Space,
         FileIcon,
+        utils.insert(FileNameModifer, FileName),
         FileSize,
         unpack(FileFlags),
         { provider = "%<" }
@@ -702,11 +704,11 @@ function config.heirline_nvim()
             local extension = vim.fn.expand("%:e")
             if not isempty(filename) then
                 local file_icon, file_icon_color =
-                    require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
+                require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
                 local hl_group_2 = "FileIconColor" .. extension
                 vim.api.nvim_set_hl(0, hl_group_2, { fg = file_icon_color, bg = colors.status_line_bg })
                 if isempty(file_icon) then
-                    file_icon = " "
+                    file_icon = ""
                     file_icon_color = ""
                 end
                 return "%#"
@@ -839,7 +841,7 @@ function config.heirline_nvim()
         },
     }
     if vim.fn.has("nvim-0.8") == 1 then
-        require("heirline").setup(StatusLines)
+        require("heirline").setup(StatusLines, WinBars)
     else
         require("heirline").setup(StatusLines)
     end

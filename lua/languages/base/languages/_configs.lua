@@ -2,6 +2,7 @@ local global = require("core.global")
 local languages_setup = require("languages.base.utils")
 local nvim_lsp_util = require("lspconfig/util")
 local navic = require("nvim-navic")
+local lsp_inlayhints = require("lsp-inlayhints")
 local default_debouce_time = 150
 local M = {}
 
@@ -20,6 +21,7 @@ M.default_config = function(file_types, pid_name)
             client.offset_encoding = "utf-16"
             if vim.fn.has("nvim-0.8") == 1 then
                 navic.attach(client, bufnr)
+                lsp_inlayhints.on_attach(bufnr, client)
             end
         end,
         capabilities = languages_setup.get_capabilities(),
@@ -50,6 +52,98 @@ M.without_winbar_config = function(file_types, pid_name)
     }
 end
 
+M.go = function(file_types, pid_name)
+    return {
+        flags = {
+            debounce_text_changes = default_debouce_time,
+        },
+        autostart = true,
+        filetypes = file_types,
+        on_attach = function(client, bufnr)
+            table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
+            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+            languages_setup.document_highlight(client, bufnr)
+            languages_setup.document_formatting(client, bufnr)
+            client.offset_encoding = "utf-16"
+            if vim.fn.has("nvim-0.8") == 1 then
+                navic.attach(client, bufnr)
+                lsp_inlayhints.on_attach(bufnr, client)
+            end
+        end,
+        settings = {
+            gopls = {
+                hints = {
+                    assignVariableTypes = true,
+                    compositeLiteralFields = true,
+                    constantValues = true,
+                    functionTypeParameters = true,
+                    parameterNames = true,
+                    rangeVariableTypes = true,
+                },
+            },
+        },
+        capabilities = languages_setup.get_capabilities(),
+        root_dir = function(fname)
+            return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
+        end,
+    }
+end
+
+M.lua = function(file_types, pid_name)
+    return {
+        flags = {
+            debounce_text_changes = default_debouce_time,
+        },
+        autostart = true,
+        filetypes = file_types,
+        on_attach = function(client, bufnr)
+            table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
+            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+            languages_setup.document_highlight(client, bufnr)
+            languages_setup.document_formatting(client, bufnr)
+            client.offset_encoding = "utf-16"
+            if vim.fn.has("nvim-0.8") == 1 then
+                navic.attach(client, bufnr)
+                lsp_inlayhints.on_attach(bufnr, client)
+            end
+        end,
+        settings = {
+            Lua = {
+                hint = {
+                    enable = true,
+                    arrayIndex = "All",
+                    await = true,
+                    paramName = "All",
+                    paramType = true,
+                    semicolon = "Disable",
+                    setType = true,
+                },
+                runtime = {
+                    version = "LuaJIT",
+                    special = {
+                        reload = "require",
+                    },
+                },
+                diagnostics = {
+                    globals = {
+                        "vim",
+                        "use",
+                        "packer_plugins",
+                        "NOREF_NOERR_TRUNC"
+                    },
+                },
+                telemetry = {
+                    enable = false,
+                },
+            },
+        },
+        capabilities = languages_setup.get_capabilities(),
+        root_dir = function(fname)
+            return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
+        end,
+    }
+end
+
 M.jsts_config = function(file_types, pid_name)
     return {
         flags = {
@@ -72,6 +166,30 @@ M.jsts_config = function(file_types, pid_name)
             })
             ts_utils.setup_client(client)
         end,
+        settings = {
+            typescript = {
+                inlayHints = {
+                    includeInlayParameterNameHints = "all",
+                    includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                    includeInlayFunctionParameterTypeHints = true,
+                    includeInlayVariableTypeHints = true,
+                    includeInlayPropertyDeclarationTypeHints = true,
+                    includeInlayFunctionLikeReturnTypeHints = true,
+                    includeInlayEnumMemberValueHints = true,
+                },
+            },
+            javascript = {
+                inlayHints = {
+                    includeInlayParameterNameHints = "all",
+                    includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                    includeInlayFunctionParameterTypeHints = true,
+                    includeInlayVariableTypeHints = true,
+                    includeInlayPropertyDeclarationTypeHints = true,
+                    includeInlayFunctionLikeReturnTypeHints = true,
+                    includeInlayEnumMemberValueHints = true,
+                },
+            },
+        },
         capabilities = languages_setup.get_capabilities(),
         root_dir = function(fname)
             return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()

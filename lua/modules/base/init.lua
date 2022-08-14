@@ -453,6 +453,15 @@ modules["nvim-treesitter/nvim-treesitter-context"] = {
     config = languages_config.nvim_treesitter_contex,
 }
 
+modules["lvimuser/lsp-inlayhints.nvim"] = {
+    requires = {
+        {
+            "neovim/nvim-lspconfig",
+        },
+    },
+    config = languages_config.lsp_inlayhints_nvim,
+}
+
 modules["SmiteshP/nvim-navic"] = {
     requires = {
         {

@@ -1,7 +1,7 @@
 local languages_setup = require("languages.base.utils")
-local gopls_config = require("languages.base.languages._configs").default_config({ "go", "gomod" }, "go")
+local gopls_config = require("languages.base.languages._configs").go({ "go", "gomod" }, "go")
 local golangci_lint_ls_config =
-    require("languages.base.languages._configs").without_winbar_config({ "go", "gomod" }, "go")
+require("languages.base.languages._configs").without_winbar_config({ "go", "gomod" }, "go")
 local dap = require("dap")
 
 local language_configs = {}
