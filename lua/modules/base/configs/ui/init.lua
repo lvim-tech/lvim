@@ -202,6 +202,7 @@ function config.which_key_nvim()
         },
         hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " },
         show_help = true,
+        buftype = "",
     }
     local nopts = {
         mode = "n",
@@ -781,6 +782,12 @@ function config.heirline_nvim()
         {
             condition = function()
                 return conditions.buffer_matches({
+                    buftype = {
+                        "nofile",
+                        "prompt",
+                        "help",
+                        "quickfix",
+                    },
                     filetype = {
                         "ctrlspace",
                         "ctrlspace_help",

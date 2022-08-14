@@ -43,60 +43,12 @@ configs["base_events"] = function()
         group = group,
     })
     vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "dashboard" },
-        command = "setlocal nowrap",
-        group = group,
-    })
-    vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "NvimTree" },
-        command = "setlocal foldmethod=indent",
-        group = group,
-    })
-    vim.api.nvim_create_autocmd("FileType", {
         pattern = { "ctrlspace" },
         callback = function()
             vim.api.nvim_win_set_option(0, "winhighlight", "SignColumn:LvimFocusNormal")
         end,
         group = group,
     })
-    if vim.fn.has("nvim-0.8") == 1 then
-        vim.api.nvim_create_autocmd(
-            { "CursorMoved", "BufWinEnter", "BufFilePost", "InsertEnter", "BufWritePost", "TabClosed" },
-            {
-                callback = function(args)
-                    local buf = args.buf
-                    local filetype = vim.tbl_contains({
-                        "ctrlspace",
-                        "ctrlspace_help",
-                        "packer",
-                        "undotree",
-                        "diff",
-                        "Outline",
-                        "NvimTree",
-                        "LvimHelper",
-                        "floaterm",
-                        "Trouble",
-                        "dashboard",
-                        "vista",
-                        "spectre_panel",
-                        "DiffviewFiles",
-                        "flutterToolsOutline",
-                        "log",
-                        "qf",
-                        "dapui_scopes",
-                        "dapui_breakpoints",
-                        "dapui_stacks",
-                        "dapui_watches",
-                        "calendar",
-                    }, vim.bo[buf].filetype)
-                    if filetype then
-                        vim.opt_local.winbar = nil
-                    end
-                end,
-                group = "LvimIDE",
-            }
-        )
-    end
 end
 
 configs["base_languages"] = function()
