@@ -781,12 +781,6 @@ function config.heirline_nvim()
         {
             condition = function()
                 return conditions.buffer_matches({
-                    buftype = {
-                        "nofile",
-                        "prompt",
-                        "help",
-                        "quickfix",
-                    },
                     filetype = {
                         "ctrlspace",
                         "ctrlspace_help",

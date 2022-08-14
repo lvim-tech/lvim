@@ -65,12 +65,6 @@ configs["base_events"] = function()
             {
                 callback = function(args)
                     local buf = args.buf
-                    local buftype = vim.tbl_contains({
-                        "prompt",
-                        "nofile",
-                        "help",
-                        "quickfix",
-                    }, vim.bo[buf].buftype)
                     local filetype = vim.tbl_contains({
                         "ctrlspace",
                         "ctrlspace_help",
@@ -95,7 +89,7 @@ configs["base_events"] = function()
                         "dapui_watches",
                         "calendar",
                     }, vim.bo[buf].filetype)
-                    if buftype or filetype then
+                    if filetype then
                         vim.opt_local.winbar = nil
                     end
                 end,
