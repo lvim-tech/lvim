@@ -2,7 +2,6 @@ local config = {}
 
 function config.mason_nvim()
     -- LSP buf
-    vim.api.nvim_create_user_command("DapToggleBreakpoint", 'lua require("dap").toggle_breakpoint()', {})
     vim.api.nvim_create_user_command("LspAddToWorkspaceFolder", "lua vim.lsp.buf.add_workspace_folder()", {})
     vim.api.nvim_create_user_command("LspListWorkspaceFolders", "lua vim.lsp.buf.list_workspace_folders()", {})
     vim.api.nvim_create_user_command("LspRemoveWorkspaceFolder", "lua vim.lsp.buf.remove_workspace_folder()", {})
@@ -26,13 +25,9 @@ function config.mason_nvim()
     else
         vim.api.nvim_create_user_command("LspFormatting", "lua vim.lsp.buf.formatting()", {})
     end
-    vim.api.nvim_create_user_command("LspHover", "lua vim.lsp.buf.hover()", {})
     vim.api.nvim_create_user_command("LspRename", "lua vim.lsp.buf.rename()", {})
     vim.api.nvim_create_user_command("LspSignatureHelp", "lua vim.lsp.buf.signature_help()", {})
     -- LSP diagnostic
-    vim.api.nvim_create_user_command("LspLine", "lua require('languages.base.utils.diagnostics').line()", {})
-    vim.api.nvim_create_user_command("LspGoToNext", "lua require('languages.base.utils.diagnostics').goto_next()", {})
-    vim.api.nvim_create_user_command("LspGoToPrev", "lua require('languages.base.utils.diagnostics').goto_prev()", {})
     require("mason").setup({
         ui = {
             icons = {
@@ -43,6 +38,37 @@ function config.mason_nvim()
         },
     })
     require("languages.base.utils").setup_diagnostic()
+end
+
+function config.goto_preview()
+    require("goto-preview").setup({
+        border = { " ", " ", " ", " ", " ", " ", " ", " " }, -- Border characters of the floating window
+    })
+    vim.api.nvim_create_user_command("LspDefinition", "lua require('goto-preview').goto_preview_definition()", {})
+    vim.api.nvim_create_user_command(
+        "LspTypeDefinition",
+        "lua require('goto-preview').goto_preview_type_definition()",
+        {}
+    )
+    vim.api.nvim_create_user_command("LspReferences", "lua require('goto-preview').goto_preview_references()", {})
+    vim.api.nvim_create_user_command(
+        "LspImplementation",
+        "lua require('goto-preview').goto_preview_implementation()",
+        {}
+    )
+end
+
+function config.hover_nvim()
+    require("hover").setup({
+        init = function()
+            require("hover.providers.lsp")
+        end,
+        preview_opts = {
+            border = nil,
+        },
+        title = false,
+    })
+    vim.api.nvim_create_user_command("Hover", "lua require('hover').hover()", {})
 end
 
 function config.go_nvim()
@@ -158,7 +184,7 @@ function config.lsp_inlayhints_nvim()
     require("lsp-inlayhints").setup({
         inlay_hints = {
             highlight = "Comment",
-        }
+        },
     })
 end
 

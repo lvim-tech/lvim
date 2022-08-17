@@ -83,25 +83,29 @@ Normal mode
 | -------------- | ---------------------------- | --------------------------- |
 | <A-s>          | :Spectre<CR>                 | Replace in multiple files   |
 | -------------- | ---------------------------- | --------------------------- |
+| gr             | :LspRename<CR>               | Lsp rename                  |
+| -------------- | ---------------------------- | --------------------------- |
 | gf             | :LspFormatting<CR>           | Lsp format code             |
 | -------------- | ---------------------------- | --------------------------- |
-| ga             | :LspAction<CR>               | Lsp action                  |
+| ga             | :LspAction<CR>               | Lsp code action             |
 | -------------- | ---------------------------- | --------------------------- |
 | gL             | :LspCodeLensRefresh<CR>      | Lsp code lens refresh       |
 | -------------- | ---------------------------- | --------------------------- |
 | gl             | :LspCodeLensRun<CR>          | Lsp code lens run           |
 | -------------- | ---------------------------- | --------------------------- |
-| gR             | :LspReferences<CR>           | Lsp references              |
+| gpd            | :LspDefinition<CR>           | Lsp definition              |
 | -------------- | ---------------------------- | --------------------------- |
-| gd             | :LspDefinition<CR>           | Lsp definition              |
+| gpt            | :LspTypeDefinition<CR>       | Lsp type definition         |
 | -------------- | ---------------------------- | --------------------------- |
-| gD             | :LspDeclaration<CR>          | Lsp declaration             |
+| gpr            | :LspReferences<CR>           | Lsp references              |
+| -------------- | ---------------------------- | --------------------------- |
+| gpi            | :LspImplementation<CR>       | Lsp implementation          |
+| -------------- | ---------------------------- | --------------------------- |
+| gps            | :LspSignatureHelp<CR>        | Lsp signature help          |
 | -------------- | ---------------------------- | --------------------------- |
 | gh             | :LspHover<CR>                | Lsp hover                   |
 | -------------- | ---------------------------- | --------------------------- |
 | gH             | :LspSignatureHelp<CR>        | Lsp signature help          |
-| -------------- | ---------------------------- | --------------------------- |
-| gr             | :LspRename<CR>               | Lsp rename                  |
 | -------------- | ---------------------------- | --------------------------- |
 | gs             | :SnipRun<CR>                 | Snip run                    |
 | -------------- | ---------------------------- | --------------------------- |

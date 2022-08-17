@@ -42,26 +42,25 @@ keymaps["normal"] = {
     { "<A-[>", ":GitSignsPrevHunk<CR>" }, -- Git signs prev hunk
     { "<A-;>", ":GitSignsPreviewHunk<CR>" }, -- Git signs preview hunk
     { "<A-s>", ":Spectre<CR>" }, -- Replace in multiple files
+    { "gr", ":LspRename<CR>" }, -- Lsp rename
     { "gf", ":LspFormatting<CR>" }, -- Lsp format code
-    { "ga", ":LspCodeAction<CR>" }, -- Lsp action
+    { "ga", ":LspCodeAction<CR>" }, -- Lsp code action
     { "gL", ":LspCodeLensRefresh<CR>" }, -- Lsp code lens refresh
     { "gl", ":LspCodeLensRun<CR>" }, -- Lsp code lens run
-    { "gR", ":LspReferences<CR>" }, -- Lsp references
-    { "gd", ":LspDefinition<CR>" }, -- Lsp definition
-    { "gD", ":LspDeclaration<CR>" }, -- Lsp declaration
-    { "gh", ":LspHover<CR>" }, -- Lsp hover
-    { "gH", ":LspSignatureHelp<CR>" }, -- Lsp signature help
-    { "gr", ":LspRename<CR>" }, -- Lsp rename
+    { "gpd", ":LspDefinition<CR>" }, -- Lsp definition
+    { "gpt", ":LspTypeDefinition<CR>" }, -- Lsp type definition
+    { "gpr", ":LspReferences<CR>" }, -- Lsp references
+    { "gpi", ":LspImplementation<CR>" }, -- Lsp implementation
+    { "gps", ":LspSignatureHelp<CR>" }, -- Lsp signsture help
+    { "gh", ":Hover<CR>" }, -- Lsp hover
     { "gs", ":SnipRun<CR>" }, -- Snip run
-    { "gp", ":hardcopy<CR>" }, -- Print file
+    { "gP", ":hardcopy<CR>" }, -- Print file
     { "tn", ":tabn<CR>" }, -- Tab next
     { "tp", ":tabp<CR>" }, -- Tab prev
     { "tc", ":CalendarVR<CR>" }, -- Calendar
     { "to", ":e ~/Org/notes/notes.org<CR>" }, -- Open org notes
     { "th", ":Telescope howdoi<CR>" }, -- Telescope howdoi
     { "tt", ":Telescope tmux sessions<CR>" }, -- Telescope tmux session
-    { "<A-n>", ":LspGoToNext<CR>" }, -- Lsp go to next
-    { "<A-p>", ":LspGoToPrev<CR>" }, -- Lsp go to prev
     { "<A-c>", ":LspLine<CR>" }, -- Lsp current line
     { "<A-e>", ":TroubleToggle<CR>" }, -- Trouble toggle
     { "<A-1>", "<Cmd>DapToggleBreakpoint<CR>" }, -- Toggle breakpoint

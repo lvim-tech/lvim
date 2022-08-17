@@ -1,10 +1,14 @@
 {
     "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
-    "Lua.diagnostics.disable": ["deprecated"],
+    "Lua.diagnostics.disable": [
+        "deprecated"
+    ],
     "Lua.diagnostics.globals": [
         "vim",
         "use",
         "packer_plugins",
-        "NOREF_NOERR_TRUNC"
-    ]
+        "NOREF_NOERR_TRUNC",
+        "lfs"
+    ],
+    "Lua.workspace.checkThirdParty": false
 }

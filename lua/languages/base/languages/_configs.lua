@@ -90,58 +90,116 @@ M.go = function(file_types, pid_name)
 end
 
 M.lua = function(file_types, pid_name)
-    return {
-        flags = {
-            debounce_text_changes = default_debouce_time,
-        },
-        autostart = true,
-        filetypes = file_types,
-        on_attach = function(client, bufnr)
-            table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
-            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-            languages_setup.document_highlight(client, bufnr)
-            languages_setup.document_formatting(client, bufnr)
-            client.offset_encoding = "utf-16"
-            if vim.fn.has("nvim-0.8") == 1 then
-                navic.attach(client, bufnr)
-                lsp_inlayhints.on_attach(bufnr, client)
-            end
-        end,
-        settings = {
-            Lua = {
-                hint = {
-                    enable = true,
-                    arrayIndex = "All",
-                    await = true,
-                    paramName = "All",
-                    paramType = true,
-                    semicolon = "Disable",
-                    setType = true,
-                },
-                runtime = {
-                    version = "LuaJIT",
-                    special = {
-                        reload = "require",
+    local luadev = require("lua-dev").setup({
+        -- add any options here, or leave empty to use the default settings
+        lspconfig = {
+            flags = {
+                debounce_text_changes = default_debouce_time,
+            },
+            autostart = true,
+            filetypes = file_types,
+            on_attach = function(client, bufnr)
+                table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
+                vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+                languages_setup.document_highlight(client, bufnr)
+                languages_setup.document_formatting(client, bufnr)
+                client.offset_encoding = "utf-16"
+                if vim.fn.has("nvim-0.8") == 1 then
+                    navic.attach(client, bufnr)
+                    lsp_inlayhints.on_attach(bufnr, client)
+                end
+            end,
+            settings = {
+                Lua = {
+                    hint = {
+                        enable = true,
+                        arrayIndex = "All",
+                        await = true,
+                        paramName = "All",
+                        paramType = true,
+                        semicolon = "Disable",
+                        setType = true,
                     },
-                },
-                diagnostics = {
-                    globals = {
-                        "vim",
-                        "use",
-                        "packer_plugins",
-                        "NOREF_NOERR_TRUNC"
+                    runtime = {
+                        version = "LuaJIT",
+                        special = {
+                            reload = "require",
+                        },
                     },
-                },
-                telemetry = {
-                    enable = false,
+                    diagnostics = {
+                        globals = {
+                            "vim",
+                            "use",
+                            "packer_plugins",
+                            "NOREF_NOERR_TRUNC",
+                        },
+                    },
+                    telemetry = {
+                        enable = false,
+                    },
                 },
             },
+            capabilities = languages_setup.get_capabilities(),
+            root_dir = function(fname)
+                return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
+            end,
         },
-        capabilities = languages_setup.get_capabilities(),
-        root_dir = function(fname)
-            return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
-        end,
-    }
+    })
+    return luadev
+    -- local lspconfig = require("lspconfig")
+    -- lspconfig.sumneko_lua.setup(luadev)
+    -- return {
+    --     flags = {
+    --         debounce_text_changes = default_debouce_time,
+    --     },
+    --     autostart = true,
+    --     filetypes = file_types,
+    --     on_attach = function(client, bufnr)
+    --         table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
+    --         vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+    --         languages_setup.document_highlight(client, bufnr)
+    --         languages_setup.document_formatting(client, bufnr)
+    --         client.offset_encoding = "utf-16"
+    --         if vim.fn.has("nvim-0.8") == 1 then
+    --             navic.attach(client, bufnr)
+    --             lsp_inlayhints.on_attach(bufnr, client)
+    --         end
+    --     end,
+    --     settings = {
+    --         Lua = {
+    --             hint = {
+    --                 enable = true,
+    --                 arrayIndex = "All",
+    --                 await = true,
+    --                 paramName = "All",
+    --                 paramType = true,
+    --                 semicolon = "Disable",
+    --                 setType = true,
+    --             },
+    --             runtime = {
+    --                 version = "LuaJIT",
+    --                 special = {
+    --                     reload = "require",
+    --                 },
+    --             },
+    --             diagnostics = {
+    --                 globals = {
+    --                     "vim",
+    --                     "use",
+    --                     "packer_plugins",
+    --                     "NOREF_NOERR_TRUNC",
+    --                 },
+    --             },
+    --             telemetry = {
+    --                 enable = false,
+    --             },
+    --         },
+    --     },
+    --     capabilities = languages_setup.get_capabilities(),
+    --     root_dir = function(fname)
+    --         return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
+    --     end,
+    -- }
 end
 
 M.jsts_config = function(file_types, pid_name)

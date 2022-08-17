@@ -251,15 +251,15 @@ function config.which_key_nvim()
         },
         l = {
             name = "LSP",
-            n = { "<Cmd>LspGoToNext<CR>", "Go to next" },
-            p = { "<Cmd>LspGoToPrev<CR>", "Go to prev" },
             r = { "<Cmd>LspRename<CR>", "Rename" },
-            h = { "<Cmd>LspHover<CR>", "Hover" },
+            f = { "<Cmd>LspFormatting<CR>", "Format" },
+            h = { "<Cmd>Hover<CR>", "Hover" },
+            a = { "<Cmd>LspCodeAction<CR>", "Code action" },
             d = { "<Cmd>LspDefinition<CR>", "Definition" },
             t = { "<Cmd>LspTypeDefinition<CR>", "Type definition" },
             R = { "<Cmd>LspReferences<CR>", "References" },
-            a = { "<Cmd>LspCodeAction<CR>", "Code action" },
-            f = { "<Cmd>LspFormatting<CR>", "Format" },
+            i = { "<Cmd>LspImplementation<CR>", "Implementation" },
+            s = { "<Cmd>LspSignatureHelp<CR>", "Signature help" },
             S = {
                 name = "Symbol",
                 d = { "<Cmd>LspDocumentSymbol<CR>", "Document symbol" },
@@ -268,11 +268,6 @@ function config.which_key_nvim()
             w = {
                 "<Cmd>LspAddToWorkspaceFolder<CR>",
                 "Add to workspace folder",
-            },
-            v = {
-                name = "Virtualtext",
-                s = { "<Cmd>LspVirtualTextShow<CR>", "Virtual text show" },
-                h = { "<Cmd>LspVirtualTextHide<CR>", "Virtual text hide" },
             },
         },
         g = {
@@ -1077,7 +1072,7 @@ function config.nvim_notify()
         stages = "fade",
         on_open = function(win)
             if vim.api.nvim_win_is_valid(win) then
-                vim.api.nvim_win_set_config(win, { border = "single", zindex = 200 })
+                vim.api.nvim_win_set_config(win, { border = { " ", " ", " ", " ", " ", " ", " ", " " }, zindex = 200 })
             end
         end,
     })

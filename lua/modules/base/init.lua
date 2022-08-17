@@ -367,6 +367,24 @@ modules["williamboman/mason.nvim"] = {
     config = languages_config.mason_nvim,
 }
 
+modules["rmagatti/goto-preview"] = {
+    event = {
+        "BufRead",
+    },
+    config = languages_config.goto_preview,
+}
+
+modules["lewis6991/hover.nvim"] = {
+    event = {
+        "BufRead",
+    },
+    config = languages_config.hover_nvim,
+}
+
+modules["folke/lua-dev.nvim"] = {
+    ft = "lua",
+}
+
 modules["simrat39/rust-tools.nvim"] = {
     ft = "rust",
     after = "telescope.nvim",

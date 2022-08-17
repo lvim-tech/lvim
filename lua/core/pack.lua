@@ -83,19 +83,6 @@ function plugins.compile_notify()
     vim.notify("Compile Done!", "info", { title = "Packer" })
 end
 
-function plugins.auto_compile()
-    local file = vim.fn.expand("%:p")
-    if not file:match(lvim_path) then
-        return
-    end
-
-    if file:match("plugins.lua") then
-        plugins.clean()
-    end
-    plugins.compile_notify()
-    require("packer_compiled")
-end
-
 function plugins.load_compile()
     if vim.fn.filereadable(packer_compiled) == 1 then
         require("packer_compiled")
