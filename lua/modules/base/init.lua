@@ -6,6 +6,8 @@ local modules = {}
 
 modules["nvim-lua/plenary.nvim"] = {}
 
+modules["lewis6991/impatient.nvim"] = {}
+
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- UI -----------------------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -443,6 +445,11 @@ modules["kosayoda/nvim-lightbulb"] = {
         "BufRead",
     },
     config = languages_config.nvim_lightbulb,
+}
+
+modules["NTBBloodbath/rest.nvim"] = {
+    ft = "http",
+    config = languages_config.rest_nvim,
 }
 
 modules["michaelb/sniprun"] = {

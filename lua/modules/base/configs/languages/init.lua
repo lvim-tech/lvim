@@ -103,6 +103,10 @@ function config.nvim_lightbulb()
     vim.fn.sign_define("LightBulbSign", { text = "", texthl = "LightBulb", linehl = "", numhl = "" })
 end
 
+function config.rest_nvim()
+    require("rest-nvim").setup()
+end
+
 function config.sniprun()
     require("sniprun").setup()
 end

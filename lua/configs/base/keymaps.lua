@@ -61,6 +61,9 @@ keymaps["normal"] = {
     { "to", ":e ~/Org/notes/notes.org<CR>" }, -- Open org notes
     { "th", ":Telescope howdoi<CR>" }, -- Telescope howdoi
     { "tt", ":Telescope tmux sessions<CR>" }, -- Telescope tmux session
+    { "trr", "<Plug>RestNvim<CR>" }, -- Rest nvim
+    { "trp", "<Plug>RestNvimPreview<CR>" }, -- Rest nvim preview
+    { "trl", "<Plug>RestNvimLast<CR>" }, -- Rest nvim last
     { "<A-c>", ":LspLine<CR>" }, -- Lsp current line
     { "<A-e>", ":TroubleToggle<CR>" }, -- Trouble toggle
     { "<A-1>", "<Cmd>DapToggleBreakpoint<CR>" }, -- Toggle breakpoint
