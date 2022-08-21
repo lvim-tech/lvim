@@ -4,7 +4,9 @@
 
   LVIM IDE is a modular Neovim configuration written in LUA with full customization
 
-  Current version - 2.0.37 (2022-08-18)
+  Current version - 2.0.40 (2022-08-21)
+
+  Startup time: 084.089 (97 plugins)
 
 **  SCREENSHOTS
 
@@ -160,6 +162,16 @@
     #+begin_src lua
 
     modules["nvim-lua/plenary.nvim"] = {}
+
+    #+end_src
+
+******   [[https://github.com/lewis6991/impatient.nvim][impatient.nvim]]
+
+        + INIT
+
+    #+begin_src lua
+
+    modules["lewis6991/impatient.nvim"] = {}
 
     #+end_src
 
@@ -3074,6 +3086,29 @@ end
             },
         })
         vim.fn.sign_define("LightBulbSign", { text = "", texthl = "LightBulb", linehl = "", numhl = "" })
+    end
+
+    #+end_src
+
+******   [[https://github.com/NTBBloodbath/rest.nvim][rest.nvim]]
+
+        + INIT
+
+    #+begin_src lua
+
+    modules["NTBBloodbath/rest.nvim"] = {
+        ft = "http",
+        config = languages_config.rest_nvim,
+    }
+
+    #+end_src
+
+        + CONFIG
+
+    #+begin_src lua
+
+    function config.rest_nvim()
+        require("rest-nvim").setup()
     end
 
     #+end_src
