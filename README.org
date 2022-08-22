@@ -34,6 +34,8 @@
 
   [[./media/lvim-ide-screenshot_12.png]]
 
+  [[./media/lvim-ide-screenshot_13.png]]
+
 **  INTRODUCTION
 
     * Neovim 0.7.0+
