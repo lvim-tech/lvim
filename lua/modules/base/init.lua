@@ -48,7 +48,12 @@ modules["lvim-tech/which-key.nvim"] = {
     config = ui_config.which_key_nvim,
 }
 
+local commit = nil
+if vim.fn.has("nvim-0.8") == 0 then
+    commit = "7b4aabc2c55d50fbd4a4923e847079d6fa9a8613"
+end
 modules["rebelot/heirline.nvim"] = {
+    commit = commit,
     after = "lvim-colorscheme",
     config = ui_config.heirline_nvim,
 }
