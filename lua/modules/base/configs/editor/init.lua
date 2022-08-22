@@ -5,10 +5,10 @@ function config.telescope_nvim()
     if not packer_plugins["telescope-fzf-native.nvim"].loaded then
         loader(
             "telescope-fzf-native.nvim"
-                .. " telescope-media-files.nvim"
-                .. " telescope-file-browser.nvim"
-                .. " telescope-tmux.nvim"
-                .. " howdoi.nvim"
+            .. " telescope-media-files.nvim"
+            .. " telescope-file-browser.nvim"
+            .. " telescope-tmux.nvim"
+            .. " howdoi.nvim"
         )
     end
     local telescope = require("telescope")
@@ -363,6 +363,12 @@ function config.nvim_colorize_lua()
         css = true,
         css_fn = true,
     })
+end
+
+function config.virtcolumn_nvim()
+    vim.api.nvim_set_option("colorcolumn", "120")
+    vim.g.virtcolumn_char = "▕"
+    vim.g.virtcolumn_priority = 10
 end
 
 function config.cinnamon_nvim()

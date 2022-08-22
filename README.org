@@ -4,9 +4,9 @@
 
   LVIM IDE is a modular Neovim configuration written in LUA with full customization
 
-  Current version - 2.0.41 (2022-08-22)
+  Current version - 2.0.42 (2022-08-22)
 
-  Startup time: 084.089 (98 plugins)
+  Startup time: 084.089 (99 plugins)
 
 **  SCREENSHOTS
 
@@ -2346,6 +2346,33 @@ end
             css = true,
             css_fn = true,
         })
+    end
+
+    #+end_src
+
+******   [[https://github.com/xiyaowong/virtcolumn.nvim][virtcolumn.nvim]]
+
+        + INIT
+
+    #+begin_src lua
+
+    modules["xiyaowong/virtcolumn.nvim"] = {
+        event = {
+            "BufRead",
+        },
+        config = editor_config.virtcolumn_nvim,
+    }
+
+    #+end_src
+
+        + CONFIG
+
+    #+begin_src lua
+
+    function config.virtcolumn_nvim()
+        vim.api.nvim_set_option("colorcolumn", "120")
+        vim.g.virtcolumn_char = "▕"
+        vim.g.virtcolumn_priority = 10
     end
 
     #+end_src

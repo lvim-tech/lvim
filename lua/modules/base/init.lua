@@ -256,6 +256,13 @@ modules["norcalli/nvim-colorizer.lua"] = {
     config = editor_config.nvim_colorize_lua,
 }
 
+modules["xiyaowong/virtcolumn.nvim"] = {
+    event = {
+        "BufRead",
+    },
+    config = editor_config.virtcolumn_nvim,
+}
+
 modules["declancm/cinnamon.nvim"] = {
     event = {
         "BufRead",
