@@ -353,6 +353,16 @@ modules["sindrets/diffview.nvim"] = {
     },
 }
 
+modules["pwntester/octo.nvim"] = {
+    after = "lvim-colorscheme",
+    requires = {
+        "nvim-lua/plenary.nvim",
+        "nvim-telescope/telescope.nvim",
+        "kyazdani42/nvim-web-devicons",
+    },
+    config = version_control_config.octo_nvim,
+}
+
 modules["mbbill/undotree"] = {
     event = {
         "BufRead",

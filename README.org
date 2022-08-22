@@ -4,9 +4,9 @@
 
   LVIM IDE is a modular Neovim configuration written in LUA with full customization
 
-  Current version - 2.0.40 (2022-08-21)
+  Current version - 2.0.41 (2022-08-22)
 
-  Startup time: 084.089 (97 plugins)
+  Startup time: 084.089 (98 plugins)
 
 **  SCREENSHOTS
 
@@ -2748,6 +2748,34 @@ end
             "DiffviewRefresh",
         },
     }
+
+    #+end_src
+
+******   [[https://github.com/pwntester/octo.nvim][pwntester/octo.nvim]]
+
+        + INIT
+
+    #+begin_src lua
+
+    modules["pwntester/octo.nvim"] = {
+        after = "lvim-colorscheme",
+        requires = {
+            "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope.nvim",
+            "kyazdani42/nvim-web-devicons",
+        },
+        config = version_control_config.octo_nvim,
+    }
+
+    #+end_src
+
+        + CONFIG
+
+    #+begin_src lua
+
+    function config.octo_nvim()
+        require("octo").setup()
+    end
 
     #+end_src
 

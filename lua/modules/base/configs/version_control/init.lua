@@ -92,4 +92,8 @@ function config.git_blame_nvim()
     }
 end
 
+function config.octo_nvim()
+    require("octo").setup()
+end
+
 return config
