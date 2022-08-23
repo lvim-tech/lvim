@@ -406,9 +406,9 @@ function config.heirline_nvim()
     local conditions = require("heirline.conditions")
     local utils = require("heirline.utils")
     local colors = LVIM_COLORS()
-    local Align = { provider = "%=" }
-    local Space = { provider = " " }
-    local ViMode = {
+    local align = { provider = "%=" }
+    local space = { provider = " " }
+    local vi_mode = {
         init = function(self)
             self.mode = vim.fn.mode(1)
         end,
@@ -473,12 +473,12 @@ function config.heirline_nvim()
             return { fg = self.mode_colors[mode], bold = true }
         end,
     }
-    local FileNameBlock = {
+    local file_name_block = {
         init = function(self)
             self.filename = vim.api.nvim_buf_get_name(0)
         end,
     }
-    local WorkDir = {
+    local work_dir = {
         provider = function(self)
             self.icon = "    "
             local cwd = vim.fn.getcwd(0)
@@ -500,7 +500,7 @@ function config.heirline_nvim()
             provider = "",
         }),
     }
-    local FileIcon = {
+    local file_icon = {
         init = function(self)
             local filename = self.filename
             local extension = vim.fn.fnamemodify(filename, ":e")
@@ -516,7 +516,7 @@ function config.heirline_nvim()
             return { fg = colors.color_05 }
         end,
     }
-    local FileName = {
+    local file_name = {
         provider = function(self)
             local filename = vim.fn.fnamemodify(self.filename, ":.")
             if filename == "" then
@@ -529,7 +529,7 @@ function config.heirline_nvim()
         end,
         hl = { fg = colors.color_05, bold = true },
     }
-    local FileFlags = {
+    local file_flags = {
         {
             provider = function()
                 if vim.bo.modified then
@@ -547,14 +547,14 @@ function config.heirline_nvim()
             hl = { fg = colors.color_02 },
         },
     }
-    local FileNameModifer = {
+    local file_name_modifer = {
         hl = function()
             if vim.bo.modified then
                 return { fg = colors.color_05, bold = true, force = true }
             end
         end,
     }
-    local FileSize = {
+    local file_size = {
         provider = function()
             local fsize = vim.fn.getfsize(vim.api.nvim_buf_get_name(0))
             fsize = (fsize < 0 and 0) or fsize
@@ -566,17 +566,17 @@ function config.heirline_nvim()
         end,
         hl = { fg = colors.color_03 },
     }
-    FileNameBlock = utils.insert(
-        FileNameBlock,
-        Space,
-        Space,
-        FileIcon,
-        utils.insert(FileNameModifer, FileName),
-        FileSize,
-        unpack(FileFlags),
+    file_name_block = utils.insert(
+        file_name_block,
+        space,
+        space,
+        file_icon,
+        utils.insert(file_name_modifer, file_name),
+        file_size,
+        unpack(file_flags),
         { provider = "%<" }
     )
-    local Git = {
+    local git = {
         condition = conditions.is_git_repo,
         init = function(self)
             self.status_dict = vim.b.gitsigns_status_dict
@@ -616,7 +616,7 @@ function config.heirline_nvim()
             hl = { fg = colors.color_03 },
         },
     }
-    local Diagnostics = {
+    local diagnostics = {
         condition = conditions.has_diagnostics,
         static = {
             error_icon = " ",
@@ -656,7 +656,7 @@ function config.heirline_nvim()
             hl = { fg = colors.color_05 },
         },
     }
-    local LSPActive = {
+    local lsp_active = {
         condition = conditions.lsp_attached,
         update = { "LspAttach", "LspDetach" },
         provider = function()
@@ -668,7 +668,7 @@ function config.heirline_nvim()
         end,
         hl = { fg = colors.color_05, bold = true },
     }
-    local _LSPActive = {
+    local is_lsp_active = {
         condition = conditions.lsp_attached,
         update = { "LspAttach", "LspDetach" },
         provider = function()
@@ -676,7 +676,7 @@ function config.heirline_nvim()
         end,
         hl = { fg = colors.color_03, bold = true },
     }
-    local FileType = {
+    local file_type = {
         provider = function()
             local filetype = vim.bo.filetype
             if filetype ~= "" then
@@ -685,7 +685,7 @@ function config.heirline_nvim()
         end,
         hl = { fg = colors.color_03, bold = true },
     }
-    local FileEncoding = {
+    local file_encoding = {
         provider = function()
             local enc = vim.opt.fileencoding:get()
             if enc ~= "" then
@@ -694,7 +694,7 @@ function config.heirline_nvim()
         end,
         hl = { fg = colors.color_04, bold = true },
     }
-    local FileFormat = {
+    local file_format = {
         provider = function()
             local format = vim.bo.fileformat
             if format ~= "" then
@@ -708,14 +708,14 @@ function config.heirline_nvim()
         end,
         hl = { fg = colors.color_04, bold = true },
     }
-    local Spell = {
+    local spell = {
         condition = function()
             return vim.wo.spell
         end,
         provider = "  SPELL",
         hl = { bold = true, fg = colors.color_03 },
     }
-    local ScrollBar = {
+    local scroll_bar = {
         provider = function()
             local current_line = vim.fn.line(".")
             local total_lines = vim.fn.line("$")
@@ -726,7 +726,7 @@ function config.heirline_nvim()
         end,
         hl = { fg = colors.color_02 },
     }
-    local FileIconName = {
+    local file_icon_name = {
         provider = function()
             local function isempty(s)
                 return s == nil or s == ""
@@ -761,18 +761,18 @@ function config.heirline_nvim()
         end,
         hl = { fg = colors.color_02 },
     }
-    local Navic = {
+    local navic = {
         condition = require("nvim-navic").is_available,
         provider = require("nvim-navic").get_location,
     }
-    local TerminalName = {
+    local terminal_name = {
         provider = function()
             local tname, _ = vim.api.nvim_buf_get_name(0):gsub(".*:", "")
             return " " .. tname
         end,
         hl = { fg = colors.color_02, bold = true },
     }
-    local StatusLines = {
+    local status_lines = {
         hl = function()
             if conditions.is_active() then
                 return {
@@ -794,23 +794,23 @@ function config.heirline_nvim()
         },
         init = utils.pick_child_on_condition,
         {
-            ViMode,
-            WorkDir,
-            FileNameBlock,
-            Git,
-            Align,
-            Diagnostics,
-            LSPActive,
-            _LSPActive,
-            FileType,
-            FileEncoding,
-            FileFormat,
-            Spell,
-            ScrollBar,
+            vi_mode,
+            work_dir,
+            file_name_block,
+            git,
+            align,
+            diagnostics,
+            lsp_active,
+            is_lsp_active,
+            file_type,
+            file_encoding,
+            file_format,
+            spell,
+            scroll_bar,
         },
     }
 
-    local WinBars = {
+    local win_bars = {
         init = utils.pick_child_on_condition,
         {
             condition = function()
@@ -855,9 +855,9 @@ function config.heirline_nvim()
                 return conditions.buffer_matches({ buftype = { "terminal" } })
             end,
             {
-                FileType,
-                Space,
-                TerminalName,
+                file_type,
+                space,
+                terminal_name,
             },
         },
         {
@@ -865,18 +865,18 @@ function config.heirline_nvim()
                 return not conditions.is_active()
             end,
             {
-                FileIconName,
+                file_icon_name,
             },
         },
         {
-            FileIconName,
-            Navic,
+            file_icon_name,
+            navic,
         },
     }
     if vim.fn.has("nvim-0.8") == 1 then
-        require("heirline").setup(StatusLines, WinBars)
+        require("heirline").setup(status_lines, win_bars)
     else
-        require("heirline").setup(StatusLines)
+        require("heirline").setup(status_lines)
     end
 end
 
