@@ -215,24 +215,24 @@ M.setup_diagnostic = function(custom_config_diagnostic)
                 return
             end
             vim.fn.sign_define("DiagnosticSignError", {
-                texthl = "DiagnosticSignError",
                 text = M.icons.error,
-                numhl = "DiagnosticSignError",
+                texthl = "DiagnosticError",
+                numhl = "DiagnosticError",
             })
             vim.fn.sign_define("DiagnosticSignWarn", {
-                texthl = "DiagnosticSignWarn",
                 text = M.icons.warn,
-                numhl = "DiagnosticSignWarn",
+                texthl = "DiagnosticWarn",
+                numhl = "DiagnosticWarn",
             })
             vim.fn.sign_define("DiagnosticSignHint", {
-                texthl = "DiagnosticSignHint",
                 text = M.icons.hint,
-                numhl = "DiagnosticSignHint",
+                texthl = "DiagnosticHint",
+                numhl = "DiagnosticHint",
             })
             vim.fn.sign_define("DiagnosticSignInfo", {
-                texthl = "DiagnosticSignInfo",
                 text = M.icons.info,
-                numhl = "DiagnosticSignInfo",
+                texthl = "DiagnosticInfo",
+                numhl = "DiagnosticInfo",
             })
             vim_diag.show(namespace, bufnr, diagnostics, local_config_diagnostic)
         end

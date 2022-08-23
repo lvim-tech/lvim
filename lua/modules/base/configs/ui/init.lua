@@ -742,18 +742,18 @@ function config.heirline_nvim()
             local filename = vim.fn.expand("%:t")
             local extension = vim.fn.expand("%:e")
             if not isempty(filename) then
-                local file_icon, file_icon_color =
+                local f_icon, f_icon_color =
                     require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
                 local hl_group_2 = "FileIconColor" .. extension
-                vim.api.nvim_set_hl(0, hl_group_2, { fg = file_icon_color, bg = colors.status_line_bg })
-                if isempty(file_icon) then
-                    file_icon = ""
-                    file_icon_color = ""
+                vim.api.nvim_set_hl(0, hl_group_2, { fg = f_icon_color, bg = colors.status_line_bg })
+                if isempty(f_icon) then
+                    f_icon = ""
+                    f_icon_color = ""
                 end
                 return "%#"
                     .. hl_group_2
                     .. "# "
-                    .. file_icon
+                    .. f_icon
                     .. "%*"
                     .. " "
                     .. "%#"
