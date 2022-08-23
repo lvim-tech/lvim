@@ -29,12 +29,22 @@ modules["goolord/alpha-nvim"] = {
     config = ui_config.alpha_nvim,
 }
 
-modules["kyazdani42/nvim-tree.lua"] = {
+modules["s1n7ax/nvim-window-picker"] = {
+    config = ui_config.nvim_window_picker,
+}
+
+modules["nvim-neo-tree/neo-tree.nvim"] = {
+    branch = "v2.x",
     requires = {
-        "kyazdani42/nvim-web-devicons",
+        "nvim-lua/plenary.nvim",
+        "kyazdani42/nvim-web-devicons", -- not strictly required, but recommended
+        "MunifTanjim/nui.nvim",
+        {
+            "mrbjarksen/neo-tree-diagnostics.nvim",
+            module = "neo-tree.sources.diagnostics",
+        },
     },
-    cmd = "NvimTreeToggle",
-    config = ui_config.nvim_tree_lua,
+    config = ui_config.neo_tree_nvim,
 }
 
 modules["elihunter173/dirbuf.nvim"] = {
@@ -524,13 +534,6 @@ modules["pechorin/any-jump.vim"] = {
         "BufRead",
     },
     config = languages_config.any_jump_nvim,
-}
-
-modules["folke/trouble.nvim"] = {
-    requires = {
-        "kyazdani42/nvim-web-devicons",
-    },
-    config = languages_config.trouble_nvim,
 }
 
 modules["simrat39/symbols-outline.nvim"] = {

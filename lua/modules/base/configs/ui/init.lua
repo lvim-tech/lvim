@@ -1,7 +1,16 @@
 local config = {}
 
 function config.lvim_colorscheme()
-    vim.g.lvim_sidebars = { "qf", "Outline", "terminal", "packer", "calendar", "spectre_panel", "Trouble", "ctrlspace" }
+    vim.g.lvim_sidebars = {
+        "qf",
+        "Outline",
+        "terminal",
+        "packer",
+        "calendar",
+        "spectre_panel",
+        "ctrlspace",
+        "neo-tree",
+    }
     vim.cmd("colorscheme lvim")
 end
 
@@ -85,62 +94,91 @@ function config.alpha_nvim()
     })
 end
 
-function config.nvim_tree_lua()
-    require("nvim-tree").setup({
-        update_cwd = true,
-        update_focused_file = {
-            enable = true,
+function config.nvim_window_picker()
+    local window_picker = require("window-picker")
+    local filters = window_picker.filter_windows
+    local function special_autoselect(windows)
+        windows = filters(windows)
+        if #windows > 1 then
+            return windows
+        end
+        local curr_win = vim.api.nvim_get_current_win()
+        for index, window in ipairs(windows) do
+            if window == curr_win then
+                table.remove(windows, index)
+            end
+        end
+        return windows
+    end
+
+    local function focus_window()
+        local window = require("window-picker").pick_window()
+        if type(window) == "number" then
+            vim.api.nvim_set_current_win(window)
+        end
+    end
+
+    require("window-picker").setup({
+        autoselect_one = false,
+        include_current_win = true,
+        filter_func = special_autoselect,
+        filter_rules = {
+            bo = {
+                filetype = {},
+                buftype = {},
+            },
         },
-        renderer = {
-            add_trailing = false,
-            group_empty = false,
-            highlight_git = false,
-            highlight_opened_files = "none",
-            root_folder_modifier = ":~",
-            indent_markers = {
-                enable = false,
-                icons = {
-                    corner = "└ ",
-                    edge = "│ ",
-                    none = "  ",
-                },
+        fg_color = "#20262A",
+        current_win_hl_color = "#20262A",
+        other_win_hl_color = "#95b365",
+    })
+    vim.api.nvim_create_user_command("WindowPicker", focus_window, {})
+end
+
+function config.neo_tree_nvim()
+    require("neo-tree").setup({
+        use_popups_for_input = false,
+        enable_diagnostics = false,
+        sources = {
+            "filesystem",
+            "buffers",
+            "git_status",
+            "diagnostics",
+        },
+        default_component_configs = {
+            container = {
+                enable_character_fade = true,
             },
-            icons = {
-                webdev_colors = true,
-                git_placement = "before",
-                padding = " ",
-                symlink_arrow = " ➛ ",
-                show = {
-                    file = true,
-                    folder = true,
-                    folder_arrow = true,
-                    git = true,
-                },
-                glyphs = {
-                    default = "",
-                    symlink = "",
-                    folder = {
-                        arrow_closed = "",
-                        arrow_open = "",
-                        default = "",
-                        open = "",
-                        empty = "",
-                        empty_open = "",
-                        symlink = "",
-                        symlink_open = "",
-                    },
-                    git = {
-                        unstaged = "",
-                        staged = "",
-                        unmerged = "",
-                        renamed = "➜",
-                        untracked = "",
-                        deleted = "",
-                        ignored = "◌",
-                    },
-                },
+            indent = {
+                with_markers = false,
+                with_expanders = true,
             },
-            special_files = { "Cargo.toml", "Makefile", "README.md", "readme.md" },
+            icon = {
+                folder_closed = "",
+                folder_open = "",
+                folder_empty = "",
+                highlight = "NeoTreeFileIcon",
+            },
+            modified = {
+                symbol = "",
+            },
+            git_status = {
+                symbols = {
+                    added = "",
+                    deleted = "",
+                    modified = "",
+                    renamed = "",
+                    untracked = "",
+                    ignored = "",
+                    unstaged = "",
+                    staged = "",
+                    conflict = "",
+                },
+                align = "right",
+            },
+        },
+        filesystem = {
+            follow_current_file = true,
         },
     })
 end
@@ -222,7 +260,7 @@ function config.which_key_nvim()
     }
     local nmappings = {
         a = { ":e $HOME/.config/nvim/README.org<CR>", "Open README file" },
-        e = { "<Cmd>NvimTreeToggle<CR>", "NvimTree toggle" },
+        e = { "<Cmd>Neotree<CR>", "Neotree" },
         b = {
             name = "Buffers",
             n = { "<Cmd>BufSurfForward<CR>", "Next buffer" },
@@ -793,7 +831,6 @@ function config.heirline_nvim()
                         "NvimTree",
                         "LvimHelper",
                         "floaterm",
-                        "Trouble",
                         "dashboard",
                         "vista",
                         "spectre_panel",

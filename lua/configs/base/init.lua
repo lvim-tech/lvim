@@ -30,7 +30,6 @@ configs["base_events"] = function()
         pattern = {
             "help",
             "calendar",
-            "Trouble",
             "Outline",
             "git",
             "dapui_scopes",
@@ -68,10 +67,8 @@ configs["base_events"] = function()
                         "undotree",
                         "diff",
                         "Outline",
-                        "NvimTree",
                         "LvimHelper",
                         "floaterm",
-                        "Trouble",
                         "dashboard",
                         "vista",
                         "spectre_panel",

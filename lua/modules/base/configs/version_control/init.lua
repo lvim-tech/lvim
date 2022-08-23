@@ -79,8 +79,6 @@ end
 function config.git_blame_nvim()
     vim.g.gitblame_ignored_filetypes = {
         "help",
-        "NvimTree",
-        "Trouble",
         "Outline",
         "git",
         "dapui_scopes",

@@ -206,21 +206,6 @@ function config.any_jump_nvim()
     vim.g.any_jump_list_numbers = 1
 end
 
-function config.trouble_nvim()
-    require("trouble").setup({
-        height = 12,
-        mode = "workspace_diagnostics",
-        use_diagnostic_signs = true,
-        signs = {
-            error = "",
-            warning = "",
-            hint = "",
-            information = "",
-            other = "",
-        },
-    })
-end
-
 function config.symbols_outline_nvim()
     require("symbols-outline").setup({
         highlight_hovered_item = true,

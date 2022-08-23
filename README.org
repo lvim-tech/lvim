@@ -198,7 +198,7 @@
     #+begin_src lua
 
     function config.lvim_colorscheme()
-        vim.g.lvim_sidebars = { "qf", "Outline", "terminal", "packer", "calendar", "spectre_panel", "Trouble", "ctrlspace" }
+        vim.g.lvim_sidebars = { "qf", "Outline", "terminal", "packer", "calendar", "spectre_panel", "ctrlspace" }
         vim.cmd("colorscheme lvim")
     end
 
@@ -331,7 +331,7 @@
 
     #+end_src
 
-******   [[https://github.com/kyazdani42/nvim-tree.lua][nvim-tree.lua]]
+******   [[https://github.com/s1n7ax/nvim-window-picker][nvim-window-picker]]
 
         + REQUIRES:
           *  [[https://github.com/kyazdani42/nvim-web-devicons][nvim-web-devicons]]
@@ -340,12 +340,8 @@
 
     #+begin_src lua
 
-    modules["kyazdani42/nvim-tree.lua"] = {
-        requires = {
-            "kyazdani42/nvim-web-devicons",
-        },
-        cmd = "NvimTreeToggle",
-        config = ui_config.nvim_tree_lua,
+    modules["s1n7ax/nvim-window-picker"] = {
+        config = ui_config.nvim_window_picker,
     }
 
     #+end_src
@@ -354,62 +350,124 @@
 
     #+begin_src lua
 
-    function config.nvim_tree_lua()
-        require("nvim-tree").setup({
-            update_cwd = true,
-            update_focused_file = {
-                enable = true,
+    function config.nvim_window_picker()
+        local window_picker = require("window-picker")
+        local filters = window_picker.filter_windows
+        local function special_autoselect(windows)
+            windows = filters(windows)
+            if #windows > 1 then
+                return windows
+            end
+            local curr_win = vim.api.nvim_get_current_win()
+            for index, window in ipairs(windows) do
+                if window == curr_win then
+                    table.remove(windows, index)
+                end
+            end
+            return windows
+        end
+
+        local function focus_window()
+            local window = require("window-picker").pick_window()
+            if type(window) == "number" then
+                vim.api.nvim_set_current_win(window)
+            end
+        end
+
+        require("window-picker").setup({
+            autoselect_one = false,
+            include_current_win = true,
+            filter_func = special_autoselect,
+            filter_rules = {
+                bo = {
+                    filetype = {},
+                    buftype = {},
+                },
             },
-            renderer = {
-                add_trailing = false,
-                group_empty = false,
-                highlight_git = false,
-                highlight_opened_files = "none",
-                root_folder_modifier = ":~",
-                indent_markers = {
-                    enable = false,
-                    icons = {
-                        corner = "└ ",
-                        edge = "│ ",
-                        none = "  ",
-                    },
+            fg_color = "#20262A",
+            current_win_hl_color = "#20262A",
+            other_win_hl_color = "#95b365",
+        })
+        vim.api.nvim_create_user_command("WindowPicker", focus_window, {})
+    end
+
+    #+end_src
+
+******   [[https://github.com/nvim-neo-tree/neo-tree.nvim][neo-tree.nvim]]
+
+        + REQUIRES:
+          *  [[https://github.com/nvim-lua/plenary.nvim][plenary.nvim]]
+          *  [[https://github.com/kyazdani42/nvim-web-devicons][nvim-web-devicons]]
+          *  [[https://github.com/MunifTanjim/nui.nvim][nui.nvim]]
+
+        + INIT
+
+    #+begin_src lua
+
+    modules["nvim-neo-tree/neo-tree.nvim"] = {
+        branch = "v2.x",
+        requires = {
+            "nvim-lua/plenary.nvim",
+            "kyazdani42/nvim-web-devicons", -- not strictly required, but recommended
+            "MunifTanjim/nui.nvim",
+            {
+                "mrbjarksen/neo-tree-diagnostics.nvim",
+                module = "neo-tree.sources.diagnostics",
+            },
+        },
+        config = ui_config.neo_tree_nvim,
+    }
+
+    #+end_src
+
+        + CONFIG
+
+    #+begin_src lua
+
+    function config.neo_tree_nvim()
+        require("neo-tree").setup({
+            use_popups_for_input = false,
+            enable_diagnostics = false,
+            sources = {
+                "filesystem",
+                "buffers",
+                "git_status",
+                "diagnostics",
+            },
+            default_component_configs = {
+                container = {
+                    enable_character_fade = true,
                 },
-                icons = {
-                    webdev_colors = true,
-                    git_placement = "before",
-                    padding = " ",
-                    symlink_arrow = " ➛ ",
-                    show = {
-                        file = true,
-                        folder = true,
-                        folder_arrow = true,
-                        git = true,
-                    },
-                    glyphs = {
-                        default = "",
-                        symlink = "",
-                        folder = {
-                            arrow_closed = "",
-                            arrow_open = "",
-                            default = "",
-                            open = "",
-                            empty = "",
-                            empty_open = "",
-                            symlink = "",
-                            symlink_open = "",
-                        },
-                        git = {
-                            unstaged = "",
-                            staged = "",
-                            unmerged = "",
-                            renamed = "➜",
-                            untracked = "",
-                            deleted = "",
-                            ignored = "◌",
-                        },
-                    },
+                indent = {
+                    with_markers = false,
+                    with_expanders = true,
                 },
-                special_files = { "Cargo.toml", "Makefile", "README.md", "readme.md" },
+                icon = {
+                    folder_closed = "",
+                    folder_open = "",
+                    folder_empty = "",
+                    highlight = "NeoTreeFileIcon",
+                },
+                modified = {
+                    symbol = "",
+                },
+                git_status = {
+                    symbols = {
+                        added = "",
+                        deleted = "",
+                        modified = "",
+                        renamed = "",
+                        untracked = "",
+                        ignored = "",
+                        unstaged = "",
+                        staged = "",
+                        conflict = "",
+                    },
+                    align = "right",
+                },
+            },
+            filesystem = {
+                follow_current_file = true,
             },
         })
     end
@@ -1110,10 +1168,8 @@
                             "undotree",
                             "diff",
                             "Outline",
-                            "NvimTree",
                             "LvimHelper",
                             "floaterm",
-                            "Trouble",
                             "dashboard",
                             "vista",
                             "spectre_panel",
@@ -2750,7 +2806,6 @@ end
         vim.g.gitblame_ignored_filetypes = {
             "help",
             "NvimTree",
-            "Trouble",
             "Outline",
             "git",
             "dapui_scopes",
