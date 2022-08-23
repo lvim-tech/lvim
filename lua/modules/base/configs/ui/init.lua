@@ -177,6 +177,11 @@ function config.neo_tree_nvim()
                 align = "right",
             },
         },
+        window = {
+            mappings = {
+                ["Z"] = "expand_all_nodes",
+            },
+        },
         filesystem = {
             follow_current_file = true,
         },
