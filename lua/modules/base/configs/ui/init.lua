@@ -141,6 +141,7 @@ end
 function config.neo_tree_nvim()
     require("neo-tree").setup({
         use_popups_for_input = false,
+        popup_border_style = { " ", " ", " ", " ", " ", " ", " ", " " },
         enable_diagnostics = false,
         sources = {
             "filesystem",
@@ -315,6 +316,13 @@ function config.which_key_nvim()
                 "<Cmd>LspAddToWorkspaceFolder<CR>",
                 "Add to workspace folder",
             },
+        },
+        n = {
+            name = "NeoTree",
+            l = { "<Cmd>Neotree left<CR>", "Set neotree left" },
+            f = { "<Cmd>Neotree float<CR>", "Set neotree float" },
+            b = { "<Cmd>Neotree buffers float<CR>", "Neotree buffers" },
+            g = { "<Cmd>Neotree git_status float<CR>", "Neotree git_status" },
         },
         g = {
             name = "GIT",

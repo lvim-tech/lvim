@@ -1,5 +1,4 @@
 local uv, api = vim.loop, vim.api
-local lvim_path = vim.fn.stdpath("config")
 local data_dir = string.format("%s/site/", vim.fn.stdpath("data"))
 local packer_compiled = data_dir .. "lua/packer_compiled.lua"
 local funcs = require("core.funcs")
