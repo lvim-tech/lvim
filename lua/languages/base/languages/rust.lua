@@ -40,7 +40,7 @@ local function start_server_tools()
                 languages_setup.document_formatting(client, bufnr)
                 if vim.fn.has("nvim-0.8") == 1 then
                     navic.attach(client, bufnr)
-                    lsp_inlayhints.on_attach(bufnr, client)
+                    lsp_inlayhints.on_attach(bufnr, client, true)
                 end
             end,
             capabilities = languages_setup.get_capabilities(),

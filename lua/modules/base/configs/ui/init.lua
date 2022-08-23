@@ -99,6 +99,9 @@ function config.nvim_window_picker()
     local filters = window_picker.filter_windows
     local function special_autoselect(windows)
         windows = filters(windows)
+        if windows == nil then
+            windows = {}
+        end
         if #windows > 1 then
             return windows
         end
@@ -743,7 +746,7 @@ function config.heirline_nvim()
             local extension = vim.fn.expand("%:e")
             if not isempty(filename) then
                 local f_icon, f_icon_color =
-                    require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
+                require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
                 local hl_group_2 = "FileIconColor" .. extension
                 vim.api.nvim_set_hl(0, hl_group_2, { fg = f_icon_color, bg = colors.status_line_bg })
                 if isempty(f_icon) then

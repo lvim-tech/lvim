@@ -21,7 +21,7 @@ M.default_config = function(file_types, pid_name)
             client.offset_encoding = "utf-16"
             if vim.fn.has("nvim-0.8") == 1 then
                 navic.attach(client, bufnr)
-                lsp_inlayhints.on_attach(bufnr, client)
+                lsp_inlayhints.on_attach(bufnr, client, true)
             end
         end,
         capabilities = languages_setup.get_capabilities(),
@@ -67,7 +67,7 @@ M.go = function(file_types, pid_name)
             client.offset_encoding = "utf-16"
             if vim.fn.has("nvim-0.8") == 1 then
                 navic.attach(client, bufnr)
-                lsp_inlayhints.on_attach(bufnr, client)
+                lsp_inlayhints.on_attach(bufnr, client, true)
             end
         end,
         settings = {
@@ -91,7 +91,6 @@ end
 
 M.lua = function(file_types, pid_name)
     local luadev = require("lua-dev").setup({
-        -- add any options here, or leave empty to use the default settings
         lspconfig = {
             flags = {
                 debounce_text_changes = default_debouce_time,
@@ -106,7 +105,7 @@ M.lua = function(file_types, pid_name)
                 client.offset_encoding = "utf-16"
                 if vim.fn.has("nvim-0.8") == 1 then
                     navic.attach(client, bufnr)
-                    lsp_inlayhints.on_attach(bufnr, client)
+                    lsp_inlayhints.on_attach(bufnr, client, true)
                 end
             end,
             settings = {
