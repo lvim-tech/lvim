@@ -21,7 +21,7 @@ M.default_config = function(file_types, pid_name)
             client.offset_encoding = "utf-16"
             if vim.fn.has("nvim-0.8") == 1 then
                 navic.attach(client, bufnr)
-                lsp_inlayhints.on_attach(bufnr, client, true)
+                lsp_inlayhints.on_attach(client, bufnr, true)
             end
         end,
         capabilities = languages_setup.get_capabilities(),
@@ -67,7 +67,7 @@ M.go = function(file_types, pid_name)
             client.offset_encoding = "utf-16"
             if vim.fn.has("nvim-0.8") == 1 then
                 navic.attach(client, bufnr)
-                lsp_inlayhints.on_attach(bufnr, client, true)
+                lsp_inlayhints.on_attach(client, bufnr, true)
             end
         end,
         settings = {
@@ -105,7 +105,7 @@ M.lua = function(file_types, pid_name)
                 client.offset_encoding = "utf-16"
                 if vim.fn.has("nvim-0.8") == 1 then
                     navic.attach(client, bufnr)
-                    lsp_inlayhints.on_attach(bufnr, client, true)
+                    lsp_inlayhints.on_attach(client, bufnr, true)
                 end
             end,
             settings = {

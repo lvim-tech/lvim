@@ -30,7 +30,7 @@ keymaps["normal"] = {
     { "<C-Right>", ":vertical resize +2<CR>" }, -- Resize width +
     { "<C-Up>", ":resize -2<CR>" }, -- Resize height -
     { "<C-Down>", ":resize +2<CR>" }, -- Resize height +
-    { "<S-x>", ":Neotree<CR>" }, -- Neotree explorer
+    { "<S-x>", ":Neotree left<CR>" }, -- Neotree explorer
     { "<S-m>", ":MarkdownPreview<CR>" }, -- Markdown preview
     { "<A-,>", ":Telescope find_files<CR>" }, -- Search files with Telescope
     { "<A-.>", ":Telescope live_grep<CR>" }, -- Search word with Telescope

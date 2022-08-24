@@ -269,7 +269,6 @@ function config.which_key_nvim()
     }
     local nmappings = {
         a = { ":e $HOME/.config/nvim/README.org<CR>", "Open README file" },
-        e = { "<Cmd>Neotree<CR>", "Neotree" },
         b = {
             name = "Buffers",
             n = { "<Cmd>BufSurfForward<CR>", "Next buffer" },
@@ -282,6 +281,13 @@ function config.which_key_nvim()
             f = { "<Cmd>DBUIFindBuffer<CR>", "DB find buffer" },
             r = { "<Cmd>DBUIRenameBuffer<CR>", "DB rename buffer" },
             l = { "<Cmd>DBUILastQueryInfo<CR>", "DB last query" },
+        },
+        e = {
+            name = "NeoTree",
+            l = { "<Cmd>Neotree left<CR>", "Neotree left" },
+            f = { "<Cmd>Neotree float<CR>", "Neotree float" },
+            b = { "<Cmd>Neotree buffers float<CR>", "Neotree buffers" },
+            g = { "<Cmd>Neotree git_status float<CR>", "Neotree git_status" },
         },
         p = {
             name = "Packer",
@@ -316,13 +322,6 @@ function config.which_key_nvim()
                 "<Cmd>LspAddToWorkspaceFolder<CR>",
                 "Add to workspace folder",
             },
-        },
-        n = {
-            name = "NeoTree",
-            l = { "<Cmd>Neotree left<CR>", "Set neotree left" },
-            f = { "<Cmd>Neotree float<CR>", "Set neotree float" },
-            b = { "<Cmd>Neotree buffers float<CR>", "Neotree buffers" },
-            g = { "<Cmd>Neotree git_status float<CR>", "Neotree git_status" },
         },
         g = {
             name = "GIT",
@@ -754,7 +753,7 @@ function config.heirline_nvim()
             local extension = vim.fn.expand("%:e")
             if not isempty(filename) then
                 local f_icon, f_icon_color =
-                require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
+                    require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
                 local hl_group_2 = "FileIconColor" .. extension
                 vim.api.nvim_set_hl(0, hl_group_2, { fg = f_icon_color, bg = colors.status_line_bg })
                 if isempty(f_icon) then
