@@ -71,6 +71,20 @@ function config.hover_nvim()
     vim.api.nvim_create_user_command("Hover", "lua require('hover').hover()", {})
 end
 
+function config.fidget_nvim()
+    require("fidget").setup({
+        text = {
+            spinner = "bouncing_bar", -- animation shown when tasks are ongoing
+        },
+        window = {
+            relative = "editor", -- where to anchor, either "win" or "editor"
+            blend = 0,
+
+            border = { " ", " ", " ", " ", " ", " ", " ", " " },
+        },
+    })
+end
+
 function config.go_nvim()
     require("go").setup({
         lsp_inlay_hints = {

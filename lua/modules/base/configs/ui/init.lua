@@ -188,6 +188,7 @@ function config.neo_tree_nvim()
         },
         filesystem = {
             follow_current_file = true,
+            use_libuv_file_watcher = true,
         },
     })
 end
@@ -753,7 +754,7 @@ function config.heirline_nvim()
             local extension = vim.fn.expand("%:e")
             if not isempty(filename) then
                 local f_icon, f_icon_color =
-                    require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
+                require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
                 local hl_group_2 = "FileIconColor" .. extension
                 vim.api.nvim_set_hl(0, hl_group_2, { fg = f_icon_color, bg = colors.status_line_bg })
                 if isempty(f_icon) then
@@ -1151,7 +1152,10 @@ function config.nvim_notify()
 end
 
 function config.lvim_focus()
-    require("lvim-focus").setup()
+    require("lvim-focus").setup({
+        colorcolumn = true,
+        colorcolumn_value = "120",
+    })
 end
 
 function config.lvim_helper()

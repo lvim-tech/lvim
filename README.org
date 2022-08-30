@@ -4,9 +4,9 @@
 
   LVIM IDE is a modular Neovim configuration written in LUA with full customization
 
-  Current version - 2.0.51 (2022-08-24)
+  Current version - 2.0.60 (2022-08-30)
 
-  Startup time: 084.089 (100 plugins)
+  Startup time: 092.314 (104 plugins)
 
 **  SCREENSHOTS
 
@@ -413,7 +413,7 @@
         branch = "v2.x",
         requires = {
             "nvim-lua/plenary.nvim",
-            "kyazdani42/nvim-web-devicons", -- not strictly required, but recommended
+            "kyazdani42/nvim-web-devicons",
             "MunifTanjim/nui.nvim",
             {
                 "mrbjarksen/neo-tree-diagnostics.nvim",
@@ -1865,6 +1865,14 @@
 
     modules["kevinhwang91/nvim-bqf"] = {
         ft = "qf",
+        requires = {
+            {
+                "junegunn/fzf",
+                run = function()
+                    vim.fn["fzf#install"]()
+                end,
+            },
+        },
         config = editor_config.nvim_bqf,
     }
 
@@ -1884,6 +1892,27 @@
 
     #+end_src
 
+******   [[https://gitlab.com/yorickpeterse/nvim-pqf][nvim-pqf]]
+
+        + INIT
+
+    #+begin_src lua
+
+    modules["https://gitlab.com/yorickpeterse/nvim-pqf"] = {
+        config = editor_config.nvim_pqf,
+    }
+
+    #+end_src
+
+        + CONFIG
+
+    #+begin_src lua
+
+    function config.nvim_pqf()
+        require("pqf").setup()
+    end
+
+    #+end_src
 
 ******   [[https://github.com/nanozuki/tabby.nvim][tabby.nvim]]
 
@@ -2912,7 +2941,6 @@ end
         requires = {
             "neovim/nvim-lspconfig",
         },
-        branch = "main",
         config = languages_config.mason,
     }
 
@@ -3036,6 +3064,42 @@ end
     end
 
     #+end_src
+
+******   [[https://github.com/lvim-tech/fidget.nvim][fidget.nvim]]
+
+        + INIT
+
+    #+begin_src lua
+
+    modules["lvim-tech/fidget.nvim"] = {
+        event = {
+            "BufRead",
+        },
+        config = fidget_nvim,
+    }
+
+    #+end_src
+
+        + CONFIG
+
+    #+begin_src lua
+
+    function config.fidget_nvim()
+        require("fidget").setup({
+            text = {
+                spinner = "bouncing_bar", -- animation shown when tasks are ongoing
+            },
+            window = {
+                relative = "editor", -- where to anchor, either "win" or "editor"
+                blend = 0,
+
+                border = { " ", " ", " ", " ", " ", " ", " ", " " },
+            },
+        })
+    end
+
+    #+end_src
+
 
 ******   [[https://github.com/folke/lua-dev.nvim][lua-dev.nvim]]
 
@@ -4324,4 +4388,3 @@ end
       + yaml
       + zig
       + zir
-

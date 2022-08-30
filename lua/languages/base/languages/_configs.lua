@@ -104,6 +104,13 @@ M.lua = function(file_types, pid_name)
                 languages_setup.document_formatting(client, bufnr)
                 client.offset_encoding = "utf-16"
                 if vim.fn.has("nvim-0.8") == 1 then
+                    client.server_capabilities.document_formatting = false
+                    client.server_capabilities.document_range_formatting = false
+                else
+                    client.resolved_capabilities.document_formatting = false
+                    client.resolved_capabilities.document_range_formatting = false
+                end
+                if vim.fn.has("nvim-0.8") == 1 then
                     navic.attach(client, bufnr)
                     lsp_inlayhints.on_attach(client, bufnr, true)
                 end

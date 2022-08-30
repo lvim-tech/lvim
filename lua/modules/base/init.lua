@@ -37,7 +37,7 @@ modules["nvim-neo-tree/neo-tree.nvim"] = {
     branch = "v2.x",
     requires = {
         "nvim-lua/plenary.nvim",
-        "kyazdani42/nvim-web-devicons", -- not strictly required, but recommended
+        "kyazdani42/nvim-web-devicons",
         "MunifTanjim/nui.nvim",
         {
             "mrbjarksen/neo-tree-diagnostics.nvim",
@@ -161,7 +161,19 @@ modules["nvim-telescope/telescope.nvim"] = {
 
 modules["kevinhwang91/nvim-bqf"] = {
     ft = "qf",
+    requires = {
+        {
+            "junegunn/fzf",
+            run = function()
+                vim.fn["fzf#install"]()
+            end,
+        },
+    },
     config = editor_config.nvim_bqf,
+}
+
+modules["https://gitlab.com/yorickpeterse/nvim-pqf"] = {
+    config = editor_config.nvim_pqf,
 }
 
 modules["nanozuki/tabby.nvim"] = {
@@ -397,7 +409,6 @@ modules["williamboman/mason.nvim"] = {
     requires = {
         "neovim/nvim-lspconfig",
     },
-    branch = "main",
     config = languages_config.mason_nvim,
 }
 
@@ -413,6 +424,13 @@ modules["lewis6991/hover.nvim"] = {
         "BufRead",
     },
     config = languages_config.hover_nvim,
+}
+
+modules["lvim-tech/fidget.nvim"] = {
+    event = {
+        "BufRead",
+    },
+    config = languages_config.fidget_nvim,
 }
 
 modules["folke/lua-dev.nvim"] = {
