@@ -20,16 +20,21 @@ function config.nui_nvim()
 end
 
 function config.alpha_nvim()
-    local dashboard = require("alpha.themes.dashboard")
+    local alpha_status_ok, alpha = pcall(require, "alpha")
+    if not alpha_status_ok then
+        return
+    end
+    local alpha_themes_dashboard_status_ok, alpha_themes_dashboard = pcall(require, "alpha.themes.dashboard")
+    if not alpha_themes_dashboard_status_ok then
+        return
+    end
     math.randomseed(os.time())
-
     local function button(sc, txt, keybind, keybind_opts)
-        local b = dashboard.button(sc, txt, keybind, keybind_opts)
+        local b = alpha_themes_dashboard.button(sc, txt, keybind, keybind_opts)
         b.opts.hl = "AlphaButton"
         b.opts.hl_shortcut = "AlphaButtonShortcut"
         return b
     end
-
     local function footer()
         local global = require("core.global")
         local plugins = #vim.tbl_keys(packer_plugins)
@@ -45,8 +50,7 @@ function config.alpha_nvim()
         end
         return string.format("  %d   v%d.%d.%d  %s  %s", plugins, v.major, v.minor, v.patch, platform, datetime)
     end
-
-    dashboard.section.header.val = {
+    alpha_themes_dashboard.section.header.val = {
         " 888     Y88b      / 888      e    e      ",
         " 888      Y88b    /  888     d8b  d8b     ",
         " 888       Y88b  /   888    d888bdY88b    ",
@@ -54,8 +58,8 @@ function config.alpha_nvim()
         " 888         Y8/     888  /   YY   Y888b  ",
         " 888____      Y      888 /          Y888b ",
     }
-    dashboard.section.header.opts.hl = "AlphaHeader"
-    dashboard.section.buttons.val = {
+    alpha_themes_dashboard.section.header.opts.hl = "AlphaHeader"
+    alpha_themes_dashboard.section.buttons.val = {
         button("SPC SPC b", "  Projects", ":CtrlSpace b<CR>"),
         button("A-/", "  File explorer", ":Telescope file_browser<CR>"),
         button("A-,", "  Search file", ":Telescope find_files<CR>"),
@@ -63,10 +67,10 @@ function config.alpha_nvim()
         button("F11", "  Help", ":LvimHelper<CR>"),
         button("q", "  Quit", "<Cmd>qa<CR>"),
     }
-    dashboard.section.footer.val = footer()
-    dashboard.section.footer.opts.hl = "AlphaFooter"
-    table.insert(dashboard.config.layout, { type = "padding", val = 1 })
-    table.insert(dashboard.config.layout, {
+    alpha_themes_dashboard.section.footer.val = footer()
+    alpha_themes_dashboard.section.footer.opts.hl = "AlphaFooter"
+    table.insert(alpha_themes_dashboard.config.layout, { type = "padding", val = 1 })
+    table.insert(alpha_themes_dashboard.config.layout, {
         type = "text",
         val = require("alpha.fortune")(),
         opts = {
@@ -74,7 +78,7 @@ function config.alpha_nvim()
             hl = "AlphaQuote",
         },
     })
-    require("alpha").setup(dashboard.config)
+    alpha.setup(alpha_themes_dashboard.config)
     vim.api.nvim_create_augroup("alpha_tabline", { clear = true })
     vim.api.nvim_create_autocmd("FileType", {
         group = "alpha_tabline",
@@ -95,7 +99,10 @@ function config.alpha_nvim()
 end
 
 function config.nvim_window_picker()
-    local window_picker = require("window-picker")
+    local window_picker_status_ok, window_picker = pcall(require, "window-picker")
+    if not window_picker_status_ok then
+        return
+    end
     local filters = window_picker.filter_windows
     local function special_autoselect(windows)
         windows = filters(windows)
@@ -113,15 +120,13 @@ function config.nvim_window_picker()
         end
         return windows
     end
-
     local function focus_window()
-        local window = require("window-picker").pick_window()
+        window_picker.pick_window()
         if type(window) == "number" then
             vim.api.nvim_set_current_win(window)
         end
     end
-
-    require("window-picker").setup({
+    window_picker.setup({
         autoselect_one = false,
         include_current_win = true,
         filter_func = special_autoselect,
@@ -139,7 +144,11 @@ function config.nvim_window_picker()
 end
 
 function config.neo_tree_nvim()
-    require("neo-tree").setup({
+    local neo_tree_status_ok, neo_tree = pcall(require, "neo-tree")
+    if not neo_tree_status_ok then
+        return
+    end
+    neo_tree.setup({
         use_popups_for_input = false,
         popup_border_style = { " ", " ", " ", " ", " ", " ", " ", " " },
         enable_diagnostics = false,
@@ -194,10 +203,18 @@ function config.neo_tree_nvim()
 end
 
 function config.dirbuf_nvim()
-    require("dirbuf").setup({})
+    local dirbuf_status_ok, dirbuf = pcall(require, "dirbuf")
+    if not dirbuf_status_ok then
+        return
+    end
+    dirbuf.setup({})
 end
 
 function config.which_key_nvim()
+    local which_key_status_ok, which_key = pcall(require, "which-key")
+    if not which_key_status_ok then
+        return
+    end
     local options = {
         plugins = {
             marks = true,
@@ -248,7 +265,16 @@ function config.which_key_nvim()
             },
             spacing = 10,
         },
-        hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " },
+        hidden = {
+            "<silent>",
+            "<cmd>",
+            "<Cmd>",
+            "<CR>",
+            "call",
+            "lua",
+            "^:",
+            "^ ",
+        },
         show_help = true,
         buftype = "",
     }
@@ -412,15 +438,24 @@ function config.which_key_nvim()
         ["/"] = { ":CommentToggle<CR>", "Comment" },
         f = { "<Cmd>LspRangeFormatting<CR>", "Range formatting" },
     }
-    local which_key = require("which-key")
     which_key.setup(options)
     which_key.register(nmappings, nopts)
     which_key.register(vmappings, vopts)
 end
 
 function config.heirline_nvim()
-    local conditions = require("heirline.conditions")
-    local utils = require("heirline.utils")
+    local heirline_status_ok, heirline = pcall(require, "heirline")
+    if not heirline_status_ok then
+        return
+    end
+    local heirline_conditions_status_ok, heirline_conditions = pcall(require, "heirline.conditions")
+    if not heirline_conditions_status_ok then
+        return
+    end
+    local heirline_utils_status_ok, heirline_utils = pcall(require, "heirline.utils")
+    if not heirline_utils_status_ok then
+        return
+    end
     local colors = LVIM_COLORS()
     local align = { provider = "%=" }
     local space = { provider = " " }
@@ -501,7 +536,7 @@ function config.heirline_nvim()
             self.cwd = vim.fn.fnamemodify(cwd, ":~")
         end,
         hl = { fg = colors.color_05, bold = true },
-        utils.make_flexible_component(1, {
+        heirline_utils.make_flexible_component(1, {
             provider = function(self)
                 local trail = self.cwd:sub(-1) == "/" and "" or "/"
                 return self.icon .. self.cwd .. trail
@@ -538,7 +573,7 @@ function config.heirline_nvim()
             if filename == "" then
                 return
             end
-            if not conditions.width_percent_below(#filename, 0.25) then
+            if not heirline_conditions.width_percent_below(#filename, 0.25) then
                 filename = vim.fn.pathshorten(filename)
             end
             return filename .. " "
@@ -582,18 +617,18 @@ function config.heirline_nvim()
         end,
         hl = { fg = colors.color_03 },
     }
-    file_name_block = utils.insert(
+    file_name_block = heirline_utils.insert(
         file_name_block,
         space,
         space,
         file_icon,
-        utils.insert(file_name_modifer, file_name),
+        heirline_utils.insert(file_name_modifer, file_name),
         file_size,
         unpack(file_flags),
         { provider = "%<" }
     )
     local git = {
-        condition = conditions.is_git_repo,
+        condition = heirline_conditions.is_git_repo,
         init = function(self)
             self.status_dict = vim.b.gitsigns_status_dict
             self.has_changes = self.status_dict.added ~= 0
@@ -633,7 +668,7 @@ function config.heirline_nvim()
         },
     }
     local diagnostics = {
-        condition = conditions.has_diagnostics,
+        condition = heirline_conditions.has_diagnostics,
         static = {
             error_icon = " ",
             warn_icon = " ",
@@ -673,8 +708,8 @@ function config.heirline_nvim()
         },
     }
     local lsp_active = {
-        condition = conditions.lsp_attached,
-        update = { "LspAttach", "LspDetach" },
+        condition = heirline_conditions.lsp_attached,
+        update = { "LspAttach", "LspDetach", "BufWinEnter" },
         provider = function()
             local names = {}
             for _, server in pairs(vim.lsp.buf_get_clients(0)) do
@@ -685,7 +720,7 @@ function config.heirline_nvim()
         hl = { fg = colors.color_05, bold = true },
     }
     local is_lsp_active = {
-        condition = conditions.lsp_attached,
+        condition = heirline_conditions.lsp_attached,
         update = { "LspAttach", "LspDetach" },
         provider = function()
             return "  "
@@ -749,12 +784,16 @@ function config.heirline_nvim()
             end
 
             local hl_group_1 = "FileTextColor"
-            vim.api.nvim_set_hl(0, hl_group_1, { fg = colors.color_01, bg = colors.status_line_bg, bold = true })
+            vim.api.nvim_set_hl(0, hl_group_1, {
+                fg = colors.color_01,
+                bg = colors.status_line_bg,
+                bold = true,
+            })
             local filename = vim.fn.expand("%:t")
             local extension = vim.fn.expand("%:e")
             if not isempty(filename) then
                 local f_icon, f_icon_color =
-                require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
+                    require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
                 local hl_group_2 = "FileIconColor" .. extension
                 vim.api.nvim_set_hl(0, hl_group_2, { fg = f_icon_color, bg = colors.status_line_bg })
                 if isempty(f_icon) then
@@ -790,7 +829,7 @@ function config.heirline_nvim()
     }
     local status_lines = {
         hl = function()
-            if conditions.is_active() then
+            if heirline_conditions.is_active() then
                 return {
                     fg = colors.status_line_fg,
                     bg = colors.status_line_bg,
@@ -804,11 +843,11 @@ function config.heirline_nvim()
         end,
         static = {
             mode_color = function(self)
-                local mode = conditions.is_active() and vim.fn.mode() or "n"
+                local mode = heirline_conditions.is_active() and vim.fn.mode() or "n"
                 return self.mode_colors[mode]
             end,
         },
-        init = utils.pick_child_on_condition,
+        init = heirline_utils.pick_child_on_condition,
         {
             vi_mode,
             work_dir,
@@ -825,12 +864,11 @@ function config.heirline_nvim()
             scroll_bar,
         },
     }
-
     local win_bars = {
-        init = utils.pick_child_on_condition,
+        init = heirline_utils.pick_child_on_condition,
         {
             condition = function()
-                return conditions.buffer_matches({
+                return heirline_conditions.buffer_matches({
                     buftype = {
                         "nofile",
                         "prompt",
@@ -868,7 +906,7 @@ function config.heirline_nvim()
         },
         {
             condition = function()
-                return conditions.buffer_matches({ buftype = { "terminal" } })
+                return heirline_conditions.buffer_matches({ buftype = { "terminal" } })
             end,
             {
                 file_type,
@@ -878,7 +916,7 @@ function config.heirline_nvim()
         },
         {
             condition = function()
-                return not conditions.is_active()
+                return not heirline_conditions.is_active()
             end,
             {
                 file_icon_name,
@@ -890,14 +928,18 @@ function config.heirline_nvim()
         },
     }
     if vim.fn.has("nvim-0.8") == 1 then
-        require("heirline").setup(status_lines, win_bars)
+        heirline.setup(status_lines, win_bars)
     else
-        require("heirline").setup(status_lines)
+        heirline.setup(status_lines)
     end
 end
 
 function config.fm_nvim()
-    require("fm-nvim").setup({
+    local fm_nvim_status_ok, fm_nvim = pcall(require, "fm-nvim")
+    if not fm_nvim_status_ok then
+        return
+    end
+    fm_nvim.setup({
         ui = {
             float = {
                 border = "single",
@@ -914,7 +956,11 @@ function config.fm_nvim()
 end
 
 function config.toggleterm_nvim()
-    local terminal_float = require("toggleterm.terminal").Terminal:new({
+    local toggleterm_terminal_status_ok, toggleterm_terminal = pcall(require, "toggleterm.terminal")
+    if not toggleterm_terminal_status_ok then
+        return
+    end
+    local terminal_float = toggleterm_terminal.Terminal:new({
         count = 4,
         direction = "float",
         float_opts = {
@@ -944,7 +990,7 @@ function config.toggleterm_nvim()
             vim.cmd("quit!")
         end,
     })
-    local terminal_one = require("toggleterm.terminal").Terminal:new({
+    local terminal_one = toggleterm_terminal.Terminal:new({
         count = 1,
         direction = "horizontal",
         on_open = function(term)
@@ -966,7 +1012,7 @@ function config.toggleterm_nvim()
             vim.cmd("quit!")
         end,
     })
-    local terminal_two = require("toggleterm.terminal").Terminal:new({
+    local terminal_two = toggleterm_terminal.Terminal:new({
         count = 2,
         direction = "horizontal",
         on_open = function(term)
@@ -988,7 +1034,7 @@ function config.toggleterm_nvim()
             vim.cmd("quit!")
         end,
     })
-    local terminal_three = require("toggleterm.terminal").Terminal:new({
+    local terminal_three = toggleterm_terminal.Terminal:new({
         count = 3,
         direction = "horizontal",
         on_open = function(term)
@@ -1013,19 +1059,15 @@ function config.toggleterm_nvim()
     function _G.toggleterm_float_toggle()
         terminal_float:toggle()
     end
-
     function _G.toggleterm_one_toggle()
         terminal_one:toggle()
     end
-
     function _G.toggleterm_two_toggle()
         terminal_two:toggle()
     end
-
     function _G.toggleterm_three_toggle()
         terminal_three:toggle()
     end
-
     vim.api.nvim_create_user_command("TTFloat", "lua _G.toggleterm_float_toggle()", {})
     vim.api.nvim_create_user_command("TTOne", "lua _G.toggleterm_one_toggle()", {})
     vim.api.nvim_create_user_command("TTTwo", "lua _G.toggleterm_two_toggle()", {})
@@ -1033,7 +1075,11 @@ function config.toggleterm_nvim()
 end
 
 function config.zen_mode_nvim()
-    require("zen-mode").setup({
+    local zen_mode_status_ok, zen_mode = pcall(require, "zen-mode")
+    if not zen_mode_status_ok then
+        return
+    end
+    zen_mode.setup({
         window = {
             options = {
                 number = false,
@@ -1049,7 +1095,11 @@ function config.zen_mode_nvim()
 end
 
 function config.twilight_nvim()
-    require("twilight").setup({
+    local twilight_status_ok, twilight = pcall(require, "twilight")
+    if not twilight_status_ok then
+        return
+    end
+    twilight.setup({
         dimming = {
             alpha = 0.5,
         },
@@ -1057,14 +1107,22 @@ function config.twilight_nvim()
 end
 
 function config.neozoom_lua()
-    require("neo-zoom").setup({})
+    local neo_zoom_status_ok, neo_zoom = pcall(require, "neo-zoom")
+    if not neo_zoom_status_ok then
+        return
+    end
+    neo_zoom.setup({})
     vim.keymap.set("n", "<C-z>", function()
         vim.cmd("NeoZoomToggle")
     end, NOREF_NOERR_TRUNC)
 end
 
 function config.indent_blankline_nvim()
-    require("indent_blankline").setup({
+    local indent_blankline_status_ok, indent_blankline = pcall(require, "indent_blankline")
+    if not indent_blankline_status_ok then
+        return
+    end
+    indent_blankline.setup({
         char = "▏",
         show_first_indent_level = true,
         show_trailing_blankline_indent = true,
@@ -1113,7 +1171,10 @@ function config.indent_blankline_nvim()
 end
 
 function config.nvim_notify()
-    local notify = require("notify")
+    local notify_status_ok, notify = pcall(require, "notify")
+    if not notify_status_ok then
+        return
+    end
     notify.setup({
         icons = {
             DEBUG = " ",
@@ -1125,7 +1186,10 @@ function config.nvim_notify()
         stages = "fade",
         on_open = function(win)
             if vim.api.nvim_win_is_valid(win) then
-                vim.api.nvim_win_set_config(win, { border = { " ", " ", " ", " ", " ", " ", " ", " " }, zindex = 200 })
+                vim.api.nvim_win_set_config(win, {
+                    border = { " ", " ", " ", " ", " ", " ", " ", " " },
+                    zindex = 200,
+                })
             end
         end,
     })
@@ -1159,8 +1223,12 @@ function config.lvim_focus()
 end
 
 function config.lvim_helper()
+    local lvim_helper_status_ok, lvim_helper = pcall(require, "lvim-helper")
+    if not lvim_helper_status_ok then
+        return
+    end
     local global = require("core.global")
-    require("lvim-helper").setup({
+    lvim_helper.setup({
         files = {
             global.home .. "/.config/nvim/help/lvim_bindings_normal_mode.md",
             global.home .. "/.config/nvim/help/lvim_bindings_visual_mode.md",

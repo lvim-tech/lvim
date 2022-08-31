@@ -1,7 +1,5 @@
 local languages_setup = require("languages.base.utils")
 local gopls_config = require("languages.base.languages._configs").go({ "go", "gomod" }, "go")
-local golangci_lint_ls_config =
-require("languages.base.languages._configs").without_winbar_config({ "go", "gomod" }, "go")
 local dap = require("dap")
 
 local language_configs = {}
@@ -11,7 +9,9 @@ language_configs["lsp"] = function()
         ["language"] = "go",
         ["dap"] = { "delve" },
         ["gopls"] = { "gopls", gopls_config },
-        ["golangci-lint-langserver"] = { "golangci_lint_ls", golangci_lint_ls_config },
+        ["dependencies"] = {
+            "golangci-lint",
+        },
     })
 end
 

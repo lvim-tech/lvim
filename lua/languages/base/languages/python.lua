@@ -9,7 +9,11 @@ language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "python",
         ["dap"] = { "debugpy" },
-        ["pyright"] = { "pyright", pyright_config },
+        ["python-lsp-server"] = { "pylsp", pyright_config },
+        ["dependencies"] = {
+            "flake8",
+            "black",
+        },
     })
 end
 

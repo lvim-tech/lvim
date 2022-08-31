@@ -7,6 +7,10 @@ language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "markdown",
         ["marksman"] = { "marksman", marksman_config },
+        ["dependencies"] = {
+            "prettierd",
+            "cbfmt",
+        },
     })
 end
 

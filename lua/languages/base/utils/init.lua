@@ -19,6 +19,7 @@ M.setup_languages = function(packages_data)
     end
 
     local function check_finish()
+        local null_ls = require("null-ls.client")
         if next(packages_to_install) == nil then
             for _, win in ipairs(vim.api.nvim_list_wins()) do
                 local config = vim.api.nvim_win_get_config(win)
@@ -28,6 +29,7 @@ M.setup_languages = function(packages_data)
                 vim.defer_fn(function()
                     vim.defer_fn(function()
                         lsp_start()
+                        null_ls.try_add()
                     end, 1000)
                     vim.defer_fn(function()
                         global.install_proccess = false
@@ -81,14 +83,11 @@ M.setup_languages = function(packages_data)
                             end, 2000)
                         elseif choice == "Don't ask me again" then
                             funcs.write_file(global.cache_path .. ".lvim_packages", "")
-                            vim.notify(
-                                "To enable ask again run command:\n:AskForPackagesFile\nand restart LVIM IDE",
-                                "error",
-                                {
-                                    timeout = 10000,
-                                    title = "LVIM IDE",
-                                }
-                            )
+                            vim.notify("To enable ask again run command:\n:AskForPackagesFile\nand restart LVIM IDE",
+                                "error", {
+                                timeout = 10000,
+                                title = "LVIM IDE",
+                            })
                         elseif choice == "Cancel" then
                             vim.notify("Need restart LVIM IDE to install packages for this filetype", "error", {
                                 timeout = 10000,
@@ -186,57 +185,28 @@ M.icons = {
     info = " ",
 }
 
-M.setup_diagnostic = function(custom_config_diagnostic)
-    local local_config_diagnostic
-    if custom_config_diagnostic ~= nil then
-        local_config_diagnostic = custom_config_diagnostic
-    else
-        local_config_diagnostic = M.config_diagnostic
-    end
-    vim.lsp.handlers["textDocument/publishDiagnostics"] = function(_, result, ctx)
-        local uri = result.uri
-        local bufnr = vim.uri_to_bufnr(uri)
-        if not bufnr then
-            return
-        end
-        local diagnostics = result.diagnostics
-        local ok, vim_diag = pcall(require, "vim.diagnostic")
-        if ok then
-            for i, diagnostic in ipairs(diagnostics) do
-                local rng = diagnostic.range
-                diagnostics[i].lnum = rng["start"].line
-                diagnostics[i].end_lnum = rng["end"].line
-                diagnostics[i].col = rng["start"].character
-                diagnostics[i].end_col = rng["end"].character
-            end
-            local namespace = vim.lsp.diagnostic.get_namespace(ctx.client_id)
-            vim_diag.set(namespace, bufnr, diagnostics, local_config_diagnostic)
-            if not vim.api.nvim_buf_is_loaded(bufnr) then
-                return
-            end
-            vim.fn.sign_define("DiagnosticSignError", {
-                text = M.icons.error,
-                texthl = "DiagnosticError",
-                numhl = "DiagnosticError",
-            })
-            vim.fn.sign_define("DiagnosticSignWarn", {
-                text = M.icons.warn,
-                texthl = "DiagnosticWarn",
-                numhl = "DiagnosticWarn",
-            })
-            vim.fn.sign_define("DiagnosticSignHint", {
-                text = M.icons.hint,
-                texthl = "DiagnosticHint",
-                numhl = "DiagnosticHint",
-            })
-            vim.fn.sign_define("DiagnosticSignInfo", {
-                text = M.icons.info,
-                texthl = "DiagnosticInfo",
-                numhl = "DiagnosticInfo",
-            })
-            vim_diag.show(namespace, bufnr, diagnostics, local_config_diagnostic)
-        end
-    end
+M.setup_diagnostic = function()
+    vim.diagnostic.config(M.config_diagnostic)
+    vim.fn.sign_define("DiagnosticSignError", {
+        text = M.icons.error,
+        texthl = "DiagnosticError",
+        numhl = "DiagnosticError",
+    })
+    vim.fn.sign_define("DiagnosticSignWarn", {
+        text = M.icons.warn,
+        texthl = "DiagnosticWarn",
+        numhl = "DiagnosticWarn",
+    })
+    vim.fn.sign_define("DiagnosticSignHint", {
+        text = M.icons.hint,
+        texthl = "DiagnosticHint",
+        numhl = "DiagnosticHint",
+    })
+    vim.fn.sign_define("DiagnosticSignInfo", {
+        text = M.icons.info,
+        texthl = "DiagnosticInfo",
+        numhl = "DiagnosticInfo",
+    })
 end
 
 M.document_highlight = function(client, bufnr)

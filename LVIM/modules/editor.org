@@ -1,0 +1,832 @@
+*  EDITOR
+
+**   [[https://github.com/vim-ctrlspace/vim-ctrlspace][vim-ctrlspace]]
+
+    + Init
+
+    #+begin_src lua
+    modules["vim-ctrlspace/vim-ctrlspace"] = {
+        cmd = "CtrlSpace",
+    }
+    #+end_src
+
+**   [[https://github.com/nvim-telescope/telescope.nvim][telescope.nvim]]
+
+    + REQUIRES:
+        *  [[https://github.com/nvim-telescope/telescope-fzf-native.nvim][telescope-fzf-native.nvim]]
+        *  [[https://github.com/nvim-telescope/telescope-fzf-native.nvim][telescope-fzf-native.nvim]]
+        *  [[https://github.com/nvim-telescope/telescope-media-files.nvim][telescope-media-files.nvim]]
+        *  [[https://github.com/nvim-telescope/telescope-file-browser.nvim][telescope-file-browser.nvim]]
+        *  [[https://github.com/camgraff/telescope-tmux.nvim][telescope-tmux.nvim]]
+        *  [[https://github.com/zane-/howdoi.nvim][howdoi.nvim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["nvim-telescope/telescope.nvim"] = {
+        requires = {
+            {
+                "nvim-telescope/telescope-fzf-native.nvim",
+                run = "make",
+                opt = true,
+            },
+            {
+                "nvim-telescope/telescope-media-files.nvim",
+                opt = true,
+            },
+            {
+                "nvim-telescope/telescope-file-browser.nvim",
+                opt = true,
+            },
+            {
+                "camgraff/telescope-tmux.nvim",
+                opt = true,
+            },
+            {
+                "zane-/howdoi.nvim",
+                opt = true,
+            },
+        },
+        config = editor_config.telescope_nvim,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.telescope_nvim()
+        local loader = require("packer").loader
+        if not packer_plugins["telescope-fzf-native.nvim"].loaded then
+            loader(
+                "telescope-fzf-native.nvim"
+                    .. " telescope-media-files.nvim"
+                    .. " telescope-file-browser.nvim"
+                    .. " telescope-tmux.nvim"
+                    .. " howdoi.nvim"
+            )
+        end
+        local telescope_status_ok, telescope = pcall(require, "telescope")
+        if not telescope_status_ok then
+            return
+        end
+        telescope.setup({
+            defaults = {
+                prompt_prefix = "   ",
+                selection_caret = "  ",
+                entry_prefix = "  ",
+                initial_mode = "insert",
+                selection_strategy = "reset",
+                sorting_strategy = "ascending",
+                layout_strategy = "horizontal",
+                layout_config = {
+                    horizontal = {
+                        prompt_position = "top",
+                        preview_width = 0.55,
+                        results_width = 0.8,
+                    },
+                    vertical = {
+                        mirror = false,
+                    },
+                    width = 0.95,
+                    height = 0.90,
+                    preview_cutoff = 120,
+                },
+                vimgrep_arguments = {
+                    "rg",
+                    "--color=never",
+                    "--no-heading",
+                    "--with-filename",
+                    "--line-number",
+                    "--column",
+                    "--smart-case",
+                    "--hidden",
+                },
+                file_sorter = require("telescope.sorters").get_fuzzy_file,
+                file_ignore_patterns = {
+                    "node_modules",
+                    ".git",
+                    "target",
+                    "vendor",
+                },
+                generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
+                path_display = { shorten = 5 },
+                winblend = 0,
+                border = {},
+                borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+                color_devicons = true,
+                set_env = { ["COLORTERM"] = "truecolor" },
+                file_previewer = require("telescope.previewers").vim_buffer_cat.new,
+                grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
+                qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
+                buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
+            },
+            pickers = {
+                file_browser = {
+                    hidden = true,
+                },
+                find_files = {
+                    hidden = true,
+                },
+                live_grep = {
+                    hidden = true,
+                    only_sort_text = true,
+                },
+            },
+            extensions = {
+                fzf = {
+                    fuzzy = true,
+                    override_generic_sorter = false,
+                    override_file_sorter = true,
+                    case_mode = "smart_case",
+                },
+                media_files = {
+                    filetypes = { "png", "webp", "jpg", "jpeg" },
+                    find_cmd = "rg",
+                },
+                file_browser = {},
+            },
+        })
+        telescope.load_extension("fzf")
+        telescope.load_extension("media_files")
+        telescope.load_extension("file_browser")
+        telescope.load_extension("tmux")
+        telescope.load_extension("howdoi")
+    end
+    #+end_src
+
+**   [[https://github.com/kevinhwang91/nvim-bqf][nvim-bqf]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["kevinhwang91/nvim-bqf"] = {
+        ft = "qf",
+        requires = {
+            {
+                "junegunn/fzf",
+                run = function()
+                    vim.fn["fzf#install"]()
+                end,
+            },
+        },
+        config = editor_config.nvim_bqf,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.nvim_bqf()
+        local bqf_status_ok, bqf = pcall(require, "bqf")
+        if not bqf_status_ok then
+            return
+        end
+        bqf.setup({
+            preview = {
+                border_chars = { "│", "│", "─", "─", "┌", "┐", "└", "┘", "█" },
+            },
+        })
+    end
+    #+end_src
+
+**   [[https://gitlab.com/yorickpeterse/nvim-pqf][nvim-pqf]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["https://gitlab.com/yorickpeterse/nvim-pqf"] = {
+        config = editor_config.nvim_pqf,
+    }
+    #+end_src
+
+        + CONFIG
+
+    #+begin_src lua
+    function config.nvim_pqf()
+        local pqf_status_ok, pqf = pcall(require, "pqf")
+        if not pqf_status_ok then
+            return
+        end
+        pqf.setup()
+    end
+    #+end_src
+
+**   [[https://github.com/nanozuki/tabby.nvim][tabby.nvim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["nanozuki/tabby.nvim"] = {
+        config = editor_config.tabby_nvim,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.tabby_nvim()
+        local tabby_util_status_ok, tabby_util = pcall(require, "tabby.util")
+        if not tabby_util_status_ok then
+            return
+        end
+        local hl_tabline = {
+            color_01 = "#242B30",
+            color_02 = "#A7C080",
+        }
+        local get_tab_label = function(tab_number)
+            local s, v = pcall(function()
+                if not packer_plugins["vim-ctrlspace"].loaded then
+                    vim.cmd("packadd vim-ctrlspace")
+                end
+                return vim.api.nvim_eval("ctrlspace#util#Gettabvar(" .. tab_number .. ", 'CtrlSpaceLabel')")
+            end)
+            if s then
+                if v == "" then
+                    return tab_number
+                else
+                    return tab_number .. ": " .. v
+                end
+            else
+                return tab_number .. ": " .. v
+            end
+        end
+        local components = function()
+            local coms = {
+                {
+                    type = "text",
+                    text = {
+                        "    ",
+                        hl = {
+                            fg = hl_tabline.color_01,
+                            bg = hl_tabline.color_02,
+                            style = "bold",
+                        },
+                    },
+                },
+            }
+            local tabs = vim.api.nvim_list_tabpages()
+            local current_tab = vim.api.nvim_get_current_tabpage()
+            local name_of_buf
+            for _, tabid in ipairs(tabs) do
+                local tab_number = vim.api.nvim_tabpage_get_number(tabid)
+                name_of_buf = get_tab_label(tab_number)
+                if tabid == current_tab then
+                    table.insert(coms, {
+                        type = "tab",
+                        tabid = tabid,
+                        label = {
+                            "  " .. name_of_buf .. "  ",
+                            hl = { fg = hl_tabline.color_02, bg = hl_tabline.color_01, style = "bold" },
+                        },
+                    })
+                    local wins = tabby_util.tabpage_list_wins(current_tab)
+                    local top_win = vim.api.nvim_tabpage_get_win(current_tab)
+                    for _, winid in ipairs(wins) do
+                        local icon = " "
+                        if winid == top_win then
+                            icon = " "
+                        end
+                        local bufid = vim.api.nvim_win_get_buf(winid)
+                        local buf_name = vim.api.nvim_buf_get_name(bufid)
+                        table.insert(coms, {
+                            type = "win",
+                            winid = winid,
+                            label = icon .. vim.fn.fnamemodify(buf_name, ":~:.") .. "  ",
+                        })
+                    end
+                else
+                    table.insert(coms, {
+                        type = "tab",
+                        tabid = tabid,
+                        label = {
+                            "  " .. name_of_buf .. "  ",
+                            hl = { fg = hl_tabline.color_01, bg = hl_tabline.color_02, style = "bold" },
+                        },
+                    })
+                end
+            end
+            table.insert(coms, { type = "text", text = { " ", hl = { bg = hl_tabline.color_01, style = "bold" } } })
+            return coms
+        end
+        local tabby_status_ok, tabby = pcall(require, "tabby")
+        if not tabby_status_ok then
+            return
+        end
+        tabby.setup({
+            components = components,
+        })
+    end
+    #+end_src
+
+**   [[https://github.com/booperlv/nvim-gomove][nvim-gomove]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["booperlv/nvim-gomove"] = {
+        event = {
+            "BufRead",
+        },
+        config = editor_config.nvim_gomove,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.nvim_gomove()
+        local gomove_status_ok, gomove = pcall(require, "gomove")
+        if not gomove_status_ok then
+            return
+        end
+        gomove.setup()
+    end
+    #+end_src
+
+**   [[https://github.com/jpalardy/vim-slime][vim-slime]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["jpalardy/vim-slime"] = {
+        config = editor_config.vim_slime,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.vim_slime()
+        vim.g.slime_target = "tmux"
+    end
+    #+end_src
+
+**   [[https://github.com/windwp/nvim-spectre][nvim-spectre]]
+
+    + REQUIRES:
+        *  [[https://github.com/nvim-lua/popup.nvim][popup.nvim]]
+        *  [[https://github.com/nvim-lua/plenary.nvim][plenary.nvim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["windwp/nvim-spectre"] = {
+        cmd = "Spectre",
+        requires = {
+            {
+                "nvim-lua/popup.nvim",
+            },
+            {
+                "nvim-lua/plenary.nvim",
+            },
+        },
+        config = editor_config.nvim_spectre,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.nvim_spectre()
+        local spectre_status_ok, spectre = pcall(require, "spectre")
+        if not spectre_status_ok then
+            return
+        end
+        vim.api.nvim_create_user_command("Spectre", "lua require('spectre').open()", {})
+        spectre.setup({
+            color_devicons = true,
+            line_sep_start = "-----------------------------------------",
+            result_padding = "|  ",
+            line_sep = "-----------------------------------------",
+            highlight = {
+                ui = "String",
+                search = "DiffAdd",
+                replace = "DiffChange",
+            },
+            mapping = {
+                ["delete_line"] = nil,
+                ["enter_file"] = nil,
+                ["send_to_qf"] = nil,
+                ["replace_cmd"] = nil,
+                ["show_option_menu"] = nil,
+                ["run_replace"] = nil,
+                ["change_view_mode"] = nil,
+                ["toggle_ignore_case"] = nil,
+                ["toggle_ignore_hidden"] = nil,
+            },
+            find_engine = {
+                ["rg"] = {
+                    cmd = "rg",
+                    args = {
+                        "--color=never",
+                        "--no-heading",
+                        "--with-filename",
+                        "--line-number",
+                        "--column",
+                    },
+                    options = {
+                        ["ignore-case"] = {
+                            value = "--ignore-case",
+                            icon = "[I]",
+                            desc = "ignore case",
+                        },
+                        ["hidden"] = {
+                            value = "--hidden",
+                            desc = "hidden file",
+                            icon = "[H]",
+                        },
+                    },
+                },
+                ["ag"] = {
+                    cmd = "ag",
+                    args = { "--vimgrep", "-s" },
+                    options = {
+                        ["ignore-case"] = {
+                            value = "-i",
+                            icon = "[I]",
+                            desc = "ignore case",
+                        },
+                        ["hidden"] = {
+                            value = "--hidden",
+                            desc = "hidden file",
+                            icon = "[H]",
+                        },
+                    },
+                },
+            },
+            replace_engine = {
+                ["sed"] = {
+                    cmd = "sed",
+                    args = nil,
+                },
+                options = {
+                    ["ignore-case"] = {
+                        value = "--ignore-case",
+                        icon = "[I]",
+                        desc = "ignore case",
+                    },
+                },
+            },
+            default = {
+                find = {
+                    cmd = "rg",
+                    options = { "ignore-case" },
+                },
+                replace = {
+                    cmd = "sed",
+                },
+            },
+            replace_vim_cmd = "cfdo",
+            is_open_target_win = true,
+            is_insert_mode = false,
+        })
+    end
+    #+end_src
+
+**   [[https://github.com/numToStr/Comment.nvim][Comment.nvim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["numToStr/Comment.nvim"] = {
+        event = {
+            "CursorMoved",
+        },
+        config = editor_config.comment_nvim,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.comment_nvim()
+        local comment_status_ok, comment = pcall(require, "Comment")
+        if not comment_status_ok then
+            return
+        end
+        comment.setup()
+    end
+    #+end_src
+
+**   [[https://github.com/MattesGroeger/vim-bookmarks][vim-bookmarks]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["MattesGroeger/vim-bookmarks"] = {
+        cmd = "BookmarkToggle",
+        config = editor_config.vim_bookmarks,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.vim_bookmarks()
+        vim.g.bookmark_no_default_key_mappings = 1
+        vim.g.bookmark_sign = ""
+    end
+    #+end_src
+
+**   [[https://github.com/ton/vim-bufsurf][vim-bufsurf]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["ton/vim-bufsurf"] = {
+        event = {
+            "BufRead",
+        },
+    }
+    #+end_src
+
+**   [[https://github.com/kkoomen/vim-doge][vim-doge]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["kkoomen/vim-doge"] = {
+        cmd = {
+            "DogeGenerate",
+            "DogeCreateDocStandard",
+        },
+        run = ":call doge#install()",
+        config = editor_config.vim_doge,
+    }
+    #+end_src
+
+    + Config
+
+    #+begin_src lua
+    function config.vim_doge()
+        vim.g.doge_mapping = "<Leader>*"
+    end
+    #+end_src
+
+**   [[https://github.com/norcalli/nvim-colorizer.lua][nvim-colorizer.lua]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["norcalli/nvim-colorizer.lua"] = {
+        event = {
+            "BufRead",
+        },
+        config = editor_config.nvim_colorize_lua,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.nvim_colorize_lua()
+        local colorizer_status_ok, colorizer = pcall(require, "colorizer")
+        if not colorizer_status_ok then
+            return
+        end
+        colorizer.setup({
+            "*",
+        }, {
+            RGB = true,
+            RRGGBB = true,
+            RRGGBBAA = true,
+            rgb_fn = true,
+            hsl_fn = true,
+            css = true,
+            css_fn = true,
+        })
+    end
+    #+end_src
+
+**   [[https://github.com/xiyaowong/virtcolumn.nvim][virtcolumn.nvim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["xiyaowong/virtcolumn.nvim"] = {
+        event = {
+            "BufRead",
+        },
+        config = editor_config.virtcolumn_nvim,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.virtcolumn_nvim()
+        vim.api.nvim_set_option("colorcolumn", "120")
+        vim.g.virtcolumn_char = "▕"
+        vim.g.virtcolumn_priority = 10
+    end
+    #+end_src
+
+**   [[https://github.com/declancm/cinnamon.nvim][cinnamon.nvim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["declancm/cinnamon.nvim"] = {
+        event = {
+            "BufRead",
+        },
+        config = editor_config.cinnamon_nvim,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.cinnamon_nvim()
+        local cinnamon_status_ok, cinnamon = pcall(require, "cinnamon")
+        if not cinnamon_status_ok then
+            return
+        end
+        cinnamon.setup({
+            extra_keymaps = true,
+            extended_keymaps = true,
+        })
+    end
+    #+end_src
+
+**   [[https://github.com/lambdalisue/suda.vim][suda.vim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["lambdalisue/suda.vim"] = {
+        event = {
+            "BufRead",
+        },
+        config = editor_config.suda_vim,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.suda_vim()
+        vim.g.suda_smart_edit = 1
+    end
+    #+end_src
+
+**   [[https://github.com/kenn7/vim-arsync][vim-arsync]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["kenn7/vim-arsync"] = {
+        cmd = {
+            "ARshowConf",
+            "ARsyncUp",
+            "ARsyncUpDelete",
+            "ARsyncDown",
+        },
+    }
+    #+end_src
+
+**   [[https://github.com/phaazon/hop.nvim][hop.nvim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["phaazon/hop.nvim"] = {
+        event = {
+            "BufRead",
+        },
+        branch = "v2",
+        config = editor_config.hop_nvim,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.hop_nvim()
+        local hop_status_ok, hop = pcall(require, "hop")
+        if not hop_status_ok then
+            return
+        end
+        hop.setup()
+    end
+    #+end_src
+
+**   [[https://github.com/folke/todo-comments.nvim][todo-comments.nvim]]
+
+    + REQUIRES:
+        *  [[https://github.com/nvim-lua/plenary.nvim][plenary.nvim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["folke/todo-comments.nvim"] = {
+        requires = {
+            "nvim-lua/plenary.nvim",
+        },
+        event = {
+            "BufRead",
+        },
+        config = editor_config.todo_comments_nvim,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.todo_comments_nvim()
+        local todo_comments_status_ok, todo_comments = pcall(require, "todo-comments")
+        if not todo_comments_status_ok then
+            return
+        end
+        todo_comments.setup({
+            colors = {
+                error = { "#F05F4E", "#F05F4E" },
+                warning = { "#F2994B", "#F2994B" },
+                info = { "#A7C080", "#A7C080" },
+                hint = { "#FF7A66", "#FF7A66" },
+                default = { "#90c1a3", "#90c1a3" },
+            },
+        })
+    end
+    #+end_src
+
+**   [[https://github.com/anuvyklack/pretty-fold.nvim][pretty-fold.nvim]]
+
+    + REQUIRES:
+        *  [[https://github.com/anuvyklack/fold-preview.nvim][fold-preview.nvim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["anuvyklack/pretty-fold.nvim"] = {
+        requires = {
+            "anuvyklack/fold-preview.nvim",
+        },
+        event = {
+            "BufRead",
+        },
+        config = editor_config.pretty_fold_nvim,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.pretty_fold_nvim()
+        local pretty_fold_status_ok, pretty_fold = pcall(require, "pretty-fold")
+        if not pretty_fold_status_ok then
+            return
+        end
+        pretty_fold.setup({
+            fill_char = "─",
+            sections = {
+                left = {
+                    "content",
+                },
+                right = {
+                    "┤ ",
+                    "number_of_folded_lines",
+                    " ├─",
+                },
+            },
+            ft_ignore = { "org" },
+        })
+        local fold_preview_status_ok, fold_preview = pcall(require, "fold-preview")
+        if not fold_preview_status_ok then
+            return
+        end
+        fold_preview.setup({
+            default_keybindings = false,
+        })
+        local map = require("fold-preview").mapping
+        function _G.fold_preview()
+            map.show_close_preview_open_fold()
+            vim.cmd("IndentBlanklineRefresh")
+        end
+    
+        vim.api.nvim_create_user_command("FoldPreview", "lua _G.fold_preview()", {})
+    end
+    #+end_src
+
+**   [[https://github.com/renerocksai/calendar-vim][calendar-vim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["renerocksai/calendar-vim"] = {
+        cmd = { "Calendar", "CalendarH", "CalendarT", "CalendarVR" },
+        config = editor_config.calendar_vim,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.calendar_vim()
+        vim.g.calendar_diary_extension = ".org"
+        vim.g.calendar_diary = "~/Org/diary/"
+        vim.g.calendar_diary_path_pattern = "{YYYY}-{MM}-{DD}{EXT}"
+        vim.g.calendar_monday = 1
+        vim.g.calendar_weeknm = 1
+    end
+    #+end_src

@@ -7,6 +7,9 @@ language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "vim",
         ["vim-language-server"] = { "vimls", vimls_config },
+        ["dependencies"] = {
+            "vint",
+        },
     })
 end
 

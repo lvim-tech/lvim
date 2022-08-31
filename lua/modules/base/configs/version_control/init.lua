@@ -1,7 +1,11 @@
 local config = {}
 
 function config.neogit()
-    require("neogit").setup({
+    local neogit_status_ok, neogit = pcall(require, "neogit")
+    if not neogit_status_ok then
+        return
+    end
+    neogit.setup({
         disable_signs = false,
         disable_context_highlighting = false,
         disable_commit_confirmation = false,
@@ -26,7 +30,11 @@ function config.neogit()
 end
 
 function config.gitsigns_nvim()
-    require("gitsigns").setup({
+    local gitsigns_status_ok, gitsigns = pcall(require, "gitsigns")
+    if not gitsigns_status_ok then
+        return
+    end
+    gitsigns.setup({
         signs = {
             add = {
                 hl = "GitSignsAdd",
@@ -91,7 +99,11 @@ function config.git_blame_nvim()
 end
 
 function config.octo_nvim()
-    require("octo").setup()
+    local octo_status_ok, octo = pcall(require, "octo")
+    if not octo_status_ok then
+        return
+    end
+    octo.setup()
 end
 
 return config

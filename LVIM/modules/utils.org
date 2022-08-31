@@ -1,0 +1,17 @@
+*  UTILS
+
+**   [[https://github.com/nvim-lua/plenary.nvim][plenary.nvim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["nvim-lua/plenary.nvim"] = {}
+    #+end_src
+
+**   [[https://github.com/lewis6991/impatient.nvim][impatient.nvim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["lewis6991/impatient.nvim"] = {}
+    #+end_src

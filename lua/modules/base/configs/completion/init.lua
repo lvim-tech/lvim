@@ -121,4 +121,72 @@ function config.nvim_cmp()
     })
 end
 
+function config.nvim_autopairs()
+    local nvim_autopairs_status_ok, nvim_autopairs = pcall(require, "nvim-autopairs")
+    if not nvim_autopairs_status_ok then
+        return
+    end
+    local rule_status_ok, rule = pcall(require, "nvim-autopairs.rule")
+    if not rule_status_ok then
+        return
+    end
+    local conds_status_ok, conds = pcall(require, "nvim-autopairs.conds")
+    if not conds_status_ok then
+        return
+    end
+    nvim_autopairs.setup({
+        check_ts = true,
+        ts_config = {
+            lua = {
+                "string",
+            },
+            javascript = {
+                "template_string",
+            },
+            java = false,
+        },
+    })
+    nvim_autopairs.add_rule(rule("$$", "$$", "tex"))
+    nvim_autopairs.add_rules({
+        rule("$", "$", { "tex", "latex" })
+            :with_pair(conds.not_after_regex_check("%%"))
+            :with_pair(conds.not_before_regex_check("xxx", 3))
+            :with_move(conds.none())
+            :with_del(conds.not_after_regex_check("xx"))
+            :with_cr(conds.none()),
+    })
+    nvim_autopairs.add_rules({
+        rule("$$", "$$", "tex"):with_pair(function(opts)
+            print(vim.inspect(opts))
+            if opts.line == "aa $$" then
+                return false
+            end
+        end),
+    })
+    local ts_conds_status_ok, ts_conds = pcall(require, "nvim-autopairs.ts-conds")
+    if not ts_conds_status_ok then
+        return
+    end
+    nvim_autopairs.add_rules({
+        rule("%", "%", "lua"):with_pair(ts_conds.is_ts_node({ "string", "comment" })),
+        rule("$", "$", "lua"):with_pair(ts_conds.is_not_ts_node({ "function" })),
+    })
+end
+
+function config.nvim_ts_autotag()
+    local nvim_ts_autotag_status_ok, nvim_ts_autotag = pcall(require, "nvim-ts-autotag")
+    if not nvim_ts_autotag_status_ok then
+        return
+    end
+    nvim_ts_autotag.setup()
+end
+
+function config.nvim_surround()
+    local nvim_surround_status_ok, nvim_surround = pcall(require, "nvim-surround")
+    if not nvim_surround_status_ok then
+        return
+    end
+    nvim_surround.setup()
+end
+
 return config

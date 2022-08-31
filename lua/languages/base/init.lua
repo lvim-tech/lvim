@@ -4,20 +4,6 @@ local funcs = require("core.funcs")
 local M = {}
 
 M.file_types = {
-    ["_diagnosticls"] = {
-        "c",
-        "cpp",
-        "html",
-        "json",
-        "less",
-        "lua",
-        "markdown",
-        "objc",
-        "objcpp",
-        "python",
-        "sh",
-        "vim",
-    },
     ["_emmet"] = { "html", "css", "typescriptreact", "javascriptreact" },
     ["_stylelint"] = {
         "css",

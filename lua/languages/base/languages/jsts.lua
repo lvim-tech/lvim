@@ -13,6 +13,9 @@ language_configs["lsp"] = function()
         ["language"] = "js-ts",
         ["dap"] = { "chrome-debug-adapter" },
         ["typescript-language-server"] = { "tsserver", tsserver_config },
+        ["dependencies"] = {
+            "prettierd",
+        },
     })
 end
 

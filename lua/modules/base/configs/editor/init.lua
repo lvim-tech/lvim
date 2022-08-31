@@ -11,7 +11,10 @@ function config.telescope_nvim()
                 .. " howdoi.nvim"
         )
     end
-    local telescope = require("telescope")
+    local telescope_status_ok, telescope = pcall(require, "telescope")
+    if not telescope_status_ok then
+        return
+    end
     telescope.setup({
         defaults = {
             prompt_prefix = "   ",
@@ -97,7 +100,11 @@ function config.telescope_nvim()
 end
 
 function config.nvim_bqf()
-    require("bqf").setup({
+    local bqf_status_ok, bqf = pcall(require, "bqf")
+    if not bqf_status_ok then
+        return
+    end
+    bqf.setup({
         preview = {
             border_chars = { "│", "│", "─", "─", "┌", "┐", "└", "┘", "█" },
         },
@@ -105,11 +112,18 @@ function config.nvim_bqf()
 end
 
 function config.nvim_pqf()
-    require("pqf").setup()
+    local pqf_status_ok, pqf = pcall(require, "pqf")
+    if not pqf_status_ok then
+        return
+    end
+    pqf.setup()
 end
 
 function config.tabby_nvim()
-    local util = require("tabby.util")
+    local tabby_util_status_ok, tabby_util = pcall(require, "tabby.util")
+    if not tabby_util_status_ok then
+        return
+    end
     local hl_tabline = {
         color_01 = "#242B30",
         color_02 = "#A7C080",
@@ -160,7 +174,7 @@ function config.tabby_nvim()
                         hl = { fg = hl_tabline.color_02, bg = hl_tabline.color_01, style = "bold" },
                     },
                 })
-                local wins = util.tabpage_list_wins(current_tab)
+                local wins = tabby_util.tabpage_list_wins(current_tab)
                 local top_win = vim.api.nvim_tabpage_get_win(current_tab)
                 for _, winid in ipairs(wins) do
                     local icon = " "
@@ -189,14 +203,21 @@ function config.tabby_nvim()
         table.insert(coms, { type = "text", text = { " ", hl = { bg = hl_tabline.color_01, style = "bold" } } })
         return coms
     end
-
-    require("tabby").setup({
+    local tabby_status_ok, tabby = pcall(require, "tabby")
+    if not tabby_status_ok then
+        return
+    end
+    tabby.setup({
         components = components,
     })
 end
 
 function config.nvim_gomove()
-    require("gomove").setup()
+    local gomove_status_ok, gomove = pcall(require, "gomove")
+    if not gomove_status_ok then
+        return
+    end
+    gomove.setup()
 end
 
 function config.vim_slime()
@@ -204,8 +225,12 @@ function config.vim_slime()
 end
 
 function config.nvim_spectre()
+    local spectre_status_ok, spectre = pcall(require, "spectre")
+    if not spectre_status_ok then
+        return
+    end
     vim.api.nvim_create_user_command("Spectre", "lua require('spectre').open()", {})
-    require("spectre").setup({
+    spectre.setup({
         color_devicons = true,
         line_sep_start = "-----------------------------------------",
         result_padding = "|  ",
@@ -295,7 +320,11 @@ function config.nvim_spectre()
 end
 
 function config.comment_nvim()
-    require("Comment").setup()
+    local comment_status_ok, comment = pcall(require, "Comment")
+    if not comment_status_ok then
+        return
+    end
+    comment.setup()
 end
 
 function config.vim_bookmarks()
@@ -307,56 +336,12 @@ function config.vim_doge()
     vim.g.doge_mapping = "<Leader>*"
 end
 
-function config.nvim_autopairs()
-    local autopairs = require("nvim-autopairs")
-    local Rule = require("nvim-autopairs.rule")
-    local cond = require("nvim-autopairs.conds")
-    autopairs.setup({
-        check_ts = true,
-        ts_config = {
-            lua = {
-                "string",
-            },
-            javascript = {
-                "template_string",
-            },
-            java = false,
-        },
-    })
-    autopairs.add_rule(Rule("$$", "$$", "tex"))
-    autopairs.add_rules({
-        Rule("$", "$", { "tex", "latex" })
-            :with_pair(cond.not_after_regex_check("%%"))
-            :with_pair(cond.not_before_regex_check("xxx", 3))
-            :with_move(cond.none())
-            :with_del(cond.not_after_regex_check("xx"))
-            :with_cr(cond.none()),
-    })
-    autopairs.add_rules({
-        Rule("$$", "$$", "tex"):with_pair(function(opts)
-            print(vim.inspect(opts))
-            if opts.line == "aa $$" then
-                return false
-            end
-        end),
-    })
-    local ts_conds = require("nvim-autopairs.ts-conds")
-    autopairs.add_rules({
-        Rule("%", "%", "lua"):with_pair(ts_conds.is_ts_node({ "string", "comment" })),
-        Rule("$", "$", "lua"):with_pair(ts_conds.is_not_ts_node({ "function" })),
-    })
-end
-
-function config.nvim_ts_autotag()
-    require("nvim-ts-autotag").setup()
-end
-
-function config.nvim_surround()
-    require("nvim-surround").setup()
-end
-
 function config.nvim_colorize_lua()
-    require("colorizer").setup({
+    local colorizer_status_ok, colorizer = pcall(require, "colorizer")
+    if not colorizer_status_ok then
+        return
+    end
+    colorizer.setup({
         "*",
     }, {
         RGB = true,
@@ -376,7 +361,11 @@ function config.virtcolumn_nvim()
 end
 
 function config.cinnamon_nvim()
-    require("cinnamon").setup({
+    local cinnamon_status_ok, cinnamon = pcall(require, "cinnamon")
+    if not cinnamon_status_ok then
+        return
+    end
+    cinnamon.setup({
         extra_keymaps = true,
         extended_keymaps = true,
     })
@@ -387,11 +376,19 @@ function config.suda_vim()
 end
 
 function config.hop_nvim()
-    require("hop").setup()
+    local hop_status_ok, hop = pcall(require, "hop")
+    if not hop_status_ok then
+        return
+    end
+    hop.setup()
 end
 
 function config.todo_comments_nvim()
-    require("todo-comments").setup({
+    local todo_comments_status_ok, todo_comments = pcall(require, "todo-comments")
+    if not todo_comments_status_ok then
+        return
+    end
+    todo_comments.setup({
         colors = {
             error = { "#F05F4E", "#F05F4E" },
             warning = { "#F2994B", "#F2994B" },
@@ -403,7 +400,11 @@ function config.todo_comments_nvim()
 end
 
 function config.pretty_fold_nvim()
-    require("pretty-fold").setup({
+    local pretty_fold_status_ok, pretty_fold = pcall(require, "pretty-fold")
+    if not pretty_fold_status_ok then
+        return
+    end
+    pretty_fold.setup({
         fill_char = "─",
         sections = {
             left = {
@@ -417,7 +418,11 @@ function config.pretty_fold_nvim()
         },
         ft_ignore = { "org" },
     })
-    require("fold-preview").setup({
+    local fold_preview_status_ok, fold_preview = pcall(require, "fold-preview")
+    if not fold_preview_status_ok then
+        return
+    end
+    fold_preview.setup({
         default_keybindings = false,
     })
     local map = require("fold-preview").mapping

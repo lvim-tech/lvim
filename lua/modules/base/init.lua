@@ -231,46 +231,6 @@ modules["kkoomen/vim-doge"] = {
     config = editor_config.vim_doge,
 }
 
-modules["windwp/nvim-autopairs"] = {
-    requires = {
-        {
-            "nvim-treesitter/nvim-treesitter",
-        },
-        {
-            "hrsh7th/nvim-cmp",
-        },
-    },
-    after = {
-        "nvim-treesitter",
-        "nvim-cmp",
-    },
-    config = editor_config.nvim_autopairs,
-}
-
-modules["windwp/nvim-ts-autotag"] = {
-    requires = {
-        {
-            "nvim-treesitter/nvim-treesitter",
-        },
-        {
-            "hrsh7th/nvim-cmp",
-        },
-    },
-    after = {
-        "nvim-treesitter",
-        "nvim-cmp",
-    },
-    config = editor_config.nvim_ts_autotag,
-}
-
-modules["kylechui/nvim-surround"] = {
-    requires = {
-        "nvim-treesitter/nvim-treesitter",
-    },
-    after = "nvim-treesitter",
-    config = editor_config.nvim_surround,
-}
-
 modules["norcalli/nvim-colorizer.lua"] = {
     event = {
         "BufRead",
@@ -410,6 +370,10 @@ modules["williamboman/mason.nvim"] = {
         "neovim/nvim-lspconfig",
     },
     config = languages_config.mason_nvim,
+}
+
+modules["jose-elias-alvarez/null-ls.nvim"] = {
+    config = languages_config.null_ls_nvim,
 }
 
 modules["rmagatti/goto-preview"] = {
@@ -694,6 +658,46 @@ modules["L3MON4D3/LuaSnip"] = {
 
 modules["Neevash/awesome-flutter-snippets"] = {
     ft = "dart",
+}
+
+modules["windwp/nvim-autopairs"] = {
+    requires = {
+        {
+            "nvim-treesitter/nvim-treesitter",
+        },
+        {
+            "hrsh7th/nvim-cmp",
+        },
+    },
+    after = {
+        "nvim-treesitter",
+        "nvim-cmp",
+    },
+    config = completion_config.nvim_autopairs,
+}
+
+modules["windwp/nvim-ts-autotag"] = {
+    requires = {
+        {
+            "nvim-treesitter/nvim-treesitter",
+        },
+        {
+            "hrsh7th/nvim-cmp",
+        },
+    },
+    after = {
+        "nvim-treesitter",
+        "nvim-cmp",
+    },
+    config = completion_config.nvim_ts_autotag,
+}
+
+modules["kylechui/nvim-surround"] = {
+    requires = {
+        "nvim-treesitter/nvim-treesitter",
+    },
+    after = "nvim-treesitter",
+    config = completion_config.nvim_surround,
 }
 
 return modules
