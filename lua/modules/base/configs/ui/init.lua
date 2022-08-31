@@ -462,6 +462,13 @@ function config.heirline_nvim()
     local vi_mode = {
         init = function(self)
             self.mode = vim.fn.mode(1)
+            if not self.once then
+                vim.api.nvim_create_autocmd("ModeChanged", {
+                    pattern = "*:*o",
+                    command = "redrawstatus",
+                })
+                self.once = true
+            end
         end,
         static = {
             mode_names = {
@@ -523,6 +530,9 @@ function config.heirline_nvim()
             local mode = self.mode:sub(1, 1)
             return { fg = self.mode_colors[mode], bold = true }
         end,
+        update = {
+            "ModeChanged",
+        },
     }
     local file_name_block = {
         init = function(self)
@@ -828,6 +838,7 @@ function config.heirline_nvim()
         hl = { fg = colors.color_02, bold = true },
     }
     local status_lines = {
+        fallthrough = false,
         hl = function()
             if heirline_conditions.is_active() then
                 return {
@@ -847,7 +858,6 @@ function config.heirline_nvim()
                 return self.mode_colors[mode]
             end,
         },
-        init = heirline_utils.pick_child_on_condition,
         {
             vi_mode,
             work_dir,
@@ -865,7 +875,8 @@ function config.heirline_nvim()
         },
     }
     local win_bars = {
-        init = heirline_utils.pick_child_on_condition,
+        fallthrough = false,
+        -- init = heirline_utils.pick_child_on_condition,
         {
             condition = function()
                 return heirline_conditions.buffer_matches({
