@@ -255,7 +255,7 @@
 
 
 
-****  LSP SUPPORT OF THE FOLLOWING TYPES 
+****  LSP SUPPORT OF THE FOLLOWING FILETYPES 
 
       + bib
       + c
