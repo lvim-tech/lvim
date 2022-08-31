@@ -163,29 +163,17 @@
 
 ****  PLUGINS
 
-*****  UTILS
+    + [[./LVIM/modules/utils.org][UTILS]]
 
-        [[./LVIM/modules/utils.org][View all plugins]]
+    + [[./LVIM/modules/ui.org][UI]]
 
-*****  UI
+    + [[./LVIM/modules/editor.org][EDITOR]]
 
-        [[./LVIM/modules/ui.org][View all plugins]]
+    + [[./LVIM/modules/version-control.org][VERSION CONTROL]]
 
-*****  EDITOR
+    + [[./LVIM/modules/languages.org][LANGUAGES]]
 
-        [[./LVIM/modules/editor.org][View all plugins]]
-
-*****  VERSION CONTROL
-
-        [[./LVIM/modules/languages.org][View all plugins]]
-
-*****  LANGUAGES
-
-        [[./LVIM/modules/languages.org][View all plugins]]
-
-*****  COMPLETION
-
-        [[./LVIM/modules/completion.org][View all plugins]]
+    + [[./LVIM/modules/completion.org][COMPLETION]]
 
 ***  LANGUAGES
 

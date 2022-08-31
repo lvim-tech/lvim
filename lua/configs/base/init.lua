@@ -37,6 +37,7 @@ configs["base_events"] = function()
             "dapui_stacks",
             "dapui_watches",
             "NeogitStatus",
+            "org",
         },
         command = "setlocal nonumber norelativenumber colorcolumn=0 nocursorcolumn",
         group = group,
