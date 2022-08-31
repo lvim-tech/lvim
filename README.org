@@ -1,6 +1,6 @@
 *  LVIM IDE
 
-  [[./media/lvim-ide-logo.png]]
+  [[./LVIM/media/lvim-ide-logo.png]]
 
   LVIM IDE is a modular Neovim configuration written in LUA with full customization
 
