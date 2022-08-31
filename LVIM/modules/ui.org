@@ -1,6 +1,6 @@
 *  UI
 
-**   [[https://github.com/lvim-tech/lvim-colorscheme][lvim-colorscheme]
+**   [[https://github.com/lvim-tech/lvim-colorscheme][lvim-colorscheme]]
 
     + INIT
 

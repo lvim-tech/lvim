@@ -50,7 +50,7 @@
     end
     #+end_src
 
-******   [[https://github.com/lewis6991/gitsigns.nvim][gitsigns.nvim]]
+**   [[https://github.com/lewis6991/gitsigns.nvim][gitsigns.nvim]]
 
     + REQUIRES:
         *  [[https://github.com/nvim-lua/plenary.nvim][plenary.nvim]]
