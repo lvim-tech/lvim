@@ -203,22 +203,6 @@ function config.nvim_lightbulb()
     vim.fn.sign_define("LightBulbSign", { text = "", texthl = "LightBulb", linehl = "", numhl = "" })
 end
 
-function config.rest_nvim()
-    local rest_nvim_status_ok, rest_nvim = pcall(require, "rest-nvim")
-    if not rest_nvim_status_ok then
-        return
-    end
-    rest_nvim.setup()
-end
-
-function config.sniprun()
-    local sniprun_status_ok, sniprun = pcall(require, "sniprun")
-    if not sniprun_status_ok then
-        return
-    end
-    sniprun.setup()
-end
-
 function config.nvim_treesitter()
     local nvim_treesitter_configs_status_ok, nvim_treesitter_configs = pcall(require, "nvim-treesitter.configs")
     if not nvim_treesitter_configs_status_ok then
