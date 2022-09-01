@@ -201,7 +201,7 @@
 
     #+begin_src lua
     modules["windwp/nvim-autopairs"] = {
-        {
+        requires = {
             "nvim-treesitter/nvim-treesitter",
             "hrsh7th/nvim-cmp",
         },

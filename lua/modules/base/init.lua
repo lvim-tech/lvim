@@ -627,7 +627,7 @@ modules["Neevash/awesome-flutter-snippets"] = {
 }
 
 modules["windwp/nvim-autopairs"] = {
-    {
+    requires = {
         "nvim-treesitter/nvim-treesitter",
         "hrsh7th/nvim-cmp",
     },
