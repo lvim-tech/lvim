@@ -212,6 +212,11 @@ modules["hkupty/iron.nvim"] = {
 }
 
 modules["CRAG666/code_runner.nvim"] = {
+    requires = {
+        {
+            "nvim-lua/plenary.nvim",
+        },
+    },
     config = editor_config.code_runner_nvim,
 }
 

@@ -343,21 +343,137 @@
     end
     #+end_src
 
-**   [[https://github.com/jpalardy/vim-slime][vim-slime]]
+**   [[https://github.com/NTBBloodbath/rest.nvim][rest.nvim]]
 
     + INIT
 
     #+begin_src lua
-    modules["jpalardy/vim-slime"] = {
-        config = editor_config.vim_slime,
+    modules["NTBBloodbath/rest.nvim"] = {
+        ft = "http",
+        config = languages_config.rest_nvim,
     }
     #+end_src
 
     + CONFIG
 
     #+begin_src lua
-    function config.vim_slime()
-        vim.g.slime_target = "tmux"
+    function config.rest_nvim()
+        local rest_nvim_status_ok, rest_nvim = pcall(require, "rest-nvim")
+        if not rest_nvim_status_ok then
+            return
+        end
+        rest_nvim.setup()
+    end
+    #+end_src
+
+**   [[https://github.com/michaelb/sniprun][sniprun]]
+
+    + REQUIRES:
+        *  [[https://github.com/neovim/nvim-lspconfig][nvim-lspconfig]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["michaelb/sniprun"] = {
+        requires = {
+            "neovim/nvim-lspconfig",
+        },
+        run = "bash ./install.sh",
+        cmd = {
+            "SnipRun",
+            "SnipInfo",
+            "SnipReset",
+            "SnipReplMemoryClean",
+            "SnipClose",
+        },
+        config = languages_config.sniprun,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.sniprun()
+        local sniprun_status_ok, sniprun = pcall(require, "sniprun")
+        if not sniprun_status_ok then
+            return
+        end
+        sniprun.setup()
+    end
+    #+end_src
+
+**   [[https://github.com/hkupty/iron.nvim][iron.nvim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["hkupty/iron.nvim"] = {
+        config = editor_config.iron_nvim,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.iron_nvim()
+        local iron_core_status_ok, iron_core = pcall(require, "iron.core")
+        if not iron_core_status_ok then
+            return
+        end
+        local iron_view_status_ok, iron_view = pcall(require, "iron.view")
+        if not iron_view_status_ok then
+            return
+        end
+        iron_core.setup({
+            config = {
+                repl_open_cmd = iron_view.split.vertical.botright(100),
+            },
+            keymaps = {
+                send_motion = "<space>rc",
+                visual_send = "<space>rv",
+                send_file = "<space>rf",
+                send_line = "<space>rl",
+                send_mark = "<space>rms",
+                mark_motion = "<space>rmm",
+                mark_visual = "<space>rmv",
+                remove_mark = "<space>rmd",
+                cr = "<space>rs<cr>",
+                interrupt = "<space>rs<space>",
+                exit = "<space>rq",
+                clear = "<space>rr",
+            },
+            highlight = {},
+        })
+    end
+    #+end_src
+
+**   [[https://github.com/CRAG666/code_runner.nvim][code_runner.nvim]]
+
+    + REQUIRES:
+        *  [[https://github.com/nvim-lua/plenary.nvim][plenary.nvim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["CRAG666/code_runner.nvim"] = {
+        requires = {
+            {
+                "nvim-lua/plenary.nvim",
+            },
+        },
+        config = editor_config.code_runner_nvim,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.code_runner_nvim()
+        local code_runner_status_ok, code_runner = pcall(require, "code_runner")
+        if not code_runner_status_ok then
+            return
+        end
+        code_runner.setup({})
     end
     #+end_src
 
@@ -508,26 +624,6 @@
     end
     #+end_src
 
-**   [[https://github.com/MattesGroeger/vim-bookmarks][vim-bookmarks]]
-
-    + INIT
-
-    #+begin_src lua
-    modules["MattesGroeger/vim-bookmarks"] = {
-        cmd = "BookmarkToggle",
-        config = editor_config.vim_bookmarks,
-    }
-    #+end_src
-
-    + CONFIG
-
-    #+begin_src lua
-    function config.vim_bookmarks()
-        vim.g.bookmark_no_default_key_mappings = 1
-        vim.g.bookmark_sign = ""
-    end
-    #+end_src
-
 **   [[https://github.com/ton/vim-bufsurf][vim-bufsurf]]
 
     + INIT
@@ -540,26 +636,42 @@
     }
     #+end_src
 
-**   [[https://github.com/kkoomen/vim-doge][vim-doge]]
+**   [[https://github.com/danymat/neogen][neogen]]
 
     + INIT
 
     #+begin_src lua
-    modules["kkoomen/vim-doge"] = {
-        cmd = {
-            "DogeGenerate",
-            "DogeCreateDocStandard",
+    modules["danymat/neogen"] = {
+        requires = {
+            {
+                "nvim-treesitter/nvim-treesitter",
+            },
         },
-        run = ":call doge#install()",
-        config = editor_config.vim_doge,
+        event = {
+            "BufRead",
+        },
+        config = editor_config.neogen,
     }
     #+end_src
 
     + Config
 
     #+begin_src lua
-    function config.vim_doge()
-        vim.g.doge_mapping = "<Leader>*"
+    function config.neogen()
+        local neogen_status_ok, neogen = pcall(require, "neogen")
+        if not neogen_status_ok then
+            return
+        end
+        neogen.setup({
+            snippet_engine = "luasnip",
+        })
+        vim.api.nvim_create_user_command("NeogenFile", "lua require('neogen').generate({ type = 'file' })", {})
+        vim.api.nvim_create_user_command("NeogenClass", "lua require('neogen').generate({ type = 'class' })", {})
+        vim.api.nvim_create_user_command("NeogenFunction", "lua require('neogen').generate({ type = 'func' })", {})
+        vim.api.nvim_create_user_command("NeogenType", "lua require('neogen').generate({ type = 'type' })", {})
+        local opts = { noremap = true, silent = true }
+        vim.api.nvim_set_keymap("i", "<C-l>", ":lua require('neogen').jump_next<CR>", opts)
+        vim.api.nvim_set_keymap("i", "<C-h>", ":lua require('neogen').jump_prev<CR>", opts)
     end
     #+end_src
 
@@ -647,42 +759,6 @@
             extended_keymaps = true,
         })
     end
-    #+end_src
-
-**   [[https://github.com/lambdalisue/suda.vim][suda.vim]]
-
-    + INIT
-
-    #+begin_src lua
-    modules["lambdalisue/suda.vim"] = {
-        event = {
-            "BufRead",
-        },
-        config = editor_config.suda_vim,
-    }
-    #+end_src
-
-    + CONFIG
-
-    #+begin_src lua
-    function config.suda_vim()
-        vim.g.suda_smart_edit = 1
-    end
-    #+end_src
-
-**   [[https://github.com/kenn7/vim-arsync][vim-arsync]]
-
-    + INIT
-
-    #+begin_src lua
-    modules["kenn7/vim-arsync"] = {
-        cmd = {
-            "ARshowConf",
-            "ARsyncUp",
-            "ARsyncUpDelete",
-            "ARsyncDown",
-        },
-    }
     #+end_src
 
 **   [[https://github.com/phaazon/hop.nvim][hop.nvim]]
