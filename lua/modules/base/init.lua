@@ -85,11 +85,9 @@ modules["akinsho/toggleterm.nvim"] = {
 
 modules["folke/zen-mode.nvim"] = {
     requires = {
-        {
-            "folke/twilight.nvim",
-            config = ui_config.twilight_nvim,
-            after = "zen-mode.nvim",
-        },
+        "folke/twilight.nvim",
+        config = ui_config.twilight_nvim,
+        after = "zen-mode.nvim",
     },
     cmd = "ZenMode",
     config = ui_config.zen_mode_nvim,
@@ -162,12 +160,10 @@ modules["nvim-telescope/telescope.nvim"] = {
 modules["kevinhwang91/nvim-bqf"] = {
     ft = "qf",
     requires = {
-        {
-            "junegunn/fzf",
-            run = function()
-                vim.fn["fzf#install"]()
-            end,
-        },
+        "junegunn/fzf",
+        run = function()
+            vim.fn["fzf#install"]()
+        end,
     },
     config = editor_config.nvim_bqf,
 }
@@ -213,9 +209,7 @@ modules["hkupty/iron.nvim"] = {
 
 modules["CRAG666/code_runner.nvim"] = {
     requires = {
-        {
-            "nvim-lua/plenary.nvim",
-        },
+        "nvim-lua/plenary.nvim",
     },
     config = editor_config.code_runner_nvim,
 }
@@ -223,12 +217,8 @@ modules["CRAG666/code_runner.nvim"] = {
 modules["windwp/nvim-spectre"] = {
     cmd = "Spectre",
     requires = {
-        {
-            "nvim-lua/popup.nvim",
-        },
-        {
-            "nvim-lua/plenary.nvim",
-        },
+        "nvim-lua/popup.nvim",
+        "nvim-lua/plenary.nvim",
     },
     config = editor_config.nvim_spectre,
 }
@@ -248,9 +238,7 @@ modules["ton/vim-bufsurf"] = {
 
 modules["danymat/neogen"] = {
     requires = {
-        {
-            "nvim-treesitter/nvim-treesitter",
-        },
+        "nvim-treesitter/nvim-treesitter",
     },
     event = {
         "BufRead",
@@ -435,6 +423,9 @@ modules["simrat39/rust-tools.nvim"] = {
 }
 
 modules["ray-x/go.nvim"] = {
+    requires = {
+        "ray-x/guihua.lua",
+    },
     ft = "go",
     config = languages_config.go_nvim,
 }
@@ -449,12 +440,8 @@ modules["akinsho/flutter-tools.nvim"] = {
 modules["jose-elias-alvarez/nvim-lsp-ts-utils"] = {
     ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
     requires = {
-        {
-            "neovim/nvim-lspconfig",
-        },
-        {
-            "nvim-lua/plenary.nvim",
-        },
+        "neovim/nvim-lspconfig",
+        "nvim-lua/plenary.nvim",
     },
 }
 
@@ -486,18 +473,14 @@ modules["nvim-treesitter/nvim-treesitter-context"] = {
 
 modules["lvimuser/lsp-inlayhints.nvim"] = {
     requires = {
-        {
-            "neovim/nvim-lspconfig",
-        },
+        "neovim/nvim-lspconfig",
     },
     config = languages_config.lsp_inlayhints_nvim,
 }
 
 modules["SmiteshP/nvim-navic"] = {
     requires = {
-        {
-            "neovim/nvim-lspconfig",
-        },
+        "neovim/nvim-lspconfig",
     },
     config = languages_config.nvim_navic,
 }
@@ -519,12 +502,8 @@ modules["rcarriga/nvim-dap-ui"] = {
         "BufRead",
     },
     requires = {
-        {
-            "mfussenegger/nvim-dap",
-        },
-        {
-            "jbyuki/one-small-step-for-vimkind",
-        },
+        "mfussenegger/nvim-dap",
+        "jbyuki/one-small-step-for-vimkind",
     },
     config = languages_config.nvim_dap_ui,
 }
@@ -611,9 +590,7 @@ local completion_config = require("modules.base.configs.completion")
 
 modules["hrsh7th/nvim-cmp"] = {
     requires = {
-        {
-            "hrsh7th/cmp-nvim-lsp",
-        },
+        "hrsh7th/cmp-nvim-lsp",
         {
             "saadparwaiz1/cmp_luasnip",
             after = "nvim-cmp",
@@ -640,10 +617,8 @@ modules["hrsh7th/nvim-cmp"] = {
 
 modules["L3MON4D3/LuaSnip"] = {
     requires = {
-        {
-            "rafamadriz/friendly-snippets",
-            after = "LuaSnip",
-        },
+        "rafamadriz/friendly-snippets",
+        after = "LuaSnip",
     },
 }
 
@@ -652,13 +627,9 @@ modules["Neevash/awesome-flutter-snippets"] = {
 }
 
 modules["windwp/nvim-autopairs"] = {
-    requires = {
-        {
-            "nvim-treesitter/nvim-treesitter",
-        },
-        {
-            "hrsh7th/nvim-cmp",
-        },
+    {
+        "nvim-treesitter/nvim-treesitter",
+        "hrsh7th/nvim-cmp",
     },
     after = {
         "nvim-treesitter",
@@ -669,12 +640,8 @@ modules["windwp/nvim-autopairs"] = {
 
 modules["windwp/nvim-ts-autotag"] = {
     requires = {
-        {
-            "nvim-treesitter/nvim-treesitter",
-        },
-        {
-            "hrsh7th/nvim-cmp",
-        },
+        "nvim-treesitter/nvim-treesitter",
+        "hrsh7th/nvim-cmp",
     },
     after = {
         "nvim-treesitter",

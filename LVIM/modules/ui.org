@@ -1252,11 +1252,9 @@
     #+begin_src lua
     modules["folke/zen-mode.nvim"] = {
         requires = {
-            {
-                "folke/twilight.nvim",
-                config = ui_config.twilight_nvim,
-                after = "zen-mode.nvim",
-            },
+            "folke/twilight.nvim",
+            config = ui_config.twilight_nvim,
+            after = "zen-mode.nvim",
         },
         cmd = "ZenMode",
         config = ui_config.zen_mode_nvim,

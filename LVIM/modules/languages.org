@@ -289,6 +289,9 @@
 
     #+begin_src lua
     modules["ray-x/go.nvim"] = {
+        requires = {
+            "ray-x/guihua.lua",
+        },
         ft = "go",
         config = languages_config.go_nvim,
     }
@@ -338,12 +341,8 @@
     modules["jose-elias-alvarez/nvim-lsp-ts-utils"] = {
         ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
         requires = {
-            {
-                "neovim/nvim-lspconfig",
-            },
-            {
-                "nvim-lua/plenary.nvim",
-            },
+            "neovim/nvim-lspconfig",
+            "nvim-lua/plenary.nvim",
         },
     }
     #+end_src
@@ -546,9 +545,7 @@
     #+begin_src lua
     modules["lvimuser/lsp-inlayhints.nvim"] = {
         requires = {
-            {
-                "neovim/nvim-lspconfig",
-            },
+            "neovim/nvim-lspconfig",
         },
         config = languages_config.lsp_inlayhints_nvim,
     }
@@ -580,9 +577,7 @@
     #+begin_src lua
     modules["SmiteshP/nvim-navic"] = {
         requires = {
-            {
-                "neovim/nvim-lspconfig",
-            },
+            "neovim/nvim-lspconfig",
         },
         config = languages_config.nvim_navic,
     }
@@ -667,12 +662,8 @@
             "BufRead",
         },
         requires = {
-            {
-                "mfussenegger/nvim-dap",
-            },
-            {
-                "jbyuki/one-small-step-for-vimkind",
-            },
+            "mfussenegger/nvim-dap",
+            "jbyuki/one-small-step-for-vimkind",
         },
         config = languages_config.nvim_dap_ui,
     }

@@ -162,12 +162,10 @@
     modules["kevinhwang91/nvim-bqf"] = {
         ft = "qf",
         requires = {
-            {
-                "junegunn/fzf",
-                run = function()
-                    vim.fn["fzf#install"]()
-                end,
-            },
+            "junegunn/fzf",
+            run = function()
+                vim.fn["fzf#install"]()
+            end,
         },
         config = editor_config.nvim_bqf,
     }
@@ -457,9 +455,7 @@
     #+begin_src lua
     modules["CRAG666/code_runner.nvim"] = {
         requires = {
-            {
-                "nvim-lua/plenary.nvim",
-            },
+            "nvim-lua/plenary.nvim",
         },
         config = editor_config.code_runner_nvim,
     }
@@ -489,12 +485,8 @@
     modules["windwp/nvim-spectre"] = {
         cmd = "Spectre",
         requires = {
-            {
-                "nvim-lua/popup.nvim",
-            },
-            {
-                "nvim-lua/plenary.nvim",
-            },
+            "nvim-lua/popup.nvim",
+            "nvim-lua/plenary.nvim",
         },
         config = editor_config.nvim_spectre,
     }
@@ -643,9 +635,7 @@
     #+begin_src lua
     modules["danymat/neogen"] = {
         requires = {
-            {
-                "nvim-treesitter/nvim-treesitter",
-            },
+            "nvim-treesitter/nvim-treesitter",
         },
         event = {
             "BufRead",

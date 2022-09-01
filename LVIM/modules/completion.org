@@ -14,9 +14,7 @@
     #+begin_src lua
     modules["hrsh7th/nvim-cmp"] = {
         requires = {
-            {
-                "hrsh7th/cmp-nvim-lsp",
-            },
+            "hrsh7th/cmp-nvim-lsp",
             {
                 "saadparwaiz1/cmp_luasnip",
                 after = "nvim-cmp",
@@ -177,10 +175,8 @@
     #+begin_src lua
     modules["L3MON4D3/LuaSnip"] = {
         requires = {
-            {
-                "rafamadriz/friendly-snippets",
-                after = "LuaSnip",
-            },
+            "rafamadriz/friendly-snippets",
+            after = "LuaSnip",
         },
     }
     #+end_src
@@ -205,13 +201,9 @@
 
     #+begin_src lua
     modules["windwp/nvim-autopairs"] = {
-        requires = {
-            {
-                "nvim-treesitter/nvim-treesitter",
-            },
-            {
-                "hrsh7th/nvim-cmp",
-            },
+        {
+            "nvim-treesitter/nvim-treesitter",
+            "hrsh7th/nvim-cmp",
         },
         after = {
             "nvim-treesitter",
@@ -288,12 +280,8 @@
     #+begin_src lua
     modules["windwp/nvim-ts-autotag"] = {
         requires = {
-            {
-                "nvim-treesitter/nvim-treesitter",
-            },
-            {
-                "hrsh7th/nvim-cmp",
-            },
+            "nvim-treesitter/nvim-treesitter",
+            "hrsh7th/nvim-cmp",
         },
         after = {
             "nvim-treesitter",
