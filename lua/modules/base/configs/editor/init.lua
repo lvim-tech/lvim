@@ -368,11 +368,6 @@ function config.comment_nvim()
     comment.setup()
 end
 
-function config.vim_bookmarks()
-    vim.g.bookmark_no_default_key_mappings = 1
-    vim.g.bookmark_sign = ""
-end
-
 function config.vim_doge()
     vim.g.doge_mapping = "<Leader>*"
 end

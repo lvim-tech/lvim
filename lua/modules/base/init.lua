@@ -235,17 +235,14 @@ modules["numToStr/Comment.nvim"] = {
     config = editor_config.comment_nvim,
 }
 
-modules["MattesGroeger/vim-bookmarks"] = {
-    cmd = "BookmarkToggle",
-    config = editor_config.vim_bookmarks,
-}
-
+-- BUG: remove??????
 modules["ton/vim-bufsurf"] = {
     event = {
         "BufRead",
     },
 }
 
+-- FEAT: https://github.com/danymat/neogen
 modules["kkoomen/vim-doge"] = {
     cmd = {
         "DogeGenerate",
