@@ -235,7 +235,6 @@ modules["numToStr/Comment.nvim"] = {
     config = editor_config.comment_nvim,
 }
 
--- BUG: remove??????
 modules["ton/vim-bufsurf"] = {
     event = {
         "BufRead",

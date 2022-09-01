@@ -65,6 +65,8 @@ function config.nvim_cmp()
                     luasnip.expand()
                 elseif luasnip.expand_or_jumpable() then
                     luasnip.expand_or_jump()
+                elseif require("neogen").jumpable() then
+                    require("neogen").jump_next()
                 elseif check_backspace() then
                     fallback()
                 else
@@ -76,6 +78,8 @@ function config.nvim_cmp()
                     cmp.select_prev_item()
                 elseif luasnip.jumpable(-1) then
                     luasnip.jump(-1)
+                elseif require("neogen").jumpable() then
+                    require("neogen").jump_prev()
                 else
                     fallback()
                 end

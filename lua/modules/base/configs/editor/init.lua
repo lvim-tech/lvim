@@ -237,11 +237,17 @@ function config.sniprun()
 end
 
 function config.iron_nvim()
-    local iron = require("iron.core")
-    local view = require("iron.view")
-    iron.setup({
+    local iron_core_status_ok, iron_core = pcall(require, "iron.core")
+    if not iron_core_status_ok then
+        return
+    end
+    local iron_view_status_ok, iron_view = pcall(require, "iron.view")
+    if not iron_view_status_ok then
+        return
+    end
+    iron_core.setup({
         config = {
-            repl_open_cmd = view.split.vertical.botright(100),
+            repl_open_cmd = iron_view.split.vertical.botright(100),
         },
         keymaps = {
             send_motion = "<space>rc",
@@ -262,7 +268,11 @@ function config.iron_nvim()
 end
 
 function config.code_runner_nvim()
-    require("code_runner").setup({})
+    local code_runner_status_ok, code_runner = pcall(require, "code_runner")
+    if not code_runner_status_ok then
+        return
+    end
+    code_runner.setup({})
 end
 
 function config.nvim_spectre()
@@ -369,7 +379,7 @@ function config.comment_nvim()
 end
 
 function config.neogen()
-    local neogen_status_ok, neogen = pcall(require, "Comment")
+    local neogen_status_ok, neogen = pcall(require, "neogen")
     if not neogen_status_ok then
         return
     end
