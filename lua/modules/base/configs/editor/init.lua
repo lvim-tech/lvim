@@ -220,8 +220,49 @@ function config.nvim_gomove()
     gomove.setup()
 end
 
-function config.vim_slime()
-    vim.g.slime_target = "tmux"
+function config.rest_nvim()
+    local rest_nvim_status_ok, rest_nvim = pcall(require, "rest-nvim")
+    if not rest_nvim_status_ok then
+        return
+    end
+    rest_nvim.setup()
+end
+
+function config.sniprun()
+    local sniprun_status_ok, sniprun = pcall(require, "sniprun")
+    if not sniprun_status_ok then
+        return
+    end
+    sniprun.setup()
+end
+
+function config.iron_nvim()
+    local iron = require("iron.core")
+    local view = require("iron.view")
+    iron.setup({
+        config = {
+            repl_open_cmd = view.split.vertical.botright(100),
+        },
+        keymaps = {
+            send_motion = "<space>rc",
+            visual_send = "<space>rv",
+            send_file = "<space>rf",
+            send_line = "<space>rl",
+            send_mark = "<space>rms",
+            mark_motion = "<space>rmm",
+            mark_visual = "<space>rmv",
+            remove_mark = "<space>rmd",
+            cr = "<space>rs<cr>",
+            interrupt = "<space>rs<space>",
+            exit = "<space>rq",
+            clear = "<space>rr",
+        },
+        highlight = {},
+    })
+end
+
+function config.code_runner_nvim()
+    require("code_runner").setup({})
 end
 
 function config.nvim_spectre()

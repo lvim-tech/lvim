@@ -187,8 +187,32 @@ modules["booperlv/nvim-gomove"] = {
     config = editor_config.nvim_gomove,
 }
 
-modules["jpalardy/vim-slime"] = {
-    config = editor_config.vim_slime,
+modules["NTBBloodbath/rest.nvim"] = {
+    ft = "http",
+    config = editor_config.rest_nvim,
+}
+
+modules["michaelb/sniprun"] = {
+    requires = {
+        "neovim/nvim-lspconfig",
+    },
+    run = "bash ./install.sh",
+    cmd = {
+        "SnipRun",
+        "SnipInfo",
+        "SnipReset",
+        "SnipReplMemoryClean",
+        "SnipClose",
+    },
+    config = editor_config.sniprun,
+}
+
+modules["hkupty/iron.nvim"] = {
+    config = editor_config.iron_nvim,
+}
+
+modules["CRAG666/code_runner.nvim"] = {
+    config = editor_config.code_runner_nvim,
 }
 
 modules["windwp/nvim-spectre"] = {
@@ -443,26 +467,6 @@ modules["kosayoda/nvim-lightbulb"] = {
         "BufRead",
     },
     config = languages_config.nvim_lightbulb,
-}
-
-modules["NTBBloodbath/rest.nvim"] = {
-    ft = "http",
-    config = languages_config.rest_nvim,
-}
-
-modules["michaelb/sniprun"] = {
-    requires = {
-        "neovim/nvim-lspconfig",
-    },
-    run = "bash ./install.sh",
-    cmd = {
-        "SnipRun",
-        "SnipInfo",
-        "SnipReset",
-        "SnipReplMemoryClean",
-        "SnipClose",
-    },
-    config = languages_config.sniprun,
 }
 
 modules["nvim-treesitter/nvim-treesitter"] = {
