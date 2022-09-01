@@ -368,8 +368,21 @@ function config.comment_nvim()
     comment.setup()
 end
 
-function config.vim_doge()
-    vim.g.doge_mapping = "<Leader>*"
+function config.neogen()
+    local neogen_status_ok, neogen = pcall(require, "Comment")
+    if not neogen_status_ok then
+        return
+    end
+    neogen.setup({
+        snippet_engine = "luasnip",
+    })
+    vim.api.nvim_create_user_command("NeogenFile", "lua require('neogen').generate({ type = 'file' })", {})
+    vim.api.nvim_create_user_command("NeogenClass", "lua require('neogen').generate({ type = 'class' })", {})
+    vim.api.nvim_create_user_command("NeogenFunction", "lua require('neogen').generate({ type = 'func' })", {})
+    vim.api.nvim_create_user_command("NeogenType", "lua require('neogen').generate({ type = 'type' })", {})
+    local opts = { noremap = true, silent = true }
+    vim.api.nvim_set_keymap("i", "<C-l>", ":lua require('neogen').jump_next<CR>", opts)
+    vim.api.nvim_set_keymap("i", "<C-h>", ":lua require('neogen').jump_prev<CR>", opts)
 end
 
 function config.nvim_colorize_lua()

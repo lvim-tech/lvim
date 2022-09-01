@@ -342,6 +342,13 @@ function config.which_key_nvim()
             n = { "<Cmd>Neogit<CR>", "Neogit" },
             l = { "<Cmd>Lazygit<CR>", "Lazygit" },
         },
+        n = {
+            name = "Neogen",
+            l = { "<Cmd>NeogenFile<CR>", "File" },
+            c = { "<Cmd>NeogenClass<CR>", "Class" },
+            f = { "<Cmd>NeogenFunction<CR>", "Function" },
+            t = { "<Cmd>NeogenType<CR>", "Type" },
+        },
         l = {
             name = "LSP",
             r = { "<Cmd>LspRename<CR>", "Rename" },

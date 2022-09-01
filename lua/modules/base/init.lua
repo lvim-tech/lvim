@@ -242,14 +242,16 @@ modules["ton/vim-bufsurf"] = {
     },
 }
 
--- FEAT: https://github.com/danymat/neogen
-modules["kkoomen/vim-doge"] = {
-    cmd = {
-        "DogeGenerate",
-        "DogeCreateDocStandard",
+modules["danymat/neogen"] = {
+    requires = {
+        {
+            "nvim-treesitter/nvim-treesitter",
+        },
     },
-    run = ":call doge#install()",
-    config = editor_config.vim_doge,
+    event = {
+        "BufRead",
+    },
+    config = editor_config.neogen,
 }
 
 modules["norcalli/nvim-colorizer.lua"] = {
