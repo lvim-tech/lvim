@@ -44,7 +44,7 @@ M.configs = function()
     end
 end
 
-M.sudo_exec = function(cmd, print_output)
+M.sudo_exec = function(cmd)
     vim.fn.inputsave()
     local password = vim.fn.inputsecret("Password: ")
     vim.fn.inputrestore()

@@ -252,15 +252,6 @@ modules["declancm/cinnamon.nvim"] = {
     config = editor_config.cinnamon_nvim,
 }
 
-modules["kenn7/vim-arsync"] = {
-    cmd = {
-        "ARshowConf",
-        "ARsyncUp",
-        "ARsyncUpDelete",
-        "ARsyncDown",
-    },
-}
-
 modules["phaazon/hop.nvim"] = {
     event = {
         "BufRead",
