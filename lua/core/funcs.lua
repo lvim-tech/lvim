@@ -44,6 +44,50 @@ M.configs = function()
     end
 end
 
+M.sudo_exec = function(cmd, print_output)
+    vim.fn.inputsave()
+    local password = vim.fn.inputsecret("Password: ")
+    vim.fn.inputrestore()
+    if not password or #password == 0 then
+        vim.notify("Invalid password, sudo aborted!", "error", {
+            title = "LVIM ORG",
+        })
+        return false
+    end
+    vim.fn.system(string.format("sudo -p '' -S %s", cmd), password)
+    if vim.v.shell_error ~= 0 then
+        vim.notify("Shell error or invalid password, sudo aborted!", "error", {
+            title = "LVIM ORG",
+        })
+        return false
+    end
+    return true
+end
+
+M.sudo_write = function(tmpfile, filepath)
+    if not tmpfile then
+        tmpfile = vim.fn.tempname()
+    end
+    if not filepath then
+        filepath = vim.fn.expand("%")
+    end
+    if not filepath or #filepath == 0 then
+        vim.notify("No file name!", "error", {
+            title = "LVIM ORG",
+        })
+        return
+    end
+    local cmd = string.format("dd if=%s of=%s bs=1048576", vim.fn.shellescape(tmpfile), vim.fn.shellescape(filepath))
+    vim.api.nvim_exec(string.format("write! %s", tmpfile), true)
+    if M.sudo_exec(cmd) then
+        vim.notify(string.format('"%s" written!', filepath), "info", {
+            title = "LVIM ORG",
+        })
+        vim.cmd("e!")
+    end
+    vim.fn.delete(tmpfile)
+end
+
 M.file_exists = function(name)
     local f = io.open(name, "r")
     return f ~= nil and io.close(f)

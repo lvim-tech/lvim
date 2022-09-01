@@ -252,13 +252,6 @@ modules["declancm/cinnamon.nvim"] = {
     config = editor_config.cinnamon_nvim,
 }
 
-modules["lambdalisue/suda.vim"] = {
-    event = {
-        "BufRead",
-    },
-    config = editor_config.suda_vim,
-}
-
 modules["kenn7/vim-arsync"] = {
     cmd = {
         "ARshowConf",
