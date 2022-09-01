@@ -425,6 +425,7 @@ modules["simrat39/rust-tools.nvim"] = {
 modules["ray-x/go.nvim"] = {
     requires = {
         "ray-x/guihua.lua",
+        run = "cd lua/fzy && make",
     },
     ft = "go",
     config = languages_config.go_nvim,
