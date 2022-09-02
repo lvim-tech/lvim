@@ -19,7 +19,7 @@ local configs = {}
 -- Add new Config function
 
 -- You can add new Config function
--- modules["user_vim"] = {
+-- configs["user_vim"] = {
 --     your code
 -- }
 

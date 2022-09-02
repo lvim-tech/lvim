@@ -38,6 +38,7 @@ configs["base_events"] = function()
             "dapui_watches",
             "NeogitStatus",
             "org",
+            "octo",
         },
         command = "setlocal nonumber norelativenumber colorcolumn=0 nocursorcolumn",
         group = group,
@@ -87,7 +88,7 @@ configs["base_events"] = function()
                         vim.opt_local.winbar = nil
                     end
                 end,
-                group = "LvimIDE",
+                group = group,
             }
         )
     end
