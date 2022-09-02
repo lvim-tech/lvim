@@ -236,37 +236,6 @@ function config.sniprun()
     sniprun.setup()
 end
 
-function config.iron_nvim()
-    local iron_core_status_ok, iron_core = pcall(require, "iron.core")
-    if not iron_core_status_ok then
-        return
-    end
-    local iron_view_status_ok, iron_view = pcall(require, "iron.view")
-    if not iron_view_status_ok then
-        return
-    end
-    iron_core.setup({
-        config = {
-            repl_open_cmd = iron_view.split.vertical.botright(100),
-        },
-        keymaps = {
-            send_motion = "<space>rc",
-            visual_send = "<space>rv",
-            send_file = "<space>rf",
-            send_line = "<space>rl",
-            send_mark = "<space>rms",
-            mark_motion = "<space>rmm",
-            mark_visual = "<space>rmv",
-            remove_mark = "<space>rmd",
-            cr = "<space>rs<cr>",
-            interrupt = "<space>rs<space>",
-            exit = "<space>rq",
-            clear = "<space>rr",
-        },
-        highlight = {},
-    })
-end
-
 function config.code_runner_nvim()
     local code_runner_status_ok, code_runner = pcall(require, "code_runner")
     if not code_runner_status_ok then

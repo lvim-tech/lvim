@@ -400,51 +400,6 @@
     end
     #+end_src
 
-**   [[https://github.com/hkupty/iron.nvim][iron.nvim]]
-
-    + INIT
-
-    #+begin_src lua
-    modules["hkupty/iron.nvim"] = {
-        config = editor_config.iron_nvim,
-    }
-    #+end_src
-
-    + CONFIG
-
-    #+begin_src lua
-    function config.iron_nvim()
-        local iron_core_status_ok, iron_core = pcall(require, "iron.core")
-        if not iron_core_status_ok then
-            return
-        end
-        local iron_view_status_ok, iron_view = pcall(require, "iron.view")
-        if not iron_view_status_ok then
-            return
-        end
-        iron_core.setup({
-            config = {
-                repl_open_cmd = iron_view.split.vertical.botright(100),
-            },
-            keymaps = {
-                send_motion = "<space>rc",
-                visual_send = "<space>rv",
-                send_file = "<space>rf",
-                send_line = "<space>rl",
-                send_mark = "<space>rms",
-                mark_motion = "<space>rmm",
-                mark_visual = "<space>rmv",
-                remove_mark = "<space>rmd",
-                cr = "<space>rs<cr>",
-                interrupt = "<space>rs<space>",
-                exit = "<space>rq",
-                clear = "<space>rr",
-            },
-            highlight = {},
-        })
-    end
-    #+end_src
-
 **   [[https://github.com/CRAG666/code_runner.nvim][code_runner.nvim]]
 
     + REQUIRES:

@@ -203,10 +203,6 @@ modules["michaelb/sniprun"] = {
     config = editor_config.sniprun,
 }
 
-modules["hkupty/iron.nvim"] = {
-    config = editor_config.iron_nvim,
-}
-
 modules["CRAG666/code_runner.nvim"] = {
     requires = {
         "nvim-lua/plenary.nvim",
