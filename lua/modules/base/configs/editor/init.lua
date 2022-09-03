@@ -1,8 +1,12 @@
 local config = {}
 
 function config.telescope_nvim()
-    local loader = require("packer").loader
+    local telescope_status_ok, telescope = pcall(require, "telescope")
+    if not telescope_status_ok then
+        return
+    end
     if not packer_plugins["telescope-fzf-native.nvim"].loaded then
+        local loader = require("packer").loader
         loader(
             "telescope-fzf-native.nvim"
                 .. " telescope-media-files.nvim"
@@ -10,10 +14,6 @@ function config.telescope_nvim()
                 .. " telescope-tmux.nvim"
                 .. " howdoi.nvim"
         )
-    end
-    local telescope_status_ok, telescope = pcall(require, "telescope")
-    if not telescope_status_ok then
-        return
     end
     telescope.setup({
         defaults = {
@@ -58,7 +58,7 @@ function config.telescope_nvim()
             path_display = { shorten = 5 },
             winblend = 0,
             border = {},
-            borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+            borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
             color_devicons = true,
             set_env = { ["COLORTERM"] = "truecolor" },
             file_previewer = require("telescope.previewers").vim_buffer_cat.new,
