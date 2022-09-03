@@ -106,6 +106,8 @@ function config.goto_preview()
                         return math.min(max_lines, 15)
                     end,
                 },
+                border = {},
+                borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
                 hide_preview = false,
             }) or nil,
         },
