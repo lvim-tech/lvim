@@ -89,11 +89,26 @@ function config.null_ls_nvim()
 end
 
 function config.goto_preview()
+    local lib = require("goto-preview.lib")
     local goto_preview_status_ok, goto_preview = pcall(require, "goto-preview")
     if not goto_preview_status_ok then
         return
     end
     goto_preview.setup({
+        references = {
+            telescope = lib.has_telescope and lib.telescope.themes.get_dropdown({
+                layout_config = {
+                    width = function(_, max_columns, _)
+                        return math.min(max_columns, 200)
+                    end,
+
+                    height = function(_, _, max_lines)
+                        return math.min(max_lines, 15)
+                    end,
+                },
+                hide_preview = false,
+            }) or nil,
+        },
         border = { " ", " ", " ", " ", " ", " ", " ", " " }, -- Border characters of the floating window
     })
     vim.api.nvim_create_user_command("LspDefinition", "lua require('goto-preview').goto_preview_definition()", {})
