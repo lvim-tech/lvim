@@ -111,7 +111,7 @@ function config.goto_preview()
                 hide_preview = false,
             }) or nil,
         },
-        border = { " ", " ", " ", " ", " ", " ", " ", " " }, -- Border characters of the floating window
+        -- border = { " ", " ", " ", " ", " ", " ", " ", " " }, -- Border characters of the floating window
     })
     vim.api.nvim_create_user_command("LspDefinition", "lua require('goto-preview').goto_preview_definition()", {})
     vim.api.nvim_create_user_command(
@@ -125,6 +125,7 @@ function config.goto_preview()
         "lua require('goto-preview').goto_preview_implementation()",
         {}
     )
+    vim.api.nvim_create_user_command("LspCloseAll", "lua require('goto-preview').close_all_win()", {})
 end
 
 function config.hover_nvim()

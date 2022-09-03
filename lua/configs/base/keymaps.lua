@@ -53,6 +53,7 @@ keymaps["normal"] = {
     { "gpr", ":LspReferences<CR>" }, -- Lsp references
     { "gpi", ":LspImplementation<CR>" }, -- Lsp implementation
     { "gps", ":LspSignatureHelp<CR>" }, -- Lsp signsture help
+    { "gpp", ":LspCloseAll<CR>" }, -- Lsp signsture help
     { "gh", ":Hover<CR>" }, -- Lsp hover
     { "gs", ":SnipRun<CR>" }, -- Snip run
     { "gP", ":hardcopy<CR>" }, -- Print file
