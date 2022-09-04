@@ -1002,7 +1002,6 @@
                 condition = function()
                     return heirline_conditions.buffer_matches({
                         buftype = {
-                            "nofile",
                             "prompt",
                             "help",
                             "quickfix",

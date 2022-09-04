@@ -58,7 +58,6 @@ configs["base_events"] = function()
                     local buf = args.buf
                     local buftype = vim.tbl_contains({
                         "prompt",
-                        "nofile",
                         "help",
                         "quickfix",
                     }, vim.bo[buf].buftype)
@@ -83,9 +82,14 @@ configs["base_events"] = function()
                         "dapui_stacks",
                         "dapui_watches",
                         "calendar",
+                        "neo-tree",
+                        "neo-tree-popup",
                     }, vim.bo[buf].filetype)
                     if buftype or filetype then
-                        vim.opt_local.winbar = nil
+                        if vim.bo[buf].filetype == "WhichKey" then
+                        else
+                            vim.opt_local.winbar = nil
+                        end
                     end
                 end,
                 group = group,

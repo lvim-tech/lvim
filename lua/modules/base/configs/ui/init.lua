@@ -888,7 +888,6 @@ function config.heirline_nvim()
             condition = function()
                 return heirline_conditions.buffer_matches({
                     buftype = {
-                        "nofile",
                         "prompt",
                         "help",
                         "quickfix",
@@ -915,6 +914,8 @@ function config.heirline_nvim()
                         "dapui_stacks",
                         "dapui_watches",
                         "calendar",
+                        "neo-tree",
+                        "neo-tree-popup",
                     },
                 })
             end,

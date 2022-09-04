@@ -52,9 +52,8 @@ modules["elihunter173/dirbuf.nvim"] = {
     config = ui_config.dirbuf_nvim,
 }
 
-modules["lvim-tech/which-key.nvim"] = {
-    event = "BufWinEnter",
-    branch = "buftype",
+modules["folke/which-key.nvim"] = {
+    -- event = "BufWinEnter",
     config = ui_config.which_key_nvim,
 }
 
