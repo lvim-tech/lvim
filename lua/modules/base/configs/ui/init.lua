@@ -883,11 +883,11 @@ function config.heirline_nvim()
     }
     local win_bars = {
         fallthrough = false,
-        -- init = heirline_utils.pick_child_on_condition,
         {
             condition = function()
                 return heirline_conditions.buffer_matches({
                     buftype = {
+                        "nofile",
                         "prompt",
                         "help",
                         "quickfix",

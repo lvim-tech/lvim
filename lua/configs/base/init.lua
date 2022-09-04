@@ -57,6 +57,7 @@ configs["base_events"] = function()
                 callback = function(args)
                     local buf = args.buf
                     local buftype = vim.tbl_contains({
+                        "nofile",
                         "prompt",
                         "help",
                         "quickfix",
@@ -86,10 +87,7 @@ configs["base_events"] = function()
                         "neo-tree-popup",
                     }, vim.bo[buf].filetype)
                     if buftype or filetype then
-                        if vim.bo[buf].filetype == "WhichKey" then
-                        else
-                            vim.opt_local.winbar = nil
-                        end
+                        vim.opt_local.winbar = nil
                     end
                 end,
                 group = group,
