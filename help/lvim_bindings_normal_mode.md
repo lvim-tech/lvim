@@ -111,17 +111,19 @@ Normal mode
 | -------------- | ---------------------------- | --------------------------- |
 | gs             | :SnipRun<CR>                 | Snip run                    |
 | -------------- | ---------------------------- | --------------------------- |
-| <tn>           | :tabn<CR>                    | Tab next                    |
+| tn             | :tabn<CR>                    | Tab next                    |
 | -------------- | ---------------------------- | --------------------------- |
-| <tp>           | :tabp<CR>                    | Tab prev                    |
+| tp             | :tabp<CR>                    | Tab prev                    |
 | -------------- | ---------------------------- | --------------------------- |
-| <tc>           | :CalendarVR<CR>              | Calendar                    |
+| tc             | :CalendarVR<CR>              | Calendar                    |
 | -------------- | ---------------------------- | --------------------------- |
-| <to>           | :e ~/Org/notes/notes.org<CR> | Open org notes              |
+| to             | :e ~/Org/notes/notes.org<CR> | Open org notes              |
 | -------------- | ---------------------------- | --------------------------- |
-| <th>           | :Telescope howdoi<CR>        | Telescope howdoi            |
+| th             | :Telescope howdoi<CR>        | Telescope howdoi            |
 | -------------- | ---------------------------- | --------------------------- |
-| <tt>           | :Telescope tmux sessions<CR> | Telescope tmux session      |
+| tt             | :Telescope tmux sessions<CR> | Telescope tmux session      |
+| -------------- | ---------------------------- | --------------------------- |
+| te             | :Rg<CR>                      | Rg search under word        |
 | -------------- | ---------------------------- | --------------------------- |
 | <A-c>          | :LspLine<CR>                 | Lsp current line            |
 | -------------- | ---------------------------- | --------------------------- |

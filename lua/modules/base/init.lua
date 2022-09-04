@@ -157,6 +157,20 @@ modules["nvim-telescope/telescope.nvim"] = {
     config = editor_config.telescope_nvim,
 }
 
+modules["winston0410/rg.nvim"] = {
+    event = {
+        "BufRead",
+    },
+    config = editor_config.rg,
+}
+
+modules["kevinhwang91/nvim-hlslens"] = {
+    event = {
+        "BufRead",
+    },
+    config = editor_config.nvim_hlslens,
+}
+
 modules["kevinhwang91/nvim-bqf"] = {
     ft = "qf",
     requires = {
@@ -181,6 +195,13 @@ modules["booperlv/nvim-gomove"] = {
         "BufRead",
     },
     config = editor_config.nvim_gomove,
+}
+
+modules["RRethy/nvim-treesitter-textsubjects"] = {
+    event = {
+        "BufRead",
+    },
+    config = editor_config.nvim_treesitter_textsubjects,
 }
 
 modules["NTBBloodbath/rest.nvim"] = {
