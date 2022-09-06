@@ -67,7 +67,6 @@ function config.null_ls_nvim()
             formatting.stylua,
         },
         on_attach = function(client, bufnr)
-            client.offset_encoding = "utf-8"
             if vim.fn.has("nvim-0.8") == 1 then
                 if client.server_capabilities.documentFormattingProvider then
                     vim.api.nvim_create_autocmd("BufWritePre", {
