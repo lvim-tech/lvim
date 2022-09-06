@@ -17,7 +17,7 @@ language_configs["dap"] = function()
     dap.adapters.php = {
         type = "executable",
         command = "node",
-        args = { global.mason_path .. "packages/php-debug-adapter/extension/out/phpDebug.js" },
+        args = { global.mason_path .. "/packages/php-debug-adapter/extension/out/phpDebug.js" },
     }
     dap.configurations.php = {
         {

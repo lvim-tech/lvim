@@ -16,7 +16,7 @@ end
 language_configs["dap"] = function()
     dap.adapters.netcoredbg = {
         type = "executable",
-        command = global.mason_path .. "packages/netcoredbg/netcoredbg",
+        command = global.mason_path .. "/packages/netcoredbg/netcoredbg",
         args = { "--interpreter=vscode" },
     }
     dap.configurations.cs = {
@@ -26,7 +26,7 @@ language_configs["dap"] = function()
             name = "Launch",
             program = function()
                 return vim.fn.input(
-                    global.mason_path .. "packages/netcoredbg/build/ManagedPart.dll",
+                    global.mason_path .. "/packages/netcoredbg/build/ManagedPart.dll",
                     vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
                 )
             end,

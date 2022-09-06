@@ -157,7 +157,7 @@ configs["base_ctrlspace_pre_config"] = function()
 end
 
 configs["base_ask_packages"] = function()
-    local lvim_packages_file = global.cache_path .. ".lvim_packages"
+    local lvim_packages_file = global.cache_path .. "/.lvim_packages"
     if funcs.file_exists(lvim_packages_file) then
         global.lvim_packages = true
     end

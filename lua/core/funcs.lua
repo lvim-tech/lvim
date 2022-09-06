@@ -110,7 +110,7 @@ M.delete_file = function(f)
 end
 
 M.delete_packages_file = function()
-    local lvim_packages_file = global.cache_path .. ".lvim_packages"
+    local lvim_packages_file = global.cache_path .. "/.lvim_packages"
     os.remove(lvim_packages_file)
 end
 
@@ -227,6 +227,16 @@ M.file_size = function(size, options)
         value = value:gsub("%.0$", "")
         local suffix = result[2]
         return value .. o.spacer .. suffix
+    end
+end
+
+M.get_commit = function(plugin, plugins_snapshot)
+    if plugins_snapshot ~= nil then
+        if plugins_snapshot[plugin] ~= nil and plugins_snapshot[plugin].commit ~= nil then
+            return plugins_snapshot[plugin].commit
+        end
+    else
+        return nil
     end
 end
 

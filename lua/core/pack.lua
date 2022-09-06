@@ -1,8 +1,10 @@
 local uv, api = vim.loop, vim.api
-local data_dir = string.format("%s/site/", vim.fn.stdpath("data"))
-local packer_compiled = data_dir .. "lua/packer_compiled.lua"
+local global = require("core.global")
 local funcs = require("core.funcs")
+local packer_compiled = global.packer_path .. "/lua/packer_compiled.lua"
 local packer = nil
+
+-- local a = require("async")
 local display = {
     open_fn = function()
         return require("packer.util").float({ border = "single" })
@@ -30,15 +32,21 @@ function Packer:load_plugins()
 end
 
 function Packer:load_packer()
+    _G.LVIM_SNAPSHOT = vim.fn.input("Rollback from file: ", global.snapshot_path, "file")
     if not packer then
         api.nvim_command("packadd packer.nvim")
         packer = require("packer")
     end
     packer.init({
         compile_path = packer_compiled,
+        snapshot_path = global.snapshot_path,
         git = { clone_timeout = 120 },
+        preview_updates = true,
         disable_commands = true,
         display = display,
+        luarocks = {
+            python_cmd = "python3",
+        },
         max_jobs = 50,
     })
     packer.reset()
@@ -51,13 +59,13 @@ function Packer:load_packer()
 end
 
 function Packer:init_ensure_plugins()
-    local packer_dir = data_dir .. "pack/packer/opt/packer.nvim"
+    local packer_dir = global.packer_path .. "/pack/packer/opt/packer.nvim"
     local state = uv.fs_stat(packer_dir)
     if not state then
         display = nil
         local cmd = "!git clone https://github.com/wbthomason/packer.nvim " .. packer_dir
         api.nvim_command(cmd)
-        uv.fs_mkdir(data_dir .. "lua", 511, function()
+        uv.fs_mkdir(global.packer_path .. "/lua", 511, function()
             assert("Make compile path dir faield")
         end)
         self:load_packer()
@@ -67,6 +75,9 @@ end
 
 local plugins = setmetatable({}, {
     __index = function(_, key)
+        if key == "Packer" then
+            return Packer
+        end
         if not packer then
             Packer:load_packer()
         end
@@ -79,6 +90,9 @@ function plugins.ensure_plugins()
 end
 
 function plugins.package(repo)
+    if not Packer.repos then
+        Packer.repos = {}
+    end
     table.insert(Packer.repos, repo)
 end
 
@@ -90,15 +104,21 @@ end
 function plugins.load_compile()
     if vim.fn.filereadable(packer_compiled) == 1 then
         require("packer_compiled")
-    else
-        vim.notify("Run PackerInstall", "info", { title = "Packer" })
     end
-    vim.cmd([[command! PackerCompile lua require('core.pack').compile_notify()]])
-    vim.cmd([[command! PackerInstall lua require('core.pack').install()]])
-    vim.cmd([[command! PackerUpdate lua require('core.pack').update()]])
-    vim.cmd([[command! PackerSync lua require('core.pack').sync()]])
-    vim.cmd([[command! PackerClean lua require('core.pack').clean()]])
-    vim.cmd([[command! PackerStatus  lua require('core.pack').status()]])
+    local cmds = {
+        "Compile",
+        "Install",
+        "Update",
+        "Sync",
+        "Clean",
+        "Status",
+        "Snapshot",
+    }
+    for _, cmd in ipairs(cmds) do
+        api.nvim_create_user_command("Packer" .. cmd, function()
+            require("core.pack")[string.lower(cmd)]()
+        end, {})
+    end
 end
 
 return plugins

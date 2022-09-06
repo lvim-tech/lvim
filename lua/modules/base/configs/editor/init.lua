@@ -322,11 +322,15 @@ function config.sniprun()
 end
 
 function config.code_runner_nvim()
+    local global = require("core.global")
     local code_runner_status_ok, code_runner = pcall(require, "code_runner")
     if not code_runner_status_ok then
         return
     end
-    code_runner.setup({})
+    code_runner.setup({
+        filetype_path = global.lvim_path .. "/.configs/code_runner/files.json",
+        project_path = global.lvim_path .. "/.configs/code_runner/projects.json",
+    })
 end
 
 function config.nvim_spectre()
