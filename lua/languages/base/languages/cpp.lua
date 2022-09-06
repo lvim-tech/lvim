@@ -11,9 +11,9 @@ language_configs["lsp"] = function()
         ["language"] = "cpp",
         ["dap"] = { "cpptools" },
         ["clangd"] = { "clangd", clangd_config },
-        -- ["dependencies"] = {
-        --     "cpplint",
-        -- },
+        ["dependencies"] = {
+            "cpplint",
+        },
     })
 end
 

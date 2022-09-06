@@ -14,6 +14,7 @@ M.default_config = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
+            client.offset_encoding = "utf-8"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             languages_setup.document_highlight(client, bufnr)
@@ -38,6 +39,7 @@ M.without_formatting = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
+            client.offset_encoding = "utf-8"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             languages_setup.document_highlight(client, bufnr)
@@ -61,6 +63,7 @@ M.without_winbar_config = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
+            client.offset_encoding = "utf-8"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             languages_setup.document_highlight(client, bufnr)
@@ -81,6 +84,7 @@ M.go = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
+            client.offset_encoding = "utf-8"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             languages_setup.document_highlight(client, bufnr)
@@ -118,6 +122,7 @@ M.lua = function(file_types, pid_name)
             autostart = true,
             filetypes = file_types,
             on_attach = function(client, bufnr)
+                client.offset_encoding = "utf-8"
                 table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
                 vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
                 languages_setup.document_highlight(client, bufnr)
@@ -176,6 +181,7 @@ M.jsts_config = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
+            client.offset_encoding = "utf-8"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             languages_setup.document_highlight(client, bufnr)
@@ -228,6 +234,7 @@ M.angular_config = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
+            client.offset_encoding = "utf-8"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             languages_setup.document_highlight(client, bufnr)
@@ -246,6 +253,7 @@ M.ember_config = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
+            client.offset_encoding = "utf-8"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             languages_setup.document_highlight(client, bufnr)
