@@ -1,5 +1,5 @@
 pcall(require, "impatient")
-vim.fn.setenv("MACOSX_DEPLOYMENT_TARGET", "10.15")
+-- vim.fn.setenv("MACOSX_DEPLOYMENT_TARGET", "10.15")
 if vim.fn.has("nvim-0.7") == 1 then
     require("core")
 else
