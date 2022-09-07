@@ -2,11 +2,10 @@ local funcs = require("core.funcs")
 local modules = {}
 local plugins_snapshot = {}
 
-if funcs.file_exists(_G.LVIM_SNAPSHOT) then
-    local content = vim.fn.readfile(_G.LVIM_SNAPSHOT)
-    plugins_snapshot = vim.fn.json_decode(content)
+local read_json_file = funcs.read_json_file(_G.LVIM_SNAPSHOT)
+if read_json_file ~= nil then
+    plugins_snapshot = read_json_file
 end
-
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- UTILS -----------------------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -81,8 +80,7 @@ modules["elihunter173/dirbuf.nvim"] = {
     config = ui_config.dirbuf_nvim,
 }
 
-modules["lvim-tech/which-key.nvim"] = {
-    branch = "buftype",
+modules["folke/which-key.nvim"] = {
     commit = funcs.get_commit("which-key.nvim", plugins_snapshot),
     event = "BufWinEnter",
     config = ui_config.which_key_nvim,

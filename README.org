@@ -81,6 +81,44 @@
 
     #+end_src
 
+**  SNAPSHOTS 
+
+    + Snap folder: *~/.config/nvim/.snapshots/* 
+
+    + Default snapshot file: *default* 
+
+    + Show current snapshot: 
+
+    #+begin_src bash
+
+    :PackerShowCurrentSnapshot
+
+    #+end_src
+
+    + Create new snapshot: 
+
+    #+begin_src bash
+
+    :PackerSnapshot
+
+    #+end_src
+
+    + Choice file to rollback: 
+
+    #+begin_src bash
+
+    :PackerChoiceSnapshotToRollback
+
+    #+end_src
+
+    Then restart LVIM IDE and run:
+
+    #+begin_src bash
+
+    :PackerSync
+
+    #+end_src
+
 **  COMPONENTS
 
 ***  CORE

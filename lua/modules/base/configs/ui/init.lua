@@ -239,7 +239,7 @@ function config.which_key_nvim()
             group = "+",
         },
         window = {
-            border = "single",
+            border = { " ", " ", " ", " ", " ", " ", " ", " " },
             position = "bottom",
             margin = {
                 0,
@@ -1195,6 +1195,7 @@ function config.nvim_notify()
         return
     end
     notify.setup({
+        background_colour = "#2A3339",
         icons = {
             DEBUG = " ",
             ERROR = " ",

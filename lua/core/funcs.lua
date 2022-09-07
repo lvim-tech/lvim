@@ -97,6 +97,18 @@ M.dir_exists = function(path)
     return M.file_exists(path)
 end
 
+M.read_json_file = function(file)
+    local content
+    local file_content_ok, _ = pcall(function()
+        content = vim.fn.readfile(file)
+    end)
+    if file_content_ok or type(content) == "table" then
+        return vim.fn.json_decode(content)
+    else
+        return nil
+    end
+end
+
 M.write_file = function(f, content)
     local file = io.open(f, "w")
     if file ~= nil then
@@ -228,6 +240,16 @@ M.file_size = function(size, options)
         local suffix = result[2]
         return value .. o.spacer .. suffix
     end
+end
+
+M.get_snapshot = function()
+    local read_json_file = M.read_json_file(global.cache_path .. "/.lvim_snapshot")
+    if read_json_file ~= nil then
+        if read_json_file["snapshot"] ~= nil then
+            return read_json_file["snapshot"]
+        end
+    end
+    return global.snapshot_path .. "/default"
 end
 
 M.get_commit = function(plugin, plugins_snapshot)

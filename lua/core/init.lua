@@ -4,6 +4,7 @@ if global == "unsuported" then
     print("Your OS is not supported!")
 else
     local funcs = require("core.funcs")
+    _G.LVIM_SNAPSHOT = funcs.get_snapshot()
     local vim = vim
     vim.g.mapleader = " "
     vim.api.nvim_set_keymap("n", " ", "", { noremap = true })

@@ -4,7 +4,6 @@ local funcs = require("core.funcs")
 local packer_compiled = global.packer_path .. "/lua/packer_compiled.lua"
 local packer = nil
 
--- local a = require("async")
 local display = {
     open_fn = function()
         return require("packer.util").float({ border = "single" })
@@ -32,7 +31,6 @@ function Packer:load_plugins()
 end
 
 function Packer:load_packer()
-    _G.LVIM_SNAPSHOT = vim.fn.input("Rollback from file: ", global.snapshot_path, "file")
     if not packer then
         api.nvim_command("packadd packer.nvim")
         packer = require("packer")
@@ -43,6 +41,7 @@ function Packer:load_packer()
         git = { clone_timeout = 120 },
         preview_updates = true,
         disable_commands = true,
+        log = { level = "error" },
         display = display,
         luarocks = {
             python_cmd = "python3",
@@ -96,9 +95,25 @@ function plugins.package(repo)
     table.insert(Packer.repos, repo)
 end
 
-function plugins.compile_notify()
-    plugins.compile()
-    vim.notify("Compile Done!", "info", { title = "Packer" })
+function plugins.snapshot_current_show()
+    local plugins_snapshot = {}
+    local read_json_file = funcs.read_json_file(_G.LVIM_SNAPSHOT)
+    if read_json_file ~= nil then
+        plugins_snapshot = read_json_file
+    end
+    vim.notify(vim.inspect(plugins_snapshot), "info")
+end
+
+function plugins.snapshot_file_choice()
+    local snapshot_file = vim.fn.input("Rollback from file: ", global.snapshot_path .. "/", "file")
+    local read_json_file = funcs.read_json_file(snapshot_file)
+    if read_json_file ~= nil then
+        _G.LVIM_SNAPSHOT = snapshot_file
+        funcs.write_file(global.cache_path .. "/.lvim_snapshot", '{"snapshot": "' .. _G.LVIM_SNAPSHOT .. '"}')
+        vim.notify("Restart LVIM IDE and run\n:PackerSync", "info")
+    else
+        vim.notify("The file does not exist or is wrong", "error")
+    end
 end
 
 function plugins.load_compile()
@@ -119,6 +134,8 @@ function plugins.load_compile()
             require("core.pack")[string.lower(cmd)]()
         end, {})
     end
+    vim.cmd("command! PackerShowCurrentSnapshot lua require('core.pack').snapshot_current_show()")
+    vim.cmd("command! PackerChoiceSnapshotToRollback lua require('core.pack').snapshot_file_choice()")
 end
 
 return plugins
