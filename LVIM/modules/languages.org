@@ -9,8 +9,10 @@
 
     #+begin_src lua
     modules["williamboman/mason.nvim"] = {
+        commit = funcs.get_commit("mason.nvim", plugins_snapshot),
         requires = {
             "neovim/nvim-lspconfig",
+            commit = funcs.get_commit("nvim-lspconfig", plugins_snapshot),
         },
         config = languages_config.mason,
     }
@@ -68,6 +70,7 @@
 
     #+begin_src lua
     modules["jose-elias-alvarez/null-ls.nvim"] = {
+        commit = funcs.get_commit("null-ls.nvim", plugins_snapshot),
         config = languages_config.null_ls_nvim,
     }
     #+end_src
@@ -127,6 +130,7 @@
 
     #+begin_src lua
     modules["rmagatti/goto-preview"] = {
+        commit = funcs.get_commit("goto-preview", plugins_snapshot),
         event = {
             "BufRead",
         },
@@ -166,6 +170,7 @@
 
     #+begin_src lua
     modules["lewis6991/hover.nvim"] = {
+        commit = funcs.get_commit("hover.nvim", plugins_snapshot),
         event = {
             "BufRead",
         },
@@ -200,6 +205,7 @@
 
     #+begin_src lua
     modules["lvim-tech/fidget.nvim"] = {
+        commit = funcs.get_commit("fidget.nvim", plugins_snapshot),
         event = {
             "BufRead",
         },
@@ -244,6 +250,7 @@
 
     #+begin_src lua
     modules["folke/lua-dev.nvim"] = {
+        commit = funcs.get_commit("lua-dev.nvim", plugins_snapshot),
         ft = "lua",
     }
     #+end_src
@@ -261,23 +268,29 @@
 
     #+begin_src lua
     modules["simrat39/rust-tools.nvim"] = {
+        commit = funcs.get_commit("rust-tools.nvim", plugins_snapshot),
         ft = "rust",
         after = "telescope.nvim",
         requires = {
             {
                 "neovim/nvim-lspconfig",
+                commit = funcs.get_commit("vim-lspconfig", plugins_snapshot),
             },
             {
                 "nvim-lua/popup.nvim",
+                commit = funcs.get_commit("popup.nvim", plugins_snapshot),
             },
             {
                 "nvim-lua/plenary.nvim",
+                commit = funcs.get_commit("plenary.nvim", plugins_snapshot),
             },
             {
                 "mfussenegger/nvim-dap",
+                commit = funcs.get_commit("nvim-dap", plugins_snapshot),
             },
             {
                 "nvim-telescope/telescope.nvim",
+                commit = funcs.get_commit("telescope.nvim", plugins_snapshot),
             },
         },
     }
@@ -285,12 +298,17 @@
 
 **   [[https://github.com/ray-x/go.nvim][go.nvim]]
 
+   + REQUIRES:
+       *  [[https://github.com/ray-x/guihua.lua][guihua.lua]]
+
     + INIT
 
     #+begin_src lua
     modules["ray-x/go.nvim"] = {
+        commit = funcs.get_commit("go.nvim", plugins_snapshot),
         requires = {
             "ray-x/guihua.lua",
+            commit = funcs.get_commit("guihua.lua", plugins_snapshot),
             run = "cd lua/fzy && make",
         },
         ft = "go",
@@ -323,9 +341,11 @@
 
     #+begin_src lua
     modules["akinsho/flutter-tools.nvim"] = {
+        commit = funcs.get_commit("flutter-tools.nvim", plugins_snapshot),
         ft = "dart",
         requires = {
             "nvim-lua/plenary.nvim",
+            commit = funcs.get_commit("plenary.nvim", plugins_snapshot),
         },
     }
     #+end_src
@@ -340,10 +360,17 @@
 
     #+begin_src lua
     modules["jose-elias-alvarez/nvim-lsp-ts-utils"] = {
+        commit = funcs.get_commit("nvim-lsp-ts-utils", plugins_snapshot),
         ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
         requires = {
-            "neovim/nvim-lspconfig",
-            "nvim-lua/plenary.nvim",
+            {
+                "neovim/nvim-lspconfig",
+                commit = funcs.get_commit("nvim-lspconfig", plugins_snapshot),
+            },
+            {
+                "nvim-lua/plenary.nvim",
+                commit = funcs.get_commit("plenary.nvim", plugins_snapshot),
+            },
         },
     }
     #+end_src
@@ -354,6 +381,7 @@
 
     #+begin_src lua
     modules["Mofiqul/trld.nvim"] = {
+        commit = funcs.get_commit("trld.nvim", plugins_snapshot),
         event = {
             "BufRead",
         },
@@ -387,6 +415,7 @@
 
     #+begin_src lua
     modules["kosayoda/nvim-lightbulb"] = {
+        commit = funcs.get_commit("nvim-lightbulb", plugins_snapshot),
         event = {
             "BufRead",
         },
@@ -426,6 +455,7 @@
 
     #+begin_src lua
     modules["nvim-treesitter/nvim-treesitter"] = {
+        commit = funcs.get_commit("nvim-treesitter", plugins_snapshot),
         config = languages_config.nvim_treesitter,
     }
     #+end_src
@@ -501,8 +531,10 @@
 
     #+begin_src lua
     modules["nvim-treesitter/nvim-treesitter-context"] = {
+        commit = funcs.get_commit("nvim-treesitter-context", plugins_snapshot),
         requires = {
             "nvim-treesitter/nvim-treesitter",
+            commit = funcs.get_commit("nvim-treesitter-context", plugins_snapshot),
         },
         after = "nvim-treesitter",
         config = languages_config.nvim_treesitter_contex,
@@ -545,8 +577,10 @@
 
     #+begin_src lua
     modules["lvimuser/lsp-inlayhints.nvim"] = {
+        commit = funcs.get_commit("lsp-inlayhints.nvim", plugins_snapshot),
         requires = {
             "neovim/nvim-lspconfig",
+            commit = funcs.get_commit("nvim-lspconfig", plugins_snapshot),
         },
         config = languages_config.lsp_inlayhints_nvim,
     }
@@ -577,8 +611,10 @@
 
     #+begin_src lua
     modules["SmiteshP/nvim-navic"] = {
+        commit = funcs.get_commit("nvim-navic", plugins_snapshot),
         requires = {
             "neovim/nvim-lspconfig",
+            commit = funcs.get_commit("nvim-lspconfig", plugins_snapshot),
         },
         config = languages_config.nvim_navic,
     }
@@ -606,6 +642,7 @@
 
     #+begin_src lua
     modules["pechorin/any-jump.vim"] = {
+        commit = funcs.get_commit("any-jump.vim", plugins_snapshot),
         event = {
             "BufRead",
         },
@@ -629,6 +666,7 @@
 
     #+begin_src lua
     modules["simrat39/symbols-outline.nvim"] = {
+        commit = funcs.get_commit("symbols-outline.nvim", plugins_snapshot),
         cmd = "SymbolsOutline",
         config = languages_config.symbols_outline_nvim,
     }
@@ -659,12 +697,19 @@
 
     #+begin_src lua
     modules["rcarriga/nvim-dap-ui"] = {
+        commit = funcs.get_commit("nvim-dap-ui", plugins_snapshot),
         event = {
             "BufRead",
         },
         requires = {
-            "mfussenegger/nvim-dap",
-            "jbyuki/one-small-step-for-vimkind",
+            {
+                "mfussenegger/nvim-dap",
+                commit = funcs.get_commit("nvim-dap", plugins_snapshot),
+            },
+            {
+                "jbyuki/one-small-step-for-vimkind",
+                commit = funcs.get_commit("one-small-step-for-vimkind", plugins_snapshot),
+            },
         },
         config = languages_config.nvim_dap_ui,
     }
@@ -798,13 +843,16 @@
 
     #+begin_src lua
     modules["kristijanhusak/vim-dadbod-ui"] = {
+        commit = funcs.get_commit("vim-dadbod-ui", plugins_snapshot),
         requires = {
             {
                 "tpope/vim-dadbod",
+                commit = funcs.get_commit("vim-dadbod", plugins_snapshot),
                 after = "vim-dadbod-ui",
             },
             {
                 "kristijanhusak/vim-dadbod-completion",
+                commit = funcs.get_commit("vim-dadbod-completion", plugins_snapshot),
                 after = "vim-dadbod-ui",
             },
         },
@@ -856,8 +904,10 @@
 
     #+begin_src lua
     modules["vuki656/package-info.nvim"] = {
+        commit = funcs.get_commit("package-info.nvim", plugins_snapshot),
         requires = {
             "MunifTanjim/nui.nvim",
+            commit = funcs.get_commit("nui.nvim", plugins_snapshot),
         },
         event = "BufRead package.json",
         config = languages_config.package_info,
@@ -890,8 +940,10 @@
 
     #+begin_src lua
     modules["Saecki/crates.nvim"] = {
+        commit = funcs.get_commit("crates.nvim", plugins_snapshot),
         requires = {
             "nvim-lua/plenary.nvim",
+            commit = funcs.get_commit("plenary.nvim", plugins_snapshot),
         },
         event = "BufRead Cargo.toml",
         config = languages_config.crates_nvim,
@@ -934,8 +986,10 @@
 
     #+begin_src lua
     modules["akinsho/pubspec-assist.nvim"] = {
+        commit = funcs.get_commit("pubspec-assist.nvim", plugins_snapshot),
         requires = {
             "nvim-lua/plenary.nvim",
+            commit = funcs.get_commit("plenary.nvim", plugins_snapshot),
         },
         event = "BufRead pubspec.yaml",
         rocks = {
@@ -966,6 +1020,7 @@
 
     #+begin_src lua
     modules["davidgranstrom/nvim-markdown-preview"] = {
+        commit = funcs.get_commit("nvim-markdown-preview", plugins_snapshot),
         ft = "markdown",
     }
     #+end_src
@@ -976,6 +1031,7 @@
 
     #+begin_src lua
     modules["lervag/vimtex"] = {
+        commit = funcs.get_commit("vimtex", plugins_snapshot),
         config = languages_config.vimtex,
     }
     #+end_src
@@ -998,6 +1054,7 @@
 
     #+begin_src lua
     modules["dhruvasagar/vim-table-mode"] = {
+        commit = funcs.get_commit("vim-table-mode", plugins_snapshot),
         event = {
             "BufRead",
         },
@@ -1010,6 +1067,7 @@
 
     #+begin_src lua
     modules["nvim-orgmode/orgmode"] = {
+        commit = funcs.get_commit("orgmode", plugins_snapshot),
         config = languages_config.orgmode,
     }
     #+end_src
@@ -1039,6 +1097,7 @@
 
     #+begin_src lua
     modules["lvim-tech/lvim-org-utils"] = {
+        commit = funcs.get_commit("lvim-org-utils", plugins_snapshot),
         ft = "org",
         config = languages_config.lvim_org_utils,
     }

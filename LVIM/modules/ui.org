@@ -6,6 +6,7 @@
 
     #+begin_src lua
     modules["lvim-tech/lvim-colorscheme"] = {
+        commit = funcs.get_commit("lvim-colorscheme", plugins_snapshot),
         config = ui_config.lvim_colorscheme,
     }
     #+end_src
@@ -24,7 +25,9 @@
     + INIT
 
     #+begin_src lua
-    modules["nvim-lua/popup.nvim"] = {}
+    modules["nvim-lua/popup.nvim"] = {
+        commit = funcs.get_commit("popup.nvim", plugins_snapshot),
+    }
     #+end_src
 
 **   [[https://github.com/MunifTanjim/nui.nvim][nui.nvim]]
@@ -33,6 +36,7 @@
 
     #+begin_src lua
     modules["MunifTanjim/nui.nvim"] = {
+        commit = funcs.get_commit("nui.nvim", plugins_snapshot),
         config = ui_config.nui_nvim,
     }
     #+end_src
@@ -52,6 +56,7 @@
 
     #+begin_src lua
     modules["goolord/alpha-nvim"] = {
+        commit = funcs.get_commit("alpha-nvim", plugins_snapshot),
         event = "VimEnter",
         config = ui_config.alpha_nvim,
     }
@@ -149,6 +154,7 @@
 
     #+begin_src lua
     modules["s1n7ax/nvim-window-picker"] = {
+        commit = funcs.get_commit("nvim-window-picker", plugins_snapshot),
         config = ui_config.nvim_window_picker,
     }
     #+end_src
@@ -214,6 +220,7 @@
     #+begin_src lua
     modules["nvim-neo-tree/neo-tree.nvim"] = {
         branch = "v2.x",
+        commit = funcs.get_commit("neo-tree.nvim", plugins_snapshot),
         requires = {
             "nvim-lua/plenary.nvim",
             "kyazdani42/nvim-web-devicons",
@@ -296,6 +303,7 @@
 
     #+begin_src lua
     modules["elihunter173/dirbuf.nvim"] = {
+        commit = funcs.get_commit("dirbuf.nvim", plugins_snapshot),
         cmd = "Dirbuf",
         config = ui_config.dirbuf_nvim,
     }
@@ -319,6 +327,7 @@
 
     #+begin_src lua
     modules["folke/which-key.nvim"] = {
+        commit = funcs.get_commit("which-key.nvim", plugins_snapshot),
         event = "BufWinEnter",
         config = ui_config.which_key_nvim,
     }
@@ -567,6 +576,7 @@
 
     #+begin_src lua
     modules["rebelot/heirline.nvim"] = {
+        commit = funcs.get_commit("heirline.nvim", plugins_snapshot),
         after = "lvim-colorscheme",
         config = ui_config.heirline_nvim,
     }
@@ -1072,6 +1082,7 @@
 
     #+begin_src lua
     modules["is0n/fm-nvim"] = {
+        commit = funcs.get_commit("fm-nvim", plugins_snapshot),
         config = ui_config.fm_nvim,
     }
     #+end_src
@@ -1108,6 +1119,7 @@
     #+begin_src lua
     modules["akinsho/toggleterm.nvim"] = {
         tag = "v2.*",
+        commit = funcs.get_commit("toggleterm.nvim", plugins_snapshot),
         cmd = {
             "TTFloat",
             "TTOne",
@@ -1250,8 +1262,10 @@
 
     #+begin_src lua
     modules["folke/zen-mode.nvim"] = {
+        commit = funcs.get_commit("zen-mode.nvim", plugins_snapshot),
         requires = {
             "folke/twilight.nvim",
+            commit = funcs.get_commit("twilight.nvim", plugins_snapshot),
             config = ui_config.twilight_nvim,
             after = "zen-mode.nvim",
         },
@@ -1304,6 +1318,7 @@
 
     #+begin_src lua
     modules["nyngwang/NeoZoom.lua"] = {
+        commit = funcs.get_commit("NeoZoom.lua", plugins_snapshot),
         config = ui_config.neozoom_lua,
         cmd = "NeoZoomToggle",
     }
@@ -1330,6 +1345,7 @@
 
     #+begin_src lua
     modules["lukas-reineke/indent-blankline.nvim"] = {
+        commit = funcs.get_commit("indent-blankline.nvim", plugins_snapshot),
         event = {
             "BufRead",
         },
@@ -1400,6 +1416,7 @@
 
     #+begin_src lua
     modules["rcarriga/nvim-notify"] = {
+        commit = funcs.get_commit("nvim-notify", plugins_snapshot),
         after = "lvim-colorscheme",
         config = ui_config.nvim_notify,
     }
@@ -1460,6 +1477,7 @@
 
     #+begin_src lua
     modules["lvim-tech/lvim-focus"] = {
+        commit = funcs.get_commit("lvim-focus", plugins_snapshot),
         after = "lvim-colorscheme",
         config = ui_config.lvim_focus,
     }
@@ -1482,6 +1500,7 @@
 
     #+begin_src lua
     modules["lvim-tech/lvim-helper"] = {
+        commit = funcs.get_commit("lvim-helper", plugins_snapshot),
         cmd = "LvimHelper",
         config = ui_config.lvim_helper,
     }

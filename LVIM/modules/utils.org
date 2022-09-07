@@ -5,7 +5,9 @@
     + INIT
 
     #+begin_src lua
-    modules["nvim-lua/plenary.nvim"] = {}
+    modules["nvim-lua/plenary.nvim"] = {
+        commit = funcs.get_commit("plenary.nvim", plugins_snapshot),
+    }
     #+end_src
 
 **   [[https://github.com/lewis6991/impatient.nvim][impatient.nvim]]
@@ -13,5 +15,7 @@
     + INIT
 
     #+begin_src lua
-    modules["lewis6991/impatient.nvim"] = {}
+    modules["lewis6991/impatient.nvim"] = {
+        commit = funcs.get_commit("impatient.nvim", plugins_snapshot),
+    }
     #+end_src

@@ -13,22 +13,28 @@
 
     #+begin_src lua
     modules["hrsh7th/nvim-cmp"] = {
+        commit = funcs.get_commit("nvim-cmp", plugins_snapshot),
         requires = {
             "hrsh7th/cmp-nvim-lsp",
+            commit = funcs.get_commit("cmp-nvim-lsp", plugins_snapshot),
             {
                 "saadparwaiz1/cmp_luasnip",
+                commit = funcs.get_commit("cmp_luasnip", plugins_snapshot),
                 after = "nvim-cmp",
             },
             {
                 "hrsh7th/cmp-buffer",
+                commit = funcs.get_commit("cmp-buffer", plugins_snapshot),
                 after = "nvim-cmp",
             },
             {
                 "hrsh7th/cmp-path",
+                commit = funcs.get_commit("cmp-path", plugins_snapshot),
                 after = "nvim-cmp",
             },
             {
                 "kdheepak/cmp-latex-symbols",
+                commit = funcs.get_commit("cmp-latex-symbols", plugins_snapshot),
                 after = "nvim-cmp",
             },
         },
@@ -174,8 +180,10 @@
 
     #+begin_src lua
     modules["L3MON4D3/LuaSnip"] = {
+        commit = funcs.get_commit("LuaSnip", plugins_snapshot),
         requires = {
             "rafamadriz/friendly-snippets",
+            commit = funcs.get_commit("friendly-snippets", plugins_snapshot),
             after = "LuaSnip",
         },
     }
@@ -187,6 +195,7 @@
 
     #+begin_src lua
     modules["Neevash/awesome-flutter-snippets"] = {
+        commit = funcs.get_commit("awesome-flutter-snippets", plugins_snapshot),
         ft = "dart",
     }
     #+end_src
@@ -201,9 +210,16 @@
 
     #+begin_src lua
     modules["windwp/nvim-autopairs"] = {
+        commit = funcs.get_commit("nvim-autopairs", plugins_snapshot),
         requires = {
-            "nvim-treesitter/nvim-treesitter",
-            "hrsh7th/nvim-cmp",
+            {
+                "nvim-treesitter/nvim-treesitter",
+                commit = funcs.get_commit("nvim-treesitter", plugins_snapshot),
+            },
+            {
+                "hrsh7th/nvim-cmp",
+                commit = funcs.get_commit("nvim-cmp", plugins_snapshot),
+            },
         },
         after = {
             "nvim-treesitter",
@@ -279,13 +295,16 @@
 
     #+begin_src lua
     modules["windwp/nvim-ts-autotag"] = {
+        commit = funcs.get_commit("nvim-ts-autotag", plugins_snapshot),
         requires = {
-            "nvim-treesitter/nvim-treesitter",
-            "hrsh7th/nvim-cmp",
-        },
-        after = {
-            "nvim-treesitter",
-            "nvim-cmp",
+            {
+                "nvim-treesitter/nvim-treesitter",
+                commit = funcs.get_commit("nvim-treesitter", plugins_snapshot),
+            },
+            {
+                "hrsh7th/nvim-cmp",
+                commit = funcs.get_commit("nvim-cmp", plugins_snapshot),
+            },
         },
         config = completion_config.nvim_ts_autotag,
     }
@@ -312,8 +331,10 @@
 
     #+begin_src lua
     modules["kylechui/nvim-surround"] = {
+        commit = funcs.get_commit("nvim-surround", plugins_snapshot),
         requires = {
             "nvim-treesitter/nvim-treesitter",
+            commit = funcs.get_commit("nvim-treesitter", plugins_snapshot),
         },
         after = "nvim-treesitter",
         config = completion_config.nvim_surround,

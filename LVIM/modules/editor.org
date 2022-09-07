@@ -6,6 +6,7 @@
 
     #+begin_src lua
     modules["vim-ctrlspace/vim-ctrlspace"] = {
+        commit = funcs.get_commit("vim-ctrlspace", plugins_snapshot),
         cmd = "CtrlSpace",
     }
     #+end_src
@@ -24,26 +25,33 @@
 
     #+begin_src lua
     modules["nvim-telescope/telescope.nvim"] = {
+        branch = "0.1.x",
+        commit = funcs.get_commit("telescope.nvim", plugins_snapshot),
         requires = {
             {
                 "nvim-telescope/telescope-fzf-native.nvim",
+                commit = funcs.get_commit("telescope-fzf-native.nvim", plugins_snapshot),
                 run = "make",
                 opt = true,
             },
             {
                 "nvim-telescope/telescope-media-files.nvim",
+                commit = funcs.get_commit("telescope-media-files.nvim", plugins_snapshot),
                 opt = true,
             },
             {
                 "nvim-telescope/telescope-file-browser.nvim",
+                commit = funcs.get_commit("telescope-file-browser.nvim", plugins_snapshot),
                 opt = true,
             },
             {
                 "camgraff/telescope-tmux.nvim",
+                commit = funcs.get_commit("telescope-tmux.nvim", plugins_snapshot),
                 opt = true,
             },
             {
                 "zane-/howdoi.nvim",
+                commit = funcs.get_commit("howdoi.nvim", plugins_snapshot),
                 opt = true,
             },
         },
@@ -160,6 +168,7 @@
 
     #+begin_src lua
     modules["winston0410/rg.nvim"] = {
+        commit = funcs.get_commit("rg.nvim", plugins_snapshot),
         event = {
             "BufRead",
         },
@@ -191,6 +200,7 @@
 
     #+begin_src lua
     modules["kevinhwang91/nvim-hlslens"] = {
+        commit = funcs.get_commit("nvim-hlslens", plugins_snapshot),
         event = {
             "BufRead",
         },
@@ -260,9 +270,11 @@
 
     #+begin_src lua
     modules["kevinhwang91/nvim-bqf"] = {
+        commit = funcs.get_commit("nvim-bqf", plugins_snapshot),
         ft = "qf",
         requires = {
             "junegunn/fzf",
+            commit = funcs.get_commit("fzf", plugins_snapshot),
             run = function()
                 vim.fn["fzf#install"]()
             end,
@@ -293,6 +305,7 @@
 
     #+begin_src lua
     modules["https://gitlab.com/yorickpeterse/nvim-pqf"] = {
+        commit = funcs.get_commit("nvim-pqf", plugins_snapshot),
         config = editor_config.nvim_pqf,
     }
     #+end_src
@@ -315,6 +328,7 @@
 
     #+begin_src lua
     modules["nanozuki/tabby.nvim"] = {
+        commit = funcs.get_commit("tabby.nvim", plugins_snapshot),
         config = editor_config.tabby_nvim,
     }
     #+end_src
@@ -422,6 +436,7 @@
 
     #+begin_src lua
     modules["booperlv/nvim-gomove"] = {
+        commit = funcs.get_commit("nvim-gomove", plugins_snapshot),
         event = {
             "BufRead",
         },
@@ -447,6 +462,7 @@
 
     #+begin_src lua
     modules["RRethy/nvim-treesitter-textsubjects"] = {
+        commit = funcs.get_commit("nvim-treesitter-textsubjects", plugins_snapshot),
         event = {
             "BufRead",
         },
@@ -481,6 +497,7 @@
 
     #+begin_src lua
     modules["NTBBloodbath/rest.nvim"] = {
+        commit = funcs.get_commit("rest.nvim", plugins_snapshot),
         ft = "http",
         config = languages_config.rest_nvim,
     }
@@ -507,8 +524,10 @@
 
     #+begin_src lua
     modules["michaelb/sniprun"] = {
+        commit = funcs.get_commit("sniprun", plugins_snapshot),
         requires = {
             "neovim/nvim-lspconfig",
+            commit = funcs.get_commit("nvim-lspconfig", plugins_snapshot),
         },
         run = "bash ./install.sh",
         cmd = {
@@ -543,8 +562,10 @@
 
     #+begin_src lua
     modules["CRAG666/code_runner.nvim"] = {
+        commit = funcs.get_commit("code_runner.nvim", plugins_snapshot),
         requires = {
             "nvim-lua/plenary.nvim",
+            commit = funcs.get_commit("plenary.nvim", plugins_snapshot),
         },
         config = editor_config.code_runner_nvim,
     }
@@ -572,10 +593,17 @@
 
     #+begin_src lua
     modules["windwp/nvim-spectre"] = {
+        commit = funcs.get_commit("nvim-spectre", plugins_snapshot),
         cmd = "Spectre",
         requires = {
-            "nvim-lua/popup.nvim",
-            "nvim-lua/plenary.nvim",
+            {
+                "nvim-lua/popup.nvim",
+                commit = funcs.get_commit("popup.nvim", plugins_snapshot),
+            },
+            {
+                "nvim-lua/plenary.nvim",
+                commit = funcs.get_commit("plenary.nvim", plugins_snapshot),
+            },
         },
         config = editor_config.nvim_spectre,
     }
@@ -686,6 +714,7 @@
 
     #+begin_src lua
     modules["numToStr/Comment.nvim"] = {
+        commit = funcs.get_commit("Comment.nvim", plugins_snapshot),
         event = {
             "CursorMoved",
         },
@@ -711,6 +740,7 @@
 
     #+begin_src lua
     modules["ton/vim-bufsurf"] = {
+        commit = funcs.get_commit("vim-bufsurf", plugins_snapshot),
         event = {
             "BufRead",
         },
@@ -719,12 +749,17 @@
 
 **   [[https://github.com/danymat/neogen][neogen]]
 
+    + REQUIRES:
+        *  [[https://github.com/nvim-treesitter/nvim-treesitter][nvim-treesitter]]
+
     + INIT
 
     #+begin_src lua
     modules["danymat/neogen"] = {
+        commit = funcs.get_commit("neogen", plugins_snapshot),
         requires = {
             "nvim-treesitter/nvim-treesitter",
+            commit = funcs.get_commit("nvim-treesitter", plugins_snapshot),
         },
         event = {
             "BufRead",
@@ -760,6 +795,7 @@
 
     #+begin_src lua
     modules["norcalli/nvim-colorizer.lua"] = {
+        commit = funcs.get_commit("nvim-colorizer.lua", plugins_snapshot),
         event = {
             "BufRead",
         },
@@ -789,12 +825,39 @@
     end
     #+end_src
 
+**   [[https://github.com/ziontee113/color-picker.nvim][color-picker.nvim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["ziontee113/color-picker.nvim"] = {
+        commit = funcs.get_commit("color-picker.nvim", plugins_snapshot),
+        event = {
+            "BufRead",
+        },
+        config = editor_config.color_picker_nvim,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.color_picker_nvim()
+        local color_picker_status_ok, color_picker = pcall(require, "color-picker")
+        if not color_picker_status_ok then
+            return
+        end
+        color_picker.setup({})
+    end
+    #+end_src
+
 **   [[https://github.com/xiyaowong/virtcolumn.nvim][virtcolumn.nvim]]
 
     + INIT
 
     #+begin_src lua
     modules["xiyaowong/virtcolumn.nvim"] = {
+        commit = funcs.get_commit("virtcolumn.nvim", plugins_snapshot),
         event = {
             "BufRead",
         },
@@ -818,6 +881,7 @@
 
     #+begin_src lua
     modules["declancm/cinnamon.nvim"] = {
+        commit = funcs.get_commit("cinnamon.nvim", plugins_snapshot),
         event = {
             "BufRead",
         },
@@ -846,6 +910,8 @@
 
     #+begin_src lua
     modules["phaazon/hop.nvim"] = {
+        branch = "v2",
+        commit = funcs.get_commit("hop.nvim", plugins_snapshot),
         event = {
             "BufRead",
         },
@@ -875,8 +941,10 @@
 
     #+begin_src lua
     modules["folke/todo-comments.nvim"] = {
+        commit = funcs.get_commit("todo-comments.nvim", plugins_snapshot),
         requires = {
             "nvim-lua/plenary.nvim",
+            commit = funcs.get_commit("plenary.nvim", plugins_snapshot),
         },
         event = {
             "BufRead",
@@ -914,8 +982,10 @@
 
     #+begin_src lua
     modules["anuvyklack/pretty-fold.nvim"] = {
+        commit = funcs.get_commit("pretty-fold.nvim", plugins_snapshot),
         requires = {
             "anuvyklack/fold-preview.nvim",
+            commit = funcs.get_commit("fold-preview.nvim", plugins_snapshot),
         },
         event = {
             "BufRead",
@@ -969,6 +1039,7 @@
 
     #+begin_src lua
     modules["renerocksai/calendar-vim"] = {
+        commit = funcs.get_commit("calendar-vim", plugins_snapshot),
         cmd = { "Calendar", "CalendarH", "CalendarT", "CalendarVR" },
         config = editor_config.calendar_vim,
     }

@@ -9,8 +9,10 @@
 
     #+begin_src lua
     modules["TimUntersberger/neogit"] = {
+        commit = funcs.get_commit("neogit", plugins_snapshot),
         requires = {
             "nvim-lua/plenary.nvim",
+            commit = funcs.get_commit("plenary.nvim", plugins_snapshot),
         },
         cmd = "Neogit",
         config = version_control_config.neogit,
@@ -59,8 +61,10 @@
 
     #+begin_src lua
     modules["lewis6991/gitsigns.nvim"] = {
+        commit = funcs.get_commit("gitsigns.nvim", plugins_snapshot),
         requires = {
             "nvim-lua/plenary.nvim",
+            commit = funcs.get_commit("plenary.nvim", plugins_snapshot),
         },
         event = {
             "BufRead",
@@ -133,8 +137,10 @@
 
     #+begin_src lua
     modules["lewis6991/gitsigns.nvim"] = {
+        commit = funcs.get_commit("gitsigns.nvim", plugins_snapshot),
         requires = {
             "nvim-lua/plenary.nvim",
+            commit = funcs.get_commit("plenary.nvim", plugins_snapshot),
         },
         event = {
             "BufRead",
@@ -208,6 +214,7 @@
 
     #+begin_src lua
     modules["f-person/git-blame.nvim"] = {
+        commit = funcs.get_commit("git-blame.nvim", plugins_snapshot),
         event = {
             "BufRead",
         },
@@ -239,6 +246,7 @@
 
     #+begin_src lua
     modules["sindrets/diffview.nvim"] = {
+        commit = funcs.get_commit("diffview.nvim", plugins_snapshot),
         cmd = {
             "DiffviewOpen",
             "DiffviewFileHistory",
@@ -251,15 +259,30 @@
 
 **   [[https://github.com/pwntester/octo.nvim][pwntester/octo.nvim]]
 
+    + REQUIRES:
+        *  [[https://github.com/nvim-lua/plenary.nvim][plenary.nvim]]
+        *  [[https://github.com/nvim-telescope/telescope.nvim][telescope.nvim]]
+        *  [[https://github.com/kyazdani42/nvim-web-devicons][nvim-web-devicons]]
+
     + INIT
 
     #+begin_src lua
     modules["pwntester/octo.nvim"] = {
+        commit = funcs.get_commit("octo.nvim", plugins_snapshot),
         after = "lvim-colorscheme",
         requires = {
-            "nvim-lua/plenary.nvim",
-            "nvim-telescope/telescope.nvim",
-            "kyazdani42/nvim-web-devicons",
+            {
+                "nvim-lua/plenary.nvim",
+                commit = funcs.get_commit("plenary.nvim", plugins_snapshot),
+            },
+            {
+                "nvim-telescope/telescope.nvim",
+                commit = funcs.get_commit("telescope.nvim", plugins_snapshot),
+            },
+            {
+                "kyazdani42/nvim-web-devicons",
+                commit = funcs.get_commit("nvim-web-devicons", plugins_snapshot),
+            },
         },
         config = version_control_config.octo_nvim,
     }
@@ -283,6 +306,7 @@
 
     #+begin_src lua
     modules["mbbill/undotree"] = {
+        commit = funcs.get_commit("undotree", plugins_snapshot),
         event = {
             "BufRead",
         },
