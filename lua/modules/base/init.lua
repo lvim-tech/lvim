@@ -336,6 +336,14 @@ modules["norcalli/nvim-colorizer.lua"] = {
     config = editor_config.nvim_colorize_lua,
 }
 
+modules["ziontee113/color-picker.nvim"] = {
+    commit = funcs.get_commit("color-picker.nvim", plugins_snapshot),
+    event = {
+        "BufRead",
+    },
+    config = editor_config.color_picker_nvim,
+}
+
 modules["xiyaowong/virtcolumn.nvim"] = {
     commit = funcs.get_commit("virtcolumn.nvim", plugins_snapshot),
     event = {

@@ -16,6 +16,8 @@ keymaps["normal"] = {
     { "<C-c>x", "<C-w>c" }, -- Close current window
     { "<C-c>o", "<C-w>o" }, -- Close other windows
     { "<C-c>d", ":bdelete<CR>" }, -- BDelete
+    { "<C-c>p", ":PickColor<CR>" }, -- Pick color
+    { "<C-c>P", ":PickColorInsert<CR>" }, -- Pick color insert
     { "<C-n>", ":BufSurfForward<CR>" }, -- Next buffer
     { "<C-p>", ":BufSurfBack<CR>" }, -- Previews buffer
     { "<C-c>b", ":GitBlameToggle<CR>" }, -- Git blame toggle

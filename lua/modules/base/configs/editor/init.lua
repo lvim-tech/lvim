@@ -471,6 +471,14 @@ function config.nvim_colorize_lua()
     })
 end
 
+function config.color_picker_nvim()
+    local color_picker_status_ok, color_picker = pcall(require, "color-picker")
+    if not color_picker_status_ok then
+        return
+    end
+    color_picker.setup({})
+end
+
 function config.virtcolumn_nvim()
     vim.api.nvim_set_option("colorcolumn", "120")
     vim.g.virtcolumn_char = "▕"
