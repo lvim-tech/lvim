@@ -445,13 +445,7 @@ modules["f-person/git-blame.nvim"] = {
 
 modules["sindrets/diffview.nvim"] = {
     commit = funcs.get_commit("diffview.nvim", plugins_snapshot),
-    cmd = {
-        "DiffviewOpen",
-        "DiffviewFileHistory",
-        "DiffviewFocusFiles",
-        "DiffviewToggleFiles",
-        "DiffviewRefresh",
-    },
+    after = "lvim-colorscheme",
     config = version_control_config.diffview_nvim,
 }
 
