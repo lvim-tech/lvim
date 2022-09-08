@@ -1312,7 +1312,7 @@
     end
     #+end_src
 
-**   [[https://github.comnyngwang/NeoZoom.lua/][NeoZoom.lua]]
+**   [[https://github.com/nyngwang/NeoZoom.lua][NeoZoom.lua]]
 
     + INIT
 
@@ -1336,6 +1336,32 @@
         vim.keymap.set("n", "<C-z>", function()
             vim.cmd("NeoZoomToggle")
         end, NOREF_NOERR_TRUNC)
+    end
+    #+end_src
+
+**   [[https://github.com/gbprod/stay-in-place.nvim][stay-in-place.nvim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["gbprod/stay-in-place.nvim"] = {
+        commit = funcs.get_commit("stay-in-place.nvim", plugins_snapshot),
+        event = {
+            "BufRead",
+        },
+        config = ui_config.stay_in_place,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.stay_in_place()
+        local stay_in_place_status_ok, stay_in_place = pcall(require, "stay-in-place")
+        if not stay_in_place_status_ok then
+            return
+        end
+        stay_in_place.setup({})
     end
     #+end_src
 

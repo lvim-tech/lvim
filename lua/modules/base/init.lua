@@ -127,6 +127,14 @@ modules["nyngwang/NeoZoom.lua"] = {
     cmd = "NeoZoomToggle",
 }
 
+modules["gbprod/stay-in-place.nvim"] = {
+    commit = funcs.get_commit("stay-in-place.nvim", plugins_snapshot),
+    event = {
+        "BufRead",
+    },
+    config = ui_config.stay_in_place,
+}
+
 modules["lukas-reineke/indent-blankline.nvim"] = {
     commit = funcs.get_commit("indent-blankline.nvim", plugins_snapshot),
     event = {

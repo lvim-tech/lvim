@@ -6,7 +6,7 @@
 
   Current version - 2.2.00 (2022-09-07)
 
-  108 plugins
+  109 plugins
 
 **  SCREENSHOTS
 

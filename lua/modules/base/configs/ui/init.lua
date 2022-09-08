@@ -1136,6 +1136,14 @@ function config.neozoom_lua()
     end, NOREF_NOERR_TRUNC)
 end
 
+function config.stay_in_place()
+    local stay_in_place_status_ok, stay_in_place = pcall(require, "stay-in-place")
+    if not stay_in_place_status_ok then
+        return
+    end
+    stay_in_place.setup({})
+end
+
 function config.indent_blankline_nvim()
     local indent_blankline_status_ok, indent_blankline = pcall(require, "indent_blankline")
     if not indent_blankline_status_ok then
