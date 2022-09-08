@@ -50,47 +50,6 @@ configs["base_events"] = function()
         end,
         group = group,
     })
-    if vim.fn.has("nvim-0.8") == 1 then
-        vim.api.nvim_create_autocmd("User", {
-            pattern = "HeirlineInitWinbar",
-            callback = function(args)
-                local buf = args.buf
-                local buftype = vim.tbl_contains({
-                    "nofile",
-                    "prompt",
-                    "help",
-                    "quickfix",
-                }, vim.bo[buf].buftype)
-                local filetype = vim.tbl_contains({
-                    "ctrlspace",
-                    "ctrlspace_help",
-                    "packer",
-                    "undotree",
-                    "diff",
-                    "Outline",
-                    "LvimHelper",
-                    "floaterm",
-                    "dashboard",
-                    "vista",
-                    "spectre_panel",
-                    "DiffviewFiles",
-                    "flutterToolsOutline",
-                    "log",
-                    "qf",
-                    "dapui_scopes",
-                    "dapui_breakpoints",
-                    "dapui_stacks",
-                    "dapui_watches",
-                    "calendar",
-                    "neo-tree",
-                    "neo-tree-popup",
-                }, vim.bo[buf].filetype)
-                if buftype or filetype then
-                    vim.opt_local.winbar = nil
-                end
-            end,
-        })
-    end
 end
 
 configs["base_languages"] = function()

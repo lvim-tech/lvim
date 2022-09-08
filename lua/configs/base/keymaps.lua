@@ -3,6 +3,8 @@ local keymaps = {}
 keymaps["normal"] = {
     { "<space><space>", ":CtrlSpace<CR>" }, -- CtrlSpace
     { "<F1>", ":TTOne<CR>" }, -- Toggleterm one open
+    { "u", "u:ColorizerAttachToBuffer<CR>" }, -- Toggleterm one open
+    { "<C-r>", "<C-r>:ColorizerAttachToBuffer<CR>" }, -- Toggleterm one open
     { "<F2>", ":TTTwo<CR>" }, -- Toggleterm two open
     { "<F3>", ":TTThree<CR>" }, -- Toggleterm three open
     { "<F4>", ":TTFloat<CR>" }, -- Toggleterm float open
@@ -10,7 +12,7 @@ keymaps["normal"] = {
     { "<F11>", ":LvimHelper<CR>" }, -- LvimHelper
     { "<Esc>", "<Esc>:noh<CR>:SnipClose<CR>" }, -- Remove highlight after search
     { "<C-c>n", ":enew<CR>" }, -- Create empty buffer
-    { "<C-c>s", ":w<CR>:ColorizerAttachToBuffer<CR>" }, -- Save
+    { "<C-c>s", ":w<CR>" }, -- Save
     { "<C-c>a", ":wa<CR>" }, -- Save all
     { "<C-c>e", ":qa!<CR>" }, -- Close all, exit nvim
     { "<C-c>x", "<C-w>c" }, -- Close current window

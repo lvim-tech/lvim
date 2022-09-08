@@ -136,6 +136,15 @@ function plugins.load_compile()
     end
     vim.cmd("command! PackerShowCurrentSnapshot lua require('core.pack').snapshot_current_show()")
     vim.cmd("command! PackerChoiceSnapshotToRollback lua require('core.pack').snapshot_file_choice()")
+    local PackerHooks = vim.api.nvim_create_augroup("PackerHooks", { clear = true })
+    vim.api.nvim_create_autocmd("User", {
+        group = PackerHooks,
+        pattern = "PackerCompileDone",
+        callback = function()
+            vim.notify("Compile Done!", vim.log.levels.INFO, { title = "Packer" })
+            dofile(vim.env.MYVIMRC)
+        end,
+    })
 end
 
 return plugins
