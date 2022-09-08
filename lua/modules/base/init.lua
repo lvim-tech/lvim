@@ -452,6 +452,7 @@ modules["sindrets/diffview.nvim"] = {
         "DiffviewToggleFiles",
         "DiffviewRefresh",
     },
+    config = version_control_config.diffview_nvim,
 }
 
 modules["pwntester/octo.nvim"] = {

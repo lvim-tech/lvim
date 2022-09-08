@@ -98,6 +98,24 @@ function config.git_blame_nvim()
     }
 end
 
+function config.diffview_nvim()
+    local diffview_status_ok, diffview = pcall(require, "diffview")
+    if not diffview_status_ok then
+        return
+    end
+    diffview.setup({
+        hooks = {
+            diff_buf_read = function()
+                vim.opt_local.wrap = false
+                vim.opt_local.list = false
+                vim.opt_local.relativenumber = false
+                vim.opt_local.cursorcolumn = false
+                vim.opt_local.colorcolumn = "0"
+            end,
+        },
+    })
+end
+
 function config.octo_nvim()
     local octo_status_ok, octo = pcall(require, "octo")
     if not octo_status_ok then
