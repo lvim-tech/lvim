@@ -105,12 +105,17 @@ function config.diffview_nvim()
     end
     diffview.setup({
         hooks = {
-            diff_buf_read = function()
-                vim.opt_local.wrap = false
-                vim.opt_local.list = false
-                vim.opt_local.relativenumber = false
-                vim.opt_local.cursorcolumn = false
-                vim.opt_local.colorcolumn = "0"
+            diff_buf_read = function(bufnr)
+                vim.schedule(function()
+                    vim.api.nvim_buf_call(bufnr, function()
+                        vim.opt_local.wrap = false
+                        vim.opt_local.list = false
+                        vim.opt_local.relativenumber = false
+                        vim.opt_local.cursorcolumn = false
+                        vim.opt_local.colorcolumn = "0"
+                        require("indent_blankline.commands").disable()
+                    end)
+                end)
             end,
         },
     })
