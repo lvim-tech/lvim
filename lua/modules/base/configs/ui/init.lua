@@ -466,21 +466,6 @@ function config.heirline_nvim()
     local colors = LVIM_COLORS()
     local align = { provider = "%=" }
     local space = { provider = " " }
-    local mode_colors = {
-        n = colors.color_01,
-        i = colors.color_02,
-        v = colors.color_03,
-        V = colors.color_03,
-        ["\22"] = colors.color_03,
-        c = colors.color_03,
-        s = colors.purple,
-        S = colors.purple,
-        ["\19"] = colors.purple,
-        R = colors.color_03,
-        r = colors.color_03,
-        ["!"] = colors.color_02,
-        t = colors.color_02,
-    }
     local mode
     local vi_mode = {
         init = function(self)
@@ -530,13 +515,27 @@ function config.heirline_nvim()
                 ["!"] = "!",
                 t = "T",
             },
-            mode_colors = mode_colors,
+            mode_colors = {
+                n = colors.color_01,
+                i = colors.color_02,
+                v = colors.color_03,
+                V = colors.color_03,
+                ["\22"] = colors.color_03,
+                c = colors.color_03,
+                s = colors.purple,
+                S = colors.purple,
+                ["\19"] = colors.purple,
+                R = colors.color_03,
+                r = colors.color_03,
+                ["!"] = colors.color_02,
+                t = colors.color_02,
+            },
         },
         provider = function(self)
             return "   %(" .. self.mode_names[self.mode] .. "%)"
         end,
         hl = function(self)
-            mode = vim.api.nvim_get_mode().mode
+            mode = self.mode:sub(1, 1)
             return { fg = self.mode_colors[mode], bold = true }
         end,
         update = {
@@ -583,7 +582,10 @@ function config.heirline_nvim()
             end
         end,
         hl = function()
-            return { fg = mode_colors[mode] }
+            return {
+                fg = vi_mode.static.mode_colors[mode],
+                bold = true,
+            }
         end,
     }
     local file_name = {
@@ -598,7 +600,10 @@ function config.heirline_nvim()
             return filename .. " "
         end,
         hl = function()
-            return { fg = mode_colors[mode] }
+            return {
+                fg = vi_mode.static.mode_colors[mode],
+                bold = true,
+            }
         end,
     }
     local file_flags = {
@@ -608,7 +613,7 @@ function config.heirline_nvim()
                     return " "
                 end
             end,
-            hl = { fg = colors.color_05 },
+            hl = { fg = colors.color_02 },
         },
         {
             provider = function()
@@ -616,16 +621,16 @@ function config.heirline_nvim()
                     return "  "
                 end
             end,
-            hl = { fg = colors.color_05 },
+            hl = { fg = colors.color_02 },
         },
     }
-    local file_name_modifer = {
-        hl = function()
-            if vim.bo.modified then
-                return { fg = colors.color_05, bold = true, force = true }
-            end
-        end,
-    }
+    -- local file_name_modifer = {
+    --     hl = function()
+    --         if vim.bo.modified then
+    --             return { fg = colors.color_05, bold = true, force = true }
+    --         end
+    --     end,
+    -- }
     local file_size = {
         provider = function()
             local fsize = vim.fn.getfsize(vim.api.nvim_buf_get_name(0))
@@ -636,14 +641,14 @@ function config.heirline_nvim()
             local file_size = require("core.funcs").file_size(fsize)
             return "  " .. file_size
         end,
-        hl = { fg = colors.color_05 },
+        hl = { fg = colors.color_03 },
     }
     file_name_block = heirline_utils.insert(
         file_name_block,
         space,
         space,
         file_icon,
-        heirline_utils.insert(file_name_modifer, file_name),
+        file_name,
         file_size,
         unpack(file_flags),
         { provider = "%<" }
