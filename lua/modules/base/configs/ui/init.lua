@@ -621,16 +621,9 @@ function config.heirline_nvim()
                     return "  "
                 end
             end,
-            hl = { fg = colors.color_02 },
+            hl = { fg = colors.color_05 },
         },
     }
-    -- local file_name_modifer = {
-    --     hl = function()
-    --         if vim.bo.modified then
-    --             return { fg = colors.color_05, bold = true, force = true }
-    --         end
-    --     end,
-    -- }
     local file_size = {
         provider = function()
             local fsize = vim.fn.getfsize(vim.api.nvim_buf_get_name(0))
@@ -641,7 +634,7 @@ function config.heirline_nvim()
             local file_size = require("core.funcs").file_size(fsize)
             return "  " .. file_size
         end,
-        hl = { fg = colors.color_03 },
+        hl = { fg = colors.color_05 },
     }
     file_name_block = heirline_utils.insert(
         file_name_block,
