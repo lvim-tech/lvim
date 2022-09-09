@@ -477,6 +477,12 @@ function config.color_picker_nvim()
         return
     end
     color_picker.setup({})
+    vim.api.nvim_create_autocmd("BufWritePost", {
+        callback = function()
+            vim.api.nvim_command("ColorizerAttachToBuffer")
+        end,
+        group = "LvimIDE",
+    })
 end
 
 function config.virtcolumn_nvim()
