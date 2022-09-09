@@ -536,7 +536,7 @@ function config.heirline_nvim()
             return "   %(" .. self.mode_names[self.mode] .. "%)"
         end,
         hl = function(self)
-            local mode = self.mode:sub(1, 1)
+            mode = vim.api.nvim_get_mode().mode
             return { fg = self.mode_colors[mode], bold = true }
         end,
         update = {
@@ -583,7 +583,6 @@ function config.heirline_nvim()
             end
         end,
         hl = function()
-            mode = vim.api.nvim_get_mode().mode
             return { fg = mode_colors[mode] }
         end,
     }
