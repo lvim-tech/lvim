@@ -5,7 +5,13 @@ function config.telescope_nvim()
     if not telescope_status_ok then
         return
     end
-    if not packer_plugins["telescope-fzf-native.nvim"].loaded then
+    if
+        not packer_plugins["telescope-fzf-native.nvim"].loaded
+        or not packer_plugins["telescope-media-files.nvim"].loaded
+        or not packer_plugins["telescope-file-browser.nvim"].loaded
+        or not packer_plugins["telescope-tmux.nvim"].loaded
+        or not packer_plugins["howdoi.nvim"].loaded
+    then
         local loader = require("packer").loader
         loader(
             "telescope-fzf-native.nvim"

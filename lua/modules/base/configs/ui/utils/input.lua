@@ -50,11 +50,13 @@ local function nui_input(opts, on_confirm)
         end,
     })
     if popup_reference ~= nil then
-        popup_reference:mount()
-        popup_reference:map("n", "<esc>", popup_reference.input_props.on_close, { noremap = true })
-        popup_reference:map("n", "q", popup_reference.input_props.on_close, { noremap = true })
-        popup_reference:map("i", "<esc>", popup_reference.input_props.on_close, { noremap = true })
-        popup_reference:on(event.BufLeave, popup_reference.input_props.on_close, { once = true })
+        pcall(function()
+            popup_reference:mount()
+            popup_reference:map("n", "<esc>", popup_reference.input_props.on_close, { noremap = true })
+            popup_reference:map("n", "q", popup_reference.input_props.on_close, { noremap = true })
+            popup_reference:map("i", "<esc>", popup_reference.input_props.on_close, { noremap = true })
+            popup_reference:on(event.BufLeave, popup_reference.input_props.on_close, { once = true })
+        end)
     end
 end
 

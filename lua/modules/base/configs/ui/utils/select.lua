@@ -67,8 +67,10 @@ local function nui_select(entries, stuff, on_user_choice)
         end,
     })
     if popup_reference ~= nil then
-        popup_reference:mount()
-        popup_reference:on(event.BufLeave, popup_reference.menu_props.on_close, { once = true })
+        pcall(function()
+            popup_reference:mount()
+            popup_reference:on(event.BufLeave, popup_reference.menu_props.on_close, { once = true })
+        end)
     end
 end
 
