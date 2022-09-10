@@ -5,20 +5,10 @@ function config.telescope_nvim()
     if not telescope_status_ok then
         return
     end
-    if
-        not packer_plugins["telescope-fzf-native.nvim"].loaded
-        or not packer_plugins["telescope-media-files.nvim"].loaded
-        or not packer_plugins["telescope-file-browser.nvim"].loaded
-        or not packer_plugins["telescope-tmux.nvim"].loaded
-        or not packer_plugins["howdoi.nvim"].loaded
-    then
+    if not packer_plugins["telescope-fzf-native.nvim"].loaded then
         local loader = require("packer").loader
         loader(
-            "telescope-fzf-native.nvim"
-                .. " telescope-media-files.nvim"
-                .. " telescope-file-browser.nvim"
-                .. " telescope-tmux.nvim"
-                .. " howdoi.nvim"
+            "telescope-fzf-native.nvim" .. " telescope-file-browser.nvim" .. " telescope-tmux.nvim" .. " howdoi.nvim"
         )
     end
     telescope.setup({
@@ -91,15 +81,11 @@ function config.telescope_nvim()
                 override_file_sorter = true,
                 case_mode = "smart_case",
             },
-            media_files = {
-                filetypes = { "png", "webp", "jpg", "jpeg" },
-                find_cmd = "rg",
-            },
             file_browser = {},
         },
     })
     telescope.load_extension("fzf")
-    telescope.load_extension("media_files")
+    -- telescope.load_extension("media_files")
     telescope.load_extension("file_browser")
     telescope.load_extension("tmux")
     telescope.load_extension("howdoi")

@@ -438,7 +438,6 @@ function config.which_key_nvim()
             s = { "<Cmd>Telescope git_status<CR>", "Git status" },
             S = { "<Cmd>Telescope git_stash<CR>", "Git stash" },
             i = { "<Cmd>Telescope git_files<CR>", "Git files" },
-            M = { "<Cmd>Telescope media_files<CR>", "Media files" },
         },
     }
     local vmappings = {

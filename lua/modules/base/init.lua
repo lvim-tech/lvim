@@ -183,11 +183,6 @@ modules["nvim-telescope/telescope.nvim"] = {
             opt = true,
         },
         {
-            "nvim-telescope/telescope-media-files.nvim",
-            commit = funcs.get_commit("telescope-media-files.nvim", plugins_snapshot),
-            opt = true,
-        },
-        {
             "nvim-telescope/telescope-file-browser.nvim",
             commit = funcs.get_commit("telescope-file-browser.nvim", plugins_snapshot),
             opt = true,

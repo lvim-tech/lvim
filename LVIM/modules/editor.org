@@ -35,11 +35,6 @@
                 opt = true,
             },
             {
-                "nvim-telescope/telescope-media-files.nvim",
-                commit = funcs.get_commit("telescope-media-files.nvim", plugins_snapshot),
-                opt = true,
-            },
-            {
                 "nvim-telescope/telescope-file-browser.nvim",
                 commit = funcs.get_commit("telescope-file-browser.nvim", plugins_snapshot),
                 opt = true,
@@ -63,24 +58,16 @@
 
     #+begin_src lua
     function config.telescope_nvim()
-        local loader = require("packer").loader
-        if
-            not packer_plugins["telescope-fzf-native.nvim"].loaded
-            or not packer_plugins["telescope-media-files.nvim"].loaded
-            or not packer_plugins["telescope-file-browser.nvim"].loaded
-            or not packer_plugins["telescope-tmux.nvim"].loaded
-            or not packer_plugins["howdoi.nvim"].loaded
-        then
+        local telescope_status_ok, telescope = pcall(require, "telescope")
+        if not telescope_status_ok then
+            return
+        end
+        if not packer_plugins["telescope-fzf-native.nvim"].loaded then
             local loader = require("packer").loader
             loader(
-                "telescope-fzf-native.nvim"
-                    .. " telescope-media-files.nvim"
-                    .. " telescope-file-browser.nvim"
-                    .. " telescope-tmux.nvim"
-                    .. " howdoi.nvim"
+                "telescope-fzf-native.nvim" .. " telescope-file-browser.nvim" .. " telescope-tmux.nvim" .. " howdoi.nvim"
             )
         end
-        local telescope_status_ok, telescope = pcall(require, "telescope")
         if not telescope_status_ok then
             return
         end
