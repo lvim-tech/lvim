@@ -1,5 +1,15 @@
 local config = {}
 
+function config.vim_ctrlspace()
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "ctrlspace" },
+        callback = function()
+            vim.api.nvim_win_set_option(0, "winhighlight", "SignColumn:LvimFocusNormal")
+        end,
+        group = "LvimIDE",
+    })
+end
+
 function config.telescope_nvim()
     local telescope_status_ok, telescope = pcall(require, "telescope")
     if not telescope_status_ok then
@@ -481,6 +491,13 @@ function config.virtcolumn_nvim()
     vim.api.nvim_set_option("colorcolumn", "120")
     vim.g.virtcolumn_char = "▕"
     vim.g.virtcolumn_priority = 10
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = {
+            "tex",
+        },
+        command = "setlocal colorcolumn=0",
+        group = "LvimIDE",
+    })
 end
 
 function config.cinnamon_nvim()

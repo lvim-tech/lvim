@@ -11,6 +11,20 @@
     }
     #+end_src
 
+    + CONFIG
+
+    #+begin_src lua
+    function config.vim_ctrlspace()
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = { "ctrlspace" },
+            callback = function()
+                vim.api.nvim_win_set_option(0, "winhighlight", "SignColumn:LvimFocusNormal")
+            end,
+            group = "LvimIDE",
+        })
+    end
+    #+end_src
+
 **   [[https://github.com/nvim-telescope/telescope.nvim][telescope.nvim]]
 
     + REQUIRES:
@@ -866,6 +880,13 @@
         vim.api.nvim_set_option("colorcolumn", "120")
         vim.g.virtcolumn_char = "▕"
         vim.g.virtcolumn_priority = 10
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = {
+                "tex",
+            },
+            command = "setlocal colorcolumn=0",
+            group = "LvimIDE",
+        })
     end
     #+end_src
 

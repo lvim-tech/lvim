@@ -43,13 +43,6 @@ configs["base_events"] = function()
         command = "setlocal nonumber norelativenumber colorcolumn=0 nocursorcolumn",
         group = group,
     })
-    vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "ctrlspace" },
-        callback = function()
-            vim.api.nvim_win_set_option(0, "winhighlight", "SignColumn:LvimFocusNormal")
-        end,
-        group = group,
-    })
 end
 
 configs["base_languages"] = function()
