@@ -16,7 +16,6 @@ local calculate_popup_width = function(default, prompt)
 end
 
 local function nui_input(opts, on_confirm)
-    assert(popup_reference == nil, "Sorry")
     local popup_options = {
         relative = "cursor",
         position = {
@@ -49,15 +48,13 @@ local function nui_input(opts, on_confirm)
             popup_reference = nil
         end,
     })
-    if popup_reference ~= nil then
-        pcall(function()
-            popup_reference:mount()
-            popup_reference:map("n", "<esc>", popup_reference.input_props.on_close, { noremap = true })
-            popup_reference:map("n", "q", popup_reference.input_props.on_close, { noremap = true })
-            popup_reference:map("i", "<esc>", popup_reference.input_props.on_close, { noremap = true })
-            popup_reference:on(event.BufLeave, popup_reference.input_props.on_close, { once = true })
-        end)
-    end
+    pcall(function()
+        popup_reference:mount()
+        popup_reference:map("n", "<esc>", popup_reference.input_props.on_close, { noremap = true })
+        popup_reference:map("n", "q", popup_reference.input_props.on_close, { noremap = true })
+        popup_reference:map("i", "<esc>", popup_reference.input_props.on_close, { noremap = true })
+        popup_reference:on(event.BufLeave, popup_reference.input_props.on_close, { once = true })
+    end)
 end
 
 return nui_input

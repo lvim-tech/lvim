@@ -28,8 +28,6 @@ local format_entries = function(entries, formatter)
 end
 
 local function nui_select(entries, stuff, on_user_choice)
-    assert(entries ~= nil and not vim.tbl_isempty(entries), "No entries available.")
-    assert(popup_reference == nil, "Sorry")
     local userChoice = function(choiceIndex)
         on_user_choice(entries[choiceIndex["_index"] - 1])
     end
@@ -66,12 +64,10 @@ local function nui_select(entries, stuff, on_user_choice)
             popup_reference = nil
         end,
     })
-    if popup_reference ~= nil then
-        pcall(function()
-            popup_reference:mount()
-            popup_reference:on(event.BufLeave, popup_reference.menu_props.on_close, { once = true })
-        end)
-    end
+    pcall(function()
+        popup_reference:mount()
+        popup_reference:on(event.BufLeave, popup_reference.menu_props.on_close, { once = true })
+    end)
 end
 
 return nui_select
