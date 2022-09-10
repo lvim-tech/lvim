@@ -4,7 +4,7 @@
 
   LVIM IDE is a modular Neovim configuration written in LUA with full customization
 
-  Current version - 2.2.2 (2022-09-10)
+  Current version - 2.2.25 (2022-09-10)
 
   108 plugins
 
