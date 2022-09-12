@@ -4,7 +4,7 @@
 
   LVIM IDE is a modular Neovim configuration written in LUA with full customization
 
-  Current version - 2.2.25 (2022-09-10)
+  Current version - 2.2.28 (2022-09-12)
 
   108 plugins
 
@@ -76,9 +76,17 @@
 **  INSTALL
 
     #+begin_src bash
-
     git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
+    #+end_src
 
+    + For osx bigsur bug
+        Issue: [[https://github.com/wbthomason/packer.nvim/issues/180][Luarocks fails to install on macOS BigSur #180]]
+        Uncoment these lines in *lua/init.lua*:
+
+    #+begin_src lua
+    if vim.fn.has("mac") == 1 then
+        vim.fn.setenv("MACOSX_DEPLOYMENT_TARGET", "10.15")
+    end
     #+end_src
 
 **  SNAPSHOTS 
