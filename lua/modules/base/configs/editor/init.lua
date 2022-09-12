@@ -491,13 +491,6 @@ function config.virtcolumn_nvim()
     vim.api.nvim_set_option("colorcolumn", "120")
     vim.g.virtcolumn_char = "▕"
     vim.g.virtcolumn_priority = 10
-    vim.api.nvim_create_autocmd("FileType", {
-        pattern = {
-            "tex",
-        },
-        command = "setlocal colorcolumn=0",
-        group = "LvimIDE",
-    })
 end
 
 function config.cinnamon_nvim()
