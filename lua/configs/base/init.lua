@@ -27,9 +27,8 @@ configs["base_events"] = function()
         group = group,
     })
     vim.api.nvim_create_autocmd({ "BufWinEnter", "BufWinLeave" }, {
-        callback = function(args)
-            local buf = args.buf
-            local buftype = vim.tbl_contains({ "prompt", "nofile", "help", "quickfix" }, vim.bo[buf].buftype)
+        callback = function()
+            local buftype = vim.tbl_contains({ "prompt", "nofile", "help", "quickfix" }, vim.bo.buftype)
             local filetype = vim.tbl_contains({
                 "calendar",
                 "Outline",
@@ -41,12 +40,24 @@ configs["base_events"] = function()
                 "NeogitStatus",
                 "org",
                 "octo",
-                "tex",
                 "toggleterm",
-            }, vim.bo[buf].filetype)
+            }, vim.bo.filetype)
             if buftype or filetype then
                 vim.opt_local.number = false
                 vim.opt_local.relativenumber = false
+                vim.opt_local.cursorcolumn = false
+                vim.opt_local.colorcolumn = "0"
+            end
+        end,
+        group = group,
+    })
+    vim.api.nvim_create_autocmd({ "BufWinEnter", "BufWinLeave" }, {
+        callback = function()
+            local buftype = vim.tbl_contains({ "prompt", "nofile", "help", "quickfix" }, vim.bo.buftype)
+            local filetype = vim.tbl_contains({
+                "tex",
+            }, vim.bo.filetype)
+            if buftype or filetype then
                 vim.opt_local.cursorcolumn = false
                 vim.opt_local.colorcolumn = "0"
             end
