@@ -27,8 +27,6 @@
         vim.api.nvim_create_user_command("LspRemoveWorkspaceFolder", "lua vim.lsp.buf.remove_workspace_folder()", {})
         vim.api.nvim_create_user_command("LspWorkspaceSymbol", "lua vim.lsp.buf.workspace_symbol()", {})
         vim.api.nvim_create_user_command("LspDocumentSymbol", "lua vim.lsp.buf.document_symbol()", {})
-        vim.api.nvim_create_user_command("LspReferences", "lua vim.lsp.buf.references()", {})
-        vim.api.nvim_create_user_command("LspClearReferences", "lua vim.lsp.buf.clear_references()", {})
         vim.api.nvim_create_user_command("LspCodeAction", "lua vim.lsp.buf.code_action()", {})
         vim.api.nvim_create_user_command("LspRangeCodeAction", "lua vim.api.nvim_create_user_command()", {})
         vim.api.nvim_create_user_command("LspCodeLensRefresh", "lua vim.lsp.codelens.refresh()", {})
@@ -36,6 +34,8 @@
         vim.api.nvim_create_user_command("LspDeclaration", "lua vim.lsp.buf.declaration()", {})
         vim.api.nvim_create_user_command("LspDefinition", "lua vim.lsp.buf.definition()", {})
         vim.api.nvim_create_user_command("LspTypeDefinition", "lua vim.lsp.buf.type_definition()", {})
+        vim.api.nvim_create_user_command("LspReferences", "lua vim.lsp.buf.references()", {})
+        vim.api.nvim_create_user_command("LspClearReferences", "lua vim.lsp.buf.clear_references()", {})
         vim.api.nvim_create_user_command("LspDocumentHighlight", "lua vim.lsp.buf.document_highlight()", {})
         vim.api.nvim_create_user_command("LspImplementation", "lua vim.lsp.buf.implementation()", {})
         vim.api.nvim_create_user_command("LspIncomingCalls", "lua vim.lsp.buf.incoming_calls()", {})
@@ -141,27 +141,43 @@
     + CONFIG
 
     #+begin_src lua
-    function config.goto_preview()
-        local goto_preview_status_ok, goto_preview = pcall(require, "goto-preview")
-        if not goto_preview_status_ok then
-            return
-        end
-        goto_preview.setup({
-            border = { " ", " ", " ", " ", " ", " ", " ", " " }, -- Border characters of the floating window
-        })
-        vim.api.nvim_create_user_command("LspDefinition", "lua require('goto-preview').goto_preview_definition()", {})
-        vim.api.nvim_create_user_command(
-            "LspTypeDefinition",
-            "lua require('goto-preview').goto_preview_type_definition()",
-            {}
-        )
-        vim.api.nvim_create_user_command("LspReferences", "lua require('goto-preview').goto_preview_references()", {})
-        vim.api.nvim_create_user_command(
-            "LspImplementation",
-            "lua require('goto-preview').goto_preview_implementation()",
-            {}
-        )
+    local lib = require("goto-preview.lib")
+    local goto_preview_status_ok, goto_preview = pcall(require, "goto-preview")
+    if not goto_preview_status_ok then
+        return
     end
+    goto_preview.setup({
+        references = {
+            telescope = lib.has_telescope and lib.telescope.themes.get_dropdown({
+                layout_config = {
+                    width = function(_, max_columns, _)
+                        return math.min(max_columns, 200)
+                    end,
+    
+                    height = function(_, _, max_lines)
+                        return math.min(max_lines, 15)
+                    end,
+                },
+                border = {},
+                borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
+                hide_preview = false,
+            }) or nil,
+        },
+        border = { " ", " ", " ", " ", " ", " ", " ", " " }, -- Border characters of the floating window
+    })
+    vim.api.nvim_create_user_command("LspPreviewDefinition", "lua require('goto-preview').goto_preview_definition()", {})
+    vim.api.nvim_create_user_command(
+        "LspPreviewTypeDefinition",
+        "lua require('goto-preview').goto_preview_type_definition()",
+        {}
+    )
+    vim.api.nvim_create_user_command("LspPreviewReferences", "lua require('goto-preview').goto_preview_references()", {})
+    vim.api.nvim_create_user_command(
+        "LspPreviewImplementation",
+        "lua require('goto-preview').goto_preview_implementation()",
+        {}
+    )
+    vim.api.nvim_create_user_command("LspPreviewCloseAll", "lua require('goto-preview').close_all_win()", {})
     #+end_src
 
 **   [[https://github.com/lewis6991/hover.nvim][hover.nvim]]
@@ -195,7 +211,7 @@
             },
             title = false,
         })
-        vim.api.nvim_create_user_command("Hover", "lua require('hover').hover()", {})
+        vim.api.nvim_create_user_command("LspHover", "lua require('hover').hover()", {})
     end
     #+end_src
 
