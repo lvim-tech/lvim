@@ -460,17 +460,7 @@ function config.nvim_colorize_lua()
     if not colorizer_status_ok then
         return
     end
-    colorizer.setup({
-        "*",
-    }, {
-        RGB = true,
-        RRGGBB = true,
-        RRGGBBAA = true,
-        rgb_fn = true,
-        hsl_fn = true,
-        css = true,
-        css_fn = true,
-    })
+    colorizer.setup({})
 end
 
 function config.color_picker_nvim()

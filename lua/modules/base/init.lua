@@ -331,7 +331,7 @@ modules["danymat/neogen"] = {
     config = editor_config.neogen,
 }
 
-modules["norcalli/nvim-colorizer.lua"] = {
+modules["NvChad/nvim-colorizer.lua"] = {
     commit = funcs.get_commit("nvim-colorizer.lua", plugins_snapshot),
     event = {
         "BufRead",

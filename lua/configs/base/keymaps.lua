@@ -3,8 +3,6 @@ local keymaps = {}
 keymaps["normal"] = {
     { "<space><space>", ":CtrlSpace<CR>" }, -- CtrlSpace
     { "<F1>", ":TTOne<CR>" }, -- Toggleterm one open
-    { "u", "u:ColorizerAttachToBuffer<CR>" }, -- Toggleterm one open
-    { "<C-r>", "<C-r>:ColorizerAttachToBuffer<CR>" }, -- Toggleterm one open
     { "<F2>", ":TTTwo<CR>" }, -- Toggleterm two open
     { "<F3>", ":TTThree<CR>" }, -- Toggleterm three open
     { "<F4>", ":TTFloat<CR>" }, -- Toggleterm float open
