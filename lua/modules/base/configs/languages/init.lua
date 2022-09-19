@@ -6,8 +6,6 @@ function config.mason_nvim()
     vim.api.nvim_create_user_command("LspRemoveWorkspaceFolder", "lua vim.lsp.buf.remove_workspace_folder()", {})
     vim.api.nvim_create_user_command("LspWorkspaceSymbol", "lua vim.lsp.buf.workspace_symbol()", {})
     vim.api.nvim_create_user_command("LspDocumentSymbol", "lua vim.lsp.buf.document_symbol()", {})
-    vim.api.nvim_create_user_command("LspReferences", "lua vim.lsp.buf.references()", {})
-    vim.api.nvim_create_user_command("LspClearReferences", "lua vim.lsp.buf.clear_references()", {})
     vim.api.nvim_create_user_command("LspCodeAction", "lua vim.lsp.buf.code_action()", {})
     vim.api.nvim_create_user_command("LspRangeCodeAction", "lua vim.api.nvim_create_user_command()", {})
     vim.api.nvim_create_user_command("LspCodeLensRefresh", "lua vim.lsp.codelens.refresh()", {})
@@ -15,6 +13,8 @@ function config.mason_nvim()
     vim.api.nvim_create_user_command("LspDeclaration", "lua vim.lsp.buf.declaration()", {})
     vim.api.nvim_create_user_command("LspDefinition", "lua vim.lsp.buf.definition()", {})
     vim.api.nvim_create_user_command("LspTypeDefinition", "lua vim.lsp.buf.type_definition()", {})
+    vim.api.nvim_create_user_command("LspReferences", "lua vim.lsp.buf.references()", {})
+    vim.api.nvim_create_user_command("LspClearReferences", "lua vim.lsp.buf.clear_references()", {})
     vim.api.nvim_create_user_command("LspDocumentHighlight", "lua vim.lsp.buf.document_highlight()", {})
     vim.api.nvim_create_user_command("LspImplementation", "lua vim.lsp.buf.implementation()", {})
     vim.api.nvim_create_user_command("LspIncomingCalls", "lua vim.lsp.buf.incoming_calls()", {})
@@ -133,7 +133,7 @@ function config.goto_preview()
         "lua require('goto-preview').goto_preview_implementation()",
         {}
     )
-    vim.api.nvim_create_user_command("LspCloseAll", "lua require('goto-preview').close_all_win()", {})
+    vim.api.nvim_create_user_command("LspPreviewCloseAll", "lua require('goto-preview').close_all_win()", {})
 end
 
 function config.hover_nvim()
@@ -150,7 +150,7 @@ function config.hover_nvim()
         },
         title = false,
     })
-    vim.api.nvim_create_user_command("Hover", "lua require('hover').hover()", {})
+    vim.api.nvim_create_user_command("LspHover", "lua require('hover').hover()", {})
 end
 
 function config.fidget_nvim()
