@@ -1,4 +1,5 @@
 local global = require("core.global")
+local select = require("configs.base.ui.select")
 
 local M = {}
 
@@ -278,6 +279,31 @@ M.get_highlight = function(hlname)
         end,
     })
     return hl
+end
+
+M.quit = function()
+    local status = true
+    for _, v in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.bo[v].modified then
+            status = false
+        end
+    end
+    if not status then
+        select({
+            "Save all and Quit",
+            "Don't save and Quit",
+            "Cancel",
+        }, { prompt = "  Unsaved files" }, function(choice)
+            if choice == "Save all and Quit" then
+                vim.cmd("wa")
+                vim.cmd("qa")
+            elseif choice == "Don't save and Quit" then
+                vim.cmd("qa!")
+            end
+        end, "editor")
+    else
+        vim.cmd("qa")
+    end
 end
 
 _G.LVIM_COLORS = function()

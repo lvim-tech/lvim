@@ -2,7 +2,7 @@ local global = require("core.global")
 local funcs = require("core.funcs")
 local lspconfig = require("lspconfig")
 local mason_registry = require("mason-registry")
-local select = require("languages.base.utils.select")
+local select = require("configs.base.ui.select")
 
 local M = {}
 
@@ -97,7 +97,7 @@ M.setup_languages = function(packages_data)
                                 title = "LVIM IDE",
                             })
                         end
-                    end)
+                    end, "editor")
                 end, 1000)
             end
         end

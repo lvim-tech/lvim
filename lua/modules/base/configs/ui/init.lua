@@ -15,8 +15,8 @@ function config.lvim_colorscheme()
 end
 
 function config.nui_nvim()
-    vim.ui.input = require("modules.base.configs.ui.utils.input")
-    vim.ui.select = require("modules.base.configs.ui.utils.select")
+    vim.ui.input = require("configs.base.ui.input")
+    vim.ui.select = require("configs.base.ui.select")
 end
 
 function config.alpha_nvim()
@@ -1171,7 +1171,7 @@ function config.neozoom_lua()
         return
     end
     neo_zoom.setup({})
-    vim.keymap.set("n", "<C-z>", function()
+    vim.keymap.set("n", "<C-c>z", function()
         vim.cmd("NeoZoomToggle")
     end, NOREF_NOERR_TRUNC)
 end

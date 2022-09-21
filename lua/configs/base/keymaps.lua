@@ -8,11 +8,14 @@ keymaps["normal"] = {
     { "<F4>", ":TTFloat<CR>" }, -- Toggleterm float open
     { "<F5>", ":UndotreeToggle<CR>" }, -- UndoTree toggle
     { "<F11>", ":LvimHelper<CR>" }, -- LvimHelper
+    { ":q<CR>", ":Quit<CR>" }, -- Quit
+    { ":qa<CR>", ":Quit<CR>" }, -- Quit
+    { ":qa!<CR>", ":Quit<CR>" }, -- Quit
     { "<Esc>", "<Esc>:noh<CR>:SnipClose<CR>" }, -- Remove highlight after search
     { "<C-c>n", ":enew<CR>" }, -- Create empty buffer
     { "<C-c>s", ":w<CR>" }, -- Save
     { "<C-c>a", ":wa<CR>" }, -- Save all
-    { "<C-c>e", ":qa!<CR>" }, -- Close all, exit nvim
+    { "<C-c>e", ":Quit<CR>" }, -- Close all, exit nvim
     { "<C-c>x", "<C-w>c" }, -- Close current window
     { "<C-c>o", "<C-w>o" }, -- Close other windows
     { "<C-c>d", ":bdelete<CR>" }, -- BDelete
@@ -21,13 +24,13 @@ keymaps["normal"] = {
     { "<C-n>", ":BufSurfForward<CR>" }, -- Next buffer
     { "<C-p>", ":BufSurfBack<CR>" }, -- Previews buffer
     { "<C-c>b", ":GitBlameToggle<CR>" }, -- Git blame toggle
+    { "<C-c>z", ":NeoZoomToggle<CR>" }, -- NeoZoom toggle
     { "<C-c>f", ":Vifm<CR>" }, -- Vifm file explorer
     { "<C-b>", ":b " }, -- Move to window left
     { "<C-h>", "<C-w>h" }, -- Move to window left
     { "<C-l>", "<C-w>l" }, -- Move to window right
     { "<C-j>", "<C-w>j" }, -- Move to window down
     { "<C-k>", "<C-w>k" }, -- Move to window up
-    { "<C-z>", ":NeoZoomToggle<CR>" }, -- NeoZoom toggle
     { "<C-Left>", ":vertical resize -2<CR>" }, -- Resize width -
     { "<C-Right>", ":vertical resize +2<CR>" }, -- Resize width +
     { "<C-Up>", ":resize -2<CR>" }, -- Resize height -
