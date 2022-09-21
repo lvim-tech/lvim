@@ -1171,9 +1171,6 @@ function config.neozoom_lua()
         return
     end
     neo_zoom.setup({})
-    vim.keymap.set("n", "<C-c>z", function()
-        vim.cmd("NeoZoomToggle")
-    end, NOREF_NOERR_TRUNC)
 end
 
 function config.stay_in_place()
