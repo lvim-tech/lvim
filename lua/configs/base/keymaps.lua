@@ -8,9 +8,6 @@ keymaps["normal"] = {
     { "<F4>", ":TTFloat<CR>" }, -- Toggleterm float open
     { "<F5>", ":UndotreeToggle<CR>" }, -- UndoTree toggle
     { "<F11>", ":LvimHelper<CR>" }, -- LvimHelper
-    { ":q<CR>", ":Quit<CR>" }, -- Quit
-    { ":qa<CR>", ":Quit<CR>" }, -- Quit
-    { ":qa!<CR>", ":Quit<CR>" }, -- Quit
     { "<Esc>", "<Esc>:noh<CR>:SnipClose<CR>" }, -- Remove highlight after search
     { "<C-c>n", ":enew<CR>" }, -- Create empty buffer
     { "<C-c>s", ":w<CR>" }, -- Save
@@ -107,7 +104,7 @@ keymaps["visual"] = {
     { "*", "<Esc>/\\%V" }, -- Visual search /
     { "#", "<Esc>?\\%V" }, -- Visual search ?
     { "<A-u>", ":AnyJumpVisual<CR>" }, -- Any jump visual
-    { "gs", ":SnipRun<CR>" }, -- Snip run
+    { "gS", ":SnipRun<CR>" }, -- Snip run
 }
 
 return keymaps
