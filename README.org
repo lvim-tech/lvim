@@ -8,6 +8,8 @@
 
   108 plugins
 
+  !!! This branch is no longer supported !!!
+
 **  SCREENSHOTS
 
   [[./LVIM/media/lvim-ide-screenshot_01.png]]
