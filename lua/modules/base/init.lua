@@ -86,15 +86,8 @@ modules["folke/which-key.nvim"] = {
     config = ui_config.which_key_nvim,
 }
 
-local nvim_version = vim.version()
-local heirline_commit = nil
-if nvim_version.major == 0 and nvim_version.minor < 8 then
-    heirline_commit = "7b4aabc2c55d50fbd4a4923e847079d6fa9a8613"
-else
-    heirline_commit = funcs.get_commit("heirline.nvim", plugins_snapshot)
-end
 modules["rebelot/heirline.nvim"] = {
-    commit = heirline_commit,
+    commit = funcs.get_commit("heirline.nvim", plugins_snapshot),
     after = "lvim-colorscheme",
     config = ui_config.heirline_nvim,
 }

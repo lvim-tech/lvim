@@ -2,7 +2,6 @@ local global = require("core.global")
 local languages_setup = require("languages.base.utils")
 local nvim_lsp_util = require("lspconfig/util")
 local navic = require("nvim-navic")
-local lsp_inlayhints = require("lsp-inlayhints")
 local default_debouce_time = 150
 local M = {}
 
@@ -18,10 +17,7 @@ M.default_config = function(file_types, pid_name)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
-            if vim.fn.has("nvim-0.8") == 1 then
-                navic.attach(client, bufnr)
-                lsp_inlayhints.on_attach(client, bufnr, true)
-            end
+            navic.attach(client, bufnr)
         end,
         capabilities = languages_setup.get_capabilities(),
         root_dir = function(fname)
@@ -41,10 +37,7 @@ M.without_formatting = function(file_types, pid_name)
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             languages_setup.document_highlight(client, bufnr)
-            if vim.fn.has("nvim-0.8") == 1 then
-                navic.attach(client, bufnr)
-                lsp_inlayhints.on_attach(client, bufnr, true)
-            end
+            navic.attach(client, bufnr)
         end,
         capabilities = languages_setup.get_capabilities(),
         root_dir = function(fname)
@@ -85,10 +78,7 @@ M.go = function(file_types, pid_name)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
-            if vim.fn.has("nvim-0.8") == 1 then
-                navic.attach(client, bufnr)
-                lsp_inlayhints.on_attach(client, bufnr, true)
-            end
+            navic.attach(client, bufnr)
         end,
         settings = {
             gopls = {
@@ -121,10 +111,7 @@ M.lua = function(file_types, pid_name)
                 table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
                 vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
                 languages_setup.document_highlight(client, bufnr)
-                if vim.fn.has("nvim-0.8") == 1 then
-                    navic.attach(client, bufnr)
-                    lsp_inlayhints.on_attach(client, bufnr, true)
-                end
+                navic.attach(client, bufnr)
             end,
             settings = {
                 Lua = {
@@ -180,9 +167,7 @@ M.jsts_config = function(file_types, pid_name)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
-            if vim.fn.has("nvim-0.8") == 1 then
-                navic.attach(client, bufnr)
-            end
+            navic.attach(client, bufnr)
             local ts_utils = require("nvim-lsp-ts-utils")
             ts_utils.setup({
                 debug = true,

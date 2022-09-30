@@ -19,11 +19,7 @@ function config.mason_nvim()
     vim.api.nvim_create_user_command("LspImplementation", "lua vim.lsp.buf.implementation()", {})
     vim.api.nvim_create_user_command("LspIncomingCalls", "lua vim.lsp.buf.incoming_calls()", {})
     vim.api.nvim_create_user_command("LspOutgoingCalls", "lua vim.lsp.buf.outgoing_calls()", {})
-    if vim.fn.has("nvim-0.8") == 1 then
-        vim.api.nvim_create_user_command("LspFormatting", "lua vim.lsp.buf.format {async = true}", {})
-    else
-        vim.api.nvim_create_user_command("LspFormatting", "lua vim.lsp.buf.formatting()", {})
-    end
+    vim.api.nvim_create_user_command("LspFormatting", "lua vim.lsp.buf.format {async = true}", {})
     vim.api.nvim_create_user_command("LspRename", "lua vim.lsp.buf.rename()", {})
     vim.api.nvim_create_user_command("LspSignatureHelp", "lua vim.lsp.buf.signature_help()", {})
     local mason_status_ok, mason = pcall(require, "mason")
@@ -67,22 +63,12 @@ function config.null_ls_nvim()
             formatting.stylua,
         },
         on_attach = function(client, bufnr)
-            if vim.fn.has("nvim-0.8") == 1 then
-                if client.server_capabilities.documentFormattingProvider then
-                    vim.api.nvim_create_autocmd("BufWritePre", {
-                        group = "LvimIDE",
-                        buffer = bufnr,
-                        command = "lua vim.lsp.buf.format()",
-                    })
-                end
-            else
-                if client.resolved_capabilities.document_formatting then
-                    vim.api.nvim_create_autocmd("BufWritePre", {
-                        group = "LvimIDE",
-                        buffer = bufnr,
-                        command = "lua vim.lsp.buf.formatting_seq_sync()",
-                    })
-                end
+            if client.server_capabilities.documentFormattingProvider then
+                vim.api.nvim_create_autocmd("BufWritePre", {
+                    group = "LvimIDE",
+                    buffer = bufnr,
+                    command = "lua vim.lsp.buf.format()",
+                })
             end
         end,
     })
@@ -319,6 +305,19 @@ function config.lsp_inlayhints_nvim()
         inlay_hints = {
             highlight = "Comment",
         },
+    })
+    vim.api.nvim_create_augroup("LspAttach_inlayhints", {})
+    vim.api.nvim_create_autocmd("LspAttach", {
+        group = "LspAttach_inlayhints",
+        callback = function(args)
+            if not (args.data and args.data.client_id) then
+                return
+            end
+
+            local bufnr = args.buf
+            local client = vim.lsp.get_client_by_id(args.data.client_id)
+            lsp_inlayhints.on_attach(client, bufnr)
+        end,
     })
 end
 
