@@ -19,6 +19,219 @@ function config.nui_nvim()
     vim.ui.select = require("configs.base.ui.select")
 end
 
+function config.noice_nvim()
+    local noice_config_status_ok, noice_config = pcall(require, "noice.config")
+    if not noice_config_status_ok then
+        return
+    end
+    local noice_hacks_status_ok, noice_hacks = pcall(require, "noice.hacks")
+    if not noice_hacks_status_ok then
+        return
+    end
+    local noice_commands_status_ok, noice_commands = pcall(require, "noice.commands")
+    if not noice_commands_status_ok then
+        return
+    end
+    local noice_router_status_ok, noice_router = pcall(require, "noice.router")
+    if not noice_router_status_ok then
+        return
+    end
+    local noice_ui_status_ok, noice_ui = pcall(require, "noice.ui")
+    if not noice_ui_status_ok then
+        return
+    end
+    noice_config.setup({
+        debug = false,
+        throttle = 1000 / 30,
+        cmdline = {
+            enabled = true,
+            menu = "popup",
+            icons = {
+                ["/"] = { icon = " ", hl_group = "DiagnosticWarn" },
+                ["?"] = { icon = " ", hl_group = "DiagnosticWarn" },
+                [":"] = { icon = " ", hl_group = "DiagnosticInfo", firstc = false },
+            },
+        },
+        history = {
+            view = "split",
+            opts = {
+                enter = true,
+            },
+            filter = { event = "msg_show", ["not"] = { kind = { "search_count", "echo" } } },
+        },
+        views = {
+            notify = {
+                render = "notify",
+                level = vim.log.levels.INFO,
+                replace = true,
+            },
+            split = {
+                render = "split",
+                enter = false,
+                relative = "editor",
+                position = "bottom",
+                size = "20%",
+                close = {
+                    keys = { "q", "<esc>" },
+                },
+                win_options = {
+                    winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
+                },
+            },
+            popup = {
+                render = "popup",
+                close = {
+                    events = { "BufLeave" },
+                    keys = { "q", "<esc>" },
+                },
+                enter = true,
+                border = { " ", " ", " ", " ", " ", " ", " ", " " },
+                position = "50%",
+                size = {
+                    width = "80%",
+                    height = "60%",
+                },
+                win_options = {
+                    winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
+                },
+            },
+            cmdline = {
+                render = "popup",
+                relative = "editor",
+                position = {
+                    row = "100%",
+                    col = 0,
+                },
+                size = {
+                    height = "auto",
+                    width = "100%",
+                },
+                border = { " ", " ", " ", " ", " ", " ", " ", " " },
+                win_options = {
+                    winhighlight = "Normal:MsgArea",
+                },
+            },
+            fancy_cmdline = {
+                render = "popup",
+                relative = "editor",
+                focusable = true,
+                position = {
+                    row = "50%",
+                    col = "50%",
+                },
+                size = {
+                    min_width = 60,
+                    width = "auto",
+                    height = "auto",
+                },
+                border = {
+                    style = { " ", " ", " ", " ", " ", " ", " ", " " },
+                    padding = { 0, 1, 0, 1 },
+                    text = {
+                        top = " Command Line ",
+                    },
+                },
+                win_options = {
+                    winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
+                },
+                filter_options = {
+                    {
+                        filter = { event = "cmdline", find = "^%s*[/?]" },
+                        opts = {
+                            border = {
+                                text = {
+                                    top = " Search ",
+                                },
+                            },
+                            win_options = {
+                                winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
+                            },
+                        },
+                    },
+                },
+            },
+        },
+        routes = {
+            {
+                view = "fancy_cmdline",
+                filter = {
+                    any = {
+                        { event = "cmdline" },
+                        { event = "msg_show", kind = "confirm" },
+                        { event = "msg_show", kind = "confirm_sub" },
+                        { event = "msg_show", kind = { "echo", "echomsg", "" }, before_input = true },
+                    },
+                },
+                opts = {
+                    filter_options = {
+                        {
+                            filter = { event = "cmdline" },
+                            opts = { buf_options = { filetype = "vim" } },
+                        },
+                    },
+                },
+            },
+            {
+                view = "split",
+                filter = {
+                    any = {
+                        { event = "msg_history_show" },
+                    },
+                },
+            },
+            {
+                view = "virtualtext",
+                filter = {
+                    event = "msg_show",
+                    kind = "search_count",
+                },
+                opts = { hl_group = "DiagnosticVirtualTextInfo" },
+            },
+            {
+                filter = {
+                    any = {
+                        { event = { "msg_showmode", "msg_showcmd", "msg_ruler" } },
+                        { event = "msg_show", kind = "search_count" },
+                    },
+                },
+                opts = { skip = true },
+            },
+            {
+                view = "notify",
+                filter = {
+                    event = "noice",
+                    kind = { "stats", "debug" },
+                },
+                opts = { buf_options = { filetype = "lua" }, replace = true },
+            },
+            {
+                view = "notify",
+                filter = {
+                    event = "msg_show",
+                    kind = "emsg",
+                },
+                opts = { level = vim.log.levels.ERROR, replace = false, title = "Error" },
+            },
+            {
+                view = "notify",
+                filter = {
+                    event = "msg_show",
+                    kind = "wmsg",
+                },
+                opts = { level = vim.log.levels.WARN, replace = false, title = "Warning" },
+            },
+            {
+                view = "notify",
+                filter = {},
+            },
+        },
+    })
+    noice_hacks.setup()
+    noice_commands.setup()
+    noice_router.setup()
+    noice_ui.setup()
+end
+
 function config.alpha_nvim()
     local alpha_status_ok, alpha = pcall(require, "alpha")
     if not alpha_status_ok then
