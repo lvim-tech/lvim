@@ -98,51 +98,6 @@ function config.alpha_nvim()
     })
 end
 
-function config.nvim_window_picker()
-    local window_picker_status_ok, window_picker = pcall(require, "window-picker")
-    if not window_picker_status_ok then
-        return
-    end
-    local filters = window_picker.filter_windows
-    local function special_autoselect(windows)
-        windows = filters(windows)
-        if windows == nil then
-            windows = {}
-        end
-        if #windows > 1 then
-            return windows
-        end
-        local curr_win = vim.api.nvim_get_current_win()
-        for index, window in ipairs(windows) do
-            if window == curr_win then
-                table.remove(windows, index)
-            end
-        end
-        return windows
-    end
-    local function focus_window()
-        window_picker.pick_window()
-        if type(window) == "number" then
-            vim.api.nvim_set_current_win(window)
-        end
-    end
-    window_picker.setup({
-        autoselect_one = false,
-        include_current_win = true,
-        filter_func = special_autoselect,
-        filter_rules = {
-            bo = {
-                filetype = {},
-                buftype = {},
-            },
-        },
-        fg_color = "#20262A",
-        current_win_hl_color = "#20262A",
-        other_win_hl_color = "#95b365",
-    })
-    vim.api.nvim_create_user_command("WindowPicker", focus_window, {})
-end
-
 function config.neo_tree_nvim()
     local neo_tree_status_ok, neo_tree = pcall(require, "neo-tree")
     if not neo_tree_status_ok then
@@ -193,6 +148,11 @@ function config.neo_tree_nvim()
         window = {
             mappings = {
                 ["Z"] = "expand_all_nodes",
+                w = function(state)
+                    local node = state.tree:get_node()
+                    require("configs.base.ui.window-picker").pick()
+                    vim.cmd("edit " .. vim.fn.fnameescape(node.path))
+                end,
             },
         },
         filesystem = {
