@@ -10,8 +10,10 @@ local language_configs = {}
 
 local function start_server_tools()
     rust_tools.setup({
-        autoSetHints = false,
         tools = {
+            inlay_hints = {
+                auto = false,
+            },
             hover_actions = {
                 border = {
                     { "┌", "FloatBorder" },

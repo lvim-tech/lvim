@@ -313,7 +313,6 @@ function config.lsp_inlayhints_nvim()
             if not (args.data and args.data.client_id) then
                 return
             end
-
             local bufnr = args.buf
             local client = vim.lsp.get_client_by_id(args.data.client_id)
             lsp_inlayhints.on_attach(client, bufnr)
