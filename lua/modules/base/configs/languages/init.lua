@@ -156,7 +156,6 @@ function config.fidget_nvim()
         window = {
             relative = "editor", -- where to anchor, either "win" or "editor"
             blend = 0,
-
             border = { " ", " ", " ", " ", " ", " ", " ", " " },
         },
     })

@@ -202,7 +202,7 @@ function config.noice_nvim()
                     event = "noice",
                     kind = { "stats", "debug" },
                 },
-                opts = { buf_options = { filetype = "lua" }, replace = true },
+                opts = { buf_options = { filetype = "lua" }, replace = true, title = "Biser" },
             },
             {
                 view = "notify",
@@ -223,6 +223,7 @@ function config.noice_nvim()
             {
                 view = "notify",
                 filter = {},
+                opts = { title = "LVIM IDE" },
             },
         },
     })
