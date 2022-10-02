@@ -23,7 +23,6 @@ keymaps["normal"] = {
     { "<C-c>b", ":GitBlameToggle<CR>" }, -- Git blame toggle
     { "<C-c>z", ":NeoZoomToggle<CR>" }, -- NeoZoom toggle
     { "<C-c>f", ":Vifm<CR>" }, -- Vifm file explorer
-    { "<C-b>", ":b " }, -- Move to window left
     { "<C-h>", "<C-w>h" }, -- Move to window left
     { "<C-l>", "<C-w>l" }, -- Move to window right
     { "<C-j>", "<C-w>j" }, -- Move to window down
