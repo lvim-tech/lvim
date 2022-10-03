@@ -38,12 +38,6 @@ modules["MunifTanjim/nui.nvim"] = {
     config = ui_config.nui_nvim,
 }
 
--- modules["folke/noice.nvim"] = {
---     commit = funcs.get_commit("nui.nvim", plugins_snapshot),
---     event = "VimEnter",
---     config = ui_config.noice_nvim,
--- }
-
 modules["goolord/alpha-nvim"] = {
     commit = funcs.get_commit("alpha-nvim", plugins_snapshot),
     event = "VimEnter",
