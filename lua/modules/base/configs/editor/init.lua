@@ -1,15 +1,5 @@
 local config = {}
 
-function config.vim_ctrlspace()
-    vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "ctrlspace" },
-        callback = function()
-            vim.api.nvim_win_set_option(0, "winhighlight", "SignColumn:LvimFocusNormal")
-        end,
-        group = "LvimIDE",
-    })
-end
-
 function config.telescope_nvim()
     local telescope_status_ok, telescope = pcall(require, "telescope")
     if not telescope_status_ok then

@@ -50,6 +50,67 @@
     end
     #+end_src
 
+**   [[https://github.com/rcarriga/nvim-notify][nvim-notify]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["rcarriga/nvim-notify"] = {
+        commit = funcs.get_commit("nvim-notify", plugins_snapshot),
+        after = "lvim-colorscheme",
+        config = ui_config.nvim_notify,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.nvim_notify()
+        local notify_status_ok, notify = pcall(require, "notify")
+        if not notify_status_ok then
+            return
+        end
+        notify.setup({
+            icons = {
+                DEBUG = " ",
+                ERROR = " ",
+                INFO = " ",
+                TRACE = " ",
+                WARN = " ",
+            },
+            stages = "fade",
+            on_open = function(win)
+                if vim.api.nvim_win_is_valid(win) then
+                    vim.api.nvim_win_set_config(win, {
+                        border = { " ", " ", " ", " ", " ", " ", " ", " " },
+                        zindex = 200,
+                    })
+                end
+            end,
+        })
+        notify.print_history = function()
+            local color = {
+                DEBUG = "NotifyDEBUGTitle",
+                TRACE = "NotifyTRACETitle",
+                INFO = "NotifyINFOTitle",
+                WARN = "NotifyWARNTitle",
+                ERROR = "NotifyERRORTitle",
+            }
+            for _, m in ipairs(notify.history()) do
+                vim.api.nvim_echo({
+                    { vim.fn.strftime("%FT%T", m.time), "Identifier" },
+                    { " ", "Normal" },
+                    { m.level, color[m.level] or "Title" },
+                    { " ", "Normal" },
+                    { table.concat(m.message, " "), "Normal" },
+                }, false, {})
+            end
+        end
+        vim.cmd("command! Message :lua require('notify').print_history()<CR>")
+        vim.notify = notify
+    end
+    #+end_src
+
 **   [[https://github.com/folke/noice.nvim][noice.nvim]]
 
     + INIT
@@ -66,53 +127,40 @@
 
     #+begin_src lua
     function config.noice_nvim()
-        local noice_config_status_ok, noice_config = pcall(require, "noice.config")
-        if not noice_config_status_ok then
+        local noice_status_ok, noice = pcall(require, "noice")
+        if not noice_status_ok then
             return
         end
-        local noice_hacks_status_ok, noice_hacks = pcall(require, "noice.hacks")
-        if not noice_hacks_status_ok then
-            return
-        end
-        local noice_commands_status_ok, noice_commands = pcall(require, "noice.commands")
-        if not noice_commands_status_ok then
-            return
-        end
-        local noice_router_status_ok, noice_router = pcall(require, "noice.router")
-        if not noice_router_status_ok then
-            return
-        end
-        local noice_ui_status_ok, noice_ui = pcall(require, "noice.ui")
-        if not noice_ui_status_ok then
-            return
-        end
-        noice_config.setup({
-            debug = false,
-            throttle = 1000 / 30,
+        noice.setup({
             cmdline = {
-                enabled = true,
-                menu = "popup",
+                view = "cmdline_popup",
+                opts = { buf_options = { filetype = "vim" } },
                 icons = {
-                    ["/"] = { icon = " ", hl_group = "DiagnosticWarn" },
-                    ["?"] = { icon = " ", hl_group = "DiagnosticWarn" },
+                    ["/"] = { icon = " ", hl_group = "DiagnosticWarn" },
+                    ["?"] = { icon = " ", hl_group = "DiagnosticWarn" },
                     [":"] = { icon = " ", hl_group = "DiagnosticInfo", firstc = false },
                 },
             },
-            history = {
-                view = "split",
-                opts = {
-                    enter = true,
-                },
-                filter = { event = "msg_show", ["not"] = { kind = { "search_count", "echo" } } },
-            },
             views = {
+                popupmenu = {
+                    zindex = 65,
+                    position = "auto",
+                    win_options = {
+                        winhighlight = {
+                            Normal = "NuiBody",
+                            FloatBorder = "NuiBorder",
+                            CursorLine = "PmenuSel",
+                            PmenuMatch = "Special",
+                        },
+                    },
+                },
                 notify = {
-                    render = "notify",
+                    backend = "notify",
                     level = vim.log.levels.INFO,
                     replace = true,
                 },
                 split = {
-                    render = "split",
+                    backend = "split",
                     enter = false,
                     relative = "editor",
                     position = "bottom",
@@ -124,8 +172,21 @@
                         winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
                     },
                 },
+                vsplit = {
+                    backend = "split",
+                    enter = false,
+                    relative = "editor",
+                    position = "right",
+                    size = "20%",
+                    close = {
+                        keys = { "q", "<esc>" },
+                    },
+                    win_options = {
+                        winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
+                    },
+                },
                 popup = {
-                    render = "popup",
+                    backend = "popup",
                     close = {
                         events = { "BufLeave" },
                         keys = { "q", "<esc>" },
@@ -142,7 +203,7 @@
                     },
                 },
                 cmdline = {
-                    render = "popup",
+                    backend = "popup",
                     relative = "editor",
                     position = {
                         row = "100%",
@@ -154,19 +215,20 @@
                     },
                     border = { " ", " ", " ", " ", " ", " ", " ", " " },
                     win_options = {
-                        winhighlight = "Normal:MsgArea",
+                        winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
                     },
                 },
-                fancy_cmdline = {
-                    render = "popup",
+                cmdline_popup = {
+                    backend = "popup",
                     relative = "editor",
-                    focusable = true,
+                    focusable = false,
+                    enter = false,
+                    zindex = 60,
                     position = {
                         row = "50%",
                         col = "50%",
                     },
                     size = {
-                        min_width = 60,
                         width = "auto",
                         height = "auto",
                     },
@@ -174,11 +236,12 @@
                         style = { " ", " ", " ", " ", " ", " ", " ", " " },
                         padding = { 0, 1, 0, 1 },
                         text = {
-                            top = " Command Line ",
+                            top = " COMMAND LINE: ",
                         },
                     },
                     win_options = {
                         winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
+                        cursorline = false,
                     },
                     filter_options = {
                         {
@@ -186,7 +249,7 @@
                             opts = {
                                 border = {
                                     text = {
-                                        top = " Search ",
+                                        top = " SEARCH: ",
                                     },
                                 },
                                 win_options = {
@@ -199,21 +262,15 @@
             },
             routes = {
                 {
-                    view = "fancy_cmdline",
+                    view = "cmdline_popup",
+                    filter = { event = "cmdline" },
+                },
+                {
+                    view = "cmdline_popup",
                     filter = {
                         any = {
-                            { event = "cmdline" },
                             { event = "msg_show", kind = "confirm" },
                             { event = "msg_show", kind = "confirm_sub" },
-                            { event = "msg_show", kind = { "echo", "echomsg", "" }, before_input = true },
-                        },
-                    },
-                    opts = {
-                        filter_options = {
-                            {
-                                filter = { event = "cmdline" },
-                                opts = { buf_options = { filetype = "vim" } },
-                            },
                         },
                     },
                 },
@@ -224,14 +281,6 @@
                             { event = "msg_history_show" },
                         },
                     },
-                },
-                {
-                    view = "virtualtext",
-                    filter = {
-                        event = "msg_show",
-                        kind = "search_count",
-                    },
-                    opts = { hl_group = "DiagnosticVirtualTextInfo" },
                 },
                 {
                     filter = {
@@ -252,30 +301,11 @@
                 },
                 {
                     view = "notify",
-                    filter = {
-                        event = "msg_show",
-                        kind = "emsg",
-                    },
-                    opts = { level = vim.log.levels.ERROR, replace = false, title = "Error" },
-                },
-                {
-                    view = "notify",
-                    filter = {
-                        event = "msg_show",
-                        kind = "wmsg",
-                    },
-                    opts = { level = vim.log.levels.WARN, replace = false, title = "Warning" },
-                },
-                {
-                    view = "notify",
                     filter = {},
+                    opts = { title = "LVIM IDE" },
                 },
             },
         })
-        noice_hacks.setup()
-        noice_commands.setup()
-        noice_router.setup()
-        noice_ui.setup()
     end
     #+end_src
 
@@ -517,13 +547,13 @@
                 marks = true,
                 registers = true,
                 presets = {
-                    operators = false,
-                    motions = false,
-                    text_objects = false,
-                    windows = false,
-                    nav = false,
-                    z = false,
-                    g = false,
+                    operators = true,
+                    motions = true,
+                    text_objects = true,
+                    windows = true,
+                    nav = true,
+                    z = true,
+                    g = true,
                 },
                 spelling = {
                     enabled = true,
@@ -1638,67 +1668,6 @@
                 "nofile",
             },
         })
-    end
-    #+end_src
-
-**   [[https://github.com/rcarriga/nvim-notify][nvim-notify]]
-
-    + INIT
-
-    #+begin_src lua
-    modules["rcarriga/nvim-notify"] = {
-        commit = funcs.get_commit("nvim-notify", plugins_snapshot),
-        after = "lvim-colorscheme",
-        config = ui_config.nvim_notify,
-    }
-    #+end_src
-
-    + CONFIG
-
-    #+begin_src lua
-    function config.nvim_notify()
-        local notify_status_ok, notify = pcall(require, "notify")
-        if not notify_status_ok then
-            return
-        end
-        notify.setup({
-            icons = {
-                DEBUG = " ",
-                ERROR = " ",
-                INFO = " ",
-                TRACE = " ",
-                WARN = " ",
-            },
-            stages = "fade",
-            on_open = function(win)
-                if vim.api.nvim_win_is_valid(win) then
-                    vim.api.nvim_win_set_config(win, {
-                        border = { " ", " ", " ", " ", " ", " ", " ", " " },
-                        zindex = 200,
-                    })
-                end
-            end,
-        })
-        notify.print_history = function()
-            local color = {
-                DEBUG = "NotifyDEBUGTitle",
-                TRACE = "NotifyTRACETitle",
-                INFO = "NotifyINFOTitle",
-                WARN = "NotifyWARNTitle",
-                ERROR = "NotifyERRORTitle",
-            }
-            for _, m in ipairs(notify.history()) do
-                vim.api.nvim_echo({
-                    { vim.fn.strftime("%FT%T", m.time), "Identifier" },
-                    { " ", "Normal" },
-                    { m.level, color[m.level] or "Title" },
-                    { " ", "Normal" },
-                    { table.concat(m.message, " "), "Normal" },
-                }, false, {})
-            end
-        end
-        vim.cmd("command! Message :lua require('notify').print_history()<CR>")
-        vim.notify = notify
     end
     #+end_src
 

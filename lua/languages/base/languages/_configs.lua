@@ -120,12 +120,12 @@ M.lua = function(file_types, pid_name)
                     },
                     hint = {
                         enable = true,
-                        -- arrayIndex = "All",
-                        -- await = true,
-                        -- paramName = "All",
-                        -- paramType = true,
-                        -- semicolon = "Disable",
-                        -- setType = true,
+                        arrayIndex = "All",
+                        await = true,
+                        paramName = "All",
+                        paramType = true,
+                        semicolon = "Disable",
+                        setType = true,
                     },
                     runtime = {
                         version = "LuaJIT",

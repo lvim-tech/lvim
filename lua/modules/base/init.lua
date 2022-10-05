@@ -38,6 +38,18 @@ modules["MunifTanjim/nui.nvim"] = {
     config = ui_config.nui_nvim,
 }
 
+modules["rcarriga/nvim-notify"] = {
+    commit = funcs.get_commit("nvim-notify", plugins_snapshot),
+    after = "lvim-colorscheme",
+    config = ui_config.nvim_notify,
+}
+
+modules["folke/noice.nvim"] = {
+    commit = funcs.get_commit("noice.nvim", plugins_snapshot),
+    event = "VimEnter",
+    config = ui_config.noice_nvim,
+}
+
 modules["goolord/alpha-nvim"] = {
     commit = funcs.get_commit("alpha-nvim", plugins_snapshot),
     event = "VimEnter",
@@ -136,12 +148,6 @@ modules["lukas-reineke/indent-blankline.nvim"] = {
         "BufRead",
     },
     config = ui_config.indent_blankline_nvim,
-}
-
-modules["rcarriga/nvim-notify"] = {
-    commit = funcs.get_commit("nvim-notify", plugins_snapshot),
-    after = "lvim-colorscheme",
-    config = ui_config.nvim_notify,
 }
 
 modules["lvim-tech/lvim-focus"] = {

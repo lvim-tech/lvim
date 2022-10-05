@@ -19,6 +19,236 @@ function config.nui_nvim()
     vim.ui.select = require("configs.base.ui.select")
 end
 
+function config.nvim_notify()
+    local notify_status_ok, notify = pcall(require, "notify")
+    if not notify_status_ok then
+        return
+    end
+    notify.setup({
+        minimum_width = 80,
+        background_colour = "#20262A",
+        icons = {
+            DEBUG = " ",
+            ERROR = " ",
+            INFO = " ",
+            TRACE = " ",
+            WARN = " ",
+        },
+        stages = "fade",
+        on_open = function(win)
+            if vim.api.nvim_win_is_valid(win) then
+                vim.api.nvim_win_set_config(win, {
+                    border = { " ", " ", " ", " ", " ", " ", " ", " " },
+                    zindex = 200,
+                })
+                vim.api.nvim_win_set_option(win, "wrap", true)
+            end
+        end,
+    })
+    notify.print_history = function()
+        local color = {
+            DEBUG = "NotifyDEBUGTitle",
+            TRACE = "NotifyTRACETitle",
+            INFO = "NotifyINFOTitle",
+            WARN = "NotifyWARNTitle",
+            ERROR = "NotifyERRORTitle",
+        }
+        for _, m in ipairs(notify.history()) do
+            vim.api.nvim_echo({
+                { vim.fn.strftime("%FT%T", m.time), "Identifier" },
+                { " ", "Normal" },
+                { m.level, color[m.level] or "Title" },
+                { " ", "Normal" },
+                { table.concat(m.message, " "), "Normal" },
+            }, false, {})
+        end
+    end
+    vim.cmd("command! Message :lua require('notify').print_history()<CR>")
+    vim.notify = notify
+end
+
+function config.noice_nvim()
+    local noice_status_ok, noice = pcall(require, "noice")
+    if not noice_status_ok then
+        return
+    end
+    noice.setup({
+        cmdline = {
+            view = "cmdline_popup",
+            opts = { buf_options = { filetype = "vim" } },
+            icons = {
+                ["/"] = { icon = " ", hl_group = "DiagnosticWarn" },
+                ["?"] = { icon = " ", hl_group = "DiagnosticWarn" },
+                [":"] = { icon = " ", hl_group = "DiagnosticInfo", firstc = false },
+            },
+        },
+        views = {
+            popupmenu = {
+                zindex = 65,
+                position = "auto",
+                win_options = {
+                    winhighlight = {
+                        Normal = "NuiBody",
+                        FloatBorder = "NuiBorder",
+                        CursorLine = "PmenuSel",
+                        PmenuMatch = "Special",
+                    },
+                },
+            },
+            notify = {
+                backend = "notify",
+                level = vim.log.levels.INFO,
+                replace = true,
+            },
+            split = {
+                backend = "split",
+                enter = false,
+                relative = "editor",
+                position = "bottom",
+                size = "20%",
+                close = {
+                    keys = { "q", "<esc>" },
+                },
+                win_options = {
+                    winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
+                },
+            },
+            vsplit = {
+                backend = "split",
+                enter = false,
+                relative = "editor",
+                position = "right",
+                size = "20%",
+                close = {
+                    keys = { "q", "<esc>" },
+                },
+                win_options = {
+                    winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
+                },
+            },
+            popup = {
+                backend = "popup",
+                close = {
+                    events = { "BufLeave" },
+                    keys = { "q", "<esc>" },
+                },
+                enter = true,
+                border = { " ", " ", " ", " ", " ", " ", " ", " " },
+                position = "50%",
+                size = {
+                    width = "80%",
+                    height = "60%",
+                },
+                win_options = {
+                    winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
+                },
+            },
+            cmdline = {
+                backend = "popup",
+                relative = "editor",
+                position = {
+                    row = "100%",
+                    col = 0,
+                },
+                size = {
+                    height = "auto",
+                    width = "100%",
+                },
+                border = { " ", " ", " ", " ", " ", " ", " ", " " },
+                win_options = {
+                    winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
+                },
+            },
+            cmdline_popup = {
+                backend = "popup",
+                relative = "editor",
+                focusable = false,
+                enter = false,
+                zindex = 60,
+                position = {
+                    row = "50%",
+                    col = "50%",
+                },
+                size = {
+                    width = "auto",
+                    height = "auto",
+                },
+                border = {
+                    style = { " ", " ", " ", " ", " ", " ", " ", " " },
+                    padding = { 0, 1, 0, 1 },
+                    text = {
+                        top = " COMMAND LINE: ",
+                    },
+                },
+                win_options = {
+                    winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
+                    cursorline = false,
+                },
+                filter_options = {
+                    {
+                        filter = { event = "cmdline", find = "^%s*[/?]" },
+                        opts = {
+                            border = {
+                                text = {
+                                    top = " SEARCH: ",
+                                },
+                            },
+                            win_options = {
+                                winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
+                            },
+                        },
+                    },
+                },
+            },
+        },
+        routes = {
+            {
+                view = "cmdline_popup",
+                filter = { event = "cmdline" },
+            },
+            {
+                view = "cmdline_popup",
+                filter = {
+                    any = {
+                        { event = "msg_show", kind = "confirm" },
+                        { event = "msg_show", kind = "confirm_sub" },
+                    },
+                },
+            },
+            {
+                view = "split",
+                filter = {
+                    any = {
+                        { event = "msg_history_show" },
+                    },
+                },
+            },
+            {
+                filter = {
+                    any = {
+                        { event = { "msg_showmode", "msg_showcmd", "msg_ruler" } },
+                        { event = "msg_show", kind = "search_count" },
+                    },
+                },
+                opts = { skip = true },
+            },
+            {
+                view = "notify",
+                filter = {
+                    event = "noice",
+                    kind = { "stats", "debug" },
+                },
+                opts = { buf_options = { filetype = "lua" }, replace = true },
+            },
+            {
+                view = "notify",
+                filter = {},
+                opts = { title = "LVIM IDE" },
+            },
+        },
+    })
+end
+
 function config.alpha_nvim()
     local alpha_status_ok, alpha = pcall(require, "alpha")
     if not alpha_status_ok then
@@ -180,13 +410,13 @@ function config.which_key_nvim()
             marks = true,
             registers = true,
             presets = {
-                operators = false,
-                motions = false,
-                text_objects = false,
-                windows = false,
-                nav = false,
-                z = false,
-                g = false,
+                operators = true,
+                motions = true,
+                text_objects = true,
+                windows = true,
+                nav = true,
+                z = true,
+                g = true,
             },
             spelling = {
                 enabled = true,
@@ -235,8 +465,7 @@ function config.which_key_nvim()
             "^:",
             "^ ",
         },
-        show_help = true,
-        buftype = "",
+        show_help = false,
     }
     local nopts = {
         mode = "n",
@@ -1188,52 +1417,6 @@ function config.indent_blankline_nvim()
             "nofile",
         },
     })
-end
-
-function config.nvim_notify()
-    local notify_status_ok, notify = pcall(require, "notify")
-    if not notify_status_ok then
-        return
-    end
-    notify.setup({
-        background_colour = "#20262A",
-        icons = {
-            DEBUG = " ",
-            ERROR = " ",
-            INFO = " ",
-            TRACE = " ",
-            WARN = " ",
-        },
-        stages = "fade",
-        on_open = function(win)
-            if vim.api.nvim_win_is_valid(win) then
-                vim.api.nvim_win_set_config(win, {
-                    border = { " ", " ", " ", " ", " ", " ", " ", " " },
-                    zindex = 200,
-                })
-            end
-        end,
-    })
-    notify.print_history = function()
-        local color = {
-            DEBUG = "NotifyDEBUGTitle",
-            TRACE = "NotifyTRACETitle",
-            INFO = "NotifyINFOTitle",
-            WARN = "NotifyWARNTitle",
-            ERROR = "NotifyERRORTitle",
-        }
-        for _, m in ipairs(notify.history()) do
-            vim.api.nvim_echo({
-                { vim.fn.strftime("%FT%T", m.time), "Identifier" },
-                { " ", "Normal" },
-                { m.level, color[m.level] or "Title" },
-                { " ", "Normal" },
-                { table.concat(m.message, " "), "Normal" },
-            }, false, {})
-        end
-    end
-    vim.cmd("command! Message :lua require('notify').print_history()<CR>")
-    vim.notify = notify
 end
 
 function config.lvim_focus()
