@@ -777,7 +777,7 @@
     #+begin_src lua
     modules["rebelot/heirline.nvim"] = {
         commit = funcs.get_commit("heirline.nvim", plugins_snapshot),
-        after = "lvim-colorscheme",
+        after = { "lvim-colorscheme", "noice.nvim" },
         config = ui_config.heirline_nvim,
     }
     #+end_src
@@ -1009,6 +1009,11 @@
                 hl = { fg = colors.color_03 },
             },
         }
+        local noice_mode = {
+            condition = require("noice").api.statusline.mode.has,
+            provider = require("noice").api.statusline.mode.get,
+            hl = { fg = colors.color_02, bold = true },
+        }
         local diagnostics = {
             condition = heirline_conditions.has_diagnostics,
             static = {
@@ -1195,6 +1200,8 @@
                 work_dir,
                 file_name_block,
                 git,
+                space,
+                noice_mode,
                 align,
                 diagnostics,
                 lsp_active,

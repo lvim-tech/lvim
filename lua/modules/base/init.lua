@@ -95,7 +95,7 @@ modules["folke/which-key.nvim"] = {
 
 modules["rebelot/heirline.nvim"] = {
     commit = funcs.get_commit("heirline.nvim", plugins_snapshot),
-    after = "lvim-colorscheme",
+    after = { "lvim-colorscheme", "noice.nvim" },
     config = ui_config.heirline_nvim,
 }
 
