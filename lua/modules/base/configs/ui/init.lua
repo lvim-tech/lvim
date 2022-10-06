@@ -1074,7 +1074,6 @@ function config.heirline_nvim()
         end,
         hl = { fg = colors.color_02, bold = true },
     }
-
     local status_lines = {
         fallthrough = false,
         hl = function()
@@ -1092,8 +1091,8 @@ function config.heirline_nvim()
         end,
         static = {
             mode_color = function(self)
-                local mode = heirline_conditions.is_active() and vim.fn.mode() or "n"
-                return self.mode_colors[mode]
+                local mode_color = heirline_conditions.is_active() and vim.fn.mode() or "n"
+                return self.mode_colors[mode_color]
             end,
         },
         {

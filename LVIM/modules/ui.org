@@ -1190,8 +1190,8 @@
             end,
             static = {
                 mode_color = function(self)
-                    local mode = heirline_conditions.is_active() and vim.fn.mode() or "n"
-                    return self.mode_colors[mode]
+                    local mode_color = heirline_conditions.is_active() and vim.fn.mode() or "n"
+                    return self.mode_colors[mode_color]
                 end,
             },
             init = heirline_utils.pick_child_on_condition,

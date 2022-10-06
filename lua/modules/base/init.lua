@@ -241,6 +241,22 @@ modules["nanozuki/tabby.nvim"] = {
     config = editor_config.tabby_nvim,
 }
 
+modules["ethanholz/nvim-lastplace"] = {
+    commit = funcs.get_commit("nvim-lastplace", plugins_snapshot),
+    event = {
+        "BufRead",
+    },
+    config = editor_config.nvim_lastplace,
+}
+
+modules["monaqa/dial.nvim"] = {
+    commit = funcs.get_commit("dial.nvim", plugins_snapshot),
+    event = {
+        "BufRead",
+    },
+    config = editor_config.dial_nvim,
+}
+
 modules["booperlv/nvim-gomove"] = {
     commit = funcs.get_commit("nvim-gomove", plugins_snapshot),
     event = {
