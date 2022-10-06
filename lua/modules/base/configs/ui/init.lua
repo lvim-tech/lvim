@@ -82,6 +82,18 @@ function config.noice_nvim()
                 [":"] = { icon = " ", hl_group = "DiagnosticInfo", firstc = false },
             },
         },
+        popupmenu = {
+            enabled = true,
+            backend = "nui",
+        },
+        history = {
+            view = "split",
+            opts = { enter = true },
+            filter = { event = "msg_show", ["not"] = { kind = { "search_count", "echo" } } },
+        },
+        notify = {
+            enabled = false,
+        },
         views = {
             popupmenu = {
                 zindex = 65,
@@ -198,6 +210,29 @@ function config.noice_nvim()
                             },
                         },
                     },
+                },
+            },
+            confirm = {
+                backend = "popup",
+                relative = "editor",
+                focusable = false,
+                enter = false,
+                zindex = 60,
+                format = { "{confirm}" },
+                position = {
+                    row = "50%",
+                    col = "50%",
+                },
+                size = "auto",
+                border = {
+                    style = "rounded",
+                    padding = { 0, 1, 0, 1 },
+                    text = {
+                        top = " Confirm ",
+                    },
+                },
+                win_options = {
+                    winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
                 },
             },
         },
@@ -874,6 +909,11 @@ function config.heirline_nvim()
             hl = { fg = colors.color_03 },
         },
     }
+    local noice_mode = {
+        condition = require("noice").api.statusline.mode.has,
+        provider = require("noice").api.statusline.mode.get,
+        hl = { fg = colors.color_02, bold = true },
+    }
     local diagnostics = {
         condition = heirline_conditions.has_diagnostics,
         static = {
@@ -1034,6 +1074,7 @@ function config.heirline_nvim()
         end,
         hl = { fg = colors.color_02, bold = true },
     }
+
     local status_lines = {
         fallthrough = false,
         hl = function()
@@ -1060,6 +1101,8 @@ function config.heirline_nvim()
             work_dir,
             file_name_block,
             git,
+            space,
+            noice_mode,
             align,
             diagnostics,
             lsp_active,
