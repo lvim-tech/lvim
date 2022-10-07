@@ -6,7 +6,7 @@
 
   Current version - 2.3.20 (2022-10-07)
 
-  110 plugins (startup time: ~83 ms)
+  110 plugins (startup time: ~81 ms)
 
 **  SCREENSHOTS
 
