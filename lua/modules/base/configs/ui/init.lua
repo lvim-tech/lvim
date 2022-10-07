@@ -976,9 +976,18 @@ function config.heirline_nvim()
     }
     local file_type = {
         provider = function()
+            local global = require("core.global")
             local filetype = vim.bo.filetype
             if filetype ~= "" then
-                return string.upper(filetype)
+                local lang_version = ""
+                pcall(function()
+                    local command = global.lvim_path .. "/bin/lang_version " .. filetype
+                    local handle = io.popen(command)
+                    lang_version = handle:read("*a")
+                    handle:close()
+                end)
+                filetype = string.upper(filetype)
+                return filetype .. lang_version
             end
         end,
         hl = { fg = colors.color_03, bold = true },
