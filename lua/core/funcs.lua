@@ -149,12 +149,10 @@ M.file_size = function(size, options)
     local function isNan(num)
         return num ~= num
     end
-
     local function roundNumber(num, digits)
         local fmt = "%." .. digits .. "f"
         return tonumber(fmt:format(num))
     end
-
     local o = {}
     for key, value in pairs(options or {}) do
         o[key] = value
@@ -164,7 +162,6 @@ M.file_size = function(size, options)
             o[name] = default
         end
     end
-
     setDefault("bits", false)
     setDefault("unix", false)
     setDefault("base", 2)
@@ -212,7 +209,6 @@ M.file_size = function(size, options)
         }
         if o.unix then
             result[2] = result[2]:sub(1, 1)
-
             if result[2] == "b" or result[2] == "B" then
                 result = {
                     math.floor(result[1]),
