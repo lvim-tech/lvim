@@ -33,7 +33,7 @@ lua)
 	;;
 
 typescript)
-	echo -n "$(tsc -v >/dev/null 2>&1 | awk '{print $2}')"
+	echo -n "$(tsc -v 2>&1 | awk '{print $2}')"
 	exit 0
 	;;
 
