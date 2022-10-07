@@ -306,18 +306,4 @@ M.quit = function()
     end
 end
 
-_G.LVIM_COLORS = function()
-    return {
-        color_01 = M.get_highlight("CursorLineNr").fg,
-        color_02 = M.get_highlight("DiagnosticError").fg,
-        color_03 = M.get_highlight("DiagnosticWarn").fg,
-        color_04 = M.get_highlight("DiagnosticHint").fg,
-        color_05 = M.get_highlight("DiagnosticInfo").fg,
-        status_line_bg = M.get_highlight("StatusLine").bg,
-        status_line_fg = M.get_highlight("StatusLine").fg,
-        status_line_nc_bg = M.get_highlight("StatusLineNC").bg,
-        status_line_nc_fg = M.get_highlight("StatusLineNC").fg,
-    }
-end
-
 return M

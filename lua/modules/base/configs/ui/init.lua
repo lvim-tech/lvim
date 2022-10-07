@@ -674,6 +674,7 @@ function config.which_key_nvim()
 end
 
 function config.heirline_nvim()
+    local colors = require("configs.base.ui.colors")
     local heirline_status_ok, heirline = pcall(require, "heirline")
     if not heirline_status_ok then
         return
@@ -686,7 +687,6 @@ function config.heirline_nvim()
     if not heirline_utils_status_ok then
         return
     end
-    local colors = LVIM_COLORS()
     local align = { provider = "%=" }
     local space = { provider = " " }
     local mode

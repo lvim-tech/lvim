@@ -297,11 +297,13 @@ function config.lsp_inlayhints_nvim()
 end
 
 function config.nvim_navic()
+    local icons = require("configs.base.ui.icons")
     local nvim_navic_status_ok, nvim_navic = pcall(require, "nvim-navic")
     if not nvim_navic_status_ok then
         return
     end
     nvim_navic.setup({
+        icons = icons.lsp,
         highlight = true,
         separator = " ➤ ",
     })
@@ -314,11 +316,13 @@ function config.any_jump_nvim()
 end
 
 function config.symbols_outline_nvim()
+    local icons = require("configs.base.ui.icons")
     local symbols_outline_status_ok, symbols_outline = pcall(require, "symbols-outline")
     if not symbols_outline_status_ok then
         return
     end
     symbols_outline.setup({
+        symbols = icons.outline,
         highlight_hovered_item = true,
         show_guides = true,
     })
