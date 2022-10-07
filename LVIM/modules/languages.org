@@ -524,52 +524,6 @@
     end
     #+end_src
 
-**   [[https://github.com/nvim-treesitter/nvim-treesitter-context][nvim-treesitter-context]]
-
-    + REQUIRES:
-        *  [[https://github.com/nvim-treesitter/nvim-treesitter][nvim-treesitter]]
-
-    + INIT
-
-    #+begin_src lua
-    modules["nvim-treesitter/nvim-treesitter-context"] = {
-        commit = funcs.get_commit("nvim-treesitter-context", plugins_snapshot),
-        requires = {
-            "nvim-treesitter/nvim-treesitter",
-            commit = funcs.get_commit("nvim-treesitter-context", plugins_snapshot),
-        },
-        after = "nvim-treesitter",
-        config = languages_config.nvim_treesitter_contex,
-    }
-    #+end_src
-
-    + CONFIG
-
-    #+begin_src lua
-    function config.nvim_treesitter_contex()
-        local treesitter_context_status_ok, treesitter_context = pcall(require, "treesitter-context")
-        if not treesitter_context_status_ok then
-            return
-        end
-        treesitter_context.setup({
-            enable = true,
-            max_lines = 10,
-            patterns = {
-                default = {
-                    "class",
-                    "function",
-                    "method",
-                    "for",
-                    "while",
-                    "if",
-                    "switch",
-                    "case",
-                },
-            },
-        })
-    end
-    #+end_src
-
 **   [[https://github.com/lvimuser/lsp-inlayhints.nvim][lsp-inlayhints.nvim]]
 
     + REQUIRES:

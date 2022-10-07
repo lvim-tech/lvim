@@ -622,16 +622,6 @@ modules["nvim-treesitter/nvim-treesitter"] = {
     config = languages_config.nvim_treesitter,
 }
 
-modules["nvim-treesitter/nvim-treesitter-context"] = {
-    commit = funcs.get_commit("nvim-treesitter-context", plugins_snapshot),
-    requires = {
-        "nvim-treesitter/nvim-treesitter-context",
-        commit = funcs.get_commit("nvim-treesitter-context", plugins_snapshot),
-    },
-    after = "nvim-treesitter",
-    config = languages_config.nvim_treesitter_contex,
-}
-
 modules["lvimuser/lsp-inlayhints.nvim"] = {
     commit = funcs.get_commit("lsp-inlayhints.nvim", plugins_snapshot),
     requires = {

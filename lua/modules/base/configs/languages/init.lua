@@ -272,29 +272,6 @@ function config.nvim_treesitter()
     })
 end
 
-function config.nvim_treesitter_contex()
-    local treesitter_context_status_ok, treesitter_context = pcall(require, "treesitter-context")
-    if not treesitter_context_status_ok then
-        return
-    end
-    treesitter_context.setup({
-        enable = true,
-        max_lines = 10,
-        patterns = {
-            default = {
-                "class",
-                "function",
-                "method",
-                "for",
-                "while",
-                "if",
-                "switch",
-                "case",
-            },
-        },
-    })
-end
-
 function config.lsp_inlayhints_nvim()
     local lsp_inlayhints_status_ok, lsp_inlayhints = pcall(require, "lsp-inlayhints")
     if not lsp_inlayhints_status_ok then
