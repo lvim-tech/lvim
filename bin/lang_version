@@ -3,65 +3,37 @@
 case $1 in
 
 php)
-	if which php >/dev/null 2>&1; then
-		echo -n " - $(php -v | \grep --color=never -oe '^PHP\s*[0-9.]\+' | awk '{print $2}')"
-	else
-		echo -n ""
-	fi
+	echo -n "$(php -v 2>&1 | \grep --color=never -oe '^PHP\s*[0-9.]\+' | awk '{print $2}')"
 	exit 0
 	;;
 
 python)
-	if which python >/dev/null 2>&1; then
-		echo -n " - $(python -V | awk '{print $2}')"
-	else
-		echo -n ""
-	fi
+	echo -n "$(python -V 2>&1 | awk '{print $2}')"
 	exit 0
 	;;
 
 ruby)
-	if which ruby >/dev/null 2>&1; then
-		echo -n " - $(ruby -v | awk '{print $2}')"
-	else
-		echo -n ""
-	fi
+	echo -n "$(ruby -v 2>&1 | awk '{print $2}')"
 	exit 0
 	;;
 
 go)
-	if which go >/dev/null 2>&1; then
-		echo -n " - $(go version | awk '{ if ($3 ~ /^devel/) {print $3 ":" substr($4, 2)} else {print substr($3, 3)} }')"
-	else
-		echo -n ""
-	fi
+	echo -n "$(go version 2>&1 | awk '{ if ($3 ~ /^devel/) {print $3 ":" substr($4, 2)} else {print substr($3, 3)} }')"
 	exit 0
 	;;
 
 rust)
-	if which rustc >/dev/null 2>&1; then
-		echo -n " - $(rustc --version | cut -d' ' -f2)"
-	else
-		echo -n ""
-	fi
+	echo -n "$(rustc --version 2>&1 | cut -d' ' -f2)"
 	exit 0
 	;;
 
 lua)
-	if which lua >/dev/null 2>&1; then
-		echo -n " - $(lua -v | awk '{print $2}')"
-	else
-		echo -n ""
-	fi
+	echo -n "$(lua -v 2>&1 | awk '{print $2}')"
 	exit 0
 	;;
 
 typescript)
-	if which tsc >/dev/null 2>&1; then
-		echo -n " - $(tsc -v | awk '{print $2}')"
-	else
-		echo -n ""
-	fi
+	echo -n "$(tsc -v >/dev/null 2>&1 | awk '{print $2}')"
 	exit 0
 	;;
 
