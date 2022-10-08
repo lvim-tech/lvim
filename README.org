@@ -4,7 +4,7 @@
 
   LVIM IDE is a modular Neovim configuration written in LUA with full customization
 
-  Current version - 2.3.20 (2022-10-07)
+  Current version - 2.3.25 (2022-10-09)
 
   110 plugins (startup time: ~81 ms)
 
@@ -310,6 +310,7 @@
       + gomod
       + graphql
       + groovy
+      + haskell
       + handlebars
       + html
       + java
