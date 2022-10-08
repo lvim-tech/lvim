@@ -28,7 +28,11 @@ language_configs["dap"] = function()
                 return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
             end,
             cwd = "${fileDirname}",
-            port = 0,
+            port = function()
+                local val = tonumber(vim.fn.input("Port: "))
+                assert(val, "Please provide a port number")
+                return val
+            end,
             runtimeArgs = {
                 "-dxdebug.start_with_request=yes",
             },

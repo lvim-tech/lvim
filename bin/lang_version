@@ -32,11 +32,6 @@ lua)
 	exit 0
 	;;
 
-typescript)
-	echo -n "$(tsc -v 2>&1 | awk '{print $2}')"
-	exit 0
-	;;
-
 *)
 	echo -n ""
 	exit 0

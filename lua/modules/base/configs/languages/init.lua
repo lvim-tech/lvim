@@ -433,6 +433,20 @@ function config.nvim_dap_ui()
     )
 end
 
+function config.nvim_dap_vscode_js()
+    local global = require("core.global")
+    local dap_vscode_js_status_ok, dap_vscode_js = pcall(require, "dap-vscode-js")
+    if not dap_vscode_js_status_ok then
+        return
+    end
+    dap_vscode_js.setup({
+        node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
+        debugger_path = global.mason_path .. "/bin/vscode-js-debug", -- Path to vscode-js-debug installation.
+        debugger_cmd = { "js-debug-adapter" }, -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
+        adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" }, -- which adapters to register in nvim-dap
+    })
+end
+
 function config.vim_dadbod_ui()
     vim.g.db_ui_show_help = 0
     vim.g.db_ui_win_position = "left"
