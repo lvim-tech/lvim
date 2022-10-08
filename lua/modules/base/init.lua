@@ -661,13 +661,13 @@ modules["rcarriga/nvim-dap-ui"] = {
     },
     requires = {
         {
+            "mfussenegger/nvim-dap",
+            commit = funcs.get_commit("nvim-dap", plugins_snapshot),
+        },
+        {
             "mxsdev/nvim-dap-vscode-js",
             commit = funcs.get_commit("nvim-dap-vscode-js", plugins_snapshot),
             config = languages_config.nvim_dap_vscode_js,
-        },
-        {
-            "mfussenegger/nvim-dap",
-            commit = funcs.get_commit("nvim-dap", plugins_snapshot),
         },
         {
             "jbyuki/one-small-step-for-vimkind",

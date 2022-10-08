@@ -667,6 +667,11 @@
                 commit = funcs.get_commit("nvim-dap", plugins_snapshot),
             },
             {
+                "mxsdev/nvim-dap-vscode-js",
+                commit = funcs.get_commit("nvim-dap-vscode-js", plugins_snapshot),
+                config = languages_config.nvim_dap_vscode_js,
+            },
+            {
                 "jbyuki/one-small-step-for-vimkind",
                 commit = funcs.get_commit("one-small-step-for-vimkind", plugins_snapshot),
             },
@@ -785,10 +790,17 @@
     #+end_src
 
     #+begin_src lua
-    function config.dapinstall()
-        local path_debuggers = vim.fn.stdpath("data") .. "/dapinstall/"
-        require("dap-install").setup({
-            installation_path = path_debuggers,
+    function config.nvim_dap_vscode_js()
+        local global = require("core.global")
+        local dap_vscode_js_status_ok, dap_vscode_js = pcall(require, "dap-vscode-js")
+        if not dap_vscode_js_status_ok then
+            return
+        end
+        dap_vscode_js.setup({
+            node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
+            debugger_path = global.mason_path .. "/bin/vscode-js-debug", -- Path to vscode-js-debug installation.
+            debugger_cmd = { "js-debug-adapter" }, -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
+            adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" }, -- which adapters to register in nvim-dap
         })
     end
     #+end_src
