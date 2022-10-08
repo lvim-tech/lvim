@@ -1,4 +1,3 @@
-local global = require("core.global")
 local languages_setup = require("languages.base.utils")
 local tsserver_config = require("languages.base.languages._configs").jsts_config(
     { "javascript", "javascriptreact", "typescript", "typescriptreact" },
