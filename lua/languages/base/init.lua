@@ -38,6 +38,7 @@ M.file_types = {
     ["go"] = { "go", "gomod" },
     ["graphql"] = { "graphql" },
     ["groovy"] = { "groovy" },
+    ["haskell"] = { "haskell", "lhaskell" },
     ["html"] = { "html" },
     ["java"] = { "java" },
     ["json"] = { "json" },
