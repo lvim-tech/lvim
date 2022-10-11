@@ -533,14 +533,14 @@ modules["j-hui/fidget.nvim"] = {
     config = languages_config.fidget_nvim,
 }
 
-modules["folke/lua-dev.nvim"] = {
-    commit = funcs.get_commit("lua-dev.nvim", plugins_snapshot),
-    ft = "lua",
-}
-
 modules["mfussenegger/nvim-jdtls"] = {
     commit = funcs.get_commit("nvim-jdtls", plugins_snapshot),
     ft = "java",
+}
+
+modules["folke/lua-dev.nvim"] = {
+    commit = funcs.get_commit("lua-dev.nvim", plugins_snapshot),
+    ft = "lua",
 }
 
 modules["simrat39/rust-tools.nvim"] = {
