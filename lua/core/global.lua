@@ -5,9 +5,9 @@ local global = {}
 
 local os
 if os_name == "Darwin" then
-    os = "macOS"
+    os = "mac"
 elseif os_name == "Linux" then
-    os = "Linux"
+    os = "linux"
 elseif os_name == "Windows" then
     os = "unsuported"
 else

@@ -306,9 +306,9 @@ function config.alpha_nvim()
         local v = vim.version()
         local datetime = os.date(" %d-%m-%Y   %H:%M:%S")
         local platform
-        if global.os == "Linux" then
+        if global.os == "linux" then
             platform = " Linux"
-        elseif global.os == "macOS" then
+        elseif global.os == "mac" then
             platform = " macOS"
         else
             platform = ""
@@ -1146,6 +1146,7 @@ function config.heirline_nvim()
                         "dapui_breakpoints",
                         "dapui_stacks",
                         "dapui_watches",
+                        "dapui_console",
                         "calendar",
                         "neo-tree",
                         "neo-tree-popup",
