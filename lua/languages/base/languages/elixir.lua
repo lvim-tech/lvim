@@ -16,7 +16,7 @@ end
 language_configs["dap"] = function()
     dap.adapters.mix_task = {
         type = "executable",
-        command = global.mason_path .. "/bin/elixir-ls-debugger", -- debugger.bat for windows
+        command = global.mason_path .. "/bin/elixir-ls-debugger",
         args = {},
     }
     dap.configurations.elixir = {
@@ -26,7 +26,7 @@ language_configs["dap"] = function()
             task = "test",
             taskArgs = { "--trace" },
             request = "launch",
-            startApps = true, -- for Phoenix projects
+            startApps = true,
             projectDir = "${workspaceFolder}",
             requireFiles = {
                 "test/**/test_helper.exs",
