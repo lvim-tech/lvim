@@ -1,7 +1,6 @@
 local global = require("core.global")
 local languages_setup = require("languages.base.utils")
-local elixirls_config =
-    require("languages.base.languages._configs").elixir_config_config({ "elixir", "eelixir" }, "elixir")
+local elixirls_config = require("languages.base.languages._configs").elixir_config({ "elixir", "eelixir" }, "elixir")
 local dap = require("dap")
 
 local language_configs = {}
@@ -9,7 +8,7 @@ local language_configs = {}
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "elixir",
-        ["elixir-ls"] = { "elixir-ls", elixirls_config },
+        ["elixir-ls"] = { "elixirls", elixirls_config },
     })
 end
 
