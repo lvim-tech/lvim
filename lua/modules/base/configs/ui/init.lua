@@ -771,26 +771,17 @@ function config.heirline_nvim()
         end,
     }
     local work_dir = {
-        provider = function(self)
-            self.icon = "    "
+        provider = function()
+            local icon = "    "
             local cwd = vim.fn.getcwd(0)
-            self.cwd = vim.fn.fnamemodify(cwd, ":~")
+            cwd = vim.fn.fnamemodify(cwd, ":~")
+            if not heirline_conditions.width_percent_below(#cwd, 0.25) then
+                cwd = vim.fn.pathshorten(cwd)
+            end
+            local trail = cwd:sub(-1) == "/" and "" or "/"
+            return icon .. cwd .. trail
         end,
         hl = { fg = colors.color_05, bold = true },
-        heirline_utils.make_flexible_component(1, {
-            provider = function(self)
-                local trail = self.cwd:sub(-1) == "/" and "" or "/"
-                return self.icon .. self.cwd .. trail
-            end,
-        }, {
-            provider = function(self)
-                local cwd = vim.fn.pathshorten(self.cwd)
-                local trail = self.cwd:sub(-1) == "/" and "" or "/"
-                return self.icon .. cwd .. trail
-            end,
-        }, {
-            provider = "",
-        }),
     }
     local file_icon = {
         init = function(self)
