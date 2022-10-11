@@ -81,6 +81,9 @@ function config.goto_preview()
         return
     end
     goto_preview.setup({
+        width = 160,
+        height = 25,
+        border = { " ", " ", " ", " ", " ", " ", " ", " " }, -- Border characters of the floating window
         references = {
             telescope = lib.has_telescope and lib.telescope.themes.get_dropdown({
                 layout_config = {
@@ -92,12 +95,12 @@ function config.goto_preview()
                         return math.min(max_lines, 15)
                     end,
                 },
+                winblend = 8,
                 border = {},
                 borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
                 hide_preview = false,
             }) or nil,
         },
-        border = { " ", " ", " ", " ", " ", " ", " ", " " }, -- Border characters of the floating window
     })
     vim.api.nvim_create_user_command(
         "LspPreviewDefinition",

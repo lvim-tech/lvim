@@ -6,7 +6,9 @@ local packer = nil
 
 local display = {
     open_fn = function()
-        return require("packer.util").float({ border = "single" })
+        return require("packer.util").float({
+            border = { " ", " ", " ", " ", " ", " ", " ", " " },
+        })
     end,
     working_sym = "ﰭ",
     error_sym = "",
