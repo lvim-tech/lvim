@@ -13,9 +13,11 @@ M.setup_languages = function(packages_data)
     local packages_to_install, lsp_to_start, ordered_keys
 
     local function lsp_start()
-        for i = 1, #lsp_to_start do
-            lspconfig[lsp_to_start[i][1]].setup(lsp_to_start[i][2])
-        end
+        vim.defer_fn(function()
+            for i = 1, #lsp_to_start do
+                lspconfig[lsp_to_start[i][1]].setup(lsp_to_start[i][2])
+            end
+        end, 5000)
     end
 
     local function check_finish()
@@ -30,11 +32,11 @@ M.setup_languages = function(packages_data)
                     vim.defer_fn(function()
                         lsp_start()
                         null_ls.try_add()
-                    end, 1000)
+                    end, 100)
                     vim.defer_fn(function()
                         global.install_proccess = false
                         M.diagnosticls_ready = true
-                    end, 2000)
+                    end, 200)
                 end, 100)
             end
         else
@@ -49,7 +51,7 @@ M.setup_languages = function(packages_data)
             if not mason_registry.is_installed(k) then
                 vim.defer_fn(function()
                     check_proccess(k)
-                end, 1000)
+                end, 100)
             else
                 local index = {}
                 for key, v in pairs(packages_to_install) do
@@ -57,7 +59,7 @@ M.setup_languages = function(packages_data)
                 end
                 packages_to_install[index[k]] = nil
             end
-        end, 2000)
+        end, 200)
     end
 
     local function install_package()
@@ -75,12 +77,12 @@ M.setup_languages = function(packages_data)
                                     vim.cmd("MasonInstall " .. packages_to_install[i])
                                     check_proccess(packages_to_install[i])
                                 end
-                            end, 1000)
+                            end, 100)
                             vim.defer_fn(function()
                                 if global.install_proccess then
                                     check_finish()
                                 end
-                            end, 2000)
+                            end, 100)
                         elseif choice == "Don't ask me again" then
                             funcs.write_file(global.cache_path .. "/.lvim_packages", "")
                             vim.notify(
@@ -98,7 +100,7 @@ M.setup_languages = function(packages_data)
                             })
                         end
                     end, "editor")
-                end, 1000)
+                end, 100)
             end
         end
     end
@@ -166,7 +168,9 @@ M.setup_languages = function(packages_data)
                 end
             end
             vim.schedule(function()
-                install_package()
+                vim.defer_fn(function()
+                    install_package()
+                end, 3000)
             end)
         end
     end
