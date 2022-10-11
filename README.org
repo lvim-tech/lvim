@@ -4,9 +4,13 @@
 
   LVIM IDE is a modular Neovim configuration written in LUA with full customization
 
-  Current version - 2.3.25 (2022-10-09)
+  * LSP support for 60+ languages
 
-  110 plugins (startup time: ~81 ms)
+  * Debug support for c, cpp, dart, elixir, go, haskell, java, javascript/typescript, lua, php, python, ruby, rust
+
+  Current version - 2.3.50 (2022-10-11)
+
+  111 plugins (startup time: ~81 ms)
 
 **  SCREENSHOTS
 
@@ -289,7 +293,7 @@
 
 
 
-****  LSP SUPPORT OF THE FOLLOWING FILETYPES 
+****  LSP SUPPORT 
 
       + bib
       + c
@@ -355,3 +359,19 @@
       + yaml
       + zig
       + zir
+
+****  DEBUG SUPPORT 
+
+      + c
+      + cpp
+      + dart
+      + elixir
+      + go
+      + haskell
+      + java
+      + javascript/typescript
+      + lua
+      + php
+      + python
+      + ruby
+      + rust
