@@ -525,7 +525,7 @@ modules["lewis6991/hover.nvim"] = {
     config = languages_config.hover_nvim,
 }
 
-modules["lvim-tech/fidget.nvim"] = {
+modules["j-hui/fidget.nvim"] = {
     commit = funcs.get_commit("fidget.nvim", plugins_snapshot),
     event = {
         "BufRead",
