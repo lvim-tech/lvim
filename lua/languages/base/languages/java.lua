@@ -48,11 +48,17 @@ local function start_server_tools()
         init_options = {
             bundles = jdtls_bundles,
         },
-        on_attach = function(_, _)
+        on_attach = function(client, bufnr)
             require("jdtls").setup_dap({ hotcodereplace = "auto" })
+            require("jdtls.dap").setup_dap_main_class_configs()
             -- require("jdtls").test_class()
             -- require("jdtls").test_nearest_method()
-            require("jdtls.dap").setup_dap_main_class_configs()
+            table.insert(global["languages"]["java"]["pid"], client.rpc.pid)
+            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+            languages_setup.document_highlight(client, bufnr)
+            languages_setup.document_formatting(client, bufnr)
+            local bufopts = { noremap = true, silent = true, buffer = bufnr }
+            vim.keymap.set("n", "ge", vim.lsp.buf.rename, bufopts)
         end,
     })
 end
