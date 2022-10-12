@@ -2,21 +2,21 @@ local global = require("core.global")
 local languages_setup = require("languages.base.utils")
 
 local language_configs = {}
-local jdtls_launcher = vim.fn.glob(global.mason_path .. "/packages/jdtls/plugins/org.eclipse.equinox.launcher_*.jar")
-local jdtls_bundles = {
-    vim.fn.glob(
-        global.mason_path .. "/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar"
-    ),
-}
--- vim.list_extend(
---     jdtls_bundles,
---     vim.split(vim.fn.glob(global.mason_path .. "/packages/java-test/extension/server/*.jar"), "\n")
--- )
-local jdtls_config = global.mason_path .. "/packages/jdtls/config_" .. global.os
-local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
-local workspace_dir = global.cache_path .. "/workspace-root/" .. project_name
 
 local function start_server_tools()
+    local jdtls_launcher = vim.fn.glob(global.mason_path .. "/packages/jdtls/plugins/org.eclipse.equinox.launcher_*.jar")
+    local jdtls_bundles = {
+        vim.fn.glob(
+            global.mason_path .. "/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar"
+        ),
+    }
+    vim.list_extend(
+        jdtls_bundles,
+        vim.split(vim.fn.glob(global.mason_path .. "/packages/java-test/extension/server/*.jar"), "\n")
+    )
+    local jdtls_config = global.mason_path .. "/packages/jdtls/config_" .. global.os
+    local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+    local workspace_dir = global.cache_path .. "/workspace-root/" .. project_name
     require("jdtls").start_or_attach({
         cmd = {
             "java",
@@ -62,7 +62,6 @@ language_configs["lsp"] = function()
         ["dap"] = { "java-debug-adapter", "java-test" },
         ["jdtls"] = {},
     })
-
     local function check_status()
         if global.install_proccess == false then
             local JdtlsHooks = vim.api.nvim_create_augroup("JdtlsHooks", { clear = true })
@@ -73,13 +72,13 @@ language_configs["lsp"] = function()
                     start_server_tools()
                 end,
             })
+            vim.cmd("set filetype=java")
         else
             vim.defer_fn(function()
                 check_status()
             end, 1000)
         end
     end
-
     check_status()
 end
 

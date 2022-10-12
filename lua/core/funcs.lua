@@ -1,5 +1,4 @@
 local global = require("core.global")
-local select = require("configs.base.ui.select")
 
 local M = {}
 
@@ -278,6 +277,7 @@ M.get_highlight = function(hlname)
 end
 
 M.quit = function()
+    local select = require("configs.base.ui.select")
     local status = true
     for _, v in ipairs(vim.api.nvim_list_bufs()) do
         if vim.bo[v].modified then

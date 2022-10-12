@@ -43,25 +43,8 @@ function config.null_ls_nvim()
     if not null_ls_status_ok then
         return
     end
-    local formatting = null_ls.builtins.formatting
-    local diagnostics = null_ls.builtins.diagnostics
     null_ls.setup({
         debug = false,
-        sources = {
-            diagnostics.cpplint,
-            diagnostics.flake8,
-            diagnostics.golangci_lint,
-            diagnostics.luacheck,
-            diagnostics.rubocop,
-            diagnostics.shellcheck,
-            diagnostics.vint,
-            diagnostics.yamllint,
-            formatting.black,
-            formatting.cbfmt,
-            formatting.prettierd,
-            formatting.shfmt,
-            formatting.stylua,
-        },
         on_attach = function(client, bufnr)
             if client.server_capabilities.documentFormattingProvider then
                 vim.api.nvim_create_autocmd("BufWritePre", {

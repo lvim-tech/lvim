@@ -967,7 +967,6 @@ function config.heirline_nvim()
     }
     local file_type = {
         provider = function()
-            local global = require("core.global")
             local filetype = vim.bo.filetype
             if filetype ~= "" then
                 return string.upper(filetype)

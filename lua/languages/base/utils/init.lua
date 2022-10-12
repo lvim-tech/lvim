@@ -6,8 +6,32 @@ local select = require("configs.base.ui.select")
 
 local M = {}
 
-M.diagnosticls_ready = true
+M.dependencies_ready = true
 M.current_language = ""
+
+local null_ls_status_ok, null_ls = pcall(require, "null-ls")
+if not null_ls_status_ok then
+    return
+end
+local formatting = null_ls.builtins.formatting
+local diagnostics = null_ls.builtins.diagnostics
+
+M.null_ls = {
+    cpplint = diagnostics.cpplint,
+    flake8 = diagnostics.flake8,
+    golangci_lint = diagnostics.golangci_lint,
+    luacheck = diagnostics.luacheck,
+    rubocop = diagnostics.rubocop,
+    shellcheck = diagnostics.shellcheck,
+    vint = diagnostics.vint,
+    yamllint = diagnostics.yamllint,
+    black = formatting.black,
+    cbfmt = formatting.cbfmt,
+    prettierd = formatting.prettierd,
+    shfmt = formatting.shfmt,
+    stylua = formatting.stylua,
+}
+
 
 M.setup_languages = function(packages_data)
     local packages_to_install, lsp_to_start, ordered_keys
@@ -31,11 +55,10 @@ M.setup_languages = function(packages_data)
                 vim.defer_fn(function()
                     vim.defer_fn(function()
                         lsp_start()
-                        null_ls.try_add()
-                    end, 100)
+                    end, 2000)
                     vim.defer_fn(function()
                         global.install_proccess = false
-                        M.diagnosticls_ready = true
+                        M.dependencies_ready = true
                     end, 200)
                 end, 100)
             end
@@ -56,6 +79,11 @@ M.setup_languages = function(packages_data)
                 local index = {}
                 for key, v in pairs(packages_to_install) do
                     index[v] = key
+                    if index[v] ~= nil then
+                        null_ls.register({
+                            M.null_ls[v]
+                        })
+                    end
                 end
                 packages_to_install[index[k]] = nil
             end
@@ -127,8 +155,14 @@ M.setup_languages = function(packages_data)
                     for a = 1, #v do
                         if not mason_registry.is_installed(v[a]) then
                             global.install_proccess = true
-                            M.diagnosticls_ready = false
+                            M.dependencies_ready = false
                             table.insert(packages_to_install, v[a])
+                        else
+                            if v[a] ~= nil then
+                                null_ls.register({
+                                    M.null_ls[v[a]]
+                                })
+                            end
                         end
                     end
                 elseif k == "dap" then
@@ -136,20 +170,6 @@ M.setup_languages = function(packages_data)
                         if not mason_registry.is_installed(v[a]) then
                             global.install_proccess = true
                             table.insert(packages_to_install, v[a])
-                        end
-                    end
-                elseif k == "diagnostic-languageserver" then
-                    if not mason_registry.is_installed(k) then
-                        global.install_proccess = true
-                        table.insert(packages_to_install, k)
-                        table.insert(lsp_to_start, { v[1], v[2] })
-                    else
-                        if M.diagnosticls_ready then
-                            lspconfig[v[1]].setup(v[2])
-                            vim.cmd("LspStart " .. v[1])
-                        else
-                            global.install_proccess = true
-                            table.insert(lsp_to_start, { v[1], v[2] })
                         end
                     end
                 else
@@ -177,6 +197,7 @@ M.setup_languages = function(packages_data)
 
     init(packages_data)
 end
+
 
 M.config_diagnostic = {
     virtual_text = false,
