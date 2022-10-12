@@ -32,7 +32,6 @@ M.null_ls = {
     stylua = formatting.stylua,
 }
 
-
 M.setup_languages = function(packages_data)
     local packages_to_install, lsp_to_start, ordered_keys
 
@@ -45,7 +44,6 @@ M.setup_languages = function(packages_data)
     end
 
     local function check_finish()
-        local null_ls = require("null-ls.client")
         if next(packages_to_install) == nil then
             for _, win in ipairs(vim.api.nvim_list_wins()) do
                 local config = vim.api.nvim_win_get_config(win)
@@ -81,7 +79,7 @@ M.setup_languages = function(packages_data)
                     index[v] = key
                     if index[v] ~= nil then
                         null_ls.register({
-                            M.null_ls[v]
+                            M.null_ls[v],
                         })
                     end
                 end
@@ -160,7 +158,7 @@ M.setup_languages = function(packages_data)
                         else
                             if v[a] ~= nil then
                                 null_ls.register({
-                                    M.null_ls[v[a]]
+                                    M.null_ls[v[a]],
                                 })
                             end
                         end
@@ -194,10 +192,8 @@ M.setup_languages = function(packages_data)
             end)
         end
     end
-
     init(packages_data)
 end
-
 
 M.config_diagnostic = {
     virtual_text = false,

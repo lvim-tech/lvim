@@ -44,7 +44,6 @@ modules["rcarriga/nvim-notify"] = {
 }
 
 modules["folke/noice.nvim"] = {
-    -- event = "VimEnter",
     requires = {
         {
             "MunifTanjim/nui.nvim",
@@ -53,7 +52,7 @@ modules["folke/noice.nvim"] = {
         {
             "rcarriga/nvim-notify",
             commit = funcs.get_commit("nvim-notify", plugins_snapshot),
-        }
+        },
     },
     commit = funcs.get_commit("noice.nvim", plugins_snapshot),
     config = ui_config.noice_nvim,
@@ -119,12 +118,12 @@ modules["rebelot/heirline.nvim"] = {
                 {
                     "rcarriga/nvim-notify",
                     commit = funcs.get_commit("nvim-notify", plugins_snapshot),
-                }
+                },
             },
             commit = funcs.get_commit("noice.nvim", plugins_snapshot),
         },
     },
-    after = {"lvim-colorscheme", "noice.nvim"},
+    after = { "lvim-colorscheme", "noice.nvim" },
     config = ui_config.heirline_nvim,
 }
 
