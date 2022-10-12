@@ -60,6 +60,7 @@ keymaps["normal"] = {
     { "gpi", ":LspPreviewImplementation<CR>" }, -- Lsp implementation
     { "gpp", ":LspPreviewCloseAll<CR>" }, -- Lsp close all
     { "gh", ":LspHover<CR>" }, -- Lsp hover
+    { "K", ":LspHover<CR>" }, -- Lsp hover
     { "gS", ":SnipRun<CR>" }, -- Snip run
     { "gP", ":hardcopy<CR>" }, -- Print file
     { "tn", ":tabn<CR>" }, -- Tab next
