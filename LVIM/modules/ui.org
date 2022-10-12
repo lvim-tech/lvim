@@ -57,7 +57,6 @@
     #+begin_src lua
     modules["rcarriga/nvim-notify"] = {
         commit = funcs.get_commit("nvim-notify", plugins_snapshot),
-        after = "lvim-colorscheme",
         config = ui_config.nvim_notify,
     }
     #+end_src
@@ -117,8 +116,17 @@
 
     #+begin_src lua
     modules["folke/noice.nvim"] = {
-        commit = funcs.get_commit("nui.nvim", plugins_snapshot),
-        event = "VimEnter",
+        requires = {
+            {
+                "MunifTanjim/nui.nvim",
+                commit = funcs.get_commit("nui.nvim", plugins_snapshot),
+            },
+            {
+                "rcarriga/nvim-notify",
+                commit = funcs.get_commit("nvim-notify", plugins_snapshot),
+            },
+        },
+        commit = funcs.get_commit("noice.nvim", plugins_snapshot),
         config = ui_config.noice_nvim,
     }
     #+end_src
