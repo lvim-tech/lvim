@@ -123,6 +123,7 @@ modules["rebelot/heirline.nvim"] = {
             commit = funcs.get_commit("noice.nvim", plugins_snapshot),
         },
     },
+    after = { "lvim-colorscheme", "noice.nvim" },
     config = ui_config.heirline_nvim,
 }
 
