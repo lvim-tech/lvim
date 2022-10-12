@@ -4,7 +4,8 @@ local languages_setup = require("languages.base.utils")
 local language_configs = {}
 
 local function start_server_tools()
-    local jdtls_launcher = vim.fn.glob(global.mason_path .. "/packages/jdtls/plugins/org.eclipse.equinox.launcher_*.jar")
+    local jdtls_launcher =
+        vim.fn.glob(global.mason_path .. "/packages/jdtls/plugins/org.eclipse.equinox.launcher_*.jar")
     local jdtls_bundles = {
         vim.fn.glob(
             global.mason_path .. "/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar"
@@ -72,7 +73,15 @@ language_configs["lsp"] = function()
                     start_server_tools()
                 end,
             })
-            vim.cmd("set filetype=java")
+            vim.tbl_filter(function(buf)
+                if
+                    vim.api.nvim_buf_is_valid(buf)
+                    and vim.api.nvim_buf_get_option(buf, "buflisted")
+                    and vim.api.nvim_buf_get_option(buf, "filetype") == "java"
+                then
+                    vim.api.nvim_buf_set_option(buf, "filetype", "java")
+                end
+            end, vim.api.nvim_list_bufs())
         else
             vim.defer_fn(function()
                 check_status()
