@@ -8,9 +8,9 @@
 
   * Debug support for c, cpp, dart, elixir, go, haskell, java, javascript/typescript, lua, php, python, ruby, rust
 
-  Current version - 2.3.50 (2022-10-11)
+  Current version - 2.3.62 (2022-10-12)
 
-  111 plugins (startup time: ~81 ms)
+  111 plugins
 
 **  SCREENSHOTS
 
