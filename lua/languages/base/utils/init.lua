@@ -40,7 +40,7 @@ M.setup_languages = function(packages_data)
             for i = 1, #lsp_to_start do
                 lspconfig[lsp_to_start[i][1]].setup(lsp_to_start[i][2])
             end
-        end, 5000)
+        end, 3000)
     end
 
     local function check_finish()
@@ -75,15 +75,17 @@ M.setup_languages = function(packages_data)
                 end, 100)
             else
                 local index = {}
-                for key, v in pairs(packages_to_install) do
-                    index[v] = key
-                    if index[v] ~= nil then
-                        null_ls.register({
-                            M.null_ls[v],
-                        })
+                vim.defer_fn(function()
+                    for key, v in pairs(packages_to_install) do
+                        index[v] = key
+                        if index[v] ~= nil then
+                            null_ls.register({
+                                M.null_ls[v],
+                            })
+                        end
                     end
-                end
-                packages_to_install[index[k]] = nil
+                    packages_to_install[index[k]] = nil
+                end, 3000)
             end
         end, 200)
     end
@@ -158,7 +160,7 @@ M.setup_languages = function(packages_data)
                         else
                             if v[a] ~= nil then
                                 null_ls.register({
-                                    M.null_ls[v[a]],
+                                    -- M.null_ls[v[a]],
                                 })
                             end
                         end
