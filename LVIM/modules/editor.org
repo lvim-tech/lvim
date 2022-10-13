@@ -68,9 +68,6 @@
                 "telescope-fzf-native.nvim" .. " telescope-file-browser.nvim" .. " telescope-tmux.nvim" .. " howdoi.nvim"
             )
         end
-        if not telescope_status_ok then
-            return
-        end
         telescope.setup({
             defaults = {
                 prompt_prefix = "   ",
@@ -149,7 +146,6 @@
             },
         })
         telescope.load_extension("fzf")
-        telescope.load_extension("media_files")
         telescope.load_extension("file_browser")
         telescope.load_extension("tmux")
         telescope.load_extension("howdoi")
