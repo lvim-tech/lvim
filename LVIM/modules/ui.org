@@ -814,6 +814,7 @@
 
     #+begin_src lua
     function config.heirline_nvim()
+        local colors = require("configs.base.ui.colors")
         local heirline_status_ok, heirline = pcall(require, "heirline")
         if not heirline_status_ok then
             return
@@ -826,12 +827,19 @@
         if not heirline_utils_status_ok then
             return
         end
-        local colors = LVIM_COLORS()
         local align = { provider = "%=" }
         local space = { provider = " " }
+        local mode
         local vi_mode = {
             init = function(self)
                 self.mode = vim.fn.mode(1)
+                if not self.once then
+                    vim.api.nvim_create_autocmd("ModeChanged", {
+                        pattern = "*:*o",
+                        command = "redrawstatus",
+                    })
+                    self.once = true
+                end
             end,
             static = {
                 mode_names = {
@@ -890,9 +898,12 @@
                 return "   %(" .. self.mode_names[self.mode] .. "%)"
             end,
             hl = function(self)
-                local mode = self.mode:sub(1, 1)
+                mode = self.mode:sub(1, 1)
                 return { fg = self.mode_colors[mode], bold = true }
             end,
+            update = {
+                "ModeChanged",
+            },
         }
         local file_name_block = {
             init = function(self)
@@ -900,26 +911,23 @@
             end,
         }
         local work_dir = {
-            provider = function(self)
-                self.icon = "    "
+            provider = function()
+                local icon = "    "
                 local cwd = vim.fn.getcwd(0)
-                self.cwd = vim.fn.fnamemodify(cwd, ":~")
+                cwd = vim.fn.fnamemodify(cwd, ":~")
+                if not heirline_conditions.width_percent_below(#cwd, 0.25) then
+                    cwd = vim.fn.pathshorten(cwd)
+                end
+                local trail = cwd:sub(-1) == "/" and "" or "/"
+                return icon .. cwd .. trail
             end,
             hl = { fg = colors.color_05, bold = true },
-            heirline_utils.make_flexible_component(1, {
-                provider = function(self)
-                    local trail = self.cwd:sub(-1) == "/" and "" or "/"
-                    return self.icon .. self.cwd .. trail
+            on_click = {
+                callback = function()
+                    vim.cmd("Neotree position=left")
                 end,
-            }, {
-                provider = function(self)
-                    local cwd = vim.fn.pathshorten(self.cwd)
-                    local trail = self.cwd:sub(-1) == "/" and "" or "/"
-                    return self.icon .. cwd .. trail
-                end,
-            }, {
-                provider = "",
-            }),
+                name = "heirline_browser",
+            },
         }
         local file_icon = {
             init = function(self)
@@ -934,7 +942,10 @@
                 end
             end,
             hl = function()
-                return { fg = colors.color_05 }
+                return {
+                    fg = vi_mode.static.mode_colors[mode],
+                    bold = true,
+                }
             end,
         }
         local file_name = {
@@ -948,7 +959,12 @@
                 end
                 return filename .. " "
             end,
-            hl = { fg = colors.color_05, bold = true },
+            hl = function()
+                return {
+                    fg = vi_mode.static.mode_colors[mode],
+                    bold = true,
+                }
+            end,
         }
         local file_flags = {
             {
@@ -965,15 +981,8 @@
                         return "  "
                     end
                 end,
-                hl = { fg = colors.color_02 },
+                hl = { fg = colors.color_05 },
             },
-        }
-        local file_name_modifer = {
-            hl = function()
-                if vim.bo.modified then
-                    return { fg = colors.color_05, bold = true, force = true }
-                end
-            end,
         }
         local file_size = {
             provider = function()
@@ -985,14 +994,14 @@
                 local file_size = require("core.funcs").file_size(fsize)
                 return "  " .. file_size
             end,
-            hl = { fg = colors.color_03 },
+            hl = { fg = colors.color_05 },
         }
         file_name_block = heirline_utils.insert(
             file_name_block,
             space,
             space,
             file_icon,
-            heirline_utils.insert(file_name_modifer, file_name),
+            file_name,
             file_size,
             unpack(file_flags),
             { provider = "%<" }
@@ -1035,6 +1044,14 @@
                     return count > 0 and ("  " .. count)
                 end,
                 hl = { fg = colors.color_03 },
+            },
+            on_click = {
+                callback = function()
+                    vim.defer_fn(function()
+                        vim.cmd("Lazygit")
+                    end, 100)
+                end,
+                name = "heirline_git",
             },
         }
         local noice_mode = {
@@ -1081,6 +1098,12 @@
                 end,
                 hl = { fg = colors.color_05 },
             },
+            on_click = {
+                callback = function()
+                    vim.cmd("Neotree diagnostics position=bottom")
+                end,
+                name = "heirline_diagnostics",
+            },
         }
         local lsp_active = {
             condition = heirline_conditions.lsp_attached,
@@ -1093,6 +1116,14 @@
                 return "  " .. table.concat(names, ", ")
             end,
             hl = { fg = colors.color_05, bold = true },
+            on_click = {
+                callback = function()
+                    vim.defer_fn(function()
+                        vim.cmd("LspInfo")
+                    end, 100)
+                end,
+                name = "heirline_LSP",
+            },
         }
         local is_lsp_active = {
             condition = heirline_conditions.lsp_attached,
@@ -1193,7 +1224,82 @@
         }
         local navic = {
             condition = require("nvim-navic").is_available,
-            provider = require("nvim-navic").get_location,
+            static = {
+                type_hl = {
+                    File = "Directory",
+                    Module = "Include",
+                    Namespace = "TSNamespace",
+                    Package = "Include",
+                    Class = "Struct",
+                    Method = "Method",
+                    Property = "TSProperty",
+                    Field = "TSField",
+                    Constructor = "TSConstructor ",
+                    Enum = "TSField",
+                    Interface = "Type",
+                    Function = "Function",
+                    Variable = "TSVariable",
+                    Constant = "Constant",
+                    String = "String",
+                    Number = "Number",
+                    Boolean = "Boolean",
+                    Array = "TSField",
+                    Object = "Type",
+                    Key = "TSKeyword",
+                    Null = "Comment",
+                    EnumMember = "TSField",
+                    Struct = "Struct",
+                    Event = "Keyword",
+                    Operator = "Operator",
+                    TypeParameter = "Type",
+                },
+                enc = function(line, col, winnr)
+                    return bit.bor(bit.lshift(line, 16), bit.lshift(col, 6), winnr)
+                end,
+                dec = function(c)
+                    local line = bit.rshift(c, 16)
+                    local col = bit.band(bit.rshift(c, 6), 1023)
+                    local winnr = bit.band(c, 63)
+                    return line, col, winnr
+                end,
+            },
+            init = function(self)
+                local data = require("nvim-navic").get_data() or {}
+                local children = {}
+                for i, d in ipairs(data) do
+                    local pos = self.enc(d.scope.start.line, d.scope.start.character, self.winnr)
+                    local child = {
+                        {
+                            provider = d.icon,
+                            hl = self.type_hl[d.type],
+                        },
+                        {
+                            provider = d.name:gsub("%%", "%%%%"):gsub("%s*->%s*", ""),
+                            on_click = {
+                                minwid = pos,
+                                callback = function(_, minwid)
+                                    -- decode
+                                    local line, col, winnr = self.dec(minwid)
+                                    vim.api.nvim_win_set_cursor(vim.fn.win_getid(winnr), { line, col })
+                                end,
+                                name = "heirline_navic",
+                            },
+                        },
+                    }
+                    if #data > 1 and i < #data then
+                        table.insert(child, {
+                            provider = " ➤ ",
+                            hl = { fg = colors.color_01 },
+                        })
+                    end
+                    table.insert(children, child)
+                end
+                self.child = self:new(children, 1)
+            end,
+            provider = function(self)
+                return self.child:eval()
+            end,
+            update = "CursorMoved",
         }
         local terminal_name = {
             provider = function()
@@ -1203,6 +1309,7 @@
             hl = { fg = colors.color_02, bold = true },
         }
         local status_lines = {
+            fallthrough = false,
             hl = function()
                 if heirline_conditions.is_active() then
                     return {
@@ -1222,7 +1329,6 @@
                     return self.mode_colors[mode_color]
                 end,
             },
-            init = heirline_utils.pick_child_on_condition,
             {
                 vi_mode,
                 work_dir,
@@ -1242,11 +1348,12 @@
             },
         }
         local win_bars = {
-            init = heirline_utils.pick_child_on_condition,
+            fallthrough = false,
             {
                 condition = function()
                     return heirline_conditions.buffer_matches({
                         buftype = {
+                            "nofile",
                             "prompt",
                             "help",
                             "quickfix",
@@ -1272,7 +1379,10 @@
                             "dapui_breakpoints",
                             "dapui_stacks",
                             "dapui_watches",
+                            "dapui_console",
                             "calendar",
+                            "neo-tree",
+                            "neo-tree-popup",
                         },
                     })
                 end,

@@ -782,6 +782,12 @@ function config.heirline_nvim()
             return icon .. cwd .. trail
         end,
         hl = { fg = colors.color_05, bold = true },
+        on_click = {
+            callback = function()
+                vim.cmd("Neotree position=left")
+            end,
+            name = "heirline_browser",
+        },
     }
     local file_icon = {
         init = function(self)
@@ -899,6 +905,14 @@ function config.heirline_nvim()
             end,
             hl = { fg = colors.color_03 },
         },
+        on_click = {
+            callback = function()
+                vim.defer_fn(function()
+                    vim.cmd("Lazygit")
+                end, 100)
+            end,
+            name = "heirline_git",
+        },
     }
     local noice_mode = {
         condition = require("noice").api.statusline.mode.has,
@@ -944,6 +958,12 @@ function config.heirline_nvim()
             end,
             hl = { fg = colors.color_05 },
         },
+        on_click = {
+            callback = function()
+                vim.cmd("Neotree diagnostics position=bottom")
+            end,
+            name = "heirline_diagnostics",
+        },
     }
     local lsp_active = {
         condition = heirline_conditions.lsp_attached,
@@ -956,6 +976,14 @@ function config.heirline_nvim()
             return "  " .. table.concat(names, ", ")
         end,
         hl = { fg = colors.color_05, bold = true },
+        on_click = {
+            callback = function()
+                vim.defer_fn(function()
+                    vim.cmd("LspInfo")
+                end, 100)
+            end,
+            name = "heirline_LSP",
+        },
     }
     local is_lsp_active = {
         condition = heirline_conditions.lsp_attached,
@@ -1056,7 +1084,82 @@ function config.heirline_nvim()
     }
     local navic = {
         condition = require("nvim-navic").is_available,
-        provider = require("nvim-navic").get_location,
+        static = {
+            type_hl = {
+                File = "Directory",
+                Module = "Include",
+                Namespace = "TSNamespace",
+                Package = "Include",
+                Class = "Struct",
+                Method = "Method",
+                Property = "TSProperty",
+                Field = "TSField",
+                Constructor = "TSConstructor ",
+                Enum = "TSField",
+                Interface = "Type",
+                Function = "Function",
+                Variable = "TSVariable",
+                Constant = "Constant",
+                String = "String",
+                Number = "Number",
+                Boolean = "Boolean",
+                Array = "TSField",
+                Object = "Type",
+                Key = "TSKeyword",
+                Null = "Comment",
+                EnumMember = "TSField",
+                Struct = "Struct",
+                Event = "Keyword",
+                Operator = "Operator",
+                TypeParameter = "Type",
+            },
+            enc = function(line, col, winnr)
+                return bit.bor(bit.lshift(line, 16), bit.lshift(col, 6), winnr)
+            end,
+            dec = function(c)
+                local line = bit.rshift(c, 16)
+                local col = bit.band(bit.rshift(c, 6), 1023)
+                local winnr = bit.band(c, 63)
+                return line, col, winnr
+            end,
+        },
+        init = function(self)
+            local data = require("nvim-navic").get_data() or {}
+            local children = {}
+            for i, d in ipairs(data) do
+                local pos = self.enc(d.scope.start.line, d.scope.start.character, self.winnr)
+                local child = {
+                    {
+                        provider = d.icon,
+                        hl = self.type_hl[d.type],
+                    },
+                    {
+                        provider = d.name:gsub("%%", "%%%%"):gsub("%s*->%s*", ""),
+                        on_click = {
+                            minwid = pos,
+                            callback = function(_, minwid)
+                                -- decode
+                                local line, col, winnr = self.dec(minwid)
+                                vim.api.nvim_win_set_cursor(vim.fn.win_getid(winnr), { line, col })
+                            end,
+                            name = "heirline_navic",
+                        },
+                    },
+                }
+                if #data > 1 and i < #data then
+                    table.insert(child, {
+                        provider = " ➤ ",
+                        hl = { fg = colors.color_01 },
+                    })
+                end
+                table.insert(children, child)
+            end
+            self.child = self:new(children, 1)
+        end,
+        provider = function(self)
+            return self.child:eval()
+        end,
+        update = "CursorMoved",
     }
     local terminal_name = {
         provider = function()
