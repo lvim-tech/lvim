@@ -16,7 +16,7 @@ end
 local formatting = null_ls.builtins.formatting
 local diagnostics = null_ls.builtins.diagnostics
 
-M.null_ls = {
+local null_ls_builtins = {
     cpplint = diagnostics.cpplint,
     flake8 = diagnostics.flake8,
     golangci_lint = diagnostics.golangci_lint,
@@ -80,7 +80,7 @@ M.setup_languages = function(packages_data)
                         index[v] = key
                         if index[v] ~= nil then
                             null_ls.register({
-                                M.null_ls[v],
+                                null_ls_builtins[v],
                             })
                         end
                     end
@@ -160,7 +160,7 @@ M.setup_languages = function(packages_data)
                         else
                             if v[a] ~= nil then
                                 null_ls.register({
-                                    -- M.null_ls[v[a]],
+                                    null_ls_builtins[v[a]],
                                 })
                             end
                         end
