@@ -57,8 +57,6 @@ local function start_server_tools()
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
-            local bufopts = { noremap = true, silent = true, buffer = bufnr }
-            vim.keymap.set("n", "ge", vim.lsp.buf.rename, bufopts)
         end,
     })
 end
