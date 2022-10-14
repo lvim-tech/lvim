@@ -571,9 +571,10 @@ modules["mfussenegger/nvim-jdtls"] = {
     ft = "java",
 }
 
-modules["folke/lua-dev.nvim"] = {
-    commit = funcs.get_commit("lua-dev.nvim", plugins_snapshot),
+modules["folke/neodev.nvim"] = {
+    commit = funcs.get_commit("neodev.nvim", plugins_snapshot),
     ft = "lua",
+    config = languages_config.neodev_nvim,
 }
 
 modules["simrat39/rust-tools.nvim"] = {

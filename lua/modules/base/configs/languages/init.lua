@@ -150,6 +150,14 @@ function config.fidget_nvim()
     })
 end
 
+function config.neodev_nvim()
+    local neodev_status_ok, neodev = pcall(require, "neodev")
+    if not neodev_status_ok then
+        return
+    end
+    neodev.setup({})
+end
+
 function config.go_nvim()
     local go_status_ok, go = pcall(require, "go")
     if not go_status_ok then
