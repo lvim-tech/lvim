@@ -64,6 +64,11 @@ modules["goolord/alpha-nvim"] = {
     config = ui_config.alpha_nvim,
 }
 
+modules["s1n7ax/nvim-window-picker"] = {
+    commit = funcs.get_commit("nvim-window-picker", plugins_snapshot),
+    config = ui_config.nvim_window_picker,
+}
+
 modules["nvim-neo-tree/neo-tree.nvim"] = {
     branch = "v2.x",
     commit = funcs.get_commit("neo-tree.nvim", plugins_snapshot),
