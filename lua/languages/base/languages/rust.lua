@@ -34,6 +34,7 @@ local function start_server_tools()
             autostart = true,
             filetypes = { "rust" },
             on_attach = function(client, bufnr)
+                client.offset_encoding = "utf-16"
                 table.insert(global["languages"]["rust"]["pid"], client.rpc.pid)
                 vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
                 languages_setup.document_highlight(client, bufnr)

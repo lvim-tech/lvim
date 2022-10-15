@@ -53,6 +53,7 @@ local function start_server_tools()
             require("jdtls.dap").setup_dap_main_class_configs()
             -- require("jdtls").test_class()
             -- require("jdtls").test_nearest_method()
+            client.offset_encoding = "utf-16"
             table.insert(global["languages"]["java"]["pid"], client.rpc.pid)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             languages_setup.document_highlight(client, bufnr)
