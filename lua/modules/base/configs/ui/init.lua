@@ -74,6 +74,7 @@ function config.noice_nvim()
     end
     noice.setup({
         cmdline = {
+            enabled = true,
             view = "cmdline_popup",
             opts = { buf_options = { filetype = "vim" } },
             icons = {
@@ -81,6 +82,9 @@ function config.noice_nvim()
                 ["?"] = { icon = " ", hl_group = "DiagnosticWarn" },
                 [":"] = { icon = " ", hl_group = "DiagnosticInfo", firstc = false },
             },
+        },
+        messages = {
+            enabled = true,
         },
         popupmenu = {
             enabled = true,
@@ -92,12 +96,18 @@ function config.noice_nvim()
             filter = { event = "msg_show", ["not"] = { kind = { "search_count", "echo" } } },
         },
         notify = {
-            enabled = false,
+            enabled = true,
+        },
+        hacks = {
+            skip_duplicate_messages = true,
         },
         views = {
             popupmenu = {
                 zindex = 65,
                 position = "auto",
+                size = {
+                    width = "auto",
+                },
                 win_options = {
                     winhighlight = {
                         Normal = "NuiBody",
@@ -106,11 +116,15 @@ function config.noice_nvim()
                         PmenuMatch = "Special",
                     },
                 },
+                border = {
+                    padding = { 0, 1 },
+                },
             },
             notify = {
                 backend = "notify",
                 level = vim.log.levels.INFO,
                 replace = true,
+                format = "notify",
             },
             split = {
                 backend = "split",
@@ -122,7 +136,8 @@ function config.noice_nvim()
                     keys = { "q", "<esc>" },
                 },
                 win_options = {
-                    winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
+                    winhighlight = { Normal = "NuiBody", FloatBorder = "NuiBorder" },
+                    wrap = true,
                 },
             },
             vsplit = {
@@ -135,7 +150,7 @@ function config.noice_nvim()
                     keys = { "q", "<esc>" },
                 },
                 win_options = {
-                    winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
+                    winhighlight = { Normal = "NuiBody", FloatBorder = "NuiBorder" },
                 },
             },
             popup = {
@@ -145,14 +160,16 @@ function config.noice_nvim()
                     keys = { "q", "<esc>" },
                 },
                 enter = true,
-                border = { " ", " ", " ", " ", " ", " ", " ", " " },
+                border = {
+                    style = "single",
+                },
                 position = "50%",
                 size = {
                     width = "80%",
                     height = "60%",
                 },
                 win_options = {
-                    winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
+                    winhighlight = { Normal = "NuiBody", FloatBorder = "NuiBorder" },
                 },
             },
             cmdline = {
@@ -166,9 +183,16 @@ function config.noice_nvim()
                     height = "auto",
                     width = "100%",
                 },
-                border = { " ", " ", " ", " ", " ", " ", " ", " " },
+                border = {
+                    style = "none",
+                },
                 win_options = {
-                    winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
+                    winhighlight = {
+                        Normal = "NuiBody",
+                        FloatBorder = "NuiBorder",
+                        IncSearch = "IncSearch",
+                        Search = "Search",
+                    },
                 },
             },
             cmdline_popup = {
@@ -182,6 +206,7 @@ function config.noice_nvim()
                     col = "50%",
                 },
                 size = {
+                    min_width = 60,
                     width = "auto",
                     height = "auto",
                 },
@@ -193,7 +218,12 @@ function config.noice_nvim()
                     },
                 },
                 win_options = {
-                    winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
+                    winhighlight = {
+                        Normal = "NuiBody",
+                        FloatBorder = "NuiBorder",
+                        IncSearch = "IncSearch",
+                        Search = "Search",
+                    },
                     cursorline = false,
                 },
                 filter_options = {
@@ -206,7 +236,12 @@ function config.noice_nvim()
                                 },
                             },
                             win_options = {
-                                winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
+                                winhighlight = {
+                                    Normal = "NuiBody",
+                                    FloatBorder = "NuiBorder",
+                                    IncSearch = "IncSearch",
+                                    Search = "Search",
+                                },
                             },
                         },
                     },
@@ -216,6 +251,7 @@ function config.noice_nvim()
                 backend = "popup",
                 relative = "editor",
                 focusable = false,
+                align = "center",
                 enter = false,
                 zindex = 60,
                 format = { "{confirm}" },
@@ -225,14 +261,17 @@ function config.noice_nvim()
                 },
                 size = "auto",
                 border = {
-                    style = "rounded",
+                    style = { " ", " ", " ", " ", " ", " ", " ", " " },
                     padding = { 0, 1, 0, 1 },
                     text = {
-                        top = " Confirm ",
+                        top = " CONFIRM: ",
                     },
                 },
                 win_options = {
-                    winhighlight = "Normal:NuiBody,FloatBorder:NuiBorder",
+                    winhighlight = {
+                        Normal = "NuiBody",
+                        FloatBorder = "NuiBorder",
+                    },
                 },
             },
         },
@@ -242,7 +281,7 @@ function config.noice_nvim()
                 filter = { event = "cmdline" },
             },
             {
-                view = "cmdline_popup",
+                view = "confirm",
                 filter = {
                     any = {
                         { event = "msg_show", kind = "confirm" },
@@ -1361,7 +1400,7 @@ function config.fm_nvim()
     fm_nvim.setup({
         ui = {
             float = {
-                border = "single",
+                border = { " ", " ", " ", " ", " ", " ", " ", " " },
                 float_hl = "NormalFloat",
                 border_hl = "FloatBorder",
                 height = 0.95,
@@ -1383,7 +1422,7 @@ function config.toggleterm_nvim()
         count = 4,
         direction = "float",
         float_opts = {
-            border = "single",
+            border = { " ", " ", " ", " ", " ", " ", " ", " " },
             winblend = 0,
             width = vim.o.columns - 20,
             height = vim.o.lines - 9,

@@ -44,6 +44,7 @@ modules["rcarriga/nvim-notify"] = {
 }
 
 modules["folke/noice.nvim"] = {
+    commit = funcs.get_commit("noice.nvim", plugins_snapshot),
     requires = {
         {
             "MunifTanjim/nui.nvim",
@@ -54,7 +55,7 @@ modules["folke/noice.nvim"] = {
             commit = funcs.get_commit("nvim-notify", plugins_snapshot),
         },
     },
-    commit = funcs.get_commit("noice.nvim", plugins_snapshot),
+    after = { "lvim-colorscheme" },
     config = ui_config.noice_nvim,
 }
 
