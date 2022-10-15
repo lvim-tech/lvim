@@ -46,6 +46,7 @@ function config.null_ls_nvim()
     null_ls.setup({
         debug = false,
         on_attach = function(client, bufnr)
+            client.offset_encoding = "utf-8"
             if client.server_capabilities.documentFormattingProvider then
                 vim.api.nvim_create_autocmd("BufWritePre", {
                     group = "LvimIDE",
