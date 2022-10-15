@@ -25,13 +25,17 @@ end
 configs["base_events"] = function()
     vim.api.nvim_create_autocmd("FileType", {
         pattern = {
-            "dart",
-            "ruby",
-            "yaml",
             "c",
             "cpp",
+            "css",
+            "dart",
+            "haskell",
+            "less",
             "objc",
             "objcpp",
+            "ruby",
+            "scss",
+            "yaml",
         },
         command = "setlocal ts=2 sw=2",
         group = group,
