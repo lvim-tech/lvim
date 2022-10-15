@@ -523,13 +523,6 @@ function config.color_picker_nvim()
     })
 end
 
-function config.virtcolumn_nvim()
-    vim.api.nvim_set_option("colorcolumn", "120")
-    require("virt-column").setup({
-        char = "▕",
-    })
-end
-
 function config.cinnamon_nvim()
     local cinnamon_status_ok, cinnamon = pcall(require, "cinnamon")
     if not cinnamon_status_ok then

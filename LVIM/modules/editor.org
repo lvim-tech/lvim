@@ -934,30 +934,6 @@
     end
     #+end_src
 
-**   [[https://github.com/xiyaowong/virtcolumn.nvim][virtcolumn.nvim]]
-
-    + INIT
-
-    #+begin_src lua
-    modules["xiyaowong/virtcolumn.nvim"] = {
-        commit = funcs.get_commit("virtcolumn.nvim", plugins_snapshot),
-        event = {
-            "BufRead",
-        },
-        config = editor_config.virtcolumn_nvim,
-    }
-    #+end_src
-
-    + CONFIG
-
-    #+begin_src lua
-    function config.virtcolumn_nvim()
-        vim.api.nvim_set_option("colorcolumn", "120")
-        vim.g.virtcolumn_char = "▕"
-        vim.g.virtcolumn_priority = 10
-    end
-    #+end_src
-
 **   [[https://github.com/declancm/cinnamon.nvim][cinnamon.nvim]]
 
     + INIT

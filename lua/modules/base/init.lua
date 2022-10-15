@@ -393,14 +393,6 @@ modules["ziontee113/color-picker.nvim"] = {
     config = editor_config.color_picker_nvim,
 }
 
-modules["lukas-reineke/virt-column.nvim"] = {
-    commit = funcs.get_commit("virt-column.nvim", plugins_snapshot),
-    event = {
-        "BufRead",
-    },
-    config = editor_config.virtcolumn_nvim,
-}
-
 modules["declancm/cinnamon.nvim"] = {
     commit = funcs.get_commit("cinnamon.nvim", plugins_snapshot),
     event = {
