@@ -751,7 +751,9 @@ function config.which_key_nvim()
 end
 
 function config.heirline_nvim()
-    local colors = require("configs.base.ui.colors")
+    local get_colors = require("configs.base.ui.colors")
+    local colors = get_colors.colors()
+    local icons = require("configs.base.ui.icons")
     local heirline_status_ok, heirline = pcall(require, "heirline")
     if not heirline_status_ok then
         return
@@ -1141,7 +1143,6 @@ function config.heirline_nvim()
                 vim.api.nvim_set_hl(0, hl_group_2, { fg = f_icon_color, bg = colors.status_line_bg })
                 if isempty(f_icon) then
                     f_icon = ""
-                    f_icon_color = ""
                 end
                 return "%#"
                     .. hl_group_2
@@ -1162,34 +1163,7 @@ function config.heirline_nvim()
     local navic = {
         condition = require("nvim-navic").is_available,
         static = {
-            type_hl = {
-                File = "TSURI",
-                Module = "TSNamespace",
-                Namespace = "TSNamespace",
-                Package = "TSNamespace",
-                Class = "TSType",
-                Method = "TSMethod",
-                Property = "TSMethod",
-                Field = "TSField",
-                Constructor = "TSConstructor",
-                Enum = "TSType",
-                Interface = "TSType",
-                Function = "TSFunction",
-                Variable = "TSConstant",
-                Constant = "TSConstant",
-                String = "TSString",
-                Number = "TSNumber",
-                Boolean = "TSBoolean",
-                Array = "TSConstant",
-                Object = "TSType",
-                Key = "TSType",
-                Null = "TSType",
-                EnumMember = "TSField",
-                Struct = "TSType",
-                Event = "TSType",
-                Operator = "TSOperator",
-                TypeParameter = "TSParameter",
-            },
+            type_hl = icons.hl,
             enc = function(line, col, winnr)
                 return bit.bor(bit.lshift(line, 16), bit.lshift(col, 6), winnr)
             end,
@@ -1388,6 +1362,23 @@ function config.heirline_nvim()
                 vim.opt_local.winbar = nil
             end
         end,
+    })
+    vim.api.nvim_create_augroup("Heirline", { clear = true })
+    vim.api.nvim_create_autocmd("ColorScheme", {
+        callback = function()
+            get_colors = require("configs.base.ui.colors")
+            colors = get_colors.colors()
+            heirline_utils.on_colorscheme(colors)
+        end,
+        group = "Heirline",
+    })
+    vim.api.nvim_create_autocmd("VimEnter", {
+        callback = function()
+            get_colors = require("configs.base.ui.colors")
+            colors = get_colors.colors()
+            heirline_utils.on_colorscheme(colors)
+        end,
+        group = "Heirline",
     })
 end
 

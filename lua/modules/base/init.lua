@@ -108,11 +108,8 @@ modules["folke/which-key.nvim"] = {
 
 modules["rebelot/heirline.nvim"] = {
     commit = funcs.get_commit("heirline.nvim", plugins_snapshot),
+    event = "VimEnter",
     requires = {
-        {
-            "lvim-tech/lvim-colorscheme",
-            commit = funcs.get_commit("lvim-colorscheme", plugins_snapshot),
-        },
         {
             "folke/noice.nvim",
             requires = {
@@ -128,7 +125,6 @@ modules["rebelot/heirline.nvim"] = {
             commit = funcs.get_commit("noice.nvim", plugins_snapshot),
         },
     },
-    after = { "lvim-colorscheme", "noice.nvim" },
     config = ui_config.heirline_nvim,
 }
 
@@ -185,7 +181,7 @@ modules["lukas-reineke/indent-blankline.nvim"] = {
 
 modules["lvim-tech/lvim-focus"] = {
     commit = funcs.get_commit("lvim-focus", plugins_snapshot),
-    after = "lvim-colorscheme",
+    event = "VimEnter",
     config = ui_config.lvim_focus,
 }
 
@@ -490,13 +486,13 @@ modules["f-person/git-blame.nvim"] = {
 
 modules["sindrets/diffview.nvim"] = {
     commit = funcs.get_commit("diffview.nvim", plugins_snapshot),
-    after = "lvim-colorscheme",
+    event = "VimEnter",
     config = version_control_config.diffview_nvim,
 }
 
 modules["pwntester/octo.nvim"] = {
     commit = funcs.get_commit("octo.nvim", plugins_snapshot),
-    after = "lvim-colorscheme",
+    event = "VimEnter",
     requires = {
         {
             "nvim-lua/plenary.nvim",
