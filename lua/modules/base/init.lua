@@ -55,7 +55,6 @@ modules["folke/noice.nvim"] = {
             commit = funcs.get_commit("nvim-notify", plugins_snapshot),
         },
     },
-    after = { "lvim-colorscheme" },
     config = ui_config.noice_nvim,
 }
 
