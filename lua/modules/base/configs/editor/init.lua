@@ -525,8 +525,9 @@ end
 
 function config.virtcolumn_nvim()
     vim.api.nvim_set_option("colorcolumn", "120")
-    vim.g.virtcolumn_char = "▕"
-    vim.g.virtcolumn_priority = 10
+    require("virt-column").setup({
+        char = "▕",
+    })
 end
 
 function config.cinnamon_nvim()
