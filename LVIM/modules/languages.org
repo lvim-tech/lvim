@@ -292,6 +292,29 @@
     }
     #+end_src
 
+**   [[https://github.com/folke/neodev.nvim][neodev.nvim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["folke/neodev.nvim"] = {
+        commit = funcs.get_commit("neodev.nvim", plugins_snapshot),
+        ft = "lua",
+        config = languages_config.neodev_nvim,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.neodev_nvim()
+        local neodev_status_ok, neodev = pcall(require, "neodev")
+        if not neodev_status_ok then
+            return
+        end
+        neodev.setup({})
+    end
+    #+end_src
 **   [[https://github.com/ray-x/go.nvim][go.nvim]]
 
    + REQUIRES:
