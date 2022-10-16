@@ -934,6 +934,32 @@
     end
     #+end_src
 
+**   [[https://github.com/lvim-tech/lvim-colorcolumn][lvim-colorcolumn]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["lvim-tech/lvim-colorcolumn"] = {
+        commit = funcs.get_commit("lvim-colorcolumn", plugins_snapshot),
+        event = {
+            "BufRead",
+        },
+        config = editor_config.lvim_colorcolumn,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.lvim_colorcolumn()
+        local lvim_colorcolumn_status_ok, lvim_colorcolumn = pcall(require, "lvim-colorcolumn")
+        if not lvim_colorcolumn_status_ok then
+            return
+        end
+        lvim_colorcolumn.setup()
+    end
+    #+end_src
+
 **   [[https://github.com/declancm/cinnamon.nvim][cinnamon.nvim]]
 
     + INIT
