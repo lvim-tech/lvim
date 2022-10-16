@@ -393,6 +393,14 @@ modules["ziontee113/color-picker.nvim"] = {
     config = editor_config.color_picker_nvim,
 }
 
+modules["lvim-tech/lvim-colorcolumn"] = {
+    commit = funcs.get_commit("lvim-colorcolumn", plugins_snapshot),
+    event = {
+        "BufRead",
+    },
+    config = editor_config.lvim_colorcolumn,
+}
+
 modules["declancm/cinnamon.nvim"] = {
     commit = funcs.get_commit("cinnamon.nvim", plugins_snapshot),
     event = {

@@ -523,6 +523,14 @@ function config.color_picker_nvim()
     })
 end
 
+function config.lvim_colorcolumn()
+    local lvim_colorcolumn_status_ok, lvim_colorcolumn = pcall(require, "lvim-colorcolumn")
+    if not lvim_colorcolumn_status_ok then
+        return
+    end
+    lvim_colorcolumn.setup()
+end
+
 function config.cinnamon_nvim()
     local cinnamon_status_ok, cinnamon = pcall(require, "cinnamon")
     if not cinnamon_status_ok then
