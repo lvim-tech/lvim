@@ -554,14 +554,6 @@ modules["lewis6991/hover.nvim"] = {
     config = languages_config.hover_nvim,
 }
 
-modules["j-hui/fidget.nvim"] = {
-    commit = funcs.get_commit("fidget.nvim", plugins_snapshot),
-    event = {
-        "BufRead",
-    },
-    config = languages_config.fidget_nvim,
-}
-
 modules["mfussenegger/nvim-jdtls"] = {
     commit = funcs.get_commit("nvim-jdtls", plugins_snapshot),
     ft = "java",

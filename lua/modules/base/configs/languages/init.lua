@@ -126,31 +126,6 @@ function config.hover_nvim()
     vim.api.nvim_create_user_command("LspHover", "lua require('hover').hover()", {})
 end
 
-function config.fidget_nvim()
-    local fidget_status_ok, fidget = pcall(require, "fidget")
-    if not fidget_status_ok then
-        return
-    end
-    fidget.setup({
-        sources = {
-            ["null-ls"] = {
-                ignore = true,
-            },
-        },
-        text = {
-            spinner = "bouncing_bar", -- animation shown when tasks are ongoing
-        },
-        window = {
-            relative = "editor", -- where to anchor, either "win" or "editor"
-            blend = 0,
-            border = { " ", " ", " ", " ", " ", " ", " ", " " },
-        },
-    })
-    vim.api.nvim_create_autocmd("VimLeavePre", {
-        command = [[silent! FidgetClose]],
-    })
-end
-
 function config.neodev_nvim()
     local neodev_status_ok, neodev = pcall(require, "neodev")
     if not neodev_status_ok then
