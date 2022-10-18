@@ -89,11 +89,11 @@ function config.noice_nvim()
         notify = {
             enabled = false,
         },
-        lsp_progress = {
-            enabled = true,
-            format = "lsp_progress",
-            format_done = "lsp_progress_done",
-        },
+        -- lsp_progress = {
+        --     enabled = true,
+        --     format = "lsp_progress",
+        --     format_done = "lsp_progress_done",
+        -- },
         hacks = {
             skip_duplicate_messages = false,
         },
@@ -1296,7 +1296,7 @@ function config.heirline_nvim()
             noice_mode,
             align,
             diagnostics,
-            -- lsp_progress,
+            lsp_progress,
             lsp_active,
             is_lsp_active,
             file_type,
