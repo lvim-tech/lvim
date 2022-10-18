@@ -12,6 +12,18 @@ configs["base_vim"] = function()
     options.global()
 end
 
+configs["base_colors"] = function()
+    _G.LVIM_COLORS = {
+        color_01 = "#A7C080",
+        color_02 = "#F05F4E",
+        color_03 = "#F2994B",
+        color_04 = "#2AA198",
+        color_05 = "#00839F",
+        bg = "#20262A",
+        fg = "#4C5D67",
+    }
+end
+
 configs["base_options"] = function()
     vim.g.indent_blankline_char = "▏"
     vim.g.indentLine_char = "▏"
@@ -67,11 +79,10 @@ configs["base_events"] = function()
     })
     vim.api.nvim_create_autocmd({ "BufWinEnter", "BufWinLeave" }, {
         callback = function()
-            local buftype = vim.tbl_contains({ "prompt", "nofile", "help", "quickfix" }, vim.bo.buftype)
             local filetype = vim.tbl_contains({
                 "tex",
             }, vim.bo.filetype)
-            if buftype or filetype then
+            if filetype then
                 vim.opt_local.cursorcolumn = false
                 vim.opt_local.colorcolumn = "0"
             end

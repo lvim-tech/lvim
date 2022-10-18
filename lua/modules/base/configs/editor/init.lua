@@ -183,8 +183,8 @@ function config.tabby_nvim()
         return
     end
     local hl_tabline = {
-        color_01 = "#242B30",
-        color_02 = "#A7C080",
+        color_01 = _G.LVIM_COLORS.bg,
+        color_02 = _G.LVIM_COLORS.color_01,
     }
     local get_tab_label = function(tab_number)
         local s, v = pcall(function()
@@ -561,11 +561,11 @@ function config.todo_comments_nvim()
     end
     todo_comments.setup({
         colors = {
-            error = { "#F05F4E", "#F05F4E" },
-            warning = { "#F2994B", "#F2994B" },
-            info = { "#A7C080", "#A7C080" },
-            hint = { "#FF7A66", "#FF7A66" },
-            default = { "#90c1a3", "#90c1a3" },
+            error = { _G.LVIM_COLORS.color_02 },
+            warning = { _G.LVIM_COLORS.color_03 },
+            info = { _G.LVIM_COLORS.color_05 },
+            hint = { _G.LVIM_COLORS.color_04 },
+            default = { _G.LVIM_COLORS.color_05 },
         },
     })
 end

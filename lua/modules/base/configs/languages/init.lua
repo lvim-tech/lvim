@@ -131,7 +131,14 @@ function config.neodev_nvim()
     if not neodev_status_ok then
         return
     end
-    neodev.setup({})
+    neodev.setup({
+        library = {
+            enabled = true,
+            runtime = true,
+            types = true,
+            plugins = false,
+        },
+    })
 end
 
 function config.go_nvim()
@@ -448,8 +455,8 @@ function config.package_info_nvim()
     end
     package_info.setup({
         colors = {
-            up_to_date = "#98c379",
-            outdated = "#F05F4E",
+            up_to_date = _G.LVIM_COLORS.color_01,
+            outdated = _G.LVIM_COLORS.color_02,
         },
     })
 end

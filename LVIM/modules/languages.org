@@ -185,50 +185,6 @@
     end
     #+end_src
 
-**   [[https://github.com/j-hui/fidget.nvim][fidget.nvim]]
-
-    + INIT
-
-    #+begin_src lua
-    modules["j-hui/fidget.nvim"] = {
-        commit = funcs.get_commit("fidget.nvim", plugins_snapshot),
-        event = {
-            "BufRead",
-        },
-        config = fidget_nvim,
-    }
-    #+end_src
-
-    + CONFIG
-
-    #+begin_src lua
-    function config.fidget_nvim()
-        local fidget_status_ok, fidget = pcall(require, "fidget")
-        if not fidget_status_ok then
-            return
-        end
-        fidget.setup({
-            sources = {
-                ["null-ls"] = {
-                    ignore = true,
-                },
-            },
-            text = {
-                spinner = "bouncing_bar", -- animation shown when tasks are ongoing
-            },
-            window = {
-                relative = "editor", -- where to anchor, either "win" or "editor"
-                blend = 0,
-    
-                border = { " ", " ", " ", " ", " ", " ", " ", " " },
-            },
-        })
-        vim.api.nvim_create_autocmd("VimLeavePre", {
-            command = [[silent! FidgetClose]],
-        })
-    end
-    #+end_src
-
 **   [[https://github.com/mfussenegger/nvim-jdtls][nvim-jdtls]]
 
     + INIT
@@ -240,15 +196,34 @@
     }
     #+end_src
 
-**   [[https://github.com/folke/lua-dev.nvim][lua-dev.nvim]]
+**   [[https://github.com/folke/neodev.nvim][neodev.nvim]]
 
     + INIT
 
     #+begin_src lua
-    modules["folke/lua-dev.nvim"] = {
-        commit = funcs.get_commit("lua-dev.nvim", plugins_snapshot),
+    modules["folke/neodev.nvim"] = {
+        commit = funcs.get_commit("neodev.nvim", plugins_snapshot),
         ft = "lua",
     }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.neodev_nvim()
+        local neodev_status_ok, neodev = pcall(require, "neodev")
+        if not neodev_status_ok then
+            return
+        end
+        neodev.setup({
+            library = {
+                enabled = true,
+                runtime = true,
+                types = true,
+                plugins = false,
+            },
+        })
+    end
     #+end_src
 
 **   [[https://github.com/simrat39/rust-tools.nvim][rust-tools.nvim]]
@@ -292,29 +267,6 @@
     }
     #+end_src
 
-**   [[https://github.com/folke/neodev.nvim][neodev.nvim]]
-
-    + INIT
-
-    #+begin_src lua
-    modules["folke/neodev.nvim"] = {
-        commit = funcs.get_commit("neodev.nvim", plugins_snapshot),
-        ft = "lua",
-        config = languages_config.neodev_nvim,
-    }
-    #+end_src
-
-    + CONFIG
-
-    #+begin_src lua
-    function config.neodev_nvim()
-        local neodev_status_ok, neodev = pcall(require, "neodev")
-        if not neodev_status_ok then
-            return
-        end
-        neodev.setup({})
-    end
-    #+end_src
 **   [[https://github.com/ray-x/go.nvim][go.nvim]]
 
    + REQUIRES:
@@ -913,8 +865,8 @@
         end
         package_info.setup({
             colors = {
-                up_to_date = "#98c379",
-                outdated = "#F05F4E",
+                up_to_date = _G.LVIM_COLORS.color_01,
+                outdated = _G.LVIM_COLORS.color_02,
             },
         })
     end
