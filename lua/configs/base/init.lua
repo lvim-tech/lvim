@@ -89,6 +89,10 @@ configs["base_events"] = function()
         end,
         group = group,
     })
+    vim.api.nvim_create_autocmd({ "WinEnter", "WinLeave" }, {
+        command = "set cmdheight=0",
+        group = group,
+    })
 end
 
 configs["base_languages"] = function()
