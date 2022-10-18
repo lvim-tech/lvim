@@ -1412,6 +1412,13 @@ function config.heirline_nvim()
             end
         end,
     })
+    vim.api.nvim_create_augroup("Heirline", { clear = true })
+    vim.api.nvim_create_autocmd("ColorScheme", {
+        callback = function()
+            heirline_utils.on_colorscheme(_G.LVIM_COLORS)
+        end,
+        group = "Heirline",
+    })
 end
 
 function config.fm_nvim()
