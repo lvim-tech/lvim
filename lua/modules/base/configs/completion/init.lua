@@ -146,10 +146,6 @@ function config.nvim_autopairs()
     if not ts_conds_status_ok then
         return
     end
-    nvim_autopairs.add_rules({
-        rule("%", "%", "lua"):with_pair(ts_conds.is_ts_node({ "string", "comment" })),
-        rule("$", "$", "lua"):with_pair(ts_conds.is_not_ts_node({ "function" })),
-    })
 end
 
 function config.nvim_ts_autotag()

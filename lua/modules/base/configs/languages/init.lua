@@ -332,31 +332,29 @@ function config.nvim_dap_ui()
         layouts = {
             {
                 elements = {
-                    "scopes",
-                    "breakpoints",
-                    "stacks",
-                    "watches",
+                    { id = "scopes", size = 0.33 },
+                    { id = "breakpoints", size = 0.17 },
+                    { id = "stacks", size = 0.25 },
+                    { id = "watches", size = 0.25 },
                 },
-                size = 40,
-                position = "left",
+                size = 0.33,
+                position = "right",
             },
             {
                 elements = {
-                    "repl",
-                    "console",
+                    { id = "repl", size = 0.45 },
+                    { id = "console", size = 0.55 },
                 },
-                size = 10,
+                size = 0.27,
                 position = "bottom",
             },
         },
         floating = {
-            max_height = nil,
-            max_width = nil,
+            max_height = 0.9,
+            max_width = 0.5, -- Floats will be treated as percentage of your screen.
+            border = vim.g.border_chars, -- Border style. Can be 'single', 'double' or 'rounded'
             mappings = {
-                close = {
-                    "q",
-                    "<Esc>",
-                },
+                close = { "q", "<Esc>" },
             },
         },
         windows = {
