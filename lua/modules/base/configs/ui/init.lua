@@ -79,10 +79,11 @@ function config.noice_nvim()
             enabled = true,
             view = "cmdline_popup",
             opts = { buf_options = { filetype = "vim" } },
-            icons = {
-                ["/"] = { icon = " ", hl_group = "DiagnosticWarn" },
-                ["?"] = { icon = " ", hl_group = "DiagnosticWarn" },
-                [":"] = { icon = " ", hl_group = "DiagnosticInfo", firstc = false },
+            format = {
+                cmdline = { pattern = "^:", icon = " " },
+                search = { pattern = "^[?/]", icon = " ", conceal = false },
+                filter = { pattern = "^:%s*!", icon = "$", opts = { buf_options = { filetype = "sh" } } },
+                lua = { pattern = "^:%s*lua%s+", icon = "", opts = { buf_options = { filetype = "lua" } } },
             },
         },
         messages = {
@@ -100,11 +101,11 @@ function config.noice_nvim()
         notify = {
             enabled = false,
         },
-        -- lsp_progress = {
-        --     enabled = true,
-        --     format = "lsp_progress",
-        --     format_done = "lsp_progress_done",
-        -- },
+        lsp_progress = {
+            enabled = true,
+            format = "lsp_progress",
+            format_done = "lsp_progress_done",
+        },
         hacks = {
             skip_duplicate_messages = false,
         },
