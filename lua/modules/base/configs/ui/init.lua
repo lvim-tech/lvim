@@ -1255,11 +1255,12 @@ function config.heirline_nvim()
                             name = "heirline_navic",
                         },
                     },
+                    hl = { bg = _G.LVIM_COLORS.bg },
                 }
                 if #data > 1 and i < #data then
                     table.insert(child, {
                         provider = " ➤ ",
-                        hl = { fg = _G.LVIM_COLORS.color_01 },
+                        hl = { bg = _G.LVIM_COLORS.bg, fg = _G.LVIM_COLORS.color_01 },
                     })
                 end
                 table.insert(children, child)
@@ -1269,6 +1270,7 @@ function config.heirline_nvim()
         provider = function(self)
             return self.child:eval()
         end,
+        hl = { bg = _G.LVIM_COLORS.bg, fg = _G.LVIM_COLORS.color_06, bold = true },
         update = "CursorMoved",
     }
     local terminal_name = {
