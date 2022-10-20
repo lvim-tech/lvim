@@ -19,6 +19,7 @@ configs["base_colors"] = function()
         color_03 = "#F2994B",
         color_04 = "#2AA198",
         color_05 = "#00839F",
+        color_06 = "#83A598",
         bg = "#20262A",
         fg = "#4C5D67",
     }
