@@ -100,7 +100,11 @@ configs["base_events"] = function()
         "CursorMoved",
         "CursorMovedI",
     }, {
-        command = "set cmdheight=0",
+        callback = function()
+            vim.schedule(function()
+                vim.cmd("set cmdheight=0")
+            end)
+        end,
         group = group,
     })
 end
