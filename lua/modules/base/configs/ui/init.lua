@@ -1308,7 +1308,7 @@ function config.heirline_nvim()
             noice_mode,
             align,
             diagnostics,
-            lsp_progress,
+            -- lsp_progress,
             lsp_active,
             is_lsp_active,
             file_type,
