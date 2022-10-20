@@ -1,7 +1,18 @@
 local config = {}
 
 function config.lvim_colorscheme()
-    require("lvim-colorscheme").setup()
+    require("lvim-colorscheme").setup({
+        sidebars = {
+            "qf",
+            "Outline",
+            "terminal",
+            "packer",
+            "calendar",
+            "spectre_panel",
+            "ctrlspace",
+            "neo-tree",
+        },
+    })
     vim.cmd("colorscheme lvim")
 end
 
