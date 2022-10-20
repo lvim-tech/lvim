@@ -628,14 +628,6 @@ modules["jose-elias-alvarez/nvim-lsp-ts-utils"] = {
     },
 }
 
-modules["Mofiqul/trld.nvim"] = {
-    commit = funcs.get_commit("trld.nvim", plugins_snapshot),
-    event = {
-        "BufRead",
-    },
-    config = languages_config.trld_nvim,
-}
-
 modules["kosayoda/nvim-lightbulb"] = {
     commit = funcs.get_commit("nvim-lightbulb", plugins_snapshot),
     event = {

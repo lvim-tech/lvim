@@ -22,6 +22,21 @@ function config.mason_nvim()
     vim.api.nvim_create_user_command("LspFormatting", "lua vim.lsp.buf.format {async = true}", {})
     vim.api.nvim_create_user_command("LspRename", "lua vim.lsp.buf.rename()", {})
     vim.api.nvim_create_user_command("LspSignatureHelp", "lua vim.lsp.buf.signature_help()", {})
+    vim.api.nvim_create_user_command(
+        "LspShowDiagnosticCurrent",
+        "lua require('languages.base.utils.show_diagnostic').line()",
+        {}
+    )
+    vim.api.nvim_create_user_command(
+        "LspShowDiagnosticNext",
+        "lua require('languages.base.utils.show_diagnostic').goto_next()",
+        {}
+    )
+    vim.api.nvim_create_user_command(
+        "LspShowDiagnostigPrev",
+        "lua require('languages.base.utils.show_diagnostic').goto_prev()",
+        {}
+    )
     local mason_status_ok, mason = pcall(require, "mason")
     if not mason_status_ok then
         return
@@ -149,22 +164,6 @@ function config.go_nvim()
     go.setup({
         lsp_inlay_hints = {
             enable = false,
-        },
-    })
-end
-
-function config.trld_nvim()
-    local trld_status_ok, trld = pcall(require, "trld")
-    if not trld_status_ok then
-        return
-    end
-    trld.setup({
-        position = "bottom",
-        highlights = {
-            error = "DiagnosticError",
-            warn = "DiagnosticWarn",
-            info = "DiagnosticInfo",
-            hint = "DiagnosticHint",
         },
     })
 end

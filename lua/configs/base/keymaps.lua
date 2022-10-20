@@ -72,7 +72,9 @@ keymaps["normal"] = {
     { "trr", "<Plug>RestNvim<CR>" }, -- Rest nvim
     { "trp", "<Plug>RestNvimPreview<CR>" }, -- Rest nvim preview
     { "trl", "<Plug>RestNvimLast<CR>" }, -- Rest nvim last
-    { "<A-c>", ":LspLine<CR>" }, -- Lsp current line
+    { "dc", ":LspShowDiagnosticCurrent<CR>" }, -- Lsp show diagnostic current line
+    { "dn", ":LspShowDiagnosticNext<CR>" }, -- Lsp show diagnostic next line
+    { "dp", ":LspShowDiagnostigPrev<CR>" }, -- Lsp show diagnostic prev line
     { "<A-e>", ":Neotree diagnostics reveal bottom<CR>" }, -- Neotree diagnostics
     { "<A-1>", "<Cmd>DapToggleBreakpoint<CR>" }, -- Toggle breakpoint
     { "<A-2>", "<Cmd>DapStartContinue<CR>" }, -- Start / continue
