@@ -1033,7 +1033,7 @@ function config.heirline_nvim()
         on_click = {
             callback = function()
                 vim.defer_fn(function()
-                    vim.cmd("Lazygit")
+                    vim.cmd("Neogit")
                 end, 100)
             end,
             name = "heirline_git",
