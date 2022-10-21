@@ -635,13 +635,10 @@
                 },
             },
             window = {
+                position = "left",
+                width = 40,
                 mappings = {
                     ["Z"] = "expand_all_nodes",
-                    w = function(state)
-                        local node = state.tree:get_node()
-                        require("configs.base.ui.window-picker").pick()
-                        vim.cmd("edit " .. vim.fn.fnameescape(node.path))
-                    end,
                 },
             },
             filesystem = {

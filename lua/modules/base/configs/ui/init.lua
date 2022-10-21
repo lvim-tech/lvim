@@ -555,6 +555,8 @@ function config.neo_tree_nvim()
             },
         },
         window = {
+            position = "left",
+            width = 40,
             mappings = {
                 ["Z"] = "expand_all_nodes",
             },
