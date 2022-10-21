@@ -517,7 +517,7 @@ function config.neo_tree_nvim()
             content_layout = "center",
             tab_labels = {
                 filesystem = "  DIR  ",
-                buffers = "  BUFS  ",
+                buffers = "  BUF  ",
                 git_status = " GIT  ",
                 diagnostics = "  LSP  ",
             },
