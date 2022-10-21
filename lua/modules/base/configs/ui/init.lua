@@ -3,7 +3,9 @@ local config = {}
 function config.lvim_colorscheme()
     require("lvim-colorscheme").setup({
         sidebars = {
+            "dbui",
             "qf",
+            "pqf",
             "Outline",
             "terminal",
             "packer",

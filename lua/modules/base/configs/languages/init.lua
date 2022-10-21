@@ -222,23 +222,18 @@ function config.nvim_treesitter()
         },
         indent = {
             enable = true,
-            disable = { "html" },
         },
         autopairs = {
             enable = true,
-            disable = { "html" },
         },
         autotag = {
             enable = true,
-            disable = { "html" },
         },
         rainbow = {
             enable = true,
-            disable = { "html" },
         },
         context_commentstring = {
             enable = true,
-            disable = { "html" },
             config = {
                 javascriptreact = {
                     style_element = "{/*%s*/}",
