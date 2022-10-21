@@ -15,7 +15,20 @@
 
     #+begin_src lua
     function config.lvim_colorscheme()
-        require("lvim-colorscheme").setup()
+        require("lvim-colorscheme").setup({
+            sidebars = {
+                "dbui",
+                "qf",
+                "pqf",
+                "Outline",
+                "terminal",
+                "packer",
+                "calendar",
+                "spectre_panel",
+                "ctrlspace",
+                "neo-tree",
+            },
+        })
         vim.cmd("colorscheme lvim")
     end
     #+end_src
@@ -577,6 +590,17 @@
                 "buffers",
                 "git_status",
                 "diagnostics",
+            },
+            source_selector = {
+                winbar = true,
+                separator = "",
+                content_layout = "center",
+                tab_labels = {
+                    filesystem = "  DIR  ",
+                    buffers = "  BUFS  ",
+                    git_status = " GIT  ",
+                    diagnostics = "  LSP  ",
+                },
             },
             default_component_configs = {
                 container = {
