@@ -57,7 +57,15 @@ Normal mode
 | -------------- | ----------------------------  | --------------------------- |
 | <C-Down>       | :resize +2<CR>                | Resize height +             |
 | -------------- | ----------------------------  | --------------------------- |
-| <S-x>          | :Neotree<CR>                  | Neotree explorer            |
+| <S-x>          | :Neotree filesystem left<CR>  | Neotree ilesystem left      |
+| -------------- | ----------------------------  | --------------------------- |
+| <S-d>          | :Neotree filesystem left<CR>  | Neotree filesystem left     |
+| -------------- | ----------------------------  | --------------------------- |
+| <S-b>          | :Neotree buffers left<CR>     | Neotree filesystem left     |
+| -------------- | ----------------------------  | --------------------------- |
+| <S-g>          | :Neotree git_status left<CR>  | Neotree git_status left     |
+| -------------- | ----------------------------  | --------------------------- |
+| <S-l>          | :Neotree diagnostics left<CR> | Neotree diagnostics left    |
 | -------------- | ----------------------------  | --------------------------- |
 | <S-l>          | :FloatermNew lazygit<CR>      | Lazygit                     |
 | -------------- | ----------------------------  | --------------------------- |

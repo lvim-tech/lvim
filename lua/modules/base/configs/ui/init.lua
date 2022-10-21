@@ -511,6 +511,17 @@ function config.neo_tree_nvim()
             "git_status",
             "diagnostics",
         },
+        source_selector = {
+            winbar = true,
+            separator = "",
+            content_layout = "center",
+            tab_labels = {
+                filesystem = "  DIR  ",
+                buffers = "  BUFS  ",
+                git_status = " GIT  ",
+                diagnostics = "  LSP  ",
+            },
+        },
         default_component_configs = {
             container = {
                 enable_character_fade = true,
