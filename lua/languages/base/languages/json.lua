@@ -1,5 +1,5 @@
 local languages_setup = require("languages.base.utils")
-local jsonls_config = require("languages.base.languages._configs").default_config({ "json" }, "json")
+local jsonls_config = require("languages.base.languages._configs").without_formatting({ "json" }, "json")
 
 local language_configs = {}
 
