@@ -168,6 +168,14 @@ function config.go_nvim()
     })
 end
 
+function config.typescript_nvim()
+    local typescript_status_ok, typescript = pcall(require, "typescript")
+    if not typescript_status_ok then
+        return
+    end
+    typescript.setup()
+end
+
 function config.nvim_lightbulb()
     local nvim_lightbulb_status_ok, nvim_lightbulb = pcall(require, "nvim-lightbulb")
     if not nvim_lightbulb_status_ok then

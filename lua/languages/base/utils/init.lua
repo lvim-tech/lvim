@@ -27,7 +27,32 @@ local null_ls_builtins = {
     yamllint = diagnostics.yamllint,
     black = formatting.black,
     cbfmt = formatting.cbfmt,
-    prettierd = formatting.prettierd,
+    prettierd = formatting.prettierd.with({
+        filetypes = {
+            "javascript",
+            "javascriptreact",
+            "typescript",
+            "typescriptreact",
+            "vue",
+            "css",
+            "scss",
+            "less",
+            "html",
+            "json",
+            "jsonc",
+            "yaml",
+            "markdown",
+            "markdown.mdx",
+            "graphql",
+            "handlebars",
+        },
+        env = {
+            PRETTIERD_DEFAULT_CONFIG = vim.fn.expand("$HOME/.config/nvim/.configs/formatters/.prettierrc.json"),
+        },
+        options = {
+            args = { "$FILENAME", "--no-progress" },
+        },
+    }),
     shfmt = formatting.shfmt,
     stylua = formatting.stylua,
 }
@@ -233,6 +258,18 @@ M.setup_diagnostic = function()
         texthl = "DiagnosticInfo",
         numhl = "DiagnosticInfo",
     })
+end
+
+M.omni = function(client, bufnr)
+    if client.server_capabilities.completionProvider then
+        vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+    end
+end
+
+M.tag = function(client, bufnr)
+    if client.server_capabilities.definitionProvider then
+        vim.api.nvim_buf_set_option(bufnr, "tagfunc", "v:lua.vim.lsp.tagfunc")
+    end
 end
 
 M.document_highlight = function(client, bufnr)

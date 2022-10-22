@@ -613,7 +613,7 @@ modules["akinsho/flutter-tools.nvim"] = {
     },
 }
 
-modules["jose-elias-alvarez/nvim-lsp-ts-utils"] = {
+modules["jose-elias-alvarez/typescript.nvim"] = {
     commit = funcs.get_commit("nvim-lsp-ts-utils", plugins_snapshot),
     ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
     requires = {

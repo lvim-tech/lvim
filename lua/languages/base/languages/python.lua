@@ -1,6 +1,6 @@
 local global = require("core.global")
 local languages_setup = require("languages.base.utils")
-local pyright_config = require("languages.base.languages._configs").default_config({ "python" }, "python")
+local pyright_config = require("languages.base.languages._configs").without_formatting({ "python" }, "python")
 local dap = require("dap")
 
 local language_configs = {}

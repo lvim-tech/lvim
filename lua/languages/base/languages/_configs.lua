@@ -15,7 +15,8 @@ M.default_config = function(file_types, pid_name)
         on_attach = function(client, bufnr)
             client.offset_encoding = "utf-16"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
-            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+            languages_setup.omni(client, bufnr)
+            languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
             navic.attach(client, bufnr)
@@ -37,7 +38,8 @@ M.without_formatting = function(file_types, pid_name)
         on_attach = function(client, bufnr)
             client.offset_encoding = "utf-16"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
-            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+            languages_setup.omni(client, bufnr)
+            languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
             navic.attach(client, bufnr)
         end,
@@ -57,12 +59,7 @@ M.without_winbar_config = function(file_types, pid_name)
         filetypes = file_types,
         on_attach = function(client, bufnr)
             client.offset_encoding = "utf-16"
-            table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
-            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-            languages_setup.document_highlight(client, bufnr)
-            languages_setup.document_formatting(client, bufnr)
         end,
-        capabilities = languages_setup.get_capabilities(),
         root_dir = function(fname)
             return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
         end,
@@ -80,7 +77,8 @@ M.elixir_config = function(file_types, pid_name)
         on_attach = function(client, bufnr)
             client.offset_encoding = "utf-16"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
-            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+            languages_setup.omni(client, bufnr)
+            languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
             navic.attach(client, bufnr)
@@ -102,7 +100,8 @@ M.go = function(file_types, pid_name)
         on_attach = function(client, bufnr)
             client.offset_encoding = "utf-16"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
-            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+            languages_setup.omni(client, bufnr)
+            languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
             navic.attach(client, bufnr)
@@ -136,9 +135,9 @@ M.lua = function(file_types, pid_name)
         on_attach = function(client, bufnr)
             client.offset_encoding = "utf-16"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
-            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+            languages_setup.omni(client, bufnr)
+            languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
-            languages_setup.document_formatting(client, bufnr)
             navic.attach(client, bufnr)
         end,
         settings = {
@@ -191,15 +190,10 @@ M.jsts_config = function(file_types, pid_name)
         on_attach = function(client, bufnr)
             client.offset_encoding = "utf-16"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
-            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-            languages_setup.document_highlight(client, bufnr)
+            languages_setup.omni(client, bufnr)
+            languages_setup.tag(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
             navic.attach(client, bufnr)
-            local ts_utils = require("nvim-lsp-ts-utils")
-            ts_utils.setup({
-                debug = true,
-            })
-            ts_utils.setup_client(client)
         end,
         settings = {
             typescript = {
@@ -242,9 +236,10 @@ M.angular_config = function(file_types, pid_name)
         on_attach = function(client, bufnr)
             client.offset_encoding = "utf-16"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
-            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-            languages_setup.document_highlight(client, bufnr)
+            languages_setup.omni(client, bufnr)
+            languages_setup.tag(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
+            navic.attach(client, bufnr)
         end,
         capabilities = languages_setup.get_capabilities(),
         root_dir = nvim_lsp_util.root_pattern("angular.json"),
@@ -261,9 +256,10 @@ M.ember_config = function(file_types, pid_name)
         on_attach = function(client, bufnr)
             client.offset_encoding = "utf-16"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
-            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-            languages_setup.document_highlight(client, bufnr)
+            languages_setup.omni(client, bufnr)
+            languages_setup.tag(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
+            navic.attach(client, bufnr)
         end,
         capabilities = languages_setup.get_capabilities(),
         root_dir = nvim_lsp_util.root_pattern("ember-cli-build.js"),

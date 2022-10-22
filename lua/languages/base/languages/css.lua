@@ -1,6 +1,6 @@
 local languages_setup = require("languages.base.utils")
 local cssls_config =
-require("languages.base.languages._configs").default_config({ "css", "scss", "less", "sass" }, "css")
+    require("languages.base.languages._configs").without_formatting({ "css", "scss", "less", "sass" }, "css")
 
 local language_configs = {}
 
