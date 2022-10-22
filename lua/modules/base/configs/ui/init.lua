@@ -109,7 +109,7 @@ function config.noice_nvim()
             format_done = "lsp_progress_done",
         },
         hacks = {
-            skip_duplicate_messages = false,
+            skip_duplicate_messages = true,
         },
         views = {
             popupmenu = {
@@ -208,9 +208,9 @@ function config.noice_nvim()
             mini = {
                 backend = "mini",
                 relative = "editor",
-                align = "right",
+                align = "message-right",
                 timeout = 2000,
-                reverse = false,
+                reverse = true,
                 position = {
                     row = -1,
                     col = "100%",
@@ -219,7 +219,7 @@ function config.noice_nvim()
                 border = {
                     style = "none",
                 },
-                zindex = 1000,
+                zindex = 60,
                 win_options = {
                     winblend = 0,
                     winhighlight = {
@@ -308,16 +308,11 @@ function config.noice_nvim()
                     },
                 },
             },
-            text = {
-                hl_group = "NoiceText",
-            },
-            data = {
-                hl_group = "NoiceData",
-            },
         },
         routes = {
             {
                 view = "cmdline_popup",
+                -- opts = { buf_options = { filetype = "vim" } },
                 filter = { event = "cmdline" },
             },
             {
@@ -349,10 +344,47 @@ function config.noice_nvim()
             {
                 view = "notify",
                 filter = {
+                    event = "msg_show",
+                    kind = { "", "echo", "echomsg" },
+                },
+                opts = {
+                    replace = true,
+                    merge = true,
+                    title = "LVIM IDE",
+                },
+            },
+            {
+                view = "notify",
+                filter = { error = true },
+                opts = {
+                    title = "ERROR",
+                },
+            },
+            {
+                view = "notify",
+                filter = { warning = true },
+                opts = {
+                    title = "WARNING",
+                },
+            },
+            {
+                view = "notify",
+                filter = { event = "notify" },
+                opts = {
+                    title = "LVIM IDE",
+                },
+            },
+            {
+                view = "notify",
+                filter = {
                     event = "noice",
                     kind = { "stats", "debug" },
                 },
-                opts = { buf_options = { filetype = "lua" }, replace = true },
+                opts = {
+                    buf_options = { filetype = "lua" },
+                    replace = true,
+                    title = "LVIM IDE",
+                },
             },
             {
                 view = "mini",
@@ -361,7 +393,9 @@ function config.noice_nvim()
             {
                 view = "notify",
                 filter = {},
-                opts = { title = "LVIM IDE" },
+                opts = {
+                    title = "LVIM IDE",
+                },
             },
         },
     })
