@@ -50,14 +50,14 @@ M.without_formatting = function(file_types, pid_name)
     }
 end
 
-M.without_winbar_config = function(file_types, pid_name)
+M.without_winbar_config = function(file_types, _)
     return {
         flags = {
             debounce_text_changes = default_debouce_time,
         },
         autostart = true,
         filetypes = file_types,
-        on_attach = function(client, bufnr)
+        on_attach = function(client, _)
             client.offset_encoding = "utf-16"
         end,
         root_dir = function(fname)
