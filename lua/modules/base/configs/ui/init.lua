@@ -107,10 +107,10 @@ function config.noice_nvim()
             enabled = true,
             format = "lsp_progress",
             format_done = "lsp_progress_done",
+            throttle = 1000 / 30,
+            view = "mini",
         },
-        hacks = {
-            skip_duplicate_messages = true,
-        },
+        throttle = 1000 / 30,
         views = {
             popupmenu = {
                 zindex = 65,
@@ -210,7 +210,7 @@ function config.noice_nvim()
                 relative = "editor",
                 align = "message-right",
                 timeout = 2000,
-                reverse = true,
+                reverse = false,
                 position = {
                     row = -1,
                     col = "100%",
@@ -312,7 +312,6 @@ function config.noice_nvim()
         routes = {
             {
                 view = "cmdline_popup",
-                -- opts = { buf_options = { filetype = "vim" } },
                 filter = { event = "cmdline" },
             },
             {
