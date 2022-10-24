@@ -162,7 +162,7 @@
         event = {
             "BufRead",
         },
-        config = editor_config.rg,
+        config = editor_config.rg_nvim,
     }
     #+end_src
 

@@ -236,7 +236,7 @@ modules["winston0410/rg.nvim"] = {
     event = {
         "BufRead",
     },
-    config = editor_config.rg,
+    config = editor_config.rg_nvim,
 }
 
 modules["kevinhwang91/nvim-hlslens"] = {
