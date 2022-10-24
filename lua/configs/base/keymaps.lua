@@ -31,11 +31,11 @@ keymaps["normal"] = {
     { "<C-Right>", ":vertical resize +2<CR>" }, -- Resize width +
     { "<C-Up>", ":resize -2<CR>" }, -- Resize height -
     { "<C-Down>", ":resize +2<CR>" }, -- Resize height +
-    { "<S-x>", ":Neotree filesystem left<CR>" }, -- Neotree explorer
-    { "<S-d>", ":Neotree filesystem left<CR>" }, -- Neotree explorer
-    { "<S-b>", ":Neotree buffers left<CR>" }, -- Neotree explorer
-    { "<S-g>", ":Neotree git_status left<CR>" }, -- Neotree explorer
-    { "<S-l>", ":Neotree diagnostics left<CR>" }, -- Neotree explorer
+    { "<S-x>", ":Neotree filesystem left<CR>" }, -- Neotree filesystem left
+    { "<S-d>", ":Neotree filesystem left<CR>" }, -- Neotree filesystem left
+    { "<S-b>", ":Neotree buffers left<CR>" }, -- Neotree buffers lefter
+    { "<S-t>", ":Neotree git_status left<CR>" }, -- Neotree git_status left
+    { "<S-l>", ":Neotree diagnostics left<CR>" }, -- Neotree diagnostics left
     { "<S-m>", ":MarkdownPreview<CR>" }, -- Markdown preview
     { "<A-,>", ":Telescope find_files<CR>" }, -- Search files with Telescope
     { "<A-.>", ":Telescope live_grep<CR>" }, -- Search word with Telescope

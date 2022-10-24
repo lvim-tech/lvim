@@ -63,7 +63,7 @@ Normal mode
 | -------------- | ----------------------------  | --------------------------- |
 | <S-b>          | :Neotree buffers left<CR>     | Neotree filesystem left     |
 | -------------- | ----------------------------  | --------------------------- |
-| <S-g>          | :Neotree git_status left<CR>  | Neotree git_status left     |
+| <S-t>          | :Neotree git_status left<CR>  | Neotree git_status left     |
 | -------------- | ----------------------------  | --------------------------- |
 | <S-l>          | :Neotree diagnostics left<CR> | Neotree diagnostics left    |
 | -------------- | ----------------------------  | --------------------------- |
