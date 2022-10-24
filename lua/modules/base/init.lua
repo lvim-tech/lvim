@@ -233,6 +233,9 @@ modules["nvim-telescope/telescope.nvim"] = {
 
 modules["winston0410/rg.nvim"] = {
     commit = funcs.get_commit("rg.nvim", plugins_snapshot),
+    event = {
+        "BufRead",
+    },
     config = editor_config.rg_nvim,
 }
 
