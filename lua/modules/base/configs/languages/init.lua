@@ -390,6 +390,7 @@ function config.nvim_dap_ui()
         linehl = "",
         numhl = "",
     })
+    vim.api.nvim_create_user_command("LuaDapLaunch", 'lua require"osv".run_this()', {})
     vim.api.nvim_create_user_command("DapToggleBreakpoint", 'lua require("dap").toggle_breakpoint()', {})
     vim.api.nvim_create_user_command("DapStartContinue", 'lua require"dap".continue()', {})
     vim.api.nvim_create_user_command("DapStepInto", 'lua require"dap".step_into()', {})
