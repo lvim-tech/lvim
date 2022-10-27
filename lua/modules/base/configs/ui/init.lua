@@ -848,6 +848,7 @@ function config.which_key_nvim()
 end
 
 function config.heirline_nvim()
+    local funcs = require("core.funcs")
     local icons = require("configs.base.ui.icons")
     local heirline_status_ok, heirline = pcall(require, "heirline")
     if not heirline_status_ok then
@@ -1144,10 +1145,28 @@ function config.heirline_nvim()
         update = { "LspAttach", "LspDetach", "BufWinEnter" },
         provider = function()
             local names = {}
+            local null_ls = {}
             for _, server in pairs(vim.lsp.buf_get_clients(0)) do
-                table.insert(names, server.name)
+                if server.name == "null-ls" then
+                    local sources = require("null-ls.sources")
+                    local ft = vim.api.nvim_buf_get_option(vim.api.nvim_win_get_buf(0), "filetype")
+                    for _, source in ipairs(sources.get_available(ft)) do
+                        table.insert(null_ls, source.name)
+                    end
+                    null_ls = funcs.remove_duplicate(null_ls)
+                else
+                    table.insert(names, server.name)
+                end
             end
-            return "  " .. table.concat(names, ", ")
+            if next(null_ls) == nil then
+                return "  LSP [" .. table.concat(names, ", ") .. "]"
+            else
+                return "  LSP ["
+                    .. table.concat(names, ", ")
+                    .. "] | NULL-LS ["
+                    .. table.concat(null_ls, ", ")
+                    .. "]"
+            end
         end,
         hl = { fg = _G.LVIM_COLORS.color_05, bold = true },
         on_click = {

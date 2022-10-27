@@ -44,6 +44,18 @@ M.configs = function()
     end
 end
 
+M.remove_duplicate = function(tbl)
+    local hash = {}
+    local res = {}
+    for _, v in ipairs(tbl) do
+        if not hash[v] then
+            res[#res + 1] = v -- you could print here instead of saving to result table if you wanted
+            hash[v] = true
+        end
+    end
+    return res
+end
+
 M.sudo_exec = function(cmd)
     vim.fn.inputsave()
     local password = vim.fn.inputsecret("Password: ")
