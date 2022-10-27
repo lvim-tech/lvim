@@ -72,6 +72,7 @@ function config.nui_nvim()
                     winhighlight = "Normal:NuiBody",
                 },
             }, {
+                prompt = "➤ ",
                 default_value = default_value,
                 on_close = function()
                     on_done(nil)
