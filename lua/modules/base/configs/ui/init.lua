@@ -212,7 +212,7 @@ function config.noice_nvim()
                 timeout = 2000,
                 reverse = false,
                 position = {
-                    row = -1,
+                    row = -2,
                     col = "100%",
                 },
                 size = "auto",
