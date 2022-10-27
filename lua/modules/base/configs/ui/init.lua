@@ -30,10 +30,27 @@ function config.nui_nvim()
     local Menu = require("nui.menu")
     local event = require("nui.utils.autocmd").event
     local function override_ui_input()
+        local calculate_popup_width = function(default, prompt)
+            local result = 40
+            if prompt ~= nil then
+                result = #prompt + 40
+            end
+            if default ~= nil then
+                if #default + 40 > result then
+                    result = #default + 40
+                end
+            end
+            return result
+        end
         local UIInput = Input:extend("UIInput")
         function UIInput:init(opts, on_done)
-            local border_top_text = get_prompt_text(opts.prompt, "[Input]")
-            local default_value = tostring(opts.default)
+            local border_top_text = get_prompt_text(opts.prompt, "Input")
+            local default_value
+            if opts.default ~= nil then
+                default_value = tostring(opts.default)
+            else
+                default_value = ""
+            end
             UIInput.super.init(self, {
                 relative = "cursor",
                 position = {
@@ -41,7 +58,7 @@ function config.nui_nvim()
                     col = 0,
                 },
                 size = {
-                    width = math.max(40, vim.api.nvim_strwidth(default_value) + 40),
+                    width = calculate_popup_width(default_value, border_top_text),
                 },
                 border = {
                     highlight = "NuiBorder",
@@ -135,8 +152,6 @@ function config.nui_nvim()
                 item.index = index
                 local item_text = string.sub(format_item(item), 0, max_width)
                 table.insert(menu_items, Menu.item(item_text, item))
-
-                -- menu_items[index] = Menu.item(item_text, item)
             end
             local menu_options = {
                 min_width = vim.api.nvim_strwidth(border_top_text),
@@ -235,33 +250,107 @@ function config.noice_nvim()
             view = "cmdline_popup",
             opts = { buf_options = { filetype = "vim" } },
             format = {
-                cmdline = { pattern = "^:", icon = " " },
-                search = { pattern = "^[?/]", icon = " ", conceal = false },
-                filter = { pattern = "^:%s*!", icon = "$", opts = { buf_options = { filetype = "sh" } } },
-                lua = { pattern = "^:%s*lua%s+", icon = "", opts = { buf_options = { filetype = "lua" } } },
+                cmdline = { pattern = "^:", icon = " ", lang = "vim" },
+                search_down = { kind = "search", pattern = "^/", icon = " ", lang = "regex" },
+                search_up = { kind = "search", pattern = "^%?", icon = " ", lang = "regex" },
+                filter = { pattern = "^:%s*!", icon = "$", lang = "bash" },
+                lua = { pattern = "^:%s*lua%s+", icon = "", lang = "lua" },
+                help = { pattern = "^:%s*h%s+", icon = "" },
+                input = {},
             },
         },
         messages = {
             enabled = true,
+            view = "notify",
+            view_error = "notify",
+            view_warn = "notify",
+            view_history = "split",
+            view_search = false,
         },
         popupmenu = {
             enabled = true,
             backend = "nui",
+            kind_icons = {},
         },
-        history = {
-            view = "split",
-            opts = { enter = true },
-            filter = { event = "msg_show", ["not"] = { kind = { "search_count", "echo" } } },
+        commands = {
+            history = {
+                view = "split",
+                opts = { enter = true, format = "details" },
+                filter = { event = { "msg_show", "notify" }, ["not"] = { kind = { "search_count", "echo" } } },
+            },
+            last = {
+                view = "popup",
+                opts = { enter = true, format = "details" },
+                filter = { event = { "msg_show", "notify" }, ["not"] = { kind = { "search_count", "echo" } } },
+                filter_opts = { count = 1 },
+            },
+            errors = {
+                view = "popup",
+                opts = { enter = true, format = "details" },
+                filter = { error = true },
+                filter_opts = { reverse = true },
+            },
         },
         notify = {
             enabled = false,
+            view = "notify",
         },
         lsp_progress = {
+            progress = {
+                enabled = true,
+                format = "lsp_progress",
+                format_done = "lsp_progress_done",
+                throttle = 1000 / 30,
+                view = "mini",
+            },
+            hover = {
+                enabled = false,
+                view = nil,
+                opts = {},
+            },
+            signature = {
+                enabled = false,
+                auto_open = true,
+                view = nil,
+                opts = {},
+            },
+            documentation = {
+                view = "hover",
+                opts = {
+                    lang = "markdown",
+                    replace = true,
+                    render = "plain",
+                    format = { "{message}" },
+                    win_options = { concealcursor = "n", conceallevel = 3 },
+                },
+            },
+        },
+        markdown = {
+            hover = {
+                ["|(%S-)|"] = vim.cmd.help,
+                ["%[.-%]%((%S-)%)"] = require("noice.util").open,
+            },
+            highlights = {
+                ["|%S-|"] = "@text.reference",
+                ["@%S+"] = "@parameter",
+                ["^%s*(Parameters:)"] = "@text.title",
+                ["^%s*(Return:)"] = "@text.title",
+                ["^%s*(See also:)"] = "@text.title",
+                ["{%S-}"] = "@parameter",
+            },
+        },
+        health = {
+            checker = true,
+        },
+        smart_move = {
             enabled = true,
-            format = "lsp_progress",
-            format_done = "lsp_progress_done",
-            throttle = 1000 / 30,
-            view = "mini",
+            excluded_filetypes = { "cmp_menu", "cmp_docs", "notify" },
+        },
+        presets = {
+            bottom_search = false,
+            command_palette = false,
+            long_message_to_split = false,
+            inc_rename = false,
         },
         throttle = 1000 / 30,
         views = {
