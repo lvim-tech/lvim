@@ -217,7 +217,7 @@ function config.noice_nvim()
                 },
                 size = "auto",
                 border = {
-                    style = "none",
+                    style = { " ", " ", " ", " ", " ", " ", " ", " " },
                 },
                 zindex = 60,
                 win_options = {
@@ -226,6 +226,7 @@ function config.noice_nvim()
                         Normal = "NoiceBody",
                         IncSearch = "IncSearch",
                         Search = "Search",
+                        FloatBorder = "NoiceBody",
                     },
                 },
             },
