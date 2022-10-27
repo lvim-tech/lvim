@@ -22,7 +22,6 @@ local format_entries = function(entries, formatter)
     local results = {
         custom_select.separator("", {
             char = " ",
-            text_align = "right",
         }),
     }
     for _, entry in pairs(entries) do
