@@ -47,7 +47,7 @@ local function nui_select(entries, stuff, on_user_choice, position)
         }
     end
     local userChoice = function(choiceIndex)
-        on_user_choice(entries[choiceIndex["_index"]])
+        on_user_choice(choiceIndex["text"])
     end
     local formatted_entries = format_entries(entries, stuff.format_item)
     local select_options = {
