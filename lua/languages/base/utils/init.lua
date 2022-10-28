@@ -307,11 +307,11 @@ M.get_capabilities = function()
             "additionalTextEdits",
         },
     }
+    capabilities.offsetEncoding = "utf-16"
     local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
     if status_ok then
         capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
     end
-    capabilities.offsetEncoding = "utf-16"
     return capabilities
 end
 
