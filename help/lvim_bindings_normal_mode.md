@@ -29,19 +29,19 @@ Normal mode
 | `<C-l>`          | `<C-w>l`                        | Move to window right        |
 | `<C-j>`          | `<C-w>j`                        | Move to window down         |
 | `<C-k>`          | `<C-w>k`                        | Move to window up           |
-| `<C-Left>`       | `:vertical` resize -2<CR>       | Resize width -              |
-| `<C-Right>`      | `:vertical` resize +2<CR>       | Resize width +              |
-| `<C-Up>`         | `:resize` -2<CR>                | Resize height -             |
-| `<C-Down>`       | `:resize` +2<CR>                | Resize height +             |
-| `<S-x>`          | `:Neotree` filesystem left<CR>  | Neotree ilesystem left      |
-| `<S-b>`          | `:Neotree` buffers left<CR>     | Neotree filesystem left     |
-| `<S-t>`          | `:Neotree` git_status left<CR>  | Neotree git_status left     |
-| `<S-l>`          | `:Neotree` diagnostics left<CR> | Neotree diagnostics left    |
+| `<C-Left>`       | `:vertical resize -2<CR>`       | Resize width -              |
+| `<C-Right>`      | `:vertical resize +2<CR>`       | Resize width +              |
+| `<C-Up>`         | `:resize -2<CR>`                | Resize height -             |
+| `<C-Down>`       | `:resize +2<CR>`                | Resize height +             |
+| `<S-x>`          | `:Neotree filesystem left<CR>`  | Neotree ilesystem left      |
+| `<S-b>`          | `:Neotree buffers left<CR>`     | Neotree filesystem left     |
+| `<S-t>`          | `:Neotree git_status left<CR>`  | Neotree git_status left     |
+| `<S-l>`          | `:Neotree diagnostics left<CR>` | Neotree diagnostics left    |
 | `<S-m>`          | `:MarkdownPreview<CR>`          | Markdown preview            |
-| `<A-,>`          | `:Telescope` find_files<CR>     | Search files with Telescope |
-| `<A-.>`          | `:Telescope` live_grep<CR>      | Search word with Telescope  |
-| `<A-b>`          | `:Telescope` buffers<CR>        | Telescope buffers           |
-| `<A-/>`          | `:Telescope` file_browser<CR>   | Telescope file browser      |
+| `<A-,>`          | `:Telescope find_files<CR>`     | Search files with Telescope |
+| `<A-.>`          | `:Telescope live_grep<CR>`      | Search word with Telescope  |
+| `<A-b>`          | `:Telescope buffers<CR>`        | Telescope buffers           |
+| `<A-/>`          | `:Telescope file_browser<CR>`   | Telescope file browser      |
 | `<A-u>`          | `:AnyJump<CR>`                  | Any jump                    |
 | `<A-v>`          | `:SymbolsOutline<CR>`           | Symbols outline             |
 | `<A-]>`          | `:GitSignsNextHunk<CR>`         | Git signs next hunk         |
@@ -71,16 +71,16 @@ Normal mode
 | `tn`             | `:tabn<CR>`                     | Tab next                    |
 | `tp`             | `:tabp<CR>`                     | Tab prev                    |
 | `tc`             | `:CalendarVR<CR>`               | Calendar                    |
-| `to`             | `:e` ~/Org/notes/notes.org<CR>  | Open org notes              |
-| `th`             | `:Telescope` howdoi<CR>         | Telescope howdoi            |
-| `tt`             | `:Telescope` tmux sessions<CR>  | Telescope tmux session      |
+| `to`             | `:e ~/Org/notes/notes.org<CR>`  | Open org notes              |
+| `th`             | `:Telescope howdoi<CR>`         | Telescope howdoi            |
+| `tt`             | `:Telescope tmux sessions<CR>`  | Telescope tmux session      |
 | `trr`            | `<Plug>RestNvim<CR>`            | Rest nvim                   |
 | `trp`            | `<Plug>RestNvimPreview<CR>`     | Rest nvim preview           |
 | `trl`            | `<Plug>RestNvimLast<CR>`        | Rest nvim last              |
 | `dc`             | `:LspShowDiagnosticCurrent<CR>` | Lsp show diagnostic current |
 | `dn`             | `:LspShowDiagnosticNext<CR>`    | Lsp show diagnostic next    |
 | `dp`             | `:LspShowDiagnosticPrev<CR>`    | Lsp show diagnostic prev    |
-| `<A-e>`          | `:Neotree` diagnostics<CR>      | Neotree diagnostics         |
+| `<A-e>`          | `:Neotree diagnostics<CR>`      | Neotree diagnostics         |
 | `<A-/>`          | `:TelescopeBrowser<CR>`         | Telescope browser           |
 | `<A-j>`          | `MoveDown`                      | Move line down              |
 | `<A-k>`          | `MoveUp`                        | Move line up                |

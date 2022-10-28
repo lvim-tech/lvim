@@ -2,15 +2,15 @@ LVIM BINDINGS
 
 Debug DAP
 
-| Key     | Action              | Description       |
-| ------- | ------------------- | ----------------- |
-| `<A-1>` | DapToggleBreakpoint | Toggle breakpoint |
-| `<A-2>` | DapStart            | Start / continue  |
-| `<A-3>` | DapStop             | Stop              |
-| `<A-4>` | DapRestart          | Restart           |
-| `<A-5>` | DapStepOver         | Step over         |
-| `<A-6>` | DapStepInto         | Step into         |
-| `<A-7>` | DapStepOut          | Step out          |
-| `<A-8>` | DapPause            | Pause             |
-| `<A-9>` | DapToggleRepl       | Toggle repl       |
-| `<A-0>` | DapGetSession       | Get session       |
+| Key     | Action                         | Description       |
+| ------- | ------------------------------ | ----------------- |
+| `<A-1>` | `<Cmd>DapToggleBreakpoint<CR>` | Toggle breakpoint |
+| `<A-2>` | `<Cmd>DapStartContinue<CR>`    | Start / continue  |
+| `<A-3>` | `<Cmd>DapStepInto<CR>`         | Step into         |
+| `<A-4>` | `<Cmd>DapStepOver<CR>`         | Step over         |
+| `<A-5>` | `<Cmd>DapStepOut<CR>`          | Step out          |
+| `<A-6>` | `<Cmd>DapUp<CR>`               | Up                |
+| `<A-7>` | `<Cmd>DapDown<CR>`             | Down              |
+| `<A-8>` | `<Cmd>DapUIClose<CR>`          | UI close          |
+| `<A-9>` | `<Cmd>DapRestart<CR>`          | Restart           |
+| `<A-0>` | `<Cmd>DapToggleRepl<CR>`       | Toggle Repl       |
