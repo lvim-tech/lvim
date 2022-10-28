@@ -32,7 +32,6 @@ keymaps["normal"] = {
     { "<C-Up>", ":resize -2<CR>" }, -- Resize height -
     { "<C-Down>", ":resize +2<CR>" }, -- Resize height +
     { "<S-x>", ":Neotree filesystem left<CR>" }, -- Neotree filesystem left
-    { "<S-d>", ":Neotree filesystem left<CR>" }, -- Neotree filesystem left
     { "<S-b>", ":Neotree buffers left<CR>" }, -- Neotree buffers lefter
     { "<S-t>", ":Neotree git_status left<CR>" }, -- Neotree git_status left
     { "<S-l>", ":Neotree diagnostics left<CR>" }, -- Neotree diagnostics left
