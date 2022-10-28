@@ -13,7 +13,6 @@ M.default_config = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            client.offset_encoding = "utf-16"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
@@ -36,7 +35,6 @@ M.without_formatting = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            client.offset_encoding = "utf-16"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
@@ -57,9 +55,29 @@ M.without_winbar_config = function(file_types, _)
         },
         autostart = true,
         filetypes = file_types,
-        on_attach = function(client, _)
-            client.offset_encoding = "utf-16"
+        root_dir = function(fname)
+            return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
         end,
+    }
+end
+
+M.cpp_config = function(file_types, pid_name)
+    return {
+        flags = {
+            debounce_text_changes = default_debouce_time,
+        },
+        autostart = true,
+        filetypes = file_types,
+        on_attach = function(client, bufnr)
+            client.offset_encoding = "utf-16"
+            table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
+            languages_setup.omni(client, bufnr)
+            languages_setup.tag(client, bufnr)
+            languages_setup.document_highlight(client, bufnr)
+            languages_setup.document_formatting(client, bufnr)
+            navic.attach(client, bufnr)
+        end,
+        capabilities = languages_setup.get_cpp_capabilities(),
         root_dir = function(fname)
             return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
         end,
@@ -75,7 +93,6 @@ M.omnisharp_config = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            client.offset_encoding = "utf-16"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
@@ -99,7 +116,6 @@ M.elixir_config = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            client.offset_encoding = "utf-16"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
@@ -122,7 +138,6 @@ M.go = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            client.offset_encoding = "utf-16"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
@@ -157,7 +172,6 @@ M.lua = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            client.offset_encoding = "utf-16"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
@@ -212,7 +226,6 @@ M.jsts_config = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            client.offset_encoding = "utf-16"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
@@ -259,7 +272,6 @@ M.angular_config = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            client.offset_encoding = "utf-16"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
@@ -279,7 +291,6 @@ M.ember_config = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            client.offset_encoding = "utf-16"
             table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)

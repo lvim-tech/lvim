@@ -1,7 +1,6 @@
 local global = require("core.global")
 local languages_setup = require("languages.base.utils")
-local clangd_config =
-    require("languages.base.languages._configs").default_config({ "c", "cpp", "objc", "objcpp" }, "cpp")
+local clangd_config = require("languages.base.languages._configs").cpp_config({ "c", "cpp", "objc", "objcpp" }, "cpp")
 local dap = require("dap")
 
 local language_configs = {}

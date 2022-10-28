@@ -53,7 +53,6 @@ local function start_server_tools()
             require("jdtls.dap").setup_dap_main_class_configs()
             -- require("jdtls").test_class()
             -- require("jdtls").test_nearest_method()
-            client.offset_encoding = "utf-16"
             table.insert(global["languages"]["java"]["pid"], client.rpc.pid)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)

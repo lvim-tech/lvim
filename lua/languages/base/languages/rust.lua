@@ -34,7 +34,6 @@ local function start_server_tools()
             autostart = true,
             filetypes = { "rust" },
             on_attach = function(client, bufnr)
-                client.offset_encoding = "utf-16"
                 table.insert(global["languages"]["rust"]["pid"], client.rpc.pid)
                 languages_setup.omni(client, bufnr)
                 languages_setup.tag(client, bufnr)
