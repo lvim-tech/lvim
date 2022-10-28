@@ -401,12 +401,12 @@ modules["lvim-tech/lvim-colorcolumn"] = {
     config = editor_config.lvim_colorcolumn,
 }
 
-modules["declancm/cinnamon.nvim"] = {
-    commit = funcs.get_commit("cinnamon.nvim", plugins_snapshot),
+modules["karb94/neoscroll.nvim"] = {
+    commit = funcs.get_commit("neoscroll.nvim", plugins_snapshot),
     event = {
         "BufRead",
     },
-    config = editor_config.cinnamon_nvim,
+    config = editor_config.neoscroll_nvim,
 }
 
 modules["phaazon/hop.nvim"] = {

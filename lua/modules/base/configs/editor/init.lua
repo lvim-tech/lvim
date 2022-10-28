@@ -531,14 +531,13 @@ function config.lvim_colorcolumn()
     lvim_colorcolumn.setup()
 end
 
-function config.cinnamon_nvim()
-    local cinnamon_status_ok, cinnamon = pcall(require, "cinnamon")
-    if not cinnamon_status_ok then
+function config.neoscroll_nvim()
+    local neoscroll_status_ok, neoscroll = pcall(require, "neoscroll")
+    if not neoscroll_status_ok then
         return
     end
-    cinnamon.setup({
-        extra_keymaps = true,
-        extended_keymaps = true,
+    neoscroll.setup({
+        mappings = { "<C-u>", "<C-d>", "<C-b>", "<C-f>", "<C-y>", "<C-e>", "zt", "zz", "zb" },
     })
 end
 
