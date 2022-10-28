@@ -11,4 +11,4 @@ Visual mode
 | `<A-k>` | `MoveUp`             | Move selected up    |
 | `<A-h>` | `MoveLeft`           | Move selected left  |
 | `<A-l>` | `MoveRight`          | Move selected right |
-| `s`     | `:SnipRun<CR>`       | Snip run            |
+| `ts`    | `:SnipRun<CR>`       | Snip run            |

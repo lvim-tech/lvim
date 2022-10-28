@@ -66,7 +66,7 @@ Normal mode
 | `gpp`            | `:LspCloseAll<CR>`              | Lsp preview close all       |
 | `gh`             | `:LspHover<CR>`                 | Lsp hover                   |
 | `K`              | `:LspHover<CR>`                 | Lsp hover                   |
-| `gS`             | `:SnipRun<CR>`                  | Snip run                    |
+| `ts`             | `:SnipRun<CR>`                  | Snip run                    |
 | `gP`             | `:hardcopy<CR>`                 | hard copy                   |
 | `tn`             | `:tabn<CR>`                     | Tab next                    |
 | `tp`             | `:tabp<CR>`                     | Tab prev                    |
