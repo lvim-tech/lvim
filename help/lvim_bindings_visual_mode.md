@@ -2,21 +2,13 @@ LVIM BINDINGS
 
 Visual mode
 
-| Key            | Action                           | Description                |
-| -------------- | -------------------------------- | -------------------------- |
-| -------------- | -------------------------------- | -------------------------- |
-| *              | :<Esc>/\\%V                      | Visual search /            |
-| -------------- | -------------------------------- | -------------------------- |
-| #              | :<Esc>?\\%V                      | Visual search ?            |
-| -------------- | -------------------------------- | -------------------------- |
-| <A-u>          | :AnyJumpVisual<CR>               | Any jump visual            |
-| -------------- | -------------------------------- | -------------------------- |
-| <A-j>          | MoveDown                         | Move selected down         |
-| -------------- | -------------------------------- | -------------------------- |
-| <A-k>          | MoveUp                           | Move selected up           |
-| -------------- | -------------------------------- | -------------------------- |
-| <A-h>          | MoveLeft                         | Move selected left         |
-| -------------- | -------------------------------- | -------------------------- |
-| <A-l>          | MoveRight                        | Move selected right        |
-| -------------- | -------------------------------- | -------------------------- |
-| gS             | :SnipRun<CR>                     | Snip run                   |
+| Key     | Action               | Description         |
+| ------- | -------------------- | ------------------- |
+| `*`     | `:<Esc>/\\%V`        | Visual search /     |
+| `#`     | `:<Esc>?\\%V`        | Visual search ?     |
+| `<A-u>` | `:AnyJumpVisual<CR>` | Any jump visual     |
+| `<A-j>` | `MoveDown`           | Move selected down  |
+| `<A-k>` | `MoveUp`             | Move selected up    |
+| `<A-h>` | `MoveLeft`           | Move selected left  |
+| `<A-l>` | `MoveRight`          | Move selected right |
+| `s`     | `:SnipRun<CR>`       | Snip run            |

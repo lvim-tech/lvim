@@ -2,26 +2,15 @@ LVIM BINDINGS
 
 Debug DAP
 
-| Key     | Action                     | Description         |
-| ------- | -------------------------- | ------------------- |
-| ------- | -------------------------- | ------------------- |
-| <A-1>   | DapToggleBreakpoint        | Toggle breakpoint   |
-| ------- | -------------------------- | ------------------- |
-| <A-2>   | DapStart                   | Start / continue    |
-| ------- | -------------------------- | ------------------- |
-| <A-3>   | DapStop                    | Stop                |
-| ------- | -------------------------- | ------------------- |
-| <A-4>   | DapRestart                 | Restart             |
-| ------- | -------------------------- | ------------------- |
-| <A-5>   | DapStepOver                | Step over           |
-| ------- | -------------------------- | ------------------- |
-| <A-6>   | DapStepInto                | Step into           |
-| ------- | -------------------------- | ------------------- |
-| <A-7>   | DapStepOut                 | Step out            |
-| ------- | -------------------------- | ------------------- |
-| <A-8>   | DapPause                   | Pause               |
-| ------- | -------------------------- | ------------------- |
-| <A-9>   | DapToggleRepl              | Toggle repl         |
-| ------- | -------------------------- | ------------------- |
-| <A-0>   | DapGetSession              | Get session         |
-| ------- | -------------------------- | ------------------- |
+| Key     | Action              | Description       |
+| ------- | ------------------- | ----------------- |
+| `<A-1>` | DapToggleBreakpoint | Toggle breakpoint |
+| `<A-2>` | DapStart            | Start / continue  |
+| `<A-3>` | DapStop             | Stop              |
+| `<A-4>` | DapRestart          | Restart           |
+| `<A-5>` | DapStepOver         | Step over         |
+| `<A-6>` | DapStepInto         | Step into         |
+| `<A-7>` | DapStepOut          | Step out          |
+| `<A-8>` | DapPause            | Pause             |
+| `<A-9>` | DapToggleRepl       | Toggle repl       |
+| `<A-0>` | DapGetSession       | Get session       |
