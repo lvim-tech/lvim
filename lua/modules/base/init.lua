@@ -401,14 +401,6 @@ modules["lvim-tech/lvim-colorcolumn"] = {
     config = editor_config.lvim_colorcolumn,
 }
 
-modules["karb94/neoscroll.nvim"] = {
-    commit = funcs.get_commit("neoscroll.nvim", plugins_snapshot),
-    event = {
-        "BufRead",
-    },
-    config = editor_config.neoscroll_nvim,
-}
-
 modules["phaazon/hop.nvim"] = {
     branch = "v2",
     commit = funcs.get_commit("hop.nvim", plugins_snapshot),
@@ -536,6 +528,11 @@ modules["williamboman/mason.nvim"] = {
 modules["jose-elias-alvarez/null-ls.nvim"] = {
     commit = funcs.get_commit("null-ls.nvim", plugins_snapshot),
     config = languages_config.null_ls_nvim,
+}
+
+modules["smjonas/inc-rename.nvim"] = {
+    commit = funcs.get_commit("inc-rename.nvim", plugins_snapshot),
+    config = languages_config.inc_rename_nvim,
 }
 
 modules["rmagatti/goto-preview"] = {

@@ -2,6 +2,7 @@ local config = {}
 
 function config.mason_nvim()
     vim.api.nvim_create_user_command("LspHover", "lua vim.lsp.buf.hover()", {})
+    vim.api.nvim_create_user_command("LspRename", "lua vim.lsp.buf.rename()", {})
     vim.api.nvim_create_user_command("LspAddToWorkspaceFolder", "lua vim.lsp.buf.add_workspace_folder()", {})
     vim.api.nvim_create_user_command("LspListWorkspaceFolders", "lua vim.lsp.buf.list_workspace_folders()", {})
     vim.api.nvim_create_user_command("LspRemoveWorkspaceFolder", "lua vim.lsp.buf.remove_workspace_folder()", {})
@@ -71,6 +72,17 @@ function config.null_ls_nvim()
             end
         end,
     })
+end
+
+function config.inc_rename_nvim()
+    local inc_rename_status_ok, inc_rename = pcall(require, "inc_rename")
+    if not inc_rename_status_ok then
+        return
+    end
+    inc_rename.setup()
+    vim.keymap.set("n", "ge", function()
+        return ":IncRename " .. vim.fn.expand("<cword>")
+    end, { expr = true })
 end
 
 function config.goto_preview()

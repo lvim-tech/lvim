@@ -531,16 +531,6 @@ function config.lvim_colorcolumn()
     lvim_colorcolumn.setup()
 end
 
-function config.neoscroll_nvim()
-    local neoscroll_status_ok, neoscroll = pcall(require, "neoscroll")
-    if not neoscroll_status_ok then
-        return
-    end
-    neoscroll.setup({
-        mappings = { "<C-u>", "<C-d>", "<C-b>", "<C-f>", "<C-y>", "<C-e>", "zt", "zz", "zb" },
-    })
-end
-
 function config.suda_vim()
     vim.g.suda_smart_edit = 1
 end

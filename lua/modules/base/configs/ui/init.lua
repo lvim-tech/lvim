@@ -245,14 +245,13 @@ function config.noice_nvim()
     if not noice_status_ok then
         return
     end
-    local Config = require("noice.config")
     noice.setup({
         cmdline = {
             enabled = true,
             view = "cmdline_popup",
             opts = { buf_options = { filetype = "vim" } },
             format = {
-                cmdline = { pattern = "^:", icon = " ", lang = "vim" },
+                cmdline = { pattern = "^:", icon = "", lang = "vim" },
                 search_down = { kind = "search", pattern = "^/", icon = " ", lang = "regex" },
                 search_up = { kind = "search", pattern = "^%?", icon = " ", lang = "regex" },
                 filter = { pattern = "^:%s*!", icon = "$", lang = "bash" },
@@ -367,7 +366,7 @@ function config.noice_nvim()
             bottom_search = false,
             command_palette = false,
             long_message_to_split = false,
-            inc_rename = false,
+            inc_rename = true,
             lsp_doc_border = false,
         },
         views = {
@@ -454,10 +453,6 @@ function config.noice_nvim()
                     max_height = 20,
                     max_width = 120,
                 },
-                border = {
-                    style = "none",
-                    padding = { 0, 2 },
-                },
                 position = { row = 1, col = 0 },
                 win_options = {
                     wrap = true,
@@ -529,10 +524,7 @@ function config.noice_nvim()
                 },
                 border = {
                     style = { " ", " ", " ", " ", " ", " ", " ", " " },
-                    padding = { 0, 1, 0, 1 },
-                    text = {
-                        top = " COMMAND LINE: ",
-                    },
+                    padding = { 0, 1 },
                 },
                 win_options = {
                     winhighlight = {
@@ -542,26 +534,6 @@ function config.noice_nvim()
                         Search = "Search",
                     },
                     cursorline = false,
-                },
-                filter_options = {
-                    {
-                        filter = { event = "cmdline", find = "^%s*[/?]" },
-                        opts = {
-                            border = {
-                                text = {
-                                    top = " SEARCH: ",
-                                },
-                            },
-                            win_options = {
-                                winhighlight = {
-                                    Normal = "NoiceBody",
-                                    FloatBorder = "NoiceBorder",
-                                    IncSearch = "IncSearch",
-                                    Search = "Search",
-                                },
-                            },
-                        },
-                    },
                 },
             },
             confirm = {
@@ -681,13 +653,17 @@ function config.noice_nvim()
         status = {},
         format = {},
     })
-    vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
-        pattern = { "noice" },
-        callback = function()
-            vim.opt_local.wrap = false
-        end,
-        group = "LvimIDE",
-    })
+    vim.keymap.set({ "n", "i" }, "<c-d>", function()
+        if not require("noice.lsp").scroll(4) then
+            return "<c-d>"
+        end
+    end, { silent = true, expr = true })
+
+    vim.keymap.set({ "n", "i" }, "<c-u>", function()
+        if not require("noice.lsp").scroll(-4) then
+            return "<c-u>"
+        end
+    end, { silent = true, expr = true })
 end
 
 function config.alpha_nvim()

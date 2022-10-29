@@ -51,7 +51,7 @@ keymaps["normal"] = {
     { "gt", ":LspTypeDefinition<CR>" }, -- Lsp type definition
     { "gr", ":LspReferences<CR>" }, -- Lsp references
     { "gi", ":LspImplementation<CR>" }, -- Lsp implementation
-    { "ge", ":LspRename<CR>" }, -- Lsp rename
+    { "gE", ":LspRename" }, -- Lsp rename
     { "gf", ":LspFormatting<CR>" }, -- Lsp format code
     { "ga", ":LspCodeAction<CR>" }, -- Lsp code action
     { "gs", ":LspSignatureHelp<CR>" }, -- Lsp signsture help
