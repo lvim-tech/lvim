@@ -960,35 +960,6 @@
     end
     #+end_src
 
-**   [[https://github.com/declancm/cinnamon.nvim][cinnamon.nvim]]
-
-    + INIT
-
-    #+begin_src lua
-    modules["declancm/cinnamon.nvim"] = {
-        commit = funcs.get_commit("cinnamon.nvim", plugins_snapshot),
-        event = {
-            "BufRead",
-        },
-        config = editor_config.cinnamon_nvim,
-    }
-    #+end_src
-
-    + CONFIG
-
-    #+begin_src lua
-    function config.cinnamon_nvim()
-        local cinnamon_status_ok, cinnamon = pcall(require, "cinnamon")
-        if not cinnamon_status_ok then
-            return
-        end
-        cinnamon.setup({
-            extra_keymaps = true,
-            extended_keymaps = true,
-        })
-    end
-    #+end_src
-
 **   [[https://github.com/phaazon/hop.nvim][hop.nvim]]
 
     + INIT

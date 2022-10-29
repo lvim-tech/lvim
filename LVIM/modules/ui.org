@@ -159,34 +159,124 @@
                 enabled = true,
                 view = "cmdline_popup",
                 opts = { buf_options = { filetype = "vim" } },
-                icons = {
-                    ["/"] = { icon = " ", hl_group = "DiagnosticWarn" },
-                    ["?"] = { icon = " ", hl_group = "DiagnosticWarn" },
-                    [":"] = { icon = " ", hl_group = "DiagnosticInfo", firstc = false },
+                format = {
+                    cmdline = { pattern = "^:", icon = "", lang = "vim" },
+                    search_down = { kind = "search", pattern = "^/", icon = " ", lang = "regex" },
+                    search_up = { kind = "search", pattern = "^%?", icon = " ", lang = "regex" },
+                    filter = { pattern = "^:%s*!", icon = "$", lang = "bash" },
+                    lua = { pattern = "^:%s*lua%s+", icon = "", lang = "lua" },
+                    help = { pattern = "^:%s*h%s+", icon = "" },
+                    input = {},
                 },
             },
             messages = {
                 enabled = true,
+                view = "notify",
+                view_error = "notify",
+                view_warn = "notify",
+                view_history = "split",
+                view_search = false,
             },
             popupmenu = {
                 enabled = true,
                 backend = "nui",
+                kind_icons = {},
             },
-            history = {
-                view = "split",
-                opts = { enter = true },
-                filter = { event = "msg_show", ["not"] = { kind = { "search_count", "echo" } } },
+            commands = {
+                history = {
+                    view = "split",
+                    opts = { enter = true, format = "details" },
+                    filter = { event = { "msg_show", "notify" }, ["not"] = { kind = { "search_count", "echo" } } },
+                },
+                last = {
+                    view = "popup",
+                    opts = { enter = true, format = "details" },
+                    filter = { event = { "msg_show", "notify" }, ["not"] = { kind = { "search_count", "echo" } } },
+                    filter_opts = { count = 1 },
+                },
+                errors = {
+                    view = "popup",
+                    opts = { enter = true, format = "details" },
+                    filter = { error = true },
+                    filter_opts = { reverse = true },
+                },
             },
             notify = {
                 enabled = false,
+                view = "notify",
             },
-            lsp_progress = {
+            lsp = {
+                progress = {
+                    enabled = true,
+                    format = "lsp_progress",
+                    format_done = "lsp_progress_done",
+                    throttle = 1000 / 30,
+                    view = "mini",
+                },
+                override = {
+                    ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                    ["vim.lsp.util.stylize_markdown"] = true,
+                    ["cmp.entry.get_documentation"] = true,
+                },
+                hover = {
+                    enabled = true,
+                    view = nil,
+                    opts = {},
+                },
+                signature = {
+                    enabled = true,
+                    auto_open = {
+                        enabled = true,
+                        trigger = true,
+                        luasnip = true,
+                        throttle = 50,
+                    },
+                    view = nil,
+                    opts = {},
+                },
+                message = {
+                    enabled = true,
+                    view = "notify",
+                    opts = {},
+                },
+                documentation = {
+                    view = "hover",
+                    opts = {
+                        lang = "markdown",
+                        replace = true,
+                        render = "plain",
+                        format = { "{message}" },
+                        win_options = { concealcursor = "n", conceallevel = 3 },
+                    },
+                },
+            },
+            markdown = {
+                hover = {
+                    ["|(%S-)|"] = vim.cmd.help,
+                    ["%[.-%]%((%S-)%)"] = require("noice.util").open,
+                },
+                highlights = {
+                    ["|%S-|"] = "@text.reference",
+                    ["@%S+"] = "@parameter",
+                    ["^%s*(Parameters:)"] = "@text.title",
+                    ["^%s*(Return:)"] = "@text.title",
+                    ["^%s*(See also:)"] = "@text.title",
+                    ["{%S-}"] = "@parameter",
+                },
+            },
+            health = {
+                checker = true,
+            },
+            smart_move = {
                 enabled = true,
-                format = "lsp_progress",
-                format_done = "lsp_progress_done",
+                excluded_filetypes = { "cmp_menu", "cmp_docs", "notify" },
             },
-            hacks = {
-                skip_duplicate_messages = false,
+            presets = {
+                bottom_search = false,
+                command_palette = false,
+                long_message_to_split = false,
+                inc_rename = true,
+                lsp_doc_border = false,
             },
             views = {
                 popupmenu = {
@@ -242,21 +332,40 @@
                 },
                 popup = {
                     backend = "popup",
+                    relative = "editor",
                     close = {
                         events = { "BufLeave" },
-                        keys = { "q", "<esc>" },
+                        keys = { "q" },
                     },
                     enter = true,
                     border = {
-                        style = "single",
+                        style = "rounded",
                     },
                     position = "50%",
                     size = {
-                        width = "80%",
-                        height = "60%",
+                        width = "120",
+                        height = "20",
                     },
                     win_options = {
                         winhighlight = { Normal = "NoiceBody", FloatBorder = "NoiceBorder" },
+                    },
+                },
+                hover = {
+                    view = "popup",
+                    relative = "cursor",
+                    zindex = 45,
+                    enter = false,
+                    anchor = "auto",
+                    size = {
+                        width = "auto",
+                        height = "auto",
+                        max_height = 20,
+                        max_width = 120,
+                    },
+                    position = { row = 1, col = 0 },
+                    win_options = {
+                        wrap = true,
+                        linebreak = true,
                     },
                 },
                 cmdline = {
@@ -285,24 +394,25 @@
                 mini = {
                     backend = "mini",
                     relative = "editor",
-                    align = "right",
+                    align = "message-right",
                     timeout = 2000,
                     reverse = false,
                     position = {
-                        row = -1,
+                        row = -2,
                         col = "100%",
                     },
                     size = "auto",
                     border = {
-                        style = "none",
+                        style = { " ", " ", " ", " ", " ", " ", " ", " " },
                     },
-                    zindex = 1000,
+                    zindex = 60,
                     win_options = {
                         winblend = 0,
                         winhighlight = {
                             Normal = "NoiceBody",
                             IncSearch = "IncSearch",
                             Search = "Search",
+                            FloatBorder = "NoiceBody",
                         },
                     },
                 },
@@ -323,10 +433,7 @@
                     },
                     border = {
                         style = { " ", " ", " ", " ", " ", " ", " ", " " },
-                        padding = { 0, 1, 0, 1 },
-                        text = {
-                            top = " COMMAND LINE: ",
-                        },
+                        padding = { 0, 1 },
                     },
                     win_options = {
                         winhighlight = {
@@ -336,26 +443,6 @@
                             Search = "Search",
                         },
                         cursorline = false,
-                    },
-                    filter_options = {
-                        {
-                            filter = { event = "cmdline", find = "^%s*[/?]" },
-                            opts = {
-                                border = {
-                                    text = {
-                                        top = " SEARCH: ",
-                                    },
-                                },
-                                win_options = {
-                                    winhighlight = {
-                                        Normal = "NoiceBody",
-                                        FloatBorder = "NoiceBorder",
-                                        IncSearch = "IncSearch",
-                                        Search = "Search",
-                                    },
-                                },
-                            },
-                        },
                     },
                 },
                 confirm = {
@@ -384,12 +471,6 @@
                             FloatBorder = "NoiceBorder",
                         },
                     },
-                },
-                text = {
-                    hl_group = "NoiceText",
-                },
-                data = {
-                    hl_group = "NoiceData",
                 },
             },
             routes = {
@@ -426,29 +507,72 @@
                 {
                     view = "notify",
                     filter = {
-                        event = "noice",
-                        kind = { "stats", "debug" },
+                        event = "msg_show",
+                        kind = { "", "echo", "echomsg" },
                     },
-                    opts = { buf_options = { filetype = "lua" }, replace = true },
-                },
-                {
-                    view = "mini",
-                    filter = { event = "lsp" },
+                    opts = {
+                        replace = true,
+                        merge = true,
+                        title = "LVIM IDE",
+                    },
                 },
                 {
                     view = "notify",
-                    filter = {},
-                    opts = { title = "LVIM IDE" },
+                    filter = { error = true },
+                    opts = {
+                        title = "ERROR",
+                    },
+                },
+                {
+                    view = "notify",
+                    filter = { warning = true },
+                    opts = {
+                        title = "WARNING",
+                    },
+                },
+                {
+                    view = "notify",
+                    filter = { event = "notify" },
+                    opts = {
+                        title = "LVIM IDE",
+                    },
+                },
+                {
+                    view = "notify",
+                    filter = {
+                        event = "noice",
+                        kind = { "stats", "debug" },
+                    },
+                    opts = {
+                        buf_options = { filetype = "lua" },
+                        replace = true,
+                        title = "LVIM IDE",
+                    },
+                },
+                {
+                    view = "mini",
+                    filter = { event = "lsp", kind = "progress" },
+                },
+                {
+                    view = "notify",
+                    opts = {},
+                    filter = { event = "lsp", kind = "message" },
                 },
             },
+            status = {},
+            format = {},
         })
-        vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
-            pattern = { "noice" },
-            callback = function()
-                vim.opt_local.wrap = false
-            end,
-            group = "LvimIDE",
-        })
+        vim.keymap.set({ "n", "i" }, "<c-d>", function()
+            if not require("noice.lsp").scroll(4) then
+                return "<c-d>"
+            end
+        end, { silent = true, expr = true })
+    
+        vim.keymap.set({ "n", "i" }, "<c-u>", function()
+            if not require("noice.lsp").scroll(-4) then
+                return "<c-u>"
+            end
+        end, { silent = true, expr = true })
     end
     #+end_src
 

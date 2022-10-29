@@ -532,6 +532,9 @@ modules["jose-elias-alvarez/null-ls.nvim"] = {
 
 modules["smjonas/inc-rename.nvim"] = {
     commit = funcs.get_commit("inc-rename.nvim", plugins_snapshot),
+    event = {
+        "BufRead",
+    },
     config = languages_config.inc_rename_nvim,
 }
 

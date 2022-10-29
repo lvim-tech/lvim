@@ -109,6 +109,35 @@
     end
     #+end_src
 
+**   [[https://github.com/smjonas/inc-rename.nvim][inc-rename.nvim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["smjonas/inc-rename.nvim"] = {
+        commit = funcs.get_commit("inc-rename.nvim", plugins_snapshot),
+        event = {
+            "BufRead",
+        },
+        config = languages_config.inc_rename_nvim,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.inc_rename_nvim()
+        local inc_rename_status_ok, inc_rename = pcall(require, "inc_rename")
+        if not inc_rename_status_ok then
+            return
+        end
+        inc_rename.setup()
+        vim.keymap.set("n", "ge", function()
+            return ":IncRename " .. vim.fn.expand("<cword>")
+        end, { expr = true })
+    end
+    #+end_src
+
 **   [[https://github.com/rmagatti/goto-preview][goto-preview]]
 
     + INIT
@@ -164,7 +193,6 @@
     )
     vim.api.nvim_create_user_command("LspPreviewCloseAll", "lua require('goto-preview').close_all_win()", {})
     #+end_src
-
 
 **   [[https://github.com/mfussenegger/nvim-jdtls][nvim-jdtls]]
 
