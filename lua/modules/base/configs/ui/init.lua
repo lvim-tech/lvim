@@ -455,7 +455,7 @@ function config.noice_nvim()
                     max_width = 120,
                 },
                 border = {
-                    style = { " ", " ", " ", " ", " ", " ", " ", " " },
+                    style = "none",
                     padding = { 0, 2 },
                 },
                 position = { row = 1, col = 0 },
