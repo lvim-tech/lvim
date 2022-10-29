@@ -245,6 +245,7 @@ function config.noice_nvim()
     if not noice_status_ok then
         return
     end
+    local Config = require("noice.config")
     noice.setup({
         cmdline = {
             enabled = true,
@@ -296,7 +297,7 @@ function config.noice_nvim()
             enabled = false,
             view = "notify",
         },
-        lsp_progress = {
+        lsp = {
             progress = {
                 enabled = true,
                 format = "lsp_progress",
@@ -304,15 +305,30 @@ function config.noice_nvim()
                 throttle = 1000 / 30,
                 view = "mini",
             },
+            override = {
+                ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                ["vim.lsp.util.stylize_markdown"] = true,
+                ["cmp.entry.get_documentation"] = true,
+            },
             hover = {
-                enabled = false,
+                enabled = true,
                 view = nil,
                 opts = {},
             },
             signature = {
-                enabled = false,
-                auto_open = true,
+                enabled = true,
+                auto_open = {
+                    enabled = true,
+                    trigger = true,
+                    luasnip = true,
+                    throttle = 50,
+                },
                 view = nil,
+                opts = {},
+            },
+            message = {
+                enabled = true,
+                view = "notify",
                 opts = {},
             },
             documentation = {
@@ -352,8 +368,8 @@ function config.noice_nvim()
             command_palette = false,
             long_message_to_split = false,
             inc_rename = false,
+            lsp_doc_border = false,
         },
-        throttle = 1000 / 30,
         views = {
             popupmenu = {
                 zindex = 65,
@@ -408,21 +424,44 @@ function config.noice_nvim()
             },
             popup = {
                 backend = "popup",
+                relative = "editor",
                 close = {
                     events = { "BufLeave" },
-                    keys = { "q", "<esc>" },
+                    keys = { "q" },
                 },
                 enter = true,
                 border = {
-                    style = "single",
+                    style = "rounded",
                 },
                 position = "50%",
                 size = {
-                    width = "80%",
-                    height = "60%",
+                    width = "120",
+                    height = "20",
                 },
                 win_options = {
                     winhighlight = { Normal = "NoiceBody", FloatBorder = "NoiceBorder" },
+                },
+            },
+            hover = {
+                view = "popup",
+                relative = "cursor",
+                zindex = 45,
+                enter = false,
+                anchor = "auto",
+                size = {
+                    width = "auto",
+                    height = "auto",
+                    max_height = 20,
+                    max_width = 120,
+                },
+                border = {
+                    style = { " ", " ", " ", " ", " ", " ", " ", " " },
+                    padding = { 0, 2 },
+                },
+                position = { row = 1, col = 0 },
+                win_options = {
+                    wrap = true,
+                    linebreak = true,
                 },
             },
             cmdline = {
@@ -631,16 +670,16 @@ function config.noice_nvim()
             },
             {
                 view = "mini",
-                filter = { event = "lsp" },
+                filter = { event = "lsp", kind = "progress" },
             },
             {
                 view = "notify",
-                filter = {},
-                opts = {
-                    title = "LVIM IDE",
-                },
+                opts = {},
+                filter = { event = "lsp", kind = "message" },
             },
         },
+        status = {},
+        format = {},
     })
     vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
         pattern = { "noice" },

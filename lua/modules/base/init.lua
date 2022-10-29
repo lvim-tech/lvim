@@ -546,14 +546,6 @@ modules["rmagatti/goto-preview"] = {
     config = languages_config.goto_preview,
 }
 
-modules["lewis6991/hover.nvim"] = {
-    commit = funcs.get_commit("hover.nvim", plugins_snapshot),
-    event = {
-        "BufRead",
-    },
-    config = languages_config.hover_nvim,
-}
-
 modules["mfussenegger/nvim-jdtls"] = {
     commit = funcs.get_commit("nvim-jdtls", plugins_snapshot),
     ft = "java",

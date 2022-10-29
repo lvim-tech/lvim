@@ -1,6 +1,7 @@
 local config = {}
 
 function config.mason_nvim()
+    vim.api.nvim_create_user_command("LspHover", "lua vim.lsp.buf.hover()", {})
     vim.api.nvim_create_user_command("LspAddToWorkspaceFolder", "lua vim.lsp.buf.add_workspace_folder()", {})
     vim.api.nvim_create_user_command("LspListWorkspaceFolders", "lua vim.lsp.buf.list_workspace_folders()", {})
     vim.api.nvim_create_user_command("LspRemoveWorkspaceFolder", "lua vim.lsp.buf.remove_workspace_folder()", {})

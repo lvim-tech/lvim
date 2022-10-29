@@ -165,40 +165,6 @@
     vim.api.nvim_create_user_command("LspPreviewCloseAll", "lua require('goto-preview').close_all_win()", {})
     #+end_src
 
-**   [[https://github.com/lewis6991/hover.nvim][hover.nvim]]
-
-    + INIT
-
-    #+begin_src lua
-    modules["lewis6991/hover.nvim"] = {
-        commit = funcs.get_commit("hover.nvim", plugins_snapshot),
-        event = {
-            "BufRead",
-        },
-        config = languages_config.hover_nvim,
-    }
-    #+end_src
-
-    + CONFIG
-
-    #+begin_src lua
-    function config.hover_nvim()
-        local hover_status_ok, hover = pcall(require, "hover")
-        if not hover_status_ok then
-            return
-        end
-        hover.setup({
-            init = function()
-                require("hover.providers.lsp")
-            end,
-            preview_opts = {
-                border = nil,
-            },
-            title = false,
-        })
-        vim.api.nvim_create_user_command("LspHover", "lua require('hover').hover()", {})
-    end
-    #+end_src
 
 **   [[https://github.com/mfussenegger/nvim-jdtls][nvim-jdtls]]
 
