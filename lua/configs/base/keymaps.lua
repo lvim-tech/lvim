@@ -26,7 +26,6 @@ keymaps["visual"] = {
     { "*", "<Esc>/\\%V" }, -- Visual search /
     { "#", "<Esc>?\\%V" }, -- Visual search ?
     { "<A-u>", ":AnyJumpVisual<CR>" }, -- Any jump visual
-    { "ts", ":SnipRun<CR>" }, -- Snip run
 }
 
 return keymaps
