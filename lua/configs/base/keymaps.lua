@@ -2,10 +2,6 @@ local keymaps = {}
 
 keymaps["normal"] = {
     { "<space><space>", ":CtrlSpace<CR>" }, -- CtrlSpace
-    { "<F1>", ":TTOne<CR>" }, -- Toggleterm one open
-    { "<F2>", ":TTTwo<CR>" }, -- Toggleterm two open
-    { "<F3>", ":TTThree<CR>" }, -- Toggleterm three open
-    { "<F4>", ":TTFloat<CR>" }, -- Toggleterm float open
     { "<F5>", ":UndotreeToggle<CR>" }, -- UndoTree toggle
     { "<F11>", ":LvimHelper<CR>" }, -- LvimHelper
     { "<Esc>", "<Esc>:noh<CR>:SnipClose<CR>" }, -- Remove highlight after search

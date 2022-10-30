@@ -134,13 +134,12 @@ modules["is0n/fm-nvim"] = {
 }
 
 modules["akinsho/toggleterm.nvim"] = {
-    tag = "v2.*",
     commit = funcs.get_commit("toggleterm.nvim", plugins_snapshot),
     cmd = {
-        "TTFloat",
-        "TTOne",
-        "TTTwo",
-        "TTThree",
+        "TermOne",
+        "TermTwo",
+        "TermThree",
+        "TermFloat",
     },
     config = ui_config.toggleterm_nvim,
 }
