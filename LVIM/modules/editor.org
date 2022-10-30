@@ -889,23 +889,17 @@
     + CONFIG
 
     #+begin_src lua
-    function config.nvim_colorize_lua()
-        local colorizer_status_ok, colorizer = pcall(require, "colorizer")
-        if not colorizer_status_ok then
-            return
-        end
-        colorizer.setup({
-            "*",
-        }, {
-            RGB = true,
-            RRGGBB = true,
-            RRGGBBAA = true,
-            rgb_fn = true,
-            hsl_fn = true,
-            css = true,
-            css_fn = true,
-        })
+    local colorizer_status_ok, colorizer = pcall(require, "colorizer")
+    if not colorizer_status_ok then
+        return
     end
+    colorizer.setup({})
+    vim.api.nvim_create_autocmd("BufWritePost", {
+        callback = function()
+            vim.api.nvim_command("ColorizerAttachToBuffer")
+        end,
+        group = "LvimIDE",
+    })
     #+end_src
 
 **   [[https://github.com/ziontee113/color-picker.nvim][color-picker.nvim]]
@@ -931,6 +925,12 @@
             return
         end
         color_picker.setup({})
+        vim.keymap.set("n", "<C-c>p", function()
+            vim.cmd("PickColor")
+        end, { noremap = true, silent = true })
+        vim.keymap.set("n", "<C-c>P", function()
+            vim.cmd("PickColorInsert")
+        end, { noremap = true, silent = true })
     end
     #+end_src
 
