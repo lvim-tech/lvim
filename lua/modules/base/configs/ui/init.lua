@@ -653,16 +653,16 @@ function config.noice_nvim()
         status = {},
         format = {},
     })
-    vim.keymap.set({ "n", "i" }, "<c-d>", function()
+    vim.keymap.set({ "n", "i" }, "<C-d>", function()
         if not require("noice.lsp").scroll(4) then
-            return "<c-d>"
+            return "<C-d>"
         end
-    end, { silent = true, expr = true })
-    vim.keymap.set({ "n", "i" }, "<c-u>", function()
+    end, { silent = true, expr = true, desc = "Scroll Down" })
+    vim.keymap.set({ "n", "i" }, "<C-u>", function()
         if not require("noice.lsp").scroll(-4) then
-            return "<c-u>"
+            return "<C-u>"
         end
-    end, { silent = true, expr = true })
+    end, { silent = true, expr = true, desc = "Scroll Up" })
 end
 
 function config.alpha_nvim()
@@ -787,7 +787,7 @@ function config.nvim_window_picker()
     vim.api.nvim_create_user_command("WindowPicker", focus_window, {})
     vim.keymap.set("n", "gw", function()
         vim.cmd("WindowPicker")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "WindowPicker" })
 end
 
 function config.neo_tree_nvim()
@@ -862,19 +862,19 @@ function config.neo_tree_nvim()
     })
     vim.keymap.set("n", "<S-x>", function()
         vim.cmd("Neotree filesystem left")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "Neotree filesystem" })
     vim.keymap.set("n", "<S-b>", function()
         vim.cmd("Neotree buffers left")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "Neotree buffers" })
     vim.keymap.set("n", "<S-t>", function()
         vim.cmd("Neotree git_status left")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "Neotree git_status" })
     vim.keymap.set("n", "<S-l>", function()
         vim.cmd("Neotree diagnostics left")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "Neotree diagnostics" })
     vim.keymap.set("n", "<A-e>", function()
         vim.cmd("Neotree diagnostics reveal bottom")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "Neotree diagnostics bottom" })
 end
 
 function config.dirbuf_nvim()
@@ -1815,7 +1815,7 @@ function config.fm_nvim()
     })
     vim.keymap.set("n", "<C-c>f", function()
         vim.cmd("Vifm")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "Vifm" })
 end
 
 function config.toggleterm_nvim()
@@ -1933,16 +1933,16 @@ function config.toggleterm_nvim()
     end, {})
     vim.keymap.set("n", "<F1>", function()
         terminal_one:toggle()
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "Terminal One" })
     vim.keymap.set("n", "<F2>", function()
         terminal_two:toggle()
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "Terminal Two" })
     vim.keymap.set("n", "<F3>", function()
         terminal_three:toggle()
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "Terminal Three" })
     vim.keymap.set("n", "<F4>", function()
         terminal_float:toggle()
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "Terminal Float" })
 end
 
 function config.zen_mode_nvim()
@@ -1990,7 +1990,7 @@ function config.neozoom_lua()
         border = "none",
         scrolloff_on_zoom = 0,
     })
-    vim.keymap.set("n", "<C-space>", require("neo-zoom").neo_zoom, { silent = true, nowait = true })
+    vim.keymap.set("n", "<C-space>", require("neo-zoom").neo_zoom, { silent = true, nowait = true, desc = "NeoZoom" })
 end
 
 function config.stay_in_place()
@@ -2107,7 +2107,7 @@ function config.lvim_helper()
     })
     vim.keymap.set("n", "<F11>", function()
         vim.cmd("LvimHelper")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "LvimHelper" })
 end
 
 return config

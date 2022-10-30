@@ -3,7 +3,7 @@ local config = {}
 function config.vim_ctrlspace()
     vim.keymap.set("n", "<space><space>", function()
         vim.cmd("CtrlSpace")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "CtrlSpace" })
 end
 
 function config.telescope_nvim()
@@ -96,22 +96,22 @@ function config.telescope_nvim()
     telescope.load_extension("howdoi")
     vim.keymap.set("n", "<A-,>", function()
         vim.cmd("Telescope find_files")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "Telescope find_files" })
     vim.keymap.set("n", "<A-.>", function()
         vim.cmd("Telescope live_grep")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "Telescope live_grep" })
     vim.keymap.set("n", "<A-/>", function()
         vim.cmd("Telescope file_browser")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "Telescope file_browser" })
     vim.keymap.set("n", "<A-b>", function()
         vim.cmd("Telescope buffers")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "Telescope buffers" })
     vim.keymap.set("n", "th", function()
         vim.cmd("Telescope howdoi")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "Telescope howdoi" })
     vim.keymap.set("n", "tt", function()
         vim.cmd("Telescope tmux sessions")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "Telescope tmux sessions" })
 end
 
 function config.rg_nvim()
@@ -122,8 +122,8 @@ function config.rg_nvim()
     rg.setup({
         default_keybindings = {
             enable = true,
-            modes = { "n", "v" },
-            binding = "te",
+            modes = { "v" },
+            binding = "tr",
         },
     })
 end
@@ -162,23 +162,23 @@ function config.nvim_hlslens()
             render.setVirt(0, lnum - 1, col - 1, chunks, nearest)
         end,
     })
-    local kopts = { noremap = true, silent = true }
-    vim.api.nvim_set_keymap(
+    local opts = { noremap = true, silent = true }
+    vim.keymap.set(
         "n",
         "n",
         [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
-        kopts
+        opts
     )
-    vim.api.nvim_set_keymap(
+    vim.keymap.set(
         "n",
         "N",
         [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
-        kopts
+        opts
     )
-    vim.api.nvim_set_keymap("n", "*", [[*<Cmd>lua require('hlslens').start()<CR>]], kopts)
-    vim.api.nvim_set_keymap("n", "#", [[#<Cmd>lua require('hlslens').start()<CR>]], kopts)
-    vim.api.nvim_set_keymap("n", "g*", [[g*<Cmd>lua require('hlslens').start()<CR>]], kopts)
-    vim.api.nvim_set_keymap("n", "g#", [[g#<Cmd>lua require('hlslens').start()<CR>]], kopts)
+    vim.keymap.set("n", "*", [[*<Cmd>lua require('hlslens').start()<CR>]], opts)
+    vim.keymap.set("n", "#", [[#<Cmd>lua require('hlslens').start()<CR>]], opts)
+    vim.keymap.set("n", "g*", [[g*<Cmd>lua require('hlslens').start()<CR>]], opts)
+    vim.keymap.set("n", "g#", [[g#<Cmd>lua require('hlslens').start()<CR>]], opts)
 end
 
 function config.nvim_bqf()
@@ -342,13 +342,12 @@ function config.dial_nvim()
             }),
         },
     })
-    local opts = { noremap = true, silent = true }
-    vim.api.nvim_set_keymap("n", "<C-a>", "<Plug>(dial-increment)", opts)
-    vim.api.nvim_set_keymap("n", "<C-x>", "<Plug>(dial-decrement)", opts)
-    vim.api.nvim_set_keymap("v", "<C-a>", "<Plug>(dial-increment)", opts)
-    vim.api.nvim_set_keymap("v", "<C-x>", "<Plug>(dial-decrement)", opts)
-    vim.api.nvim_set_keymap("v", "g<C-a>", "<Plug>(dial-increment)", opts)
-    vim.api.nvim_set_keymap("v", "g<C-x>", "<Plug>(dial-decrement)", opts)
+    vim.keymap.set("n", "<C-a>", "<Plug>(dial-increment)", { noremap = true, silent = true, desc = "Dial Increment" })
+    vim.keymap.set("n", "<C-x>", "<Plug>(dial-decrement)", { noremap = true, silent = true, desc = "Dial Decrement" })
+    vim.keymap.set("v", "<C-a>", "<Plug>(dial-increment)", { noremap = true, silent = true, desc = "Dial Increment" })
+    vim.keymap.set("v", "<C-x>", "<Plug>(dial-decrement)", { noremap = true, silent = true, desc = "Dial Decrement" })
+    vim.keymap.set("v", "g<C-a>", "<Plug>(dial-increment)", { noremap = true, silent = true, desc = "Dial Increment" })
+    vim.keymap.set("v", "g<C-x>", "<Plug>(dial-decrement)", { noremap = true, silent = true, desc = "Dial Decrement" })
 end
 
 function config.nvim_gomove()
@@ -383,18 +382,18 @@ function config.rest_nvim()
         return
     end
     rest_nvim.setup()
-    vim.api.nvim_create_user_command("RestNvim", "lua require('rest-nvim').run()", {})
-    vim.api.nvim_create_user_command("RestNvimPreview", "lua require('rest-nvim').run(true)", {})
-    vim.api.nvim_create_user_command("RestNvimLast", "lua require('rest-nvim').last()", {})
+    vim.api.nvim_create_user_command("Rest", "lua require('rest-nvim').run()", {})
+    vim.api.nvim_create_user_command("RestPreview", "lua require('rest-nvim').run(true)", {})
+    vim.api.nvim_create_user_command("RestLast", "lua require('rest-nvim').last()", {})
     vim.keymap.set("n", "trr", function()
         rest_nvim.run()
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "Rest" })
     vim.keymap.set("n", "trp", function()
         rest_nvim.run(true)
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "RestPreview" })
     vim.keymap.set("n", "trl", function()
         rest_nvim.last()
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "RestLast" })
 end
 
 function config.sniprun()
@@ -403,8 +402,8 @@ function config.sniprun()
         return
     end
     sniprun.setup()
-    vim.keymap.set({ "n", "v" }, "ts", ":SnipRun<CR>", { noremap = true, silent = true })
-    vim.keymap.set("n", "<Esc>", "<Esc>:noh<CR>:SnipClose<CR>", { noremap = true, silent = true })
+    vim.keymap.set({ "n", "v" }, "ts", ":SnipRun<CR>", { noremap = true, silent = true, desc = "SnipRun" })
+    vim.keymap.set("n", "<Esc>", "<Esc>:noh<CR>:SnipClose<CR>", { noremap = true, silent = true, desc = "Escape" })
 end
 
 function config.code_runner_nvim()
@@ -514,7 +513,7 @@ function config.nvim_spectre()
     })
     vim.keymap.set("n", "<A-s>", function()
         vim.cmd("Spectre")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "Spectre" })
 end
 
 function config.comment_nvim()
@@ -528,10 +527,10 @@ end
 function config.vim_bufsurf()
     vim.keymap.set("n", "<C-n>", function()
         vim.cmd("BufSurfForward")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "BufSurfForward" })
     vim.keymap.set("n", "<C-p>", function()
         vim.cmd("BufSurfBack")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "BufSurfBack" })
 end
 
 function config.neogen()
@@ -546,9 +545,6 @@ function config.neogen()
     vim.api.nvim_create_user_command("NeogenClass", "lua require('neogen').generate({ type = 'class' })", {})
     vim.api.nvim_create_user_command("NeogenFunction", "lua require('neogen').generate({ type = 'func' })", {})
     vim.api.nvim_create_user_command("NeogenType", "lua require('neogen').generate({ type = 'type' })", {})
-    local opts = { noremap = true, silent = true }
-    vim.api.nvim_set_keymap("i", "<C-l>", ":lua require('neogen').jump_next<CR>", opts)
-    vim.api.nvim_set_keymap("i", "<C-h>", ":lua require('neogen').jump_prev<CR>", opts)
 end
 
 function config.nvim_colorize_lua()
@@ -573,10 +569,10 @@ function config.color_picker_nvim()
     color_picker.setup({})
     vim.keymap.set("n", "<C-c>p", function()
         vim.cmd("PickColor")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "ColorPicker" })
     vim.keymap.set("n", "<C-c>P", function()
         vim.cmd("PickColorInsert")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "PickColorInsert" })
 end
 
 function config.lvim_colorcolumn()
@@ -649,7 +645,7 @@ function config.pretty_fold_nvim()
     vim.api.nvim_create_user_command("FoldPreview", "lua _G.fold_preview()", {})
     vim.keymap.set("n", "zp", function()
         _G.fold_preview()
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "FoldPreview" })
 end
 
 function config.calendar_vim()
@@ -660,7 +656,7 @@ function config.calendar_vim()
     vim.g.calendar_weeknm = 1
     vim.keymap.set("n", "tc", function()
         vim.cmd("CalendarVR")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "Calendar" })
 end
 
 return config

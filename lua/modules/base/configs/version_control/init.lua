@@ -84,13 +84,13 @@ function config.gitsigns_nvim()
     vim.api.nvim_create_user_command("GitSignsBlameLine", "lua require('gitsigns').blame_line()", {})
     vim.keymap.set("n", "<A-]>", function()
         vim.cmd("GitSignsNextHunk")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "GitSignsNextHunk" })
     vim.keymap.set("n", "<A-[>", function()
         vim.cmd("GitSignsPrevHunk")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "GitSignsPrevHunk" })
     vim.keymap.set("n", "<A-;>", function()
         vim.cmd("GitSignsPreviewHunk")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "GitSignsPreviewHunk" })
 end
 
 function config.git_blame_nvim()
@@ -107,7 +107,7 @@ function config.git_blame_nvim()
     }
     vim.keymap.set("n", "<C-c>b", function()
         vim.cmd("GitBlameToggle")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "GitBlameToggle" })
 end
 
 function config.diffview_nvim()
@@ -144,7 +144,7 @@ end
 function config.undotree()
     vim.keymap.set("n", "<F5>", function()
         vim.cmd("UndotreeToggle")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "UndotreeToggle" })
 end
 
 return config
