@@ -655,7 +655,9 @@ modules["pechorin/any-jump.vim"] = {
 
 modules["simrat39/symbols-outline.nvim"] = {
     commit = funcs.get_commit("symbols-outline.nvim", plugins_snapshot),
-    cmd = "SymbolsOutline",
+    event = {
+        "BufRead",
+    },
     config = languages_config.symbols_outline_nvim,
 }
 
