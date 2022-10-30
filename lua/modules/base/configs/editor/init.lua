@@ -484,6 +484,15 @@ function config.comment_nvim()
     comment.setup()
 end
 
+function config.vim_bufsurf()
+    vim.keymap.set("n", "<C-n>", function()
+        vim.cmd("BufSurfForward")
+    end, { noremap = true, silent = true })
+    vim.keymap.set("n", "<C-p>", function()
+        vim.cmd("BufSurfBack")
+    end, { noremap = true, silent = true })
+end
+
 function config.neogen()
     local neogen_status_ok, neogen = pcall(require, "neogen")
     if not neogen_status_ok then
@@ -506,7 +515,7 @@ function config.nvim_colorize_lua()
     if not colorizer_status_ok then
         return
     end
-    colorizer.setup({})
+    colorizer.setup()
     vim.api.nvim_create_autocmd("BufWritePost", {
         callback = function()
             vim.api.nvim_command("ColorizerAttachToBuffer")

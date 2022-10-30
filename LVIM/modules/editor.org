@@ -827,7 +827,21 @@
         event = {
             "BufRead",
         },
+        config = editor_config.vim_bufsurf,
     }
+    #+end_src
+
+    + Config
+
+    #+begin_src lua
+    function config.vim_bufsurf()
+        vim.keymap.set("n", "<C-n>", function()
+            vim.cmd("BufSurfForward")
+        end, { noremap = true, silent = true })
+        vim.keymap.set("n", "<C-p>", function()
+            vim.cmd("BufSurfBack")
+        end, { noremap = true, silent = true })
+    end
     #+end_src
 
 **   [[https://github.com/danymat/neogen][neogen]]
@@ -893,7 +907,7 @@
     if not colorizer_status_ok then
         return
     end
-    colorizer.setup({})
+    colorizer.setup()
     vim.api.nvim_create_autocmd("BufWritePost", {
         callback = function()
             vim.api.nvim_command("ColorizerAttachToBuffer")

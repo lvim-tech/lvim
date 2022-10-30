@@ -356,6 +356,7 @@ modules["ton/vim-bufsurf"] = {
     event = {
         "BufRead",
     },
+    config = editor_config.vim_bufsurf,
 }
 
 modules["danymat/neogen"] = {

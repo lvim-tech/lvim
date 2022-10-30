@@ -11,8 +11,6 @@ keymaps["normal"] = {
     { "<C-c>x", "<C-w>c" }, -- Close current window
     { "<C-c>o", "<C-w>o" }, -- Close other windows
     { "<C-c>d", ":bdelete<CR>" }, -- BDelete
-    { "<C-n>", ":BufSurfForward<CR>" }, -- Next buffer
-    { "<C-p>", ":BufSurfBack<CR>" }, -- Previews buffer
     { "<C-c>b", ":GitBlameToggle<CR>" }, -- Git blame toggle
     { "<C-c>z", ":NeoZoomToggle<CR>" }, -- NeoZoom toggle
     { "<C-c>f", ":Vifm<CR>" }, -- Vifm file explorer
