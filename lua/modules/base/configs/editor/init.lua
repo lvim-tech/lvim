@@ -513,12 +513,6 @@ function config.nvim_colorize_lua()
         end,
         group = "LvimIDE",
     })
-    vim.api.nvim_create_autocmd("BufWritePost", {
-        callback = function()
-            vim.api.nvim_command("ColorizerAttachToBuffer")
-        end,
-        group = "LvimIDE",
-    })
 end
 
 function config.color_picker_nvim()
