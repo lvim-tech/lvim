@@ -39,8 +39,6 @@ keymaps["normal"] = {
     { "gP", ":hardcopy<CR>" }, -- Print file
     { "tn", ":tabn<CR>" }, -- Tab next
     { "tp", ":tabp<CR>" }, -- Tab prev
-    { "th", ":Telescope howdoi<CR>" }, -- Telescope howdoi
-    { "tt", ":Telescope tmux sessions<CR>" }, -- Telescope tmux session
     { "trr", "<Plug>RestNvim<CR>" }, -- Rest nvim
     { "trp", "<Plug>RestNvimPreview<CR>" }, -- Rest nvim preview
     { "trl", "<Plug>RestNvimLast<CR>" }, -- Rest nvim last

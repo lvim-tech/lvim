@@ -100,6 +100,12 @@ function config.telescope_nvim()
     vim.keymap.set("n", "<A-b>", function()
         vim.cmd("Telescope buffers")
     end, { noremap = true, silent = true })
+    vim.keymap.set("n", "th", function()
+        vim.cmd("Telescope howdoi")
+    end, { noremap = true, silent = true })
+    vim.keymap.set("n", "tt", function()
+        vim.cmd("Telescope tmux sessions")
+    end, { noremap = true, silent = true })
 end
 
 function config.rg_nvim()
