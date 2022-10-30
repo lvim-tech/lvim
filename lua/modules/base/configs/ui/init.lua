@@ -658,7 +658,6 @@ function config.noice_nvim()
             return "<c-d>"
         end
     end, { silent = true, expr = true })
-
     vim.keymap.set({ "n", "i" }, "<c-u>", function()
         if not require("noice.lsp").scroll(-4) then
             return "<c-u>"
@@ -1042,9 +1041,13 @@ function config.which_key_nvim()
         },
         s = {
             name = "Spectre",
-            d = {
-                '<Cmd>lua require("spectre").delete()<CR>',
-                "Toggle current item",
+            s = {
+                "<Cmd>Spectre<CR>",
+                "Open Spectre",
+            },
+            t = {
+                '<Cmd>lua require("spectre").toggle_line()<CR>',
+                "Toggle current line",
             },
             g = {
                 '<Cmd>lua require("spectre.actions").select_entry()<CR>',
@@ -1060,11 +1063,19 @@ function config.which_key_nvim()
             },
             o = {
                 '<Cmd>lua require("spectre").show_options()<CR>',
-                "show option",
+                "Show option",
+            },
+            r = {
+                '<Cmd>lua require("spectre.actions").run_current_replace()<CR>',
+                "Replace current line",
             },
             R = {
                 '<Cmd>lua require("spectre.actions").run_replace()<CR>',
                 "Replace all",
+            },
+            u = {
+                '<Cmd>lua require("spectre").toggle_live_update()<CR>',
+                "Update change when vim write file",
             },
             v = {
                 '<Cmd>lua require("spectre").change_view()<CR>',
@@ -1077,6 +1088,10 @@ function config.which_key_nvim()
             h = {
                 '<Cmd>lua require("spectre").change_options("hidden")<CR>',
                 "Toggle search hidden",
+            },
+            l = {
+                '<Cmd>lua require("spectre").resume_last_search()<CR>',
+                "Resume last search before close",
             },
         },
         t = {
