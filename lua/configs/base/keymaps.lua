@@ -19,7 +19,6 @@ keymaps["normal"] = {
     { "<C-Right>", ":vertical resize +2<CR>" }, -- Resize width +
     { "<C-Up>", ":resize -2<CR>" }, -- Resize height -
     { "<C-Down>", ":resize +2<CR>" }, -- Resize height +
-    { "<A-u>", ":AnyJump<CR>" }, -- Any jump
     { "<A-v>", ":SymbolsOutline<CR>" }, -- Symbols outline
     { "<A-]>", ":GitSignsNextHunk<CR>" }, -- Git signs next hunk
     { "<A-[>", ":GitSignsPrevHunk<CR>" }, -- Git signs prev hunk
