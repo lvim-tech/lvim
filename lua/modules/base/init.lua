@@ -197,7 +197,6 @@ modules["vim-ctrlspace/vim-ctrlspace"] = {
 }
 
 modules["nvim-telescope/telescope.nvim"] = {
-    branch = "0.1.x",
     commit = funcs.get_commit("telescope.nvim", plugins_snapshot),
     requires = {
         {
