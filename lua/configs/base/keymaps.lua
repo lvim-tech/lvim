@@ -42,20 +42,6 @@ keymaps["normal"] = {
     { "dc", ":LspShowDiagnosticCurrent<CR>" }, -- Lsp show diagnostic current line
     { "dn", ":LspShowDiagnosticNext<CR>" }, -- Lsp show diagnostic next line
     { "dp", ":LspShowDiagnostigPrev<CR>" }, -- Lsp show diagnostic prev line
-    { "zp", "<Cmd>FoldPreview<CR>" }, -- Fix indent + fold lines
-    { "zo", "zo:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
-    { "zO", "zO:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
-    { "zc", "zc:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
-    { "zC", "zC:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
-    { "za", "za:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
-    { "zA", "zA:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
-    { "zv", "zv:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
-    { "zx", "zx:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
-    { "zX", "zX:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
-    { "zm", "zm:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
-    { "zM", "zM:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
-    { "zr", "zr:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
-    { "zR", "zR:IndentBlanklineRefresh<CR>" }, -- Fix indent + fold lines
 }
 
 keymaps["visual"] = {

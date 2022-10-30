@@ -2052,6 +2052,20 @@ function config.indent_blankline_nvim()
             "nofile",
         },
     })
+    vim.keymap.set("n", "zo", "zo:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
+    vim.keymap.set("n", "zO", "zO:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
+    vim.keymap.set("n", "zc", "zc:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
+    vim.keymap.set("n", "zC", "zC:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
+    vim.keymap.set("n", "za", "za:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
+    vim.keymap.set("n", "zA", "zA:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
+    vim.keymap.set("n", "zv", "zv:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
+    vim.keymap.set("n", "zV", "zV:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
+    vim.keymap.set("n", "zx", "zx:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
+    vim.keymap.set("n", "zX", "zX:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
+    vim.keymap.set("n", "zm", "zm:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
+    vim.keymap.set("n", "zM", "zM:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
+    vim.keymap.set("n", "zr", "zr:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
+    vim.keymap.set("n", "zR", "zR:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
 end
 
 function config.lvim_focus()
