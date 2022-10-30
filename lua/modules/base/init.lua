@@ -193,7 +193,7 @@ local editor_config = require("modules.base.configs.editor")
 
 modules["vim-ctrlspace/vim-ctrlspace"] = {
     commit = funcs.get_commit("vim-ctrlspace", plugins_snapshot),
-    -- cmd = "CtrlSpace",
+    config = editor_config.vim_ctrlspace,
 }
 
 modules["nvim-telescope/telescope.nvim"] = {

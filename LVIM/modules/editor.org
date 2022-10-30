@@ -7,8 +7,18 @@
     #+begin_src lua
     modules["vim-ctrlspace/vim-ctrlspace"] = {
         commit = funcs.get_commit("vim-ctrlspace", plugins_snapshot),
-        cmd = "CtrlSpace",
+        config = editor_config.vim_ctrlspace,
     }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.vim_ctrlspace()
+        vim.keymap.set("n", "<space><space>", function()
+            vim.cmd("CtrlSpace")
+        end, { noremap = true, silent = true })
+    end
     #+end_src
 
 **   [[https://github.com/nvim-telescope/telescope.nvim][telescope.nvim]]

@@ -1,5 +1,11 @@
 local config = {}
 
+function config.vim_ctrlspace()
+    vim.keymap.set("n", "<space><space>", function()
+        vim.cmd("CtrlSpace")
+    end, { noremap = true, silent = true })
+end
+
 function config.telescope_nvim()
     local telescope_status_ok, telescope = pcall(require, "telescope")
     if not telescope_status_ok then
