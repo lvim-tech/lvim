@@ -933,7 +933,18 @@
     modules["davidgranstrom/nvim-markdown-preview"] = {
         commit = funcs.get_commit("nvim-markdown-preview", plugins_snapshot),
         ft = "markdown",
+        config = languages_config.nvim_markdown_preview,
     }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.nvim_markdown_preview()
+        vim.keymap.set("n", "<S-m>", function()
+            vim.cmd("MarkdownPreview")
+        end, { noremap = true, silent = true })
+    end
     #+end_src
 
 **   [[https://github.com/lervag/vimtex][vimtex]]

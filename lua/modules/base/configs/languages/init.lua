@@ -505,6 +505,12 @@ function config.pubspec_assist_nvim()
     pubspec_assist.setup({})
 end
 
+function config.nvim_markdown_preview()
+    vim.keymap.set("n", "<S-m>", function()
+        vim.cmd("MarkdownPreview")
+    end, { noremap = true, silent = true })
+end
+
 function config.vimtex()
     vim.g.vimtex_view_method = "zathura"
     vim.g.latex_view_general_viewer = "zathura"

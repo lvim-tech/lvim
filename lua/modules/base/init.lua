@@ -747,6 +747,7 @@ modules["akinsho/pubspec-assist.nvim"] = {
 modules["davidgranstrom/nvim-markdown-preview"] = {
     commit = funcs.get_commit("nvim-markdown-preview", plugins_snapshot),
     ft = "markdown",
+    config = languages_config.nvim_markdown_preview,
 }
 
 modules["lervag/vimtex"] = {
