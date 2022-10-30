@@ -19,11 +19,6 @@ keymaps["normal"] = {
     { "<C-Right>", ":vertical resize +2<CR>" }, -- Resize width +
     { "<C-Up>", ":resize -2<CR>" }, -- Resize height -
     { "<C-Down>", ":resize +2<CR>" }, -- Resize height +
-    { "gpd", ":LspPreviewDefinition<CR>" }, -- Lsp definition
-    { "gpt", ":LspPreviewTypeDefinition<CR>" }, -- Lsp type definition
-    { "gpr", ":LspPreviewReferences<CR>" }, -- Lsp references
-    { "gpi", ":LspPreviewImplementation<CR>" }, -- Lsp implementation
-    { "gpp", ":LspPreviewCloseAll<CR>" }, -- Lsp close all
     { "gP", ":hardcopy<CR>" }, -- Print file
     { "tn", ":tabn<CR>" }, -- Tab next
     { "tp", ":tabp<CR>" }, -- Tab prev
