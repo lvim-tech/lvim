@@ -379,6 +379,9 @@ function config.sniprun()
         return
     end
     sniprun.setup()
+    vim.keymap.set("n", "ts", function()
+        vim.cmd("SnipRun")
+    end, { noremap = true, silent = true })
 end
 
 function config.code_runner_nvim()

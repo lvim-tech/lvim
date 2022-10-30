@@ -308,12 +308,8 @@ modules["michaelb/sniprun"] = {
         commit = funcs.get_commit("nvim-lspconfig", plugins_snapshot),
     },
     run = "bash ./install.sh",
-    cmd = {
-        "SnipRun",
-        "SnipInfo",
-        "SnipReset",
-        "SnipReplMemoryClean",
-        "SnipClose",
+    event = {
+        "BufRead",
     },
     config = editor_config.sniprun,
 }

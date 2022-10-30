@@ -36,7 +36,6 @@ keymaps["normal"] = {
     { "gpp", ":LspPreviewCloseAll<CR>" }, -- Lsp close all
     { "gh", ":LspHover<CR>" }, -- Lsp hover
     { "K", ":LspHover<CR>" }, -- Lsp hover
-    { "ts", ":SnipRun<CR>" }, -- Snip run
     { "gP", ":hardcopy<CR>" }, -- Print file
     { "tn", ":tabn<CR>" }, -- Tab next
     { "tp", ":tabp<CR>" }, -- Tab prev

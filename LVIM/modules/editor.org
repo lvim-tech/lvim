@@ -625,12 +625,8 @@
             commit = funcs.get_commit("nvim-lspconfig", plugins_snapshot),
         },
         run = "bash ./install.sh",
-        cmd = {
-            "SnipRun",
-            "SnipInfo",
-            "SnipReset",
-            "SnipReplMemoryClean",
-            "SnipClose",
+        event = {
+            "BufRead",
         },
         config = languages_config.sniprun,
     }
@@ -645,6 +641,9 @@
             return
         end
         sniprun.setup()
+        vim.keymap.set("n", "ts", function()
+            vim.cmd("SnipRun")
+        end, { noremap = true, silent = true })
     end
     #+end_src
 
