@@ -641,8 +641,10 @@ function config.pretty_fold_nvim()
         map.show_close_preview_open_fold()
         vim.cmd("IndentBlanklineRefresh")
     end
-
     vim.api.nvim_create_user_command("FoldPreview", "lua _G.fold_preview()", {})
+    vim.keymap.set("n", "zp", function()
+        _G.fold_preview()
+    end, { noremap = true, silent = true })
 end
 
 function config.calendar_vim()
