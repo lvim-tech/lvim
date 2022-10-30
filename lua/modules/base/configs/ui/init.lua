@@ -2105,6 +2105,9 @@ function config.lvim_helper()
             global.home .. "/.config/nvim/help/vim_cheat_sheet_diff.md",
         },
     })
+    vim.keymap.set("n", "<F11>", function()
+        vim.cmd("LvimHelper")
+    end, { noremap = true, silent = true })
 end
 
 return config

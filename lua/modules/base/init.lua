@@ -181,7 +181,6 @@ modules["lvim-tech/lvim-focus"] = {
 
 modules["lvim-tech/lvim-helper"] = {
     commit = funcs.get_commit("lvim-helper", plugins_snapshot),
-    cmd = "LvimHelper",
     config = ui_config.lvim_helper,
 }
 
