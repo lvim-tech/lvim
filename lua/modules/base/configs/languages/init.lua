@@ -364,9 +364,8 @@ end
 function config.any_jump_nvim()
     vim.g.any_jump_disable_default_keybindings = 1
     vim.g.any_jump_list_numbers = 1
-    vim.keymap.set("n", "<A-u>", function()
-        vim.cmd("AnyJump")
-    end, { noremap = true, silent = true })
+    vim.keymap.set("n", "<A-u>", ":AnyJump<CR>", { noremap = true, silent = true })
+    vim.keymap.set("v", "<A-u>", ":AnyJumpVisual<CR>", { noremap = true, silent = true })
 end
 
 function config.symbols_outline_nvim()
