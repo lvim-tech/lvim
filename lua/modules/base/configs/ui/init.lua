@@ -2069,7 +2069,11 @@ function config.indent_blankline_nvim()
 end
 
 function config.lvim_focus()
-    require("lvim-focus").setup({
+    local lvim_focus_status_ok, lvim_focus = pcall(require, "lvim-focus")
+    if not lvim_focus_status_ok then
+        return
+    end
+    lvim_focus.setup({
         colorcolumn = true,
         colorcolumn_value = "120",
     })

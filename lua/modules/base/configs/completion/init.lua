@@ -105,14 +105,6 @@ function config.nvim_autopairs()
     if not nvim_autopairs_status_ok then
         return
     end
-    local rule_status_ok, rule = pcall(require, "nvim-autopairs.rule")
-    if not rule_status_ok then
-        return
-    end
-    local conds_status_ok, conds = pcall(require, "nvim-autopairs.conds")
-    if not conds_status_ok then
-        return
-    end
     nvim_autopairs.setup({
         check_ts = true,
         ts_config = {
