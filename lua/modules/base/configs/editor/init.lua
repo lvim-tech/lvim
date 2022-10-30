@@ -406,6 +406,7 @@ function config.sniprun()
     vim.keymap.set("n", "ts", function()
         vim.cmd("SnipRun")
     end, { noremap = true, silent = true })
+    vim.keymap.set("n", "<Esc>", "<Esc>:noh<CR>:SnipClose<CR>", { noremap = true, silent = true })
 end
 
 function config.code_runner_nvim()
