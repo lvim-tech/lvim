@@ -785,6 +785,9 @@ function config.nvim_window_picker()
         other_win_hl_color = _G.LVIM_COLORS.color_01,
     })
     vim.api.nvim_create_user_command("WindowPicker", focus_window, {})
+    vim.keymap.set("n", "gw", function()
+        vim.cmd("WindowPicker")
+    end, { noremap = true, silent = true })
 end
 
 function config.neo_tree_nvim()
