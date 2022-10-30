@@ -1757,13 +1757,12 @@
 
     #+begin_src lua
     modules["akinsho/toggleterm.nvim"] = {
-        tag = "v2.*",
         commit = funcs.get_commit("toggleterm.nvim", plugins_snapshot),
         cmd = {
-            "TTFloat",
-            "TTOne",
-            "TTTwo",
-            "TTThree",
+            "TermOne",
+            "TermTwo",
+            "TermThree",
+            "TermFloat",
         },
         config = ui_config.toggleterm_nvim,
     }
@@ -1777,36 +1776,6 @@
         if not toggleterm_terminal_status_ok then
             return
         end
-        local terminal_float = toggleterm_terminal.Terminal:new({
-            count = 4,
-            direction = "float",
-            float_opts = {
-                border = "single",
-                winblend = 0,
-                width = vim.o.columns - 20,
-                height = vim.o.lines - 9,
-                highlights = {
-                    border = "FloatBorder",
-                    background = "NormalFloat",
-                },
-            },
-            on_open = function(term)
-                vim.api.nvim_buf_set_keymap(term.bufnr, "n", "<Esc>", "<cmd>close<cr>", { noremap = true, silent = true })
-                vim.api.nvim_buf_set_keymap(
-                    term.bufnr,
-                    "t",
-                    "<Esc>",
-                    "<c-\\><c-n><cmd>close<cr><c-w><c-p>",
-                    { noremap = true }
-                )
-                vim.wo.cursorcolumn = false
-                vim.wo.cursorline = false
-                vim.cmd("startinsert!")
-            end,
-            on_close = function()
-                vim.cmd("quit!")
-            end,
-        })
         local terminal_one = toggleterm_terminal.Terminal:new({
             count = 1,
             direction = "horizontal",
@@ -1873,22 +1842,60 @@
                 vim.cmd("quit!")
             end,
         })
-        function _G.toggleterm_float_toggle()
-            terminal_float:toggle()
-        end
-        function _G.toggleterm_one_toggle()
+        local terminal_float = toggleterm_terminal.Terminal:new({
+            count = 4,
+            direction = "float",
+            float_opts = {
+                border = { " ", " ", " ", " ", " ", " ", " ", " " },
+                winblend = 0,
+                width = vim.o.columns - 20,
+                height = vim.o.lines - 9,
+                highlights = {
+                    border = "FloatBorder",
+                    background = "NormalFloat",
+                },
+            },
+            on_open = function(term)
+                vim.api.nvim_buf_set_keymap(term.bufnr, "n", "<Esc>", "<cmd>close<cr>", { noremap = true, silent = true })
+                vim.api.nvim_buf_set_keymap(
+                    term.bufnr,
+                    "t",
+                    "<Esc>",
+                    "<c-\\><c-n><cmd>close<cr><c-w><c-p>",
+                    { noremap = true }
+                )
+                vim.wo.cursorcolumn = false
+                vim.wo.cursorline = false
+                vim.cmd("startinsert!")
+            end,
+            on_close = function()
+                vim.cmd("quit!")
+            end,
+        })
+        vim.api.nvim_create_user_command("TermOne", function()
             terminal_one:toggle()
-        end
-        function _G.toggleterm_two_toggle()
+        end, {})
+        vim.api.nvim_create_user_command("TermTwo", function()
             terminal_two:toggle()
-        end
-        function _G.toggleterm_three_toggle()
+        end, {})
+        vim.api.nvim_create_user_command("TermThree", function()
             terminal_three:toggle()
-        end
-        vim.api.nvim_create_user_command("TTFloat", "lua _G.toggleterm_float_toggle()", {})
-        vim.api.nvim_create_user_command("TTOne", "lua _G.toggleterm_one_toggle()", {})
-        vim.api.nvim_create_user_command("TTTwo", "lua _G.toggleterm_two_toggle()", {})
-        vim.api.nvim_create_user_command("TTThree", "lua _G.toggleterm_three_toggle()", {})
+        end, {})
+        vim.api.nvim_create_user_command("TermFloat", function()
+            terminal_float:toggle()
+        end, {})
+        vim.keymap.set("n", "<F1>", function()
+            terminal_one:toggle()
+        end, { silent = true })
+        vim.keymap.set("n", "<F2>", function()
+            terminal_two:toggle()
+        end, { silent = true })
+        vim.keymap.set("n", "<F3>", function()
+            terminal_three:toggle()
+        end, { silent = true })
+        vim.keymap.set("n", "<F4>", function()
+            terminal_float:toggle()
+        end, { silent = true })
     end
     #+end_src
 

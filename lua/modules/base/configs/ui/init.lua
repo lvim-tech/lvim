@@ -1802,36 +1802,6 @@ function config.toggleterm_nvim()
     if not toggleterm_terminal_status_ok then
         return
     end
-    local terminal_float = toggleterm_terminal.Terminal:new({
-        count = 4,
-        direction = "float",
-        float_opts = {
-            border = { " ", " ", " ", " ", " ", " ", " ", " " },
-            winblend = 0,
-            width = vim.o.columns - 20,
-            height = vim.o.lines - 9,
-            highlights = {
-                border = "FloatBorder",
-                background = "NormalFloat",
-            },
-        },
-        on_open = function(term)
-            vim.api.nvim_buf_set_keymap(term.bufnr, "n", "<Esc>", "<cmd>close<cr>", { noremap = true, silent = true })
-            vim.api.nvim_buf_set_keymap(
-                term.bufnr,
-                "t",
-                "<Esc>",
-                "<c-\\><c-n><cmd>close<cr><c-w><c-p>",
-                { noremap = true }
-            )
-            vim.wo.cursorcolumn = false
-            vim.wo.cursorline = false
-            vim.cmd("startinsert!")
-        end,
-        on_close = function()
-            vim.cmd("quit!")
-        end,
-    })
     local terminal_one = toggleterm_terminal.Terminal:new({
         count = 1,
         direction = "horizontal",
@@ -1893,6 +1863,36 @@ function config.toggleterm_nvim()
             vim.wo.cursorline = false
             vim.cmd("startinsert!")
             vim.api.nvim_exec([[exe "normal \<C-W>\="]], true)
+        end,
+        on_close = function()
+            vim.cmd("quit!")
+        end,
+    })
+    local terminal_float = toggleterm_terminal.Terminal:new({
+        count = 4,
+        direction = "float",
+        float_opts = {
+            border = { " ", " ", " ", " ", " ", " ", " ", " " },
+            winblend = 0,
+            width = vim.o.columns - 20,
+            height = vim.o.lines - 9,
+            highlights = {
+                border = "FloatBorder",
+                background = "NormalFloat",
+            },
+        },
+        on_open = function(term)
+            vim.api.nvim_buf_set_keymap(term.bufnr, "n", "<Esc>", "<cmd>close<cr>", { noremap = true, silent = true })
+            vim.api.nvim_buf_set_keymap(
+                term.bufnr,
+                "t",
+                "<Esc>",
+                "<c-\\><c-n><cmd>close<cr><c-w><c-p>",
+                { noremap = true }
+            )
+            vim.wo.cursorcolumn = false
+            vim.wo.cursorline = false
+            vim.cmd("startinsert!")
         end,
         on_close = function()
             vim.cmd("quit!")

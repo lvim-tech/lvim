@@ -2,7 +2,6 @@ local keymaps = {}
 
 keymaps["normal"] = {
     { "<space><space>", ":CtrlSpace<CR>" }, -- CtrlSpace
-    { "<F5>", ":UndotreeToggle<CR>" }, -- UndoTree toggle
     { "<F11>", ":LvimHelper<CR>" }, -- LvimHelper
     { "<Esc>", "<Esc>:noh<CR>:SnipClose<CR>" }, -- Remove highlight after search
     { "<C-c>n", ":enew<CR>" }, -- Create empty buffer

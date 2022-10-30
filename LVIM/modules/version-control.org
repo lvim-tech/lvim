@@ -328,5 +328,16 @@
             "BufRead",
         },
         cmd = "UndotreeToggle",
+        config = version_control_config.undotree,
     }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    function config.undotree()
+        vim.keymap.set("n", "<F5>", function()
+            vim.cmd("UndotreeToggle")
+        end, { silent = true })
+    end
     #+end_src

@@ -129,4 +129,10 @@ function config.octo_nvim()
     octo.setup()
 end
 
+function config.undotree()
+    vim.keymap.set("n", "<F5>", function()
+        vim.cmd("UndotreeToggle")
+    end, { silent = true })
+end
+
 return config
