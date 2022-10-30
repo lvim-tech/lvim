@@ -1017,6 +1017,9 @@
             org_default_notes_file = "$HOME/Org/refile.org",
         })
     end
+    vim.keymap.set("n", "to", function()
+        vim.cmd("e ~/Org/notes/notes.org")
+    end, { noremap = true, silent = true })
     #+end_src
 
 **   [[https://github.com/lvim-tech/lvim-org-utils][lvim-org-utils]]

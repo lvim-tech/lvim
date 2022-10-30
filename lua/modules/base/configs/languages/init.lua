@@ -538,6 +538,9 @@ function config.orgmode()
         org_agenda_files = { "$HOME/Org/**/*" },
         org_default_notes_file = "$HOME/Org/refile.org",
     })
+    vim.keymap.set("n", "to", function()
+        vim.cmd("e ~/Org/notes/notes.org")
+    end, { noremap = true, silent = true })
 end
 
 function config.lvim_org_utils()
