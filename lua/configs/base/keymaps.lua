@@ -39,9 +39,6 @@ keymaps["normal"] = {
     { "gP", ":hardcopy<CR>" }, -- Print file
     { "tn", ":tabn<CR>" }, -- Tab next
     { "tp", ":tabp<CR>" }, -- Tab prev
-    { "trr", "<Plug>RestNvim<CR>" }, -- Rest nvim
-    { "trp", "<Plug>RestNvimPreview<CR>" }, -- Rest nvim preview
-    { "trl", "<Plug>RestNvimLast<CR>" }, -- Rest nvim last
     { "dc", ":LspShowDiagnosticCurrent<CR>" }, -- Lsp show diagnostic current line
     { "dn", ":LspShowDiagnosticNext<CR>" }, -- Lsp show diagnostic next line
     { "dp", ":LspShowDiagnostigPrev<CR>" }, -- Lsp show diagnostic prev line

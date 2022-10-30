@@ -377,6 +377,18 @@ function config.rest_nvim()
         return
     end
     rest_nvim.setup()
+    vim.api.nvim_create_user_command("RestNvim", "lua require('rest-nvim').run()", {})
+    vim.api.nvim_create_user_command("RestNvimPreview", "lua require('rest-nvim').run(true)", {})
+    vim.api.nvim_create_user_command("RestNvimLast", "lua require('rest-nvim').last()", {})
+    vim.keymap.set("n", "trr", function()
+        rest_nvim.run()
+    end, { noremap = true, silent = true })
+    vim.keymap.set("n", "trp", function()
+        rest_nvim.run(true)
+    end, { noremap = true, silent = true })
+    vim.keymap.set("n", "trl", function()
+        rest_nvim.last()
+    end, { noremap = true, silent = true })
 end
 
 function config.sniprun()
