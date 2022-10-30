@@ -86,23 +86,6 @@ configs["base_events"] = function()
         end,
         group = group,
     })
-    vim.api.nvim_create_autocmd({
-        "WinEnter",
-        "WinLeave",
-        "BufEnter",
-        "BufLeave",
-        "InsertEnter",
-        "InsertLeave",
-        "CursorMoved",
-        "CursorMovedI",
-    }, {
-        callback = function()
-            vim.schedule(function()
-                vim.cmd("set cmdheight=0")
-            end)
-        end,
-        group = group,
-    })
 end
 
 configs["base_languages"] = function()

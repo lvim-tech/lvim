@@ -1961,7 +1961,15 @@ function config.neozoom_lua()
     if not neo_zoom_status_ok then
         return
     end
-    neo_zoom.setup({})
+    neo_zoom.setup({
+        left_ratio = 0,
+        top_ratio = 0,
+        width_ratio = 0.6,
+        height_ratio = 1,
+        border = "none",
+        scrolloff_on_zoom = 0,
+    })
+    vim.keymap.set("n", "<C-space>", require("neo-zoom").neo_zoom, { silent = true, nowait = true })
 end
 
 function config.stay_in_place()

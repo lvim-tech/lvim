@@ -11,7 +11,6 @@ keymaps["normal"] = {
     { "<C-c>x", "<C-w>c" }, -- Close current window
     { "<C-c>o", "<C-w>o" }, -- Close other windows
     { "<C-c>d", ":bdelete<CR>" }, -- BDelete
-    { "<C-c>z", ":NeoZoomToggle<CR>" }, -- NeoZoom toggle
     { "<C-c>f", ":Vifm<CR>" }, -- Vifm file explorer
     { "<C-h>", "<C-w>h" }, -- Move to window left
     { "<C-l>", "<C-w>l" }, -- Move to window right

@@ -25,7 +25,7 @@ Normal mode
 | `<C-n>`          | `:BufSurfForward<CR>`           | Bnext buffer                          |
 | `<C-p>`          | `:BufSurfBack<CR>`              | Bprev buffer                          |
 | `<C-c>b`         | `:GitBlameToggle<CR>`           | GitBlame toggle                       |
-| `<C-c>z`         | `:NeoZoom<CR>`                  | Zoom toggle                           |
+| `<C-space>`      | `:NeoZoom<CR>`                  | Zoom toggle                           |
 | `<C-c>f`         | `:Vifm<CR>`                     | Vifm                                  |
 | `<C-h>`          | `<C-w>h`                        | Move to window left                   |
 | `<C-l>`          | `<C-w>l`                        | Move to window right                  |

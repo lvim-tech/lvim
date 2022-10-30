@@ -152,8 +152,10 @@ modules["folke/zen-mode.nvim"] = {
 
 modules["nyngwang/NeoZoom.lua"] = {
     commit = funcs.get_commit("NeoZoom.lua", plugins_snapshot),
+    event = {
+        "BufRead",
+    },
     config = ui_config.neozoom_lua,
-    cmd = "NeoZoomToggle",
 }
 
 modules["gbprod/stay-in-place.nvim"] = {
