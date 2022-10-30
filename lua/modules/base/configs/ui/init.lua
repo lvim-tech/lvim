@@ -857,6 +857,21 @@ function config.neo_tree_nvim()
             use_libuv_file_watcher = true,
         },
     })
+    vim.keymap.set("n", "<S-x>", function()
+        vim.cmd("Neotree filesystem left")
+    end, { noremap = true, silent = true })
+    vim.keymap.set("n", "<S-b>", function()
+        vim.cmd("Neotree buffers left")
+    end, { noremap = true, silent = true })
+    vim.keymap.set("n", "<S-t>", function()
+        vim.cmd("Neotree git_status left")
+    end, { noremap = true, silent = true })
+    vim.keymap.set("n", "<S-l>", function()
+        vim.cmd("Neotree diagnostics left")
+    end, { noremap = true, silent = true })
+    vim.keymap.set("n", "<A-e>", function()
+        vim.cmd("Neotree diagnostics reveal bottom")
+    end, { noremap = true, silent = true })
 end
 
 function config.dirbuf_nvim()

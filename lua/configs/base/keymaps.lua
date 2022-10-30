@@ -19,10 +19,6 @@ keymaps["normal"] = {
     { "<C-Right>", ":vertical resize +2<CR>" }, -- Resize width +
     { "<C-Up>", ":resize -2<CR>" }, -- Resize height -
     { "<C-Down>", ":resize +2<CR>" }, -- Resize height +
-    { "<S-x>", ":Neotree filesystem left<CR>" }, -- Neotree filesystem left
-    { "<S-b>", ":Neotree buffers left<CR>" }, -- Neotree buffers lefter
-    { "<S-t>", ":Neotree git_status left<CR>" }, -- Neotree git_status left
-    { "<S-l>", ":Neotree diagnostics left<CR>" }, -- Neotree diagnostics left
     { "<S-m>", ":MarkdownPreview<CR>" }, -- Markdown preview
     { "<A-,>", ":Telescope find_files<CR>" }, -- Search files with Telescope
     { "<A-.>", ":Telescope live_grep<CR>" }, -- Search word with Telescope
@@ -66,7 +62,6 @@ keymaps["normal"] = {
     { "dc", ":LspShowDiagnosticCurrent<CR>" }, -- Lsp show diagnostic current line
     { "dn", ":LspShowDiagnosticNext<CR>" }, -- Lsp show diagnostic next line
     { "dp", ":LspShowDiagnostigPrev<CR>" }, -- Lsp show diagnostic prev line
-    { "<A-e>", ":Neotree diagnostics reveal bottom<CR>" }, -- Neotree diagnostics
     { "<A-1>", "<Cmd>DapToggleBreakpoint<CR>" }, -- Toggle breakpoint
     { "<A-2>", "<Cmd>DapStartContinue<CR>" }, -- Start / continue
     { "<A-3>", "<Cmd>DapStepInto<CR>" }, -- Step into

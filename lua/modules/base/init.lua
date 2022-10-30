@@ -70,7 +70,6 @@ modules["s1n7ax/nvim-window-picker"] = {
 }
 
 modules["nvim-neo-tree/neo-tree.nvim"] = {
-    branch = "v2.x",
     commit = funcs.get_commit("neo-tree.nvim", plugins_snapshot),
     requires = {
         {
