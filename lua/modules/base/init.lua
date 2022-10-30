@@ -428,7 +428,9 @@ modules["anuvyklack/pretty-fold.nvim"] = {
 
 modules["renerocksai/calendar-vim"] = {
     commit = funcs.get_commit("calendar-vim", plugins_snapshot),
-    cmd = { "Calendar", "CalendarH", "CalendarT", "CalendarVR" },
+    event = {
+        "BufRead",
+    },
     config = editor_config.calendar_vim,
 }
 

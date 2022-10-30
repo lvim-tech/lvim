@@ -633,6 +633,9 @@ function config.calendar_vim()
     vim.g.calendar_diary_path_pattern = "{YYYY}-{MM}-{DD}{EXT}"
     vim.g.calendar_monday = 1
     vim.g.calendar_weeknm = 1
+    vim.keymap.set("n", "tc", function()
+        vim.cmd("CalendarVR")
+    end, { noremap = true, silent = true })
 end
 
 return config
