@@ -19,9 +19,6 @@ keymaps["normal"] = {
     { "<C-Right>", ":vertical resize +2<CR>" }, -- Resize width +
     { "<C-Up>", ":resize -2<CR>" }, -- Resize height -
     { "<C-Down>", ":resize +2<CR>" }, -- Resize height +
-    { "<A-]>", ":GitSignsNextHunk<CR>" }, -- Git signs next hunk
-    { "<A-[>", ":GitSignsPrevHunk<CR>" }, -- Git signs prev hunk
-    { "<A-;>", ":GitSignsPreviewHunk<CR>" }, -- Git signs preview hunk
     { "<A-s>", ":Spectre<CR>" }, -- Replace in multiple files
     { "gw", ":WindowPicker<CR>" }, -- Window picker
     { "gd", ":LspDefinition<CR>" }, -- Lsp definition

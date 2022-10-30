@@ -205,6 +205,15 @@
         vim.api.nvim_create_user_command("GitSignsResetHunk", "lua require('gitsigns').reset_hunk()", {})
         vim.api.nvim_create_user_command("GitSignsResetBuffer", "lua require('gitsigns').reset_buffer()", {})
         vim.api.nvim_create_user_command("GitSignsBlameLine", "lua require('gitsigns').blame_line()", {})
+        vim.keymap.set("n", "<A-]>", function()
+            vim.cmd("GitSignsNextHunk")
+        end, { noremap = true, silent = true })
+        vim.keymap.set("n", "<A-[>", function()
+            vim.cmd("GitSignsPrevHunk")
+        end, { noremap = true, silent = true })
+        vim.keymap.set("n", "<A-;>", function()
+            vim.cmd("GitSignsPreviewHunk")
+        end, { noremap = true, silent = true })
     end
     #+end_src
 
