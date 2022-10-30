@@ -1795,6 +1795,9 @@ function config.fm_nvim()
             vifm_cmd = "vifmrun",
         },
     })
+    vim.keymap.set("n", "<C-c>f", function()
+        vim.cmd("Vifm")
+    end, { noremap = true, silent = true })
 end
 
 function config.toggleterm_nvim()
