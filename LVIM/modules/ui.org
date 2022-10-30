@@ -1758,12 +1758,6 @@
     #+begin_src lua
     modules["akinsho/toggleterm.nvim"] = {
         commit = funcs.get_commit("toggleterm.nvim", plugins_snapshot),
-        cmd = {
-            "TermOne",
-            "TermTwo",
-            "TermThree",
-            "TermFloat",
-        },
         config = ui_config.toggleterm_nvim,
     }
     #+end_src
@@ -1886,16 +1880,16 @@
         end, {})
         vim.keymap.set("n", "<F1>", function()
             terminal_one:toggle()
-        end, { silent = true })
+        end, { noremap = true, silent = true })
         vim.keymap.set("n", "<F2>", function()
             terminal_two:toggle()
-        end, { silent = true })
+        end, { noremap = true, silent = true })
         vim.keymap.set("n", "<F3>", function()
             terminal_three:toggle()
-        end, { silent = true })
+        end, { noremap = true, silent = true })
         vim.keymap.set("n", "<F4>", function()
             terminal_float:toggle()
-        end, { silent = true })
+        end, { noremap = true, silent = true })
     end
     #+end_src
 

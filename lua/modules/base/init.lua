@@ -135,12 +135,6 @@ modules["is0n/fm-nvim"] = {
 
 modules["akinsho/toggleterm.nvim"] = {
     commit = funcs.get_commit("toggleterm.nvim", plugins_snapshot),
-    cmd = {
-        "TermOne",
-        "TermTwo",
-        "TermThree",
-        "TermFloat",
-    },
     config = ui_config.toggleterm_nvim,
 }
 
@@ -507,6 +501,7 @@ modules["mbbill/undotree"] = {
         "BufRead",
     },
     cmd = "UndotreeToggle",
+    config = version_control_config.undotree,
 }
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
