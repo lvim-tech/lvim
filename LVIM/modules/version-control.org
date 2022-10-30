@@ -237,6 +237,9 @@
             "NeogitStatus",
             "dashboard",
         }
+        vim.keymap.set("n", "<C-c>b", function()
+            vim.cmd("GitBlameToggle")
+        end, { noremap = true, silent = true })
     end
     #+end_src
 

@@ -96,6 +96,9 @@ function config.git_blame_nvim()
         "NeogitStatus",
         "dashboard",
     }
+    vim.keymap.set("n", "<C-c>b", function()
+        vim.cmd("GitBlameToggle")
+    end, { noremap = true, silent = true })
 end
 
 function config.diffview_nvim()
