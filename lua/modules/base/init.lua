@@ -329,7 +329,9 @@ modules["CRAG666/code_runner.nvim"] = {
 
 modules["windwp/nvim-spectre"] = {
     commit = funcs.get_commit("nvim-spectre", plugins_snapshot),
-    cmd = "Spectre",
+    event = {
+        "BufRead",
+    },
     requires = {
         {
             "nvim-lua/popup.nvim",

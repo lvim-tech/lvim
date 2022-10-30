@@ -19,7 +19,6 @@ keymaps["normal"] = {
     { "<C-Right>", ":vertical resize +2<CR>" }, -- Resize width +
     { "<C-Up>", ":resize -2<CR>" }, -- Resize height -
     { "<C-Down>", ":resize +2<CR>" }, -- Resize height +
-    { "<A-s>", ":Spectre<CR>" }, -- Replace in multiple files
     { "gw", ":WindowPicker<CR>" }, -- Window picker
     { "gd", ":LspDefinition<CR>" }, -- Lsp definition
     { "gt", ":LspTypeDefinition<CR>" }, -- Lsp type definition

@@ -486,6 +486,9 @@ function config.nvim_spectre()
         is_open_target_win = true,
         is_insert_mode = false,
     })
+    vim.keymap.set("n", "<A-s>", function()
+        vim.cmd("Spectre")
+    end, { noremap = true, silent = true })
 end
 
 function config.comment_nvim()
