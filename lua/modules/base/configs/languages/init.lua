@@ -320,6 +320,9 @@ function config.symbols_outline_nvim()
         highlight_hovered_item = true,
         show_guides = true,
     })
+    vim.keymap.set("n", "<A-v>", function()
+        vim.cmd("SymbolsOutline")
+    end, { noremap = true, silent = true })
 end
 
 function config.nvim_dap_ui()

@@ -586,6 +586,9 @@
             highlight_hovered_item = true,
             show_guides = true,
         })
+        vim.keymap.set("n", "<A-v>", function()
+            vim.cmd("SymbolsOutline")
+        end, { noremap = true, silent = true })
     end
     #+end_src
 
