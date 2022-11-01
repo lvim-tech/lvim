@@ -35,6 +35,7 @@ modules["nvim-lua/popup.nvim"] = {
 
 modules["MunifTanjim/nui.nvim"] = {
     commit = funcs.get_commit("nui.nvim", plugins_snapshot),
+    config = ui_config.nui_nvim,
 }
 
 modules["rcarriga/nvim-notify"] = {
