@@ -50,7 +50,7 @@ function config.mason_nvim()
     vim.keymap.set("n", "gi", function()
         vim.lsp.buf.implementation()
     end, { noremap = true, silent = true, desc = "LspImplementation" })
-    vim.keymap.set("n", "gE", function()
+    vim.keymap.set("n", "ge", function()
         vim.lsp.buf.rename()
     end, { noremap = true, silent = true, desc = "LspRename" })
     vim.keymap.set("n", "gf", function()
@@ -124,7 +124,7 @@ function config.inc_rename_nvim()
         return
     end
     inc_rename.setup()
-    vim.keymap.set("n", "ge", function()
+    vim.keymap.set("n", "gE", function()
         return ":IncRename " .. vim.fn.expand("<cword>")
     end, { expr = true, desc = "IncRename" })
 end

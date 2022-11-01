@@ -2,7 +2,7 @@ local global = require("core.global")
 local funcs = require("core.funcs")
 local lspconfig = require("lspconfig")
 local mason_registry = require("mason-registry")
-local select = require("configs.base.ui.select")
+local select = require("lvim-select-input.select")
 
 local M = {}
 

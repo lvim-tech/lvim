@@ -35,12 +35,20 @@ modules["nvim-lua/popup.nvim"] = {
 
 modules["MunifTanjim/nui.nvim"] = {
     commit = funcs.get_commit("nui.nvim", plugins_snapshot),
-    config = ui_config.nui_nvim,
 }
 
 modules["rcarriga/nvim-notify"] = {
     commit = funcs.get_commit("nvim-notify", plugins_snapshot),
     config = ui_config.nvim_notify,
+}
+
+modules["lvim-tech/lvim-select-input"] = {
+    requires = {
+        {
+            "MunifTanjim/nui.nvim",
+            commit = funcs.get_commit("nui.nvim", plugins_snapshot),
+        },
+    },
 }
 
 modules["folke/noice.nvim"] = {
@@ -108,22 +116,6 @@ modules["folke/which-key.nvim"] = {
 modules["rebelot/heirline.nvim"] = {
     commit = funcs.get_commit("heirline.nvim", plugins_snapshot),
     event = "VimEnter",
-    requires = {
-        {
-            "folke/noice.nvim",
-            requires = {
-                {
-                    "MunifTanjim/nui.nvim",
-                    commit = funcs.get_commit("nui.nvim", plugins_snapshot),
-                },
-                {
-                    "rcarriga/nvim-notify",
-                    commit = funcs.get_commit("nvim-notify", plugins_snapshot),
-                },
-            },
-            commit = funcs.get_commit("noice.nvim", plugins_snapshot),
-        },
-    },
     config = ui_config.heirline_nvim,
 }
 
@@ -259,6 +251,7 @@ modules["https://gitlab.com/yorickpeterse/nvim-pqf"] = {
 
 modules["nanozuki/tabby.nvim"] = {
     commit = funcs.get_commit("tabby.nvim", plugins_snapshot),
+    after = "vim-ctrlspace",
     config = editor_config.tabby_nvim,
 }
 
