@@ -28,7 +28,6 @@
         vim.api.nvim_create_user_command("LspWorkspaceSymbol", "lua vim.lsp.buf.workspace_symbol()", {})
         vim.api.nvim_create_user_command("LspDocumentSymbol", "lua vim.lsp.buf.document_symbol()", {})
         vim.api.nvim_create_user_command("LspCodeAction", "lua vim.lsp.buf.code_action()", {})
-        vim.api.nvim_create_user_command("LspRangeCodeAction", "lua vim.api.nvim_create_user_command()", {})
         vim.api.nvim_create_user_command("LspCodeLensRefresh", "lua vim.lsp.codelens.refresh()", {})
         vim.api.nvim_create_user_command("LspCodeLensRun", "lua vim.lsp.codelens.run()", {})
         vim.api.nvim_create_user_command("LspDeclaration", "lua vim.lsp.buf.declaration()", {})
@@ -70,7 +69,7 @@
         vim.keymap.set("n", "gi", function()
             vim.lsp.buf.implementation()
         end, { noremap = true, silent = true, desc = "LspImplementation" })
-        vim.keymap.set("n", "gE", function()
+        vim.keymap.set("n", "ge", function()
             vim.lsp.buf.rename()
         end, { noremap = true, silent = true, desc = "LspRename" })
         vim.keymap.set("n", "gf", function()
@@ -177,7 +176,7 @@
             return
         end
         inc_rename.setup()
-        vim.keymap.set("n", "ge", function()
+        vim.keymap.set("n", "gE", function()
             return ":IncRename " .. vim.fn.expand("<cword>")
         end, { expr = true, desc = "IncRename" })
     end
@@ -626,7 +625,9 @@
     #+begin_src lua
     modules["simrat39/symbols-outline.nvim"] = {
         commit = funcs.get_commit("symbols-outline.nvim", plugins_snapshot),
-        cmd = "SymbolsOutline",
+        event = {
+            "BufRead",
+        },
         config = languages_config.symbols_outline_nvim,
     }
     #+end_src
@@ -1006,25 +1007,26 @@
     end
     #+end_src
 
-**   [[https://github.com/davidgranstrom/nvim-markdown-preview][nvim-markdown-preview]]
+**   [[https://github.com/iamcco/markdown-preview.nvim][markdown-preview.nvim]]
 
     + INIT
 
     #+begin_src lua
-    modules["davidgranstrom/nvim-markdown-preview"] = {
-        commit = funcs.get_commit("nvim-markdown-preview", plugins_snapshot),
+    modules["iamcco/markdown-preview.nvim"] = {
+        commit = funcs.get_commit("markdown-preview.nvim", plugins_snapshot),
+        run = "cd app && npm install",
         ft = "markdown",
-        config = languages_config.nvim_markdown_preview,
+        config = languages_config.markdown_preview_nvim,
     }
     #+end_src
 
     + CONFIG
 
     #+begin_src lua
-    function config.nvim_markdown_preview()
+    function config.markdown_preview_nvim()
         vim.keymap.set("n", "<S-m>", function()
-            vim.cmd("MarkdownPreview")
-        end, { noremap = true, silent = true, desc = "MarkdownPreview" })
+            vim.cmd("MarkdownPreviewToggle")
+        end, { noremap = true, silent = true, desc = "MarkdownPreviewToggle" })
     end
     #+end_src
 

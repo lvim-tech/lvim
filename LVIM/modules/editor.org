@@ -574,6 +574,10 @@
     #+begin_src lua
     modules["RRethy/nvim-treesitter-textsubjects"] = {
         commit = funcs.get_commit("nvim-treesitter-textsubjects", plugins_snapshot),
+        requires = {
+            "nvim-treesitter/nvim-treesitter",
+            commit = funcs.get_commit("nvim-treesitter", plugins_snapshot),
+        },
         event = {
             "BufRead",
         },
