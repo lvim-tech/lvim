@@ -568,10 +568,10 @@ function config.pubspec_assist_nvim()
     pubspec_assist.setup({})
 end
 
-function config.nvim_markdown_preview()
+function config.markdown_preview_nvim()
     vim.keymap.set("n", "<S-m>", function()
-        vim.cmd("MarkdownPreview")
-    end, { noremap = true, silent = true, desc = "MarkdownPreview" })
+        vim.cmd("MarkdownPreviewToggle")
+    end, { noremap = true, silent = true, desc = "MarkdownPreviewToggle" })
 end
 
 function config.vimtex()

@@ -282,6 +282,10 @@ modules["booperlv/nvim-gomove"] = {
 
 modules["RRethy/nvim-treesitter-textsubjects"] = {
     commit = funcs.get_commit("nvim-treesitter-textsubjects", plugins_snapshot),
+    requires = {
+        "nvim-treesitter/nvim-treesitter",
+        commit = funcs.get_commit("nvim-treesitter", plugins_snapshot),
+    },
     event = {
         "BufRead",
     },
@@ -738,10 +742,11 @@ modules["akinsho/pubspec-assist.nvim"] = {
     config = languages_config.pubspec_assist_nvim,
 }
 
-modules["davidgranstrom/nvim-markdown-preview"] = {
-    commit = funcs.get_commit("nvim-markdown-preview", plugins_snapshot),
+modules["iamcco/markdown-preview.nvim"] = {
+    commit = funcs.get_commit("markdown-preview.nvim", plugins_snapshot),
+    run = "cd app && npm install",
     ft = "markdown",
-    config = languages_config.nvim_markdown_preview,
+    config = languages_config.markdown_preview_nvim,
 }
 
 modules["lervag/vimtex"] = {
