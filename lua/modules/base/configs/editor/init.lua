@@ -151,6 +151,12 @@ function config.lvim_linguistics()
             },
         },
     })
+    vim.keymap.set("n", "<C-c>l", function()
+        vim.cmd("LvimLinguisticsTOGGLEInsertModeLanguage")
+    end, { noremap = true, silent = true, desc = "LvimLinguisticsTOGGLEInsertModeLanguage" })
+    vim.keymap.set("n", "<C-c>k", function()
+        vim.cmd("LvimLinguisticsTOGGLESpelling")
+    end, { noremap = true, silent = true, desc = "LvimLinguisticsTOGGLESpelling" })
 end
 function config.rg_nvim()
     local rg_status_ok, rg = pcall(require, "rg")
