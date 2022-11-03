@@ -1382,8 +1382,8 @@ function config.heirline_nvim()
         },
     }
     local noice_mode = {
-        condition = require("noice").api.statusline.mode.has,
-        provider = require("noice").api.statusline.mode.get,
+        condition = require("noice").api.status.mode.has,
+        provider = require("noice").api.status.mode.get,
         hl = { fg = _G.LVIM_COLORS.color_02, bold = true },
     }
     local diagnostics = {
