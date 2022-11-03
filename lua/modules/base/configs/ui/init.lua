@@ -1525,11 +1525,12 @@ function config.heirline_nvim()
         hl = { fg = _G.LVIM_COLORS.color_04, bold = true },
     }
     local spell = {
-        condition = function()
-            return vim.wo.spell
+        condition = require("lvim-linguistics.status").spell_has,
+        provider = function()
+            local status = require("lvim-linguistics.status").spell_get()
+            return "  SPELL: " .. status
         end,
-        provider = "  SPELL",
-        hl = { bold = true, fg = _G.LVIM_COLORS.color_03 },
+        hl = { fg = _G.LVIM_COLORS.color_02, bold = true },
     }
     local scroll_bar = {
         provider = function()

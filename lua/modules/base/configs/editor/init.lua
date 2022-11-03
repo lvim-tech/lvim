@@ -114,6 +114,44 @@ function config.telescope_nvim()
     end, { noremap = true, silent = true, desc = "Telescope tmux sessions" })
 end
 
+function config.lvim_linguistics()
+    local lvim_linguistics_status_ok, lvim_linguistics = pcall(require, "lvim-linguistics")
+    if not lvim_linguistics_status_ok then
+        return
+    end
+    lvim_linguistics.setup({
+        base_config = {
+            mode_language = {
+                active = false,
+                normal_mode_language = "us",
+                insert_mode_language = "bg",
+                insert_mode_languages = { "en", "fr", "de", "bg" },
+            },
+            spell = {
+                active = false,
+                language = "en",
+                languages = {
+                    en = {
+                        spelllang = "en",
+                        spellfile = "en.add",
+                    },
+                    fr = {
+                        spelllang = "fr",
+                        spellfile = "fr.add",
+                    },
+                    de = {
+                        spelllang = "de",
+                        spellfile = "de.add",
+                    },
+                    bg = {
+                        spelllang = "bg",
+                        spellfile = "bg.add",
+                    },
+                },
+            },
+        },
+    })
+end
 function config.rg_nvim()
     local rg_status_ok, rg = pcall(require, "rg")
     if not rg_status_ok then

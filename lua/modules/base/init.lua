@@ -216,6 +216,31 @@ modules["nvim-telescope/telescope.nvim"] = {
     config = editor_config.telescope_nvim,
 }
 
+modules["lvim-tech/lvim-linguistics"] = {
+    commit = funcs.get_commit("lvim-linguistics", plugins_snapshot),
+    requires = {
+        {
+            "MunifTanjim/nui.nvim",
+            commit = funcs.get_commit("nui.nvim", plugins_snapshot),
+        },
+        {
+            "rcarriga/nvim-notify",
+            commit = funcs.get_commit("nvim-notify", plugins_snapshot),
+        },
+        {
+            "lvim-tech/lvim-select-input",
+            commit = funcs.get_commit("lvim-select-input", plugins_snapshot),
+        },
+    },
+    rocks = {
+        {
+            "lunajson",
+            server = "http://rocks.moonscript.org",
+        },
+    },
+    config = editor_config.lvim_linguistics,
+}
+
 modules["winston0410/rg.nvim"] = {
     commit = funcs.get_commit("rg.nvim", plugins_snapshot),
     event = {
