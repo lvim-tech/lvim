@@ -118,6 +118,53 @@ config.null_ls_nvim = function()
     })
 end
 
+config.neotest = function()
+    local neotest_status_ok, neotest = pcall(require, "neodim")
+    if not neotest_status_ok then
+        return
+    end
+    local neotest_ns = vim.api.nvim_create_namespace("neotest")
+    vim.diagnostic.config({
+        virtual_text = {
+            format = function(diagnostic)
+                local message = diagnostic.message:gsub("\n", " "):gsub("\t", " "):gsub("%s+", " "):gsub("^%s+", "")
+                return message
+            end,
+        },
+    }, neotest_ns)
+    neotest.setup({
+        adapters = {
+            require("neotest-phpunit"),
+            require("neotest-rust"),
+            require("neotest-go"),
+            require("neotest-python")({
+                dap = { justMyCode = false },
+                args = { "--log-level", "DEBUG" },
+                runner = "pytest",
+            }),
+            require("neotest-haskell"),
+            require("neotest-elixir"),
+            require("neotest-dart")({
+                command = "flutter",
+                use_lsp = true,
+            }),
+        },
+    })
+    local opts = { noremap = true }
+    vim.api.nvim_create_user_command("NeotestRun", require("neotest").run.run(), {})
+    vim.api.nvim_create_user_command("NeotestOutput", require("neotest").output.open(), {})
+    vim.api.nvim_create_user_command("NeotestSummary", require("neotest").summary.toggle(), {})
+    vim.keymap.set("n", "<leader>nr", function()
+        require("neotest").run.run()
+    end, opts)
+    vim.keymap.set("n", "<leader>no", function()
+        require("neotest").output.open()
+    end, opts)
+    vim.keymap.set("n", "<leader>ns", function()
+        require("neotest").summary.toggle()
+    end, opts)
+end
+
 config.inc_rename_nvim = function()
     local inc_rename_status_ok, inc_rename = pcall(require, "inc_rename")
     if not inc_rename_status_ok then

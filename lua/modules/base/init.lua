@@ -547,6 +547,22 @@ modules["jose-elias-alvarez/null-ls.nvim"] = {
     config = languages_config.null_ls_nvim,
 }
 
+modules["nvim-neotest/neotest"] = {
+    requires = {
+        "nvim-lua/plenary.nvim",
+        "nvim-treesitter/nvim-treesitter",
+        "antoinemadec/FixCursorHold.nvim",
+        "olimorris/neotest-phpunit",
+        "rouge8/neotest-rust",
+        "nvim-neotest/neotest-go",
+        "nvim-neotest/neotest-python",
+        "MrcJkb/neotest-haskell",
+        "jfpedroza/neotest-elixir",
+        "sidlatau/neotest-dart",
+    },
+    config = languages_config.neotest,
+}
+
 modules["smjonas/inc-rename.nvim"] = {
     commit = funcs.get_commit("inc-rename.nvim", plugins_snapshot),
     event = {
