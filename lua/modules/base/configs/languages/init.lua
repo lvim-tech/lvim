@@ -119,7 +119,7 @@ config.null_ls_nvim = function()
 end
 
 config.neotest = function()
-    local neotest_status_ok, neotest = pcall(require, "neodim")
+    local neotest_status_ok, neotest = pcall(require, "neotest")
     if not neotest_status_ok then
         return
     end
@@ -150,19 +150,18 @@ config.neotest = function()
             }),
         },
     })
-    local opts = { noremap = true }
-    vim.api.nvim_create_user_command("NeotestRun", require("neotest").run.run(), {})
-    vim.api.nvim_create_user_command("NeotestOutput", require("neotest").output.open(), {})
-    vim.api.nvim_create_user_command("NeotestSummary", require("neotest").summary.toggle(), {})
+    vim.api.nvim_create_user_command("NeotestRun", require("neotest").run.run, {})
+    vim.api.nvim_create_user_command("NeotestOutput", require("neotest").output.open, {})
+    vim.api.nvim_create_user_command("NeotestSummary", require("neotest").summary.toggle, {})
     vim.keymap.set("n", "<leader>nr", function()
         require("neotest").run.run()
-    end, opts)
+    end, { noremap = true, desc = "NeotestRun" })
     vim.keymap.set("n", "<leader>no", function()
         require("neotest").output.open()
-    end, opts)
+    end, { noremap = true, desc = "NeotestOutput" })
     vim.keymap.set("n", "<leader>ns", function()
         require("neotest").summary.toggle()
-    end, opts)
+    end, { noremap = true, desc = "NeotestSummary" })
 end
 
 config.inc_rename_nvim = function()
