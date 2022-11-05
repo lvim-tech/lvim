@@ -549,16 +549,46 @@ modules["jose-elias-alvarez/null-ls.nvim"] = {
 
 modules["nvim-neotest/neotest"] = {
     requires = {
-        "nvim-lua/plenary.nvim",
-        "nvim-treesitter/nvim-treesitter",
-        "antoinemadec/FixCursorHold.nvim",
-        "olimorris/neotest-phpunit",
-        "rouge8/neotest-rust",
-        "nvim-neotest/neotest-go",
-        "nvim-neotest/neotest-python",
-        "MrcJkb/neotest-haskell",
-        "jfpedroza/neotest-elixir",
-        "sidlatau/neotest-dart",
+        {
+            "nvim-lua/plenary.nvim",
+            commit = funcs.get_commit("plenary.nvim", plugins_snapshot),
+        },
+        {
+            "nvim-treesitter/nvim-treesitter",
+            commit = funcs.get_commit("nvim-treesitter", plugins_snapshot),
+        },
+        {
+            "antoinemadec/FixCursorHold.nvim",
+            commit = funcs.get_commit("FixCursorHold.nvim", plugins_snapshot),
+        },
+        {
+            "olimorris/neotest-phpunit",
+            commit = funcs.get_commit("neotest-phpunit", plugins_snapshot),
+        },
+        {
+            "rouge8/neotest-rust",
+            commit = funcs.get_commit("neotest-rust", plugins_snapshot),
+        },
+        {
+            "nvim-neotest/neotest-go",
+            commit = funcs.get_commit("neotest-go", plugins_snapshot),
+        },
+        {
+            "nvim-neotest/neotest-python",
+            commit = funcs.get_commit("neotest-python", plugins_snapshot),
+        },
+        {
+            "MrcJkb/neotest-haskell",
+            commit = funcs.get_commit("neotest-haskell", plugins_snapshot),
+        },
+        {
+            "jfpedroza/neotest-elixir",
+            commit = funcs.get_commit("neotest-elixir", plugins_snapshot),
+        },
+        {
+            "sidlatau/neotest-dart",
+            commit = funcs.get_commit("neotest-dart", plugins_snapshot),
+        },
     },
     config = languages_config.neotest,
 }
