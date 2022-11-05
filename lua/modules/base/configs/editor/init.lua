@@ -1,12 +1,12 @@
 local config = {}
 
-function config.vim_ctrlspace()
+config.vim_ctrlspace = function()
     vim.keymap.set("n", "<space><space>", function()
         vim.cmd("CtrlSpace")
     end, { noremap = true, silent = true, desc = "CtrlSpace" })
 end
 
-function config.telescope_nvim()
+config.telescope_nvim = function()
     local telescope_status_ok, telescope = pcall(require, "telescope")
     if not telescope_status_ok then
         return
@@ -114,7 +114,7 @@ function config.telescope_nvim()
     end, { noremap = true, silent = true, desc = "Telescope tmux sessions" })
 end
 
-function config.lvim_linguistics()
+config.lvim_linguistics = function()
     local lvim_linguistics_status_ok, lvim_linguistics = pcall(require, "lvim-linguistics")
     if not lvim_linguistics_status_ok then
         return
@@ -158,7 +158,8 @@ function config.lvim_linguistics()
         vim.cmd("LvimLinguisticsTOGGLESpelling")
     end, { noremap = true, silent = true, desc = "LvimLinguisticsTOGGLESpelling" })
 end
-function config.rg_nvim()
+
+config.rg_nvim = function()
     local rg_status_ok, rg = pcall(require, "rg")
     if not rg_status_ok then
         return
@@ -172,7 +173,7 @@ function config.rg_nvim()
     })
 end
 
-function config.nvim_hlslens()
+config.nvim_hlslens = function()
     local hlslens_status_ok, hlslens = pcall(require, "hlslens")
     if not hlslens_status_ok then
         return
@@ -225,7 +226,7 @@ function config.nvim_hlslens()
     vim.keymap.set("n", "g#", [[g#<Cmd>lua require('hlslens').start()<CR>]], opts)
 end
 
-function config.nvim_bqf()
+config.nvim_bqf = function()
     local bqf_status_ok, bqf = pcall(require, "bqf")
     if not bqf_status_ok then
         return
@@ -237,7 +238,7 @@ function config.nvim_bqf()
     })
 end
 
-function config.nvim_pqf()
+config.nvim_pqf = function()
     local pqf_status_ok, pqf = pcall(require, "pqf")
     if not pqf_status_ok then
         return
@@ -245,7 +246,7 @@ function config.nvim_pqf()
     pqf.setup()
 end
 
-function config.tabby_nvim()
+config.tabby_nvim = function()
     local tabby_util_status_ok, tabby_util = pcall(require, "tabby.util")
     if not tabby_util_status_ok then
         return
@@ -338,7 +339,7 @@ function config.tabby_nvim()
     })
 end
 
-function config.nvim_lastplace()
+config.nvim_lastplace = function()
     local nvim_lastplace_status_ok, nvim_lastplace = pcall(require, "nvim-lastplace")
     if not nvim_lastplace_status_ok then
         return
@@ -350,7 +351,7 @@ function config.nvim_lastplace()
     })
 end
 
-function config.dial_nvim()
+config.dial_nvim = function()
     local dial_config_status_ok, dial_config = pcall(require, "dial.config")
     if not dial_config_status_ok then
         return
@@ -394,7 +395,7 @@ function config.dial_nvim()
     vim.keymap.set("v", "g<C-x>", "<Plug>(dial-decrement)", { noremap = true, silent = true, desc = "Dial Decrement" })
 end
 
-function config.nvim_gomove()
+config.nvim_gomove = function()
     local gomove_status_ok, gomove = pcall(require, "gomove")
     if not gomove_status_ok then
         return
@@ -402,7 +403,7 @@ function config.nvim_gomove()
     gomove.setup()
 end
 
-function config.nvim_treesitter_textsubjects()
+config.nvim_treesitter_textsubjects = function()
     local nvim_treesitter_configs_status_ok, nvim_treesitter_configs = pcall(require, "nvim-treesitter.configs")
     if not nvim_treesitter_configs_status_ok then
         return
@@ -420,7 +421,7 @@ function config.nvim_treesitter_textsubjects()
     })
 end
 
-function config.rest_nvim()
+config.rest_nvim = function()
     local rest_nvim_status_ok, rest_nvim = pcall(require, "rest-nvim")
     if not rest_nvim_status_ok then
         return
@@ -440,7 +441,7 @@ function config.rest_nvim()
     end, { noremap = true, silent = true, desc = "RestLast" })
 end
 
-function config.sniprun()
+config.sniprun = function()
     local sniprun_status_ok, sniprun = pcall(require, "sniprun")
     if not sniprun_status_ok then
         return
@@ -450,7 +451,7 @@ function config.sniprun()
     vim.keymap.set("n", "<Esc>", "<Esc>:noh<CR>:SnipClose<CR>", { noremap = true, silent = true, desc = "Escape" })
 end
 
-function config.code_runner_nvim()
+config.code_runner_nvim = function()
     local global = require("core.global")
     local code_runner_status_ok, code_runner = pcall(require, "code_runner")
     if not code_runner_status_ok then
@@ -462,7 +463,7 @@ function config.code_runner_nvim()
     })
 end
 
-function config.nvim_spectre()
+config.nvim_spectre = function()
     local spectre_status_ok, spectre = pcall(require, "spectre")
     if not spectre_status_ok then
         return
@@ -560,7 +561,7 @@ function config.nvim_spectre()
     end, { noremap = true, silent = true, desc = "Spectre" })
 end
 
-function config.comment_nvim()
+config.comment_nvim = function()
     local comment_status_ok, comment = pcall(require, "Comment")
     if not comment_status_ok then
         return
@@ -568,7 +569,7 @@ function config.comment_nvim()
     comment.setup()
 end
 
-function config.vim_bufsurf()
+config.vim_bufsurf = function()
     vim.keymap.set("n", "<C-n>", function()
         vim.cmd("BufSurfForward")
     end, { noremap = true, silent = true, desc = "BufSurfForward" })
@@ -577,7 +578,7 @@ function config.vim_bufsurf()
     end, { noremap = true, silent = true, desc = "BufSurfBack" })
 end
 
-function config.neogen()
+config.neogen = function()
     local neogen_status_ok, neogen = pcall(require, "neogen")
     if not neogen_status_ok then
         return
@@ -591,7 +592,7 @@ function config.neogen()
     vim.api.nvim_create_user_command("NeogenType", "lua require('neogen').generate({ type = 'type' })", {})
 end
 
-function config.nvim_colorize_lua()
+config.nvim_colorize_lua = function()
     local colorizer_status_ok, colorizer = pcall(require, "colorizer")
     if not colorizer_status_ok then
         return
@@ -605,7 +606,7 @@ function config.nvim_colorize_lua()
     })
 end
 
-function config.color_picker_nvim()
+config.color_picker_nvim = function()
     local color_picker_status_ok, color_picker = pcall(require, "color-picker")
     if not color_picker_status_ok then
         return
@@ -619,7 +620,7 @@ function config.color_picker_nvim()
     end, { noremap = true, silent = true, desc = "PickColorInsert" })
 end
 
-function config.lvim_colorcolumn()
+config.lvim_colorcolumn = function()
     local lvim_colorcolumn_status_ok, lvim_colorcolumn = pcall(require, "lvim-colorcolumn")
     if not lvim_colorcolumn_status_ok then
         return
@@ -627,11 +628,11 @@ function config.lvim_colorcolumn()
     lvim_colorcolumn.setup()
 end
 
-function config.suda_vim()
+config.suda_vim = function()
     vim.g.suda_smart_edit = 1
 end
 
-function config.hop_nvim()
+config.hop_nvim = function()
     local hop_status_ok, hop = pcall(require, "hop")
     if not hop_status_ok then
         return
@@ -639,7 +640,7 @@ function config.hop_nvim()
     hop.setup()
 end
 
-function config.todo_comments_nvim()
+config.todo_comments_nvim = function()
     local todo_comments_status_ok, todo_comments = pcall(require, "todo-comments")
     if not todo_comments_status_ok then
         return
@@ -655,7 +656,7 @@ function config.todo_comments_nvim()
     })
 end
 
-function config.pretty_fold_nvim()
+config.pretty_fold_nvim = function()
     local pretty_fold_status_ok, pretty_fold = pcall(require, "pretty-fold")
     if not pretty_fold_status_ok then
         return
@@ -692,7 +693,7 @@ function config.pretty_fold_nvim()
     end, { noremap = true, silent = true, desc = "FoldPreview" })
 end
 
-function config.calendar_vim()
+config.calendar_vim = function()
     vim.g.calendar_diary_extension = ".org"
     vim.g.calendar_diary = "~/Org/diary/"
     vim.g.calendar_diary_path_pattern = "{YYYY}-{MM}-{DD}{EXT}"

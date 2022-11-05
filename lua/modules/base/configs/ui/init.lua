@@ -1,6 +1,6 @@
 local config = {}
 
-function config.lvim_colorscheme()
+config.lvim_colorscheme = function()
     require("lvim-colorscheme").setup({
         sidebars = {
             "dbui",
@@ -18,7 +18,7 @@ function config.lvim_colorscheme()
     vim.cmd("colorscheme lvim")
 end
 
-function config.nui_nvim()
+config.nui_nvim = function()
     local function get_prompt_text(prompt, default_prompt)
         local prompt_text = prompt or default_prompt
         if prompt_text:sub(-1) == ":" then
@@ -192,7 +192,7 @@ function config.nui_nvim()
     override_ui_select()
 end
 
-function config.nvim_notify()
+config.nvim_notify = function()
     local notify_status_ok, notify = pcall(require, "notify")
     if not notify_status_ok then
         return
@@ -240,7 +240,7 @@ function config.nvim_notify()
     vim.notify = notify
 end
 
-function config.noice_nvim()
+config.noice_nvim = function()
     local noice_status_ok, noice = pcall(require, "noice")
     if not noice_status_ok then
         return
@@ -665,7 +665,7 @@ function config.noice_nvim()
     end, { silent = true, expr = true, desc = "Scroll Up" })
 end
 
-function config.alpha_nvim()
+config.alpha_nvim = function()
     local alpha_status_ok, alpha = pcall(require, "alpha")
     if not alpha_status_ok then
         return
@@ -744,7 +744,7 @@ function config.alpha_nvim()
     })
 end
 
-function config.nvim_window_picker()
+config.nvim_window_picker = function()
     local window_picker_status_ok, window_picker = pcall(require, "window-picker")
     if not window_picker_status_ok then
         return
@@ -790,7 +790,7 @@ function config.nvim_window_picker()
     end, { noremap = true, silent = true, desc = "WindowPicker" })
 end
 
-function config.neo_tree_nvim()
+config.neo_tree_nvim = function()
     local neo_tree_status_ok, neo_tree = pcall(require, "neo-tree")
     if not neo_tree_status_ok then
         return
@@ -877,7 +877,7 @@ function config.neo_tree_nvim()
     end, { noremap = true, silent = true, desc = "Neotree diagnostics bottom" })
 end
 
-function config.dirbuf_nvim()
+config.dirbuf_nvim = function()
     local dirbuf_status_ok, dirbuf = pcall(require, "dirbuf")
     if not dirbuf_status_ok then
         return
@@ -885,7 +885,7 @@ function config.dirbuf_nvim()
     dirbuf.setup({})
 end
 
-function config.which_key_nvim()
+config.which_key_nvim = function()
     local which_key_status_ok, which_key = pcall(require, "which-key")
     if not which_key_status_ok then
         return
@@ -1139,7 +1139,7 @@ function config.which_key_nvim()
     which_key.register(vmappings, vopts)
 end
 
-function config.heirline_nvim()
+config.heirline_nvim = function()
     local funcs = require("core.funcs")
     local icons = require("configs.base.ui.icons")
     local heirline_status_ok, heirline = pcall(require, "heirline")
@@ -1795,7 +1795,7 @@ function config.heirline_nvim()
     })
 end
 
-function config.fm_nvim()
+config.fm_nvim = function()
     local fm_nvim_status_ok, fm_nvim = pcall(require, "fm-nvim")
     if not fm_nvim_status_ok then
         return
@@ -1819,7 +1819,7 @@ function config.fm_nvim()
     end, { noremap = true, silent = true, desc = "Vifm" })
 end
 
-function config.toggleterm_nvim()
+config.toggleterm_nvim = function()
     local toggleterm_terminal_status_ok, toggleterm_terminal = pcall(require, "toggleterm.terminal")
     if not toggleterm_terminal_status_ok then
         return
@@ -1946,7 +1946,7 @@ function config.toggleterm_nvim()
     end, { noremap = true, silent = true, desc = "Terminal Float" })
 end
 
-function config.zen_mode_nvim()
+config.zen_mode_nvim = function()
     local zen_mode_status_ok, zen_mode = pcall(require, "zen-mode")
     if not zen_mode_status_ok then
         return
@@ -1966,7 +1966,7 @@ function config.zen_mode_nvim()
     })
 end
 
-function config.twilight_nvim()
+config.twilight_nvim = function()
     local twilight_status_ok, twilight = pcall(require, "twilight")
     if not twilight_status_ok then
         return
@@ -1978,7 +1978,7 @@ function config.twilight_nvim()
     })
 end
 
-function config.neozoom_lua()
+config.neozoom_lua = function()
     local neo_zoom_status_ok, neo_zoom = pcall(require, "neo-zoom")
     if not neo_zoom_status_ok then
         return
@@ -1994,7 +1994,7 @@ function config.neozoom_lua()
     vim.keymap.set("n", "<C-space>", require("neo-zoom").neo_zoom, { silent = true, nowait = true, desc = "NeoZoom" })
 end
 
-function config.stay_in_place()
+config.stay_in_place = function()
     local stay_in_place_status_ok, stay_in_place = pcall(require, "stay-in-place")
     if not stay_in_place_status_ok then
         return
@@ -2002,7 +2002,7 @@ function config.stay_in_place()
     stay_in_place.setup({})
 end
 
-function config.indent_blankline_nvim()
+config.indent_blankline_nvim = function()
     local indent_blankline_status_ok, indent_blankline = pcall(require, "indent_blankline")
     if not indent_blankline_status_ok then
         return
@@ -2069,7 +2069,7 @@ function config.indent_blankline_nvim()
     vim.keymap.set("n", "zR", "zR:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
 end
 
-function config.lvim_focus()
+config.lvim_focus = function()
     local lvim_focus_status_ok, lvim_focus = pcall(require, "lvim-focus")
     if not lvim_focus_status_ok then
         return
@@ -2080,7 +2080,7 @@ function config.lvim_focus()
     })
 end
 
-function config.lvim_helper()
+config.lvim_helper = function()
     local lvim_helper_status_ok, lvim_helper = pcall(require, "lvim-helper")
     if not lvim_helper_status_ok then
         return

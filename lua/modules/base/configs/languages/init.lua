@@ -1,6 +1,6 @@
 local config = {}
 
-function config.mason_nvim()
+config.mason_nvim = function()
     vim.api.nvim_create_user_command("LspHover", "lua vim.lsp.buf.hover()", {})
     vim.api.nvim_create_user_command("LspRename", "lua vim.lsp.buf.rename()", {})
     vim.api.nvim_create_user_command("LspAddToWorkspaceFolder", "lua vim.lsp.buf.add_workspace_folder()", {})
@@ -99,7 +99,7 @@ function config.mason_nvim()
     require("languages.base.utils").setup_diagnostic()
 end
 
-function config.null_ls_nvim()
+config.null_ls_nvim = function()
     local null_ls_status_ok, null_ls = pcall(require, "null-ls")
     if not null_ls_status_ok then
         return
@@ -118,7 +118,7 @@ function config.null_ls_nvim()
     })
 end
 
-function config.inc_rename_nvim()
+config.inc_rename_nvim = function()
     local inc_rename_status_ok, inc_rename = pcall(require, "inc_rename")
     if not inc_rename_status_ok then
         return
@@ -129,7 +129,7 @@ function config.inc_rename_nvim()
     end, { expr = true, desc = "IncRename" })
 end
 
-function config.goto_preview()
+config.goto_preview = function()
     local lib = require("goto-preview.lib")
     local goto_preview_status_ok, goto_preview = pcall(require, "goto-preview")
     if not goto_preview_status_ok then
@@ -195,7 +195,7 @@ function config.goto_preview()
     end, { noremap = true, silent = true, desc = "LspPreviewCloseAll" })
 end
 
-function config.neodev_nvim()
+config.neodev_nvim = function()
     local neodev_status_ok, neodev = pcall(require, "neodev")
     if not neodev_status_ok then
         return
@@ -210,7 +210,7 @@ function config.neodev_nvim()
     })
 end
 
-function config.go_nvim()
+config.go_nvim = function()
     local go_status_ok, go = pcall(require, "go")
     if not go_status_ok then
         return
@@ -222,7 +222,7 @@ function config.go_nvim()
     })
 end
 
-function config.typescript_nvim()
+config.typescript_nvim = function()
     local typescript_status_ok, typescript = pcall(require, "typescript")
     if not typescript_status_ok then
         return
@@ -230,7 +230,7 @@ function config.typescript_nvim()
     typescript.setup()
 end
 
-function config.nvim_lightbulb()
+config.nvim_lightbulb = function()
     local nvim_lightbulb_status_ok, nvim_lightbulb = pcall(require, "nvim-lightbulb")
     if not nvim_lightbulb_status_ok then
         return
@@ -252,7 +252,7 @@ function config.nvim_lightbulb()
     vim.fn.sign_define("LightBulbSign", { text = "", texthl = "LightBulb", linehl = "", numhl = "" })
 end
 
-function config.nvim_treesitter()
+config.nvim_treesitter = function()
     local nvim_treesitter_configs_status_ok, nvim_treesitter_configs = pcall(require, "nvim-treesitter.configs")
     if not nvim_treesitter_configs_status_ok then
         return
@@ -305,7 +305,7 @@ function config.nvim_treesitter()
     })
 end
 
-function config.lsp_inlayhints_nvim()
+config.lsp_inlayhints_nvim = function()
     local lsp_inlayhints_status_ok, lsp_inlayhints = pcall(require, "lsp-inlayhints")
     if not lsp_inlayhints_status_ok then
         return
@@ -329,7 +329,7 @@ function config.lsp_inlayhints_nvim()
     })
 end
 
-function config.nvim_navic()
+config.nvim_navic = function()
     local icons = require("configs.base.ui.icons")
     local nvim_navic_status_ok, nvim_navic = pcall(require, "nvim-navic")
     if not nvim_navic_status_ok then
@@ -343,14 +343,14 @@ function config.nvim_navic()
     vim.g.navic_silence = true
 end
 
-function config.any_jump_nvim()
+config.any_jump_nvim = function()
     vim.g.any_jump_disable_default_keybindings = 1
     vim.g.any_jump_list_numbers = 1
     vim.keymap.set("n", "<A-u>", ":AnyJump<CR>", { noremap = true, silent = true, desc = "AnyJump" })
     vim.keymap.set("v", "<A-u>", ":AnyJumpVisual<CR>", { noremap = true, silent = true, desc = "AnyJumpVisual" })
 end
 
-function config.symbols_outline_nvim()
+config.symbols_outline_nvim = function()
     local icons = require("configs.base.ui.icons")
     local symbols_outline_status_ok, symbols_outline = pcall(require, "symbols-outline")
     if not symbols_outline_status_ok then
@@ -366,7 +366,7 @@ function config.symbols_outline_nvim()
     end, { noremap = true, silent = true, desc = "SymbolsOutline" })
 end
 
-function config.nvim_dap_ui()
+config.nvim_dap_ui = function()
     local dapui_status_ok, dapui = pcall(require, "dapui")
     if not dapui_status_ok then
         return
@@ -502,7 +502,7 @@ function config.nvim_dap_ui()
     end, { noremap = true, silent = true, desc = "DapToggleRepl" })
 end
 
-function config.nvim_dap_vscode_js()
+config.nvim_dap_vscode_js = function()
     local global = require("core.global")
     local dap_vscode_js_status_ok, dap_vscode_js = pcall(require, "dap-vscode-js")
     if not dap_vscode_js_status_ok then
@@ -516,7 +516,7 @@ function config.nvim_dap_vscode_js()
     })
 end
 
-function config.vim_dadbod_ui()
+config.vim_dadbod_ui = function()
     vim.g.db_ui_show_help = 0
     vim.g.db_ui_win_position = "left"
     vim.g.db_ui_use_nerd_fonts = 1
@@ -524,7 +524,7 @@ function config.vim_dadbod_ui()
     vim.g.db_ui_auto_execute_table_helpers = true
 end
 
-function config.package_info_nvim()
+config.package_info_nvim = function()
     local package_info_status_ok, package_info = pcall(require, "package-info")
     if not package_info_status_ok then
         return
@@ -537,7 +537,7 @@ function config.package_info_nvim()
     })
 end
 
-function config.crates_nvim()
+config.crates_nvim = function()
     local crates_status_ok, crates = pcall(require, "crates")
     if not crates_status_ok then
         return
@@ -560,7 +560,7 @@ function config.crates_nvim()
     vim.api.nvim_create_user_command("CratesHidePopup", "lua require('crates').hide_popup()", {})
 end
 
-function config.pubspec_assist_nvim()
+config.pubspec_assist_nvim = function()
     local pubspec_assist_status_ok, pubspec_assist = pcall(require, "pubspec-assist")
     if not pubspec_assist_status_ok then
         return
@@ -568,13 +568,13 @@ function config.pubspec_assist_nvim()
     pubspec_assist.setup({})
 end
 
-function config.markdown_preview_nvim()
+config.markdown_preview_nvim = function()
     vim.keymap.set("n", "<S-m>", function()
         vim.cmd("MarkdownPreviewToggle")
     end, { noremap = true, silent = true, desc = "MarkdownPreviewToggle" })
 end
 
-function config.vimtex()
+config.vimtex = function()
     vim.g.vimtex_view_method = "zathura"
     vim.g.latex_view_general_viewer = "zathura"
     vim.g.vimtex_compiler_progname = "nvr"
@@ -582,7 +582,7 @@ function config.vimtex()
     vim.g.vimtex_quickfix_open_on_warning = 0
 end
 
-function config.orgmode()
+config.orgmode = function()
     local orgmode_status_ok, orgmode = pcall(require, "orgmode")
     if not orgmode_status_ok then
         return
@@ -600,7 +600,7 @@ function config.orgmode()
     end, { noremap = true, silent = true, desc = "Open org notes" })
 end
 
-function config.lvim_org_utils()
+config.lvim_org_utils = function()
     local lvim_org_utils_status_ok, lvim_org_utils = pcall(require, "lvim-org-utils")
     if not lvim_org_utils_status_ok then
         return

@@ -1,6 +1,6 @@
 local config = {}
 
-function config.neogit()
+config.neogit = function()
     local neogit_status_ok, neogit = pcall(require, "neogit")
     if not neogit_status_ok then
         return
@@ -29,7 +29,7 @@ function config.neogit()
     })
 end
 
-function config.gitsigns_nvim()
+config.gitsigns_nvim = function()
     local gitsigns_status_ok, gitsigns = pcall(require, "gitsigns")
     if not gitsigns_status_ok then
         return
@@ -93,7 +93,7 @@ function config.gitsigns_nvim()
     end, { noremap = true, silent = true, desc = "GitSignsPreviewHunk" })
 end
 
-function config.git_blame_nvim()
+config.git_blame_nvim = function()
     vim.g.gitblame_ignored_filetypes = {
         "help",
         "Outline",
@@ -110,7 +110,7 @@ function config.git_blame_nvim()
     end, { noremap = true, silent = true, desc = "GitBlameToggle" })
 end
 
-function config.diffview_nvim()
+config.diffview_nvim = function()
     local diffview_status_ok, diffview = pcall(require, "diffview")
     if not diffview_status_ok then
         return
@@ -133,7 +133,7 @@ function config.diffview_nvim()
     })
 end
 
-function config.octo_nvim()
+config.octo_nvim = function()
     local octo_status_ok, octo = pcall(require, "octo")
     if not octo_status_ok then
         return
@@ -141,7 +141,7 @@ function config.octo_nvim()
     octo.setup()
 end
 
-function config.undotree()
+config.undotree = function()
     vim.keymap.set("n", "<F5>", function()
         vim.cmd("UndotreeToggle")
     end, { noremap = true, silent = true, desc = "UndotreeToggle" })

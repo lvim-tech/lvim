@@ -1,6 +1,6 @@
 local config = {}
 
-function config.nvim_cmp()
+config.nvim_cmp = function()
     local icons = require("configs.base.ui.icons")
     local cmp_status_ok, cmp = pcall(require, "cmp")
     if not cmp_status_ok then
@@ -100,7 +100,7 @@ function config.nvim_cmp()
     })
 end
 
-function config.nvim_autopairs()
+config.nvim_autopairs = function()
     local nvim_autopairs_status_ok, nvim_autopairs = pcall(require, "nvim-autopairs")
     if not nvim_autopairs_status_ok then
         return
@@ -119,7 +119,7 @@ function config.nvim_autopairs()
     })
 end
 
-function config.nvim_ts_autotag()
+config.nvim_ts_autotag = function()
     local nvim_ts_autotag_status_ok, nvim_ts_autotag = pcall(require, "nvim-ts-autotag")
     if not nvim_ts_autotag_status_ok then
         return
@@ -127,7 +127,7 @@ function config.nvim_ts_autotag()
     nvim_ts_autotag.setup()
 end
 
-function config.nvim_surround()
+config.nvim_surround = function()
     local nvim_surround_status_ok, nvim_surround = pcall(require, "nvim-surround")
     if not nvim_surround_status_ok then
         return
