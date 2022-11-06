@@ -305,6 +305,15 @@ modules["booperlv/nvim-gomove"] = {
     config = editor_config.nvim_gomove,
 }
 
+modules["nvim-treesitter/nvim-treesitter-context"] = {
+    commit = funcs.get_commit("nvim-treesitter-context", plugins_snapshot),
+    requires = {
+        "nvim-treesitter/nvim-treesitter",
+        commit = funcs.get_commit("nvim-treesitter", plugins_snapshot),
+    },
+    config = editor_config.nvim_treesitter_context,
+}
+
 modules["RRethy/nvim-treesitter-textsubjects"] = {
     commit = funcs.get_commit("nvim-treesitter-textsubjects", plugins_snapshot),
     requires = {

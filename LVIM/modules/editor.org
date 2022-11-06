@@ -567,6 +567,93 @@
     end
     #+end_src
 
+**   [[https://github.com/nvim-treesitter/nvim-treesitter-context][nvim-treesitter-context]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["nvim-treesitter/nvim-treesitter-context"] = {
+        commit = funcs.get_commit("nvim-treesitter-context", plugins_snapshot),
+        requires = {
+            "nvim-treesitter/nvim-treesitter",
+            commit = funcs.get_commit("nvim-treesitter", plugins_snapshot),
+        },
+        config = editor_config.nvim_treesitter_context,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    config.nvim_treesitter_context = function()
+        local treesitter_context_status_ok, treesitter_context = pcall(require, "treesitter-context")
+        if not treesitter_context_status_ok then
+            return
+        end
+        treesitter_context.setup({
+            enable = true,
+            max_lines = 0,
+            trim_scope = "outer",
+            min_window_height = 0,
+            patterns = {
+                default = {
+                    "class",
+                    "function",
+                    "method",
+                    "for",
+                    "while",
+                    "if",
+                    "switch",
+                    "case",
+                },
+                tex = {
+                    "chapter",
+                    "section",
+                    "subsection",
+                    "subsubsection",
+                },
+                rust = {
+                    "impl_item",
+                    "struct",
+                    "enum",
+                },
+                scala = {
+                    "object_definition",
+                },
+                vhdl = {
+                    "process_statement",
+                    "architecture_body",
+                    "entity_declaration",
+                },
+                markdown = {
+                    "section",
+                },
+                elixir = {
+                    "anonymous_function",
+                    "arguments",
+                    "block",
+                    "do_block",
+                    "list",
+                    "map",
+                    "tuple",
+                    "quoted_content",
+                },
+                json = {
+                    "pair",
+                },
+                yaml = {
+                    "block_mapping_pair",
+                },
+            },
+            exact_patterns = {},
+            zindex = 20,
+            mode = "cursor",
+            separator = nil,
+        })
+    end
+    #+end_src
+
+
 **   [[https://github.com/RRethy/nvim-treesitter-textsubjects][nvim-treesitter-textsubjects]]
 
     + INIT

@@ -403,6 +403,73 @@ config.nvim_gomove = function()
     gomove.setup()
 end
 
+config.nvim_treesitter_context = function()
+    local treesitter_context_status_ok, treesitter_context = pcall(require, "treesitter-context")
+    if not treesitter_context_status_ok then
+        return
+    end
+    treesitter_context.setup({
+        enable = true,
+        max_lines = 0,
+        trim_scope = "outer",
+        min_window_height = 0,
+        patterns = {
+            default = {
+                "class",
+                "function",
+                "method",
+                "for",
+                "while",
+                "if",
+                "switch",
+                "case",
+            },
+            tex = {
+                "chapter",
+                "section",
+                "subsection",
+                "subsubsection",
+            },
+            rust = {
+                "impl_item",
+                "struct",
+                "enum",
+            },
+            scala = {
+                "object_definition",
+            },
+            vhdl = {
+                "process_statement",
+                "architecture_body",
+                "entity_declaration",
+            },
+            markdown = {
+                "section",
+            },
+            elixir = {
+                "anonymous_function",
+                "arguments",
+                "block",
+                "do_block",
+                "list",
+                "map",
+                "tuple",
+                "quoted_content",
+            },
+            json = {
+                "pair",
+            },
+            yaml = {
+                "block_mapping_pair",
+            },
+        },
+        exact_patterns = {},
+        zindex = 20,
+        mode = "cursor",
+        separator = nil,
+    })
+end
+
 config.nvim_treesitter_textsubjects = function()
     local nvim_treesitter_configs_status_ok, nvim_treesitter_configs = pcall(require, "nvim-treesitter.configs")
     if not nvim_treesitter_configs_status_ok then
