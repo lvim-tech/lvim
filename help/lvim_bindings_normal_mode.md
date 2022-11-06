@@ -36,9 +36,12 @@ Normal mode
 | `<C-Up>`         | `:resize -2<CR>`                | Resize height -                       |
 | `<C-Down>`       | `:resize +2<CR>`                | Resize height +                       |
 | `<S-x>`          | `:Neotree filesystem left<CR>`  | Neotree ilesystem left                |
-| `<S-b>`          | `:Neotree buffers left<CR>`     | Neotree filesystem left               |
-| `<S-t>`          | `:Neotree git_status left<CR>`  | Neotree git_status left               |
-| `<S-l>`          | `:Neotree diagnostics left<CR>` | Neotree diagnostics left              |
+| `<C-c><C-f>`     | `:Neotree filesystem left<CR>`  | Neotree ilesystem left                |
+| `<C-c><C-b>`     | `:Neotree buffers left<CR>`     | Neotree filesystem left               |
+| `<C-c><C-g>`     | `:Neotree git_status left<CR>`  | Neotree git_status left               |
+| `<C-c><C-l>`     | `:Neotree diagnostics left<CR>` | Neotree diagnostics left              |
+| `<C-c><C-d>`     | `:Neotree diagnostics<CR>`      | Neotree diagnostics                   |
+| `<A-e>`          | `:Neotree diagnostics<CR>`      | Neotree diagnostics                   |
 | `<S-m>`          | `:MarkdownPreview<CR>`          | Markdown preview                      |
 | `<A-,>`          | `:Telescope find_files<CR>`     | Search files with Telescope           |
 | `<A-.>`          | `:Telescope live_grep<CR>`      | Search word with Telescope            |
@@ -83,7 +86,6 @@ Normal mode
 | `dc`             | `:LspShowDiagnosticCurrent<CR>` | Lsp show diagnostic current           |
 | `dn`             | `:LspShowDiagnosticNext<CR>`    | Lsp show diagnostic next              |
 | `dp`             | `:LspShowDiagnosticPrev<CR>`    | Lsp show diagnostic prev              |
-| `<A-e>`          | `:Neotree diagnostics<CR>`      | Neotree diagnostics                   |
 | `<A-/>`          | `:TelescopeBrowser<CR>`         | Telescope browser                     |
 | `<A-j>`          | `MoveDown`                      | Move line down                        |
 | `<A-k>`          | `MoveUp`                        | Move line up                          |
