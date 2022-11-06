@@ -390,7 +390,6 @@ config.noice_nvim = function()
             },
             notify = {
                 backend = "notify",
-                level = vim.log.levels.INFO,
                 replace = true,
                 format = "notify",
             },

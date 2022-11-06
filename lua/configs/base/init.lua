@@ -102,6 +102,11 @@ configs["base_commands"] = function()
     vim.api.nvim_create_user_command("SetWindowPath", 'lua require("core.funcs").set_window_path()', {})
     vim.api.nvim_create_user_command("SudoWrite", 'lua require("core.funcs").sudo_write()', {})
     vim.api.nvim_create_user_command("Quit", 'lua require("core.funcs").quit()', {})
+    vim.api.nvim_create_user_command("Save", function()
+        vim.schedule(function()
+            vim.cmd("w")
+        end)
+    end, {})
 end
 
 configs["base_keymaps"] = function()
