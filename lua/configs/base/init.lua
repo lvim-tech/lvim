@@ -105,8 +105,8 @@ configs["base_commands"] = function()
 end
 
 configs["base_keymaps"] = function()
-    funcs.keymaps("n", { noremap = false, silent = true }, keymaps.normal)
-    funcs.keymaps("x", { noremap = false, silent = true }, keymaps.visual)
+    funcs.keymaps("n", { noremap = true, silent = true }, keymaps.normal)
+    funcs.keymaps("x", { noremap = true, silent = true }, keymaps.visual)
 end
 
 configs["base_ctrlspace_pre_config"] = function()
