@@ -109,9 +109,11 @@ config.null_ls_nvim = function()
         on_attach = function(client, bufnr)
             if client.server_capabilities.documentFormattingProvider then
                 vim.api.nvim_create_autocmd("BufWritePre", {
-                    group = "LvimIDE",
                     buffer = bufnr,
-                    command = "lua vim.lsp.buf.format()",
+                    callback = function()
+                        vim.lsp.buf.format()
+                    end,
+                    group = "LvimIDE",
                 })
             end
         end,

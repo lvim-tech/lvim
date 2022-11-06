@@ -291,7 +291,9 @@ M.document_formatting = function(client, bufnr)
     if client.server_capabilities.documentFormattingProvider then
         vim.api.nvim_create_autocmd("BufWritePre", {
             buffer = bufnr,
-            command = "lua vim.lsp.buf.format()",
+            callback = function()
+                vim.lsp.buf.format()
+            end,
             group = "LvimIDE",
         })
     end
