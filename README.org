@@ -8,9 +8,9 @@
 
   * Debug support for c, cpp, dart, elixir, go, haskell, java, javascript/typescript, lua, php, python, ruby, rust
 
-  Current version - 2.4.68 (2022-11-06)
+  Current version - 2.5.00 (2022-11-10)
 
-  118 plugins
+  121 plugins
 
 **  SCREENSHOTS
 
@@ -93,13 +93,17 @@
     end
     #+end_src
 
+**  LVIM THEMES - Dark (default) and Light
+
+    + Command for choice theme: LvimTheme
+
 **  SNAPSHOTS 
 
-    + Snap folder: *~/.config/nvim/.snapshots/* 
+    + Snap folder: *~/.config/nvim/.snapshots/*
 
-    + Default snapshot file: *default* 
+    + Default snapshot file: *default*
 
-    + Show current snapshot: 
+    + Show current snapshot:
 
     #+begin_src bash
 
