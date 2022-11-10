@@ -247,19 +247,27 @@ config.nvim_pqf = function()
 end
 
 config.tabby_nvim = function()
+    local tabby_status_ok, tabby = pcall(require, "tabby")
+    if not tabby_status_ok then
+        return
+    end
     local tabby_util_status_ok, tabby_util = pcall(require, "tabby.util")
     if not tabby_util_status_ok then
         return
     end
+    local tabby_filename_status_ok, tabby_filename = pcall(require, "tabby.filename")
+    if not tabby_filename_status_ok then
+        return
+    end
+    local theme = _G.LVIM_THEME.theme
     local hl_tabline = {
-        color_01 = _G.LVIM_COLORS.bg,
-        color_02 = _G.LVIM_COLORS.color_01,
+        color_01 = _G.LVIM_THEME.colors[theme].bg_01,
+        color_02 = _G.LVIM_THEME.colors[theme].bg_03,
+        color_03 = _G.LVIM_THEME.colors[theme].green_01,
+        color_04 = _G.LVIM_THEME.colors[theme].green_02,
     }
     local get_tab_label = function(tab_number)
         local s, v = pcall(function()
-            if not packer_plugins["vim-ctrlspace"].loaded then
-                vim.cmd("packadd vim-ctrlspace")
-            end
             return vim.api.nvim_eval("ctrlspace#util#Gettabvar(" .. tab_number .. ", 'CtrlSpaceLabel')")
         end)
         if s then
@@ -273,14 +281,40 @@ config.tabby_nvim = function()
         end
     end
     local components = function()
-        local coms = {
+        local exclude = {
+            "ctrlspace",
+            "ctrlspace_help",
+            "packer",
+            "undotree",
+            "diff",
+            "Outline",
+            "LvimHelper",
+            "floaterm",
+            "toggleterm",
+            "dashboard",
+            "vista",
+            "spectre_panel",
+            "DiffviewFiles",
+            "flutterToolsOutline",
+            "log",
+            "qf",
+            "dapui_scopes",
+            "dapui_breakpoints",
+            "dapui_stacks",
+            "dapui_watches",
+            "calendar",
+            "octo",
+            "neo-tree",
+            "neo-tree-popup",
+        }
+        local comps = {
             {
                 type = "text",
                 text = {
                     "    ",
                     hl = {
+                        bg = hl_tabline.color_04,
                         fg = hl_tabline.color_01,
-                        bg = hl_tabline.color_02,
                         style = "bold",
                     },
                 },
@@ -289,50 +323,53 @@ config.tabby_nvim = function()
         local tabs = vim.api.nvim_list_tabpages()
         local current_tab = vim.api.nvim_get_current_tabpage()
         local name_of_buf
-        for _, tabid in ipairs(tabs) do
-            local tab_number = vim.api.nvim_tabpage_get_number(tabid)
-            name_of_buf = get_tab_label(tab_number)
-            if tabid == current_tab then
-                table.insert(coms, {
-                    type = "tab",
-                    tabid = tabid,
-                    label = {
-                        "  " .. name_of_buf .. "  ",
-                        hl = { fg = hl_tabline.color_02, bg = hl_tabline.color_01, style = "bold" },
-                    },
-                })
-                local wins = tabby_util.tabpage_list_wins(current_tab)
-                local top_win = vim.api.nvim_tabpage_get_win(current_tab)
-                for _, winid in ipairs(wins) do
-                    local icon = " "
-                    if winid == top_win then
-                        icon = " "
-                    end
-                    local bufid = vim.api.nvim_win_get_buf(winid)
-                    local buf_name = vim.api.nvim_buf_get_name(bufid)
-                    table.insert(coms, {
-                        type = "win",
-                        winid = winid,
-                        label = icon .. vim.fn.fnamemodify(buf_name, ":~:.") .. "  ",
-                    })
+        local wins = tabby_util.tabpage_list_wins(current_tab)
+        local top_win = vim.api.nvim_tabpage_get_win(current_tab)
+        local hl
+        local win_name
+        for _, win_id in ipairs(wins) do
+            local ft = vim.api.nvim_buf_get_option(vim.api.nvim_win_get_buf(win_id), "filetype")
+            win_name = tabby_filename.unique(win_id)
+            if not vim.tbl_contains(exclude, ft) then
+                if win_id == top_win then
+                    hl = { bg = hl_tabline.color_03, fg = hl_tabline.color_02, style = "bold" }
+                else
+                    hl = { bg = hl_tabline.color_02, fg = hl_tabline.color_03, style = "bold" }
                 end
-            else
-                table.insert(coms, {
-                    type = "tab",
-                    tabid = tabid,
+                table.insert(comps, {
+                    type = "win",
+                    winid = win_id,
                     label = {
-                        "  " .. name_of_buf .. "  ",
-                        hl = { fg = hl_tabline.color_01, bg = hl_tabline.color_02, style = "bold" },
+                        "  " .. win_name .. "  ",
+                        hl = hl,
                     },
+                    right_sep = { "", hl = { bg = hl_tabline.color_01, fg = hl_tabline.color_01 } },
                 })
             end
         end
-        table.insert(coms, { type = "text", text = { " ", hl = { bg = hl_tabline.color_01, style = "bold" } } })
-        return coms
-    end
-    local tabby_status_ok, tabby = pcall(require, "tabby")
-    if not tabby_status_ok then
-        return
+        table.insert(comps, {
+            type = "text",
+            text = { "%=" },
+            hl = { bg = hl_tabline.color_01, fg = hl_tabline.color_01 },
+        })
+        for _, tab_id in ipairs(tabs) do
+            local tab_number = vim.api.nvim_tabpage_get_number(tab_id)
+            name_of_buf = get_tab_label(tab_number)
+            if tab_id == current_tab then
+                hl = { bg = hl_tabline.color_03, fg = hl_tabline.color_02, style = "bold" }
+            else
+                hl = { bg = hl_tabline.color_02, fg = hl_tabline.color_03, style = "bold" }
+            end
+            table.insert(comps, {
+                type = "tab",
+                tabid = tab_id,
+                label = {
+                    "  " .. name_of_buf .. "  ",
+                    hl = hl,
+                },
+            })
+        end
+        return comps
     end
     tabby.setup({
         components = components,
@@ -714,11 +751,12 @@ config.todo_comments_nvim = function()
     end
     todo_comments.setup({
         colors = {
-            error = { _G.LVIM_COLORS.color_02 },
-            warning = { _G.LVIM_COLORS.color_03 },
-            info = { _G.LVIM_COLORS.color_05 },
-            hint = { _G.LVIM_COLORS.color_04 },
-            default = { _G.LVIM_COLORS.color_05 },
+            error = { "DiagnosticError" },
+            warning = { "DiagnosticWarn" },
+            info = { "DiagnosticInfo" },
+            hint = { "DiagnosticHint" },
+            default = { "Identifier" },
+            test = { "Identifier" },
         },
     })
 end

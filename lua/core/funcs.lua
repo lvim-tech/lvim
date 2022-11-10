@@ -1,4 +1,6 @@
 local global = require("core.global")
+local select = require("lvim-ui-config.select")
+local notify = require("lvim-ui-config.notify")
 
 local M = {}
 
@@ -61,15 +63,15 @@ M.sudo_exec = function(cmd)
     local password = vim.fn.inputsecret("Password: ")
     vim.fn.inputrestore()
     if not password or #password == 0 then
-        vim.notify("Invalid password, sudo aborted!", "error", {
-            title = "LVIM ORG",
+        notify.error("Invalid password, sudo aborted!", {
+            title = "LVIM IDE",
         })
         return false
     end
     vim.fn.system(string.format("sudo -p '' -S %s", cmd), password)
     if vim.v.shell_error ~= 0 then
-        vim.notify("Shell error or invalid password, sudo aborted!", "error", {
-            title = "LVIM ORG",
+        notify.error("Shell error or invalid password, sudo aborted!", {
+            title = "LVIM IDE",
         })
         return false
     end
@@ -84,16 +86,16 @@ M.sudo_write = function(tmpfile, filepath)
         filepath = vim.fn.expand("%")
     end
     if not filepath or #filepath == 0 then
-        vim.notify("No file name!", "error", {
-            title = "LVIM ORG",
+        notify.error("No file name!", {
+            title = "LVIM IDE",
         })
         return
     end
     local cmd = string.format("dd if=%s of=%s bs=1048576", vim.fn.shellescape(tmpfile), vim.fn.shellescape(filepath))
     vim.api.nvim_exec(string.format("write! %s", tmpfile), true)
     if M.sudo_exec(cmd) then
-        vim.notify(string.format('"%s" written!', filepath), "info", {
-            title = "LVIM ORG",
+        notify.info(string.format('"%s" written!', filepath), {
+            title = "LVIM IDE",
         })
         vim.cmd("e!")
     end
@@ -119,6 +121,26 @@ M.read_json_file = function(file)
     else
         return nil
     end
+end
+
+M.read_file = function(f)
+    local file = io.open(f, "rb")
+    if file ~= nil then
+        local content = file:read("*a")
+        file:close()
+        return content
+    end
+end
+
+M.get_line = function(filename, line_number)
+    local i = 0
+    for line in io.lines(filename) do
+        i = i + 1
+        if i == line_number then
+            return line
+        end
+    end
+    return nil -- line not found
 end
 
 M.write_file = function(f, content)
@@ -289,7 +311,6 @@ M.get_highlight = function(hlname)
 end
 
 M.quit = function()
-    local select = require("lvim-select-input.select")
     local status = true
     for _, v in ipairs(vim.api.nvim_list_bufs()) do
         if vim.bo[v].modified then

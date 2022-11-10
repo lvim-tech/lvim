@@ -199,58 +199,70 @@
     + CONFIG
 
     #+begin_src lua
-    local lib = require("goto-preview.lib")
-    local goto_preview_status_ok, goto_preview = pcall(require, "goto-preview")
-    if not goto_preview_status_ok then
-        return
+    config.goto_preview = function()
+        local lib = require("goto-preview.lib")
+        local goto_preview_status_ok, goto_preview = pcall(require, "goto-preview")
+        if not goto_preview_status_ok then
+            return
+        end
+        goto_preview.setup({
+            width = 160,
+            height = 25,
+            border = { " ", " ", " ", " ", " ", " ", " ", " " },
+            references = {
+                telescope = lib.has_telescope and lib.telescope.themes.get_dropdown({
+                    layout_config = {
+                        width = function(_, max_columns, _)
+                            return math.min(max_columns, 200)
+                        end,
+                        height = function(_, _, max_lines)
+                            return math.min(max_lines, 15)
+                        end,
+                    },
+                    winblend = 8,
+                    border = {},
+                    borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
+                    hide_preview = false,
+                }) or nil,
+            },
+        })
+        vim.api.nvim_create_user_command(
+            "LspPreviewDefinition",
+            "lua require('goto-preview').goto_preview_definition()",
+            {}
+        )
+        vim.api.nvim_create_user_command(
+            "LspPreviewTypeDefinition",
+            "lua require('goto-preview').goto_preview_type_definition()",
+            {}
+        )
+        vim.api.nvim_create_user_command(
+            "LspPreviewReferences",
+            "lua require('goto-preview').goto_preview_references()",
+            {}
+        )
+        vim.api.nvim_create_user_command(
+            "LspPreviewImplementation",
+            "lua require('goto-preview').goto_preview_implementation()",
+            {}
+        )
+        vim.api.nvim_create_user_command("LspPreviewCloseAll", "lua require('goto-preview').close_all_win()", {})
+        vim.keymap.set("n", "gpd", function()
+            goto_preview.goto_preview_definition()
+        end, { noremap = true, silent = true, desc = "LspPreviewDefinition" })
+        vim.keymap.set("n", "gpt", function()
+            goto_preview.goto_preview_type_definition()
+        end, { noremap = true, silent = true, desc = "LspPreviewTypeDefinition" })
+        vim.keymap.set("n", "gpr", function()
+            goto_preview.goto_preview_references()
+        end, { noremap = true, silent = true, desc = "LspPreviewReferences" })
+        vim.keymap.set("n", "gpi", function()
+            goto_preview.goto_preview_implementation()
+        end, { noremap = true, silent = true, desc = "LspPreviewImplementation" })
+        vim.keymap.set("n", "gpp", function()
+            goto_preview.close_all_win()
+        end, { noremap = true, silent = true, desc = "LspPreviewCloseAll" })
     end
-    goto_preview.setup({
-        references = {
-            telescope = lib.has_telescope and lib.telescope.themes.get_dropdown({
-                layout_config = {
-                    width = function(_, max_columns, _)
-                        return math.min(max_columns, 200)
-                    end,
-    
-                    height = function(_, _, max_lines)
-                        return math.min(max_lines, 15)
-                    end,
-                },
-                border = {},
-                borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
-                hide_preview = false,
-            }) or nil,
-        },
-        border = { " ", " ", " ", " ", " ", " ", " ", " " }, -- Border characters of the floating window
-    })
-    vim.api.nvim_create_user_command("LspPreviewDefinition", "lua require('goto-preview').goto_preview_definition()", {})
-    vim.api.nvim_create_user_command(
-        "LspPreviewTypeDefinition",
-        "lua require('goto-preview').goto_preview_type_definition()",
-        {}
-    )
-    vim.api.nvim_create_user_command("LspPreviewReferences", "lua require('goto-preview').goto_preview_references()", {})
-    vim.api.nvim_create_user_command(
-        "LspPreviewImplementation",
-        "lua require('goto-preview').goto_preview_implementation()",
-        {}
-    )
-    vim.api.nvim_create_user_command("LspPreviewCloseAll", "lua require('goto-preview').close_all_win()", {})
-    vim.keymap.set("n", "gpd", function()
-        goto_preview.goto_preview_definition()
-    end, { noremap = true, silent = true, desc = "LspPreviewDefinition" })
-    vim.keymap.set("n", "gpt", function()
-        goto_preview.goto_preview_type_definition()
-    end, { noremap = true, silent = true, desc = "LspPreviewTypeDefinition" })
-    vim.keymap.set("n", "gpr", function()
-        goto_preview.goto_preview_references()
-    end, { noremap = true, silent = true, desc = "LspPreviewReferences" })
-    vim.keymap.set("n", "gpi", function()
-        goto_preview.goto_preview_implementation()
-    end, { noremap = true, silent = true, desc = "LspPreviewImplementation" })
-    vim.keymap.set("n", "gpp", function()
-        goto_preview.close_all_win()
-    end, { noremap = true, silent = true, desc = "LspPreviewCloseAll" })
     #+end_src
 
 **   [[https://github.com/mfussenegger/nvim-jdtls][nvim-jdtls]]
@@ -917,8 +929,8 @@
         end
         package_info.setup({
             colors = {
-                up_to_date = _G.LVIM_COLORS.color_01,
-                outdated = _G.LVIM_COLORS.color_02,
+                up_to_date = _G.LVIM_THEME.colors[_G.LVIM_THEME.theme].green_01,
+                outdated = _G.LVIM_THEME.colors[_G.LVIM_THEME.theme].red_01,
             },
         })
     end

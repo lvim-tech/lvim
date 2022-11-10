@@ -13,7 +13,7 @@ else
     global["diagnostics"]["path"] = vim.fn.getcwd()
     global["diagnostics"]["method"] = "global"
     local packer = require("core.pack")
-    packer.ensure_plugins()
     funcs.configs()
+    packer.ensure_plugins()
     packer.load_compile()
 end

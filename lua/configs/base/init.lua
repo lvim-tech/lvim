@@ -9,25 +9,111 @@ local group = vim.api.nvim_create_augroup("LvimIDE", {
 local configs = {}
 
 configs["base_vim"] = function()
-    options.global()
-end
-
-configs["base_colors"] = function()
-    _G.LVIM_COLORS = {
-        color_01 = "#A7C080",
-        color_02 = "#F05F4E",
-        color_03 = "#F2994B",
-        color_04 = "#2AA198",
-        color_05 = "#00839F",
-        color_06 = "#83A598",
-        bg = "#20262A",
-        fg = "#4C5D67",
+    local theme = funcs.get_line(global.lvim_path .. "/.configs/lvim/theme", 1)
+    _G.LVIM_THEME = {
+        theme_plugin = "lvim-tech/lvim-colorscheme",
+        theme_name = "lvim-colorscheme",
+        theme = theme,
+        colors = {
+            dark = {
+                bg = "#20262A",
+                bg_01 = "#242B30",
+                bg_02 = "#272F35",
+                bg_03 = "#2A3339",
+                bg_04 = "#364249",
+                bg_05 = "#415058",
+                bg_06 = "#4C5D67",
+                fg_01 = "#97b9ac",
+                fg_02 = "#83A598",
+                fg_03 = "#6f9184",
+                fg_04 = "#70A9A8",
+                fg_05 = "#90C1A3",
+                fg_06 = "#7CB692",
+                blue_01 = "#148fc3",
+                blue_02 = "#007baf",
+                blue_03 = "#00679b",
+                teal_01 = "#2ab198",
+                teal_02 = "#169d84",
+                teal_03 = "#028970",
+                cyan_01 = "#00acc1",
+                cyan_02 = "#0098ad",
+                cyan_03 = "#008499",
+                green_01 = "#A7C080",
+                green_02 = "#93ac6c",
+                green_03 = "#7f9858",
+                red_01 = "#F16A5B",
+                red_02 = "#dd5647",
+                red_03 = "#c94233",
+                orange_01 = "#ffae50",
+                orange_02 = "#ff9a3c",
+                orange_03 = "#F08628",
+            },
+            light = {
+                bg = "#EAEAEA",
+                bg_01 = "#FFFFFF",
+                bg_02 = "#f5f5f5",
+                bg_03 = "#ebebeb",
+                bg_04 = "#e1e1e1",
+                bg_05 = "#d7d7d7",
+                bg_06 = "#cdcdcd",
+                fg_01 = "#6f9184",
+                fg_02 = "#5b7d70",
+                fg_03 = "#9bbdb0",
+                fg_04 = "#488180",
+                fg_05 = "#5e8f71",
+                fg_06 = "#4a8460",
+                blue_01 = "#28a3d7",
+                blue_02 = "#148fc3",
+                blue_03 = "#007baf",
+                teal_01 = "#2ab198",
+                teal_02 = "#169d84",
+                teal_03 = "#028970",
+                cyan_01 = "#00acc1",
+                cyan_02 = "#0098ad",
+                cyan_03 = "#008499",
+                green_01 = "#7f9858",
+                green_02 = "#6b8444",
+                green_03 = "#577030",
+                red_01 = "#c94233",
+                red_02 = "#b52e1f",
+                red_03 = "#a11a0b",
+                orange_01 = "#f08628",
+                orange_02 = "#dc7214",
+                orange_03 = "#c85e00",
+            },
+        },
     }
+    local function lvim_theme()
+        local select = require("lvim-select-input.select")
+        select({
+            "Dark",
+            "Light",
+            "Cancel",
+        }, { prompt = "Change theme" }, function(choice)
+            if choice == "Cancel" then
+            else
+                local user_choice = string.lower(choice)
+                funcs.write_file(global.lvim_path .. "/.configs/lvim/theme", user_choice)
+                _G.LVIM_THEME.theme = user_choice
+                local ui_config = require("modules.base.configs.ui")
+                ui_config.heirline_nvim()
+                ui_config.nvim_notify()
+                ui_config.nvim_window_picker()
+                ui_config.neo_tree_nvim()
+                local editor_config = require("modules.base.configs.editor")
+                editor_config.tabby_nvim()
+                local languages_config = require("modules.base.configs.languages")
+                languages_config.package_info_nvim()
+                vim.cmd("colorscheme lvim-" .. user_choice)
+            end
+        end, "editor")
+    end
+    vim.api.nvim_create_user_command("LvimTheme", lvim_theme, {})
+    options.global()
 end
 
 configs["base_options"] = function()
     vim.g.indent_blankline_char = "▏"
-    vim.g.indentLine_char = "▏"
     vim.g.gitblame_enabled = 0
     vim.g.gitblame_highlight_group = "CursorLine"
     pcall(function()
@@ -104,7 +190,9 @@ configs["base_commands"] = function()
     vim.api.nvim_create_user_command("Quit", 'lua require("core.funcs").quit()', {})
     vim.api.nvim_create_user_command("Save", function()
         vim.schedule(function()
-            vim.cmd("w")
+            if not vim.bo.readonly then
+                vim.cmd("w")
+            end
         end)
     end, {})
 end

@@ -186,14 +186,13 @@ config.goto_preview = function()
     goto_preview.setup({
         width = 160,
         height = 25,
-        border = { " ", " ", " ", " ", " ", " ", " ", " " }, -- Border characters of the floating window
+        border = { " ", " ", " ", " ", " ", " ", " ", " " },
         references = {
             telescope = lib.has_telescope and lib.telescope.themes.get_dropdown({
                 layout_config = {
                     width = function(_, max_columns, _)
                         return math.min(max_columns, 200)
                     end,
-
                     height = function(_, _, max_lines)
                         return math.min(max_lines, 15)
                     end,
@@ -579,8 +578,8 @@ config.package_info_nvim = function()
     end
     package_info.setup({
         colors = {
-            up_to_date = _G.LVIM_COLORS.color_01,
-            outdated = _G.LVIM_COLORS.color_02,
+            up_to_date = _G.LVIM_THEME.colors[_G.LVIM_THEME.theme].green_01,
+            outdated = _G.LVIM_THEME.colors[_G.LVIM_THEME.theme].red_01,
         },
     })
 end

@@ -2,7 +2,7 @@ local global = require("core.global")
 local funcs = require("core.funcs")
 local lspconfig = require("lspconfig")
 local mason_registry = require("mason-registry")
-local select = require("lvim-select-input.select")
+local select = require("lvim-ui-config.select")
 
 local M = {}
 
@@ -137,17 +137,15 @@ M.setup_languages = function(packages_data)
                                 end
                             end, 100)
                         elseif choice == "Don't ask me again" then
+                            local notify = require("lvim-ui-config.notify")
                             funcs.write_file(global.cache_path .. "/.lvim_packages", "")
-                            vim.notify(
-                                "To enable ask again run command:\n:AskForPackagesFile\nand restart LVIM IDE",
-                                "error",
-                                {
-                                    timeout = 10000,
-                                    title = "LVIM IDE",
-                                }
-                            )
+                            notify.error("To enable ask again run command:\n:AskForPackagesFile\nand restart LVIM IDE", {
+                                timeout = 10000,
+                                title = "LVIM IDE",
+                            })
                         elseif choice == "Cancel" then
-                            vim.notify("Need restart LVIM IDE to install packages for this filetype", "error", {
+                            local notify = require("lvim-ui-config.notify")
+                            notify.error("Need restart LVIM IDE to install packages for this filetype", {
                                 timeout = 10000,
                                 title = "LVIM IDE",
                             })

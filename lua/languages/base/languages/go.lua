@@ -24,7 +24,6 @@ language_configs["dap"] = function()
             detached = true,
         }, function(code)
             handle:close()
-            vim.notify("Delve exited with exit code: " .. code)
         end)
         vim.defer_fn(function()
             callback({ type = "server", host = "127.0.0.1", port = port })

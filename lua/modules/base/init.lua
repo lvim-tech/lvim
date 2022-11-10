@@ -24,8 +24,8 @@ modules["lewis6991/impatient.nvim"] = {
 
 local ui_config = require("modules.base.configs.ui")
 
-modules["lvim-tech/lvim-colorscheme"] = {
-    commit = funcs.get_commit("lvim-colorscheme", plugins_snapshot),
+modules[_G.LVIM_THEME.theme_plugin] = {
+    commit = funcs.get_commit(_G.LVIM_THEME.theme_name, plugins_snapshot),
     config = ui_config.lvim_colorscheme,
 }
 
@@ -43,8 +43,12 @@ modules["rcarriga/nvim-notify"] = {
     config = ui_config.nvim_notify,
 }
 
-modules["lvim-tech/lvim-select-input"] = {
+modules["lvim-tech/lvim-ui-config"] = {
     requires = {
+        {
+            "rcarriga/nvim-notify",
+            commit = funcs.get_commit("nvim-notify", plugins_snapshot),
+        },
         {
             "MunifTanjim/nui.nvim",
             commit = funcs.get_commit("nui.nvim", plugins_snapshot),
@@ -220,16 +224,16 @@ modules["lvim-tech/lvim-linguistics"] = {
     commit = funcs.get_commit("lvim-linguistics", plugins_snapshot),
     requires = {
         {
-            "MunifTanjim/nui.nvim",
-            commit = funcs.get_commit("nui.nvim", plugins_snapshot),
-        },
-        {
             "rcarriga/nvim-notify",
             commit = funcs.get_commit("nvim-notify", plugins_snapshot),
         },
         {
-            "lvim-tech/lvim-select-input",
-            commit = funcs.get_commit("lvim-select-input", plugins_snapshot),
+            "MunifTanjim/nui.nvim",
+            commit = funcs.get_commit("nui.nvim", plugins_snapshot),
+        },
+        {
+            "lvim-tech/lvim-ui-config",
+            commit = funcs.get_commit("lvim-ui-config", plugins_snapshot),
         },
     },
     rocks = {

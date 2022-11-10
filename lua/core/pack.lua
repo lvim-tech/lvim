@@ -103,18 +103,26 @@ function plugins.snapshot_current_show()
     if read_json_file ~= nil then
         plugins_snapshot = read_json_file
     end
-    vim.notify(vim.inspect(plugins_snapshot), "info")
+    local notify = require("lvim-ui-config.notify")
+    notify.info(vim.inspect(plugins_snapshot), {
+        title = "LVIM IDE",
+    })
 end
 
 function plugins.snapshot_file_choice()
     local snapshot_file = vim.fn.input("Rollback from file: ", global.snapshot_path .. "/", "file")
     local read_json_file = funcs.read_json_file(snapshot_file)
+    local notify = require("lvim-ui-config.notify")
     if read_json_file ~= nil then
         _G.LVIM_SNAPSHOT = snapshot_file
         funcs.write_file(global.cache_path .. "/.lvim_snapshot", '{"snapshot": "' .. _G.LVIM_SNAPSHOT .. '"}')
-        vim.notify("Restart LVIM IDE and run\n:PackerSync", "info")
+        notify.warning("Restart LVIM IDE and run\n:PackerSync", {
+            title = "LVIM IDE",
+        })
     else
-        vim.notify("The file does not exist or is wrong", "error")
+        notify.error("The file does not exist or is wrong", {
+            title = "LVIM IDE",
+        })
     end
 end
 
@@ -139,11 +147,14 @@ function plugins.load_compile()
     vim.cmd("command! PackerShowCurrentSnapshot lua require('core.pack').snapshot_current_show()")
     vim.cmd("command! PackerChoiceSnapshotToRollback lua require('core.pack').snapshot_file_choice()")
     local PackerHooks = vim.api.nvim_create_augroup("PackerHooks", { clear = true })
+    local notify = require("lvim-ui-config.notify")
     vim.api.nvim_create_autocmd("User", {
         group = PackerHooks,
         pattern = "PackerCompileDone",
         callback = function()
-            vim.notify("Compile Done!", vim.log.levels.INFO, { title = "Packer" })
+            notify.info("Compile Done!", {
+                title = "LVIM IDE",
+            })
             dofile(vim.env.MYVIMRC)
         end,
     })
