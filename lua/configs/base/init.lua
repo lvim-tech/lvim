@@ -84,7 +84,7 @@ configs["base_vim"] = function()
         },
     }
     local function lvim_theme()
-        local select = require("lvim-select-input.select")
+        local select = require("lvim-ui-config.select")
         select({
             "Dark",
             "Light",
