@@ -781,7 +781,7 @@ config.nvim_window_picker = function()
         },
         fg_color = _G.LVIM_THEME.colors[_G.LVIM_THEME.theme].bg,
         current_win_hl_color = _G.LVIM_THEME.colors[_G.LVIM_THEME.theme].bg,
-        other_win_hl_color = _G.LVIM_THEME.colors[_G.LVIM_THEME.theme].bg_01,
+        other_win_hl_color = _G.LVIM_THEME.colors[_G.LVIM_THEME.theme].green_01,
     })
     vim.api.nvim_create_user_command("WindowPicker", focus_window, {})
     vim.keymap.set("n", "gw", function()
