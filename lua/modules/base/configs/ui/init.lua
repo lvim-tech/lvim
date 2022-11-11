@@ -1212,27 +1212,27 @@ config.heirline_nvim = function()
                 t = "T",
             },
             mode_colors = {
-                n = theme_colors.green_01,
+                n = theme_colors.green_02,
                 i = theme_colors.red_02,
                 v = theme_colors.orange_02,
                 V = theme_colors.orange_02,
-                ["\22"] = theme_colors.cyan_02,
-                c = theme_colors.cyan_02,
+                ["\22"] = theme_colors.orange_02_02,
+                c = theme_colors.teal_01,
                 s = theme_colors.teal_01,
                 S = theme_colors.teal_01,
                 ["\19"] = theme_colors.teal_01,
                 R = theme_colors.cyan_02,
                 r = theme_colors.cyan_02,
                 ["!"] = theme_colors.cyan_02,
-                t = theme_colors.blue_01,
+                t = theme_colors.green_02,
             },
         },
         provider = function(self)
-            return "   %(" .. self.mode_names[self.mode] .. "%)"
+            return "   %(" .. self.mode_names[self.mode] .. "%)  "
         end,
         hl = function(self)
             mode = self.mode:sub(1, 1)
-            return { fg = self.mode_colors[mode], bold = true }
+            return { bg = self.mode_colors[mode], fg = theme_colors.bg_01, bold = true }
         end,
         update = {
             "ModeChanged",
