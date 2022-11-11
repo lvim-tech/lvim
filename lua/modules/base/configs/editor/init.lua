@@ -750,6 +750,15 @@ config.todo_comments_nvim = function()
         return
     end
     todo_comments.setup({
+        keywords = {
+            FIX = { icon = " ", color = "error", alt = { "FIX", "FIXME" } },
+            TODO = { icon = " ", color = "info", alt = { "TODO" } },
+            HACK = { icon = " ", color = "error", alt = { "HACK" } },
+            WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
+            PERF = { icon = "神", color = "warning", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+            NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
+            TEST = { icon = " ", color = "test", alt = { "TEST", "TESTING", "PASSED", "FAILED" } },
+        },
         highlight = {
             before = "fg",
             keyword = "fg",
@@ -761,7 +770,6 @@ config.todo_comments_nvim = function()
             info = { "ToDoInfo" },
             hint = { "ToDoHint" },
             test = { "ToDoTest" },
-            default = { "ToDoDefault" },
         },
     })
 end
