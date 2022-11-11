@@ -750,13 +750,18 @@ config.todo_comments_nvim = function()
         return
     end
     todo_comments.setup({
+        highlight = {
+            before = "fg",
+            keyword = "fg",
+            after = "fg",
+        },
         colors = {
-            error = { "DiagnosticError" },
-            warning = { "DiagnosticWarn" },
-            info = { "DiagnosticInfo" },
-            hint = { "DiagnosticHint" },
-            default = { "Identifier" },
-            test = { "Identifier" },
+            error = { "ToDoError" },
+            warning = { "ToDoWarning" },
+            info = { "ToDoInfo" },
+            hint = { "ToDoHint" },
+            test = { "ToDoTest" },
+            default = { "ToDoDefault" },
         },
     })
 end
