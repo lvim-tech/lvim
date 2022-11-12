@@ -35,8 +35,8 @@ Normal mode
 | `<C-Right>`      | `:vertical resize +2<CR>`       | Resize width +                        |
 | `<C-Up>`         | `:resize -2<CR>`                | Resize height -                       |
 | `<C-Down>`       | `:resize +2<CR>`                | Resize height +                       |
-| `<S-x>`          | `:Neotree filesystem left<CR>`  | Neotree ilesystem left                |
-| `<C-c><C-f>`     | `:Neotree filesystem left<CR>`  | Neotree ilesystem left                |
+| `<S-x>`          | `:Neotree filesystem left<CR>`  | Neotree filesystem left               |
+| `<C-c><C-f>`     | `:Neotree filesystem left<CR>`  | Neotree filesystem left               |
 | `<C-c><C-b>`     | `:Neotree buffers left<CR>`     | Neotree filesystem left               |
 | `<C-c><C-g>`     | `:Neotree git_status left<CR>`  | Neotree git_status left               |
 | `<C-c><C-l>`     | `:Neotree diagnostics left<CR>` | Neotree diagnostics left              |
