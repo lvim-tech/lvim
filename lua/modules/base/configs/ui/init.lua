@@ -1216,15 +1216,15 @@ config.heirline_nvim = function()
                 i = theme_colors.red_02,
                 v = theme_colors.orange_02,
                 V = theme_colors.orange_02,
-                ["\22"] = theme_colors.orange_02_02,
+                ["\22"] = theme_colors.orange_02,
                 c = theme_colors.teal_01,
                 s = theme_colors.teal_01,
                 S = theme_colors.teal_01,
                 ["\19"] = theme_colors.teal_01,
-                R = theme_colors.cyan_02,
-                r = theme_colors.cyan_02,
-                ["!"] = theme_colors.cyan_02,
-                t = theme_colors.green_02,
+                R = theme_colors.cyan_01,
+                r = theme_colors.cyan_01,
+                ["!"] = theme_colors.cyan_01,
+                t = theme_colors.blue_01,
             },
         },
         provider = function(self)
@@ -1236,6 +1236,7 @@ config.heirline_nvim = function()
         end,
         update = {
             "ModeChanged",
+            "MenuPopup",
         },
     }
     local file_name_block = {
@@ -1536,6 +1537,10 @@ config.heirline_nvim = function()
             local status = require("lvim-linguistics.status").spell_get()
             return "  SPELL: " .. status
         end,
+        hl = { fg = theme_colors.green_02, bold = true },
+    }
+    local ruler = {
+        provider = " %7(%l/%3L%):%2c %P",
         hl = { fg = theme_colors.red_02, bold = true },
     }
     local scroll_bar = {
@@ -1683,6 +1688,7 @@ config.heirline_nvim = function()
             file_encoding,
             file_format,
             spell,
+            ruler,
             scroll_bar,
         },
     }
