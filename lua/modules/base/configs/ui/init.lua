@@ -1237,6 +1237,7 @@ config.heirline_nvim = function()
         update = {
             "ModeChanged",
             "MenuPopup",
+            "WinLeave",
         },
     }
     local file_name_block = {
