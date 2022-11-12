@@ -1515,27 +1515,27 @@ config.heirline_nvim = function()
                 return " " .. enc:upper()
             end
         end,
-        hl = { fg = theme_colors.teal_01, bold = true },
+        hl = { fg = theme_colors.orange_02, bold = true },
     }
     local file_format = {
         provider = function()
             local format = vim.bo.fileformat
             if format ~= "" then
                 local symbols = {
-                    unix = " ",
-                    dos = " ",
-                    mac = " ",
+                    unix = "  ",
+                    dos = "  ",
+                    mac = "  ",
                 }
                 return symbols[format]
             end
         end,
-        hl = { fg = theme_colors.teal_01, bold = true },
+        hl = { fg = theme_colors.orange_02, bold = true },
     }
     local spell = {
         condition = require("lvim-linguistics.status").spell_has,
         provider = function()
             local status = require("lvim-linguistics.status").spell_get()
-            return "  SPELL: " .. status
+            return " SPELL: " .. status
         end,
         hl = { fg = theme_colors.green_02, bold = true },
     }
