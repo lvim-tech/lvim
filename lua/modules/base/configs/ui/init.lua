@@ -1539,7 +1539,7 @@ config.heirline_nvim = function()
         hl = { fg = theme_colors.fg_05, bold = true },
     }
     local ruler = {
-        provider = "  %7(%l (%3L%)) |%2c %P",
+        provider = "  %7(%l (%3L%)) | %2c %P",
         hl = { fg = theme_colors.red_02, bold = true },
     }
     local scroll_bar = {
