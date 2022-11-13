@@ -48,6 +48,8 @@
 
   [[./LVIM/media/lvim-ide-screenshot_17.png]]
 
+  [[./LVIM/media/lvim-ide-screenshot_18.png]]
+
 **  INTRODUCTION
 
     * Neovim 0.8.0+ (for NEOVIM < 0.8 use branch NEOVIM-0.7)
