@@ -224,9 +224,9 @@ configs["base_commands"] = function()
     vim.api.nvim_create_user_command("Quit", 'lua require("core.funcs").quit()', {})
     vim.api.nvim_create_user_command("Save", function()
         vim.schedule(function()
-            if not vim.bo.readonly then
+            pcall(function()
                 vim.cmd("w")
-            end
+            end)
         end)
     end, {})
 end
