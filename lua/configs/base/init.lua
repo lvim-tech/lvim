@@ -13,12 +13,20 @@ configs["base_lvim"] = function()
     _G.LVIM_SETTINGS = funcs.read_file(global.lvim_path .. "/.configs/lvim/config.json")
     local function lvim_theme()
         local select = require("lvim-ui-config.select")
+        local status
+        if _G.LVIM_SETTINGS.colorschemes.theme == "dark" then
+            status = "Dark"
+        elseif _G.LVIM_SETTINGS.colorschemes.theme == "darksoft" then
+            status = "DarkSoft"
+        elseif _G.LVIM_SETTINGS.colorschemes.theme == "light" then
+            status = "Light"
+        end
         select({
             "Dark",
             "DarkSoft",
             "Light",
             "Cancel",
-        }, { prompt = "Change theme" }, function(choice)
+        }, { prompt = "Theme (" .. status .. ")" }, function(choice)
             if choice == "Cancel" then
             else
                 local user_choice = string.lower(choice)
