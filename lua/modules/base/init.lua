@@ -2,9 +2,9 @@ local funcs = require("core.funcs")
 local modules = {}
 local plugins_snapshot = {}
 
-local read_json_file = funcs.read_json_file(_G.LVIM_SNAPSHOT)
-if read_json_file ~= nil then
-    plugins_snapshot = read_json_file
+local file_content = funcs.read_file(_G.LVIM_SNAPSHOT)
+if file_content ~= nil then
+    plugins_snapshot = file_content
 end
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- UTILS -----------------------------------------------------------
@@ -24,8 +24,8 @@ modules["lewis6991/impatient.nvim"] = {
 
 local ui_config = require("modules.base.configs.ui")
 
-modules[_G.LVIM_THEME.theme_plugin] = {
-    commit = funcs.get_commit(_G.LVIM_THEME.theme_name, plugins_snapshot),
+modules[_G.LVIM_SETTINGS.colorschemes.theme_plugin] = {
+    commit = funcs.get_commit(_G.LVIM_SETTINGS.colorschemes.theme_name, plugins_snapshot),
     config = ui_config.lvim_colorscheme,
 }
 
@@ -236,12 +236,12 @@ modules["lvim-tech/lvim-linguistics"] = {
             commit = funcs.get_commit("lvim-ui-config", plugins_snapshot),
         },
     },
-    rocks = {
-        {
-            "lunajson",
-            server = "http://rocks.moonscript.org",
-        },
-    },
+    -- rocks = {
+    --     {
+    --         "lunajson",
+    --         server = "http://rocks.moonscript.org",
+    --     },
+    -- },
     config = editor_config.lvim_linguistics,
 }
 

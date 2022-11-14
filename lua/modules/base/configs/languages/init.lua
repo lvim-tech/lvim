@@ -111,7 +111,9 @@ config.null_ls_nvim = function()
                 vim.api.nvim_create_autocmd("BufWritePre", {
                     buffer = bufnr,
                     callback = function()
-                        vim.lsp.buf.format()
+                        if _G.LVIM_SETTINGS.autoformat == true then
+                            vim.lsp.buf.format()
+                        end
                     end,
                     group = "LvimIDE",
                 })
@@ -578,8 +580,8 @@ config.package_info_nvim = function()
     end
     package_info.setup({
         colors = {
-            up_to_date = _G.LVIM_THEME.colors[_G.LVIM_THEME.theme].green_01,
-            outdated = _G.LVIM_THEME.colors[_G.LVIM_THEME.theme].red_01,
+            up_to_date = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].green_01,
+            outdated = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].red_01,
         },
     })
 end

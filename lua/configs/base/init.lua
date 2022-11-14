@@ -1,5 +1,6 @@
 local global = require("core.global")
 local funcs = require("core.funcs")
+-- local fs = require("core.fs")
 local options = require("configs.base.options")
 local keymaps = require("configs.base.keymaps")
 local group = vim.api.nvim_create_augroup("LvimIDE", {
@@ -8,114 +9,8 @@ local group = vim.api.nvim_create_augroup("LvimIDE", {
 
 local configs = {}
 
-configs["base_vim"] = function()
-    local theme = funcs.get_line(global.lvim_path .. "/.configs/lvim/theme", 1)
-    _G.LVIM_THEME = {
-        theme_plugin = "lvim-tech/lvim-colorscheme",
-        theme_name = "lvim-colorscheme",
-        theme = theme,
-        colors = {
-            dark = {
-                bg = "#20262A",
-                bg_01 = "#242B30",
-                bg_02 = "#272F35",
-                bg_03 = "#2A3339",
-                bg_04 = "#364249",
-                bg_05 = "#415058",
-                bg_06 = "#4C5D67",
-                fg_01 = "#97b9ac",
-                fg_02 = "#83A598",
-                fg_03 = "#6f9184",
-                fg_04 = "#70A9A8",
-                fg_05 = "#90C1A3",
-                fg_06 = "#7CB692",
-                blue_01 = "#148fc3",
-                blue_02 = "#007baf",
-                blue_03 = "#00679b",
-                teal_01 = "#2ab198",
-                teal_02 = "#169d84",
-                teal_03 = "#028970",
-                cyan_01 = "#00acc1",
-                cyan_02 = "#0098ad",
-                cyan_03 = "#008499",
-                green_01 = "#A7C080",
-                green_02 = "#93ac6c",
-                green_03 = "#7f9858",
-                red_01 = "#F16A5B",
-                red_02 = "#dd5647",
-                red_03 = "#c94233",
-                orange_01 = "#ffae50",
-                orange_02 = "#ff9a3c",
-                orange_03 = "#F08628",
-            },
-            darksoft = {
-                bg = "#272D31",
-                bg_01 = "#383f44",
-                bg_02 = "#3b4349",
-                bg_03 = "#3e474d",
-                bg_04 = "#4a565d",
-                bg_05 = "#55646c",
-                bg_06 = "#60717b",
-                fg_01 = "#97b9ac",
-                fg_02 = "#83A598",
-                fg_03 = "#6f9184",
-                fg_04 = "#70A9A8",
-                fg_05 = "#90C1A3",
-                fg_06 = "#7CB692",
-                blue_01 = "#28a3d7",
-                blue_02 = "#148fc3",
-                blue_03 = "#007baf",
-                teal_01 = "#2ab198",
-                teal_02 = "#169d84",
-                teal_03 = "#028970",
-                cyan_01 = "#00acc1",
-                cyan_02 = "#0098ad",
-                cyan_03 = "#008499",
-                green_01 = "#A7C080",
-                green_02 = "#93ac6c",
-                green_03 = "#7f9858",
-                red_01 = "#F16A5B",
-                red_02 = "#dd5647",
-                red_03 = "#c94233",
-                orange_01 = "#ffae50",
-                orange_02 = "#ff9a3c",
-                orange_03 = "#F08628",
-            },
-            light = {
-                bg = "#EAEAEA",
-                bg_01 = "#FFFFFF",
-                bg_02 = "#f5f5f5",
-                bg_03 = "#ebebeb",
-                bg_04 = "#e1e1e1",
-                bg_05 = "#d7d7d7",
-                bg_06 = "#cdcdcd",
-                fg_01 = "#6f9184",
-                fg_02 = "#5b7d70",
-                fg_03 = "#9bbdb0",
-                fg_04 = "#488180",
-                fg_05 = "#5e8f71",
-                fg_06 = "#4a8460",
-                blue_01 = "#28a3d7",
-                blue_02 = "#148fc3",
-                blue_03 = "#007baf",
-                teal_01 = "#2ab198",
-                teal_02 = "#169d84",
-                teal_03 = "#028970",
-                cyan_01 = "#00acc1",
-                cyan_02 = "#0098ad",
-                cyan_03 = "#008499",
-                green_01 = "#7f9858",
-                green_02 = "#6b8444",
-                green_03 = "#577030",
-                red_01 = "#c94233",
-                red_02 = "#b52e1f",
-                red_03 = "#a11a0b",
-                orange_01 = "#f08628",
-                orange_02 = "#dc7214",
-                orange_03 = "#c85e00",
-            },
-        },
-    }
+configs["base_lvim"] = function()
+    _G.LVIM_SETTINGS = funcs.read_file(global.lvim_path .. "/.configs/lvim/config.json")
     local function lvim_theme()
         local select = require("lvim-ui-config.select")
         select({
@@ -127,8 +22,8 @@ configs["base_vim"] = function()
             if choice == "Cancel" then
             else
                 local user_choice = string.lower(choice)
-                funcs.write_file(global.lvim_path .. "/.configs/lvim/theme", user_choice)
-                _G.LVIM_THEME.theme = user_choice
+                _G.LVIM_SETTINGS.colorschemes.theme = user_choice
+                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
                 local ui_config = require("modules.base.configs.ui")
                 ui_config.heirline_nvim()
                 ui_config.nvim_notify()
@@ -143,10 +38,31 @@ configs["base_vim"] = function()
         end, "editor")
     end
     vim.api.nvim_create_user_command("LvimTheme", lvim_theme, {})
-    options.global()
+    local function lvim_auto_format()
+        local select = require("lvim-ui-config.select")
+        local status
+        if _G.LVIM_SETTINGS.autoformat == true then
+            status = "Enabled"
+        else
+            status = "Disabled"
+        end
+        select({
+            "Enable",
+            "Disable",
+            "Cancel",
+        }, { prompt = "AutoFormat (" .. status .. ")" }, function(choice)
+            if choice == "Enable" then
+                _G.LVIM_SETTINGS.autoformat = true
+            elseif choice == "Disable" then
+                _G.LVIM_SETTINGS.autoformat = false
+            end
+        end, "editor")
+    end
+    vim.api.nvim_create_user_command("LvimAutoFormat", lvim_auto_format, {})
 end
 
 configs["base_options"] = function()
+    options.global()
     vim.g.indent_blankline_char = "▏"
     vim.g.gitblame_enabled = 0
     vim.g.gitblame_highlight_group = "CursorLine"

@@ -99,9 +99,9 @@ end
 
 function plugins.snapshot_current_show()
     local plugins_snapshot = {}
-    local read_json_file = funcs.read_json_file(_G.LVIM_SNAPSHOT)
-    if read_json_file ~= nil then
-        plugins_snapshot = read_json_file
+    local file_content = funcs.read_file(_G.LVIM_SNAPSHOT)
+    if file_content ~= nil then
+        plugins_snapshot = file_content
     end
     local notify = require("lvim-ui-config.notify")
     notify.info(vim.inspect(plugins_snapshot), {
@@ -111,9 +111,9 @@ end
 
 function plugins.snapshot_file_choice()
     local snapshot_file = vim.fn.input("Rollback from file: ", global.snapshot_path .. "/", "file")
-    local read_json_file = funcs.read_json_file(snapshot_file)
+    local file_content = funcs.read_file(snapshot_file)
     local notify = require("lvim-ui-config.notify")
-    if read_json_file ~= nil then
+    if file_content ~= nil then
         _G.LVIM_SNAPSHOT = snapshot_file
         funcs.write_file(global.cache_path .. "/.lvim_snapshot", '{"snapshot": "' .. _G.LVIM_SNAPSHOT .. '"}')
         notify.warning("Restart LVIM IDE and run\n:PackerSync", {

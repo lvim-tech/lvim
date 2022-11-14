@@ -290,7 +290,9 @@ M.document_formatting = function(client, bufnr)
         vim.api.nvim_create_autocmd("BufWritePre", {
             buffer = bufnr,
             callback = function()
-                vim.lsp.buf.format()
+                if _G.LVIM_SETTINGS.autoformat == true then
+                    vim.lsp.buf.format()
+                end
             end,
             group = "LvimIDE",
         })

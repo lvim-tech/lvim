@@ -15,7 +15,7 @@ config.lvim_colorscheme = function()
             "neo-tree",
         },
     })
-    vim.cmd("colorscheme lvim-" .. _G.LVIM_THEME.theme)
+    vim.cmd("colorscheme lvim-" .. _G.LVIM_SETTINGS.colorschemes.theme)
 end
 
 config.nui_nvim = function()
@@ -199,7 +199,7 @@ config.nvim_notify = function()
     end
     notify.setup({
         minimum_width = 80,
-        background_colour = _G.LVIM_THEME.colors[_G.LVIM_THEME.theme].bg,
+        background_colour = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
         icons = {
             DEBUG = " ",
             ERROR = " ",
@@ -779,9 +779,9 @@ config.nvim_window_picker = function()
                 buftype = {},
             },
         },
-        fg_color = _G.LVIM_THEME.colors[_G.LVIM_THEME.theme].bg,
-        current_win_hl_color = _G.LVIM_THEME.colors[_G.LVIM_THEME.theme].bg,
-        other_win_hl_color = _G.LVIM_THEME.colors[_G.LVIM_THEME.theme].green_01,
+        fg_color = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
+        current_win_hl_color = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
+        other_win_hl_color = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].green_01,
     })
     vim.api.nvim_create_user_command("WindowPicker", focus_window, {})
     vim.keymap.set("n", "gw", function()
@@ -1159,7 +1159,7 @@ config.heirline_nvim = function()
     if not heirline_utils_status_ok then
         return
     end
-    local theme_colors = _G.LVIM_THEME.colors[_G.LVIM_THEME.theme]
+    local theme_colors = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme]
     local align = { provider = "%=" }
     local space = { provider = " " }
     local mode
@@ -1800,7 +1800,7 @@ config.heirline_nvim = function()
     vim.api.nvim_create_augroup("Heirline", { clear = true })
     vim.api.nvim_create_autocmd("ColorScheme", {
         callback = function()
-            heirline_utils.on_colorscheme(_G.LVIM_THEME.colors[_G.LVIM_THEME.theme])
+            heirline_utils.on_colorscheme(_G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme])
         end,
         group = "Heirline",
     })
