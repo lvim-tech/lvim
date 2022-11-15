@@ -1,6 +1,5 @@
 local global = require("core.global")
 local funcs = require("core.funcs")
--- local fs = require("core.fs")
 local options = require("configs.base.options")
 local keymaps = require("configs.base.keymaps")
 local group = vim.api.nvim_create_augroup("LvimIDE", {

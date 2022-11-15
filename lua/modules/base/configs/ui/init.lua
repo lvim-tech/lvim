@@ -956,6 +956,7 @@ config.which_key_nvim = function()
             "^ ",
         },
         show_help = false,
+        show_keys = false,
     }
     local nopts = {
         mode = "n",

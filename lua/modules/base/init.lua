@@ -236,12 +236,6 @@ modules["lvim-tech/lvim-linguistics"] = {
             commit = funcs.get_commit("lvim-ui-config", plugins_snapshot),
         },
     },
-    -- rocks = {
-    --     {
-    --         "lunajson",
-    --         server = "http://rocks.moonscript.org",
-    --     },
-    -- },
     config = editor_config.lvim_linguistics,
 }
 
