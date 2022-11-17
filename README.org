@@ -81,7 +81,7 @@
 
 **  INSTALL
 
-    #+begin_src lua
+    #+begin_src bash
     git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
     #+end_src
 
