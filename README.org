@@ -8,7 +8,7 @@
 
   * Debug support for c, cpp, dart, elixir, go, haskell, java, javascript/typescript, lua, php, python, ruby, rust
 
-  Current version - 2.5.20 (2022-11-14)
+  Current version - 2.5.30 (2022-11-17)
 
   121 plugins
 
@@ -95,10 +95,9 @@
     end
     #+end_src
 
-**  LVIM SETTINGS
+**  LVIM CONFIG
 
     - Theme - Dark (default), DarkSoft and Light
-
 
     #+begin_src bash
 
@@ -108,10 +107,29 @@
 
     - AutoFormat (on save) - true (default), false
 
-
     #+begin_src bash
 
     :LvimAutoFormat
+
+    #+end_src
+
+    - Charset, End of line, Indent style, Indent size, Insert final newline, Max line length, Tab width, Trim trailing whitespace
+
+    #+begin_src bash
+
+    :EditorConfigCreate
+
+    #+end_src
+
+    - LSP
+
+    #+begin_src bash
+
+    :Neoconf
+    :Neoconf local
+    :Neoconf global
+    :Neoconf show
+    :Neoconf lsp
 
     #+end_src
 
