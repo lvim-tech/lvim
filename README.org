@@ -81,7 +81,7 @@
 
 **  INSTALL
 
-    #+begin_src bash
+    #+begin_src lua
     git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
     #+end_src
 
@@ -99,7 +99,7 @@
 
     - Theme - Dark (default), DarkSoft and Light
 
-    #+begin_src bash
+    #+begin_src lua
 
     :LvimTheme
 
@@ -107,7 +107,7 @@
 
     - AutoFormat (on save) - true (default), false
 
-    #+begin_src bash
+    #+begin_src lua
 
     :LvimAutoFormat
 
@@ -115,7 +115,7 @@
 
     - Charset, End of line, Indent style, Indent size, Insert final newline, Max line length, Tab width, Trim trailing whitespace
 
-    #+begin_src bash
+    #+begin_src lua
 
     :EditorConfigCreate
 
@@ -123,7 +123,7 @@
 
     - LSP
 
-    #+begin_src bash
+    #+begin_src lua
 
     :Neoconf
     :Neoconf local
@@ -141,7 +141,7 @@
 
     + Show current snapshot:
 
-    #+begin_src bash
+    #+begin_src lua
 
     :PackerShowCurrentSnapshot
 
@@ -149,7 +149,7 @@
 
     + Create new snapshot: 
 
-    #+begin_src bash
+    #+begin_src lua
 
     :PackerSnapshot
 
@@ -157,7 +157,7 @@
 
     + Choice file to rollback: 
 
-    #+begin_src bash
+    #+begin_src lua
 
     :PackerChoiceSnapshotToRollback
 
@@ -165,7 +165,7 @@
 
     Then restart LVIM IDE and run:
 
-    #+begin_src bash
+    #+begin_src lua
 
     :PackerSync
 
@@ -177,7 +177,7 @@
 
 ****  FILE STRUCTURE
 
-    #+begin_src bash
+    #+begin_src
 
     core
     ├── funcs.lua
@@ -194,7 +194,7 @@
 
 ****  FILE STRUCTURE
 
-    #+begin_src bash
+    #+begin_src
 
     configs
     ├── base
@@ -214,7 +214,7 @@
 
 ****  FILE STRUCTURE
 
-    #+begin_src bash
+    #+begin_src
 
     modules
     ├── base
@@ -269,7 +269,7 @@
 
 ****  FILE STRUCTURE
 
-     #+begin_src bash
+     #+begin_src
 
     languages
     ├── base
