@@ -1,5 +1,28 @@
 *  LANGUAGES
 
+**   [[https://github.com/folke/neoconf.nvim][folke/neoconf.nvim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["folke/neoconf.nvim"] = {
+        commit = funcs.get_commit("neoconf.nvim", plugins_snapshot),
+        config = languages_config.neoconf_nvim,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    config.neoconf_nvim = function()
+        local neoconf_status_ok, neoconf = pcall(require, "neoconf")
+        if not neoconf_status_ok then
+            return
+        end
+        neoconf.setup()
+    end
+    #+end_src
+
 **   [[https://github.com/williamboman/mason.nvim][mason.nvim]]
 
    + REQUIRES:

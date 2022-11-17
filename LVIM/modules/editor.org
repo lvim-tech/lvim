@@ -1,5 +1,29 @@
 *  EDITOR
 
+**   [[https://github.com/gpanders/editorconfig.nvim][editorconfig.nvim]]
+
+    + Init
+
+    #+begin_src lua
+    modules["gpanders/editorconfig.nvim"] = {
+        commit = funcs.get_commit("editorconfig.nvim", plugins_snapshot),
+        config = editor_config.editorconfig_nvim,
+    }
+    #+end_src
+
+    + CONFIG
+
+    #+begin_src lua
+    config.editorconfig_nvim = function()
+        local global = require("core.global")
+        vim.api.nvim_create_user_command(
+            "EditorConfigCreate",
+            "lua require'core.funcs'.copy_file(require'core.global'.lvim_path .. '/.configs/templates/.editorconfig', vim.fn.getcwd() .. '/.editorconfig')",
+            {}
+        )
+    end
+    #+end_src
+
 **   [[https://github.com/vim-ctrlspace/vim-ctrlspace][vim-ctrlspace]]
 
     + Init
