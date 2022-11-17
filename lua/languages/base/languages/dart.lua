@@ -15,7 +15,6 @@ language_configs["lsp"] = function()
         },
         lsp = {
             on_attach = function(client, bufnr)
-                table.insert(global["languages"]["dart"]["pid"], client.rpc.pid)
                 languages_setup.omni(client, bufnr)
                 languages_setup.tag(client, bufnr)
                 languages_setup.document_highlight(client, bufnr)

@@ -5,7 +5,7 @@ local navic = require("nvim-navic")
 local default_debouce_time = 150
 local M = {}
 
-M.default_config = function(file_types, pid_name)
+M.default_config = function(file_types)
     return {
         flags = {
             debounce_text_changes = default_debouce_time,
@@ -13,7 +13,6 @@ M.default_config = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
@@ -27,7 +26,7 @@ M.default_config = function(file_types, pid_name)
     }
 end
 
-M.without_formatting = function(file_types, pid_name)
+M.without_formatting = function(file_types)
     return {
         flags = {
             debounce_text_changes = default_debouce_time,
@@ -35,7 +34,6 @@ M.without_formatting = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
@@ -48,7 +46,7 @@ M.without_formatting = function(file_types, pid_name)
     }
 end
 
-M.without_winbar_config = function(file_types, _)
+M.without_winbar_config = function(file_types)
     return {
         flags = {
             debounce_text_changes = default_debouce_time,
@@ -61,7 +59,7 @@ M.without_winbar_config = function(file_types, _)
     }
 end
 
-M.cpp_config = function(file_types, pid_name)
+M.cpp_config = function(file_types)
     return {
         flags = {
             debounce_text_changes = default_debouce_time,
@@ -70,7 +68,6 @@ M.cpp_config = function(file_types, pid_name)
         filetypes = file_types,
         on_attach = function(client, bufnr)
             client.offset_encoding = "utf-16"
-            table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
@@ -84,7 +81,7 @@ M.cpp_config = function(file_types, pid_name)
     }
 end
 
-M.omnisharp_config = function(file_types, pid_name)
+M.omnisharp_config = function(file_types)
     return {
         cmd = { "dotnet", global.mason_path .. "/packages/omnisharp/OmniSharp.dll" },
         flags = {
@@ -93,7 +90,6 @@ M.omnisharp_config = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
@@ -107,7 +103,7 @@ M.omnisharp_config = function(file_types, pid_name)
     }
 end
 
-M.elixir_config = function(file_types, pid_name)
+M.elixir_config = function(file_types)
     return {
         cmd = { global.mason_path .. "/bin/elixir-ls" },
         flags = {
@@ -116,7 +112,6 @@ M.elixir_config = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
@@ -130,7 +125,7 @@ M.elixir_config = function(file_types, pid_name)
     }
 end
 
-M.go = function(file_types, pid_name)
+M.go = function(file_types)
     return {
         flags = {
             debounce_text_changes = default_debouce_time,
@@ -138,7 +133,6 @@ M.go = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
@@ -164,7 +158,7 @@ M.go = function(file_types, pid_name)
     }
 end
 
-M.lua = function(file_types, pid_name)
+M.lua = function(file_types)
     return {
         flags = {
             debounce_text_changes = default_debouce_time,
@@ -172,7 +166,6 @@ M.lua = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
@@ -218,7 +211,7 @@ M.lua = function(file_types, pid_name)
     }
 end
 
-M.jsts_config = function(file_types, pid_name)
+M.jsts_config = function(file_types)
     return {
         flags = {
             debounce_text_changes = default_debouce_time,
@@ -226,7 +219,6 @@ M.jsts_config = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
@@ -264,7 +256,7 @@ M.jsts_config = function(file_types, pid_name)
     }
 end
 
-M.angular_config = function(file_types, pid_name)
+M.angular_config = function(file_types)
     return {
         flags = {
             debounce_text_changes = default_debouce_time,
@@ -272,7 +264,6 @@ M.angular_config = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
@@ -283,7 +274,7 @@ M.angular_config = function(file_types, pid_name)
     }
 end
 
-M.ember_config = function(file_types, pid_name)
+M.ember_config = function(file_types)
     return {
         flags = {
             debounce_text_changes = default_debouce_time,
@@ -291,7 +282,6 @@ M.ember_config = function(file_types, pid_name)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            table.insert(global["languages"][pid_name]["pid"], client.rpc.pid)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)

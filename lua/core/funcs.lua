@@ -1,8 +1,6 @@
 local global = require("core.global")
 local select = require("lvim-ui-config.select")
 local notify = require("lvim-ui-config.notify")
--- vim.cmd([[packadd lunajson]])
--- local lunajson = require("lunajson")
 
 local M = {}
 
@@ -137,6 +135,10 @@ M.write_file = function(file, content)
         f:write(content)
         f:close()
     end
+end
+
+M.copy_file = function(file, dest)
+    os.execute("cp " .. file .. " " .. dest)
 end
 
 M.delete_file = function(f)

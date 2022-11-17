@@ -22,7 +22,6 @@ local function start_server_tools()
             autostart = true,
             filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
             on_attach = function(client, bufnr)
-                table.insert(global["languages"]["jsts"]["pid"], client.rpc.pid)
                 languages_setup.omni(client, bufnr)
                 languages_setup.tag(client, bufnr)
                 languages_setup.document_highlight(client, bufnr)
