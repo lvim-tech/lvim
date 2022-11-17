@@ -70,18 +70,39 @@ M.setup = function()
     for language, v in pairs(M.file_types) do
         for _, v2 in pairs(v) do
             if v2 == filetype then
-                M.init_language(language)
+                M.start_language(language)
             end
         end
     end
 end
 
+M.start_language = function(language)
+    local project_root_path = vim.fn.getcwd()
+    if global["languages"][language] ~= nil then
+        if global["languages"][language]["project_root_path"] == project_root_path then
+            return
+        else
+            M.pre_init_language(language, project_root_path, "global")
+            M.init_language(language, project_root_path)
+        end
+    else
+        M.pre_init_language(language, project_root_path, "global")
+        M.init_language(language, project_root_path)
+    end
+end
+
+M.pre_init_language = function(language, project_root_path, lsp_type)
+    global["languages"][language] = {}
+    global["languages"][language]["project_root_path"] = project_root_path
+    global["languages"][language]["lsp_type"] = lsp_type
+end
+
 M.init_language = function(language, project_root_path)
-    local language_config = dofile(global.lvim_path .. "/lua/languages/base/languages/" .. language .. ".lua")
-    for _, func in pairs(language_config) do
+    local language_configs_global = dofile(global.lvim_path .. "/lua/languages/base/languages/" .. language .. ".lua")
+    for _, func in pairs(language_configs_global) do
         func()
     end
-    -- vim.cmd("e")
+    vim.cmd("e")
 end
 
 return M
