@@ -1,6 +1,6 @@
-VIM CHEAT SHEET
+# VIM CHEAT SHEET
 
-Working with multiple files
+## Working with multiple files
 
 | Key                  | Action                                                  |
 | -------------------- | ------------------------------------------------------- |

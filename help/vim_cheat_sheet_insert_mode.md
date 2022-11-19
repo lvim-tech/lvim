@@ -1,6 +1,6 @@
-VIM CHEAT SHEET
+# VIM CHEAT SHEET
 
-Insert mode
+## Insert mode
 
 | Key         | Action                                                       |
 | ----------- | ------------------------------------------------------------ |

@@ -1,6 +1,6 @@
-VIM CHEAT SHEET
+# VIM CHEAT SHEET
 
-Search in multiple files
+## Search in multiple files
 
 | Key                         | Action                                       |
 | --------------------------- | -------------------------------------------- |

@@ -1,6 +1,6 @@
-VIM CHEAT SHEET
+# VIM CHEAT SHEET
 
-Cut and paste
+## Cut and paste
 
 | Key   | Action                                                                                         |
 | ----- | ---------------------------------------------------------------------------------------------- |

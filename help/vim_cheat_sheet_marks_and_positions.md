@@ -1,6 +1,6 @@
-VIM CHEAT SHEET
+# VIM CHEAT SHEET
 
-Marks and positions
+## Marks and positions
 
 | Key        | Action                                             |
 | ---------- | -------------------------------------------------- |

@@ -1,6 +1,6 @@
-VIM CHEAT SHEET
+# VIM CHEAT SHEET
 
-Indent text
+## Indent text
 
 | Key    | Action                                            |
 | ------ | ------------------------------------------------- |

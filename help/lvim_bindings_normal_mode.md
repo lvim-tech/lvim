@@ -1,6 +1,6 @@
-LVIM BINDINGS
+# LVIM BINDINGS
 
-Normal mode
+## Normal mode
 
 | Key              | Action                          | Description                           |
 | ---------------- | ------------------------------- | ------------------------------------- |
@@ -11,6 +11,7 @@ Normal mode
 | `<F4>`           | `:TTFloat<CR>`                  | Toggleterm float open                 |
 | `<F5>`           | `:UndotreeToggle<CR>`           | Undotree toggle                       |
 | `<F11>`          | `:LvimHelper<CR>`               | LvimHelper                            |
+| `<C-c>h`         | `:LvimHelper<CR>`               | LvimHelper                            |
 | `<C-d>`          |                                 | Scroll down for cmp, hover, signature |
 | `<C-u>`          |                                 | Scroll up for cmp, hover, signature   |
 | `<C-c>n`         | `:enew<CR>`                     | Create empty buffer                   |

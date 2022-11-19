@@ -1,6 +1,6 @@
-VIM CHEAT SHEET
+# VIM CHEAT SHEET
 
-Search and replace
+## Search and replace
 
 | Key              | Action                                                      |
 | ---------------- | ----------------------------------------------------------- |

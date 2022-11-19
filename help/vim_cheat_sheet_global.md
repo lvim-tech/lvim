@@ -1,6 +1,6 @@
-VIM CHEAT SHEET
+# VIM CHEAT SHEET
 
-Global
+## Global
 
 | Key               | Action                                  |
 | ----------------- | --------------------------------------- |

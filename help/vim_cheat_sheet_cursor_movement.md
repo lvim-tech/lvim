@@ -1,6 +1,6 @@
-VIM CHEAT SHEET
+# VIM CHEAT SHEET
 
-Cursor movement
+## Cursor movement
 
 | Key         | Action                                            |
 | ----------- | ------------------------------------------------- |

@@ -1,6 +1,6 @@
-VIM CHEAT SHEET
+# VIM CHEAT SHEET
 
-Visual mode
+## Visual mode
 
 | Key        | Action                                           |
 | ---------- | ------------------------------------------------ |

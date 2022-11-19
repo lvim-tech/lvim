@@ -102,7 +102,7 @@ M.init_language = function(language, project_root_path)
     for _, func in pairs(language_configs_global) do
         func()
     end
-    vim.cmd("e")
+    -- vim.cmd("e")
 end
 
 return M

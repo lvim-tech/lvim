@@ -1,6 +1,6 @@
-LVIM BINDINGS
+# LVIM BINDINGS
 
-Visual mode
+## Visual mode
 
 | Key     | Action               | Description         |
 | ------- | -------------------- | ------------------- |

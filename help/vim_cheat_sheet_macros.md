@@ -1,6 +1,6 @@
-VIM CHEAT SHEET
+# VIM CHEAT SHEET
 
-Macros
+## Macros
 
 | Key  | Action               |
 | ---- | -------------------- |

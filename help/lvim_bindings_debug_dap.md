@@ -1,6 +1,6 @@
-LVIM BINDINGS
+# LVIM BINDINGS
 
-Debug DAP
+## Debug DAP
 
 | Key     | Action                         | Description       |
 | ------- | ------------------------------ | ----------------- |
