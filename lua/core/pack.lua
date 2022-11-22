@@ -10,11 +10,11 @@ local display = {
             border = { " ", " ", " ", " ", " ", " ", " ", " " },
         })
     end,
-    working_sym = "ﰭ",
-    error_sym = "",
-    done_sym = "",
-    removed_sym = "",
-    moved_sym = "ﰳ",
+    working_sym = " 金",
+    error_sym = "  ",
+    done_sym = "  ",
+    removed_sym = "  ",
+    moved_sym = " ﰲ ",
 }
 
 local Packer = {}
