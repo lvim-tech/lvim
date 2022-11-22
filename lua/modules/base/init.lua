@@ -563,6 +563,7 @@ modules["williamboman/mason.nvim"] = {
         "neovim/nvim-lspconfig",
         commit = funcs.get_commit("nvim-lspconfig", plugins_snapshot),
     },
+    after = "neoconf.nvim",
     config = languages_config.mason_nvim,
 }
 
