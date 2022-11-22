@@ -8,7 +8,7 @@
 
   * Debug support for c, cpp, dart, elixir, go, haskell, java, javascript/typescript, lua, php, python, ruby, rust
 
-  Current version - 2.5.42 (2022-11-22)
+  Current version - 2.5.50 (2022-11-22)
 
   123 plugins
 
