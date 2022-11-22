@@ -183,7 +183,6 @@ modules["lvim-tech/lvim-focus"] = {
 
 modules["lvim-tech/lvim-helper"] = {
     commit = funcs.get_commit("lvim-helper", plugins_snapshot),
-    after = "neoconf.nvim",
     config = ui_config.lvim_helper,
 }
 
@@ -554,7 +553,6 @@ local languages_config = require("modules.base.configs.languages")
 
 modules["folke/neoconf.nvim"] = {
     commit = funcs.get_commit("neoconf.nvim", plugins_snapshot),
-    config = languages_config.neoconf_nvim,
 }
 
 modules["williamboman/mason.nvim"] = {
@@ -563,7 +561,6 @@ modules["williamboman/mason.nvim"] = {
         "neovim/nvim-lspconfig",
         commit = funcs.get_commit("nvim-lspconfig", plugins_snapshot),
     },
-    after = "neoconf.nvim",
     config = languages_config.mason_nvim,
 }
 
