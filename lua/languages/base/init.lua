@@ -1,13 +1,6 @@
 local global = require("core.global")
 local funcs = require("core.funcs")
-local lspconfig_util_ok, lspconfig_util = pcall(require, "lspconfig.util")
-if not lspconfig_util_ok then
-    return
-end
-local neoconf_status_ok, neoconf = pcall(require, "neoconf")
-if not neoconf_status_ok then
-    return
-end
+
 local M = {}
 
 M.file_types = {
@@ -105,6 +98,14 @@ M.pre_init_language = function(language, project_root_path, lsp_type)
 end
 
 M.init_language = function(language, project_root_path)
+    local lspconfig_util_ok, lspconfig_util = pcall(require, "lspconfig.util")
+    if not lspconfig_util_ok then
+        return
+    end
+    local neoconf_status_ok, neoconf = pcall(require, "neoconf")
+    if not neoconf_status_ok then
+        return
+    end
     if #lspconfig_util.available_servers() == 0 then
         neoconf.setup()
     end
@@ -112,7 +113,7 @@ M.init_language = function(language, project_root_path)
     for _, func in pairs(language_configs_global) do
         func()
     end
-    vim.cmd("e")
+    --vim.cmd("e")
 end
 
 return M

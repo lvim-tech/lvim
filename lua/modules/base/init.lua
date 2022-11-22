@@ -125,7 +125,6 @@ modules["folke/which-key.nvim"] = {
 
 modules["rebelot/heirline.nvim"] = {
     commit = funcs.get_commit("heirline.nvim", plugins_snapshot),
-    event = "VimEnter",
     config = ui_config.heirline_nvim,
 }
 
@@ -715,6 +714,10 @@ modules["kosayoda/nvim-lightbulb"] = {
 
 modules["nvim-treesitter/nvim-treesitter"] = {
     commit = funcs.get_commit("nvim-treesitter", plugins_snapshot),
+    run = function()
+        local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+        ts_update()
+    end,
     config = languages_config.nvim_treesitter,
 }
 
