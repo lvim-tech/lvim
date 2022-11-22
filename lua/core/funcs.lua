@@ -1,6 +1,4 @@
 local global = require("core.global")
-local select = require("lvim-ui-config.select")
-local notify = require("lvim-ui-config.notify")
 
 local M = {}
 
@@ -59,6 +57,7 @@ M.remove_duplicate = function(tbl)
 end
 
 M.sudo_exec = function(cmd)
+    local notify = require("lvim-ui-config.notify")
     vim.fn.inputsave()
     local password = vim.fn.inputsecret("Password: ")
     vim.fn.inputrestore()
@@ -79,6 +78,7 @@ M.sudo_exec = function(cmd)
 end
 
 M.sudo_write = function(tmpfile, filepath)
+    local notify = require("lvim-ui-config.notify")
     if not tmpfile then
         tmpfile = vim.fn.tempname()
     end
@@ -283,6 +283,7 @@ M.get_commit = function(plugin, plugins_snapshot)
 end
 
 M.quit = function()
+    local select = require("lvim-ui-config.select")
     local status = true
     for _, v in ipairs(vim.api.nvim_list_bufs()) do
         if vim.bo[v].modified then

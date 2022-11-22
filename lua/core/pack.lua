@@ -147,11 +147,11 @@ function plugins.load_compile()
     vim.cmd("command! PackerShowCurrentSnapshot lua require('core.pack').snapshot_current_show()")
     vim.cmd("command! PackerChoiceSnapshotToRollback lua require('core.pack').snapshot_file_choice()")
     local PackerHooks = vim.api.nvim_create_augroup("PackerHooks", { clear = true })
-    local notify = require("lvim-ui-config.notify")
     vim.api.nvim_create_autocmd("User", {
         group = PackerHooks,
         pattern = "PackerCompileDone",
         callback = function()
+            local notify = require("lvim-ui-config.notify")
             notify.info("Compile Done!", {
                 title = "LVIM IDE",
             })

@@ -33,6 +33,11 @@ modules["nvim-lua/popup.nvim"] = {
     commit = funcs.get_commit("popup.nvim", plugins_snapshot),
 }
 
+modules["nvim-tree/nvim-web-devicons"] = {
+    commit = funcs.get_commit("nvim-web-devicons", plugins_snapshot),
+    config = ui_config.nvim_web_devicons,
+}
+
 modules["MunifTanjim/nui.nvim"] = {
     commit = funcs.get_commit("nui.nvim", plugins_snapshot),
     config = ui_config.nui_nvim,
@@ -90,7 +95,7 @@ modules["nvim-neo-tree/neo-tree.nvim"] = {
             commit = funcs.get_commit("plenary.nvim", plugins_snapshot),
         },
         {
-            "kyazdani42/nvim-web-devicons",
+            "nvim-tree/nvim-web-devicons",
             commit = funcs.get_commit("nvim-web-devicons", plugins_snapshot),
         },
         {
@@ -315,6 +320,7 @@ modules["nvim-treesitter/nvim-treesitter-context"] = {
         "nvim-treesitter/nvim-treesitter",
         commit = funcs.get_commit("nvim-treesitter", plugins_snapshot),
     },
+    after = "nvim-treesitter",
     config = editor_config.nvim_treesitter_context,
 }
 
@@ -524,7 +530,7 @@ modules["pwntester/octo.nvim"] = {
             commit = funcs.get_commit("telescope.nvim", plugins_snapshot),
         },
         {
-            "kyazdani42/nvim-web-devicons",
+            "nvim-tree/nvim-web-devicons",
             commit = funcs.get_commit("nvim-web-devicons", plugins_snapshot),
         },
     },

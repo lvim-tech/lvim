@@ -18,6 +18,10 @@ config.lvim_colorscheme = function()
     vim.cmd("colorscheme lvim-" .. _G.LVIM_SETTINGS.colorschemes.theme)
 end
 
+config.nvim_web_devicons = function()
+    require("nvim-web-devicons").setup()
+end
+
 config.nui_nvim = function()
     local function get_prompt_text(prompt, default_prompt)
         local prompt_text = prompt or default_prompt

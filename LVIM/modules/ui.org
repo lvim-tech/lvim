@@ -928,7 +928,7 @@
 
     + REQUIRES:
         *  [[https://github.com/nvim-lua/plenary.nvim][plenary.nvim]]
-        *  [[https://github.com/kyazdani42/nvim-web-devicons][nvim-web-devicons]]
+        *  [[https://github.com/nvim-tree/nvim-web-devicons][nvim-web-devicons]]
         *  [[https://github.com/MunifTanjim/nui.nvim][nui.nvim]]
 
     + INIT
@@ -938,7 +938,7 @@
         commit = funcs.get_commit("neo-tree.nvim", plugins_snapshot),
         requires = {
             "nvim-lua/plenary.nvim",
-            "kyazdani42/nvim-web-devicons",
+            "nvim-tree/nvim-web-devicons",
             "MunifTanjim/nui.nvim",
             {
                 "mrbjarksen/neo-tree-diagnostics.nvim",
