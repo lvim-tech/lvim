@@ -49,7 +49,7 @@ M.remove_duplicate = function(tbl)
     local res = {}
     for _, v in ipairs(tbl) do
         if not hash[v] then
-            res[#res + 1] = v -- you could print here instead of saving to result table if you wanted
+            res[#res + 1] = v
             hash[v] = true
         end
     end
