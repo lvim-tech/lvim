@@ -41,8 +41,6 @@ local null_ls_builtins = {
             "scss",
             "less",
             "html",
-            "json",
-            "jsonc",
             "yaml",
             "markdown",
             "markdown.mdx",
