@@ -39,7 +39,7 @@ config.mason_nvim = function()
         {}
     )
     vim.api.nvim_create_user_command(
-        "LspShowDiagnostigPrev",
+        "LspShowDiagnosticPrev",
         "lua require('languages.base.utils.show_diagnostic').goto_prev()",
         {}
     )
