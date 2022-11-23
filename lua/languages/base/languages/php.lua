@@ -5,6 +5,8 @@ local dap = require("dap")
 
 local language_configs = {}
 
+language_configs["dependencies"] = { "intelephense", "php-debug-adapter" }
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "php",

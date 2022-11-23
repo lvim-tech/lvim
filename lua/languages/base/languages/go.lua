@@ -4,6 +4,8 @@ local dap = require("dap")
 
 local language_configs = {}
 
+language_configs["dependencies"] = { "gopls", "delve", "golangci-lint" }
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "go",

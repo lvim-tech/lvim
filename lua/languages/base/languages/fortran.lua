@@ -3,6 +3,8 @@ local fortls_config = require("languages.base.languages._configs").default_confi
 
 local language_configs = {}
 
+language_configs["dependencies"] = { "fortls" }
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "fortran",

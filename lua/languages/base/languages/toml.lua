@@ -3,6 +3,8 @@ local taplo_config = require("languages.base.languages._configs").default_config
 
 local language_configs = {}
 
+language_configs["dependencies"] = { "taplo" }
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "toml",

@@ -3,6 +3,8 @@ local html_config = require("languages.base.languages._configs").without_formatt
 
 local language_configs = {}
 
+language_configs["dependencies"] = { "html-lsp", "prettierd" }
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "html",

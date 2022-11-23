@@ -1,9 +1,10 @@
 local languages_setup = require("languages.base.utils")
 local solargraph_config = require("languages.base.languages._configs").default_config({ "ruby" }, "ruby")
 local dap = require("dap")
--- Add debug (https://github.com/ruby/debug) to your Gemfile
 
 local language_configs = {}
+
+language_configs["dependencies"] = { "solargraph", "rubocop" }
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({

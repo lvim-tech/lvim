@@ -5,6 +5,8 @@ local dap = require("dap")
 
 local language_configs = {}
 
+language_configs["dependencies"] = { "clangd", "cpptools", "cpplint" }
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "cpp",

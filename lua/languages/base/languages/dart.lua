@@ -1,11 +1,11 @@
 local global = require("core.global")
 local languages_setup = require("languages.base.utils")
-local flutter_tools = require("flutter-tools")
 local navic = require("nvim-navic")
 
 local language_configs = {}
 
 language_configs["lsp"] = function()
+    local flutter_tools = require("flutter-tools")
     flutter_tools.setup({
         debugger = {
             enabled = true,

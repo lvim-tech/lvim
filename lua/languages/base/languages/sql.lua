@@ -3,6 +3,8 @@ local sqls_config = require("languages.base.languages._configs").default_config(
 
 local language_configs = {}
 
+language_configs["dependencies"] = { "sqls" }
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "sql",

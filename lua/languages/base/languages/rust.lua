@@ -1,5 +1,4 @@
 local global = require("core.global")
-local rust_tools = require("rust-tools")
 local languages_setup = require("languages.base.utils")
 local nvim_lsp_util = require("lspconfig/util")
 local navic = require("nvim-navic")
@@ -9,6 +8,7 @@ local dap = require("dap")
 local language_configs = {}
 
 local function start_server_tools()
+    local rust_tools = require("rust-tools")
     rust_tools.setup({
         tools = {
             inlay_hints = {
@@ -47,6 +47,8 @@ local function start_server_tools()
         },
     })
 end
+
+language_configs["dependencies"] = { "rust-analyzer", "cpptools" }
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({

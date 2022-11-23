@@ -10,6 +10,8 @@ local stylelint_lsp_config = require("languages.base.languages._configs").withou
 
 local language_configs = {}
 
+language_configs["dependencies"] = {"stylelint-lsp"}
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "stylelint",

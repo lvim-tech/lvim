@@ -3,6 +3,8 @@ local perlnavigator_config = require("languages.base.languages._configs").defaul
 
 local language_configs = {}
 
+language_configs["dependencies"] = { "perlnavigator" }
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "perl",

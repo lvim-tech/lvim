@@ -3,6 +3,8 @@ local erlangls_config = require("languages.base.languages._configs").default_con
 
 local language_configs = {}
 
+language_configs["dependencies"] = { "erlang-ls" }
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "erlang",

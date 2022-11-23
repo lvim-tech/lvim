@@ -7,6 +7,8 @@ local angularls_config = require("languages.base.languages._configs").angular_co
 
 local language_configs = {}
 
+language_configs["dependencies"] = { "angular-language-server" }
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "angular",

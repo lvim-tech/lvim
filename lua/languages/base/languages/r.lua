@@ -3,6 +3,8 @@ local r_language_server_config = require("languages.base.languages._configs").de
 
 local language_configs = {}
 
+language_configs["dependencies"] = { "r-languageserver" }
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "r",

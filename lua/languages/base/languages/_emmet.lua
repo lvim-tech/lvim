@@ -6,6 +6,8 @@ local emmet_ls_config = require("languages.base.languages._configs").without_win
 
 local language_configs = {}
 
+language_configs["dependencies"] = { "emmet-ls" }
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "emmet",

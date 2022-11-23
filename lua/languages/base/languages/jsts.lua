@@ -35,6 +35,8 @@ local function start_server_tools()
     })
 end
 
+language_configs["dependencies"] = { "typescript-language-server", "js-debug-adapter", "prettierd" }
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "js-ts",
@@ -44,7 +46,6 @@ language_configs["lsp"] = function()
             "prettierd",
         },
     })
-
     local function check_status()
         if global.install_proccess == false then
             start_server_tools()

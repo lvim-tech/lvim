@@ -3,6 +3,8 @@ local clojure_lsp_config = require("languages.base.languages._configs").default_
 
 local language_configs = {}
 
+language_configs["dependencies"] = { "kotlin-language-server" }
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "kotlin",

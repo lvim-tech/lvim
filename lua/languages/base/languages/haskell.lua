@@ -1,9 +1,10 @@
 local languages_setup = require("languages.base.utils")
 local hls_config = require("languages.base.languages._configs").default_config({ "haskell", "lhaskell" }, "haskell")
 local dap = require("dap")
--- stack install haskell-dap ghci-dap haskell-debug-adapter
 
 local language_configs = {}
+
+language_configs["dependencies"] = { "haskell-language-server" }
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({

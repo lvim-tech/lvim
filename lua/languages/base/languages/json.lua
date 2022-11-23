@@ -3,6 +3,8 @@ local jsonls_config = require("languages.base.languages._configs").default_confi
 
 local language_configs = {}
 
+language_configs["dependencies"] = { "json-lsp" }
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "json",

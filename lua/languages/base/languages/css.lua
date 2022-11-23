@@ -4,6 +4,8 @@ local cssls_config =
 
 local language_configs = {}
 
+language_configs["dependencies"] = { "css-lsp", "prettierd" }
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "css",

@@ -111,9 +111,10 @@ M.init_language = function(language, project_root_path)
     end
     local language_configs_global = dofile(global.lvim_path .. "/lua/languages/base/languages/" .. language .. ".lua")
     for _, func in pairs(language_configs_global) do
-        func()
+        if type(func) == "function" then
+            func()
+        end
     end
-    --vim.cmd("e")
 end
 
 return M

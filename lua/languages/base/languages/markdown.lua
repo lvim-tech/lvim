@@ -3,6 +3,8 @@ local marksman_config = require("languages.base.languages._configs").without_for
 
 local language_configs = {}
 
+language_configs["dependencies"] = { "marksman", "prettierd", "cbfmt" }
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "markdown",

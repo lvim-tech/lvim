@@ -61,6 +61,8 @@ local function start_server_tools()
     })
 end
 
+language_configs["dependencies"] = { "jdtls", "java-debug-adapter", "java-test" }
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "java",

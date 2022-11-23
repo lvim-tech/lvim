@@ -4,6 +4,8 @@ local ember_config =
 
 local language_configs = {}
 
+language_configs["dependencies"] = { "ember-language-server" }
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "ember",

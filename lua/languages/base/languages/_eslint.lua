@@ -11,6 +11,8 @@ local eslint_config = require("languages.base.languages._configs").without_winba
 
 local language_configs = {}
 
+language_configs["dependencies"] = {"eslint-lsp"}
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "eslint",

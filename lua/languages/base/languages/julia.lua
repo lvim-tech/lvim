@@ -3,6 +3,8 @@ local julials_config = require("languages.base.languages._configs").default_conf
 
 local language_configs = {}
 
+language_configs["dependencies"] = { "julia-lsp" }
+
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "julia",
