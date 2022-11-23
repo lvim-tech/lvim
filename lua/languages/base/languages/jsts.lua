@@ -1,5 +1,4 @@
 local global = require("core.global")
-local typescript = require("typescript")
 local languages_setup = require("languages.base.utils")
 local nvim_lsp_util = require("lspconfig/util")
 local navic = require("nvim-navic")
@@ -9,6 +8,7 @@ local dap = require("dap")
 local language_configs = {}
 
 local function start_server_tools()
+    local typescript = require("typescript")
     typescript.setup({
         disable_commands = false, -- prevent the plugin from creating Vim commands
         debug = false, -- enable debug logging for commands
