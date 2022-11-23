@@ -64,7 +64,7 @@ language_configs["lsp"] = function()
         else
             vim.defer_fn(function()
                 check_status()
-            end, 1000)
+            end, 3100)
         end
     end
 
