@@ -856,6 +856,7 @@ config.neo_tree_nvim = function()
             width = 40,
             mappings = {
                 ["Z"] = "expand_all_nodes",
+                ["<space>"] = false,
             },
         },
         filesystem = {
