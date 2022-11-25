@@ -715,7 +715,7 @@ modules["kosayoda/nvim-lightbulb"] = {
 modules["nvim-treesitter/nvim-treesitter"] = {
     commit = funcs.get_commit("nvim-treesitter", plugins_snapshot),
     run = function()
-        local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+        local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
         ts_update()
     end,
     config = languages_config.nvim_treesitter,
