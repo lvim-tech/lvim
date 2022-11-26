@@ -622,12 +622,12 @@ modules["smjonas/inc-rename.nvim"] = {
     config = languages_config.inc_rename_nvim,
 }
 
-modules["rmagatti/goto-preview"] = {
-    commit = funcs.get_commit("goto-preview", plugins_snapshot),
+modules["DNLHC/glance.nvim"] = {
+    commit = funcs.get_commit("glance.nvim", plugins_snapshot),
     event = {
         "BufRead",
     },
-    config = languages_config.goto_preview,
+    config = languages_config.glance_nvim,
 }
 
 modules["mfussenegger/nvim-jdtls"] = {
