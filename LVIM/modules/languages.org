@@ -192,86 +192,87 @@
     end
     #+end_src
 
-**   [[https://github.com/rmagatti/goto-preview][goto-preview]]
+**   [[https://github.com/DNLHC/glance.nvim][glance.nvim]]
 
     + INIT
 
     #+begin_src lua
-    modules["rmagatti/goto-preview"] = {
-        commit = funcs.get_commit("goto-preview", plugins_snapshot),
+    modules["DNLHC/glance.nvim"] = {
+        commit = funcs.get_commit("glance.nvim", plugins_snapshot),
         event = {
             "BufRead",
         },
-        config = languages_config.goto_preview,
+        config = languages_config.glance_nvim,
     }
     #+end_src
 
     + CONFIG
 
     #+begin_src lua
-    config.goto_preview = function()
-        local lib = require("goto-preview.lib")
-        local goto_preview_status_ok, goto_preview = pcall(require, "goto-preview")
-        if not goto_preview_status_ok then
-            return
-        end
-        goto_preview.setup({
-            width = 160,
-            height = 25,
-            border = { " ", " ", " ", " ", " ", " ", " ", " " },
-            references = {
-                telescope = lib.has_telescope and lib.telescope.themes.get_dropdown({
-                    layout_config = {
-                        width = function(_, max_columns, _)
-                            return math.min(max_columns, 200)
-                        end,
-                        height = function(_, _, max_lines)
-                            return math.min(max_lines, 15)
-                        end,
-                    },
-                    winblend = 8,
-                    border = {},
-                    borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
-                    hide_preview = false,
-                }) or nil,
+    config.glance_nvim = function()
+        local glance = require("glance")
+        local actions = glance.actions
+        glance.setup({
+            border = {
+                enable = true,
+                top_char = " ",
+                bottom_char = " ",
+            },
+            list = {
+                width = 0.4,
+            },
+            theme = {
+                enable = false,
+            },
+            indent_lines = {
+                enable = true,
+                icon = "▏",
+            },
+            mappings = {
+                list = {
+                    ["j"] = actions.next,
+                    ["k"] = actions.previous,
+                    ["<Tab>"] = actions.next_location,
+                    ["<S-Tab>"] = actions.previous_location,
+                    ["<C-u>"] = actions.preview_scroll_win(5),
+                    ["<C-d>"] = actions.preview_scroll_win(-5),
+                    ["v"] = actions.jump_vsplit,
+                    ["s"] = actions.jump_split,
+                    ["t"] = actions.jump_tab,
+                    ["<CR>"] = actions.jump,
+                    ["o"] = actions.jump,
+                    ["<C-h>"] = actions.enter_win("preview"), -- Focus preview window
+                    ["<Esc>"] = actions.close,
+                    ["q"] = actions.close,
+                },
+                preview = {
+                    ["q"] = actions.close,
+                    ["<Tab>"] = actions.next_location,
+                    ["<S-Tab>"] = actions.previous_location,
+                    ["<C-l>"] = actions.enter_win("list"), -- Focus list window
+                },
+            },
+            hooks = {
+                before_open = function(results, open, jump, method)
+                    local uri = vim.uri_from_bufnr(0)
+                    if #results == 1 then
+                        local target_uri = results[1].uri or results[1].targetUri
+                        if target_uri == uri then
+                            jump(results[1])
+                        else
+                            open(results)
+                        end
+                    else
+                        open(results)
+                    end
+                end,
             },
         })
-        vim.api.nvim_create_user_command(
-            "LspPreviewDefinition",
-            "lua require('goto-preview').goto_preview_definition()",
-            {}
-        )
-        vim.api.nvim_create_user_command(
-            "LspPreviewTypeDefinition",
-            "lua require('goto-preview').goto_preview_type_definition()",
-            {}
-        )
-        vim.api.nvim_create_user_command(
-            "LspPreviewReferences",
-            "lua require('goto-preview').goto_preview_references()",
-            {}
-        )
-        vim.api.nvim_create_user_command(
-            "LspPreviewImplementation",
-            "lua require('goto-preview').goto_preview_implementation()",
-            {}
-        )
-        vim.api.nvim_create_user_command("LspPreviewCloseAll", "lua require('goto-preview').close_all_win()", {})
-        vim.keymap.set("n", "gpd", function()
-            goto_preview.goto_preview_definition()
-        end, { noremap = true, silent = true, desc = "LspPreviewDefinition" })
-        vim.keymap.set("n", "gpt", function()
-            goto_preview.goto_preview_type_definition()
-        end, { noremap = true, silent = true, desc = "LspPreviewTypeDefinition" })
-        vim.keymap.set("n", "gpr", function()
-            goto_preview.goto_preview_references()
-        end, { noremap = true, silent = true, desc = "LspPreviewReferences" })
-        vim.keymap.set("n", "gpi", function()
-            goto_preview.goto_preview_implementation()
-        end, { noremap = true, silent = true, desc = "LspPreviewImplementation" })
-        vim.keymap.set("n", "gpp", function()
-            goto_preview.close_all_win()
-        end, { noremap = true, silent = true, desc = "LspPreviewCloseAll" })
+        vim.keymap.set("n", "gpd", "<Cmd>Glance definitions<CR>")
+        vim.keymap.set("n", "gpr", "<Cmd>Glance references<CR>")
+        vim.keymap.set("n", "gpt", "<Cmd>Glance type_definitions<CR>")
+        vim.keymap.set("n", "gpi", "<Cmd>Glance implementations<CR>")
+        vim.keymap.set("n", "fq", "<Cmd>CloseFloatWindows<CR>")
     end
     #+end_src
 
