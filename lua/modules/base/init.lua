@@ -322,16 +322,13 @@ modules["nvim-treesitter/nvim-treesitter-context"] = {
     config = editor_config.nvim_treesitter_context,
 }
 
-modules["RRethy/nvim-treesitter-textsubjects"] = {
-    commit = funcs.get_commit("nvim-treesitter-textsubjects", plugins_snapshot),
+modules["Dkendal/nvim-treeclimber"] = {
+    commit = funcs.get_commit("nvim-treeclimber", plugins_snapshot),
     requires = {
         "nvim-treesitter/nvim-treesitter",
         commit = funcs.get_commit("nvim-treesitter", plugins_snapshot),
     },
-    event = {
-        "BufRead",
-    },
-    config = editor_config.nvim_treesitter_textsubjects,
+    config = editor_config.nvim_treeclimber,
 }
 
 modules["NTBBloodbath/rest.nvim"] = {
