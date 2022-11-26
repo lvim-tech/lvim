@@ -2,6 +2,8 @@ local keymaps = {}
 
 keymaps["normal"] = {
     { "<Esc>", "<Esc>:noh<CR>" }, -- Remove highlight after search
+    { "j", "gj" }, -- Re-map j
+    { "k", "gk" }, -- Re-map k
     { "<C-c>n", ":enew<CR>" }, -- Create empty buffer
     { "<C-c>s", ":Save<CR>" }, -- Save
     { "<C-c>a", ":wa<CR>" }, -- Save all
@@ -23,6 +25,8 @@ keymaps["normal"] = {
 }
 
 keymaps["visual"] = {
+    { "j", "gj" }, -- Re-map j
+    { "k", "gk" }, -- Re-map k
     { "*", "<Esc>/\\%V" }, -- Visual search /
     { "#", "<Esc>?\\%V" }, -- Visual search ?
 }
