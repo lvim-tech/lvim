@@ -66,11 +66,11 @@
 | `gs`             | `:LspSignatureHelp<CR>`         | Lsp signature help                    |
 | `gL`             | `:LspCodeLensRefresh<CR>`       | Lsp code lens refresh                 |
 | `gl`             | `:LspCodeLensRun<CR>`           | Lsp code lens run                     |
-| `gpd`            | `:LspPreviewDefinition<CR>`     | Lsp preview definition                |
-| `gpt`            | `:LspPreviewTypeDefinition<CR>` | Lsp preview type definition           |
-| `gpr`            | `:LspPreviewReferences<CR>`     | Lsp preview references                |
-| `gpi`            | `:LspPreviewImplementation<CR>` | Lsp preview implementation            |
-| `gpp`            | `:LspCloseAll<CR>`              | Lsp preview close all                 |
+| `gpd`            | `:Glance definitions<CR>`       | Glance definitions                    |
+| `gpt`            | `:Glance type_definitions<CR>`  | Glance type_definitions               |
+| `gpr`            | `:Glance references<CR>`        | Glance references                     |
+| `gpi`            | `:Glance implementations<CR>`   | Glance implementations                |
+| `fq`             | `:CloseFloatWindows<CR>`        | Close float qindows                   |
 | `gh`             | `:LspHover<CR>`                 | Lsp hover                             |
 | `K`              | `:LspHover<CR>`                 | Lsp hover                             |
 | `ts`             | `:SnipRun<CR>`                  | Snip run                              |
