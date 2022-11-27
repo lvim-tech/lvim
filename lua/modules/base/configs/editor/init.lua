@@ -67,7 +67,7 @@ config.telescope_nvim = function()
             },
             generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
             path_display = { shorten = 5 },
-            winblend = 8,
+            winblend = 0,
             border = {},
             borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
             color_devicons = true,
