@@ -251,7 +251,6 @@ config.glance_nvim = function()
     vim.keymap.set("n", "gpr", "<Cmd>Glance references<CR>")
     vim.keymap.set("n", "gpt", "<Cmd>Glance type_definitions<CR>")
     vim.keymap.set("n", "gpi", "<Cmd>Glance implementations<CR>")
-    vim.keymap.set("n", "tf", "<Cmd>CloseFloatWindows<CR>")
 end
 
 config.neodev_nvim = function()

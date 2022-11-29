@@ -22,6 +22,7 @@ keymaps["normal"] = {
     { "gP", ":hardcopy<CR>" }, -- Print file
     { "tn", ":tabn<CR>" }, -- Tab next
     { "tp", ":tabp<CR>" }, -- Tab prev
+    { "tf", ":CloseFloatWindows<CR>" }, -- Tab prev
 }
 
 keymaps["visual"] = {
