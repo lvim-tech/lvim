@@ -55,6 +55,8 @@
 | `<A-;>`          | `:GitSignsPreviewHunk<CR>`      | Git signs preview hunk                |
 | `<A-s>`          | `:Spectre<CR>`                  | Replace in multiple files             |
 | `gw`             | `:WindowPicker<CR>`             | Window picker                         |
+| `gh`             | `:LspHover<CR>`                 | Lsp hover                             |
+| `K`              | `:LspHover<CR>`                 | Lsp hover                             |
 | `gd`             | `:LspDefinition<CR>`            | Lsp definition                        |
 | `gt`             | `:LspTypeDefinition<CR>`        | Lsp type definition                   |
 | `gr`             | `:LspReferences<CR>`            | Lsp references                        |
@@ -70,11 +72,9 @@
 | `gpt`            | `:Glance type_definitions<CR>`  | Glance type_definitions               |
 | `gpr`            | `:Glance references<CR>`        | Glance references                     |
 | `gpi`            | `:Glance implementations<CR>`   | Glance implementations                |
-| `fq`             | `:CloseFloatWindows<CR>`        | Close float qindows                   |
-| `gh`             | `:LspHover<CR>`                 | Lsp hover                             |
-| `K`              | `:LspHover<CR>`                 | Lsp hover                             |
-| `ts`             | `:SnipRun<CR>`                  | Snip run                              |
 | `gP`             | `:hardcopy<CR>`                 | hard copy                             |
+| `ts`             | `:SnipRun<CR>`                  | Snip run                              |
+| `tf`             | `:CloseFloatWindows<CR>`        | Close float qindows                   |
 | `tn`             | `:tabn<CR>`                     | Tab next                              |
 | `tp`             | `:tabp<CR>`                     | Tab prev                              |
 | `tc`             | `:CalendarVR<CR>`               | Calendar                              |

@@ -191,6 +191,7 @@ config.glance_nvim = function()
     local glance = require("glance")
     local actions = glance.actions
     glance.setup({
+        zindex = 20,
         border = {
             enable = true,
             top_char = " ",
@@ -250,7 +251,7 @@ config.glance_nvim = function()
     vim.keymap.set("n", "gpr", "<Cmd>Glance references<CR>")
     vim.keymap.set("n", "gpt", "<Cmd>Glance type_definitions<CR>")
     vim.keymap.set("n", "gpi", "<Cmd>Glance implementations<CR>")
-    vim.keymap.set("n", "fq", "<Cmd>CloseFloatWindows<CR>")
+    vim.keymap.set("n", "tf", "<Cmd>CloseFloatWindows<CR>")
 end
 
 config.neodev_nvim = function()
