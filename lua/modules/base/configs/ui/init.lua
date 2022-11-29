@@ -802,7 +802,8 @@ config.neo_tree_nvim = function()
     neo_tree.setup({
         use_popups_for_input = false,
         popup_border_style = { " ", " ", " ", " ", " ", " ", " ", " " },
-        enable_diagnostics = true,
+        enable_git_status = false,
+        enable_diagnostics = false,
         sources = {
             "filesystem",
             "buffers",
