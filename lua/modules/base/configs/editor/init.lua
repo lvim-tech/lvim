@@ -21,9 +21,7 @@ config.telescope_nvim = function()
     end
     if not packer_plugins["telescope-fzf-native.nvim"].loaded then
         local loader = require("packer").loader
-        loader(
-            "telescope-fzf-native.nvim" .. " telescope-file-browser.nvim" .. " telescope-tmux.nvim" .. " howdoi.nvim"
-        )
+        loader("telescope-fzf-native.nvim" .. " telescope-file-browser.nvim" .. " telescope-tmux.nvim")
     end
     telescope.setup({
         defaults = {
@@ -114,9 +112,6 @@ config.telescope_nvim = function()
     vim.keymap.set("n", "<A-b>", function()
         vim.cmd("Telescope buffers")
     end, { noremap = true, silent = true, desc = "Telescope buffers" })
-    vim.keymap.set("n", "th", function()
-        vim.cmd("Telescope howdoi")
-    end, { noremap = true, silent = true, desc = "Telescope howdoi" })
     vim.keymap.set("n", "tt", function()
         vim.cmd("Telescope tmux sessions")
     end, { noremap = true, silent = true, desc = "Telescope tmux sessions" })

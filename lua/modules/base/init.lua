@@ -220,11 +220,6 @@ modules["nvim-telescope/telescope.nvim"] = {
             commit = funcs.get_commit("telescope-tmux.nvim", plugins_snapshot),
             opt = true,
         },
-        {
-            "zane-/howdoi.nvim",
-            commit = funcs.get_commit("howdoi.nvim", plugins_snapshot),
-            opt = true,
-        },
     },
     config = editor_config.telescope_nvim,
 }
