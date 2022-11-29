@@ -1,7 +1,6 @@
 local config = {}
 
 config.editorconfig_nvim = function()
-    local global = require("core.global")
     vim.api.nvim_create_user_command(
         "EditorConfigCreate",
         "lua require'core.funcs'.copy_file(require'core.global'.lvim_path .. '/.configs/templates/.editorconfig', vim.fn.getcwd() .. '/.editorconfig')",

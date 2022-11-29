@@ -802,7 +802,7 @@ config.neo_tree_nvim = function()
     neo_tree.setup({
         use_popups_for_input = false,
         popup_border_style = { " ", " ", " ", " ", " ", " ", " ", " " },
-        enable_diagnostics = false,
+        enable_diagnostics = true,
         sources = {
             "filesystem",
             "buffers",
@@ -863,6 +863,22 @@ config.neo_tree_nvim = function()
         filesystem = {
             follow_current_file = true,
             use_libuv_file_watcher = true,
+        },
+        diagnostics = {
+            autopreview = false,
+            autopreview_config = {},
+            autopreview_event = "neo_tree_buffer_enter",
+            bind_to_cwd = true,
+            diag_sort_function = "severity",
+            follow_behavior = {
+                always_focus_file = true,
+                expand_followed = true,
+                collapse_others = true,
+            },
+            follow_current_file = false,
+            group_dirs_and_files = true,
+            group_empty_dirs = true,
+            show_unloaded = true,
         },
     })
     vim.keymap.set("n", "<S-x>", function()
@@ -1483,20 +1499,6 @@ config.heirline_nvim = function()
             name = "heirline_LSP",
         },
     }
-    local lsp_progress = {
-        provider = function()
-            local lsp = vim.lsp.util.get_progress_messages()[1]
-            if lsp then
-                local name = lsp.name or ""
-                local msg = lsp.message or ""
-                local percentage = lsp.percentage or 0
-                local title = lsp.title or ""
-                return string.format(" %%<%s: %s %s (%s%%%%) ", name, title, msg, percentage)
-            end
-            return ""
-        end,
-        hl = { fg = theme_colors.green_01, bold = true },
-    }
     local file_type = {
         provider = function()
             local filetype = vim.bo.filetype
@@ -1687,7 +1689,6 @@ config.heirline_nvim = function()
             noice_mode,
             align,
             diagnostics,
-            -- lsp_progress,
             lsp_active,
             file_type,
             file_encoding,

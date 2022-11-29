@@ -228,7 +228,7 @@ config.glance_nvim = function()
             },
         },
         hooks = {
-            before_open = function(results, open, jump, method)
+            before_open = function(results, open, jump, _)
                 local uri = vim.uri_from_bufnr(0)
                 if #results == 1 then
                     local target_uri = results[1].uri or results[1].targetUri

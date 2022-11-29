@@ -61,16 +61,15 @@ local null_ls_builtins = {
 M.install_all_packages = function()
     local file_types = require("languages.base.init").file_types
     local packages = {}
-    local n = 0
     local function has_value(val)
-        for index, value in ipairs(packages) do
+        for _, value in ipairs(packages) do
             if value == val then
                 return true
             end
         end
         return false
     end
-    for k, v in pairs(file_types) do
+    for k, _ in pairs(file_types) do
         local file = require("languages.base.languages." .. k)
         if file.dependencies ~= nil then
             for _, dependency in pairs(file.dependencies) do

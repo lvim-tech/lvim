@@ -1,5 +1,4 @@
 local global = require("core.global")
-local funcs = require("core.funcs")
 
 local M = {}
 
@@ -97,7 +96,7 @@ M.pre_init_language = function(language, project_root_path, lsp_type)
     global["languages"][language]["lsp_type"] = lsp_type
 end
 
-M.init_language = function(language, project_root_path)
+M.init_language = function(language)
     local lspconfig_util_ok, lspconfig_util = pcall(require, "lspconfig.util")
     if not lspconfig_util_ok then
         return

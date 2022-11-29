@@ -960,7 +960,7 @@
         neo_tree.setup({
             use_popups_for_input = false,
             popup_border_style = { " ", " ", " ", " ", " ", " ", " ", " " },
-            enable_diagnostics = false,
+            enable_diagnostics = true,
             sources = {
                 "filesystem",
                 "buffers",
@@ -1020,6 +1020,22 @@
             filesystem = {
                 follow_current_file = true,
                 use_libuv_file_watcher = true,
+            },
+            diagnostics = {
+                autopreview = false,
+                autopreview_config = {},
+                autopreview_event = "neo_tree_buffer_enter",
+                bind_to_cwd = true,
+                diag_sort_function = "severity",
+                follow_behavior = {
+                    always_focus_file = true,
+                    expand_followed = true,
+                    collapse_others = true,
+                },
+                follow_current_file = false,
+                group_dirs_and_files = true,
+                group_empty_dirs = true,
+                show_unloaded = true,
             },
         })
         vim.keymap.set("n", "<S-x>", function()
@@ -1361,7 +1377,7 @@
         if not heirline_utils_status_ok then
             return
         end
-        local theme_colors = _G.LVIM_SETTINGS.colorscheme.colors[_G.LVIM_SETTINGS.colorscheme.theme]
+        local theme_colors = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme]
         local align = { provider = "%=" }
         local space = { provider = " " }
         local mode
@@ -1414,30 +1430,33 @@
                     t = "T",
                 },
                 mode_colors = {
-                    n = theme_colors.green_01,
+                    n = theme_colors.green_02,
                     i = theme_colors.red_02,
                     v = theme_colors.orange_02,
                     V = theme_colors.orange_02,
-                    ["\22"] = theme_colors.cyan_02,
-                    c = theme_colors.cyan_02,
+                    ["\22"] = theme_colors.orange_02,
+                    c = theme_colors.teal_01,
                     s = theme_colors.teal_01,
                     S = theme_colors.teal_01,
                     ["\19"] = theme_colors.teal_01,
-                    R = theme_colors.cyan_02,
-                    r = theme_colors.cyan_02,
-                    ["!"] = theme_colors.cyan_02,
+                    R = theme_colors.cyan_01,
+                    r = theme_colors.cyan_01,
+                    ["!"] = theme_colors.cyan_01,
                     t = theme_colors.blue_01,
                 },
             },
             provider = function(self)
-                return "   %(" .. self.mode_names[self.mode] .. "%)"
+                return "   %(" .. self.mode_names[self.mode] .. "%)  "
             end,
             hl = function(self)
                 mode = self.mode:sub(1, 1)
-                return { fg = self.mode_colors[mode], bold = true }
+                return { bg = self.mode_colors[mode], fg = theme_colors.bg_01, bold = true }
             end,
             update = {
                 "ModeChanged",
+                "MenuPopup",
+                "CmdlineEnter",
+                "CmdlineLeave",
             },
         }
         local file_name_block = {
@@ -1456,7 +1475,7 @@
                 local trail = cwd:sub(-1) == "/" and "" or "/"
                 return icon .. cwd .. trail
             end,
-            hl = { fg = theme_colors.blue_01, bold = true },
+            hl = { fg = theme_colors.fg_05, bold = true },
             on_click = {
                 callback = function()
                     vim.cmd("Neotree position=left")
@@ -1501,24 +1520,6 @@
                 }
             end,
         }
-        local file_flags = {
-            {
-                provider = function()
-                    if vim.bo.modified then
-                        return " "
-                    end
-                end,
-                hl = { fg = theme_colors.red_01 },
-            },
-            {
-                provider = function()
-                    if not vim.bo.modifiable or vim.bo.readonly then
-                        return "  "
-                    end
-                end,
-                hl = { fg = theme_colors.blue_01 },
-            },
-        }
         local file_size = {
             provider = function()
                 local fsize = vim.fn.getfsize(vim.api.nvim_buf_get_name(0))
@@ -1527,9 +1528,27 @@
                     return
                 end
                 local file_size = require("core.funcs").file_size(fsize)
-                return "  " .. file_size
+                return " " .. file_size
             end,
             hl = { fg = theme_colors.blue_01 },
+        }
+        local file_flags = {
+            {
+                provider = function()
+                    if vim.bo.modified then
+                        return "  "
+                    end
+                end,
+                hl = { fg = theme_colors.red_01 },
+            },
+            {
+                provider = function()
+                    if not vim.bo.modifiable or vim.bo.readonly then
+                        return "  "
+                    end
+                end,
+                hl = { fg = theme_colors.red_01 },
+            },
         }
         file_name_block = heirline_utils.insert(
             file_name_block,
@@ -1551,11 +1570,8 @@
             end,
             hl = { fg = theme_colors.orange_02 },
             {
-                provider = "  ",
-            },
-            {
                 provider = function(self)
-                    return " " .. self.status_dict.head .. " "
+                    return "   " .. self.status_dict.head .. " "
                 end,
                 hl = { bold = true },
             },
@@ -1631,7 +1647,7 @@
                 provider = function(self)
                     return self.hints > 0 and (self.hint_icon .. self.hints .. " ")
                 end,
-                hl = { fg = theme_colors.blue_01 },
+                hl = { fg = theme_colors.fg_05 },
             },
             on_click = {
                 callback = function()
@@ -1678,33 +1694,11 @@
                 name = "heirline_LSP",
             },
         }
-        local lsp_progress = {
-            provider = function()
-                local lsp = vim.lsp.util.get_progress_messages()[1]
-                if lsp then
-                    local name = lsp.name or ""
-                    local msg = lsp.message or ""
-                    local percentage = lsp.percentage or 0
-                    local title = lsp.title or ""
-                    return string.format(" %%<%s: %s %s (%s%%%%) ", name, title, msg, percentage)
-                end
-                return ""
-            end,
-            hl = { fg = theme_colors.green_01, bold = true },
-        }
-        local is_lsp_active = {
-            condition = heirline_conditions.lsp_attached,
-            update = { "LspAttach", "LspDetach" },
-            provider = function()
-                return "  "
-            end,
-            hl = { fg = theme_colors.orange_02, bold = true },
-        }
         local file_type = {
             provider = function()
                 local filetype = vim.bo.filetype
                 if filetype ~= "" then
-                    return string.upper(filetype)
+                    return "  " .. string.upper(filetype)
                 end
             end,
             hl = { fg = theme_colors.orange_02, bold = true },
@@ -1716,28 +1710,40 @@
                     return " " .. enc:upper()
                 end
             end,
-            hl = { fg = theme_colors.teal_01, bold = true },
+            hl = { fg = theme_colors.orange_02, bold = true },
         }
         local file_format = {
             provider = function()
                 local format = vim.bo.fileformat
                 if format ~= "" then
                     local symbols = {
-                        unix = " ",
-                        dos = " ",
-                        mac = " ",
+                        unix = "  ",
+                        dos = "  ",
+                        mac = "  ",
                     }
                     return symbols[format]
                 end
             end,
-            hl = { fg = theme_colors.teal_01, bold = true },
+            hl = { fg = theme_colors.orange_02, bold = true },
         }
         local spell = {
             condition = require("lvim-linguistics.status").spell_has,
             provider = function()
                 local status = require("lvim-linguistics.status").spell_get()
-                return "  SPELL: " .. status
+                return " SPELL: " .. status
             end,
+            hl = { fg = theme_colors.green_02, bold = true },
+        }
+        local statistic = {
+            provider = function()
+                local words = vim.fn.wordcount().words
+                local chars = vim.fn.wordcount().chars
+                return " " .. words .. " W | " .. chars .. " Ch"
+            end,
+            hl = { fg = theme_colors.fg_05, bold = true },
+        }
+        local ruler = {
+            provider = "  %7(%l (%3L%)) | %2c %P",
             hl = { fg = theme_colors.red_02, bold = true },
         }
         local scroll_bar = {
@@ -1878,13 +1884,13 @@
                 noice_mode,
                 align,
                 diagnostics,
-                -- lsp_progress,
                 lsp_active,
-                is_lsp_active,
                 file_type,
                 file_encoding,
                 file_format,
                 spell,
+                statistic,
+                ruler,
                 scroll_bar,
             },
         }
@@ -1993,6 +1999,13 @@
                     vim.opt_local.winbar = nil
                 end
             end,
+        })
+        vim.api.nvim_create_augroup("Heirline", { clear = true })
+        vim.api.nvim_create_autocmd("ColorScheme", {
+            callback = function()
+                heirline_utils.on_colorscheme(_G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme])
+            end,
+            group = "Heirline",
         })
     end
     #+end_src
