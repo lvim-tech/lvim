@@ -6,6 +6,10 @@ config.nvim_cmp = function()
     if not cmp_status_ok then
         return
     end
+    local cmp_config_compare_status_ok, cmp_config_compare = pcall(require, "cmp.config.compare")
+    if not cmp_config_compare_status_ok then
+        return
+    end
     local snip_status_ok, luasnip = pcall(require, "luasnip")
     if not snip_status_ok then
         return
@@ -95,6 +99,12 @@ config.nvim_cmp = function()
             },
             {
                 name = "orgmode",
+            },
+        },
+        sorting = {
+            comparators = {
+                cmp_config_compare.exact,
+                cmp_config_compare.length,
             },
         },
     })

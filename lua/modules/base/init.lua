@@ -72,6 +72,10 @@ modules["folke/noice.nvim"] = {
             "rcarriga/nvim-notify",
             commit = funcs.get_commit("nvim-notify", plugins_snapshot),
         },
+        {
+            "hrsh7th/nvim-cmp",
+            commit = funcs.get_commit("nvim-cmp", plugins_snapshot),
+        },
     },
     config = ui_config.noice_nvim,
 }
