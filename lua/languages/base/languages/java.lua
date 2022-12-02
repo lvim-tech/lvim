@@ -8,12 +8,13 @@ local function start_server_tools()
         vim.fn.glob(global.mason_path .. "/packages/jdtls/plugins/org.eclipse.equinox.launcher_*.jar")
     local jdtls_bundles = {
         vim.fn.glob(
-            global.mason_path .. "/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar"
+            global.mason_path .. "/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
+            1
         ),
     }
     vim.list_extend(
         jdtls_bundles,
-        vim.split(vim.fn.glob(global.mason_path .. "/packages/java-test/extension/server/*.jar"), "\n")
+        vim.split(vim.fn.glob(global.mason_path .. "/packages/java-test/extension/server/*.jar", 1), "\n")
     )
     local jdtls_config = global.mason_path .. "/packages/jdtls/config_" .. global.os
     local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
@@ -40,7 +41,9 @@ local function start_server_tools()
             workspace_dir,
         },
         filetyps = { "java" },
-        root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew" }),
+        root_dir = vim.fs.dirname(vim.fs.find({ ".gradlew", ".git", "mvnw" }, {
+            upward = true,
+        })[1]),
         bundles = jdtls_bundles,
         settings = {
             java = {},
@@ -49,14 +52,14 @@ local function start_server_tools()
             bundles = jdtls_bundles,
         },
         on_attach = function(client, bufnr)
-            require("jdtls").setup_dap({ hotcodereplace = "auto" })
-            require("jdtls.dap").setup_dap_main_class_configs()
-            -- require("jdtls").test_class()
-            -- require("jdtls").test_nearest_method()
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
+            require("jdtls").setup_dap({ hotcodereplace = "auto" })
+            require("jdtls.dap").setup_dap_main_class_configs()
+            -- require("jdtls").test_class()
+            -- require("jdtls").test_nearest_method()
         end,
     })
 end
