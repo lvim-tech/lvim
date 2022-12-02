@@ -479,6 +479,20 @@ config.nvim_dap_ui = function()
         windows = {
             indent = 1,
         },
+        controls = {
+            enabled = true,
+            element = "repl",
+            icons = {
+                pause = "",
+                play = "",
+                step_over = "",
+                step_into = "",
+                step_back = "",
+                step_out = "",
+                run_last = "",
+                terminate = "",
+            },
+        },
     })
     dap.listeners.after.event_initialized["dapui_config"] = function()
         dapui.open({})
