@@ -54,6 +54,7 @@ M.file_types = {
     ["ruby"] = { "ruby" },
     ["r"] = { "r", "rmd" },
     ["rust"] = { "rust" },
+    ["scala"] = { "scala", "sbt" },
     ["shell"] = { "sh" },
     ["sql"] = { "sql", "mysql" },
     ["vim"] = { "vim" },

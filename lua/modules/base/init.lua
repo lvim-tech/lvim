@@ -626,15 +626,21 @@ modules["DNLHC/glance.nvim"] = {
     config = languages_config.glance_nvim,
 }
 
+modules["folke/neodev.nvim"] = {
+    commit = funcs.get_commit("neodev.nvim", plugins_snapshot),
+    ft = "lua",
+    config = languages_config.neodev_nvim,
+}
+
 modules["mfussenegger/nvim-jdtls"] = {
     commit = funcs.get_commit("nvim-jdtls", plugins_snapshot),
     ft = "java",
 }
 
-modules["folke/neodev.nvim"] = {
-    commit = funcs.get_commit("neodev.nvim", plugins_snapshot),
-    ft = "lua",
-    config = languages_config.neodev_nvim,
+modules["scalameta/nvim-metals"] = {
+    commit = funcs.get_commit("nvim-metals", plugins_snapshot),
+    requires = { "nvim-lua/plenary.nvim" },
+    ft = { "scala", "sbt" },
 }
 
 modules["simrat39/rust-tools.nvim"] = {
