@@ -6,11 +6,11 @@
 
   * LSP support for 60+ languages
 
-  * Debug support for c, cpp, dart, elixir, go, haskell, java, javascript/typescript, lua, php, python, ruby, rust
+  * Debug support for c, cpp, dart, elixir, go, haskell, java, javascript/typescript, lua, php, python, ruby, rust, scala
 
-  Current version - 2.5.80 (2022-12-02)
+  Current version - 2.5.85 (2022-12-07)
 
-  122 plugins
+  123 plugins
 
 **  SCREENSHOTS
 
@@ -389,6 +389,7 @@
       + rust
       + sass
       + scss
+      + scala
       + sh
       + sql
       + sugarss
@@ -424,3 +425,4 @@
       + python
       + ruby
       + rust
+      + scala
