@@ -276,17 +276,6 @@
     end
     #+end_src
 
-**   [[https://github.com/mfussenegger/nvim-jdtls][nvim-jdtls]]
-
-    + INIT
-
-    #+begin_src lua
-    modules["mfussenegger/nvim-jdtls"] = {
-        commit = funcs.get_commit("nvim-jdtls", plugins_snapshot),
-        ft = "java",
-    }
-    #+end_src
-
 **   [[https://github.com/folke/neodev.nvim][neodev.nvim]]
 
     + INIT
@@ -315,6 +304,32 @@
             },
         })
     end
+    #+end_src
+
+**   [[https://github.com/mfussenegger/nvim-jdtls][nvim-jdtls]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["mfussenegger/nvim-jdtls"] = {
+        commit = funcs.get_commit("nvim-jdtls", plugins_snapshot),
+        ft = "java",
+    }
+    #+end_src
+
+**   [[https://github.com/mfussenegger/nvim-jdtls][nvim-jdtls]]
+
+   + REQUIRES:
+       *  [[https://github.com/nvim-lua/plenary.nvim][plenary.nvim]]
+
+    + INIT
+
+    #+begin_src lua
+    modules["scalameta/nvim-metals"] = {
+        commit = funcs.get_commit("nvim-metals", plugins_snapshot),
+        requires = { "nvim-lua/plenary.nvim" },
+        ft = { "scala", "sbt" },
+    }
     #+end_src
 
 **   [[https://github.com/simrat39/rust-tools.nvim][rust-tools.nvim]]
