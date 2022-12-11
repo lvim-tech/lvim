@@ -499,6 +499,16 @@
     #+begin_src lua
     modules["nvim-treesitter/nvim-treesitter"] = {
         commit = funcs.get_commit("nvim-treesitter", plugins_snapshot),
+        requires = {
+            {
+                "nvim-treesitter/playground",
+                commit = funcs.get_commit("playground", plugins_snapshot),
+            },
+            {
+                "nullchilly/lsp-playground",
+                commit = funcs.get_commit("lsp-playground", plugins_snapshot),
+            },
+        },
         run = function()
             local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
             ts_update()
@@ -510,7 +520,7 @@
     + CONFIG
 
     #+begin_src lua
-    function config.nvim_treesitter()
+    config.nvim_treesitter = function()
         local nvim_treesitter_configs_status_ok, nvim_treesitter_configs = pcall(require, "nvim-treesitter.configs")
         if not nvim_treesitter_configs_status_ok then
             return
@@ -561,6 +571,9 @@
                 },
             },
         })
+        vim.keymap.set("n", "ti", function()
+            vim.cmd("TSHighlightCapturesUnderCursor")
+        end, { noremap = true, silent = true, desc = "PlaygroundHover" })
     end
     #+end_src
 

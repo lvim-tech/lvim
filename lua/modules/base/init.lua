@@ -716,6 +716,16 @@ modules["kosayoda/nvim-lightbulb"] = {
 
 modules["nvim-treesitter/nvim-treesitter"] = {
     commit = funcs.get_commit("nvim-treesitter", plugins_snapshot),
+    requires = {
+        {
+            "nvim-treesitter/playground",
+            commit = funcs.get_commit("playground", plugins_snapshot),
+        },
+        {
+            "nullchilly/lsp-playground",
+            commit = funcs.get_commit("lsp-playground", plugins_snapshot),
+        },
+    },
     run = function()
         local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
         ts_update()
