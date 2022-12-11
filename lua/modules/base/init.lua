@@ -721,10 +721,6 @@ modules["nvim-treesitter/nvim-treesitter"] = {
             "nvim-treesitter/playground",
             commit = funcs.get_commit("playground", plugins_snapshot),
         },
-        {
-            "nullchilly/lsp-playground",
-            commit = funcs.get_commit("lsp-playground", plugins_snapshot),
-        },
     },
     run = function()
         local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
