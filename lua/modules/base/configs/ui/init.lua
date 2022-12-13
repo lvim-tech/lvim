@@ -775,6 +775,7 @@ config.nvim_window_picker = function()
         return windows
     end
     window_picker.setup({
+        show_prompt = false,
         autoselect_one = false,
         include_current_win = true,
         filter_func = special_autoselect,
