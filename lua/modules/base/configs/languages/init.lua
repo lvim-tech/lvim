@@ -361,9 +361,6 @@ config.nvim_treesitter = function()
             },
         },
     })
-    vim.keymap.set("n", "ti", function()
-        vim.cmd("TSHighlightCapturesUnderCursor")
-    end, { noremap = true, silent = true, desc = "PlaygroundHover" })
 end
 
 config.lsp_inlayhints_nvim = function()

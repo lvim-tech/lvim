@@ -23,6 +23,7 @@ keymaps["normal"] = {
     { "tn", ":tabn<CR>" }, -- Tab next
     { "tp", ":tabp<CR>" }, -- Tab prev
     { "tf", ":CloseFloatWindows<CR>" }, -- Tab prev
+    { "ti", ":Inspect<CR>" }, -- Tab prev
 }
 
 keymaps["visual"] = {
