@@ -9,7 +9,6 @@ local group = vim.api.nvim_create_augroup("LvimIDE", {
 local configs = {}
 
 configs["base_lvim"] = function()
-    _G.LVIM_SETTINGS = funcs.read_file(global.lvim_path .. "/.configs/lvim/config.json")
     local function lvim_theme()
         local select = require("lvim-ui-config.select")
         local status

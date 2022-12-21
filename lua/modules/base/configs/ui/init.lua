@@ -282,12 +282,28 @@ config.noice_nvim = function()
             history = {
                 view = "split",
                 opts = { enter = true, format = "details" },
-                filter = { event = { "msg_show", "notify" }, ["not"] = { kind = { "search_count", "echo" } } },
+                filter = {
+                    any = {
+                        { event = "notify" },
+                        { error = true },
+                        { warning = true },
+                        { event = "msg_show", kind = { "" } },
+                        { event = "lsp", kind = "message" },
+                    },
+                },
             },
             last = {
                 view = "popup",
                 opts = { enter = true, format = "details" },
-                filter = { event = { "msg_show", "notify" }, ["not"] = { kind = { "search_count", "echo" } } },
+                filter = {
+                    any = {
+                        { event = "notify" },
+                        { error = true },
+                        { warning = true },
+                        { event = "msg_show", kind = { "" } },
+                        { event = "lsp", kind = "message" },
+                    },
+                },
                 filter_opts = { count = 1 },
             },
             errors = {
@@ -674,6 +690,7 @@ config.alpha_nvim = function()
     if not alpha_status_ok then
         return
     end
+    -- alpha.setup(require("alpha.themes.startify").config)
     local alpha_themes_dashboard_status_ok, alpha_themes_dashboard = pcall(require, "alpha.themes.dashboard")
     if not alpha_themes_dashboard_status_ok then
         return
@@ -687,7 +704,7 @@ config.alpha_nvim = function()
     end
     local function footer()
         local global = require("core.global")
-        local plugins = #vim.tbl_keys(packer_plugins)
+        local plugins = require("lazy").stats().count
         local v = vim.version()
         local datetime = os.date(" %d-%m-%Y   %H:%M:%S")
         local platform

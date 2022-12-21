@@ -85,16 +85,6 @@
     git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
     #+end_src
 
-    + For osx bigsur bug
-        Issue: [[https://github.com/wbthomason/packer.nvim/issues/180][Luarocks fails to install on macOS BigSur #180]]
-        Uncoment these lines in *lua/init.lua*:
-
-    #+begin_src lua
-    if vim.fn.has("mac") == 1 then
-        vim.fn.setenv("MACOSX_DEPLOYMENT_TARGET", "10.15")
-    end
-    #+end_src
-
 **  LVIM CONFIG
 
     - Help for keybinds
@@ -152,31 +142,24 @@
 
     #+begin_src lua
 
-    :PackerShowCurrentSnapshot
+    :SnapshotFileShow
 
     #+end_src
 
-    + Create new snapshot: 
-
-    #+begin_src lua
-
-    :PackerSnapshot
-
-    #+end_src
 
     + Choice file to rollback: 
 
     #+begin_src lua
 
-    :PackerChoiceSnapshotToRollback
+    :SnapshotFileChoice
 
     #+end_src
 
-    Then restart LVIM IDE and run:
+    Then run:
 
     #+begin_src lua
 
-    :PackerSync
+    :Lazy sync
 
     #+end_src
 

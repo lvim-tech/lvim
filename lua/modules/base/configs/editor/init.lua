@@ -19,10 +19,6 @@ config.telescope_nvim = function()
     if not telescope_status_ok then
         return
     end
-    if not packer_plugins["telescope-fzf-native.nvim"].loaded then
-        local loader = require("packer").loader
-        loader("telescope-fzf-native.nvim" .. " telescope-file-browser.nvim" .. " telescope-tmux.nvim")
-    end
     telescope.setup({
         defaults = {
             prompt_prefix = "   ",

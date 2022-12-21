@@ -12,8 +12,9 @@ else
     global["diagnostics"] = {}
     global["diagnostics"]["path"] = vim.fn.getcwd()
     global["diagnostics"]["method"] = "global"
-    local packer = require("core.pack")
+    _G.LVIM_SETTINGS = funcs.read_file(global.lvim_path .. "/.configs/lvim/config.json")
+    local lazy_packer = require("core.pack")
+    lazy_packer.is_lazy()
     funcs.configs()
-    packer.ensure_plugins()
-    packer.load_compile()
+    lazy_packer.load()
 end
