@@ -9,6 +9,7 @@ local file_content = funcs.read_file(_G.LVIM_SNAPSHOT)
 if file_content ~= nil then
     plugins_snapshot = file_content
 end
+
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- DEPENDENCIES -------------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -97,11 +98,6 @@ modules["neovim/nvim-lspconfig"] = {
 
 modules["anuvyklack/pretty-fold.nvim"] = {
     commit = funcs.get_commit("fold-preview.nvim", plugins_snapshot),
-    lazy = true,
-}
-
-modules["antoinemadec/FixCursorHold.nvim"] = {
-    commit = funcs.get_commit("FixCursorHold.nvim", plugins_snapshot),
     lazy = true,
 }
 
@@ -649,7 +645,6 @@ modules["nvim-neotest/neotest"] = {
     dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-treesitter/nvim-treesitter",
-        "antoinemadec/FixCursorHold.nvim",
         "olimorris/neotest-phpunit",
         "rouge8/neotest-rust",
         "nvim-neotest/neotest-go",
