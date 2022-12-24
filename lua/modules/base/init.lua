@@ -250,7 +250,7 @@ modules["elihunter173/dirbuf.nvim"] = {
 
 modules["folke/which-key.nvim"] = {
     commit = funcs.get_commit("which-key.nvim", plugins_snapshot),
-    keys = { "<space>" },
+    keys = { "<space>", "g", "t" },
     config = ui_config.which_key_nvim,
 }
 
