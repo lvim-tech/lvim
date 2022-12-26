@@ -232,7 +232,15 @@ modules["s1n7ax/nvim-window-picker"] = {
 modules["nvim-neo-tree/neo-tree.nvim"] = {
     commit = funcs.get_commit("neo-tree.nvim", plugins_snapshot),
     cmd = "Neotree",
-    keys = { "<S-x>", "<C-c><C-f>", "<C-c><C-f>", "<C-c><C-b>", "<C-c><C-g>", "<C-c><C-l>", "<C-c><C-d>" },
+    keys = {
+        { "<S-x>", "<cmd>Neotree filesystem left toggle<cr>", desc = "NeoTree filesystem" },
+        { "<C-c><C-f>", "<cmd>Neotree filesystem left toggle<cr>", desc = "NeoTree filesystem" },
+        { "<C-c><C-b>", "<cmd>Neotree buffers left toggle<cr>", desc = "NeoTree buffers" },
+        { "<C-c><C-g>", "<cmd>Neotree git_status left toggle<cr>", desc = "NeoTree git status" },
+        { "<C-c><C-l>", "<cmd>Neotree diagnostics left toggle<cr>", desc = "NeoTree diagnostics" },
+        { "<C-c><C-d>", "<cmd>Neotree diagnostics reveal bottom toggle<cr>", desc = "NeoTree diagnostics" },
+        { "<A-e>", "<cmd>Neotree diagnostics reveal bottom toggle<cr>", desc = "NeoTree diagnostics" },
+    },
     dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-tree/nvim-web-devicons",
@@ -250,7 +258,7 @@ modules["elihunter173/dirbuf.nvim"] = {
 
 modules["folke/which-key.nvim"] = {
     commit = funcs.get_commit("which-key.nvim", plugins_snapshot),
-    keys = { "<space>", "g", "t" },
+    keys = { "<space>", "d", "g", "t", "<C-c>" },
     config = ui_config.which_key_nvim,
 }
 
