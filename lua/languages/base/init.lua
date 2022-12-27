@@ -47,6 +47,7 @@ M.file_types = {
     ["latex"] = { "bib", "tex" },
     ["lua"] = { "lua" },
     ["markdown"] = { "markdown" },
+    ["ocaml"] = { "ocaml", "ocaml.menhir", "ocaml.interface", "ocaml.ocamllex", "reason", "dune" },
     ["org"] = { "org" },
     ["perl"] = { "perl" },
     ["php"] = { "php" },
