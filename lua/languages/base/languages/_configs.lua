@@ -13,6 +13,7 @@ M.default_config = function(file_types)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
+            languages_setup.keymaps(client, bufnr)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
@@ -34,6 +35,7 @@ M.without_formatting = function(file_types)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
+            languages_setup.keymaps(client, bufnr)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
@@ -68,6 +70,7 @@ M.cpp_config = function(file_types)
         filetypes = file_types,
         on_attach = function(client, bufnr)
             client.offset_encoding = "utf-16"
+            languages_setup.keymaps(client, bufnr)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
@@ -90,6 +93,7 @@ M.omnisharp_config = function(file_types)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
+            languages_setup.keymaps(client, bufnr)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
@@ -112,6 +116,7 @@ M.elixir_config = function(file_types)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
+            languages_setup.keymaps(client, bufnr)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
@@ -133,6 +138,7 @@ M.go = function(file_types)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
+            languages_setup.keymaps(client, bufnr)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
@@ -166,6 +172,7 @@ M.lua = function(file_types)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
+            languages_setup.keymaps(client, bufnr)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
@@ -211,51 +218,6 @@ M.lua = function(file_types)
     }
 end
 
-M.jsts_config = function(file_types)
-    return {
-        flags = {
-            debounce_text_changes = default_debouce_time,
-        },
-        autostart = true,
-        filetypes = file_types,
-        on_attach = function(client, bufnr)
-            languages_setup.omni(client, bufnr)
-            languages_setup.tag(client, bufnr)
-            languages_setup.document_highlight(client, bufnr)
-            languages_setup.document_formatting(client, bufnr)
-            navic.attach(client, bufnr)
-        end,
-        settings = {
-            typescript = {
-                inlayHints = {
-                    includeInlayParameterNameHints = "all",
-                    includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                    includeInlayFunctionParameterTypeHints = true,
-                    includeInlayVariableTypeHints = true,
-                    includeInlayPropertyDeclarationTypeHints = true,
-                    includeInlayFunctionLikeReturnTypeHints = true,
-                    includeInlayEnumMemberValueHints = true,
-                },
-            },
-            javascript = {
-                inlayHints = {
-                    includeInlayParameterNameHints = "all",
-                    includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                    includeInlayFunctionParameterTypeHints = true,
-                    includeInlayVariableTypeHints = true,
-                    includeInlayPropertyDeclarationTypeHints = true,
-                    includeInlayFunctionLikeReturnTypeHints = true,
-                    includeInlayEnumMemberValueHints = true,
-                },
-            },
-        },
-        capabilities = languages_setup.get_capabilities(),
-        root_dir = function(fname)
-            return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
-        end,
-    }
-end
-
 M.angular_config = function(file_types)
     return {
         flags = {
@@ -264,6 +226,7 @@ M.angular_config = function(file_types)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
+            languages_setup.keymaps(client, bufnr)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
@@ -282,6 +245,7 @@ M.ember_config = function(file_types)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
+            languages_setup.keymaps(client, bufnr)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)

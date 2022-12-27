@@ -34,6 +34,7 @@ local function start_server_tools()
             autostart = true,
             filetypes = { "rust" },
             on_attach = function(client, bufnr)
+                languages_setup.keymaps(client, bufnr)
                 languages_setup.omni(client, bufnr)
                 languages_setup.tag(client, bufnr)
                 languages_setup.document_highlight(client, bufnr)

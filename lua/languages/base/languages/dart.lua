@@ -1,4 +1,3 @@
-local global = require("core.global")
 local languages_setup = require("languages.base.utils")
 local navic = require("nvim-navic")
 
@@ -15,6 +14,7 @@ language_configs["lsp"] = function()
         },
         lsp = {
             on_attach = function(client, bufnr)
+                languages_setup.keymaps(client, bufnr)
                 languages_setup.omni(client, bufnr)
                 languages_setup.tag(client, bufnr)
                 languages_setup.document_highlight(client, bufnr)
