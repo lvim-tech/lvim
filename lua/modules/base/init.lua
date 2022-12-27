@@ -238,8 +238,7 @@ modules["nvim-neo-tree/neo-tree.nvim"] = {
         { "<C-c><C-f>", "<cmd>Neotree filesystem left toggle<cr>", desc = "NeoTree filesystem" },
         { "<C-c><C-b>", "<cmd>Neotree buffers left toggle<cr>", desc = "NeoTree buffers" },
         { "<C-c><C-g>", "<cmd>Neotree git_status left toggle<cr>", desc = "NeoTree git status" },
-        { "<C-c><C-l>", "<cmd>Neotree diagnostics left toggle<cr>", desc = "NeoTree diagnostics" },
-        { "<C-c><C-d>", "<cmd>Neotree diagnostics reveal bottom toggle<cr>", desc = "NeoTree diagnostics" },
+        { "<C-c><C-d>", "<cmd>Neotree diagnostics left toggle<cr>", desc = "NeoTree diagnostics" },
         { "<A-e>", "<cmd>Neotree diagnostics reveal bottom toggle<cr>", desc = "NeoTree diagnostics" },
     },
     dependencies = {
