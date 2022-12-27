@@ -362,6 +362,7 @@
       + mysql
       + objc
       + objcpp
+      + ocaml
       + perl
       + php
       + postcss
