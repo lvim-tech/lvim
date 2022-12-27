@@ -110,6 +110,12 @@ config.telescope_nvim = function()
     vim.keymap.set("n", "tt", function()
         vim.cmd("Telescope tmux sessions")
     end, { noremap = true, silent = true, desc = "Telescope tmux sessions" })
+    vim.api.nvim_create_autocmd("User", {
+        pattern = "TelescopePreviewerLoaded",
+        callback = function()
+            vim.opt.number = true
+        end,
+    })
 end
 
 config.lvim_linguistics = function()
