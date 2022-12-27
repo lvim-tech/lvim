@@ -690,7 +690,6 @@ config.alpha_nvim = function()
     if not alpha_status_ok then
         return
     end
-    -- alpha.setup(require("alpha.themes.startify").config)
     local alpha_themes_dashboard_status_ok, alpha_themes_dashboard = pcall(require, "alpha.themes.dashboard")
     if not alpha_themes_dashboard_status_ok then
         return
@@ -705,8 +704,9 @@ config.alpha_nvim = function()
     local function footer()
         local global = require("core.global")
         local plugins = require("lazy").stats().count
+        local startup_time = require("lazy").stats().startuptime
         local v = vim.version()
-        local datetime = os.date(" %d-%m-%Y   %H:%M:%S")
+        local datetime = os.date(" %d-%m-%Y")
         local platform
         if global.os == "linux" then
             platform = " Linux"
@@ -715,7 +715,16 @@ config.alpha_nvim = function()
         else
             platform = ""
         end
-        return string.format("  %d   v%d.%d.%d  %s  %s", plugins, v.major, v.minor, v.patch, platform, datetime)
+        return string.format(
+            "  %d plugins   %d ms   v%d.%d.%d  %s  %s",
+            plugins,
+            startup_time,
+            v.major,
+            v.minor,
+            v.patch,
+            platform,
+            datetime
+        )
     end
     alpha_themes_dashboard.section.header.val = {
         " 888     Y88b      / 888      e    e      ",
@@ -746,6 +755,12 @@ config.alpha_nvim = function()
         },
     })
     alpha.setup(alpha_themes_dashboard.config)
+    vim.api.nvim_create_autocmd("User", {
+        pattern = "LazyVimStarted",
+        callback = function()
+            alpha_themes_dashboard.section.footer.val = footer()
+        end,
+    })
 end
 
 config.nvim_window_picker = function()
