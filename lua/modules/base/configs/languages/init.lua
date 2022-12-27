@@ -43,6 +43,10 @@ config.mason_nvim = function()
         "lua require('languages.base.utils.show_diagnostic').goto_prev()",
         {}
     )
+    vim.api.nvim_create_user_command("DAPLocal", "lua require('languages.base.utils').dap_local()", {})
+    vim.keymap.set("n", "<C-c><C-l>", function()
+        vim.cmd("DAPLocal")
+    end, { noremap = true, silent = true, desc = "DAPLocal" })
     vim.keymap.set("n", "dc", function()
         vim.cmd("LspShowDiagnosticCurrent")
     end, { noremap = true, silent = true, desc = "LspShowDiagnosticCurrent" })
