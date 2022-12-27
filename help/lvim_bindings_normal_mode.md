@@ -67,7 +67,7 @@
 | `gi`             | `:LspImplementation<CR>`          | Lsp implementation                    |
 | `ge`             | `:IncRename<CR>`                  | Inc rename                            |
 | `gE`             | `:LspRename<CR>`                  | Lsp rename                            |
-| `gf`             | `:LspFormatting<CR>`              | Lsp format code                       |
+| `gf`             | `:LspFormat<CR>`                  | Lsp format                            |
 | `ga`             | `:LspCodeAction<CR>`              | Lsp code action                       |
 | `gs`             | `:LspSignatureHelp<CR>`           | Lsp signature help                    |
 | `gL`             | `:LspCodeLensRefresh<CR>`         | Lsp code lens refresh                 |
