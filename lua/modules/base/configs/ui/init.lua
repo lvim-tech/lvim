@@ -1054,14 +1054,6 @@ config.which_key_nvim = function()
             },
         },
         p = {
-            name = "Packer",
-            c = { "<cmd>PackerCompile<CR>", "Compile" },
-            i = { "<cmd>PackerInstall<CR>", "Install" },
-            s = { "<cmd>PackerSync<CR>", "Sync" },
-            S = { "<cmd>PackerStatus<CR>", "Status" },
-            u = { "<cmd>PackerUpdate<CR>", "Update" },
-        },
-        P = {
             name = "Path",
             g = { "<Cmd>SetGlobalPath<CR>", "Set global path" },
             w = { "<Cmd>SetWindowPath<CR>", "Set window path" },
