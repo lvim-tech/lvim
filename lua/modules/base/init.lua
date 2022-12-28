@@ -342,12 +342,6 @@ modules["vim-ctrlspace/vim-ctrlspace"] = {
 
 modules["numToStr/Navigator.nvim"] = {
     commit = funcs.get_commit("Navigator.nvim", plugins_snapshot),
-    keys = {
-        { "<C-h>", "<Cmd>NavigatorLeft<CR>", desc = "NavigatorLeft" },
-        { "<C-l>", "<Cmd>NavigatorLeft<CR>", desc = "NavigatorRight" },
-        { "<C-j>", "<Cmd>NavigatorLeft<CR>", desc = "NavigatorDown" },
-        { "<C-k>", "<Cmd>NavigatorLeft<CR>", desc = "NavigatorUp" },
-    },
     config = editor_config.navigator_nvim,
 }
 
