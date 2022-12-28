@@ -339,6 +339,16 @@ modules["vim-ctrlspace/vim-ctrlspace"] = {
     config = editor_config.vim_ctrlspace,
 }
 
+modules["numToStr/Navigator.nvim"] = {
+    config = function()
+        require("Navigator").setup()
+        vim.keymap.set("n", "<C-h>", "<Cmd>NavigatorLeft<CR>")
+        vim.keymap.set("n", "<C-l>", "<Cmd>NavigatorRight<CR>")
+        vim.keymap.set("n", "<C-k>", "<Cmd>NavigatorUp<CR>")
+        vim.keymap.set("n", "<C-j>", "<Cmd>NavigatorDown<CR>")
+    end,
+}
+
 modules["nvim-telescope/telescope.nvim"] = {
     commit = funcs.get_commit("telescope.nvim", plugins_snapshot),
     cmd = "Telescope",

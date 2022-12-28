@@ -14,6 +14,14 @@ config.vim_ctrlspace = function()
     end, { noremap = true, silent = true, desc = "CtrlSpace" })
 end
 
+config.navigator_nvim = function()
+    require("Navigator").setup()
+    vim.keymap.set("n", "<C-h>", "<CMD>NavigatorLeft<CR>")
+    vim.keymap.set("n", "<C-l>", "<CMD>NavigatorRight<CR>")
+    vim.keymap.set("n", "<C-k>", "<CMD>NavigatorUp<CR>")
+    vim.keymap.set("n", "<C-j>", "<CMD>NavigatorDown<CR>")
+end
+
 config.telescope_nvim = function()
     local telescope_status_ok, telescope = pcall(require, "telescope")
     if not telescope_status_ok then
