@@ -1,4 +1,6 @@
 local global = require("core.global")
+local funcs = require("core.funcs")
+local user_file_types = require("languages.user.file_types")
 
 local M = {}
 
@@ -67,10 +69,12 @@ M.file_types = {
 }
 
 M.setup = function()
-    local filetype = vim.bo.filetype
-    for language, v in pairs(M.file_types) do
+    local file_type = vim.bo.filetype
+    local file_types = funcs.merge(M.file_types, user_file_types)
+
+    for language, v in pairs(file_types) do
         for _, v2 in pairs(v) do
-            if v2 == filetype then
+            if v2 == file_type then
                 M.start_language(language)
             end
         end
