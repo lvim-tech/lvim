@@ -1268,7 +1268,7 @@ config.heirline_nvim = function()
             local trail = cwd:sub(-1) == "/" and "" or "/"
             return icon .. cwd .. trail
         end,
-        hl = { fg = theme_colors.fg_05, bold = true },
+        hl = { fg = theme_colors.blue_01, bold = true },
         on_click = {
             callback = function()
                 vim.cmd("Neotree position=left")
