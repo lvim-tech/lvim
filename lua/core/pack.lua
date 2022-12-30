@@ -34,17 +34,17 @@ function lazy_pack.snapshot_file_choice()
 end
 
 lazy_pack.is_lazy = function()
-    if not vim.loop.fs_stat(lazypath) then
+    local lazy_path = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+    if not vim.loop.fs_stat(lazy_path) then
         vim.fn.system({
             "git",
             "clone",
             "--filter=blob:none",
-            "--single-branch",
             "https://github.com/folke/lazy.nvim.git",
-            lazypath,
+            lazy_path,
         })
     end
-    vim.opt.runtimepath:prepend(lazypath)
+    vim.opt.rtp:prepend(lazy_path)
     vim.cmd("command! SnapshotFileShow lua require('core.pack').snapshot_file_show()")
     vim.cmd("command! SnapshotFileChoice lua require('core.pack').snapshot_file_choice()")
 end
