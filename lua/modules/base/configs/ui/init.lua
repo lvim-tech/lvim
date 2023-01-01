@@ -1343,16 +1343,8 @@ config.heirline_nvim = function()
             hl = { fg = theme_colors.red_01 },
         },
     }
-    file_name_block = heirline_utils.insert(
-        file_name_block,
-        space,
-        space,
-        file_icon,
-        file_name,
-        file_size,
-        unpack(file_flags),
-        { provider = "%<" }
-    )
+    file_name_block =
+        heirline_utils.insert(file_name_block, file_name, file_icon, file_size, unpack(file_flags), { provider = "%<" })
     local git = {
         condition = heirline_conditions.is_git_repo,
         init = function(self)
