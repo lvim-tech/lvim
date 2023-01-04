@@ -6,7 +6,7 @@
 
   * LSP support for 60+ languages
 
-  * Debug support for c, cpp, dart, elixir, go, haskell, java, javascript/typescript, lua, php, python, ruby, rust, scala
+  * Debug support for c, cpp, cs, dart, elixir, go, haskell, java, javascript/typescript, lua, php, python, ruby, rust, scala
 
   Current version - 2.6.15 (2022-12-28)
 
@@ -397,6 +397,7 @@
 
       + c
       + cpp
+      + cs
       + dart
       + elixir
       + go
