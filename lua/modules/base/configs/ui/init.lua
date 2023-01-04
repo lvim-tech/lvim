@@ -65,7 +65,7 @@ config.nui_nvim = function()
                     width = calculate_popup_width(default_value, border_top_text),
                 },
                 border = {
-                    highlight = "LvimInputBorder",
+                    highlight = "NormalFloat:LvimInputBorder",
                     style = { " ", " ", " ", " ", " ", " ", " ", " " },
                     text = {
                         top = border_top_text,
@@ -122,7 +122,7 @@ config.nui_nvim = function()
                 relative = "editor",
                 position = "50%",
                 border = {
-                    highlight = "LvimSelectBorder",
+                    highlight = "NormalFloat:LvimSelectBorder",
                     style = { " ", " ", " ", " ", " ", " ", " ", " " },
                     text = {
                         top = border_top_text,
