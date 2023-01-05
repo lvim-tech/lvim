@@ -850,12 +850,6 @@ modules["akinsho/pubspec-assist.nvim"] = {
         "nvim-lua/plenary.nvim",
     },
     event = "BufRead pubspec.yaml",
-    rocks = {
-        {
-            "lyaml",
-            server = "http://rocks.moonscript.org",
-        },
-    },
     config = languages_config.pubspec_assist_nvim,
 }
 
