@@ -569,12 +569,7 @@ config.package_info_nvim = function()
     if not package_info_status_ok then
         return
     end
-    package_info.setup({
-        colors = {
-            up_to_date = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].green_01,
-            outdated = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].red_01,
-        },
-    })
+    package_info.setup({})
 end
 
 config.crates_nvim = function()
@@ -605,7 +600,13 @@ config.pubspec_assist_nvim = function()
     if not pubspec_assist_status_ok then
         return
     end
-    pubspec_assist.setup({})
+    pubspec_assist.setup({
+        highlights = {
+            up_to_date = "PubspecAssistDependencyUpToDate",
+            outdated = "PubspecAssistDependencyOutdated",
+            unknown = "PubspecAssistDependencyUnknown",
+        },
+    })
 end
 
 config.markdown_preview_nvim = function()

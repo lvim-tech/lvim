@@ -831,7 +831,7 @@ modules["vuki656/package-info.nvim"] = {
     dependencies = {
         "MunifTanjim/nui.nvim",
     },
-    event = "BufRead package.json",
+    event = "BufReadPost package.json",
     config = languages_config.package_info_nvim,
 }
 
@@ -840,7 +840,7 @@ modules["Saecki/crates.nvim"] = {
     dependencies = {
         "nvim-lua/plenary.nvim",
     },
-    event = "BufRead Cargo.toml",
+    event = "BufReadPost Cargo.toml",
     config = languages_config.crates_nvim,
 }
 
@@ -849,7 +849,7 @@ modules["akinsho/pubspec-assist.nvim"] = {
     dependencies = {
         "nvim-lua/plenary.nvim",
     },
-    event = "BufRead pubspec.yaml",
+    event = "BufReadPost pubspec.yaml",
     config = languages_config.pubspec_assist_nvim,
 }
 

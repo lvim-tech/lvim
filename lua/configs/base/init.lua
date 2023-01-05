@@ -37,8 +37,6 @@ configs["base_lvim"] = function()
                 ui_config.neo_tree_nvim()
                 local editor_config = require("modules.base.configs.editor")
                 editor_config.tabby_nvim()
-                local languages_config = require("modules.base.configs.languages")
-                languages_config.package_info_nvim()
                 vim.cmd("colorscheme lvim-" .. user_choice)
             end
         end, "editor")
