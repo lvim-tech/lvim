@@ -12,6 +12,9 @@ language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "ocaml",
         ["ocaml-lsp"] = { "ocamllsp", ocaml_config },
+        ["dependencies"] = {
+            "ocamlformat",
+        },
     })
 end
 
