@@ -82,17 +82,15 @@ configs["base_options"] = function()
     vim.g.netrw_keepdir = 1
     vim.g.netrw_list_hide = "(^|ss)\zs.S+"
     vim.g.netrw_localcopydircmd = "cp -r"
-    -- vim.keymap.set("n", "<leader>ec", "<Cmd>Lexplore %:p:h<CR>")
-    -- vim.keymap.set("n", "<leader>ee", "<Cmd>Lexplore<CR>")
     vim.api.nvim_create_autocmd("FileType", {
         pattern = {
             "netrw",
         },
         callback = function()
-            vim.api.nvim_set_keymap("n", "q", [[:bd<CR>]], {})
+            vim.api.nvim_set_keymap("n", "<Esc>", "<Cmd>:bd<CR>", {})
             vim.api.nvim_set_keymap("n", ".", "gh", {})
             vim.api.nvim_set_keymap("n", "P", "<C-w>z", {})
-            vim.keymap.set("n", ".", "gh", {})
+            vim.api.nvim_set_keymap("n", ".", "gh", {})
             vim.api.nvim_set_keymap("n", "<TAB>", "mf", {})
             vim.api.nvim_set_keymap("n", "<S-TAB>", "mF", {})
             vim.api.nvim_set_keymap("n", "<Leader><TAB>", "mu", {})
