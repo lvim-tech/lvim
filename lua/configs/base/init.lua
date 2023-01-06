@@ -73,6 +73,54 @@ configs["base_options"] = function()
     pcall(function()
         vim.opt.splitkeep = "screen"
     end)
+    vim.g.netrw_banner = 0
+    vim.g.netrw_hide = 1
+    vim.g.netrw_browse_split = 0
+    vim.g.netrw_altv = 1
+    vim.g.netrw_liststyle = 4
+    vim.g.netrw_winsize = 20
+    vim.g.netrw_keepdir = 0
+    vim.g.netrw_list_hide = "(^|ss)\zs.S+"
+    vim.g.netrw_localcopydircmd = "cp -r"
+    vim.keymap.set("n", "<leader>ec", ":Lexplore %:p:h<CR>")
+    vim.keymap.set("n", "<leader>ee", ":Lexplore<CR>")
+    vim.api.nvim_create_autocmd({ "WinResized", "BufWinEnter" }, {
+        pattern = {
+            "netrw",
+        },
+        callback = function()
+            vim.g.netrw_winsize = 20
+        end,
+        group = group,
+    })
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = {
+            "netrw",
+        },
+        callback = function()
+            vim.api.nvim_set_keymap("n", "q", [[:bd<CR>]], {})
+            vim.api.nvim_set_keymap("n", ".", "gh", {})
+            vim.api.nvim_set_keymap("n", "P", "<C-w>z", {})
+            vim.keymap.set("n", ".", "gh", {})
+            vim.api.nvim_set_keymap("n", "<TAB>", "mf", {})
+            vim.api.nvim_set_keymap("n", "<S-TAB>", "mF", {})
+            vim.api.nvim_set_keymap("n", "<Leader><TAB>", "mu", {})
+            vim.api.nvim_set_keymap("n", "fc", "mc", {})
+            vim.api.nvim_set_keymap("n", "fC", "mtmc", {})
+            vim.api.nvim_set_keymap("n", "fx", "mm", {})
+            vim.api.nvim_set_keymap("n", "fX", "mtmm", {})
+            vim.api.nvim_set_keymap("n", "f;", "mx", {})
+            vim.api.nvim_set_keymap("n", "bb", "mb", {})
+            vim.api.nvim_set_keymap("n", "bd", "mB", {})
+            vim.api.nvim_set_keymap("n", "bl", "gb", {})
+            vim.api.nvim_set_keymap("n", "H", "u", {})
+            vim.api.nvim_set_keymap("n", "fa", "d", {})
+            vim.api.nvim_set_keymap("n", "ff", [[%:w<CR>]], {})
+            vim.api.nvim_set_keymap("n", "fr", "R", {})
+            vim.api.nvim_set_keymap("n", "fd", "D", {})
+        end,
+        group = group,
+    })
 end
 
 configs["base_events"] = function()
