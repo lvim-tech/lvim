@@ -30,7 +30,6 @@ local null_ls_builtins = {
     yamllint = diagnostics.yamllint,
     black = formatting.black,
     cbfmt = formatting.cbfmt,
-    ocamlformat = formatting.ocamlformat,
     prettierd = formatting.prettierd.with({
         filetypes = {
             "javascript",
