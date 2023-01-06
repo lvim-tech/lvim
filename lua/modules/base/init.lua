@@ -231,6 +231,7 @@ modules["s1n7ax/nvim-window-picker"] = {
 }
 
 modules["prichrd/netrw.nvim"] = {
+    commit = funcs.get_commit("netrw.nvim", plugins_snapshot),
     config = ui_config.netrw_nvim,
 }
 
