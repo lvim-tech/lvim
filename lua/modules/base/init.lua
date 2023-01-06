@@ -231,10 +231,6 @@ modules["s1n7ax/nvim-window-picker"] = {
 }
 
 modules["prichrd/netrw.nvim"] = {
-    keys = {
-        { "<leader>ee", "<Cmd>Lexplore<CR>", desc = "Netrw" },
-        { "<leader>ec", "<Cmd>Lexplore %:p:h<CR>", desc = "Netrw from file directory" },
-    },
     config = ui_config.netrw_nvim,
 }
 
