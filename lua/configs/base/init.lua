@@ -93,16 +93,17 @@ configs["base_events"] = function()
         callback = function()
             local buftype = vim.tbl_contains({ "prompt", "nofile", "help", "quickfix" }, vim.bo.buftype)
             local filetype = vim.tbl_contains({
-                "calendar",
+                "NeogitStatus",
                 "Outline",
-                "git",
-                "dapui_scopes",
+                "calendar",
                 "dapui_breakpoints",
+                "dapui_scopes",
                 "dapui_stacks",
                 "dapui_watches",
-                "NeogitStatus",
-                "org",
+                "git",
+                "netrw",
                 "octo",
+                "org",
                 "toggleterm",
             }, vim.bo.filetype)
             if buftype or filetype then
