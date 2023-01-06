@@ -108,6 +108,33 @@ config.telescope_nvim = function()
     })
 end
 
+config.fzf_lua = function()
+    local fzf_lua_status_ok, fzf_lua = pcall(require, "fzf-lua")
+    if not fzf_lua_status_ok then
+        return
+    end
+    fzf_lua.setup({
+        winopts = {
+            height = 0.95,
+            width = 0.95,
+            row = 0.2,
+            col = 0.4,
+            border = { " ", " ", " ", " ", " ", " ", " ", " " },
+            preview = {
+                vertical = "down:45%",
+                horizontal = "right:50%",
+                border = "noborder",
+            },
+        },
+        keymap = {
+            builtin = {
+                ["<C-d>"] = "preview-page-down",
+                ["<C-u>"] = "preview-page-up",
+            },
+        },
+    })
+end
+
 config.lvim_linguistics = function()
     local lvim_linguistics_status_ok, lvim_linguistics = pcall(require, "lvim-linguistics")
     if not lvim_linguistics_status_ok then

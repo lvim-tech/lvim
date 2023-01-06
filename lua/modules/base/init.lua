@@ -368,6 +368,12 @@ modules["nvim-telescope/telescope.nvim"] = {
     config = editor_config.telescope_nvim,
 }
 
+modules["ibhagwan/fzf-lua"] = {
+    commit = funcs.get_commit("fzf-lua", plugins_snapshot),
+    cmd = "FzfLua",
+    config = editor_config.fzf_lua,
+}
+
 modules["lvim-tech/lvim-linguistics"] = {
     commit = funcs.get_commit("lvim-linguistics", plugins_snapshot),
     dependencies = {
