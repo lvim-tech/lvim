@@ -900,6 +900,14 @@ config.neo_tree_nvim = function()
     })
 end
 
+config.netrw_nvim = function()
+    local netrw_nvim_status_ok, netrw_nvim = pcall(require, "netrw")
+    if not netrw_nvim_status_ok then
+        return
+    end
+    netrw_nvim.setup()
+end
+
 config.dirbuf_nvim = function()
     local dirbuf_status_ok, dirbuf = pcall(require, "dirbuf")
     if not dirbuf_status_ok then
@@ -1008,7 +1016,9 @@ config.which_key_nvim = function()
             l = { "<Cmd>DBUILastQueryInfo<CR>", "DB last query" },
         },
         e = {
-            name = "NeoTree",
+            name = "Explorer",
+            e = { "<Cmd>Lexplore<CR>", "Neotree left" },
+            c = { "<Cmd>Lexplore %:p:h<CR>", "Neotree left" },
             l = { "<Cmd>Neotree left<CR>", "Neotree left" },
             f = { "<Cmd>Neotree float<CR>", "Neotree float" },
             b = { "<Cmd>Neotree buffers float<CR>", "Neotree buffers" },
