@@ -348,6 +348,7 @@ config.tabby_nvim = function()
             "octo",
             "neo-tree",
             "neo-tree-popup",
+            "netrw",
         }
         local comps = {
             {
