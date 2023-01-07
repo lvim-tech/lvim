@@ -113,6 +113,7 @@ config.fzf_lua = function()
     if not fzf_lua_status_ok then
         return
     end
+    local actions = require("fzf-lua.actions")
     fzf_lua.setup({
         winopts = {
             height = 0.95,
@@ -126,8 +127,30 @@ config.fzf_lua = function()
         },
         keymap = {
             builtin = {
+                ["<F1>"] = "toggle-help",
+                ["<F2>"] = "toggle-fullscreen",
+                ["<F3>"] = "toggle-preview-wrap",
+                ["<F4>"] = "toggle-preview",
+                ["<F5>"] = "toggle-preview-ccw",
                 ["<C-d>"] = "preview-page-down",
                 ["<C-u>"] = "preview-page-up",
+                ["<C-r>"] = "preview-page-reset",
+            },
+        },
+        actions = {
+            files = {
+                ["default"] = actions.file_edit_or_qf,
+                ["ctrl-h"] = actions.file_split,
+                ["ctrl-v"] = actions.file_vsplit,
+                ["ctrl-t"] = actions.file_tabedit,
+                ["alt-q"] = actions.file_sel_to_qf,
+                ["alt-l"] = actions.file_sel_to_ll,
+            },
+            buffers = {
+                ["default"] = actions.buf_edit,
+                ["ctrl-h"] = actions.buf_split,
+                ["ctrl-v"] = actions.buf_vsplit,
+                ["ctrl-t"] = actions.buf_tabedit,
             },
         },
     })
