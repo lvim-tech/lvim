@@ -33,14 +33,14 @@ config.telescope_nvim = function()
             layout_config = {
                 horizontal = {
                     prompt_position = "top",
-                    preview_width = 0.55,
-                    results_width = 0.8,
+                    preview_width = 0.5,
+                    results_width = 0.5,
                 },
                 vertical = {
                     mirror = false,
                 },
                 width = 0.95,
-                height = 0.90,
+                height = 0.95,
                 preview_cutoff = 120,
             },
             vimgrep_arguments = {
@@ -117,8 +117,6 @@ config.fzf_lua = function()
         winopts = {
             height = 0.95,
             width = 0.95,
-            row = 0.2,
-            col = 0.4,
             border = { " ", " ", " ", " ", " ", " ", " ", " " },
             preview = {
                 vertical = "down:45%",

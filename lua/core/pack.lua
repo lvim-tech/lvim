@@ -65,7 +65,10 @@ lazy_pack.load = function()
             colorscheme = { "lvim", "habamax" },
         },
         ui = {
-            size = { width = 0.8, height = 0.8 },
+            size = {
+                width = 0.95,
+                height = 0.95,
+            },
             border = "none",
             icons = {
                 cmd = " ",
