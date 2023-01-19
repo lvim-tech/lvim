@@ -1811,7 +1811,10 @@ config.heirline_nvim = function()
             navic,
         },
     }
-    heirline.setup(status_lines, win_bars)
+    heirline.setup({
+        statusline = status_lines,
+        winbar = win_bars,
+    })
     vim.api.nvim_create_autocmd("User", {
         pattern = "HeirlineInitWinbar",
         callback = function(args)
