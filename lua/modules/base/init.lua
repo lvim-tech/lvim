@@ -225,6 +225,11 @@ modules["goolord/alpha-nvim"] = {
     config = ui_config.alpha_nvim,
 }
 
+modules["luukvbaal/statuscol.nvim"] = {
+    commit = funcs.get_commit("statuscol.nvim", plugins_snapshot),
+    config = ui_config.statuscol_nvim,
+}
+
 modules["s1n7ax/nvim-window-picker"] = {
     commit = funcs.get_commit("nvim-window-picker", plugins_snapshot),
     config = ui_config.nvim_window_picker,

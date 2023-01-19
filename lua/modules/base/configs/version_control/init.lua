@@ -35,6 +35,8 @@ config.gitsigns_nvim = function()
         return
     end
     gitsigns.setup({
+        numhl = true,
+        signcolumn = false,
         signs = {
             add = {
                 hl = "GitSignsAdd",
@@ -67,7 +69,6 @@ config.gitsigns_nvim = function()
                 linehl = "GitSignsChangeLn",
             },
         },
-        numhl = false,
         linehl = false,
         keymaps = {
             noremap = true,

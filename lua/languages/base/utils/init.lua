@@ -289,22 +289,18 @@ M.setup_diagnostic = function()
     vim.fn.sign_define("DiagnosticSignError", {
         text = M.icons.error,
         texthl = "DiagnosticError",
-        numhl = "DiagnosticError",
     })
     vim.fn.sign_define("DiagnosticSignWarn", {
         text = M.icons.warn,
         texthl = "DiagnosticWarn",
-        numhl = "DiagnosticWarn",
     })
     vim.fn.sign_define("DiagnosticSignHint", {
         text = M.icons.hint,
         texthl = "DiagnosticHint",
-        numhl = "DiagnosticHint",
     })
     vim.fn.sign_define("DiagnosticSignInfo", {
         text = M.icons.info,
         texthl = "DiagnosticInfo",
-        numhl = "DiagnosticInfo",
     })
 end
 
