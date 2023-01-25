@@ -32,10 +32,6 @@ local null_ls_builtins = {
     cbfmt = formatting.cbfmt,
     prettierd = formatting.prettierd.with({
         filetypes = {
-            "javascript",
-            "javascriptreact",
-            "typescript",
-            "typescriptreact",
             "vue",
             "css",
             "scss",

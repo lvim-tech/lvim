@@ -10,10 +10,10 @@ local language_configs = {}
 local function start_server_tools()
     local typescript = require("typescript")
     typescript.setup({
-        disable_commands = false, -- prevent the plugin from creating Vim commands
-        debug = false, -- enable debug logging for commands
+        disable_commands = false,
+        debug = false,
         go_to_source_definition = {
-            fallback = true, -- fall back to standard LSP definition on failure
+            fallback = true,
         },
         server = {
             flags = {
@@ -26,6 +26,7 @@ local function start_server_tools()
                 languages_setup.omni(client, bufnr)
                 languages_setup.tag(client, bufnr)
                 languages_setup.document_highlight(client, bufnr)
+                languages_setup.document_formatting(client, bufnr)
                 navic.attach(client, bufnr)
             end,
             capabilities = languages_setup.get_capabilities(),
