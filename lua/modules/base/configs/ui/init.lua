@@ -619,7 +619,7 @@ config.noice_nvim = function()
                 view = "notify",
                 filter = {
                     event = "msg_show",
-                    kind = { "", "echo", "echomsg" },
+                    kind = { "echo", "echomsg" },
                 },
                 opts = {
                     replace = true,
@@ -631,15 +631,22 @@ config.noice_nvim = function()
                 view = "notify",
                 filter = { error = true },
                 opts = {
-                    title = "ERROR",
+                    skip = true,
                 },
             },
             {
                 view = "notify",
                 filter = { warning = true },
                 opts = {
-                    title = "WARNING",
+                    skip = true,
                 },
+            },
+            {
+                filter = {
+                    event = "msg_show",
+                    kind = "",
+                },
+                opts = { skip = true },
             },
             {
                 view = "notify",
@@ -663,11 +670,6 @@ config.noice_nvim = function()
             {
                 view = "mini",
                 filter = { event = "lsp", kind = "progress" },
-            },
-            {
-                view = "notify",
-                opts = {},
-                filter = { event = "lsp", kind = "message" },
             },
         },
         status = {},
