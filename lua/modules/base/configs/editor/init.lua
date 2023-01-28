@@ -344,6 +344,8 @@ config.tabby_nvim = function()
             "dapui_breakpoints",
             "dapui_stacks",
             "dapui_watches",
+            "dapui_console",
+            "dap-repl",
             "calendar",
             "octo",
             "neo-tree",
