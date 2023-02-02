@@ -126,6 +126,15 @@ configs["base_events"] = function()
         command = "setlocal ts=2 sw=2",
         group = group,
     })
+    vim.api.nvim_create_autocmd({
+        "BufWinEnter",
+    }, {
+        pattern = "*.dart",
+        callback = function()
+            vim.cmd("set filetype=dart")
+        end,
+        group = group,
+    })
     vim.api.nvim_create_autocmd({ "BufWinEnter", "BufWinLeave" }, {
         callback = function()
             local buftype = vim.tbl_contains({ "prompt", "nofile", "help", "quickfix" }, vim.bo.buftype)
