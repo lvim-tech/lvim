@@ -56,7 +56,6 @@ M.global = function()
     vim.opt.completeopt = "menu,menuone,noselect"
     vim.opt.jumpoptions = "stack"
     vim.opt.showmode = false
-    vim.opt.shortmess = "aoOTIcF"
     vim.opt.scrolloff = 2
     vim.opt.sidescrolloff = 5
     vim.opt.foldlevelstart = 99

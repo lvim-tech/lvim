@@ -607,6 +607,7 @@ config.noice_nvim = function()
                 },
             },
             {
+                view = "notify",
                 filter = {
                     any = {
                         { event = { "msg_showmode", "msg_showcmd", "msg_ruler" } },
@@ -619,7 +620,16 @@ config.noice_nvim = function()
                 view = "notify",
                 filter = {
                     event = "msg_show",
-                    kind = { "echo", "echomsg" },
+                    kind = "",
+                    find = "written",
+                },
+                opts = { skip = true },
+            },
+            {
+                view = "notify",
+                filter = {
+                    event = "msg_show",
+                    kind = { "", "echo", "echomsg" },
                 },
                 opts = {
                     replace = true,
@@ -640,13 +650,6 @@ config.noice_nvim = function()
                 opts = {
                     skip = true,
                 },
-            },
-            {
-                filter = {
-                    event = "msg_show",
-                    kind = "",
-                },
-                opts = { skip = true },
             },
             {
                 view = "notify",
