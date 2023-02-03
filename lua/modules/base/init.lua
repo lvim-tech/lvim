@@ -754,6 +754,7 @@ modules["akinsho/flutter-tools.nvim"] = {
     dependencies = {
         "nvim-lua/plenary.nvim",
     },
+    config = languages_config.flutter_tools_nvim,
 }
 
 modules["jose-elias-alvarez/typescript.nvim"] = {
@@ -816,7 +817,7 @@ modules["simrat39/symbols-outline.nvim"] = {
 modules["rcarriga/nvim-dap-ui"] = {
     commit = funcs.get_commit("nvim-dap-ui", plugins_snapshot),
     event = {
-        "BufRead",
+        "BufReadPre",
     },
     dependencies = {
         "mfussenegger/nvim-dap",

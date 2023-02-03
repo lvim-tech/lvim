@@ -248,6 +248,34 @@ config.go_nvim = function()
     })
 end
 
+config.flutter_tools_nvim = function()
+    local languages_setup = require("languages.base.utils")
+    local navic = require("nvim-navic")
+    local flutter_tools_status_ok, flutter_tools = pcall(require, "flutter-tools")
+    if not flutter_tools_status_ok then
+        return
+    end
+    flutter_tools.setup({
+        debugger = {
+            enabled = true,
+        },
+        closing_tags = {
+            prefix = " ",
+        },
+        lsp = {
+            on_attach = function(client, bufnr)
+                languages_setup.keymaps(client, bufnr)
+                languages_setup.omni(client, bufnr)
+                languages_setup.tag(client, bufnr)
+                languages_setup.document_highlight(client, bufnr)
+                languages_setup.document_formatting(client, bufnr)
+                navic.attach(client, bufnr)
+            end,
+            capabilities = languages_setup.get_capabilities(),
+        },
+    })
+end
+
 config.typescript_nvim = function()
     local typescript_status_ok, typescript = pcall(require, "typescript")
     if not typescript_status_ok then
