@@ -1,0 +1,12 @@
+{
+  "rem": {
+    "prefix": "rem",
+    "body": "(Css.rem ${1})",
+    "description": "Rem units"
+  },
+  "styled": {
+    "prefix": "styled",
+    "body": "styled ${1} [${2: Css.$3}] [] [ ${4: text \"$5\"} ]",
+    "description": "Create a styled component"
+  }
+}

@@ -1,0 +1,205 @@
+{
+  "doctype": {
+    "prefix": "doctype",
+    "body": "<!DOCTYPE html>\n",
+    "description": "HTML - 5.0 (doctype)"
+  },
+  "down": {
+    "prefix": "down",
+    "body": "&#x2193;",
+    "description": "Down (down)"
+  },
+  "enter": {
+    "prefix": "enter",
+    "body": "&#x2305;",
+    "description": "Enter (enter)"
+  },
+  "escape": {
+    "prefix": "escape",
+    "body": "&#x238B;",
+    "description": "Escape (escape)"
+  },
+  "shift": {
+    "prefix": "shift",
+    "body": "&#x21E7;",
+    "description": "Shift (shift)"
+  },
+  "tab": {
+    "prefix": "tab",
+    "body": "&#x21E5;",
+    "description": "Tab (tab)"
+  },
+  "up": {
+    "prefix": "up",
+    "body": "&#x2191;",
+    "description": "Up (up)"
+  },
+  "return": {
+    "prefix": "return",
+    "body": "&#x21A9;",
+    "description": "Return (return)"
+  },
+  "right": {
+    "prefix": "right",
+    "body": "&#x2192;",
+    "description": "Right (right)"
+  },
+  "left": {
+    "prefix": "left",
+    "body": "&#x2190;",
+    "description": "Left (left)"
+  },
+  "input": {
+    "prefix": "input",
+    "body": "<input type=\"${1:text}\" value=\"$2\" name=\"$3\"${4: id=\"${5:$3}\"}/>$7"
+  },
+  "option": {
+    "prefix": "option",
+    "body": "<option${1: value=\"${2:option}\"}>${3:$2}</option>",
+    "description": "Option"
+  },
+  "select": {
+    "prefix": "select",
+    "body": "<select name=\"${1:some_name}\" id=\"${2:$1}\"${3:${4: multiple}${5: onchange=\"${6:}\"}${7: size=\"${8:1}\"}}>\n  $0\n</select>",
+    "description": "Select Box"
+  },
+  "textarea": {
+    "prefix": "textarea",
+    "body": "<textarea name=\"$2\"${3: id=\"$4\"}>$5</textarea>"
+  },
+  "mailto": {
+    "prefix": "mailto",
+    "body": "<a href=\"mailto:${1:joe@example.com}?subject=${2:feedback}\">${3:email me}</a>",
+    "description": "HTML <a mailto: >"
+  },
+  "base": {
+    "prefix": "base",
+    "body": "<base href=\"$1\"${2: target=\"$3\"}`!p x(snip)`>",
+    "description": "HTML <base>"
+  },
+  "body": {
+    "prefix": "body",
+    "body": "<body>\n  $0\n</body>",
+    "description": "<body>"
+  },
+  "div": {
+    "prefix": "div",
+    "body": "<div>\n  $0\n</div>",
+    "description": "<div>"
+  },
+  "div.": {
+    "prefix": "div.",
+    "body": "<div`!p snip.rv=' class=\"' if t[1] else \"\"`${1:name}`!p snip.rv = '\"' if t[1] else \"\"`>\n  $0\n</div>",
+    "description": "<div> with class"
+  },
+  "div#": {
+    "prefix": "div#",
+    "body": "<div`!p snip.rv=' id=\"' if t[1] else \"\"`${1:name}`!p snip.rv = '\"' if t[1] else \"\"``!p snip.rv=' class=\"' if t[2] else \"\"`${2:name}`!p snip.rv = '\"' if t[2] else \"\"`>\n  $0\n</div>",
+    "description": "<div> with ID & class"
+  },
+  "scriptsrc": {
+    "prefix": "scriptsrc",
+    "body": "<script src=\"$1\" charset=\"${3:utf-8}\"></script>",
+    "description": "HTML <script src...>"
+  },
+  "script": {
+    "prefix": "script",
+    "body": "<script charset=\"utf-8\">\n  $0\n</script>",
+    "description": "HTML <script>"
+  },
+  "span": {
+    "prefix": "span",
+    "body": "<span> $0 </span>",
+    "description": "<span>"
+  },
+  "span.": {
+    "prefix": "span.",
+    "body": "<span`!p snip.rv=' class=\"' if t[1] else \"\"`${1:name}`!p snip.rv = '\"' if t[1] else \"\"`> $0 </span>",
+    "description": "<span> with class"
+  },
+  "span#": {
+    "prefix": "span#",
+    "body": "<span`!p snip.rv=' id=\"' if t[1] else \"\"`${1:name}`!p snip.rv = '\"' if t[1] else \"\"``!p snip.rv=' class=\"' if t[2] else \"\"`${2:name}`!p snip.rv = '\"' if t[2] else \"\"`> $0 </span>",
+    "description": "<span> with ID & class"
+  },
+  "style": {
+    "prefix": "style",
+    "body": "<style type=\"text/css\" media=\"screen\">\n  $0\n</style>",
+    "description": "XHTML <style>"
+  },
+  "table": {
+    "prefix": "table",
+    "body": "<table>\n  $0\n</table>",
+    "description": "XHTML <table>"
+  },
+  "a": {
+    "prefix": "a",
+    "body": "<a href=\"${1:http://www.${2:url.com}}\"${3: target=\"_blank\"}>${4:Anchor Text}</a>",
+    "description": "Link"
+  },
+  "p": {
+    "prefix": "p",
+    "body": "<p>$0</p>",
+    "description": "paragraph"
+  },
+  "li": {
+    "prefix": "li",
+    "body": "<li>$0</li>",
+    "description": "list item"
+  },
+  "ul": {
+    "prefix": "ul",
+    "body": "<ul>\n  $0\n</ul>",
+    "description": "unordered list"
+  },
+  "td": {
+    "prefix": "td",
+    "body": "<td>$0</td>",
+    "description": "table cell"
+  },
+  "th": {
+    "prefix": "th",
+    "body": "<th>$0</th>",
+    "description": "table header"
+  },
+  "tr": {
+    "prefix": "tr",
+    "body": "<tr>$0</tr>",
+    "description": "table row"
+  },
+  "title": {
+    "prefix": "title",
+    "body": "<title>${1:`!p snip.rv = snip.basename or \"Page Title\"`}</title>",
+    "description": "XHTML <title>"
+  },
+  "fieldset": {
+    "prefix": "fieldset",
+    "body": "<fieldset id=\"${1/[\\w\\d]+|( )/(?1:_:\\L$0\\E)/g}\" ${2:class=\"${3:}\"}>\n  <legend>$1</legend>\n  $0\n</fieldset>",
+    "description": "Fieldset"
+  },
+  "viewport": {
+    "prefix": "viewport",
+    "body": "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">",
+    "description": "Responsive viewport meta"
+  },
+  "id": {
+    "prefix": "id",
+    "body": "id=\"$1\"$2"
+  },
+  "idn": {
+    "prefix": "idn",
+    "body": "id=\"$1\" name=\"${2:$1}\""
+  },
+  "label_and_input": {
+    "prefix": "label_and_input",
+    "body": "<label for=\"${2:$1}\">$1</label>\n<input type=\"${3:text}\" name=\"${4:$2}\"${5: id=\"${6:$2}\"} value=\"$7\" />$8"
+  },
+  "submit": {
+    "prefix": "submit",
+    "body": "<input type=\"submit\" value=\"$2\" $3/>$7"
+  },
+  "img": {
+    "prefix": "img",
+    "body": "<img src=\"$1\"${2: alt=\"$3\"}/>"
+  }
+}

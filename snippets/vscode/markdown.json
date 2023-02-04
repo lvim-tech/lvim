@@ -1,0 +1,62 @@
+{
+  "sec": {
+    "prefix": "sec",
+    "body": "# ${1:Section Name} #\n$0",
+    "description": "Section"
+  },
+  "ssec": {
+    "prefix": "ssec",
+    "body": "## ${1:Section Name} ##\n$0",
+    "description": "Sub Section"
+  },
+  "sssec": {
+    "prefix": "sssec",
+    "body": "### ${1:Section Name} ###\n$0",
+    "description": "SubSub Section"
+  },
+  "par": {
+    "prefix": "par",
+    "body": "#### ${1:Paragraph Name} ####\n$0",
+    "description": "Paragraph"
+  },
+  "spar": {
+    "prefix": "spar",
+    "body": "##### ${1:Paragraph Name} #####\n$0",
+    "description": "Paragraph"
+  },
+  "link": {
+    "prefix": "link",
+    "body": "[${1:${VISUAL:Text}}](${3:http://${2:www.url.com}})$0",
+    "description": "Link to something"
+  },
+  "img": {
+    "prefix": "img",
+    "body": "![${1:pic alt}](${2:path}${3/.+/ \"/}${3:opt title}${3/.+/\"/})$0",
+    "description": "Image"
+  },
+  "ilc": {
+    "prefix": "ilc",
+    "body": "\\`$1\\`$0",
+    "description": "Inline Code"
+  },
+  "cbl": {
+    "prefix": "cbl",
+    "body": "\\`\\`\\`\n$1\n\\`\\`\\`\n$0",
+    "description": "Codeblock"
+  },
+  "refl": {
+    "prefix": "refl",
+    "body": "[${1:${VISUAL:Text}}][${2:id}]$0\n\n[$2]:${4:http://${3:www.url.com}} \"${5:$4}\"",
+    "description": "Reference Link"
+  },
+  "fnt": {
+    "prefix": "fnt",
+    "body": "[^${1:${VISUAL:Footnote}}]$0\n\n[^$1]:${2:Text}",
+    "description": "Footnote"
+  },
+  "\"tb(\\d+x\\d+)\"": {
+    "prefix": "\"tb(\\d+x\\d+)\"",
+    "body": "`!p snip.rv = match.group(1)`",
+    "description": "Customizable table"
+  }
+}

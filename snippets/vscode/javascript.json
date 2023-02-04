@@ -1,0 +1,246 @@
+{
+  "cw": {
+    "prefix": "cw",
+    "body": "$1);",
+    "description": "console.warn()"
+  },
+  "fun": {
+    "prefix": "fun",
+    "body": "function ${1:function_name}(${2:argument}) {\n    ${VISUAL}$0\n}",
+    "description": "function (fun)"
+  },
+  "for": {
+    "prefix": "for",
+    "body": "for (let i = 0; i< $0; i++){\n  $1\n};",
+    "description": "For Loop"
+  },
+  "lred": {
+    "prefix": "lred",
+    "body": "console.log('%c${1}', 'font-weight:bold;color:red;');"
+  },
+  "lgreen": {
+    "prefix": "lgreen",
+    "body": "console.log('%c${1}', 'font-weight:bold;color:green;');"
+  },
+  "lblue": {
+    "prefix": "lblue",
+    "body": "console.log('%c${1}', 'font-weight:bold;color:blue;');"
+  },
+  "lpurple": {
+    "prefix": "lpurple",
+    "body": "console.log('%c${1}', 'font-weight:bold;color:purple;');"
+  },
+  "lor": {
+    "prefix": "lor",
+    "body": "console.log('%c${1}', 'font-weight:bold;color:orange;');"
+  },
+  "ctab": {
+    "prefix": "ctab",
+    "body": "console.table(${1});"
+  },
+  "debug": {
+    "prefix": "debug",
+    "body": "console.log('[DEBUG] ${1}');"
+  },
+  "trace": {
+    "prefix": "trace",
+    "body": "console.trace()"
+  },
+  "cl": {
+    "prefix": "cl",
+    "body": "console.log('$1: ', ${1});"
+  },
+  "log": {
+    "prefix": "log",
+    "body": "console.log('${1:log}')",
+    "description": "console log string"
+  },
+  "fm": {
+    "prefix": "fm",
+    "body": "`!p\n# Currently Ultisnips does not support dynamic tabstops, so we cannot add\n# tabstops to the datatype for these param tags until that feature is added.\ndef formatTag(argument):\n\treturn \" * @param {{}} {0}\".format(argument)\n\narguments = t[2].split(',')\narguments = [argument.strip() for argument in arguments if argument]\n\nif len(arguments):\n\ttags = map(formatTag, arguments)\n\tsnip.rv = \"/**\"\n\tfor tag in tags:\n\t\tsnip += tag\n\tsnip += ' */'\n\tsnip += ''\nelse:\n\tsnip.rv = ''\n`${1}: function(${2}) {\n\t$0\n},",
+    "description": "function with dynamic docblock"
+  },
+  "class": {
+    "prefix": "class",
+    "body": "class ${1:name} {\n\tconstructor(${2:arg}) {\n\t\t${3:// init}\n\t}\n\t${4}\n}",
+    "description": "class + constructor"
+  },
+  "expf": {
+    "prefix": "expf",
+    "body": "export ${1:default }function($2) {\n  $3\n\n};",
+    "description": "Export function"
+  },
+  "=>c": {
+    "prefix": "=>c",
+    "body": "const ${1:name} = (${2:args}) => {\n  return $4;\n\n}${3:;}",
+    "description": "Const Function"
+  },
+  "=>>": {
+    "prefix": "=>>",
+    "body": "(${1:args}) => ($2);",
+    "description": "Inline arrow function"
+  },
+  "\"\\.(map|filter|forEach|reduce)=\"": {
+    "prefix": "\"\\.(map|filter|forEach|reduce)=\"",
+    "body": ".`!p snip.rv = match.group(1)`(${1:(c, i)} => $2);",
+    "description": "Array method with an arrow function inline"
+  },
+  "\"\\.(map|filter|forEach|reduce)\"": {
+    "prefix": "\"\\.(map|filter|forEach|reduce)\"",
+    "body": ".`!p snip.rv = match.group(1)`(${1:(c, i)} => {\n  return $2;\n\n});",
+    "description": "Array method with an arrow function"
+  },
+  ":": {
+    "prefix": ":",
+    "body": "${1:key}: ${0:value},",
+    "description": "Object Value JS"
+  },
+  "react": {
+    "prefix": "react",
+    "body": "import React from 'react';",
+    "description": "Import React from react"
+  },
+  "reactC": {
+    "prefix": "reactC",
+    "body": "import React, { Component } from 'react';",
+    "description": "Import React & Component from react"
+  },
+  "redux": {
+    "prefix": "redux",
+    "body": "import redux from 'redux';",
+    "description": "Import redux"
+  },
+  "store": {
+    "prefix": "store",
+    "body": "import { Provider } from 'react-redux';\nimport { createStore } from 'redux';",
+    "description": "redux store import"
+  },
+  "impst": {
+    "prefix": "impst",
+    "body": "import styled from 'styled-components';\n$1",
+    "description": "Import styled components"
+  },
+  "inj": {
+    "prefix": "inj",
+    "body": "import styled,{ injectGlobal } from 'styled-components';\n$1",
+    "description": "Inject global style"
+  },
+  "styc": {
+    "prefix": "styc",
+    "body": "const $1 = styled.$2\\`\n  $3\n\\`;$4",
+    "description": "Styled component"
+  },
+  "get": {
+    "prefix": "get",
+    "body": "getElement${1/(T)|.*/(?1:s)/}By${1:T}${1/(T)|(I)|.*/(?1:agName)(?2:d)/}('$2')",
+    "description": "Get Elements"
+  },
+  ":,": {
+    "prefix": ":,",
+    "body": "${1:value_name}: ${0:value},",
+    "description": "Object Value JS"
+  },
+  "af": {
+    "prefix": "af",
+    "body": "function($1) {\n\t${VISUAL}$0\n}",
+    "description": "Anonymous Function"
+  },
+  "iife": {
+    "prefix": "iife",
+    "body": "(function(${1:window}) {\n\t${VISUAL}$0\n}(${2:$1}))",
+    "description": "Immediately-Invoked Function Expression (iife)"
+  },
+  "timeout": {
+    "prefix": "timeout",
+    "body": "setTimeout(function() {\n\t${VISUAL}$0\n}${2:.bind(${3:this})}, ${1:10})",
+    "description": "setTimeout function"
+  },
+  "fi": {
+    "prefix": "fi",
+    "body": "for(${1:prop} in ${2:obj}){\n\tif($2.hasOwnProperty($1)) {\n\t\t${VISUAL}$0\n\t}\n}",
+    "description": "for prop in obj using hasOwnProperty"
+  },
+  "if": {
+    "prefix": "if",
+    "body": "if(${1:true}) {\n\t${VISUAL}$0\n}",
+    "description": "if (condition) { ... }"
+  },
+  "ife": {
+    "prefix": "ife",
+    "body": "if(${1:true}) {\n\t${VISUAL}$0\n}else {\n\t${2}\n}",
+    "description": "if (condition) { ... } else { ... }"
+  },
+  "switch": {
+    "prefix": "switch",
+    "body": "switch (${VISUAL}${0:expression}) {\n\tcase '${VISUAL}${2:case}':\n\t\t${3}\n\tdefault:\n\t\t${1}\n}"
+  },
+  "case": {
+    "prefix": "case",
+    "body": "case '${VISUAL}${1:case}':\n\t${VISUAL}$0",
+    "description": "case 'xyz': ... break"
+  },
+  "ret": {
+    "prefix": "ret",
+    "body": "return ${VISUAL}$0;",
+    "description": "Return statement"
+  },
+  "gfn": {
+    "prefix": "gfn",
+    "body": "function* ${1:name}(${2}) {\n\tyield ${3};\n}"
+  },
+  "=>": {
+    "prefix": "=>",
+    "body": "(${1}) => {\n\t${2}\n}",
+    "description": "Arrow function"
+  },
+  "forof": {
+    "prefix": "forof",
+    "body": "for (let ${1:s} of ${2:sequence}) {\n\t${3}\n}",
+    "description": "for of loop"
+  },
+  "im": {
+    "prefix": "im",
+    "body": "import ${1:foo} from '${2:bar}'",
+    "description": "import from"
+  },
+  "imm": {
+    "prefix": "imm",
+    "body": "import { ${1:foo} } from '${2:bar}'",
+    "description": "import {} from"
+  },
+  "imas": {
+    "prefix": "imas",
+    "body": "import * as ${1:foo} from '${2:bar}'",
+    "description": "import * as from"
+  },
+  "ex": {
+    "prefix": "ex",
+    "body": "export ${1:default} ${2:bar}",
+    "description": "export default"
+  },
+  "spo": {
+    "prefix": "spo",
+    "body": "{...${1:props}}",
+    "description": "spread object"
+  },
+  "fl": {
+    "prefix": "fl",
+    "body": "// @flow",
+    "description": "Flow"
+  },
+  "fls": {
+    "prefix": "fls",
+    "body": "// @flow strict",
+    "description": "Flow Strict"
+  },
+  "doc": {
+    "prefix": "doc",
+    "body": "/*******************************************************************************\n  ${1: Header}\n ******************************************************************************/",
+    "description": "Header"
+  },
+  "todo": {
+    "prefix": "todo",
+    "body": "/*\n * TODO:\n */",
+    "description": "Add a todo comment"
+  }
+}

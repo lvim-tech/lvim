@@ -1,0 +1,22 @@
+{
+  "gvar": {
+    "prefix": "gvar",
+    "body": "if !exists(\"g:${1:MyUltraImportantVar}\")\n\tlet g:$1 = \t$2\nendif",
+    "description": "Global / configuration variable"
+  },
+  "f": {
+    "prefix": "f",
+    "body": "function ${1:function_name}($2)\n\t${3:\" code}\nendfunction",
+    "description": "function"
+  },
+  "doc": {
+    "prefix": "doc",
+    "body": "\"--------------------------------------------------------------------------------\n\" ${1: title}\n\"--------------------------------------------------------------------------------",
+    "description": "header block"
+  },
+  "pl": {
+    "prefix": "pl",
+    "body": "if !v:lua.as.plugin_loaded('${TM_FILENAME}')\n\tfinish\nendif",
+    "description": "plugin loaded check"
+  }
+}

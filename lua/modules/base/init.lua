@@ -929,11 +929,6 @@ modules["L3MON4D3/LuaSnip"] = {
     },
 }
 
-modules["Neevash/awesome-flutter-snippets"] = {
-    commit = funcs.get_commit("awesome-flutter-snippets", plugins_snapshot),
-    ft = "dart",
-}
-
 modules["windwp/nvim-autopairs"] = {
     commit = funcs.get_commit("nvim-autopairs", plugins_snapshot),
     dependencies = {

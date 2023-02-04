@@ -1,0 +1,29 @@
+{
+  "heading": {
+    "prefix": "hr",
+    "body": [
+      "==============================================================================",
+      "${1:HEADING}                                           *${2:plugin-name}-${1}*"
+    ]
+  },
+  "skel": {
+    "prefix": "skel",
+    "body": "==============================================================================\nCONTENTS                                      *${1:plugin}* *$1-contents*\n\nInstallation...........................: |$1-installation|\nUsage..................................: |$1-usage|\nSettings...............................: |$1-settings|\nInternals..............................: |$1-internals|\nIssues.................................: |$1-issues|\n\n\n==============================================================================\nINSTALLATION                                          *$1-installation*\n\nThere are several ways to install the plugin. The recommended one is by using\nvim plug (plug link). In\nthat case, you can clone the plugin's git repository like so:\n>\nPlug 'akinsho/$1'\n<\n\n\n\t\t==============================================================================\n\t\tUSAGE                                                        *$1-usage*\n\n\t\tTODO\n\n\n\t\t==============================================================================\n\t\tSETTINGS                                                  *$1-settings*\n\n\t\tTODO\n\n\n\t\t==============================================================================\n\t\tINTERNALS                                                *$1-internals*\n\n\t\tTODO\n\n\t\t==============================================================================\n\t\tISSUES                                                      *$1-issues*\n\n\t\tAny issues and suggestions are very welcome on the github bugtracker:\n\t\thttps://github.com/akinsho/$1.vim/issues\n\n\nvim:tw=78:sw=4:ft=help:norl:"
+  },
+  "code": {
+    "prefix": "code",
+    "body": ">\n${1}\n<"
+  },
+  "section": {
+    "prefix": "section",
+    "body": "==============================================================================\n${1:SECTION}                                                *${2:plugin}-${3:section}*"
+  },
+  "subsection": {
+    "prefix": "subsection",
+    "body": "${1:Subsection} ~\n\n${1}"
+  },
+  "setting": {
+    "prefix": "setting",
+    "body": "*g:${1:setting_name}*\n>\nlet g:$1 = 'TODO'\n<\nDefault value: TODO\n\n${2}"
+  }
+}

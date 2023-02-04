@@ -1,0 +1,60 @@
+{
+  "contributes": {
+    "snippets": [
+      {
+        "language": [
+          "global"
+        ],
+        "path": "./global.json"
+      },
+      {
+        "language": "dart",
+        "path": "./dart.json"
+      },
+      {
+        "language": "help",
+        "path": "./help.json"
+      },
+      {
+        "language": "lua",
+        "path": "./lua.json"
+      },
+      {
+        "language": "vim",
+        "path": "./vim.json"
+      },
+      {
+        "language": "tmux",
+        "path": "./tmux.json"
+      },
+      {
+        "language": "reason",
+        "path": "./reason.json"
+      },
+      {
+        "language": "vimwiki",
+        "path": "./vimwiki.json"
+      },
+      {
+        "language": "elm",
+        "path": "./elm.json"
+      },
+      {
+        "language": "markdown",
+        "path": "./markdown.json"
+      },
+      {
+        "language": "html",
+        "path": "./html.json"
+      },
+      {
+        "language": "javascript",
+        "path": "./javascript.json"
+      },
+      {
+        "language": "json",
+        "path": "./json.json"
+      }
+    ]
+  }
+}

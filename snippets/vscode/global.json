@@ -1,0 +1,17 @@
+{
+  "\"(\\w+).par\"": {
+    "prefix": "\"(\\w+).par\"",
+    "body": "(`!p snip.rv = match.group(1)`$1)$0",
+    "description": "Parenthesis (postfix)"
+  },
+  "\"([^\\s].*)\\.r\"": {
+    "prefix": "\"([^\\s].*)\\.r\"",
+    "body": "return `!p snip.rv = match.group(1)`$0",
+    "description": "Return (postfix)"
+  },
+  "lorem": {
+    "prefix": "lorem",
+    "body": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod\ntempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At\nvero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,\nno sea takimata sanctus est Lorem ipsum dolor sit amet.",
+    "description": "Lorem Ipsum - 50 Words"
+  }
+}

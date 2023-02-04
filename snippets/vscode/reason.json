@@ -1,0 +1,102 @@
+{
+  "hr": {
+    "prefix": "hr",
+    "body": "/* -------------------------------------------------------------------------------\n   ${1: Header}\n   -------------------------------------------------------------------------------*/",
+    "description": "header"
+  },
+  "doc": {
+    "prefix": "doc",
+    "body": "/**\n   ${0}\n */",
+    "description": "comment"
+  },
+  "todo": {
+    "prefix": "todo",
+    "body": "/**\n   TODO: ${0}\n */",
+    "description": "todo"
+  },
+  "let": {
+    "prefix": "let",
+    "body": "let ${1} = ${0};",
+    "description": "assignment"
+  },
+  "fn": {
+    "prefix": "fn",
+    "body": "let ${1} = (${2}) => {\n  ${0}\n};",
+    "description": "arrow function"
+  },
+  "fun": {
+    "prefix": "fun",
+    "body": "fun ${1} => ${0}",
+    "description": "function statement"
+  },
+  "ty": {
+    "prefix": "ty",
+    "body": "type ${1} = ${0};",
+    "description": "type"
+  },
+  "mod": {
+    "prefix": "mod",
+    "body": "module ${1} = {\n  ${0}\n};",
+    "description": "module"
+  },
+  "modty": {
+    "prefix": "modty",
+    "body": "module type ${1} = {\n  ${0}\n};",
+    "description": "module type"
+  },
+  "sw": {
+    "prefix": "sw",
+    "body": "switch (${1}) {\n  | ${2} => ${0}\n}",
+    "description": "switch"
+  },
+  "|": {
+    "prefix": "|",
+    "body": "| ${1} => ${0}",
+    "description": "pattern match"
+  },
+  "p": {
+    "prefix": "p",
+    "body": "|> ${0}",
+    "description": "pipe"
+  },
+  "if": {
+    "prefix": "if",
+    "body": "if (${1}) {\n  ${2}\n}",
+    "description": "if"
+  },
+  "elif": {
+    "prefix": "elif",
+    "body": "if (${1}) {\n  ${2}\n} else {\n  ${0}\n}",
+    "description": "if else"
+  },
+  "log": {
+    "prefix": "log",
+    "body": "print_endline(\"$1: \" ++ ${1: value})",
+    "description": "print endline"
+  },
+  "describe": {
+    "prefix": "describe",
+    "body": "test(\"${1: test description}\", () => {\n  test(\"${2: first case}\", () => {\n    ${3: // Write some test}\n  })\n})",
+    "description": "rejest test"
+  },
+  "test": {
+    "prefix": "test",
+    "body": "test(\"${1: test case}\", () => {\n    ${2: // Write some test}\n    })",
+    "description": "test case"
+  },
+  "expect": {
+    "prefix": "expect",
+    "body": "expect(${1:variable}).toEqual(${2:value})",
+    "description": "expect"
+  },
+  "show": {
+    "prefix": "show",
+    "body": "[@deriving show]",
+    "description": "show"
+  },
+  "comp": {
+    "prefix": "comp",
+    "body": "open Revery_UI;\n\nlet component = React.component(\"${1:Name}\");\n\nlet createElement = (~children, ()) => component(hooks => (\n  hooks,\n  <View>...children</View>\n));",
+    "description": "Revery component"
+  }
+}
