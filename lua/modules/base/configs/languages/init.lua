@@ -256,6 +256,9 @@ config.flutter_tools_nvim = function()
         return
     end
     flutter_tools.setup({
+        ui = {
+            notification_style = "plugin",
+        },
         debugger = {
             enabled = true,
         },
