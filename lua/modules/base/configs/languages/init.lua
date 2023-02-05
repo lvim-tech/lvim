@@ -261,6 +261,41 @@ config.flutter_tools_nvim = function()
         },
         debugger = {
             enabled = true,
+            run_via_dap = true,
+            exception_breakpoints = {},
+            register_configurations = function(paths)
+                local dap = require("dap")
+                dap.adapters.dart = {
+                    type = "executable",
+                    command = "dart",
+                    args = { "debug_adapter" },
+                }
+                dap.adapters.flutter = {
+                    type = "executable",
+                    command = "flutter",
+                    args = { "debug_adapter" },
+                }
+                dap.configurations.dart = {
+                    {
+                        type = "dart",
+                        name = "Launch Dart",
+                        request = "launch",
+                        program = function()
+                            return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+                        end,
+                        cwd = "${workspaceFolder}",
+                    },
+                    {
+                        type = "flutter",
+                        name = "Launch Flutter",
+                        request = "launch",
+                        program = function()
+                            return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+                        end,
+                        cwd = "${workspaceFolder}",
+                    },
+                }
+            end,
         },
         closing_tags = {
             prefix = " ",
