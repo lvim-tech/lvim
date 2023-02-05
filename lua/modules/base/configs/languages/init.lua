@@ -261,7 +261,7 @@ config.flutter_tools_nvim = function()
         },
         debugger = {
             enabled = true,
-            run_via_dap = true,
+            run_via_dap = false,
             exception_breakpoints = {},
             register_configurations = function(paths)
                 local dap = require("dap")
