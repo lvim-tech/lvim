@@ -280,6 +280,8 @@ config.flutter_tools_nvim = function()
                         type = "dart",
                         name = "Launch Dart",
                         request = "launch",
+                        dartSdkPath = paths["dart_sdk"],
+                        flutterSdkPath = paths["flutter_sdk"],
                         program = function()
                             return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
                         end,
@@ -289,6 +291,8 @@ config.flutter_tools_nvim = function()
                         type = "flutter",
                         name = "Launch Flutter",
                         request = "launch",
+                        dartSdkPath = paths["dart_sdk"],
+                        flutterSdkPath = paths["flutter_sdk"],
                         program = function()
                             return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
                         end,
