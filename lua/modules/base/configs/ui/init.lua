@@ -1651,7 +1651,7 @@ config.heirline_nvim = function()
         hl = { fg = theme_colors.red_02 },
     }
     local navic = {
-        condition = require("nvim-navic").is_available,
+        condition = require("nvim-navic").is_available(),
         static = {
             type_hl = icons.hl,
             enc = function(line, col, winnr)

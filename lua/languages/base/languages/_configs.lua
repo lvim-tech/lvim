@@ -18,7 +18,9 @@ M.default_config = function(file_types)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
-            navic.attach(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                navic.attach(client, bufnr)
+            end
         end,
         capabilities = languages_setup.get_capabilities(),
         root_dir = function(fname)
@@ -39,7 +41,9 @@ M.without_formatting = function(file_types)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
-            navic.attach(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                navic.attach(client, bufnr)
+            end
         end,
         capabilities = languages_setup.get_capabilities(),
         root_dir = function(fname)
@@ -75,7 +79,9 @@ M.cpp_config = function(file_types)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
-            navic.attach(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                navic.attach(client, bufnr)
+            end
         end,
         capabilities = languages_setup.get_cpp_capabilities(),
         root_dir = function(fname)
@@ -98,7 +104,9 @@ M.omnisharp_config = function(file_types)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
-            navic.attach(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                navic.attach(client, bufnr)
+            end
         end,
         capabilities = languages_setup.get_capabilities(),
         root_dir = function(fname)
@@ -121,7 +129,9 @@ M.elixir_config = function(file_types)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
-            navic.attach(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                navic.attach(client, bufnr)
+            end
         end,
         capabilities = languages_setup.get_capabilities(),
         root_dir = function(fname)
@@ -143,7 +153,9 @@ M.go = function(file_types)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
-            navic.attach(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                navic.attach(client, bufnr)
+            end
         end,
         settings = {
             gopls = {
@@ -176,7 +188,9 @@ M.lua = function(file_types)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
-            navic.attach(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                navic.attach(client, bufnr)
+            end
         end,
         settings = {
             Lua = {
@@ -230,7 +244,9 @@ M.angular_config = function(file_types)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
-            navic.attach(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                navic.attach(client, bufnr)
+            end
         end,
         capabilities = languages_setup.get_capabilities(),
         root_dir = nvim_lsp_util.root_pattern("angular.json"),
@@ -250,7 +266,9 @@ M.ember_config = function(file_types)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
-            navic.attach(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                navic.attach(client, bufnr)
+            end
         end,
         capabilities = languages_setup.get_capabilities(),
         root_dir = nvim_lsp_util.root_pattern("ember-cli-build.js"),

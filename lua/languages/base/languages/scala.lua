@@ -41,7 +41,9 @@ language_configs["lsp"] = function()
             end,
             group = "LvimIDE",
         })
-        navic.attach(client, bufnr)
+        if client.server_capabilities.documentSymbolProvider then
+            navic.attach(client, bufnr)
+        end
     end
     require("metals").initialize_or_attach(metals_config)
 end
