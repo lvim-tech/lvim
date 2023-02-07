@@ -80,19 +80,26 @@ config.null_ls_nvim = function()
     if not null_ls_status_ok then
         return
     end
+    local generators = require("null-ls.generators")
+    local methods = require("null-ls.methods")
     null_ls.setup({
         debug = false,
         on_attach = function(client, bufnr)
             if client.server_capabilities.documentFormattingProvider then
-                vim.api.nvim_create_autocmd("BufWritePre", {
-                    buffer = bufnr,
-                    callback = function()
-                        if _G.LVIM_SETTINGS.autoformat == true then
-                            vim.lsp.buf.format()
-                        end
-                    end,
-                    group = "LvimIDE",
-                })
+                local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
+                local method = methods.internal.FORMATTING
+                local available = generators.get_available(filetype, method)
+                if next(available) then
+                    vim.api.nvim_create_autocmd("BufWritePre", {
+                        buffer = bufnr,
+                        callback = function()
+                            if _G.LVIM_SETTINGS.autoformat == true then
+                                vim.lsp.buf.format()
+                            end
+                        end,
+                        group = "LvimIDE",
+                    })
+                end
             end
         end,
     })
