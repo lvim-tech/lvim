@@ -52,6 +52,7 @@ local null_ls_builtins = {
     }),
     shfmt = formatting.shfmt,
     stylua = formatting.stylua,
+    yamlfmt = formatting.yamlfmt,
 }
 
 M.install_all_packages = function()

@@ -11,6 +11,7 @@ language_configs["lsp"] = function()
         ["yaml-language-server"] = { "yamlls", yamlls_config },
         ["dependencies"] = {
             "yamllint",
+            "yamlfmt",
         },
     })
 end
