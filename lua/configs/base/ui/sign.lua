@@ -26,8 +26,12 @@ function M.statuscolumn()
     local number = vim.api.nvim_win_get_option(vim.g.statusline_winid, "number")
     if number and vim.wo.relativenumber and vim.v.virtnum == 0 then
         number_text = vim.v.relnum == 0 and vim.v.lnum or vim.v.relnum
+    elseif number and vim.wo.relativenumber == false and vim.v.virtnum == 0 then
+        number_text = vim.v.lnum == 0 and vim.v.lnum or vim.v.lnum
+    else
+        return ""
     end
-    local number_column = "%=" .. number_text .. " "
+    local number_column = "%=" .. " " .. number_text .. " "
     local columns = {
         diagnostic_column,
         number_column,
