@@ -35,38 +35,44 @@ config.gitsigns_nvim = function()
         return
     end
     gitsigns.setup({
-        numhl = true,
-        signcolumn = false,
+        numhl = false,
+        signcolumn = true,
         signs = {
             add = {
                 hl = "GitSignsAdd",
-                text = " ▎",
+                text = "▌",
                 numhl = "GitSignsAddNr",
                 linehl = "GitSignsAddLn",
             },
             change = {
                 hl = "GitSignsChange",
-                text = " ▎",
+                text = "▌",
                 numhl = "GitSignsChangeNr",
                 linehl = "GitSignsChangeLn",
             },
             delete = {
                 hl = "GitSignsDelete",
-                text = " ▎",
+                text = "▌",
                 numhl = "GitSignsDeleteNr",
                 linehl = "GitSignsDeleteLn",
             },
             topdelete = {
-                hl = "GitSignsDelete",
-                text = " ▎",
-                numhl = "GitSignsDeleteNr",
-                linehl = "GitSignsDeleteLn",
+                hl = "GitSignsTopDelete",
+                text = "▌",
+                numhl = "GitSignsTopDeleteNr",
+                linehl = "GitSignsTopDeleteLn",
             },
             changedelete = {
-                hl = "GitSignsChange",
-                text = " ▎",
-                numhl = "GitSignsChangeNr",
-                linehl = "GitSignsChangeLn",
+                hl = "GitSignsChangeDelete",
+                text = "▌",
+                numhl = "GitSignsChangeDeleteNr",
+                linehl = "GitSignsChangeDeleteLn",
+            },
+            untracked = {
+                hl = "GitSignsUntracked",
+                text = "▌",
+                numhl = "GitSignsUntrackedNr",
+                linehl = "GitSignsUntrackedLn",
             },
         },
         linehl = false,

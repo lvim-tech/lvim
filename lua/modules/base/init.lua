@@ -225,11 +225,6 @@ modules["goolord/alpha-nvim"] = {
     config = ui_config.alpha_nvim,
 }
 
-modules["luukvbaal/statuscol.nvim"] = {
-    commit = funcs.get_commit("statuscol.nvim", plugins_snapshot),
-    config = ui_config.statuscol_nvim,
-}
-
 modules["s1n7ax/nvim-window-picker"] = {
     commit = funcs.get_commit("nvim-window-picker", plugins_snapshot),
     config = ui_config.nvim_window_picker,
@@ -318,12 +313,6 @@ modules["lukas-reineke/indent-blankline.nvim"] = {
         "BufRead",
     },
     config = ui_config.indent_blankline_nvim,
-}
-
-modules["lvim-tech/lvim-focus"] = {
-    commit = funcs.get_commit("lvim-focus", plugins_snapshot),
-    event = "VimEnter",
-    config = ui_config.lvim_focus,
 }
 
 modules["lvim-tech/lvim-helper"] = {

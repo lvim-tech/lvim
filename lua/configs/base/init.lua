@@ -2,6 +2,7 @@ local global = require("core.global")
 local funcs = require("core.funcs")
 local options = require("configs.base.options")
 local keymaps = require("configs.base.keymaps")
+require("configs.base.ui.sign")
 local group = vim.api.nvim_create_augroup("LvimIDE", {
     clear = true,
 })
@@ -113,6 +114,14 @@ configs["base_options"] = function()
 end
 
 configs["base_events"] = function()
+    vim.api.nvim_create_autocmd("VimEnter", {
+        callback = function()
+            if vim.fn.has("nvim-0.9.0") == 1 then
+                vim.opt.statuscolumn = [[%!v:lua.Status.statuscolumn()]]
+            end
+        end,
+        group = group,
+    })
     vim.api.nvim_create_autocmd("FileType", {
         pattern = {
             "c",

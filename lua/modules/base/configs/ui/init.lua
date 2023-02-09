@@ -768,38 +768,6 @@ config.alpha_nvim = function()
     })
 end
 
-config.statuscol_nvim = function()
-    local statuscol_nvim_status_ok, statuscol_nvim = pcall(require, "statuscol")
-    if not statuscol_nvim_status_ok then
-        return
-    end
-    statuscol_nvim.setup({
-        separator = " ",
-        thousands = false,
-        relculright = true,
-        lnumfunc = nil,
-        reeval = true,
-        setopt = true,
-        order = "FSNs",
-        Lnum = false,
-        FoldPlus = false,
-        FoldMinus = false,
-        FoldEmpty = false,
-        DapBreakpointRejected = false,
-        DapBreakpoint = false,
-        DapBreakpointCondition = false,
-        DiagnosticSignError = false,
-        DiagnosticSignHint = false,
-        DiagnosticSignInfo = false,
-        DiagnosticSignWarn = false,
-        GitSignsTopdelete = false,
-        GitSignsUntracked = false,
-        GitSignsAdd = false,
-        GitSignsChangedelete = false,
-        GitSignsDelete = false,
-    })
-end
-
 config.nvim_window_picker = function()
     local window_picker_status_ok, window_picker = pcall(require, "window-picker")
     if not window_picker_status_ok then
@@ -2140,17 +2108,6 @@ config.indent_blankline_nvim = function()
     vim.keymap.set("n", "zM", "zM:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
     vim.keymap.set("n", "zr", "zr:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
     vim.keymap.set("n", "zR", "zR:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
-end
-
-config.lvim_focus = function()
-    local lvim_focus_status_ok, lvim_focus = pcall(require, "lvim-focus")
-    if not lvim_focus_status_ok then
-        return
-    end
-    lvim_focus.setup({
-        colorcolumn = true,
-        colorcolumn_value = "120",
-    })
 end
 
 config.lvim_helper = function()
