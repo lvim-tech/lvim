@@ -21,7 +21,6 @@ function M.statuscolumn()
             and ("%#" .. diagnostic_sign.texthl .. "#" .. diagnostic_sign.text:sub(1, -2) .. "%*")
         or " "
     local git_column = git_sign and ("%#" .. git_sign.texthl .. "#" .. git_sign.text:sub(1, -2) .. "%*") or " "
-
     local number_text = " "
     local number = vim.api.nvim_win_get_option(vim.g.statusline_winid, "number")
     if number and vim.wo.relativenumber and vim.v.virtnum == 0 then
