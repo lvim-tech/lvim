@@ -23,6 +23,7 @@
 | `<C-c>d`         | `:bdelete<CR>`                    | Bdelete buffer                        |
 | `<C-c>p`         | `:PickColor<CR>`                  | Pick color                            |
 | `<C-c>P`         | `:PickColorInsert<CR>`            | Pick color insert                     |
+| `<C-c>=`         | `:wincmd=<CR>`                    | Win resize =                          |
 | `<C-n>`          | `:BufSurfForward<CR>`             | Bnext buffer                          |
 | `<C-p>`          | `:BufSurfBack<CR>`                | Bprev buffer                          |
 | `<C-c>b`         | `:GitBlameToggle<CR>`             | GitBlame toggle                       |
