@@ -38,5 +38,4 @@ function M.statuscolumn()
     }
     return table.concat(columns, "")
 end
-
 return M
