@@ -230,6 +230,11 @@ modules["s1n7ax/nvim-window-picker"] = {
     config = ui_config.nvim_window_picker,
 }
 
+modules["stevearc/oil.nvim"] = {
+    commit = funcs.get_commit("oil.nvim", plugins_snapshot),
+    config = ui_config.oil_nvim,
+}
+
 modules["prichrd/netrw.nvim"] = {
     commit = funcs.get_commit("netrw.nvim", plugins_snapshot),
     config = ui_config.netrw_nvim,

@@ -815,6 +815,52 @@ config.nvim_window_picker = function()
     end, { noremap = true, silent = true, desc = "WindowPicker" })
 end
 
+config.oil_nvim = function()
+    local oil_nvim_status_ok, oil_nvim = pcall(require, "oil")
+    if not oil_nvim_status_ok then
+        return
+    end
+    oil_nvim.setup({
+        columns = {
+            "icon",
+            "permissions",
+            "size",
+            "mtime",
+        },
+        win_options = {
+            number = false,
+            relativenumber = false,
+            wrap = false,
+            signcolumn = "no",
+            cursorcolumn = false,
+            foldcolumn = "0",
+            spell = false,
+            list = false,
+            conceallevel = 3,
+            concealcursor = "n",
+        },
+        view_options = {
+            show_hidden = true,
+        },
+        float = {
+            border = "none",
+            win_options = {
+                winblend = 0,
+            },
+        },
+        silence_netrw_warning = true,
+    })
+    vim.keymap.set("n", "<C-c><C-c>o", "<Cmd>Oil<CR>")
+end
+
+config.netrw_nvim = function()
+    local netrw_nvim_status_ok, netrw_nvim = pcall(require, "netrw")
+    if not netrw_nvim_status_ok then
+        return
+    end
+    netrw_nvim.setup()
+end
+
 config.neo_tree_nvim = function()
     local neo_tree_status_ok, neo_tree = pcall(require, "neo-tree")
     if not neo_tree_status_ok then
@@ -903,14 +949,6 @@ config.neo_tree_nvim = function()
             show_unloaded = true,
         },
     })
-end
-
-config.netrw_nvim = function()
-    local netrw_nvim_status_ok, netrw_nvim = pcall(require, "netrw")
-    if not netrw_nvim_status_ok then
-        return
-    end
-    netrw_nvim.setup()
 end
 
 config.dirbuf_nvim = function()
