@@ -88,6 +88,7 @@ configs["base_options"] = function()
             "netrw",
         },
         callback = function()
+            vim.opt_local.statuscolumn = ""
             vim.api.nvim_set_keymap("n", "<Esc>", "<Cmd>:bd<CR>", {})
             vim.api.nvim_set_keymap("n", ".", "gh", {})
             vim.api.nvim_set_keymap("n", "P", "<C-w>z", {})
@@ -114,14 +115,6 @@ configs["base_options"] = function()
 end
 
 configs["base_events"] = function()
-    vim.api.nvim_create_autocmd("VimEnter", {
-        callback = function()
-            if vim.fn.has("nvim-0.9.0") == 1 then
-                vim.opt.statuscolumn = [[%!v:lua.Status.statuscolumn()]]
-            end
-        end,
-        group = group,
-    })
     vim.api.nvim_create_autocmd("FileType", {
         pattern = {
             "c",
