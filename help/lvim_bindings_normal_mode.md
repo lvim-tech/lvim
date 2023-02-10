@@ -29,6 +29,7 @@
 | `<C-c>b`         | `:GitBlameToggle<CR>`             | GitBlame toggle                       |
 | `<C-space>`      | `:NeoZoom<CR>`                    | Zoom toggle                           |
 | `<C-c>f`         | `:Vifm<CR>`                       | Vifm                                  |
+| `<C-c>w`         | `:WinShift`                       | WinShift                              |
 | `<C-h>`          | `<C-w>h`                          | Move to window left                   |
 | `<C-l>`          | `<C-w>l`                          | Move to window right                  |
 | `<C-j>`          | `<C-w>j`                          | Move to window down                   |

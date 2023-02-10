@@ -230,6 +230,15 @@ modules["s1n7ax/nvim-window-picker"] = {
     config = ui_config.nvim_window_picker,
 }
 
+modules["sindrets/winshift.nvim"] = {
+    commit = funcs.get_commit("winshift.nvim", plugins_snapshot),
+    keys = {
+        { "<C-c>w", "<Cmd>WinShift<CR>", desc = "WinShift" },
+    },
+    cmd = "WinShift",
+    config = ui_config.winshift_nvim,
+}
+
 modules["stevearc/oil.nvim"] = {
     commit = funcs.get_commit("oil.nvim", plugins_snapshot),
     keys = {

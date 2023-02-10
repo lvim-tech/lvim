@@ -815,6 +815,17 @@ config.nvim_window_picker = function()
     end, { noremap = true, silent = true, desc = "WindowPicker" })
 end
 
+config.winshift_nvim = function()
+    local winshift_nvim_status_ok, winshift_nvim = pcall(require, "winshift")
+    if not winshift_nvim_status_ok then
+        return
+    end
+    winshift_nvim.setup({
+        highlight_moving_win = true,
+        focused_hl_group = "CursorLine",
+    })
+end
+
 config.oil_nvim = function()
     local oil_nvim_status_ok, oil_nvim = pcall(require, "oil")
     if not oil_nvim_status_ok then
