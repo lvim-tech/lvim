@@ -850,7 +850,6 @@ config.oil_nvim = function()
         },
         silence_netrw_warning = true,
     })
-    vim.keymap.set("n", "<C-c><C-c>o", "<Cmd>Oil<CR>")
 end
 
 config.netrw_nvim = function()

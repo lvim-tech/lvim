@@ -232,6 +232,10 @@ modules["s1n7ax/nvim-window-picker"] = {
 
 modules["stevearc/oil.nvim"] = {
     commit = funcs.get_commit("oil.nvim", plugins_snapshot),
+    keys = {
+        { "<C-c><C-c>o", "<Cmd>Oil<CR>", desc = "Oil" },
+    },
+    cmd = "Oil",
     config = ui_config.oil_nvim,
 }
 
