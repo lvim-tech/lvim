@@ -38,5 +38,4 @@ function M.statuscolumn()
     }
     return table.concat(columns, "")
 end
-vim.opt.statuscolumn = [[%!v:lua.Status.statuscolumn()]]
 return M

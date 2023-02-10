@@ -68,6 +68,7 @@ end
 
 configs["base_options"] = function()
     options.global()
+    vim.opt.statuscolumn = [[%!v:lua.Status.statuscolumn()]]
     vim.g.indent_blankline_char = "▏"
     vim.g.gitblame_enabled = 0
     vim.g.gitblame_highlight_group = "CursorLine"
