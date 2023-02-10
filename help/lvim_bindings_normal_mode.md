@@ -37,6 +37,7 @@
 | `<C-Right>`      | `:vertical resize +2<CR>`         | Resize width +                        |
 | `<C-Up>`         | `:resize -2<CR>`                  | Resize height -                       |
 | `<C-Down>`       | `:resize +2<CR>`                  | Resize height +                       |
+| `<C-c><C-c>o`    | `:Oil<CR>`                        | Oil file explorer                     |
 | `<S-x>`          | `:Neotree filesystem left<CR>`    | Neotree filesystem left               |
 | `<C-c><C-f>`     | `:Neotree filesystem left<CR>`    | Neotree filesystem left               |
 | `<C-c><C-b>`     | `:Neotree buffers left<CR>`       | Neotree filesystem left               |
