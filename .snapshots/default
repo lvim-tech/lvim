@@ -73,7 +73,7 @@
   "nvim-jdtls": { "branch": "master", "commit": "8fe3be1c08ab0bb55f2998fbc02f1a08f87a44bc" },
   "nvim-lastplace": { "branch": "main", "commit": "65c5d6e2501a3af9c2cd15c6548e67fa035bf640" },
   "nvim-lightbulb": { "branch": "master", "commit": "56b9ce31ec9d09d560fe8787c0920f76bc208297" },
-  "nvim-lspconfig": { "branch": "master", "commit": "aeb76066212b09c7c01a3abb42fe82f0130ef402" },
+  "nvim-lspconfig": { "branch": "master", "commit": "b5bb6e3d7c775c241726d1ef564902263e93e2cd" },
   "nvim-metals": { "branch": "main", "commit": "0b9c5303b7402ae24971ed2f0e5890fd72505532" },
   "nvim-navic": { "branch": "master", "commit": "7e9d2b2b601149fecdccd11b516acb721e571fe6" },
   "nvim-notify": { "branch": "master", "commit": "bdd647f61a05c9b8a57c83b78341a0690e9c29d7" },
@@ -120,5 +120,6 @@
   "vim-table-mode": { "branch": "master", "commit": "9555a3e6e5bcf285ec181b7fc983eea90500feb4" },
   "vimtex": { "branch": "master", "commit": "3a9180f1d2cc984fe24bc7afaf9d4d00b3e4c20a" },
   "which-key.nvim": { "branch": "main", "commit": "684e96c5e8477f1ee9b3f2e9a12d802fd12c5531" },
+  "winshift.nvim": { "branch": "main", "commit": "37468ed6f385dfb50402368669766504c0e15583" },
   "zen-mode.nvim": { "branch": "main", "commit": "3c92f503823088862ca2a7809d1c7edc90fb92fa" }
 }
