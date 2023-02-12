@@ -1,5 +1,5 @@
 local languages_setup = require("languages.base.utils")
-local sumneko_lua_config = require("languages.base.languages._configs").lua({ "lua" }, "lua")
+local lua_lsp_config = require("languages.base.languages._configs").lua({ "lua" }, "lua")
 local dap = require("dap")
 
 local language_configs = {}
@@ -9,7 +9,7 @@ language_configs["dependencies"] = { "lua-language-server", "stylua", "luacheck"
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
         ["language"] = "lua",
-        ["lua-language-server"] = { "sumneko_lua", sumneko_lua_config },
+        ["lua-language-server"] = { "lua_ls", lua_lsp_config },
         ["dependencies"] = {
             "stylua",
             "luacheck",
