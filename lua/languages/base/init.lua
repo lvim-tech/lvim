@@ -30,6 +30,7 @@ M.file_types = {
     ["cs"] = { "cs", "vb" },
     ["css"] = { "css", "scss", "less" },
     ["d"] = { "d" },
+    ["docker"] = { "dockerfile" },
     ["elixir"] = { "elixir", "eelixir" },
     ["elm"] = { "elm" },
     ["ember"] = { "handlebars", "typescript", "javascript" },
