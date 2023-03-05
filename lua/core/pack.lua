@@ -1,6 +1,5 @@
 local global = require("core.global")
 local funcs = require("core.funcs")
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 local lazy_pack = {}
 

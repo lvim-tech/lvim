@@ -24,7 +24,7 @@ language_configs["dap"] = function()
         handle = vim.loop.spawn("dlv", {
             args = { "dap", "-l", "127.0.0.1:" .. port },
             detached = true,
-        }, function(code)
+        }, function(_)
             handle:close()
         end)
         vim.defer_fn(function()
