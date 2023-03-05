@@ -232,6 +232,31 @@ M.lua = function(file_types)
     }
 end
 
+M.groovy_config = function(file_types)
+    return {
+        flags = {
+            debounce_text_changes = default_debouce_time,
+        },
+        cmd = { "groovy-language-server" },
+        autostart = true,
+        filetypes = file_types,
+        on_attach = function(client, bufnr)
+            languages_setup.keymaps(client, bufnr)
+            languages_setup.omni(client, bufnr)
+            languages_setup.tag(client, bufnr)
+            languages_setup.document_highlight(client, bufnr)
+            languages_setup.document_formatting(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                navic.attach(client, bufnr)
+            end
+        end,
+        capabilities = languages_setup.get_capabilities(),
+        root_dir = function(fname)
+            return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
+        end,
+    }
+end
+
 M.angular_config = function(file_types)
     return {
         flags = {
