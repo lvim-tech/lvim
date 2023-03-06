@@ -809,14 +809,6 @@ config.ccc_nvim = function()
     })
 end
 
-config.lvim_colorcolumn = function()
-    local lvim_colorcolumn_status_ok, lvim_colorcolumn = pcall(require, "lvim-colorcolumn")
-    if not lvim_colorcolumn_status_ok then
-        return
-    end
-    lvim_colorcolumn.setup()
-end
-
 config.suda_vim = function()
     vim.g.suda_smart_edit = 1
 end

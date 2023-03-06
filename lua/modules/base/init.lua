@@ -292,6 +292,7 @@ modules["rebelot/heirline.nvim"] = {
 
 modules["lvim-tech/fm-nvim"] = {
     commit = funcs.get_commit("fm-nvim", plugins_snapshot),
+    branch = "lvim",
     config = ui_config.fm_nvim,
 }
 
@@ -548,14 +549,6 @@ modules["uga-rosa/ccc.nvim"] = {
         "BufRead",
     },
     config = editor_config.ccc_nvim,
-}
-
-modules["lvim-tech/lvim-colorcolumn"] = {
-    commit = funcs.get_commit("lvim-colorcolumn", plugins_snapshot),
-    event = {
-        "BufRead",
-    },
-    config = editor_config.lvim_colorcolumn,
 }
 
 modules["phaazon/hop.nvim"] = {
