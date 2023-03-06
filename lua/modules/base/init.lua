@@ -544,12 +544,8 @@ modules["danymat/neogen"] = {
 
 modules["uga-rosa/ccc.nvim"] = {
     commit = funcs.get_commit("uga-rosa/ccc.nvim", plugins_snapshot),
-    cmd = {
-        "CccPick",
-        "CccConvert",
-        "CccHighlighterToggle",
-        "CccHighlighterEnable",
-        "CccHighlighterDisable",
+    event = {
+        "BufRead",
     },
     config = editor_config.ccc_nvim,
 }
