@@ -793,32 +793,20 @@ config.neogen = function()
     vim.api.nvim_create_user_command("NeogenType", "lua require('neogen').generate({ type = 'type' })", {})
 end
 
-config.nvim_colorize_lua = function()
-    local colorizer_status_ok, colorizer = pcall(require, "colorizer")
-    if not colorizer_status_ok then
+config.ccc_nvim = function()
+    local ccc_status_ok, ccc = pcall(require, "ccc")
+    if not ccc_status_ok then
         return
     end
-    colorizer.setup()
-    vim.api.nvim_create_autocmd("BufWritePost", {
-        callback = function()
-            vim.api.nvim_command("ColorizerAttachToBuffer")
-        end,
-        group = "LvimIDE",
+    ccc.setup({
+        alpha_show = "show",
     })
-end
-
-config.color_picker_nvim = function()
-    local color_picker_status_ok, color_picker = pcall(require, "color-picker")
-    if not color_picker_status_ok then
-        return
-    end
-    color_picker.setup({})
     vim.keymap.set("n", "<C-c>p", function()
-        vim.cmd("PickColor")
+        vim.cmd("CccPick")
     end, { noremap = true, silent = true, desc = "ColorPicker" })
-    vim.keymap.set("n", "<C-c>P", function()
-        vim.cmd("PickColorInsert")
-    end, { noremap = true, silent = true, desc = "PickColorInsert" })
+    vim.api.nvim_create_autocmd("Filetype", {
+        command = "CccHighlighterEnable",
+    })
 end
 
 config.lvim_colorcolumn = function()

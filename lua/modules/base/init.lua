@@ -290,7 +290,7 @@ modules["rebelot/heirline.nvim"] = {
     config = ui_config.heirline_nvim,
 }
 
-modules["is0n/fm-nvim"] = {
+modules["lvim-tech/fm-nvim"] = {
     commit = funcs.get_commit("fm-nvim", plugins_snapshot),
     config = ui_config.fm_nvim,
 }
@@ -542,20 +542,16 @@ modules["danymat/neogen"] = {
     config = editor_config.neogen,
 }
 
-modules["NvChad/nvim-colorizer.lua"] = {
-    commit = funcs.get_commit("nvim-colorizer.lua", plugins_snapshot),
-    event = {
-        "BufRead",
+modules["uga-rosa/ccc.nvim"] = {
+    commit = funcs.get_commit("uga-rosa/ccc.nvim", plugins_snapshot),
+    cmd = {
+        "CccPick",
+        "CccConvert",
+        "CccHighlighterToggle",
+        "CccHighlighterEnable",
+        "CccHighlighterDisable",
     },
-    config = editor_config.nvim_colorize_lua,
-}
-
-modules["ziontee113/color-picker.nvim"] = {
-    commit = funcs.get_commit("color-picker.nvim", plugins_snapshot),
-    event = {
-        "BufRead",
-    },
-    config = editor_config.color_picker_nvim,
+    config = editor_config.ccc_nvim,
 }
 
 modules["lvim-tech/lvim-colorcolumn"] = {
