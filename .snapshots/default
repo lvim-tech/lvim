@@ -35,7 +35,7 @@
   "indent-blankline.nvim": { "branch": "master", "commit": "018bd04d80c9a73d399c1061fa0c3b14a7614399" },
   "lazy.nvim": { "branch": "main", "commit": "5b4444f0d7e556deba3f7ca949a2ba0e2c3369fb" },
   "lsp-inlayhints.nvim": { "branch": "main", "commit": "84ca3abe8aaecbb5b30ad89e4701d4a9c821b72c" },
-  "lvim-colorscheme": { "branch": "main", "commit": "b331b9fa7c0cb353e9d2350bf72d98c8cd6645a0" },
+  "lvim-colorscheme": { "branch": "main", "commit": "ca691cb607a31f82aa6662dc3c8d6744a800f231" },
   "lvim-helper": { "branch": "main", "commit": "327131f36c05bea6b8f168c679df8168e705cf13" },
   "lvim-linguistics": { "branch": "main", "commit": "8b869fd0f8bff0f2e184bb7669cf093cb6b3e867" },
   "lvim-org-utils": { "branch": "main", "commit": "ad029384580c62fe0d1c09f5eb68c7b15d8deeef" },
