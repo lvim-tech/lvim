@@ -9,18 +9,21 @@ function M.get_signs()
 end
 
 function M.statuscolumn()
-    local diagnostic_sign, git_sign
+    local diagnostic_sign, git_sign, dap_sign
     for _, s in ipairs(M.get_signs()) do
         if s.name:find("GitSign") then
             git_sign = s
         elseif s.name:find("Diagnostic") then
             diagnostic_sign = s
+        elseif s.name:find("Dap") then
+            dap_sign = s
         end
     end
     local diagnostic_column = diagnostic_sign
             and ("%#" .. diagnostic_sign.texthl .. "#" .. diagnostic_sign.text:sub(1, -2) .. "%*")
         or " "
     local git_column = git_sign and ("%#" .. git_sign.texthl .. "#" .. git_sign.text:sub(1, -2) .. "%*") or " "
+    local dap_column = dap_sign and ("%#" .. dap_sign.texthl .. "#" .. dap_sign.text:sub(1, -2) .. "%*") or " "
     local number_text = " "
     local number = vim.api.nvim_win_get_option(vim.g.statusline_winid, "number")
     if number and vim.wo.relativenumber and vim.v.virtnum == 0 then
@@ -34,6 +37,7 @@ function M.statuscolumn()
     local columns = {
         diagnostic_column,
         number_column,
+        dap_column,
         git_column,
     }
     return table.concat(columns, "")
