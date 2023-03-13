@@ -481,20 +481,19 @@ config.nvim_dap_ui = function()
         return
     end
     dapui.setup({
-        icons = {
-            expanded = "▾",
-            collapsed = "▸",
-        },
+        icons = { expanded = "", collapsed = "", current_frame = "" },
         mappings = {
-            expand = {
-                "<CR>",
-                "<2-LeftMouse>",
-            },
+            -- Use a table to apply multiple mappings
+            expand = { "<CR>", "<2-LeftMouse>" },
             open = "o",
             remove = "d",
             edit = "e",
             repl = "r",
+            toggle = "t",
         },
+        element_mappings = {},
+        expand_lines = vim.fn.has("nvim-0.7") == 1,
+        force_buffers = true,
         layouts = {
             {
                 elements = {
@@ -504,7 +503,7 @@ config.nvim_dap_ui = function()
                     { id = "watches", size = 0.25 },
                 },
                 size = 0.33,
-                position = "right",
+                position = "left",
             },
             {
                 elements = {
@@ -516,55 +515,61 @@ config.nvim_dap_ui = function()
             },
         },
         floating = {
-            max_height = 0.9,
-            max_width = 0.5, -- Floats will be treated as percentage of your screen.
-            border = vim.g.border_chars, -- Border style. Can be 'single', 'double' or 'rounded'
+            max_height = nil,
+            max_width = nil,
+            border = "single",
             mappings = {
-                close = { "q", "<Esc>" },
+                ["close"] = { "q", "<Esc>" },
             },
-        },
-        windows = {
-            indent = 1,
         },
         controls = {
-            enabled = true,
+            enabled = vim.fn.exists("+winbar") == 1,
             element = "repl",
             icons = {
-                pause = "",
-                play = "",
-                step_over = "",
-                step_into = "",
-                step_back = "",
-                step_out = "",
-                run_last = "",
-                terminate = "",
+                pause = "",
+                play = "",
+                step_into = "",
+                step_over = "",
+                step_out = "",
+                step_back = "",
+                run_last = "",
+                terminate = "",
+                disconnect = "",
             },
         },
+        render = {
+            max_type_length = nil, -- Can be integer or nil.
+            max_value_lines = 100, -- Can be integer or nil.
+            indent = 1,
+        },
     })
-    dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open({})
-    end
-    dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close({})
-    end
-    dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close({})
-    end
     vim.fn.sign_define("DapBreakpoint", {
         text = "",
-        texthl = "",
+        texthl = "DapBreakpoint",
+        linehl = "",
+        numhl = "",
+    })
+    vim.fn.sign_define("DapBreakpointRejected", {
+        text = "a",
+        texthl = "DapBreakpointRejected",
+        linehl = "",
+        numhl = "",
+    })
+    vim.fn.sign_define("DapBreakpointCondition", {
+        text = "b",
+        texthl = "DapBreakpointCondition",
         linehl = "",
         numhl = "",
     })
     vim.fn.sign_define("DapStopped", {
         text = "",
-        texthl = "",
+        texthl = "DapStopped",
         linehl = "",
         numhl = "",
     })
     vim.fn.sign_define("DapLogPoint", {
         text = "▶",
-        texthl = "",
+        texthl = "DapLogPoint",
         linehl = "",
         numhl = "",
     })
@@ -619,6 +624,17 @@ config.nvim_dap_ui = function()
     vim.keymap.set("n", "<A-0>", function()
         dap.repl.toggle()
     end, { noremap = true, silent = true, desc = "DapToggleRepl" })
+    dap.listeners.after.event_initialized["dapui_config"] = function()
+        vim.defer_fn(function()
+            dapui.open()
+        end, 200)
+    end
+    dap.listeners.before.event_terminated["dapui_config"] = function()
+        dapui.close()
+    end
+    dap.listeners.before.event_exited["dapui_config"] = function()
+        dapui.close()
+    end
 end
 
 config.nvim_dap_vscode_js = function()
