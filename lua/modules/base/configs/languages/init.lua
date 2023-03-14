@@ -550,13 +550,13 @@ config.nvim_dap_ui = function()
         numhl = "",
     })
     vim.fn.sign_define("DapBreakpointRejected", {
-        text = "a",
+        text = "",
         texthl = "DapBreakpointRejected",
         linehl = "",
         numhl = "",
     })
     vim.fn.sign_define("DapBreakpointCondition", {
-        text = "b",
+        text = "",
         texthl = "DapBreakpointCondition",
         linehl = "",
         numhl = "",

@@ -37,8 +37,8 @@ function M.statuscolumn()
     local columns = {
         diagnostic_column,
         number_column,
-        dap_column,
         git_column,
+        dap_column,
     }
     return table.concat(columns, "")
 end
