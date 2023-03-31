@@ -342,7 +342,7 @@ config.nvim_lightbulb = function()
     end
     nvim_lightbulb.setup({
         sign = {
-            enabled = true,
+            enabled = false,
             priority = 10,
         },
         virtual_text = {
@@ -354,7 +354,6 @@ config.nvim_lightbulb = function()
             enabled = true,
         },
     })
-    vim.fn.sign_define("LightBulbSign", { text = "", texthl = "LightBulb", linehl = "", numhl = "" })
 end
 
 config.nvim_treesitter = function()
@@ -446,6 +445,40 @@ config.nvim_navic = function()
         separator = " ➤ ",
     })
     vim.g.navic_silence = true
+end
+
+config.nvim_navbuddy = function()
+    local icons = require("configs.base.ui.icons")
+    local nvim_navbuddy_status_ok, nvim_navbuddy = pcall(require, "nvim-navbuddy")
+    if not nvim_navbuddy_status_ok then
+        return
+    end
+    nvim_navbuddy.setup({
+        window = {
+            border = "single",
+            size = "60%",
+            position = "50%",
+            sections = {
+                left = {
+                    size = "33%",
+                    border = nil,
+                },
+                mid = {
+                    size = "34%",
+                    border = nil,
+                },
+                right = {
+                    size = "33%",
+                    border = nil,
+                },
+            },
+        },
+        icons = icons,
+        lsp = { auto_attach = true },
+    })
+    vim.keymap.set("n", "<C-c>v", function()
+        vim.cmd("Navbuddy")
+    end, { noremap = true, silent = true, desc = "Navbuddy" })
 end
 
 config.any_jump_nvim = function()
@@ -711,8 +744,6 @@ config.markdown_preview_nvim = function()
 end
 
 config.vimtex = function()
-    vim.g.vimtex_view_method = "zathura"
-    vim.g.latex_view_general_viewer = "zathura"
     vim.g.vimtex_compiler_progname = "nvr"
     vim.g.vimtex_compiler_callback_compiling = "nvr"
     vim.g.vimtex_quickfix_open_on_warning = 0

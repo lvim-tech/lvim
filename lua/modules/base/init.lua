@@ -595,6 +595,13 @@ modules["renerocksai/calendar-vim"] = {
 
 local version_control_config = require("modules.base.configs.version_control")
 
+modules["wintermute-cell/gitignore.nvim"] = {
+    event = { "BufRead" },
+    dependencies = {
+        "nvim-telescope/telescope.nvim",
+    },
+}
+
 modules["TimUntersberger/neogit"] = {
     commit = funcs.get_commit("neogit", plugins_snapshot),
     dependencies = {
@@ -788,6 +795,16 @@ modules["SmiteshP/nvim-navic"] = {
         "neovim/nvim-lspconfig",
     },
     config = languages_config.nvim_navic,
+}
+
+modules["SmiteshP/nvim-navbuddy"] = {
+    commit = funcs.get_commit("nvim-navbuddy", plugins_snapshot),
+    dependencies = {
+        "neovim/nvim-lspconfig",
+        "SmiteshP/nvim-navic",
+        "MunifTanjim/nui.nvim",
+    },
+    config = languages_config.nvim_navbuddy,
 }
 
 modules["pechorin/any-jump.vim"] = {
