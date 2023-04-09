@@ -8,7 +8,7 @@
 
   * Debug support for c, cpp, cs, dart, elixir, go, haskell, java, javascript/typescript, lua, php, python, ruby, rust, scala
 
-  Current version - 2.7.20 (2023-03-31)
+  Current version - 3.0.00 (2023-04-09)
 
   123 plugins
 
@@ -52,7 +52,7 @@
 
 **  INTRODUCTION
 
-    * Neovim 0.8.0+ (for NEOVIM < 0.8 use branch NEOVIM-0.7)
+    * Neovim 0.9.0+ (for NEOVIM < 0.9 use branch NEOVIM-0.8)
     * Add or remove plugins, rewrite all plugins
     * Add or remove settings, rewrite all settings
     * Dynamic LSP activation
@@ -64,7 +64,7 @@
 
 **  REQUIREMENTS
 
-    * [[https://github.com/neovim/neovim/wiki/Installing-Neovim][neovim >= 0.8.0]]
+    * [[https://github.com/neovim/neovim/wiki/Installing-Neovim][neovim >= 0.9.0]]
     * [[https://github.com/neovim/pynvim][pynvim]]
     * [[https://github.com/mhinz/neovim-remote][neovim-remote]]
     * [[https://nodejs.org/en/][nodejs]]
