@@ -63,6 +63,11 @@ configs["base_lvim"] = function()
         end, "editor")
     end
     vim.api.nvim_create_user_command("LvimAutoFormat", lvim_auto_format, {})
+    vim.api.nvim_create_user_command(
+        "EditorConfigCreate",
+        "lua require'core.funcs'.copy_file(require'core.global'.lvim_path .. '/.configs/templates/.editorconfig', vim.fn.getcwd() .. '/.editorconfig')",
+        {}
+    )
 end
 
 configs["base_options"] = function()

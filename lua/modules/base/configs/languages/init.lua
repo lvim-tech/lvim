@@ -456,7 +456,7 @@ config.nvim_navbuddy = function()
     nvim_navbuddy.setup({
         window = {
             border = "single",
-            size = "60%",
+            size = "80%",
             position = "50%",
             sections = {
                 left = {

@@ -344,11 +344,6 @@ modules["lvim-tech/lvim-helper"] = {
 
 local editor_config = require("modules.base.configs.editor")
 
-modules["gpanders/editorconfig.nvim"] = {
-    commit = funcs.get_commit("editorconfig.nvim", plugins_snapshot),
-    config = editor_config.editorconfig_nvim,
-}
-
 modules["vim-ctrlspace/vim-ctrlspace"] = {
     commit = funcs.get_commit("vim-ctrlspace", plugins_snapshot),
     keys = {

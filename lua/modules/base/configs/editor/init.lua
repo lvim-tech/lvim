@@ -1,13 +1,5 @@
 local config = {}
 
-config.editorconfig_nvim = function()
-    vim.api.nvim_create_user_command(
-        "EditorConfigCreate",
-        "lua require'core.funcs'.copy_file(require'core.global'.lvim_path .. '/.configs/templates/.editorconfig', vim.fn.getcwd() .. '/.editorconfig')",
-        {}
-    )
-end
-
 config.navigator_nvim = function()
     require("Navigator").setup()
     vim.keymap.set("n", "<C-h>", "<CMD>NavigatorLeft<CR>")
