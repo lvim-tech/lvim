@@ -215,7 +215,6 @@ modules["folke/noice.nvim"] = {
         "rcarriga/nvim-notify",
         "hrsh7th/nvim-cmp",
     },
-    cmd = "Noice",
     config = ui_config.noice_nvim,
 }
 
