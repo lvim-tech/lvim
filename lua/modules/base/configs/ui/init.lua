@@ -1233,13 +1233,8 @@ config.which_key_nvim = function()
             },
         },
     }
-    local vmappings = {
-        ["/"] = { ":CommentToggle<CR>", "Comment" },
-        f = { "<Cmd>LspRangeFormatting<CR>", "Range formatting" },
-    }
     which_key.setup(options)
     which_key.register(nmappings, nopts)
-    which_key.register(vmappings, vopts)
 end
 
 config.heirline_nvim = function()
