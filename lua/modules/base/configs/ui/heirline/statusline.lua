@@ -59,7 +59,7 @@ local file_flags = {
     {
         provider = function()
             if vim.bo.modified then
-                return "  "
+                return "   "
             end
         end,
         hl = { fg = common.theme_colors.red_01 },
@@ -67,7 +67,7 @@ local file_flags = {
     {
         provider = function()
             if not vim.bo.modifiable or vim.bo.readonly then
-                return "  "
+                return "   "
             end
         end,
         hl = { fg = common.theme_colors.red_01 },
@@ -90,7 +90,7 @@ local git = {
     hl = { fg = common.theme_colors.orange_02 },
     {
         provider = function(self)
-            return "   " .. self.status_dict.head .. " "
+            return "  " .. self.status_dict.head .. " "
         end,
         hl = { bold = true },
     },
