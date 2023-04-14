@@ -179,7 +179,5 @@ return {
     signs,
     common.align,
     line_numbers,
-    common.space,
     git_signs,
-    common.space,
 }
