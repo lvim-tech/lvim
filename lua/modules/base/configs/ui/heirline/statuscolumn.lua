@@ -74,7 +74,7 @@ local signs = {
         if self.has_sign then
             return vim.fn.sign_getdefined(self.sign.name)[1].text
         end
-        return " "
+        return "  "
     end,
     hl = function(self)
         if self.has_sign then
@@ -179,5 +179,7 @@ return {
     signs,
     common.align,
     line_numbers,
+    common.space,
     git_signs,
+    common.space,
 }
