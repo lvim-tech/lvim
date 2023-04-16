@@ -9,6 +9,12 @@ local group = vim.api.nvim_create_augroup("LvimIDE", {
 local configs = {}
 
 configs["base_lvim"] = function()
+    vim.api.nvim_create_autocmd("OptionSet", {
+        callback = function()
+            vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
+        end,
+        group = group,
+    })
     local function lvim_theme()
         local select = require("lvim-ui-config.select")
         local status
