@@ -5,6 +5,7 @@ local M = {}
 M.global = function()
     vim.opt.termguicolors = true
     vim.opt.mouse = "nv"
+    vim.opt.mousemodel = "extend"
     vim.opt.errorbells = true
     vim.opt.visualbell = true
     vim.opt.hidden = true
