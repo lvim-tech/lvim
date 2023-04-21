@@ -891,11 +891,23 @@ config.neo_tree_nvim = function()
             winbar = true,
             separator = "",
             content_layout = "center",
-            tab_labels = {
-                filesystem = "  DIR  ",
-                buffers = "  BUF  ",
-                git_status = " GIT  ",
-                diagnostics = "  LSP  ",
+            sources = {
+                {
+                    source = "filesystem",
+                    display_name = "  DIR  ",
+                },
+                {
+                    source = "buffers",
+                    display_name = "  BUF  ",
+                },
+                {
+                    source = "git_status",
+                    display_name = " GIT  ",
+                },
+                {
+                    source = "diagnostics",
+                    display_name = "  LSP  ",
+                },
             },
         },
         default_component_configs = {
