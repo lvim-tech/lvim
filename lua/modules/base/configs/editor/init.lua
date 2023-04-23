@@ -209,7 +209,24 @@ config.rg_nvim = function()
 end
 
 config.neocomposer_nvim = function()
-    require("NeoComposer").setup()
+    local neocomposer_status_ok, neocomposer = pcall(require, "NeoComposer")
+    if not neocomposer_status_ok then
+        return
+    end
+    neocomposer.setup({
+        notify = false,
+        status_bg = "none",
+        preview_fg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].teal_01,
+        keymaps = {
+            play_macro = "Q",
+            yank_macro = "yq",
+            stop_macro = "cq",
+            toggle_record = "q",
+            cycle_next = "<m-n>",
+            cycle_prev = "<m-p>",
+            toggle_macro_menu = "<m-q>",
+        },
+    })
 end
 
 config.nvim_hlslens = function()
