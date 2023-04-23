@@ -474,12 +474,12 @@ config.dial_nvim = function()
     vim.keymap.set("v", "g<C-x>", "<Plug>(dial-decrement)", { noremap = true, silent = true, desc = "Dial Decrement" })
 end
 
-config.nvim_gomove = function()
-    local gomove_status_ok, gomove = pcall(require, "gomove")
-    if not gomove_status_ok then
+config.lvim_move = function()
+    local lvim_move_status_ok, lvim_move = pcall(require, "lvim-move")
+    if not lvim_move_status_ok then
         return
     end
-    gomove.setup()
+    lvim_move.setup()
 end
 
 config.nvim_treesitter_context = function()

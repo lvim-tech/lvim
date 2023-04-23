@@ -399,6 +399,15 @@ modules["winston0410/rg.nvim"] = {
     config = editor_config.rg_nvim,
 }
 
+modules["ecthelionvi/NeoComposer.nvim"] = {
+    commit = funcs.get_commit("NeoComposer.nvim", plugins_snapshot),
+    dependencies = { "kkharji/sqlite.lua" },
+    event = {
+        "BufRead",
+    },
+    config = editor_config.neocomposer_nvim,
+}
+
 modules["kevinhwang91/nvim-hlslens"] = {
     commit = funcs.get_commit("nvim-hlslens", plugins_snapshot),
     event = {
@@ -448,12 +457,12 @@ modules["monaqa/dial.nvim"] = {
     config = editor_config.dial_nvim,
 }
 
-modules["booperlv/nvim-gomove"] = {
-    commit = funcs.get_commit("nvim-gomove", plugins_snapshot),
+modules["lvim-tech/lvim-move"] = {
+    commit = funcs.get_commit("lvim-move", plugins_snapshot),
     event = {
         "BufRead",
     },
-    config = editor_config.nvim_gomove,
+    config = editor_config.lvim_move,
 }
 
 modules["nvim-treesitter/nvim-treesitter-context"] = {
