@@ -86,6 +86,7 @@ config.telescope_nvim = function()
             file_browser = {},
         },
     })
+    telescope.load_extension("macros")
     telescope.load_extension("fzf")
     telescope.load_extension("file_browser")
     telescope.load_extension("tmux")
@@ -205,6 +206,10 @@ config.rg_nvim = function()
             binding = "tr",
         },
     })
+end
+
+config.neocomposer_nvim = function()
+    require("NeoComposer").setup()
 end
 
 config.nvim_hlslens = function()

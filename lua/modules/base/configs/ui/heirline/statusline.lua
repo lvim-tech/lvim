@@ -127,20 +127,9 @@ local git = {
 
 local macro_rec = {
     condition = function()
-        return vim.fn.reg_recording() ~= "" and vim.o.cmdheight == 0
+        return require("NeoComposer.state")
     end,
-    provider = " ",
-    hl = { fg = common.theme_colors.red_02, bold = true },
-    common.heirline_utils.surround({ "[", "]" }, nil, {
-        provider = function()
-            return vim.fn.reg_recording()
-        end,
-        hl = { fg = common.theme_colors.green_02 },
-    }),
-    update = {
-        "RecordingEnter",
-        "RecordingLeave",
-    },
+    provider = require("NeoComposer.ui").status_recording,
 }
 
 local diagnostics = {
