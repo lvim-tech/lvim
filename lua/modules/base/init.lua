@@ -927,6 +927,7 @@ modules["hrsh7th/nvim-cmp"] = {
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
         "kdheepak/cmp-latex-symbols",
+        "hrsh7th/cmp-cmdline",
     },
     event = {
         "InsertEnter",

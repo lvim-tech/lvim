@@ -110,6 +110,12 @@ config.nvim_cmp = function()
             },
         },
     })
+    cmp.setup.cmdline(":", {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+            { name = "cmdline" },
+        },
+    })
 end
 
 config.nvim_autopairs = function()

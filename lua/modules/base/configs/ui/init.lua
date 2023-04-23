@@ -252,7 +252,7 @@ config.noice_nvim = function()
     noice.setup({
         cmdline = {
             enabled = true,
-            view = "cmdline_popup",
+            view = "cmdline",
             opts = { buf_options = { filetype = "vim" } },
             format = {
                 cmdline = { pattern = "^:", icon = "", lang = "vim" },
@@ -534,7 +534,7 @@ config.noice_nvim = function()
                 enter = false,
                 zindex = 60,
                 position = {
-                    row = "50%",
+                    row = "90%",
                     col = "50%",
                 },
                 size = {
@@ -586,8 +586,11 @@ config.noice_nvim = function()
         },
         routes = {
             {
-                view = "cmdline_popup",
-                filter = { event = "cmdline" },
+                view = "cmdline",
+                filter = {
+                    event = "cmdline",
+                    find = "^%s*[/?]",
+                },
             },
             {
                 view = "confirm",
