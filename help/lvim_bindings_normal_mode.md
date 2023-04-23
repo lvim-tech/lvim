@@ -56,6 +56,10 @@
 | `<A-[>`          | `:GitSignsPrevHunk<CR>`           | Git signs prev hunk                   |
 | `<A-;>`          | `:GitSignsPreviewHunk<CR>`        | Git signs preview hunk                |
 | `<A-s>`          | `:Spectre<CR>`                    | Replace in multiple files             |
+| `<A-j>`          | `LvimMoveDownN`                   | Move line down                        |
+| `<A-k>`          | `LvimMoveUpN`                     | Move line up                          |
+| `<A-h>`          | `LvimMoveLeftN`                   | Move line left                        |
+| `<A-l>`          | `LvimMoveRightN`                  | Move line right                       |
 | `gw`             | `:WindowPicker<CR>`               | Window picker                         |
 | `<C-c><C-l>`     | `:DAPLocal<CR>`                   | DAP local config                      |
 | `dc`             | `:LspShowDiagnosticCurrent<CR>`   | Lsp show diagnostic current           |
