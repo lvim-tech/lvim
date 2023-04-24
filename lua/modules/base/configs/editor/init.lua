@@ -215,16 +215,16 @@ config.neocomposer_nvim = function()
     end
     neocomposer.setup({
         notify = false,
-        status_bg = "none",
-        preview_fg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].teal_01,
+        colors = {
+            bg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
+            fg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].teal_01,
+            red = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].red_02,
+            blue = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].blue_02,
+            green = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].green_02,
+        },
         keymaps = {
-            play_macro = "Q",
-            yank_macro = "yq",
-            stop_macro = "cq",
-            toggle_record = "q",
             cycle_next = "<m-n>",
             cycle_prev = "<m-p>",
-            toggle_macro_menu = "<m-q>",
         },
     })
 end
