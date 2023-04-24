@@ -113,7 +113,15 @@ config.nvim_cmp = function()
     cmp.setup.cmdline(":", {
         mapping = cmp.mapping.preset.cmdline(),
         sources = {
-            { name = "cmdline" },
+            {
+                name = "cmdline",
+            },
+            {
+                name = "buffer",
+            },
+            {
+                name = "path",
+            },
         },
     })
 end
