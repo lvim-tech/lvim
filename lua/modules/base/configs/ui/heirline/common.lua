@@ -37,6 +37,7 @@ local filetype = {
     "neo-tree",
     "neo-tree-popup",
     "noice",
+    "toggleterm",
 }
 
 local vi_mode = {
