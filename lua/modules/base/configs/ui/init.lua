@@ -387,7 +387,7 @@ config.noice_nvim = function()
             bottom_search = false,
             command_palette = false,
             long_message_to_split = false,
-            inc_rename = true,
+            inc_rename = false,
             lsp_doc_border = false,
         },
         views = {

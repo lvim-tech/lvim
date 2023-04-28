@@ -101,6 +101,9 @@ config.gitsigns_nvim = function()
 end
 
 config.git_blame_nvim = function()
+    vim.g.gitblame_message_when_not_committed = "➤ Not committed yet"
+    vim.g.gitblame_date_format = "%r"
+    vim.g.gitblame_message_template = "➤ <summary> ➤ <date> ➤ <author>"
     vim.g.gitblame_ignored_filetypes = {
         "help",
         "Outline",
