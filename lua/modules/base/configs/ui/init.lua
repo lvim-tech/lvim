@@ -93,6 +93,7 @@ config.nui_nvim = function()
             end, { noremap = true, nowait = true })
         end
         local input_ui
+        ---@diagnostic disable-next-line: duplicate-set-field
         vim.ui.input = function(opts, on_confirm)
             assert(type(on_confirm) == "function", "missing on_confirm function")
             if input_ui then
@@ -176,6 +177,7 @@ config.nui_nvim = function()
             end, { once = true })
         end
         local select_ui = nil
+        ---@diagnostic disable-next-line: duplicate-set-field
         vim.ui.select = function(items, opts, on_choice)
             assert(type(on_choice) == "function", "missing on_choice function")
             if select_ui then
