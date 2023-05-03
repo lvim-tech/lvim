@@ -38,6 +38,7 @@ local filetype = {
     "neo-tree-popup",
     "noice",
     "toggleterm",
+    "LvimShell",
 }
 
 local vi_mode = {

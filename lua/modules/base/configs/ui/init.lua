@@ -1280,28 +1280,44 @@ config.heirline_nvim = function()
     })
 end
 
-config.fm_nvim = function()
-    local fm_nvim_status_ok, fm_nvim = pcall(require, "fm-nvim")
-    if not fm_nvim_status_ok then
+config.lvim_shell = function()
+    local lvim_shell_status_ok, lvim_shell = pcall(require, "lvim-shell")
+    if not lvim_shell_status_ok then
         return
     end
-    fm_nvim.setup({
-        ui = {
-            float = {
-                border = { " ", " ", " ", " ", " ", " ", " ", " " },
-                float_hl = "NormalFloat",
-                border_hl = "FloatBorder",
-                height = 0.95,
-                width = 0.99,
-            },
-        },
-        cmds = {
-            vifm_cmd = "vifmrun",
-        },
-    })
-    vim.keymap.set("n", "<C-c>f", function()
+    local file_managers = { "Ranger", "Vifm", "Lazygit" }
+    local executable = vim.fn.executable
+    for _, fm in ipairs(file_managers) do
+        if executable(vim.fn.tolower(fm)) == 1 then
+            vim.cmd(
+                "command! -nargs=? -complete=dir "
+                    .. fm
+                    .. " :lua require('modules.base.configs.ui.fm')."
+                    .. fm
+                    .. "(<f-args>)"
+            )
+        end
+    end
+    vim.keymap.set("n", "<C-c>fv", function()
         vim.cmd("Vifm")
     end, { noremap = true, silent = true, desc = "Vifm" })
+    vim.keymap.set("n", "<C-c>fr", function()
+        vim.cmd("Ranger")
+    end, { noremap = true, silent = true, desc = "Ranger" })
+end
+
+config.lvim_fm = function()
+    local lvim_fm_status_ok, lvim_fm = pcall(require, "lvim-fm")
+    if not lvim_fm_status_ok then
+        return
+    end
+    lvim_fm.setup()
+    vim.keymap.set(
+        "n",
+        "<leader>r",
+        ":LvimFileManager<CR>",
+        { noremap = true, silent = true, desc = "LvimFileManager" }
+    )
 end
 
 config.toggleterm_nvim = function()

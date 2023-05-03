@@ -289,10 +289,17 @@ modules["rebelot/heirline.nvim"] = {
     config = ui_config.heirline_nvim,
 }
 
-modules["lvim-tech/fm-nvim"] = {
-    commit = funcs.get_commit("fm-nvim", plugins_snapshot),
-    branch = "lvim",
-    config = ui_config.fm_nvim,
+modules["lvim-tech/lvim-shell"] = {
+    commit = funcs.get_commit("lvim-shell", plugins_snapshot),
+    config = ui_config.lvim_shell,
+}
+
+modules["lvim-tech/lvim-fm"] = {
+    commit = funcs.get_commit("lvim-fm", plugins_snapshot),
+    dependencies = {
+        "lvim-tech/lvim-shell",
+    },
+    config = ui_config.lvim_fm,
 }
 
 modules["akinsho/toggleterm.nvim"] = {
