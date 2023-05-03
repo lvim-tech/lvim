@@ -5,6 +5,7 @@
 | Key              | Action                            | Description                           |
 | ---------------- | --------------------------------- | ------------------------------------- |
 | `<space><space>` | `:CtrlSpace<CR>`                  | CtrlSpace                             |
+| `<space>r`       | `:LvimFileManager<CR>`            | LvimFileManager                       |
 | `<F1>`           | `:TTOne<CR>`                      | Toggleterm one open                   |
 | `<F2>`           | `:TTTwo<CR>`                      | Toggleterm two open                   |
 | `<F3>`           | `:TTThree<CR>`                    | Toggleterm three open                 |
@@ -28,7 +29,8 @@
 | `<C-p>`          | `:BufSurfBack<CR>`                | Bprev buffer                          |
 | `<C-c>b`         | `:GitBlameToggle<CR>`             | GitBlame toggle                       |
 | `<C-space>`      | `:NeoZoom<CR>`                    | Zoom toggle                           |
-| `<C-c>f`         | `:Vifm<CR>`                       | Vifm                                  |
+| `<C-c>fv`        | `:Vifm<CR>`                       | Vifm                                  |
+| `<C-c>fr`        | `:Ranger<CR>`                     | Ranger                                |
 | `<C-c>w`         | `:WinShift`                       | WinShift                              |
 | `<C-h>`          | `<C-w>h`                          | Move to window left                   |
 | `<C-l>`          | `<C-w>l`                          | Move to window right                  |
