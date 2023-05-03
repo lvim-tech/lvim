@@ -1060,14 +1060,6 @@ config.which_key_nvim = function()
         noremap = true,
         nowait = true,
     }
-    local vopts = {
-        mode = "v",
-        prefix = "<leader>",
-        buffer = nil,
-        silent = true,
-        noremap = true,
-        nowait = true,
-    }
     local nmappings = {
         a = { ":e $HOME/.config/nvim/README.org<CR>", "Open README file" },
         b = {
@@ -1281,10 +1273,6 @@ config.heirline_nvim = function()
 end
 
 config.lvim_shell = function()
-    local lvim_shell_status_ok, lvim_shell = pcall(require, "lvim-shell")
-    if not lvim_shell_status_ok then
-        return
-    end
     local file_managers = { "Ranger", "Vifm", "Lazygit" }
     local executable = vim.fn.executable
     for _, fm in ipairs(file_managers) do
@@ -1341,7 +1329,6 @@ config.toggleterm_nvim = function()
             vim.wo.cursorcolumn = false
             vim.wo.cursorline = false
             vim.cmd("startinsert!")
-            vim.api.nvim_exec([[exe "normal \<C-W>\="]], true)
         end,
         on_close = function()
             vim.cmd("quit!")
@@ -1363,7 +1350,6 @@ config.toggleterm_nvim = function()
             vim.wo.cursorcolumn = false
             vim.wo.cursorline = false
             vim.cmd("startinsert!")
-            vim.api.nvim_exec([[exe "normal \<C-W>\="]], true)
         end,
         on_close = function()
             vim.cmd("quit!")
@@ -1385,7 +1371,6 @@ config.toggleterm_nvim = function()
             vim.wo.cursorcolumn = false
             vim.wo.cursorline = false
             vim.cmd("startinsert!")
-            vim.api.nvim_exec([[exe "normal \<C-W>\="]], true)
         end,
         on_close = function()
             vim.cmd("quit!")

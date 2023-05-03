@@ -109,8 +109,8 @@ local vi_mode = {
         return "   %(" .. self.mode_names[self.mode] .. "%)  "
     end,
     hl = function(self)
-        mode = self.mode:sub(1, 1)
-        return { bg = self.mode_colors[mode], fg = theme_colors.bg_01, bold = true }
+        _G.LVIM_SETTINGS.mode = self.mode:sub(1, 1)
+        return { bg = self.mode_colors[self.mode:sub(1, 1)], fg = theme_colors.bg_01, bold = true }
     end,
     update = {
         "ModeChanged",
@@ -121,9 +121,9 @@ local vi_mode = {
 }
 local file_type = {
     provider = function()
-        local filetype = vim.bo.filetype
-        if filetype ~= "" then
-            return "  " .. string.upper(filetype)
+        local file_type = vim.bo.filetype
+        if file_type ~= "" then
+            return "  " .. string.upper(file_type)
         end
     end,
     hl = { fg = theme_colors.orange_02, bold = true },
@@ -142,7 +142,7 @@ local file_icon = {
     end,
     hl = function()
         return {
-            fg = vi_mode.static.mode_colors[mode],
+            fg = vi_mode.static.mode_colors[_G.LVIM_SETTINGS.mode],
             bold = true,
         }
     end,
