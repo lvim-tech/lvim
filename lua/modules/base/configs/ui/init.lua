@@ -1319,15 +1319,14 @@ config.toggleterm_nvim = function()
         count = 1,
         direction = "horizontal",
         on_open = function(term)
-            vim.api.nvim_buf_set_keymap(term.bufnr, "n", "<Esc>", "<cmd>close<cr>", { noremap = true, silent = true })
-            vim.api.nvim_buf_set_keymap(
-                term.bufnr,
+            vim.keymap.set("n", "<Esc>", "<cmd>close<CR>", { buffer = term.buf, noremap = true, silent = true })
+            vim.keymap.set(
                 "t",
                 "<Esc>",
-                "<c-\\><c-n><cmd>close<cr><c-w><c-p>",
-                { noremap = true, silent = true }
+                "<C-\\><C-n><cmd>close<CR><C-w><C-p>",
+                { buffer = term.buf, noremap = true, silent = true }
             )
-            vim.api.nvim_buf_set_keymap(term.bufnr, "t", "<C-x>", "<c-\\><c-n>", { noremap = true, silent = true })
+            vim.keymap.set("t", "<C-x>", "<C-\\><C-n>", { buffer = term.buf, noremap = true, silent = true })
             vim.wo.cursorcolumn = false
             vim.wo.cursorline = false
             vim.cmd("startinsert!")
@@ -1340,15 +1339,14 @@ config.toggleterm_nvim = function()
         count = 2,
         direction = "horizontal",
         on_open = function(term)
-            vim.api.nvim_buf_set_keymap(term.bufnr, "n", "<Esc>", "<cmd>close<cr>", { noremap = true, silent = true })
-            vim.api.nvim_buf_set_keymap(
-                term.bufnr,
+            vim.keymap.set("n", "<Esc>", "<cmd>close<CR>", { buffer = term.buf, noremap = true, silent = true })
+            vim.keymap.set(
                 "t",
                 "<Esc>",
-                "<c-\\><c-n><cmd>close<cr><c-w><c-p>",
-                { noremap = true, silent = true }
+                "<C-\\><C-n><cmd>close<CR><C-w><C-p>",
+                { buffer = term.buf, noremap = true, silent = true }
             )
-            vim.api.nvim_buf_set_keymap(term.bufnr, "t", "<C-x>", "<c-\\><c-n>", { noremap = true, silent = true })
+            vim.keymap.set("t", "<C-x>", "<C-\\><C-n>", { buffer = term.buf, noremap = true, silent = true })
             vim.wo.cursorcolumn = false
             vim.wo.cursorline = false
             vim.cmd("startinsert!")
@@ -1361,15 +1359,14 @@ config.toggleterm_nvim = function()
         count = 3,
         direction = "horizontal",
         on_open = function(term)
-            vim.api.nvim_buf_set_keymap(term.bufnr, "n", "<Esc>", "<cmd>close<cr>", { noremap = true, silent = true })
-            vim.api.nvim_buf_set_keymap(
-                term.bufnr,
+            vim.keymap.set("n", "<Esc>", "<cmd>close<CR>", { buffer = term.buf, noremap = true, silent = true })
+            vim.keymap.set(
                 "t",
                 "<Esc>",
-                "<c-\\><c-n><cmd>close<cr><c-w><c-p>",
-                { noremap = true, silent = true }
+                "<C-\\><C-n><cmd>close<CR><C-w><C-p>",
+                { buffer = term.buf, noremap = true, silent = true }
             )
-            vim.api.nvim_buf_set_keymap(term.bufnr, "t", "<C-x>", "<c-\\><c-n>", { noremap = true, silent = true })
+            vim.keymap.set("t", "<C-x>", "<C-\\><C-n>", { buffer = term.buf, noremap = true, silent = true })
             vim.wo.cursorcolumn = false
             vim.wo.cursorline = false
             vim.cmd("startinsert!")
@@ -1392,14 +1389,14 @@ config.toggleterm_nvim = function()
             },
         },
         on_open = function(term)
-            vim.api.nvim_buf_set_keymap(term.bufnr, "n", "<Esc>", "<cmd>close<cr>", { noremap = true, silent = true })
-            vim.api.nvim_buf_set_keymap(
-                term.bufnr,
+            vim.keymap.set("n", "<Esc>", "<cmd>close<CR>", { buffer = term.buf, noremap = true, silent = true })
+            vim.keymap.set(
                 "t",
                 "<Esc>",
-                "<c-\\><c-n><cmd>close<cr><c-w><c-p>",
-                { noremap = true }
+                "<C-\\><C-n><cmd>close<CR><C-w><C-p>",
+                { buffer = term.buf, noremap = true, silent = true }
             )
+            vim.keymap.set("t", "<C-x>", "<C-\\><C-n>", { buffer = term.buf, noremap = true, silent = true })
             vim.wo.cursorcolumn = false
             vim.wo.cursorline = false
             vim.cmd("startinsert!")
