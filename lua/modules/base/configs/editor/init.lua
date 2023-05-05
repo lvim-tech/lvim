@@ -235,6 +235,7 @@ config.nvim_hlslens = function()
         return
     end
     hlslens.setup({
+        nearest_float_when = false,
         override_lens = function(render, posList, nearest, idx, relIdx)
             local sfw = vim.v.searchforward == 1
             local indicator, text, chunks
