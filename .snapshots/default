@@ -37,7 +37,7 @@
   "lazy.nvim": { "branch": "main", "commit": "83a625f5c884a3ceee821ce54a812c8321ecba31" },
   "lsp-inlayhints.nvim": { "branch": "main", "commit": "62c7b8dd8ac9933b071912fe3c789ef2cb704672" },
   "lvim-colorscheme": { "branch": "main", "commit": "db11162eba8f109f7e4f1568f154650240559f04" },
-  "lvim-fm": { "branch": "main", "commit": "fb46426ad38c0ff9eb320893697571b099617322" },
+  "lvim-fm": { "branch": "main", "commit": "be62296272de2193227609ffbd3b772527630b35" },
   "lvim-helper": { "branch": "main", "commit": "327131f36c05bea6b8f168c679df8168e705cf13" },
   "lvim-linguistics": { "branch": "main", "commit": "8b869fd0f8bff0f2e184bb7669cf093cb6b3e867" },
   "lvim-move": { "branch": "main", "commit": "75c74afcd6dfe36ab7a8b88086eec00a2902e1a5" },
