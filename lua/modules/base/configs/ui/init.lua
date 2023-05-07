@@ -1275,25 +1275,31 @@ config.heirline_nvim = function()
 end
 
 config.lvim_shell = function()
-    local file_managers = { "Ranger", "Vifm", "Lazygit" }
+    local file_managers = { "Ranger", "Vifm" }
     local executable = vim.fn.executable
     for _, fm in ipairs(file_managers) do
         if executable(vim.fn.tolower(fm)) == 1 then
             vim.cmd(
                 "command! -nargs=? -complete=dir "
                     .. fm
-                    .. " :lua require('modules.base.configs.ui.fm')."
+                    .. " :lua require('modules.base.configs.ui.shell')."
                     .. fm
                     .. "(<f-args>)"
             )
         end
     end
-    vim.keymap.set("n", "<C-c>fv", function()
-        vim.cmd("Vifm")
-    end, { noremap = true, silent = true, desc = "Vifm" })
+    if executable("lazygit") == 1 then
+        vim.cmd("command! Lazygit :lua require('modules.base.configs.ui.shell').Lazygit()(<f-args>)")
+    end
+    if executable("lazydocker") == 1 then
+        vim.cmd("command! Lazydocker :lua require('modules.base.configs.ui.shell').Lazydocker()")
+    end
     vim.keymap.set("n", "<C-c>fr", function()
         vim.cmd("Ranger")
     end, { noremap = true, silent = true, desc = "Ranger" })
+    vim.keymap.set("n", "<C-c>fv", function()
+        vim.cmd("Vifm")
+    end, { noremap = true, silent = true, desc = "Vifm" })
 end
 
 config.lvim_fm = function()

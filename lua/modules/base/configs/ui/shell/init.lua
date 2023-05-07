@@ -14,7 +14,11 @@ end
 
 M.Lazygit = function(dir)
     dir = dir or "."
-    lvim_shell.float("lazygit -w " .. dir, "e")
+    lvim_shell.float("lazygit -w " .. dir, "<CR>")
+end
+
+M.Lazydocker = function()
+    lvim_shell.float("lazydocker", "<CR>")
 end
 
 return M
