@@ -300,4 +300,32 @@ M.ember_config = function(file_types)
     }
 end
 
+M.yaml_config = function(file_types)
+    return {
+        flags = {
+            debounce_text_changes = default_debouce_time,
+        },
+        autostart = true,
+        filetypes = file_types,
+        on_attach = function(client, bufnr)
+            languages_setup.keymaps(client, bufnr)
+            languages_setup.omni(client, bufnr)
+            languages_setup.tag(client, bufnr)
+            languages_setup.document_highlight(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                navic.attach(client, bufnr)
+            end
+        end,
+        settings = {
+            yaml = {
+                keyOrdering = false,
+            },
+        },
+        capabilities = languages_setup.get_capabilities(),
+        root_dir = function(fname)
+            return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
+        end,
+    }
+end
+
 return M
