@@ -769,6 +769,7 @@ config.alpha_nvim = function()
         pattern = "LazyVimStarted",
         callback = function()
             alpha_themes_dashboard.section.footer.val = footer()
+            pcall(vim.cmd.AlphaRedraw)
         end,
     })
 end
