@@ -299,6 +299,7 @@ modules["lvim-tech/lvim-fm"] = {
     dependencies = {
         "lvim-tech/lvim-shell",
     },
+    event = "BufRead",
     config = ui_config.lvim_fm,
 }
 
@@ -644,6 +645,15 @@ modules["sindrets/diffview.nvim"] = {
     commit = funcs.get_commit("diffview.nvim", plugins_snapshot),
     event = "BufRead",
     config = version_control_config.diffview_nvim,
+}
+
+modules["lvim-tech/lvim-forgit"] = {
+    commit = funcs.get_commit("lvim-forgit", plugins_snapshot),
+    dependencies = {
+        "lvim-tech/lvim-shell",
+    },
+    event = "BufRead",
+    config = version_control_config.lvim_forgit,
 }
 
 modules["pwntester/octo.nvim"] = {

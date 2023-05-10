@@ -143,6 +143,17 @@ config.diffview_nvim = function()
     })
 end
 
+config.lvim_forgit = function()
+    local lvim_forgit_status_ok, lvim_forgit = pcall(require, "lvim-forgit")
+    if not lvim_forgit_status_ok then
+        return
+    end
+    lvim_forgit.setup()
+    vim.keymap.set("n", "<C-c>ff", function()
+        vim.cmd("LvimForgit")
+    end, { noremap = true, silent = true, desc = "LvimForgit" })
+end
+
 config.octo_nvim = function()
     local octo_status_ok, octo = pcall(require, "octo")
     if not octo_status_ok then
