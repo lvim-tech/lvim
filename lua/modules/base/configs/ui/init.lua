@@ -1325,7 +1325,7 @@ config.toggleterm_nvim = function()
     local terminal_one = toggleterm_terminal.Terminal:new({
         count = 1,
         direction = "horizontal",
-        on_open = function(term)
+        on_open = function()
             vim.keymap.set("n", "<C-q>", "<cmd>close<CR>", { buffer = true, noremap = true, silent = true })
             vim.keymap.set(
                 "t",
@@ -1345,7 +1345,7 @@ config.toggleterm_nvim = function()
     local terminal_two = toggleterm_terminal.Terminal:new({
         count = 2,
         direction = "horizontal",
-        on_open = function(term)
+        on_open = function()
             vim.keymap.set("n", "<C-q>", "<cmd>close<CR>", { buffer = true, noremap = true, silent = true })
             vim.keymap.set(
                 "t",
@@ -1365,7 +1365,7 @@ config.toggleterm_nvim = function()
     local terminal_three = toggleterm_terminal.Terminal:new({
         count = 3,
         direction = "horizontal",
-        on_open = function(term)
+        on_open = function()
             vim.keymap.set("n", "<C-q>", "<cmd>close<CR>", { buffer = true, noremap = true, silent = true })
             vim.keymap.set(
                 "t",
@@ -1395,7 +1395,7 @@ config.toggleterm_nvim = function()
                 background = "NormalFloat",
             },
         },
-        on_open = function(term)
+        on_open = function()
             vim.keymap.set("n", "<C-q>", "<cmd>close<CR>", { buffer = true, noremap = true, silent = true })
             vim.keymap.set(
                 "t",

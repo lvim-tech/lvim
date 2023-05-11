@@ -136,6 +136,7 @@ local git_signs = {
             return conditions.is_git_repo() and vim.v.virtnum == 0
         end,
         init = function(self)
+            ---@diagnostic disable-next-line: redefined-local
             local signs = vim.fn.sign_getplaced(vim.api.nvim_get_current_buf(), {
                 group = "gitsigns_vimfn_signs_",
                 id = vim.v.lnum,
