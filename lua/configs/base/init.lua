@@ -64,8 +64,10 @@ configs["base_lvim"] = function()
         }, { prompt = "AutoFormat (" .. status .. ")" }, function(choice)
             if choice == "Enable" then
                 _G.LVIM_SETTINGS.autoformat = true
+                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
             elseif choice == "Disable" then
                 _G.LVIM_SETTINGS.autoformat = false
+                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
             end
         end, "editor")
     end
