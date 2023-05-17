@@ -1308,7 +1308,14 @@ config.lvim_fm = function()
     if not lvim_fm_status_ok then
         return
     end
-    lvim_fm.setup()
+    lvim_fm.setup({
+        ui = {
+            float = {
+                float_hl = "NormalFloat",
+                border_hl = "FloatBorder",
+            },
+        },
+    })
     vim.keymap.set(
         "n",
         "<leader>r",
