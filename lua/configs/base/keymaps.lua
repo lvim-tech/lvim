@@ -4,6 +4,11 @@ keymaps["normal"] = {
     { "<Esc>", "<Esc>:noh<CR>" }, -- Remove highlight after search
     { "j", "gj" }, -- Re-map j
     { "k", "gk" }, -- Re-map k
+    { "<C-d>", "<C-d>zz" }, -- Re-map C-d
+    { "<C-u>", "<C-u>zz" }, -- Re-map C-u
+    { "<C-f>", "<C-f>zz" }, -- Re-map C-f
+    { "<C-b>", "<C-b>zz" }, -- Re-map C-b
+    { "<C-q>", "<Esc>" }, -- Re-map C-q
     { "<C-c>n", ":enew<CR>" }, -- Create empty buffer
     { "<C-c>s", ":Save<CR>" }, -- Save
     { "<C-c>a", ":wa<CR>" }, -- Save all
