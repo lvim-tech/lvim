@@ -8,9 +8,9 @@
 
   * Debug support for c, cpp, cs, dart, elixir, go, haskell, java, javascript/typescript, lua, php, python, ruby, rust, scala
 
-  Current version - 3.1.00 (2023-05-10)
+  Current version - 3.1.12 (2023-05-19)
 
-  127 plugins
+  128 plugins
 
 **  SCREENSHOTS
 
