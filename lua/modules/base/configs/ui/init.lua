@@ -1210,7 +1210,6 @@ config.which_key_nvim = function()
             m = { "<Cmd>Telescope marks<CR>", "Marks" },
             o = { "<Cmd>Telescope commands<CR>", "Commands" },
             t = { "<Cmd>Telescope tmux sessions<CR>", "Tmux" },
-            y = { "<Cmd>Telescope symbols<CR>", "Symbols" },
             q = { "<Cmd>Telescope quickfix<CR>", "Quickfix" },
             g = {
                 name = "Git",
