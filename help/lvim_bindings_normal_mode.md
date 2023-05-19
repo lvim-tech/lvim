@@ -31,6 +31,7 @@
 | `<C-space>`      | `:NeoZoom<CR>`                    | Zoom toggle                           |
 | `<C-c>fv`        | `:Vifm<CR>`                       | Vifm                                  |
 | `<C-c>fr`        | `:Ranger<CR>`                     | Ranger                                |
+| `<C-c>fg`        | `:LvimForgit<CR>`                 | LvimForgit                            |
 | `<C-c>w`         | `:WinShift`                       | WinShift                              |
 | `<C-h>`          | `<C-w>h`                          | Move to window left                   |
 | `<C-l>`          | `<C-w>l`                          | Move to window right                  |
@@ -64,6 +65,12 @@
 | `<A-l>`          | `LvimMoveRightN`                  | Move line right                       |
 | `gw`             | `:WindowPicker<CR>`               | Window picker                         |
 | `<C-c><C-l>`     | `:DAPLocal<CR>`                   | DAP local config                      |
+| `]m`             | `:LvimListQuickFixMenuChoice<CR>` | Quickfix menu choice                  |
+| `]d`             | `:LvimListQuickFixMenuDelete<CR>` | Quickfix menu delete                  |
+| `][`             | `:copen<CR>`                      | Quickfix open                         |
+| `[]`             | `:cclose<CR>`                     | Quickfix close                        |
+| `]]`             | `:LvimListQuickFixNext<CR>`       | Quickfix next                         |
+| `[[`             | `:LvimListQuickFixPrev<CR>`       | Quickfix prev                         |
 | `dc`             | `:LspShowDiagnosticCurrent<CR>`   | Lsp show diagnostic current           |
 | `dn`             | `:LspShowDiagnosticNext<CR>`      | Lsp show diagnostic next              |
 | `dc`             | `:LspShowDiagnosticPrev<CR>`      | Lsp show diagnostic prev              |
