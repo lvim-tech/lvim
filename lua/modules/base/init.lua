@@ -438,6 +438,16 @@ modules["yorickpeterse/nvim-pqf"] = {
     config = editor_config.nvim_pqf,
 }
 
+modules["lvim-tech/lvim-qf-loc"] = {
+    commit = funcs.get_commit("lvim-qf-loc", plugins_snapshot),
+    dependencies = {
+        "MunifTanjim/nui.nvim",
+        "rcarriga/nvim-notify",
+        "lvim-tech/lvim-ui-config",
+    },
+    config = editor_config.lvim_qf_loc,
+}
+
 modules["nanozuki/tabby.nvim"] = {
     commit = funcs.get_commit("tabby.nvim", plugins_snapshot),
     dependencies = {

@@ -303,6 +303,32 @@ config.nvim_pqf = function()
     pqf.setup()
 end
 
+config.lvim_qf_loc = function()
+    local lvim_qf_loc_status_ok, lvim_qf_loc = pcall(require, "lvim-qf-loc")
+    if not lvim_qf_loc_status_ok then
+        return
+    end
+    lvim_qf_loc.setup()
+    vim.keymap.set("n", "]m", function()
+        vim.cmd("LvimListQuickFixMenuChoice")
+    end, { noremap = true, silent = true, desc = "QfOpen" })
+    vim.keymap.set("n", "]d", function()
+        vim.cmd("LvimListQuickFixMenuDelete")
+    end, { noremap = true, silent = true, desc = "QfClose" })
+    vim.keymap.set("n", "][", function()
+        vim.cmd("copen")
+    end, { noremap = true, silent = true, desc = "QfOpen" })
+    vim.keymap.set("n", "[]", function()
+        vim.cmd("close")
+    end, { noremap = true, silent = true, desc = "QfOpen" })
+    vim.keymap.set("n", "]]", function()
+        vim.cmd("LvimListQuickFixNext")
+    end, { noremap = true, silent = true, desc = "QfOpen" })
+    vim.keymap.set("n", "[[", function()
+        vim.cmd("LvimListQuickFixPrev")
+    end, { noremap = true, silent = true, desc = "QfOpen" })
+end
+
 config.tabby_nvim = function()
     local tabby_status_ok, tabby = pcall(require, "tabby")
     if not tabby_status_ok then
