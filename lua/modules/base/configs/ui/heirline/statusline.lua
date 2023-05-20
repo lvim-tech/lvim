@@ -246,7 +246,11 @@ local spell = {
 }
 local statistic = {
     provider = function()
-        return " " .. vim.fn.wordcount().words .. " W"
+        if _G.LVIM_SETTINGS.mode == "v" or _G.LVIM_SETTINGS.mode == "V" then
+            return " " .. vim.fn.wordcount().visual_words .. "/" .. vim.fn.wordcount().words
+        else
+            return " " .. vim.fn.wordcount().words
+        end
     end,
     hl = { fg = common.theme_colors.teal_01, bold = true },
 }
