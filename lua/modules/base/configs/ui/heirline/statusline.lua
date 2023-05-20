@@ -246,11 +246,9 @@ local spell = {
 }
 local statistic = {
     provider = function()
-        local words = vim.fn.wordcount().words
-        local chars = vim.fn.wordcount().chars
-        return " " .. words .. " W | " .. chars .. " Ch"
+        return " " .. vim.fn.wordcount().words .. " W"
     end,
-    hl = { fg = common.theme_colors.fg_05, bold = true },
+    hl = { fg = common.theme_colors.teal_01, bold = true },
 }
 local ruler = {
     provider = " %7(%l/%3L%):%2c %P",
