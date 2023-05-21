@@ -12,7 +12,6 @@ language_configs["lsp"] = function()
         ["bash-language-server"] = { "bashls", bashls_config },
         ["dependencies"] = {
             "shfmt",
-            "shellcheck",
         },
     })
 end
