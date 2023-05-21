@@ -39,6 +39,7 @@ local filetype = {
     "noice",
     "toggleterm",
     "LvimShell",
+    "oil",
 }
 
 local vi_mode = {

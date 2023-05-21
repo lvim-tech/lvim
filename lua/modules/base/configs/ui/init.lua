@@ -867,6 +867,9 @@ config.oil_nvim = function()
         },
         silence_netrw_warning = true,
     })
+    vim.keymap.set("n", "<C-c>i", function()
+        vim.cmd("Oil")
+    end, { noremap = true, silent = true, desc = "Oil" })
 end
 
 config.netrw_nvim = function()

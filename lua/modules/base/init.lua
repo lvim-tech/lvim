@@ -240,10 +240,6 @@ modules["sindrets/winshift.nvim"] = {
 
 modules["stevearc/oil.nvim"] = {
     commit = funcs.get_commit("oil.nvim", plugins_snapshot),
-    keys = {
-        { "<C-c><C-c>o", "<Cmd>Oil<CR>", desc = "Oil" },
-    },
-    cmd = "Oil",
     config = ui_config.oil_nvim,
 }
 
