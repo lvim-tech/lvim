@@ -170,7 +170,7 @@ local diagnostics = {
         provider = function(self)
             return self.hints > 0 and (self.hint_icon .. self.hints .. " ")
         end,
-        hl = { fg = common.theme_colors.fg_05 },
+        hl = { fg = common.theme_colors.teal_01 },
     },
     on_click = {
         callback = function()
