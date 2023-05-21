@@ -300,7 +300,14 @@ config.nvim_pqf = function()
     if not pqf_status_ok then
         return
     end
-    pqf.setup()
+    pqf.setup({
+        signs = {
+            error = "  ",
+            warning = "  ",
+            hint = "  ",
+            info = "  ",
+        },
+    })
 end
 
 config.lvim_qf_loc = function()
