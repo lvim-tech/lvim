@@ -1,6 +1,6 @@
 {
   "Comment.nvim": { "branch": "master", "commit": "e1fe53117aab24c378d5e6deaad786789c360123" },
-  "LuaSnip": { "branch": "master", "commit": "2f78933799ef1a8558057ea7d06d6ccb11140711" },
+  "LuaSnip": { "branch": "master", "commit": "fcdaa4313305fe20d928551134c1ec2266e7af2a" },
   "Navigator.nvim": { "branch": "master", "commit": "91d86506ac2a039504d5205d32a1d4bc7aa57072" },
   "NeoComposer.nvim": { "branch": "main", "commit": "a22f5a5d7ff590f59cdeb0bf67fc617327452263" },
   "NeoZoom.lua": { "branch": "main", "commit": "2e43225b8fb62ab3ae9a14cf1b5df9c58fdde35a" },
@@ -37,7 +37,7 @@
   "lazy.nvim": { "branch": "main", "commit": "5f316cea4f0b5379e0094d6cfa5e1ee5e279f65a" },
   "lsp-inlayhints.nvim": { "branch": "main", "commit": "62c7b8dd8ac9933b071912fe3c789ef2cb704672" },
   "lvim-colorscheme": { "branch": "main", "commit": "607251a96a76c55f8a0176f5a84ce3b3e6ef2325" },
-  "lvim-fm": { "branch": "main", "commit": "3321e7d531dfdb1a90b893d946833dac62fdb287" },
+  "lvim-fm": { "branch": "main", "commit": "7a61bf008930a595e344e73006601cba9841f944" },
   "lvim-forgit": { "branch": "main", "commit": "654424a94fac295084fc86d73bfc10134fcc2b16" },
   "lvim-helper": { "branch": "main", "commit": "327131f36c05bea6b8f168c679df8168e705cf13" },
   "lvim-linguistics": { "branch": "main", "commit": "8b869fd0f8bff0f2e184bb7669cf093cb6b3e867" },
