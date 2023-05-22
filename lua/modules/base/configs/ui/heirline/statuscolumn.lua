@@ -106,6 +106,9 @@ local signs = {
 
 local line_numbers = {
     provider = function()
+        if vim.bo.filetype == "qf" then
+            return ""
+        end
         if vim.v.virtnum ~= 0 then
             return ""
         end

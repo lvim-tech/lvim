@@ -8,7 +8,6 @@ local buftype = {
     "nofile",
     "prompt",
     "help",
-    "quickfix",
 }
 
 local filetype = {
@@ -27,7 +26,6 @@ local filetype = {
     "DiffviewFiles",
     "flutterToolsOutline",
     "log",
-    "qf",
     "dapui_scopes",
     "dapui_breakpoints",
     "dapui_stacks",

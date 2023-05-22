@@ -100,6 +100,12 @@ local terminal_name = {
     hl = { fg = common.theme_colors.red_02, bold = true },
 }
 
+-- local file_type = {}
+-- for i, v in ipairs(common.filetype) do
+--     file_type[i] = v
+-- end
+
+-- table.insert(file_type, "qf")
 return {
     fallthrough = false,
     {

@@ -316,6 +316,9 @@ config.lvim_qf_loc = function()
         return
     end
     lvim_qf_loc.setup()
+    vim.keymap.set("n", "<C-c><C-h>", function()
+        vim.cmd("LvimDiagnostics")
+    end, { noremap = true, silent = true, desc = "LspDiagnostic QF" })
     vim.keymap.set("n", "]m", function()
         vim.cmd("LvimListQuickFixMenuChoice")
     end, { noremap = true, silent = true, desc = "QfOpen" })

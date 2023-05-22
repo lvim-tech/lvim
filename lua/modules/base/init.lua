@@ -429,7 +429,6 @@ modules["kevinhwang91/nvim-bqf"] = {
 }
 
 modules["yorickpeterse/nvim-pqf"] = {
-    url = "https://gitlab.com/yorickpeterse/nvim-pqf",
     commit = funcs.get_commit("nvim-pqf", plugins_snapshot),
     config = editor_config.nvim_pqf,
 }
@@ -675,6 +674,9 @@ modules["pwntester/octo.nvim"] = {
 
 modules["mbbill/undotree"] = {
     commit = funcs.get_commit("undotree", plugins_snapshot),
+    keys = {
+        { "<F5>", "<Cmd>UndotreeToggle<CR>", desc = "Undotree" },
+    },
     cmd = "UndotreeToggle",
     config = version_control_config.undotree,
 }

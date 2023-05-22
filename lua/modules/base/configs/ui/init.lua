@@ -1261,6 +1261,11 @@ config.heirline_nvim = function()
     if not heirline_status_ok then
         return
     end
+    local file_type_winbar = {}
+    for i, v in ipairs(common.filetype) do
+        file_type_winbar[i] = v
+    end
+    table.insert(file_type_winbar, "qf")
     heirline.setup({
         statusline = statusline,
         winbar = winbar,
@@ -1270,7 +1275,7 @@ config.heirline_nvim = function()
             disable_winbar_cb = function(args)
                 local buf = args.buf
                 local buftype = vim.tbl_contains(common.buftype, vim.bo[buf].buftype)
-                local filetype = vim.tbl_contains(common.filetype, vim.bo[buf].filetype)
+                local filetype = vim.tbl_contains(file_type_winbar, vim.bo[buf].filetype)
                 return buftype or filetype
             end,
         },
@@ -1548,6 +1553,7 @@ config.indent_blankline_nvim = function()
             "undotree",
             "org",
             "flutterToolsOutline",
+            "qf",
         },
         buftype_exclude = {
             "terminal",
