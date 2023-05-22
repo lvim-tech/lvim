@@ -32,6 +32,7 @@ config.nui_nvim = function()
     end
     local Input = require("nui.input")
     local Menu = require("nui.menu")
+    local Text = require("nui.text")
     local event = require("nui.utils.autocmd").event
     local function override_ui_input()
         local calculate_popup_width = function(default, prompt)
@@ -65,10 +66,10 @@ config.nui_nvim = function()
                     width = calculate_popup_width(default_value, border_top_text),
                 },
                 border = {
-                    highlight = "NormalFloat:LvimInputBorder",
+                    highlight = "FloatBorder:LvimInputBorder",
                     style = { " ", " ", " ", " ", " ", " ", " ", " " },
                     text = {
-                        top = border_top_text,
+                        top = Text(border_top_text, "LvimInputBorder"),
                         top_align = "center",
                     },
                 },
@@ -123,10 +124,10 @@ config.nui_nvim = function()
                 relative = "editor",
                 position = "50%",
                 border = {
-                    highlight = "NormalFloat:LvimSelectBorder",
+                    highlight = "FloatBorder:LvimSelectBorder",
                     style = { " ", " ", " ", " ", " ", " ", " ", " " },
                     text = {
-                        top = border_top_text,
+                        top = Text(border_top_text, "LvimSelectBorder"),
                         top_align = "center",
                     },
                 },
