@@ -289,6 +289,7 @@ config.nvim_bqf = function()
         return
     end
     bqf.setup({
+        delay_syntax = 1,
         preview = {
             border_chars = { "│", "│", "─", "─", "┌", "┐", "└", "┘", "█" },
         },
