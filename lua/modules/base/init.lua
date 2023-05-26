@@ -416,6 +416,7 @@ modules["gennaro-tedesco/nvim-peekup"] = {
     event = {
         "BufRead",
     },
+    config = editor_config.nvim_peekup,
 }
 
 modules["kevinhwang91/nvim-hlslens"] = {

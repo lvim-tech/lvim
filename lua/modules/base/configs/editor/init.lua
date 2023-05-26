@@ -229,6 +229,17 @@ config.neocomposer_nvim = function()
     })
 end
 
+config.nvim_peekup = function()
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = {
+            "peek",
+        },
+        callback = function()
+            vim.opt_local.clipboard = "unnamed"
+        end,
+        group = "LvimIDE",
+    })
+end
 config.nvim_hlslens = function()
     local hlslens_status_ok, hlslens = pcall(require, "hlslens")
     if not hlslens_status_ok then
