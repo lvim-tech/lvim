@@ -8,9 +8,9 @@
 
   * Debug support for c, cpp, cs, dart, elixir, go, haskell, java, javascript/typescript, lua, php, python, ruby, rust, scala
 
-  Current version - 3.1.12 (2023-05-19)
+  Current version - 3.2.00 (2023-05-26)
 
-  128 plugins
+  129 plugins
 
 **  SCREENSHOTS
 
@@ -60,7 +60,24 @@
     * Autoinstall the LSP servers, DAP servers, linters, and formatters
     * Custom settings for projects
 
-    For keybindings - press F11
+***  For keybindings - press F11
+
+***  Hydra
+
+    - `<leader>l` - LVIM IDE
+    - `<leader>n` - Navigation
+    - `<leader>r` - Replace
+    - `<leader>h` - Hop
+    - `<leader>e` - Explorer
+    - `<leader>c` - Comment, annotation, fold
+    - `<leader>u` - Linguistics
+    - `<leader>z` - FZF
+    - `<leader>g` - GIT
+    - `<leader>q` - Quickfix
+    - `<leader>o` - Location
+    - `<leader>d` - Diagnostics
+    - `<leader>s` - Glance
+    - `<leader>p` - DAP
 
 **  REQUIREMENTS
 
@@ -131,7 +148,7 @@
 
     #+end_src
 
-**  SNAPSHOTS 
+**  SNAPSHOTS
 
     + Snap folder: *~/.config/nvim/.snapshots/*
 
@@ -146,7 +163,7 @@
     #+end_src
 
 
-    + Choice file to rollback: 
+    + Choice file to rollback:
 
     #+begin_src lua
 
@@ -324,7 +341,7 @@
 
 
 
-****  LSP SUPPORT 
+****  LSP SUPPORT
 
       + bib
       + c
@@ -393,7 +410,7 @@
       + zig
       + zir
 
-****  DEBUG SUPPORT 
+****  DEBUG SUPPORT
 
       + c
       + cpp
