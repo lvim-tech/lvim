@@ -30,7 +30,7 @@ Hydra({
         },
     },
     mode = { "n", "x", "v" },
-    body = "<leader>d",
+    body = "<leader>p",
     heads = {
         {
             "b",

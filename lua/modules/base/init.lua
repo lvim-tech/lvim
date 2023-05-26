@@ -413,6 +413,9 @@ modules["ecthelionvi/NeoComposer.nvim"] = {
 
 modules["gennaro-tedesco/nvim-peekup"] = {
     commit = funcs.get_commit("nvim-peekup", plugins_snapshot),
+    event = {
+        "BufRead",
+    },
 }
 
 modules["kevinhwang91/nvim-hlslens"] = {
