@@ -274,10 +274,15 @@ modules["elihunter173/dirbuf.nvim"] = {
     config = ui_config.dirbuf_nvim,
 }
 
-modules["folke/which-key.nvim"] = {
-    commit = funcs.get_commit("which-key.nvim", plugins_snapshot),
-    keys = { "<space>", "d", "g", "t", "<C-c>", "]", "[" },
-    config = ui_config.which_key_nvim,
+-- modules["folke/which-key.nvim"] = {
+--     commit = funcs.get_commit("which-key.nvim", plugins_snapshot),
+--     keys = { "<space>", "d", "g", "t", "<C-c>", "]", "[" },
+--     config = ui_config.which_key_nvim,
+-- }
+
+modules["anuvyklack/hydra.nvim"] = {
+    commit = funcs.get_commit("hydra.nvim", plugins_snapshot),
+    config = ui_config.hydra_nvim,
 }
 
 modules["rebelot/heirline.nvim"] = {
@@ -410,6 +415,10 @@ modules["ecthelionvi/NeoComposer.nvim"] = {
         "BufRead",
     },
     config = editor_config.neocomposer_nvim,
+}
+
+modules["gennaro-tedesco/nvim-peekup"] = {
+    commit = funcs.get_commit("nvim-peekup", plugins_snapshot),
 }
 
 modules["kevinhwang91/nvim-hlslens"] = {
