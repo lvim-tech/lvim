@@ -127,6 +127,23 @@ local line_numbers = {
     },
 }
 
+local function fix_git_sign_name(name)
+    if name == "GitSignsAddAdd" then
+        return "GitSignsAdd"
+    elseif name == "GitSignsChangeChange" then
+        return "GitSignsChange"
+    elseif name == "GitSignsDeleteDelete" then
+        return "GitSignsDelete"
+    elseif name == "GitSignsTopDeleteTopDelete" then
+        return "GitSignsTopDelete"
+    elseif name == "GitSignsChangeDeleteChangeDelete" then
+        return "GitSignsChangeDelete"
+    elseif name == "GitSignsUntrackedUntracked" then
+        return "GitSignsUntracked"
+    end
+    return name
+end
+
 local git_signs = {
     {
         condition = function()
@@ -155,7 +172,7 @@ local git_signs = {
         provider = "▌",
         hl = function(self)
             if self.has_sign then
-                return self.sign.name
+                return fix_git_sign_name(self.sign.name)
             end
         end,
         on_click = {
