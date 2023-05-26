@@ -92,7 +92,6 @@
 | `gpt`            | `:Glance type_definitions<CR>`    | Glance type_definitions               |
 | `gpr`            | `:Glance references<CR>`          | Glance references                     |
 | `gpi`            | `:Glance implementations<CR>`     | Glance implementations                |
-| `gP`             | `:hardcopy<CR>`                   | hard copy                             |
 | `ti`             | `:Inspect<CR>`                    | Inspect                               |
 | `ts`             | `:SnipRun<CR>`                    | Snip run                              |
 | `tf`             | `:CloseFloatWindows<CR>`          | Close float qindows                   |
