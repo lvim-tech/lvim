@@ -5,7 +5,7 @@
 | Key              | Action                            | Description                           |
 | ---------------- | --------------------------------- | ------------------------------------- |
 | `<space><space>` | `:CtrlSpace<CR>`                  | CtrlSpace                             |
-| `<space>r`       | `:LvimFileManager<CR>`            | LvimFileManager                       |
+| `<space>=`       | `:LvimFileManager<CR>`            | LvimFileManager                       |
 | `<F1>`           | `:TTOne<CR>`                      | Toggleterm one open                   |
 | `<F2>`           | `:TTTwo<CR>`                      | Toggleterm two open                   |
 | `<F3>`           | `:TTThree<CR>`                    | Toggleterm three open                 |
