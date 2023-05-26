@@ -150,6 +150,7 @@ local git_signs = {
             return not conditions.is_git_repo() or vim.v.virtnum ~= 0
         end,
         provider = "▌",
+        hl = { fg = common.theme_colors.bg_04 },
     },
     {
         condition = function()
