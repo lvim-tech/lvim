@@ -15,7 +15,7 @@ Lvim forgit                 _f_ │
                          exit _<Esc>_
 ]]
 
-M.fzf_menu = Hydra({
+M.git_menu = Hydra({
     name = "GIT",
     hint = git_menu,
     config = {
@@ -151,7 +151,7 @@ View hunk                   _v_ │ _b_                 Blame line
 Stage hunk                  _s_ │ _S_            Undo stage hunk
 Reset hunk                  _r_ │ _R_               Reset buffer
 Blame full                  _f_ │ _q_           Send to quickfix
-Toggle linehl               _h_ │
+Toggle linehl               _l_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                exit => _<Esc>_  │  back => _<BS>_
@@ -222,7 +222,7 @@ M.git_signs = Hydra({
             { silent = true, desc = "Send to quickfix" },
         },
         {
-            "h",
+            "l",
             keymap.cmd("GitSignsToggleLinehl"),
             { silent = true, desc = "Toggle linehl" },
         },
