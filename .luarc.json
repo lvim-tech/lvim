@@ -9,7 +9,8 @@
         "need-check-nil",
         "assign-type-mismatch",
         "missing-return",
-        "different-requires"
+        "different-requires",
+        "lowercase-global"
     ],
     "Lua.diagnostics.globals": [
         "vim",
