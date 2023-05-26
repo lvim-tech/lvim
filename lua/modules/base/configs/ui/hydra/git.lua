@@ -64,7 +64,7 @@ M.fzf_menu = Hydra({
 })
 
 local diff_view = [[
-                       DIFF VIEW
+                          DIFF VIEW
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 DiffView open               _o_ │ _c_             DiffView close
@@ -143,7 +143,7 @@ M.diff_view = Hydra({
 })
 
 local git_signs = [[
-                       DIFF VIEW
+                          GITSIGNS
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 Previous hunk               _p_ │ _n_                  Next hunk
@@ -151,6 +151,7 @@ View hunk                   _v_ │ _b_                 Blame line
 Stage hunk                  _s_ │ _S_            Undo stage hunk
 Reset hunk                  _r_ │ _R_               Reset buffer
 Blame full                  _f_ │ _q_           Send to quickfix
+Toggle linehl               _h_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                exit => _<Esc>_  │  back => _<BS>_
@@ -219,6 +220,11 @@ M.git_signs = Hydra({
             "q",
             keymap.cmd("Gitsigns setqflist"),
             { silent = true, desc = "Send to quickfix" },
+        },
+        {
+            "h",
+            keymap.cmd("GitSignsToggleLinehl"),
+            { silent = true, desc = "Toggle linehl" },
         },
         {
             "<BS>",
