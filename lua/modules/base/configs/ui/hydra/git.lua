@@ -131,7 +131,7 @@ M.diff_view = Hydra({
         {
             "<BS>",
             function()
-                M.fzf_menu:activate()
+                M.git_menu:activate()
             end,
         },
         {
@@ -229,7 +229,7 @@ M.git_signs = Hydra({
         {
             "<BS>",
             function()
-                M.fzf_menu:activate()
+                M.git_menu:activate()
             end,
         },
         {
