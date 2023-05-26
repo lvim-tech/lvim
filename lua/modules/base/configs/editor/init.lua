@@ -109,8 +109,8 @@ config.fzf_lua = function()
     local actions = require("fzf-lua.actions")
     fzf_lua.setup({
         winopts = {
-            height = 0.95,
-            width = 0.95,
+            height = 1.00,
+            width = 1.00,
             border = { " ", " ", " ", " ", " ", " ", " ", " " },
             preview = {
                 vertical = "down:45%",
