@@ -739,94 +739,97 @@ config.nvim_spectre = function()
     if not spectre_status_ok then
         return
     end
-    vim.api.nvim_create_user_command("Spectre", "lua require('spectre').open()", {})
     spectre.setup({
-        color_devicons = true,
-        line_sep_start = "-----------------------------------------",
-        result_padding = "|  ",
-        line_sep = "-----------------------------------------",
-        highlight = {
-            ui = "String",
-            search = "DiffAdd",
-            replace = "DiffChange",
-        },
         mapping = {
-            ["delete_line"] = nil,
-            ["enter_file"] = nil,
-            ["send_to_qf"] = nil,
-            ["replace_cmd"] = nil,
-            ["show_option_menu"] = nil,
-            ["run_replace"] = nil,
-            ["change_view_mode"] = nil,
-            ["toggle_ignore_case"] = nil,
-            ["toggle_ignore_hidden"] = nil,
+            ["toggle_line"] = {
+                map = "t",
+                cmd = "<cmd>lua require('spectre').toggle_line()<CR>",
+                desc = "toggle current item",
+            },
+            ["enter_file"] = {
+                map = "s",
+                cmd = "<cmd>lua require('spectre.actions').select_entry()<CR>",
+                desc = "goto current file",
+            },
+            ["send_to_qf"] = {
+                map = "q",
+                cmd = "<cmd>lua require('spectre.actions').send_to_qf()<CR>",
+                desc = "send all item to quickfix",
+            },
+            ["replace_cmd"] = {
+                map = "m",
+                cmd = "<cmd>lua require('spectre.actions').replace_cmd()<CR>",
+                desc = "input replace vim command",
+            },
+            ["show_option_menu"] = {
+                map = "h",
+                cmd = "<cmd>lua require('spectre').show_options()<CR>",
+                desc = "show option",
+            },
+            ["run_current_replace"] = {
+                map = "r",
+                cmd = "<cmd>lua require('spectre.actions').run_current_replace()<CR>",
+                desc = "replace current line",
+            },
+            ["run_replace"] = {
+                map = "R",
+                cmd = "<cmd>lua require('spectre.actions').run_replace()<CR>",
+                desc = "replace all",
+            },
+            ["change_view_mode"] = {
+                map = "v",
+                cmd = "<cmd>lua require('spectre').change_view()<CR>",
+                desc = "change result view mode",
+            },
+            ["change_replace_sed"] = {
+                map = "trs",
+                cmd = "<cmd>lua require('spectre').change_engine_replace('sed')<CR>",
+                desc = "use sed to replace",
+            },
+            ["change_replace_oxi"] = {
+                map = "tro",
+                cmd = "<cmd>lua require('spectre').change_engine_replace('oxi')<CR>",
+                desc = "use oxi to replace",
+            },
+            ["toggle_live_update"] = {
+                map = "u",
+                cmd = "<cmd>lua require('spectre').toggle_live_update()<CR>",
+                desc = "update change when vim write file.",
+            },
+            ["toggle_ignore_case"] = {
+                map = "I",
+                cmd = "<cmd>lua require('spectre').change_options('ignore-case')<CR>",
+                desc = "toggle ignore case",
+            },
+            ["toggle_ignore_hidden"] = {
+                map = "H",
+                cmd = "<cmd>lua require('spectre').change_options('hidden')<CR>",
+                desc = "toggle search hidden",
+            },
+            ["resume_last_search"] = {
+                map = "l",
+                cmd = "<cmd>lua require('spectre').resume_last_search()<CR>",
+                desc = "resume last search before close",
+            },
         },
-        find_engine = {
-            ["rg"] = {
-                cmd = "rg",
-                args = {
-                    "--color=never",
-                    "--no-heading",
-                    "--with-filename",
-                    "--line-number",
-                    "--column",
-                },
-                options = {
-                    ["ignore-case"] = {
-                        value = "--ignore-case",
-                        icon = "[I]",
-                        desc = "ignore case",
-                    },
-                    ["hidden"] = {
-                        value = "--hidden",
-                        desc = "hidden file",
-                        icon = "[H]",
-                    },
-                },
-            },
-            ["ag"] = {
-                cmd = "ag",
-                args = { "--vimgrep", "-s" },
-                options = {
-                    ["ignore-case"] = {
-                        value = "-i",
-                        icon = "[I]",
-                        desc = "ignore case",
-                    },
-                    ["hidden"] = {
-                        value = "--hidden",
-                        desc = "hidden file",
-                        icon = "[H]",
-                    },
-                },
-            },
-        },
-        replace_engine = {
-            ["sed"] = {
-                cmd = "sed",
-                args = nil,
-            },
-            options = {
-                ["ignore-case"] = {
-                    value = "--ignore-case",
-                    icon = "[I]",
-                    desc = "ignore case",
-                },
-            },
-        },
-        default = {
-            find = {
-                cmd = "rg",
-                options = { "ignore-case" },
-            },
-            replace = {
-                cmd = "sed",
-            },
-        },
-        replace_vim_cmd = "cfdo",
-        is_open_target_win = true,
-        is_insert_mode = false,
     })
+    vim.api.nvim_create_user_command("Spectre", "lua require('spectre').open()", {})
+    vim.api.nvim_create_user_command("SpectreToggleLine", "lua require('spectre').toggle_line()", {})
+    vim.api.nvim_create_user_command("SpectreSelectEntry", "lua require('spectre.actions').select_entry()", {})
+    vim.api.nvim_create_user_command(
+        "SpectreRunCurrentReplace",
+        "lua require('spectre.actions').run_current_replace()",
+        {}
+    )
+    vim.api.nvim_create_user_command("SpectreRunReplace", "lua require('spectre.actions').run_replace()", {})
+    vim.api.nvim_create_user_command("SpectreSendToQF", "lua require('spectre.actions').send_to_qf()", {})
+    vim.api.nvim_create_user_command("SpectreReplaceCommand", "lua require('spectre.actions').replace_cmd()", {})
+    vim.api.nvim_create_user_command("SpectreToggleLiveUpdate", "lua require('spectre').toggle_live_update()", {})
+    vim.api.nvim_create_user_command("SpectreChangeView", "lua require('spectre').change_view()", {})
+    vim.api.nvim_create_user_command("SpectreResumeLastSearch", "lua require('spectre').resume_last_search()", {})
+    vim.api.nvim_create_user_command("SpectreIgnoreCase", "lua require('spectre').change_options('ignore-case')", {})
+    vim.api.nvim_create_user_command("SpectreHidden", "lua require('spectre').change_options('hidden')", {})
+    vim.api.nvim_create_user_command("SpectreShowOptions", "lua require('spectre').show_options()", {})
     vim.keymap.set("n", "<A-s>", function()
         vim.cmd("Spectre")
     end, { noremap = true, silent = true, desc = "Spectre" })
