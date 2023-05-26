@@ -8,26 +8,40 @@ config.mason_nvim = function()
     )
     vim.api.nvim_create_user_command("LspHover", "lua vim.lsp.buf.hover()", {})
     vim.api.nvim_create_user_command("LspRename", "lua vim.lsp.buf.rename()", {})
-    vim.api.nvim_create_user_command("LspAddToWorkspaceFolder", "lua vim.lsp.buf.add_workspace_folder()", {})
-    vim.api.nvim_create_user_command("LspListWorkspaceFolders", "lua vim.lsp.buf.list_workspace_folders()", {})
-    vim.api.nvim_create_user_command("LspRemoveWorkspaceFolder", "lua vim.lsp.buf.remove_workspace_folder()", {})
-    vim.api.nvim_create_user_command("LspWorkspaceSymbol", "lua vim.lsp.buf.workspace_symbol()", {})
-    vim.api.nvim_create_user_command("LspDocumentSymbol", "lua vim.lsp.buf.document_symbol()", {})
+    vim.api.nvim_create_user_command("LspFormat", "lua vim.lsp.buf.format {async = true}", {})
     vim.api.nvim_create_user_command("LspCodeAction", "lua vim.lsp.buf.code_action()", {})
-    vim.api.nvim_create_user_command("LspCodeLensRefresh", "lua vim.lsp.codelens.refresh()", {})
-    vim.api.nvim_create_user_command("LspCodeLensRun", "lua vim.lsp.codelens.run()", {})
-    vim.api.nvim_create_user_command("LspDeclaration", "lua vim.lsp.buf.declaration()", {})
+    vim.api.nvim_create_user_command(
+        "LspShowDiagnosticCurrent",
+        "lua require('languages.base.utils.show_diagnostic').line()",
+        {}
+    )
+    vim.api.nvim_create_user_command(
+        "LspShowDiagnosticNext",
+        "lua require('languages.base.utils.show_diagnostic').goto_next()",
+        {}
+    )
+    vim.api.nvim_create_user_command(
+        "LspShowDiagnosticPrev",
+        "lua require('languages.base.utils.show_diagnostic').goto_prev()",
+        {}
+    )
     vim.api.nvim_create_user_command("LspDefinition", "lua vim.lsp.buf.definition()", {})
     vim.api.nvim_create_user_command("LspTypeDefinition", "lua vim.lsp.buf.type_definition()", {})
+    vim.api.nvim_create_user_command("LspDeclaration", "lua vim.lsp.buf.declaration()", {})
     vim.api.nvim_create_user_command("LspReferences", "lua vim.lsp.buf.references()", {})
-    vim.api.nvim_create_user_command("LspClearReferences", "lua vim.lsp.buf.clear_references()", {})
-    vim.api.nvim_create_user_command("LspDocumentHighlight", "lua vim.lsp.buf.document_highlight()", {})
     vim.api.nvim_create_user_command("LspImplementation", "lua vim.lsp.buf.implementation()", {})
+    vim.api.nvim_create_user_command("LspSignatureHelp", "lua vim.lsp.buf.signature_help()", {})
+    vim.api.nvim_create_user_command("LspDocumentSymbol", "lua vim.lsp.buf.document_symbol()", {})
+    vim.api.nvim_create_user_command("LspWorkspaceSymbol", "lua vim.lsp.buf.workspace_symbol()", {})
+    vim.api.nvim_create_user_command("LspCodeLensRefresh", "lua vim.lsp.codelens.refresh()", {})
+    vim.api.nvim_create_user_command("LspCodeLensRun", "lua vim.lsp.codelens.run()", {})
+    vim.api.nvim_create_user_command("LspAddToWorkspaceFolder", "lua vim.lsp.buf.add_workspace_folder()", {})
+    vim.api.nvim_create_user_command("LspRemoveWorkspaceFolder", "lua vim.lsp.buf.remove_workspace_folder()", {})
+    vim.api.nvim_create_user_command("LspListWorkspaceFolders", "lua vim.lsp.buf.list_workspace_folders()", {})
     vim.api.nvim_create_user_command("LspIncomingCalls", "lua vim.lsp.buf.incoming_calls()", {})
     vim.api.nvim_create_user_command("LspOutgoingCalls", "lua vim.lsp.buf.outgoing_calls()", {})
-    vim.api.nvim_create_user_command("LspFormat", "lua vim.lsp.buf.format {async = true}", {})
-    vim.api.nvim_create_user_command("LspRename", "lua vim.lsp.buf.rename()", {})
-    vim.api.nvim_create_user_command("LspSignatureHelp", "lua vim.lsp.buf.signature_help()", {})
+    vim.api.nvim_create_user_command("LspClearReferences", "lua vim.lsp.buf.clear_references()", {})
+    vim.api.nvim_create_user_command("LspDocumentHighlight", "lua vim.lsp.buf.document_highlight()", {})
     vim.api.nvim_create_user_command(
         "LspShowDiagnosticCurrent",
         "lua require('languages.base.utils.show_diagnostic').line()",
@@ -608,6 +622,8 @@ config.nvim_dap_ui = function()
     })
     vim.api.nvim_create_user_command("LuaDapLaunch", 'lua require"osv".run_this()', {})
     vim.api.nvim_create_user_command("DapToggleBreakpoint", 'lua require("dap").toggle_breakpoint()', {})
+    vim.api.nvim_create_user_command("DapClearBreakpoints", 'lua require("dap").clear_breakpoints()', {})
+    vim.api.nvim_create_user_command("DapRunToCursor", 'lua require("dap").run_to_cursor()', {})
     vim.api.nvim_create_user_command("DapContinue", 'lua require"dap".continue()', {})
     vim.api.nvim_create_user_command("DapStepInto", 'lua require"dap".step_into()', {})
     vim.api.nvim_create_user_command("DapStepOver", 'lua require"dap".step_over()', {})
@@ -690,6 +706,8 @@ config.vim_dadbod_ui = function()
     vim.g.db_ui_use_nerd_fonts = 1
     vim.g.db_ui_winwidth = 35
     vim.g.db_ui_auto_execute_table_helpers = true
+    -- vim.g.db_ui_disable_mappings = 1
+    vim.api.nvim_create_user_command("LspHover", "lua vim.lsp.buf.hover()", {})
 end
 
 config.package_info_nvim = function()
