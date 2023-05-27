@@ -7,7 +7,7 @@ local git_menu = [[
                              GIT
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Neogit                      _n_ │ _l_                    LazyGit
+Neogit                      _n_ │ _L_                    LazyGit
 Diffview                    _d_ │ _s_                   GitSigns
 Lvim forgit                 _f_ │
 
@@ -47,7 +47,7 @@ M.git_menu = Hydra({
             { silent = true, desc = "Neogit" },
         },
         {
-            "l",
+            "L",
             keymap.cmd("Lazygit"),
             { silent = true, desc = "Lazygit" },
         },
@@ -65,7 +65,7 @@ local diff_view = [[
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 DiffView open               _o_ │ _c_             DiffView close
-DiffView log                _l_ │ _r_           DiffView refresh
+DiffView log                _g_ │ _r_           DiffView refresh
 DiffView focus files        _F_ │ _f_      DiffView file history
 DiffView toggle files       _t_ │
 
@@ -98,7 +98,7 @@ M.diff_view = Hydra({
             { silent = true, desc = "DiffView close" },
         },
         {
-            "l",
+            "g",
             keymap.cmd("DiffviewLog"),
             { silent = true, desc = "DiffView log" },
         },
@@ -145,7 +145,7 @@ View hunk                   _v_ │ _b_                 Blame line
 Stage hunk                  _s_ │ _S_            Undo stage hunk
 Reset hunk                  _r_ │ _R_               Reset buffer
 Blame full                  _f_ │ _q_           Send to quickfix
-Toggle linehl               _l_ │
+Toggle linehl               _H_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                exit => _<Esc>_  │  back => _<BS>_
@@ -216,7 +216,7 @@ M.git_signs = Hydra({
             { silent = true, desc = "Send to quickfix" },
         },
         {
-            "l",
+            "H",
             keymap.cmd("GitSignsToggleLinehl"),
             { silent = true, desc = "Toggle linehl" },
         },

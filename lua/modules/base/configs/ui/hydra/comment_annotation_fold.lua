@@ -5,7 +5,7 @@ local comment_annotation_hint = [[
                 COMMENT, ANNOTATION, FOLD
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Comment toggle line         _l_ │ _b_       Comment toggle block
+Comment toggle line         _L_ │ _b_       Comment toggle block
 
 Neogen file                 _F_ │ _t_                Neogen type
 Neogen class                _c_ │ _f_            Neogen function

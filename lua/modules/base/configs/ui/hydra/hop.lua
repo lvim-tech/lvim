@@ -5,9 +5,9 @@ local hop_hint = [[
                              HOP
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Hop word                    _h_ │ _a_               Hop anywhere
+Hop word                    _w_ │ _a_               Hop anywhere
 Hop char 1                  _c_ │ _C_                 Hop char 2
-Hop line                    _l_ │ _s_             Hop line start
+Hop line                    _n_ │ _s_             Hop line start
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                          exit _<Esc>_
@@ -27,7 +27,7 @@ Hydra({
     body = "<leader>h",
     heads = {
         {
-            "h",
+            "w",
             keymap.cmd("HopWord"),
             { silent = true, desc = "Hop word" },
         },
@@ -47,7 +47,7 @@ Hydra({
             { silent = true, desc = "Hop char 2" },
         },
         {
-            "l",
+            "n",
             keymap.cmd("HopLine"),
             { silent = true, desc = "Hop line" },
         },

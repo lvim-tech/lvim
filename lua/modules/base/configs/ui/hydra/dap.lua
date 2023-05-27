@@ -5,7 +5,7 @@ local dap_hint = [[
                              DAP
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Breakpoint toggle           _b_ │ _l_          Breakpoints clear
+Breakpoint toggle           _b_ │ _q_          Breakpoints clear
 Run to cursor               _C_ │ _c_                   Continue
 Step over                   _o_ │ _u_                         Up
 Step into                   _i_ │ _d_                       Down

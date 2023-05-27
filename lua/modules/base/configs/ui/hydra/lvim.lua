@@ -5,10 +5,10 @@ local lvim_hint = [[
                             LVIM
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Help                        _h_ │ _t_                      Theme
-Auto format                 _f_ │ _i_  Install lang dependencies
+Help                        _p_ │ _t_                      Theme
+Auto format                 _f_ │ _I_  Install lang dependencies
 
-Lazy                        _l_ │ _m_                      Mason
+Lazy                        _z_ │ _m_                      Mason
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                          exit _<Esc>_
@@ -28,7 +28,7 @@ Hydra({
     body = "<leader>l",
     heads = {
         {
-            "h",
+            "p",
             keymap.cmd("LvimHelper"),
             { silent = true, desc = "Help" },
         },
@@ -43,12 +43,12 @@ Hydra({
             { silent = true, desc = "Auto format" },
         },
         {
-            "i",
+            "I",
             keymap.cmd("LvimInstallLangDependencies"),
             { silent = true, desc = "Install lang dependencies" },
         },
         {
-            "l",
+            "z",
             keymap.cmd("Lazy"),
             { silent = true, desc = "Lazy" },
         },

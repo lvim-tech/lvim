@@ -9,7 +9,7 @@ local fzf_menu = [[
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 Navigation                  _n_ │ _s_                     Search
 Tags                        _t_ │ _g_                        GIT
-LSP                         _l_ │ _d_                        DAP
+LSP                         _d_ │ _D_                        DAP
 Misc                        _m_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
@@ -55,13 +55,13 @@ M.fzf_menu = Hydra({
             end,
         },
         {
-            "l",
+            "d",
             function()
                 M.fzf_lsp:activate()
             end,
         },
         {
-            "d",
+            "D",
             function()
                 M.fzf_dap:activate()
             end,

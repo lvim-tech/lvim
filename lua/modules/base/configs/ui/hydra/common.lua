@@ -17,7 +17,7 @@ Symbols outline             _o_ │ _t_                   Terminal
 Previous hunk               _[_ │ _]_                  Next hunk
 View hunk                   _v_ │ _b_                 Blame line
 
-Lazygit                     _l_ │ _g_                Lvim forgit
+Lazygit                     _L_ │ _g_                Lvim forgit
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                          exit _<Esc>_

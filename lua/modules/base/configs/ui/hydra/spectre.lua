@@ -5,12 +5,12 @@ local spectre_hint = [[
                            SPECTRE
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Open                        _o_ │ _h_                Show option
+Open                        _o_ │ _P_                Show option
 Toggle line                 _t_ │ _r_        Run current replace
 Select entry             _<CR>_ │ _R_                Run replace
 Send to quickfix            _q_ │ _u_         Toggle live update
 Replace command             _m_ │ _v_                Change view
-Toggle ignore case          _I_ │ _l_         Resume last search
+Toggle ignore case          _I_ │ _L_         Resume last search
 Toggle hidden               _H_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔

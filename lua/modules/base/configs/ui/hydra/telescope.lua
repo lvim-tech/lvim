@@ -8,7 +8,7 @@ local telescope_menu = [[
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 File                        _f_ │ _v_                        VIM
-LSP                         _l_ │ _g_                        GIT
+LSP                         _d_ │ _g_                        GIT
 Treesitter                  _t_ │ _b_               File browser
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
@@ -42,7 +42,7 @@ M.telescope_menu = Hydra({
             end,
         },
         {
-            "l",
+            "d",
             function()
                 M.telescope_lsp:activate()
             end,

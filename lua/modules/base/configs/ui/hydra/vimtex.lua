@@ -10,7 +10,7 @@ Vimtex compile selected     _C_ │ _o_      Vimtex compile output
 Vimtex stop                 _s_ │ _S_            Vimtex stop all
 Vimtex reload               _r_ │ _R_        Vimtex reload state
 Vimtex count words          _w_ │ _W_       Vimtex count words !
-Vimtex count letters        _l_ │ _L_     Vimtex count letters !
+Vimtex count letters        _e_ │ _E_     Vimtex count letters !
 Vimtex info                 _i_ │ _I_              Vimtex info !
 Vimtex status               _u_ │ _U_            Vimtex status !
 Vimtex clean                _x_ │ _X_             Vimtex clean !

@@ -7,7 +7,7 @@ local quickfix_hint = [[
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 Prev                        _p_ │ _n_                       Next
 Choice                      _c_ │ _d_                     Delete
-Load                        _l_ │ _s_                       Save
+Load                        _o_ │ _s_                       Save
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                          exit _<Esc>_
@@ -47,7 +47,7 @@ Hydra({
             { silent = true, desc = "Delete" },
         },
         {
-            "l",
+            "o",
             keymap.cmd("LvimListQuickFixLoad"),
             { silent = true, desc = "Load" },
         },
