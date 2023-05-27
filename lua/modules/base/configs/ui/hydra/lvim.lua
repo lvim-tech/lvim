@@ -8,6 +8,8 @@ local lvim_hint = [[
 Help                        _h_ │ _t_                      Theme
 Auto format                 _f_ │ _i_  Install lang dependencies
 
+Lazy                        _l_ │ _m_                      Mason
+
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                          exit _<Esc>_
 ]]
@@ -44,6 +46,16 @@ Hydra({
             "i",
             keymap.cmd("LvimInstallLangDependencies"),
             { silent = true, desc = "Install lang dependencies" },
+        },
+        {
+            "l",
+            keymap.cmd("Lazy"),
+            { silent = true, desc = "Lazy" },
+        },
+        {
+            "m",
+            keymap.cmd("Mason"),
+            { silent = true, desc = "Mason" },
         },
         { "<Esc>", nil, { exit = true, desc = false } },
     },
