@@ -7,6 +7,8 @@ local location_hint = [[
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 Neotree                     _e_ │ _=_          LVIM file manager
 
+Search files                _f_ │ _w_            Search in files
+
 LvimDiagnostics             _d_ │ _c_    Show diagnostic current
 Show diagnostic next        _n_ │ _p_       Show diagnostic prev
 
@@ -15,7 +17,7 @@ Symbols outline             _o_ │ _t_                   Terminal
 Previous hunk               _[_ │ _]_                  Next hunk
 View hunk                   _v_ │ _b_                 Blame line
 
-Lazygit                     _l_ │ _f_                Lvim forgit
+Lazygit                     _l_ │ _g_                Lvim forgit
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                          exit _<Esc>_
@@ -44,6 +46,16 @@ Hydra({
             "=",
             keymap.cmd("LvimFileManager"),
             { silent = true, desc = "LVIM file manager" },
+        },
+        {
+            "f",
+            keymap.cmd("FzfLua files"),
+            { silent = true, desc = "Search files" },
+        },
+        {
+            "w",
+            keymap.cmd("FzfLua live_grep"),
+            { silent = true, desc = "Search in files" },
         },
         {
             "d",
@@ -101,7 +113,7 @@ Hydra({
             { silent = true, desc = "Lazygit" },
         },
         {
-            "f",
+            "g",
             keymap.cmd("LvimForgit"),
             { silent = true, desc = "LvimForgit" },
         },
