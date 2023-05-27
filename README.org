@@ -78,6 +78,7 @@
     - `<leader>d` - Diagnostics
     - `<leader>s` - Glance
     - `<leader>p` - DAP
+    - `<leader>t` - Terminal
 
 **  REQUIREMENTS
 
