@@ -758,7 +758,7 @@ config.nvim_spectre = function()
                 desc = "toggle current item",
             },
             ["enter_file"] = {
-                map = "s",
+                map = "<cr>",
                 cmd = "<cmd>lua require('spectre.actions').select_entry()<CR>",
                 desc = "goto current file",
             },

@@ -7,7 +7,7 @@ local spectre_hint = [[
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 Open                        _o_ │ _h_                Show option
 Toggle line                 _t_ │ _r_        Run current replace
-Select entry                _s_ │ _R_                Run replace
+Select entry             _<CR>_ │ _R_                Run replace
 Send to quickfix            _q_ │ _u_         Toggle live update
 Replace command             _m_ │ _v_                Change view
 Toggle ignore case          _I_ │ _l_         Resume last search
@@ -41,7 +41,7 @@ Hydra({
             { silent = true, desc = "Toggle line" },
         },
         {
-            "s",
+            "<CR>",
             keymap.cmd("SpectreSelectEntry"),
             { silent = true, desc = "Select entry" },
         },
