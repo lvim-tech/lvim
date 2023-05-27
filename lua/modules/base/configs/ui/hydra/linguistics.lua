@@ -28,9 +28,6 @@ Hydra({
             position = "bottom-center",
             border = "single",
         },
-        on_enter = function()
-            vim.bo.modifiable = false
-        end,
     },
     mode = { "n", "x", "v" },
     body = "<leader>u",

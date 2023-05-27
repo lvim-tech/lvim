@@ -26,9 +26,6 @@ M.fzf_menu = Hydra({
             position = "bottom-center",
             border = "single",
         },
-        on_enter = function()
-            vim.bo.modifiable = false
-        end,
     },
     mode = { "n", "x", "v" },
     body = "<leader>z",
@@ -103,9 +100,6 @@ M.fzf_buffers_and_files = Hydra({
             position = "bottom-center",
             border = "single",
         },
-        on_enter = function()
-            vim.bo.modifiable = false
-        end,
     },
     mode = { "n", "x", "v" },
     body = "<leader>zb",
@@ -199,9 +193,6 @@ M.fzf_search = Hydra({
             position = "bottom-center",
             border = "single",
         },
-        on_enter = function()
-            vim.bo.modifiable = false
-        end,
     },
     mode = { "n", "x", "v" },
     body = "<leader>zs",
@@ -303,9 +294,6 @@ M.fzf_tags = Hydra({
             position = "bottom-center",
             border = "single",
         },
-        on_enter = function()
-            vim.bo.modifiable = false
-        end,
     },
     mode = { "n", "x", "v" },
     body = "<leader>zt",
@@ -366,7 +354,7 @@ local fzf_git = [[
 Git files                   _f_ │ _s_                 Git status
 Git commits                 _c_ │ _r_               Git branches
 Git bcommits                _b_ │ _t_                  Git stash
-                                                    
+
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                exit => _<Esc>_  │  back => _<BS>_
 ]]
@@ -381,9 +369,6 @@ M.fzf_git = Hydra({
             position = "bottom-center",
             border = "single",
         },
-        on_enter = function()
-            vim.bo.modifiable = false
-        end,
     },
     mode = { "n", "x", "v" },
     body = "<leader>zg",
@@ -459,9 +444,6 @@ M.fzf_lsp = Hydra({
             position = "bottom-center",
             border = "single",
         },
-        on_enter = function()
-            vim.bo.modifiable = false
-        end,
     },
     mode = { "n", "x", "v" },
     body = "<leader>zl",
@@ -582,9 +564,6 @@ M.fzf_dap = Hydra({
             position = "bottom-center",
             border = "single",
         },
-        on_enter = function()
-            vim.bo.modifiable = false
-        end,
     },
     mode = { "n", "x", "v" },
     body = "<leader>zd",
@@ -654,9 +633,6 @@ M.fzf_misc = Hydra({
             position = "bottom-center",
             border = "single",
         },
-        on_enter = function()
-            vim.bo.modifiable = false
-        end,
     },
     mode = { "n", "x", "v" },
     body = "<leader>zm",

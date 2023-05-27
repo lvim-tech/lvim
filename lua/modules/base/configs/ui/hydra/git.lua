@@ -25,9 +25,6 @@ M.git_menu = Hydra({
             position = "bottom-center",
             border = "single",
         },
-        on_enter = function()
-            vim.bo.modifiable = false
-        end,
     },
     mode = { "n", "x", "v" },
     body = "<leader>g",
@@ -86,9 +83,6 @@ M.diff_view = Hydra({
             position = "bottom-center",
             border = "single",
         },
-        on_enter = function()
-            vim.bo.modifiable = false
-        end,
     },
     mode = { "n", "x", "v" },
     body = "<leader>gd",
