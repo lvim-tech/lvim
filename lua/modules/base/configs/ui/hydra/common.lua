@@ -108,7 +108,7 @@ Hydra({
             { silent = true, desc = "Blame line" },
         },
         {
-            "l",
+            "L",
             keymap.cmd("Lazygit"),
             { silent = true, desc = "Lazygit" },
         },

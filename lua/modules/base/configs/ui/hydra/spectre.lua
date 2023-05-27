@@ -86,12 +86,12 @@ Hydra({
             { silent = true, desc = "Change view" },
         },
         {
-            "l",
+            "L",
             keymap.cmd("SpectreResumeLastSearch"),
             { silent = true, desc = "Resume last search" },
         },
         {
-            "h",
+            "P",
             keymap.cmd("SpectreShowOptions"),
             { silent = true, desc = "Show option" },
         },

@@ -38,7 +38,7 @@ Hydra({
             { silent = true, desc = "Breakpoint toggle" },
         },
         {
-            "l",
+            "q",
             keymap.cmd("DapClearBreakpoints"),
             { silent = true, desc = "Breakpoints clear" },
         },

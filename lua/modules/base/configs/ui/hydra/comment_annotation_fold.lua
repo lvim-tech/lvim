@@ -32,7 +32,7 @@ Hydra({
     body = "<leader>c",
     heads = {
         {
-            "l",
+            "L",
             "<Plug>(comment_toggle_linewise_current)",
             { silent = true, desc = "Comment toggle line" },
         },
