@@ -71,6 +71,7 @@
     - `<leader>e` - Explorer
     - `<leader>c` - Comment, annotation, fold
     - `<leader>u` - Linguistics
+    - `<leader>t` - Telescope
     - `<leader>z` - FZF
     - `<leader>g` - GIT
     - `<leader>q` - Quickfix
@@ -78,7 +79,7 @@
     - `<leader>d` - Diagnostics
     - `<leader>s` - Glance
     - `<leader>p` - DAP
-    - `<leader>t` - Terminal
+    - `<leader>m` - Terminal
 
 **  REQUIREMENTS
 
