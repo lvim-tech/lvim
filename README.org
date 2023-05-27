@@ -65,6 +65,7 @@
 ***  Hydra
 
     - `<leader>l` - LVIM IDE
+    - `<leader>a` - Common
     - `<leader>n` - Navigation
     - `<leader>r` - Replace
     - `<leader>h` - Hop
