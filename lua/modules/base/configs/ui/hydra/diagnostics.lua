@@ -17,7 +17,7 @@ Implementation              _i_ │ _H_             Signature help
 
 Document symbol             _s_ │ _S_           Workspace symbol
 
-Code lens refresh           _L_ │ _l_              Code lens run
+Code lens refresh           _F_ │ _L_              Code lens run
 
 Add to workspace folder     _x_ │ _X_    Remove workspace folder
 List workspace folders      _W_ │
@@ -123,12 +123,12 @@ Hydra({
             { silent = true, desc = "Workspace symbol" },
         },
         {
-            "L",
+            "F",
             keymap.cmd("LspCodeLensRefresh"),
             { silent = true, desc = "Code lens refresh" },
         },
         {
-            "l",
+            "L",
             keymap.cmd("LspCodeLensRun"),
             { silent = true, desc = "Code lens run" },
         },
