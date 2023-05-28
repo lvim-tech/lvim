@@ -10,12 +10,12 @@ Vimtex compile selected     _C_ │ _o_      Vimtex compile output
 Vimtex stop                 _s_ │ _S_            Vimtex stop all
 Vimtex reload               _r_ │ _R_        Vimtex reload state
 Vimtex count words          _w_ │ _W_       Vimtex count words !
-Vimtex count letters        _e_ │ _E_     Vimtex count letters !
+Vimtex count letters        _t_ │ _T_     Vimtex count letters !
 Vimtex info                 _f_ │ _F_              Vimtex info !
 Vimtex status               _u_ │ _U_            Vimtex status !
 Vimtex clean                _x_ │ _X_             Vimtex clean !
 Vimtex log                  _m_ │ _e_              Vimtex errors
-Vimtex toc toggle           _t_ │ _d_         Vimtex doc package
+Vimtex toc toggle           _K_ │ _d_         Vimtex doc package
 Vimtex toggle main          _n_ │ _p_          Vimtex imaps list
 Vimtex view                 _v_ │
 
@@ -87,12 +87,12 @@ Hydra({
             { silent = true, desc = "Vimtex count words !" },
         },
         {
-            "l",
+            "t",
             keymap.cmd("VimtexCountLetters"),
             { silent = true, desc = "Vimtex count letters" },
         },
         {
-            "L",
+            "T",
             keymap.cmd("VimtexCountLetters!"),
             { silent = true, desc = "Vimtex count letters !" },
         },
@@ -137,7 +137,7 @@ Hydra({
             { silent = true, desc = "Vimtex errors" },
         },
         {
-            "t",
+            "K",
             keymap.cmd("VimtexTocToggle"),
             { silent = true, desc = "Vimtex toc toggle" },
         },
