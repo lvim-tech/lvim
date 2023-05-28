@@ -72,7 +72,7 @@ local telescope_file_pickers = [[
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 Files                       _f_ │ _g_                  Git files
-Grep string                 _w_ │ _l_                  Live grep
+Grep string                 _w_ │ _L_                  Live grep
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                exit => _<Esc>_  │  back => _<BS>_
@@ -108,7 +108,7 @@ M.telescope_file = Hydra({
             { silent = true, desc = "Grep string" },
         },
         {
-            "l",
+            "L",
             keymap.cmd("Telescope live_grep"),
             { silent = true, desc = "Live grep" },
         },
@@ -132,14 +132,14 @@ local telescope_vim_pickers = [[
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 Buffers                     _b_ │ _o_                  Old files
 Commands                    _c_ │ _t_                       Tags
-Command history             _h_ │ _s_             Search history
-Help tags                   _H_ │ _M_                  Man pages
+Command history             _H_ │ _s_             Search history
+Help tags                   _T_ │ _M_                  Man pages
 Marks                       _m_ │ _O_                Colorscheme
 Quickfix                    _q_ │ _Q_           Quickfix history
-Loc list                    _l_ │ _j_                  Jump list
+Loc list                    _L_ │ _J_                  Jump list
 Vim options                 _v_ │ _r_                  Registers
-Autocommands                _a_ │ _u_              Spell suggest
-Keymaps                     _k_ │ _f_                 File types
+Autocommands                _A_ │ _u_              Spell suggest
+Keymaps                     _K_ │ _f_                 File types
 Highlights                  _g_ │ _R_                     Resume
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
@@ -181,7 +181,7 @@ M.telescope_vim = Hydra({
             { silent = true, desc = "Telescope tags" },
         },
         {
-            "h",
+            "H",
             keymap.cmd("Telescope command_history"),
             { silent = true, desc = "Telescope command history" },
         },
@@ -191,7 +191,7 @@ M.telescope_vim = Hydra({
             { silent = true, desc = "Telescope command search" },
         },
         {
-            "H",
+            "T",
             keymap.cmd("Telescope help_tags"),
             { silent = true, desc = "Telescope help tags" },
         },
@@ -221,12 +221,12 @@ M.telescope_vim = Hydra({
             { silent = true, desc = "Telescope quickfix history" },
         },
         {
-            "l",
+            "L",
             keymap.cmd("Telescope loclist"),
             { silent = true, desc = "Telescope loc list" },
         },
         {
-            "j",
+            "J",
             keymap.cmd("Telescope jumplist"),
             { silent = true, desc = "Telescope jump list" },
         },
@@ -241,7 +241,7 @@ M.telescope_vim = Hydra({
             { silent = true, desc = "Telescope registers" },
         },
         {
-            "a",
+            "A",
             keymap.cmd("Telescope autocommands"),
             { silent = true, desc = "Telescope autocommands" },
         },
@@ -251,7 +251,7 @@ M.telescope_vim = Hydra({
             { silent = true, desc = "Telescope spell suggest" },
         },
         {
-            "k",
+            "K",
             keymap.cmd("Telescope keymaps"),
             { silent = true, desc = "Telescope keymaps" },
         },
@@ -292,7 +292,7 @@ Definitions                 _d_ │ _t_           Type definitions
 References                  _r_ │ _m_            Implementations
 Document symbols           _sd_ │ _sw_         Workspace symbols
 Dynamic workspace symbols  _sy_ │ _g_                Diagnostics
-Incoming calls              _i_ │ _o_             Outgoing calls
+Incoming calls              _I_ │ _O_             Outgoing calls
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                exit => _<Esc>_  │  back => _<BS>_
@@ -353,12 +353,12 @@ M.telescope_lsp = Hydra({
             { silent = true, desc = "Telescope diagnostics" },
         },
         {
-            "i",
+            "I",
             keymap.cmd("Telescope lsp_incoming_calls"),
             { silent = true, desc = "Telescope lsp incoming calls" },
         },
         {
-            "o",
+            "O",
             keymap.cmd("Telescope lsp_outgoing_calls"),
             { silent = true, desc = "Telescope lsp outgoing calls" },
         },

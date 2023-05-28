@@ -12,7 +12,7 @@ Neotree float               _E_ │ _B_      Neotree buffers float
 Neotree git status float    _G_ │ _D_  Neotree diagnostics float
 
 Ranger                      _r_ │ _v_                       Vifm
-Oil                         _o_ │ _f_          LVIM file manager
+Oil                         _O_ │ _f_          LVIM file manager
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                          exit _<Esc>_
@@ -22,7 +22,7 @@ Hydra({
     name = "EXPLORER",
     hint = explorer_hint,
     config = {
-        color = "blue",
+        color = "pink",
         invoke_on_body = true,
         hint = {
             position = "bottom-center",
@@ -83,7 +83,7 @@ Hydra({
             { silent = true, desc = "Vifm" },
         },
         {
-            "o",
+            "O",
             keymap.cmd("Oil"),
             { silent = true, desc = "Oil" },
         },

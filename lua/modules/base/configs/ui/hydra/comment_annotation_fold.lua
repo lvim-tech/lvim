@@ -10,7 +10,7 @@ Comment toggle line         _L_ │ _b_       Comment toggle block
 Neogen file                 _F_ │ _t_                Neogen type
 Neogen class                _c_ │ _f_            Neogen function
 
-Manual                      _m_ │ _i_                     Indent
+Manual                      _m_ │ _I_                     Indent
 Expr                        _e_ │ _d_                       Diff
 Marker                      _r_ │
 
@@ -67,7 +67,7 @@ Hydra({
             { silent = true, desc = "Manual" },
         },
         {
-            "i",
+            "I",
             keymap.cmd("set foldmethod=indent"),
             { silent = true, desc = "Indent" },
         },

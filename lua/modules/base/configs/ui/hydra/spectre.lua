@@ -5,7 +5,7 @@ local spectre_hint = [[
                            SPECTRE
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Open                        _o_ │ _P_                Show option
+Open                        _O_ │ _P_                Show option
 Toggle line                 _t_ │ _r_        Run current replace
 Select entry             _<CR>_ │ _R_                Run replace
 Send to quickfix            _q_ │ _u_         Toggle live update
@@ -31,7 +31,7 @@ Hydra({
     body = "<leader>r",
     heads = {
         {
-            "o",
+            "O",
             keymap.cmd("Spectre"),
             { silent = true, desc = "Open" },
         },

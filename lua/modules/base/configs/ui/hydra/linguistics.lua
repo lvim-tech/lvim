@@ -5,10 +5,10 @@ local linguistics_hint = [[
                         LINGUISTICS
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Insert mode status          _i_ │ _<C-i>_   Insert mode language
+Insert mode status          _I_ │ _<C-i>_   Insert mode language
 Insert mode toggle      _<C-o>_ │
 
-Spelling status             _p_ │ _<A-p>_     Spelling languages
+Spelling status             _P_ │ _<A-p>_     Spelling languages
 Spelling toggle         _<A-o>_ │
 
 Save config as local        _s_ │ _u_              Update config
@@ -33,7 +33,7 @@ Hydra({
     body = "<leader>u",
     heads = {
         {
-            "i",
+            "I",
             keymap.cmd("LvimLinguisticsMENUInsertModeStatus"),
             { silent = true, desc = "Insert mode status" },
         },
@@ -48,7 +48,7 @@ Hydra({
             { silent = true, desc = "Insert mode toggle" },
         },
         {
-            "p",
+            "P",
             keymap.cmd("LvimLinguisticsMENUSpellingStatus"),
             { silent = true, desc = "Spelling status" },
         },

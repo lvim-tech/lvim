@@ -7,8 +7,8 @@ local dap_hint = [[
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 Breakpoint toggle           _b_ │ _q_          Breakpoints clear
 Run to cursor               _C_ │ _c_                   Continue
-Step over                   _o_ │ _u_                         Up
-Step into                   _i_ │ _d_                       Down
+Step over                   _O_ │ _u_                         Up
+Step into                   _I_ │ _d_                       Down
 Step out                    _t_ │ _p_                      Pause
 Close                       _x_ │ _X_                 Disconnect
 Restart                     _R_ │ _r_                Toggle repl
@@ -53,12 +53,12 @@ Hydra({
             { silent = true, desc = "Continue" },
         },
         {
-            "o",
+            "O",
             keymap.cmd("DapStepOver"),
             { silent = true, desc = "Step over" },
         },
         {
-            "i",
+            "I",
             keymap.cmd("DapStepInto"),
             { silent = true, desc = "Step into" },
         },

@@ -12,7 +12,7 @@ Search files                _f_ │ _w_            Search in files
 LvimDiagnostics             _d_ │ _c_    Show diagnostic current
 Show diagnostic next        _n_ │ _p_       Show diagnostic prev
 
-Symbols outline             _o_ │ _t_                   Terminal
+Symbols outline             _O_ │ _t_                   Terminal
 
 Previous hunk               _[_ │ _]_                  Next hunk
 View hunk                   _v_ │ _b_                 Blame line
@@ -78,7 +78,7 @@ Hydra({
             { silent = true, desc = "Show diagnostic prev" },
         },
         {
-            "o",
+            "O",
             keymap.cmd("SymbolsOutline"),
             { silent = true, desc = "Symbols outline" },
         },

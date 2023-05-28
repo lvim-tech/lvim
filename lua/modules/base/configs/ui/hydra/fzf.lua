@@ -82,8 +82,8 @@ local fzf_buffers_and_files = [[
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 Buffers                     _b_ │ _q_                   Quickfix
 Files                       _f_ │ _Q_             Quickfix stack
-Lines                       _l_ │ _c_                    Loclist
-Bines                       _L_ │ _C_              Loclist stack
+Lines                       _s_ │ _c_                    Loclist
+Blines                      _S_ │ _C_              Loclist stack
 Oldfiles                    _o_ │ _t_                       Tabs
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
@@ -115,12 +115,12 @@ M.fzf_buffers_and_files = Hydra({
             { silent = true, desc = "FzfLua files" },
         },
         {
-            "l",
+            "s",
             keymap.cmd("FzfLua lines"),
             { silent = true, desc = "FzfLua lines" },
         },
         {
-            "L",
+            "S",
             keymap.cmd("FzfLua blines"),
             { silent = true, desc = "FzfLua blines" },
         },
@@ -173,7 +173,7 @@ local fzf_search = [[
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 Grep                        _g_ │ _G_                  Live grep
-Grep last                   _l_ │ _r_           Live grep resume
+Grep last                   _L_ │ _r_           Live grep resume
 Grep cword                  _w_ │ _o_             Live grep glob
 Grep cWORD                  _W_ │ _n_           Live grep native
 Grep visual                 _v_ │ _b_                Grep curbuf
@@ -203,7 +203,7 @@ M.fzf_search = Hydra({
             { silent = true, desc = "FzfLua grep" },
         },
         {
-            "l",
+            "L",
             keymap.cmd("FzfLua grep_last"),
             { silent = true, desc = "FzfLua grep last" },
         },
@@ -277,7 +277,7 @@ local fzf_tags = [[
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 Tags                        _t_ │ _b_                      Btags
 Tags grep                   _g_ │ _v_           Tags grep visual
-Tags grep cword             _w_ │ _l_             Tags live grep
+Tags grep cword             _w_ │ _L_             Tags live grep
 Tags grep cWORD             _W_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
@@ -329,7 +329,7 @@ M.fzf_tags = Hydra({
             { silent = true, desc = "FzfLua tags grep visual" },
         },
         {
-            "l",
+            "L",
             keymap.cmd("FzfLua tags_live_grep"),
             { silent = true, desc = "FzfLua tags_live_grep" },
         },
@@ -611,13 +611,13 @@ local fzf_misc = [[
                           FZF MISC
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Help tags                   _h_ │ _m_                      Marks
-Man pages                   _M_ │ _j_                      Jumps
+Help tags                   _t_ │ _m_                      Marks
+Man pages                   _M_ │ _J_                      Jumps
 Highlights                  _H_ │ _g_                    Changes
-Autocmds                    _a_ │ _r_                  Registers
-Commands                    _c_ │ _t_                   Tagstack
-Command history             _C_ │ _k_                    Keymaps
-Search history              _i_ │ _f_                  Filetypes
+Autocmds                    _A_ │ _r_                  Registers
+Commands                    _c_ │ _T_                   Tagstack
+Command history             _C_ │ _K_                    Keymaps
+Search history              _I_ │ _f_                  Filetypes
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                exit => _<Esc>_  │  back => _<BS>_
@@ -638,7 +638,7 @@ M.fzf_misc = Hydra({
     body = "<leader>zm",
     heads = {
         {
-            "h",
+            "t",
             keymap.cmd("FzfLua help_tags"),
             { silent = true, desc = "FzfLua help tags" },
         },
@@ -653,7 +653,7 @@ M.fzf_misc = Hydra({
             { silent = true, desc = "FzfLua highlights" },
         },
         {
-            "a",
+            "A",
             keymap.cmd("FzfLua autocmds"),
             { silent = true, desc = "FzfLua autocmds" },
         },
@@ -668,7 +668,7 @@ M.fzf_misc = Hydra({
             { silent = true, desc = "FzfLua command history" },
         },
         {
-            "i",
+            "I",
             keymap.cmd("FzfLua search_history"),
             { silent = true, desc = "FzfLua search history" },
         },
@@ -678,7 +678,7 @@ M.fzf_misc = Hydra({
             { silent = true, desc = "FzfLua marks" },
         },
         {
-            "j",
+            "J",
             keymap.cmd("FzfLua jumps"),
             { silent = true, desc = "FzfLua jumps" },
         },
@@ -693,12 +693,12 @@ M.fzf_misc = Hydra({
             { silent = true, desc = "FzfLua registers" },
         },
         {
-            "t",
+            "T",
             keymap.cmd("FzfLua tagstack"),
             { silent = true, desc = "FzfLua tagstack" },
         },
         {
-            "k",
+            "K",
             keymap.cmd("FzfLua keymaps"),
             { silent = true, desc = "FzfLua keymaps" },
         },

@@ -7,7 +7,7 @@ local location_hint = [[
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 Prev                        _p_ │ _n_                       Next
 Choice                      _c_ │ _d_                     Delete
-Load                        _o_ │ _s_                       Save
+Load                        _L_ │ _s_                       Save
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                          exit _<Esc>_
@@ -47,7 +47,7 @@ Hydra({
             { silent = true, desc = "Delete" },
         },
         {
-            "o",
+            "L",
             keymap.cmd("LvimListLocLoad"),
             { silent = true, desc = "Load" },
         },

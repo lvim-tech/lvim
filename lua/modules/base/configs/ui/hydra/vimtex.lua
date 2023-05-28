@@ -11,7 +11,7 @@ Vimtex stop                 _s_ │ _S_            Vimtex stop all
 Vimtex reload               _r_ │ _R_        Vimtex reload state
 Vimtex count words          _w_ │ _W_       Vimtex count words !
 Vimtex count letters        _e_ │ _E_     Vimtex count letters !
-Vimtex info                 _i_ │ _I_              Vimtex info !
+Vimtex info                 _f_ │ _F_              Vimtex info !
 Vimtex status               _u_ │ _U_            Vimtex status !
 Vimtex clean                _x_ │ _X_             Vimtex clean !
 Vimtex log                  _m_ │ _e_              Vimtex errors
@@ -97,12 +97,12 @@ Hydra({
             { silent = true, desc = "Vimtex count letters !" },
         },
         {
-            "i",
+            "f",
             keymap.cmd("VimtexInfo"),
             { silent = true, desc = "Vimtex info" },
         },
         {
-            "I",
+            "F",
             keymap.cmd("VimtexInfo!"),
             { silent = true, desc = "Vimtex info !" },
         },

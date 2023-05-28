@@ -6,7 +6,7 @@ local glance_hint = [[
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 Definitions                 _d_ │ _t_           Type definitions
-References                  _r_ │ _i_            Implementations
+References                  _r_ │ _I_            Implementations
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                          exit _<Esc>_
@@ -41,7 +41,7 @@ Hydra({
             { silent = true, desc = "References" },
         },
         {
-            "i",
+            "I",
             keymap.cmd("Glance implementations"),
             { silent = true, desc = "Implementations" },
         },
