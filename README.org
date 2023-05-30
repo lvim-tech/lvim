@@ -82,6 +82,10 @@
     - `<leader>p` - DAP
     - `<leader>;` - Neotest
     - `<leader>m` - Terminal
+    - `<leader>]` - Dependencies
+      * package.json (npm / yarn)
+      * Cargo.toml (rust)
+      * pubspec.yaml (dart)
 
 **  REQUIREMENTS
 
