@@ -724,7 +724,11 @@ config.package_info_nvim = function()
     if not package_info_status_ok then
         return
     end
-    package_info.setup({})
+    package_info.setup()
+    vim.api.nvim_create_user_command("PackageInfoToggle", "lua require('package-info').toggle()", {})
+    vim.api.nvim_create_user_command("PackageInfoDelete", "lua require('package-info').delete()", {})
+    vim.api.nvim_create_user_command("PackageInfoChangeVersion", "lua require('package-info').change_version()", {})
+    vim.api.nvim_create_user_command("PackageInfoInstall", "lua require('package-info').install()", {})
 end
 
 config.crates_nvim = function()
@@ -743,9 +747,21 @@ config.crates_nvim = function()
     vim.api.nvim_create_user_command("CratesUpgradeCrate", "lua require('crates').upgrade_crate()", {})
     vim.api.nvim_create_user_command("CratesUpgradeCrates", "lua require('crates').upgrade_crates()", {})
     vim.api.nvim_create_user_command("CratesUpgradeAllCrates", "lua require('crates').upgrade_all_crates()", {})
-    vim.api.nvim_create_user_command("CratesShowPopup", "lua require('crates').show_popup()", {})
-    vim.api.nvim_create_user_command("CratesShowVersionsPopup", "lua require('crates').show_versions_popup()", {})
-    vim.api.nvim_create_user_command("CratesShowFeaturesPopup", "lua require('crates').show_features_popup()", {})
+    vim.api.nvim_create_user_command(
+        "CratesShowPopup",
+        "lua require('crates').show_popup() require('crates').focus_popup()",
+        {}
+    )
+    vim.api.nvim_create_user_command(
+        "CratesShowVersionsPopup",
+        "lua require('crates').show_versions_popup() require('crates').focus_popup()",
+        {}
+    )
+    vim.api.nvim_create_user_command(
+        "CratesShowFeaturesPopup",
+        "lua require('crates').show_features_popup() require('crates').focus_popup()",
+        {}
+    )
     vim.api.nvim_create_user_command("CratesFocusPopup", "lua require('crates').focus_popup()", {})
     vim.api.nvim_create_user_command("CratesHidePopup", "lua require('crates').hide_popup()", {})
 end
@@ -757,9 +773,9 @@ config.pubspec_assist_nvim = function()
     end
     pubspec_assist.setup({
         highlights = {
-            up_to_date = "PubspecAssistDependencyUpToDate",
-            outdated = "PubspecAssistDependencyOutdated",
-            unknown = "PubspecAssistDependencyUnknown",
+            up_to_date = "PackageInfoUpToDateVersion",
+            outdated = "PackageInfoOutdatedVersion",
+            unknown = "Include",
         },
     })
 end
