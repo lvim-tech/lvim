@@ -8,6 +8,9 @@ local lvim_hint = [[
 Help                        _p_ │ _t_                      Theme
 Auto format                 _f_ │ _I_  Install lang dependencies
 
+Vertical resize -2          _H_ │ _L_         Vertical resize +2
+Resize -2                   _J_ │ _K_                  Resize +2
+
 Lazy                        _z_ │ _m_                      Mason
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
@@ -46,6 +49,26 @@ Hydra({
             "I",
             keymap.cmd("LvimInstallLangDependencies"),
             { nowait = true, silent = true, desc = "Install lang dependencies" },
+        },
+        {
+            "H",
+            keymap.cmd("vertical resize -2"),
+            { nowait = true, silent = true, desc = "Vertical resize -2" },
+        },
+        {
+            "L",
+            keymap.cmd("vertical resize +2"),
+            { nowait = true, silent = true, desc = "Vertical resize +2" },
+        },
+        {
+            "J",
+            keymap.cmd("resize -2"),
+            { nowait = true, silent = true, desc = "Resize -2" },
+        },
+        {
+            "K",
+            keymap.cmd("resize +2"),
+            { nowait = true, silent = true, desc = "Resize +2" },
         },
         {
             "z",
