@@ -6,7 +6,7 @@ local spectre_hint = [[
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 Open                        _O_ │ _P_                Show option
-Toggle line                 _t_ │ _r_        Run current replace
+Toggle line                 _g_ │ _r_        Run current replace
 Select entry             _<CR>_ │ _R_                Run replace
 Send to quickfix            _q_ │ _u_         Toggle live update
 Replace command             _m_ │ _v_                Change view
@@ -33,67 +33,67 @@ Hydra({
         {
             "O",
             keymap.cmd("Spectre"),
-            { silent = true, desc = "Open" },
+            { nowait = true, silent = true, desc = "Open" },
         },
         {
-            "t",
+            "g",
             keymap.cmd("SpectreToggleLine"),
-            { silent = true, desc = "Toggle line" },
+            { nowait = true, silent = true, desc = "Toggle line" },
         },
         {
             "<CR>",
             keymap.cmd("SpectreSelectEntry"),
-            { silent = true, desc = "Select entry" },
+            { nowait = true, silent = true, desc = "Select entry" },
         },
         {
             "q",
             keymap.cmd("SpectreSendToQF"),
-            { silent = true, desc = "Send to quickfix" },
+            { nowait = true, silent = true, desc = "Send to quickfix" },
         },
         {
             "m",
             keymap.cmd("SpectreReplaceCommand"),
-            { silent = true, desc = "Replace command" },
+            { nowait = true, silent = true, desc = "Replace command" },
         },
         {
             "r",
             keymap.cmd("SpectreRunCurrentReplace"),
-            { silent = true, desc = "Run current replace" },
+            { nowait = true, silent = true, desc = "Run current replace" },
         },
         {
             "R",
             keymap.cmd("SpectreRunReplace"),
-            { silent = true, desc = "Run replace" },
+            { nowait = true, silent = true, desc = "Run replace" },
         },
         {
             "I",
             keymap.cmd("SpectreIgnoreCase"),
-            { silent = true, desc = "Toggle ignore case" },
+            { nowait = true, silent = true, desc = "Toggle ignore case" },
         },
         {
             "H",
             keymap.cmd("SpectreHidden"),
-            { silent = true, desc = "Toggle hidden" },
+            { nowait = true, silent = true, desc = "Toggle hidden" },
         },
         {
             "u",
             keymap.cmd("SpectreToggleLiveUpdate"),
-            { silent = true, desc = "Toggle live update" },
+            { nowait = true, silent = true, desc = "Toggle live update" },
         },
         {
             "v",
             keymap.cmd("SpectreChangeView"),
-            { silent = true, desc = "Change view" },
+            { nowait = true, silent = true, desc = "Change view" },
         },
         {
             "L",
             keymap.cmd("SpectreResumeLastSearch"),
-            { silent = true, desc = "Resume last search" },
+            { nowait = true, silent = true, desc = "Resume last search" },
         },
         {
             "P",
             keymap.cmd("SpectreShowOptions"),
-            { silent = true, desc = "Show option" },
+            { nowait = true, silent = true, desc = "Show option" },
         },
         { "<Esc>", nil, { exit = true, desc = false } },
     },

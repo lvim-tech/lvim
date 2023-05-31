@@ -29,32 +29,32 @@ Hydra({
         {
             "p",
             keymap.cmd("LvimListQuickFixPrev"),
-            { silent = true, desc = "Prev" },
+            { nowait = true, silent = true, desc = "Prev" },
         },
         {
             "n",
             keymap.cmd("LvimListQuickFixNext"),
-            { silent = true, desc = "Next" },
+            { nowait = true, silent = true, desc = "Next" },
         },
         {
             "c",
             keymap.cmd("LvimListQuickFixMenuChoice"),
-            { silent = true, desc = "Choice" },
+            { nowait = true, silent = true, desc = "Choice" },
         },
         {
             "d",
             keymap.cmd("LvimListQuickFixMenuDelete"),
-            { silent = true, desc = "Delete" },
+            { nowait = true, silent = true, desc = "Delete" },
         },
         {
             "L",
             keymap.cmd("LvimListQuickFixLoad"),
-            { silent = true, desc = "Load" },
+            { nowait = true, silent = true, desc = "Load" },
         },
         {
             "s",
             keymap.cmd("LvimListQuickFixSave"),
-            { silent = true, desc = "Save" },
+            { nowait = true, silent = true, desc = "Save" },
         },
         { "<Esc>", nil, { exit = true, desc = false } },
     },

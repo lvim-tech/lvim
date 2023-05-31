@@ -29,32 +29,32 @@ Hydra({
         {
             "w",
             keymap.cmd("HopWord"),
-            { silent = true, desc = "Hop word" },
+            { nowait = true, silent = true, desc = "Hop word" },
         },
         {
             "a",
             keymap.cmd("HopAnywhere"),
-            { silent = true, desc = "Hop anywhere" },
+            { nowait = true, silent = true, desc = "Hop anywhere" },
         },
         {
             "c",
             keymap.cmd("HopChar1"),
-            { silent = true, desc = "Hop char 1" },
+            { nowait = true, silent = true, desc = "Hop char 1" },
         },
         {
             "C",
             keymap.cmd("HopChar2"),
-            { silent = true, desc = "Hop char 2" },
+            { nowait = true, silent = true, desc = "Hop char 2" },
         },
         {
             "n",
             keymap.cmd("HopLine"),
-            { silent = true, desc = "Hop line" },
+            { nowait = true, silent = true, desc = "Hop line" },
         },
         {
             "s",
             keymap.cmd("HopLineStart"),
-            { silent = true, desc = "Hop line start" },
+            { nowait = true, silent = true, desc = "Hop line start" },
         },
         { "<Esc>", nil, { exit = true, desc = false } },
     },

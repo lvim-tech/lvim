@@ -28,22 +28,22 @@ Hydra({
         {
             "d",
             keymap.cmd("Glance definitions"),
-            { silent = true, desc = "Definitions" },
+            { nowait = true, silent = true, desc = "Definitions" },
         },
         {
             "t",
             keymap.cmd("Glance type_definitions"),
-            { silent = true, desc = "Type definitions" },
+            { nowait = true, silent = true, desc = "Type definitions" },
         },
         {
             "r",
             keymap.cmd("Glance references"),
-            { silent = true, desc = "References" },
+            { nowait = true, silent = true, desc = "References" },
         },
         {
             "I",
             keymap.cmd("Glance implementations"),
-            { silent = true, desc = "Implementations" },
+            { nowait = true, silent = true, desc = "Implementations" },
         },
         { "<Esc>", nil, { exit = true, desc = false } },
     },

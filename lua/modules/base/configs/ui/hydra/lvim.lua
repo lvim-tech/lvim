@@ -30,32 +30,32 @@ Hydra({
         {
             "p",
             keymap.cmd("LvimHelper"),
-            { silent = true, desc = "Help" },
+            { nowait = true, silent = true, desc = "Help" },
         },
         {
             "t",
             keymap.cmd("LvimTheme"),
-            { silent = true, desc = "Theme" },
+            { nowait = true, silent = true, desc = "Theme" },
         },
         {
             "f",
             keymap.cmd("LvimAutoFormat"),
-            { silent = true, desc = "Auto format" },
+            { nowait = true, silent = true, desc = "Auto format" },
         },
         {
             "I",
             keymap.cmd("LvimInstallLangDependencies"),
-            { silent = true, desc = "Install lang dependencies" },
+            { nowait = true, silent = true, desc = "Install lang dependencies" },
         },
         {
             "z",
             keymap.cmd("Lazy"),
-            { silent = true, desc = "Lazy" },
+            { nowait = true, silent = true, desc = "Lazy" },
         },
         {
             "m",
             keymap.cmd("Mason"),
-            { silent = true, desc = "Mason" },
+            { nowait = true, silent = true, desc = "Mason" },
         },
         { "<Esc>", nil, { exit = true, desc = false } },
     },
