@@ -283,6 +283,15 @@ M.icons = {
 
 M.setup_diagnostic = function()
     vim.diagnostic.config(M.config_diagnostic)
+
+    vim.api.nvim_create_user_command("LspVirtualTextToggle", function()
+        local config = vim.diagnostic.config
+        local vt = config().virtual_text
+        config({
+            virtual_text = not vt,
+        })
+    end, { desc = "LspVirtualTextToggle" })
+
     vim.fn.sign_define("DiagnosticSignError", {
         text = M.icons.error,
         texthl = "DiagnosticError",

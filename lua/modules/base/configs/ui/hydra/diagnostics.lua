@@ -10,6 +10,7 @@ Format                      _f_ │ _A_                Code action
 
 Show diagnostic current     _v_ │
 Show diagnostic next        _n_ │ _p_       Show diagnostic prev
+Lsp virtual text toggle     _T_ │
 
 Definition                  _d_ │ _t_            Type definition
 Declaration                 _D_ │ _R_                 References
@@ -81,6 +82,11 @@ Hydra({
             "p",
             keymap.cmd("LspShowDiagnosticPrev"),
             { nowait = true, silent = true, desc = "Show diagnostic prev" },
+        },
+        {
+            "T",
+            keymap.cmd("LspVirtualTextToggle"),
+            { nowait = true, silent = true, desc = "Lsp virtual text toggle" },
         },
         {
             "d",
