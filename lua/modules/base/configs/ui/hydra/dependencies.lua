@@ -61,7 +61,7 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
                     buffer = true,
                 },
                 mode = { "n", "x", "v" },
-                body = "<leader>]",
+                body = ";w",
                 heads = {
                     {
                         "t",
@@ -100,7 +100,7 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
                     buffer = true,
                 },
                 mode = { "n", "x", "v" },
-                body = "<leader>]",
+                body = ";w",
                 heads = {
                     {
                         "t",
@@ -169,7 +169,7 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
                     buffer = true,
                 },
                 mode = { "n", "x", "v" },
-                body = "<leader>]",
+                body = ";w",
                 heads = {
                     {
                         "p",

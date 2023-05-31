@@ -12,7 +12,7 @@ Tab next                _<C-n>_ │ _<C-p>_               Tab prev
 Close current window        _x_ │ _O_        Close other windows
 Window zoom toggle          _r_ │ _=_            Window resize =
 Window resize width +   _<A-l>_ │ _<A-h>_  Window resize width -
-Window resize height +  _<A-j>_ │ _<A-k>_ Window resize height 
+Window resize height +  _<A-j>_ │ _<A-k>_ Window resize height
 Window move             _<A-m>_ │
 
 Move to window left         _H_ │ _L_       Move to window right
@@ -37,7 +37,7 @@ Hydra({
         },
     },
     mode = { "n", "x", "v" },
-    body = "<leader>n",
+    body = ";n",
     heads = {
         {
             "s",

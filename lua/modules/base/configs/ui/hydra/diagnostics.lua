@@ -45,7 +45,7 @@ Hydra({
         },
     },
     mode = { "n", "x", "v" },
-    body = "<leader>d",
+    body = ";d",
     heads = {
         {
             "K",

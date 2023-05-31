@@ -64,25 +64,25 @@
 
 ***  Hydra
 
-    - `<leader>l` - LVIM IDE
-    - `<leader>a` - Common
-    - `<leader>n` - Navigation
-    - `<leader>r` - Replace
-    - `<leader>h` - Hop
-    - `<leader>e` - Explorer
-    - `<leader>c` - Comment, annotation, fold
-    - `<leader>u` - Linguistics
-    - `<leader>t` - Telescope
-    - `<leader>z` - FZF
-    - `<leader>g` - GIT
-    - `<leader>q` - Quickfix
-    - `<leader>o` - Location
-    - `<leader>d` - Diagnostics
-    - `<leader>s` - Glance
-    - `<leader>p` - DAP
-    - `<leader>;` - Neotest
-    - `<leader>m` - Terminal
-    - `<leader>]` - Dependencies
+    - `;l` - LVIM IDE
+    - `;a` - Common
+    - `;n` - Navigation
+    - `;r` - Replace
+    - `;h` - Hop
+    - `;e` - Explorer
+    - `;c` - Comment, annotation, fold
+    - `;u` - Linguistics
+    - `;t` - Telescope
+    - `;z` - FZF
+    - `;g` - GIT
+    - `;q` - Quickfix
+    - `;o` - Location
+    - `;d` - Diagnostics
+    - `;s` - Glance
+    - `;p` - DAP
+    - `;'` - Neotest
+    - `;m` - Terminal
+    - `;w` - Dependencies
       * package.json (npm / yarn)
       * Cargo.toml (rust)
       * pubspec.yaml (dart)

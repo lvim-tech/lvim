@@ -617,7 +617,7 @@ config.noice_nvim = function()
                 filter = {
                     any = {
                         { event = { "msg_showmode", "msg_showcmd", "msg_ruler" } },
-                        { event = "msg_show", kind = "search_count" },
+                        { event = "msg_show", kind = "" },
                     },
                 },
                 opts = { skip = true },

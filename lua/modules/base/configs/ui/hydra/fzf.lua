@@ -28,7 +28,7 @@ M.fzf_menu = Hydra({
         },
     },
     mode = { "n", "x", "v" },
-    body = "<leader>z",
+    body = ";z",
     heads = {
         {
             "n",
@@ -101,8 +101,8 @@ M.fzf_buffers_and_files = Hydra({
             border = "single",
         },
     },
-    mode = { "n", "x", "v" },
-    body = "<leader>zb",
+    -- mode = { "n", "x", "v" },
+    -- body = ";zb",
     heads = {
         {
             "b",
@@ -194,8 +194,8 @@ M.fzf_search = Hydra({
             border = "single",
         },
     },
-    mode = { "n", "x", "v" },
-    body = "<leader>zs",
+    -- mode = { "n", "x", "v" },
+    -- body = ";zs",
     heads = {
         {
             "g",
@@ -295,8 +295,8 @@ M.fzf_tags = Hydra({
             border = "single",
         },
     },
-    mode = { "n", "x", "v" },
-    body = "<leader>zt",
+    -- mode = { "n", "x", "v" },
+    -- body = ";zt",
     heads = {
         {
             "t",
@@ -370,8 +370,8 @@ M.fzf_git = Hydra({
             border = "single",
         },
     },
-    mode = { "n", "x", "v" },
-    body = "<leader>zg",
+    -- mode = { "n", "x", "v" },
+    -- body = ";zg",
     heads = {
         {
             "f",
@@ -445,8 +445,8 @@ M.fzf_lsp = Hydra({
             border = "single",
         },
     },
-    mode = { "n", "x", "v" },
-    body = "<leader>zl",
+    -- mode = { "n", "x", "v" },
+    -- body = ";zl",
     heads = {
         {
             "r",
@@ -565,8 +565,8 @@ M.fzf_dap = Hydra({
             border = "single",
         },
     },
-    mode = { "n", "x", "v" },
-    body = "<leader>zd",
+    -- mode = { "n", "x", "v" },
+    -- body = ";zd",
     heads = {
         {
             "m",
@@ -634,8 +634,8 @@ M.fzf_misc = Hydra({
             border = "single",
         },
     },
-    mode = { "n", "x", "v" },
-    body = "<leader>zm",
+    -- mode = { "n", "x", "v" },
+    -- body = ";zm",
     heads = {
         {
             "t",

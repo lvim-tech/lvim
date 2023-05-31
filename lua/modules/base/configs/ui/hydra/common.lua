@@ -5,7 +5,7 @@ local location_hint = [[
                            COMMON
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Neotree                     _e_ │ _=_          LVIM file manager
+Neotree                     _e_ │ _u_          LVIM file manager
 
 Search files                _f_ │ _w_            Search in files
 
@@ -35,7 +35,7 @@ Hydra({
         },
     },
     mode = { "n", "x", "v" },
-    body = "<leader>a",
+    body = ";a",
     heads = {
         {
             "e",
@@ -43,7 +43,7 @@ Hydra({
             { silent = true, desc = "Neotree" },
         },
         {
-            "=",
+            "u",
             keymap.cmd("LvimFileManager"),
             { silent = true, desc = "LVIM file manager" },
         },

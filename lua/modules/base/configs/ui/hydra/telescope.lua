@@ -27,7 +27,7 @@ M.telescope_menu = Hydra({
         },
     },
     mode = { "n", "x", "v" },
-    body = "<leader>t",
+    body = ";t",
     heads = {
         {
             "f",
@@ -89,8 +89,8 @@ M.telescope_file = Hydra({
             border = "single",
         },
     },
-    mode = { "n", "x", "v" },
-    body = "<leader>tf",
+    -- mode = { "n", "x", "v" },
+    -- body = ";tf",
     heads = {
         {
             "f",
@@ -157,8 +157,8 @@ M.telescope_vim = Hydra({
             border = "single",
         },
     },
-    mode = { "n", "x", "v" },
-    body = "<leader>tv",
+    -- mode = { "n", "x", "v" },
+    -- body = ";tv",
     heads = {
         {
             "b",
@@ -309,8 +309,8 @@ M.telescope_lsp = Hydra({
             border = "single",
         },
     },
-    mode = { "n", "x", "v" },
-    body = "<leader>tl",
+    -- mode = { "n", "x", "v" },
+    -- body = ";tl",
     heads = {
         {
             "d",
@@ -399,8 +399,8 @@ M.telescope_git = Hydra({
             border = "single",
         },
     },
-    mode = { "n", "x", "v" },
-    body = "<leader>tg",
+    -- mode = { "n", "x", "v" },
+    -- body = ";tg",
     heads = {
         {
             "c",

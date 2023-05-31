@@ -27,7 +27,7 @@ M.git_menu = Hydra({
         },
     },
     mode = { "n", "x", "v" },
-    body = "<leader>g",
+    body = ";g",
     heads = {
         {
             "d",
@@ -84,8 +84,8 @@ M.diff_view = Hydra({
             border = "single",
         },
     },
-    mode = { "n", "x", "v" },
-    body = "<leader>gd",
+    -- mode = { "n", "x", "v" },
+    -- body = ";gd",
     heads = {
         {
             "o",
@@ -162,8 +162,8 @@ M.git_signs = Hydra({
             border = "single",
         },
     },
-    mode = { "n", "x", "v" },
-    body = "<leader>gs",
+    -- mode = { "n", "x", "v" },
+    -- body = ";gs",
     heads = {
         {
             "p",
