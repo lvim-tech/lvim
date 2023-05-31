@@ -92,6 +92,7 @@ M.sudo_write = function(tmpfile, filepath)
         return
     end
     local cmd = string.format("dd if=%s of=%s bs=1048576", vim.fn.shellescape(tmpfile), vim.fn.shellescape(filepath))
+    ---@diagnostic disable-next-line: undefined-field
     vim.api.nvim_exec(string.format("write! %s", tmpfile), true)
     if M.sudo_exec(cmd) then
         notify.info(string.format('"%s" written!', filepath), {
