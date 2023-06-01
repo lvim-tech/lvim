@@ -1004,8 +1004,8 @@ end
 
 config.heirline_nvim = function()
     local statusline = require("modules.base.configs.ui.heirline.statusline").get_statusline()
-    local winbar = require("modules.base.configs.ui.heirline.winbar").get_winbar()
     local statuscolumn = require("modules.base.configs.ui.heirline.statuscolumn").get_statuscolumn()
+    local winbar = require("modules.base.configs.ui.heirline.winbar").get_winbar()
     local buf_types = require("modules.base.configs.ui.heirline.buf_types")
     local file_types = require("modules.base.configs.ui.heirline.file_types")
     local heirline_status_ok, heirline = pcall(require, "heirline")
@@ -1019,8 +1019,8 @@ config.heirline_nvim = function()
     table.insert(file_type_winbar, "qf")
     heirline.setup({
         statusline = statusline,
-        winbar = winbar,
         statuscolumn = statuscolumn,
+        winbar = winbar,
         opts = {
             disable_winbar_cb = function(args)
                 local buf = args.buf

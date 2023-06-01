@@ -55,7 +55,9 @@ M.get_winbar = function()
     }
 
     local navic = {
-        condition = require("nvim-navic").is_available(),
+        condition = function()
+            return require("nvim-navic").is_available()
+        end,
         static = {
             type_hl = icons.hl,
             enc = function(line, col, winnr)
@@ -89,7 +91,6 @@ M.get_winbar = function()
                             name = "heirline_navic",
                         },
                     },
-                    hl = { bg = colors.bg },
                 }
                 if #data > 1 and i < #data then
                     table.insert(child, {
