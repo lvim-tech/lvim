@@ -1,133 +1,148 @@
-local common = require("modules.base.configs.ui.heirline.common")
+local M = {}
 
-local file_icon_name = {
-    provider = function()
-        local function isempty(s)
-            return s == nil or s == ""
-        end
-        local hl_group_1 = "FileTextColor"
-        vim.api.nvim_set_hl(0, hl_group_1, {
-            fg = common.theme_colors.green_01,
-            bg = common.theme_colors.bg,
-            bold = true,
-        })
-        local filename = vim.fn.expand("%:t")
-        local extension = vim.fn.expand("%:e")
-        if not isempty(filename) then
-            local f_icon, f_icon_color =
-                require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
-            local hl_group_2 = "FileIconColor" .. extension
-            vim.api.nvim_set_hl(0, hl_group_2, { fg = f_icon_color, bg = common.theme_colors.bg })
-            if isempty(f_icon) then
-                f_icon = ""
+M.get_winbar = function()
+    local colors = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme]
+    local icons = require("configs.base.ui.icons")
+    local heirline_conditions = require("heirline.conditions")
+    local space = { provider = " " }
+
+    local file_types = {
+        provider = function()
+            local file_type = vim.bo.filetype
+            if file_type ~= "" then
+                return "  " .. string.upper(file_type)
             end
-            return "%#"
-                .. hl_group_2
-                .. "# "
-                .. f_icon
-                .. "%*"
-                .. " "
-                .. "%#"
-                .. hl_group_1
-                .. "#"
-                .. filename
-                .. "%*"
-                .. "  "
-        end
-    end,
-    hl = { fg = common.theme_colors.red_02 },
-}
+        end,
+        hl = { fg = colors.orange_02, bold = true },
+    }
 
-local navic = {
-    condition = require("nvim-navic").is_available(),
-    static = {
-        type_hl = common.icons.hl,
-        enc = function(line, col, winnr)
-            return bit.bor(bit.lshift(line, 16), bit.lshift(col, 6), winnr)
-        end,
-        dec = function(c)
-            local line = bit.rshift(c, 16)
-            local col = bit.band(bit.rshift(c, 6), 1023)
-            local winnr = bit.band(c, 63)
-            return line, col, winnr
-        end,
-    },
-    init = function(self)
-        local data = require("nvim-navic").get_data() or {}
-        local children = {}
-        for i, d in ipairs(data) do
-            local pos = self.enc(d.scope.start.line, d.scope.start.character, self.winnr)
-            local child = {
-                {
-                    provider = d.icon,
-                    hl = self.type_hl[d.type],
-                },
-                {
-                    provider = d.name:gsub("%%", "%%%%"):gsub("%s*->%s*", ""),
-                    on_click = {
-                        minwid = pos,
-                        callback = function(_, minwid)
-                            local line, col, winnr = self.dec(minwid)
-                            vim.api.nvim_win_set_cursor(vim.fn.win_getid(winnr), { line, col })
-                        end,
-                        name = "heirline_navic",
-                    },
-                },
-                hl = { bg = common.theme_colors.bg },
-            }
-            if #data > 1 and i < #data then
-                table.insert(child, {
-                    provider = " ➤ ",
-                    hl = { bg = common.theme_colors.bg, fg = common.theme_colors.green_01 },
-                })
+    local file_icon_name = {
+        provider = function()
+            local function isempty(s)
+                return s == nil or s == ""
             end
-            table.insert(children, child)
-        end
-        self.child = self:new(children, 1)
-    end,
-    provider = function(self)
-        return self.child:eval()
-    end,
-    hl = { bg = common.theme_colors.bg, fg = common.theme_colors.fg_05, bold = true },
-    update = "CursorMoved",
-}
-
-local terminal_name = {
-    provider = function()
-        local tname, _ = vim.api.nvim_buf_get_name(0):gsub(".*:", "")
-        return " " .. tname
-    end,
-    hl = { fg = common.theme_colors.red_02, bold = true },
-}
-
--- local file_type = {}
--- for i, v in ipairs(common.filetype) do
---     file_type[i] = v
--- end
-
--- table.insert(file_type, "qf")
-return {
-    fallthrough = false,
-    {
-        condition = function()
-            return common.heirline_conditions.buffer_matches({ buftype = { "terminal" } })
+            local hl_group_1 = "FileTextColor"
+            vim.api.nvim_set_hl(0, hl_group_1, {
+                fg = colors.green_01,
+                bg = colors.bg,
+                bold = true,
+            })
+            local filename = vim.fn.expand("%:t")
+            local extension = vim.fn.expand("%:e")
+            if not isempty(filename) then
+                local f_icon, f_icon_color =
+                    require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
+                local hl_group_2 = "FileIconColor" .. extension
+                vim.api.nvim_set_hl(0, hl_group_2, { fg = f_icon_color, bg = colors.bg })
+                if isempty(f_icon) then
+                    f_icon = ""
+                end
+                return "%#"
+                    .. hl_group_2
+                    .. "# "
+                    .. f_icon
+                    .. "%*"
+                    .. " "
+                    .. "%#"
+                    .. hl_group_1
+                    .. "#"
+                    .. filename
+                    .. "%*"
+                    .. "  "
+            end
         end,
-        {
-            common.file_type,
-            common.space,
-            terminal_name,
+        hl = { fg = colors.red_02 },
+    }
+
+    local navic = {
+        condition = require("nvim-navic").is_available(),
+        static = {
+            type_hl = icons.hl,
+            enc = function(line, col, winnr)
+                return bit.bor(bit.lshift(line, 16), bit.lshift(col, 6), winnr)
+            end,
+            dec = function(c)
+                local line = bit.rshift(c, 16)
+                local col = bit.band(bit.rshift(c, 6), 1023)
+                local winnr = bit.band(c, 63)
+                return line, col, winnr
+            end,
         },
-    },
-    {
-        condition = function()
-            return not common.heirline_conditions.is_active()
+        init = function(self)
+            local data = require("nvim-navic").get_data() or {}
+            local children = {}
+            for i, d in ipairs(data) do
+                local pos = self.enc(d.scope.start.line, d.scope.start.character, self.winnr)
+                local child = {
+                    {
+                        provider = d.icon,
+                        hl = self.type_hl[d.type],
+                    },
+                    {
+                        provider = d.name:gsub("%%", "%%%%"):gsub("%s*->%s*", ""),
+                        on_click = {
+                            minwid = pos,
+                            callback = function(_, minwid)
+                                local line, col, winnr = self.dec(minwid)
+                                vim.api.nvim_win_set_cursor(vim.fn.win_getid(winnr), { line, col })
+                            end,
+                            name = "heirline_navic",
+                        },
+                    },
+                    hl = { bg = colors.bg },
+                }
+                if #data > 1 and i < #data then
+                    table.insert(child, {
+                        provider = " ➤ ",
+                        hl = { bg = colors.bg, fg = colors.green_01 },
+                    })
+                end
+                table.insert(children, child)
+            end
+            self.child = self:new(children, 1)
         end,
+        provider = function(self)
+            return self.child:eval()
+        end,
+        hl = { bg = colors.bg, fg = colors.fg_05, bold = true },
+        update = "CursorMoved",
+    }
+
+    local terminal_name = {
+        provider = function()
+            local tname, _ = vim.api.nvim_buf_get_name(0):gsub(".*:", "")
+            return " " .. tname
+        end,
+        hl = { fg = colors.red_02, bold = true },
+    }
+
+    local winbar = {
+        fallthrough = false,
+        {
+            condition = function()
+                return heirline_conditions.buffer_matches({ buftype = { "terminal" } })
+            end,
+            {
+                file_types,
+                space,
+                terminal_name,
+            },
+        },
+        {
+            condition = function()
+                return not heirline_conditions.is_active()
+            end,
+            {
+                file_icon_name,
+            },
+        },
         {
             file_icon_name,
+            navic,
         },
-    },
-    {
-        file_icon_name,
-        navic,
-    },
-}
+    }
+
+    return winbar
+end
+
+return M

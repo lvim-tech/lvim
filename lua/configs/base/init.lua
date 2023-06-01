@@ -35,6 +35,7 @@ configs["base_lvim"] = function()
             else
                 local user_choice = string.lower(choice)
                 _G.LVIM_SETTINGS.colorschemes.theme = user_choice
+                vim.cmd("colorscheme lvim-" .. user_choice)
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
                 local ui_config = require("modules.base.configs.ui")
                 ui_config.heirline_nvim()
@@ -44,7 +45,6 @@ configs["base_lvim"] = function()
                 local editor_config = require("modules.base.configs.editor")
                 editor_config.tabby_nvim()
                 editor_config.neocomposer_nvim()
-                vim.cmd("colorscheme lvim-" .. user_choice)
             end
         end, "editor")
     end

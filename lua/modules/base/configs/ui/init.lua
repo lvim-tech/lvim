@@ -1003,16 +1003,17 @@ config.hydra_nvim = function()
 end
 
 config.heirline_nvim = function()
-    local common = require("modules.base.configs.ui.heirline.common")
-    local statusline = require("modules.base.configs.ui.heirline.statusline")
-    local winbar = require("modules.base.configs.ui.heirline.winbar")
-    local statuscolumn = require("modules.base.configs.ui.heirline.statuscolumn")
+    local statusline = require("modules.base.configs.ui.heirline.statusline").get_statusline()
+    local winbar = require("modules.base.configs.ui.heirline.winbar").get_winbar()
+    local statuscolumn = require("modules.base.configs.ui.heirline.statuscolumn").get_statuscolumn()
+    local buf_types = require("modules.base.configs.ui.heirline.buf_types")
+    local file_types = require("modules.base.configs.ui.heirline.file_types")
     local heirline_status_ok, heirline = pcall(require, "heirline")
     if not heirline_status_ok then
         return
     end
     local file_type_winbar = {}
-    for i, v in ipairs(common.filetype) do
+    for i, v in ipairs(file_types) do
         file_type_winbar[i] = v
     end
     table.insert(file_type_winbar, "qf")
@@ -1021,10 +1022,9 @@ config.heirline_nvim = function()
         winbar = winbar,
         statuscolumn = statuscolumn,
         opts = {
-            colors = common.theme_colors,
             disable_winbar_cb = function(args)
                 local buf = args.buf
-                local buftype = vim.tbl_contains(common.buftype, vim.bo[buf].buftype)
+                local buftype = vim.tbl_contains(buf_types, vim.bo[buf].buftype)
                 local filetype = vim.tbl_contains(file_type_winbar, vim.bo[buf].filetype)
                 return buftype or filetype
             end,
