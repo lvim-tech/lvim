@@ -2,6 +2,7 @@ local keymaps = {}
 
 keymaps["normal"] = {
     { "<Esc>", "<Esc>:noh<CR>" }, -- Remove highlight after search
+    { "q", "<Nop>" }, -- Remove highlight after search
     { "j", "gj" }, -- Re-map j
     { "k", "gk" }, -- Re-map k
     { "<C-d>", "<C-d>zz" }, -- Re-map C-d

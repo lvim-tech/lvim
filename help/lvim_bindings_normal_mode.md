@@ -6,6 +6,8 @@
 | ---------------- | --------------------------------- | ------------------------------------- |
 | `<space><space>` | `:CtrlSpace<CR>`                  | CtrlSpace                             |
 | `<space>=`       | `:LvimFileManager<CR>`            | LvimFileManager                       |
+| `Q`              |                                   | Neocomposer toggle macro              |
+| `<space>q`       |                                   | Neocomposer play macro                |
 | `<F1>`           | `:TTOne<CR>`                      | Toggleterm one open                   |
 | `<F2>`           | `:TTTwo<CR>`                      | Toggleterm two open                   |
 | `<F3>`           | `:TTThree<CR>`                    | Toggleterm three open                 |

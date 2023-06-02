@@ -223,6 +223,8 @@ config.neocomposer_nvim = function()
             green = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].green_02,
         },
         keymaps = {
+            play_macro = "<Leader>q",
+            toggle_record = "Q",
             cycle_next = "<m-n>",
             cycle_prev = "<m-p>",
         },
