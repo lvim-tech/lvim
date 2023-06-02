@@ -808,9 +808,6 @@ config.orgmode = function()
         org_agenda_files = { "$HOME/Org/**/*" },
         org_default_notes_file = "$HOME/Org/refile.org",
     })
-    vim.keymap.set("n", "to", function()
-        vim.cmd("e ~/Org/notes/notes.org")
-    end, { noremap = true, silent = true, desc = "Open org notes" })
 end
 
 config.lvim_org_utils = function()

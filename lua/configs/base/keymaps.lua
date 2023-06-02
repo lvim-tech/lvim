@@ -25,6 +25,7 @@ keymaps["normal"] = {
     { "<C-Right>", ":vertical resize +2<CR>" }, -- Resize width +
     { "<C-Up>", ":resize -2<CR>" }, -- Resize height -
     { "<C-Down>", ":resize +2<CR>" }, -- Resize height +
+    { "to", ":e ~/Org/notes/notes.org<CR>" }, -- Open Org note file
     { "tn", ":tabn<CR>" }, -- Tab next
     { "tp", ":tabp<CR>" }, -- Tab prev
     { "tf", ":CloseFloatWindows<CR>" }, -- Tab prev
