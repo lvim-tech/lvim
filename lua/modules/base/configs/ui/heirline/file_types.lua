@@ -26,4 +26,5 @@ return {
     "toggleterm",
     "LvimShell",
     "oil",
+    "org",
 }
