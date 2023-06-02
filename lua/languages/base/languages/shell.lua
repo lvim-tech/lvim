@@ -4,7 +4,7 @@ local bashls_config =
 
 local language_configs = {}
 
-language_configs["dependencies"] = { "bash-language-server", "shfmt", "shellcheck" }
+language_configs["dependencies"] = { "bash-language-server", "shfmt" }
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
