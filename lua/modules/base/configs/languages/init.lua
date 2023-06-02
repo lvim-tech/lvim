@@ -803,10 +803,10 @@ config.orgmode = function()
     orgmode.setup_ts_grammar()
     orgmode.setup({
         emacs_config = {
-            config_path = "$HOME/.emacs.d/early-init.el",
+            config_path = "~/.emacs.d/early-init.el",
         },
-        org_agenda_files = { "$HOME/Org/**/*" },
-        org_default_notes_file = "$HOME/Org/refile.org",
+        org_agenda_files = { "~/Org/**/*" },
+        org_default_notes_file = "~/Org/refile.org",
     })
 end
 
