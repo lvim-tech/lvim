@@ -12,7 +12,6 @@ language_configs["lsp"] = function()
         ["lua-language-server"] = { "lua_ls", lua_lsp_config },
         ["dependencies"] = {
             "stylua",
-            "luacheck",
         },
     })
 end
