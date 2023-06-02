@@ -60,7 +60,7 @@
     * Autoinstall the LSP servers, DAP servers, linters, and formatters
     * Custom settings for projects
 
-***  For keybindings - press F11
+***  For keybindings - press `F11` or `<C-c>h`
 
 ***  Hydra
 
