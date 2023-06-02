@@ -1,6 +1,8 @@
 local Hydra = require("hydra")
 local keymap = require("hydra.keymap-util")
 
+local M = {}
+
 local navigation_hint = [[
                          NAVIGATION
 
@@ -25,7 +27,7 @@ Bnext buffer                _n_ │ _p_               Bprev buffer
                          exit _<Esc>_
 ]]
 
-Hydra({
+M.navigation = Hydra({
     name = "NAVIGATION",
     hint = navigation_hint,
     config = {
@@ -147,3 +149,5 @@ Hydra({
         { "<Esc>", nil, { exit = true, desc = false } },
     },
 })
+
+return M

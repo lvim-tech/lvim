@@ -1,6 +1,8 @@
 local Hydra = require("hydra")
 local keymap = require("hydra.keymap-util")
 
+local M = {}
+
 local terminal_hint = [[
                           TERMINAL
 
@@ -16,7 +18,8 @@ Terminal float              _9_ │
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                          exit _<Esc>_
 ]]
-Hydra({
+
+M.terminal = Hydra({
     name = "TERMINAL",
     hint = terminal_hint,
     config = {
@@ -78,3 +81,5 @@ Hydra({
         { "<Esc>", nil, { exit = true, desc = false } },
     },
 })
+
+return M

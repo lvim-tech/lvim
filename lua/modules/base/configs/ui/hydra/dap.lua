@@ -1,6 +1,8 @@
 local Hydra = require("hydra")
 local keymap = require("hydra.keymap-util")
 
+local M = {}
+
 local dap_hint = [[
                              DAP
 
@@ -18,7 +20,8 @@ Lua dap launch              _U_ │ _L_           Dap local config
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                          exit _<Esc>_
 ]]
-Hydra({
+
+M.dap = Hydra({
     name = "DAP",
     hint = dap_hint,
     config = {
@@ -125,3 +128,5 @@ Hydra({
         { "<Esc>", nil, { exit = true, desc = false } },
     },
 })
+
+return M

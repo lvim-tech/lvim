@@ -1,6 +1,8 @@
 local Hydra = require("hydra")
 local keymap = require("hydra.keymap-util")
 
+local M = {}
+
 local glance_hint = [[
                            GLANCE
 
@@ -11,7 +13,8 @@ References                  _r_ │ _I_            Implementations
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                          exit _<Esc>_
 ]]
-Hydra({
+
+M.glance = Hydra({
     name = "GLANCE",
     hint = glance_hint,
     config = {
@@ -48,3 +51,5 @@ Hydra({
         { "<Esc>", nil, { exit = true, desc = false } },
     },
 })
+
+return M

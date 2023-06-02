@@ -1,6 +1,8 @@
 local Hydra = require("hydra")
 local keymap = require("hydra.keymap-util")
 
+local M = {}
+
 local linguistics_hint = [[
                         LINGUISTICS
 
@@ -18,7 +20,7 @@ Delete config               _d_ │
                          exit _<Esc>_
 ]]
 
-Hydra({
+M.linguistics = Hydra({
     name = "LINGUISTICS",
     hint = linguistics_hint,
     config = {
@@ -80,3 +82,5 @@ Hydra({
         { "<Esc>", nil, { exit = true, desc = false } },
     },
 })
+
+return M

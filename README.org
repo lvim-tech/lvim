@@ -64,6 +64,8 @@
 
 ***  Hydra
 
+    - `;;` - All hydra keys
+
     - `;l` - LVIM IDE
     - `;a` - Common
     - `;n` - Navigation

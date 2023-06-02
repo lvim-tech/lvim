@@ -1,6 +1,8 @@
 local Hydra = require("hydra")
 local keymap = require("hydra.keymap-util")
 
+local M = {}
+
 local location_hint = [[
                            COMMON
 
@@ -23,7 +25,7 @@ Lazygit                     _L_ │ _g_                Lvim forgit
                          exit _<Esc>_
 ]]
 
-Hydra({
+M.common = Hydra({
     name = "COMMON",
     hint = location_hint,
     config = {
@@ -120,3 +122,5 @@ Hydra({
         { "<Esc>", nil, { exit = true, desc = false } },
     },
 })
+
+return M

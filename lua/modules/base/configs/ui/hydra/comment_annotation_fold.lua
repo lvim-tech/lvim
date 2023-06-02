@@ -1,6 +1,8 @@
 local Hydra = require("hydra")
 local keymap = require("hydra.keymap-util")
 
+local M = {}
+
 local comment_annotation_hint = [[
                 COMMENT, ANNOTATION, FOLD
 
@@ -17,7 +19,8 @@ Marker                      _r_ │
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                          exit _<Esc>_
 ]]
-Hydra({
+
+M.comment_annotation_hint = Hydra({
     name = "COMMENT and ANNOTATION",
     hint = comment_annotation_hint,
     config = {
@@ -89,3 +92,5 @@ Hydra({
         { "<Esc>", nil, { exit = true, desc = false } },
     },
 })
+
+return M

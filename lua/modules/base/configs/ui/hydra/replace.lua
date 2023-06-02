@@ -1,6 +1,8 @@
 local Hydra = require("hydra")
 local keymap = require("hydra.keymap-util")
 
+local M = {}
+
 local spectre_hint = [[
                            SPECTRE
 
@@ -16,7 +18,8 @@ Toggle hidden               _H_ │
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                          exit _<Esc>_
 ]]
-Hydra({
+
+M.replace = Hydra({
     name = "SPECTRE",
     hint = spectre_hint,
     config = {
@@ -98,3 +101,5 @@ Hydra({
         { "<Esc>", nil, { exit = true, desc = false } },
     },
 })
+
+return M

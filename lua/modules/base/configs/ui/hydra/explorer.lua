@@ -1,6 +1,8 @@
 local Hydra = require("hydra")
 local keymap = require("hydra.keymap-util")
 
+local M = {}
+
 local explorer_hint = [[
                           EXPLORER
 
@@ -18,7 +20,7 @@ Oil                         _O_ │ _f_          LVIM file manager
                          exit _<Esc>_
 ]]
 
-Hydra({
+M.explorer = Hydra({
     name = "EXPLORER",
     hint = explorer_hint,
     config = {
@@ -95,3 +97,5 @@ Hydra({
         { "<Esc>", nil, { exit = true, desc = false } },
     },
 })
+
+return M

@@ -1,6 +1,8 @@
 local Hydra = require("hydra")
 local keymap = require("hydra.keymap-util")
 
+local M = {}
+
 local lsp_hint = [[
                              LSP
 
@@ -34,7 +36,7 @@ Lvim diagnostics        _<C-c>_ │
                          exit _<Esc>_
 ]]
 
-Hydra({
+M.diagnostics = Hydra({
     name = "LSP",
     hint = lsp_hint,
     config = {
@@ -186,3 +188,5 @@ Hydra({
         { "<Esc>", nil, { exit = true, desc = false } },
     },
 })
+
+return M

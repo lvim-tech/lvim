@@ -1,6 +1,8 @@
 local Hydra = require("hydra")
 local keymap = require("hydra.keymap-util")
 
+local M = {}
+
 local neotest_hint = [[
                            NEOTEST
 
@@ -14,7 +16,7 @@ Stop                        _s_ │
                          exit _<Esc>_
 ]]
 
-Hydra({
+M.neotest = Hydra({
     name = "NEOTEST",
     hint = neotest_hint,
     config = {
@@ -66,3 +68,5 @@ Hydra({
         { "<Esc>", nil, { exit = true, desc = false } },
     },
 })
+
+return M
