@@ -16,7 +16,6 @@ configs["base_lvim"] = function()
         group = group,
     })
     local function lvim_theme()
-        local select = require("lvim-ui-config.select")
         local status
         if _G.LVIM_SETTINGS.colorschemes.theme == "dark" then
             status = "Dark"
@@ -25,43 +24,48 @@ configs["base_lvim"] = function()
         elseif _G.LVIM_SETTINGS.colorschemes.theme == "light" then
             status = "Light"
         end
-        select({
+        local ui_config = require("lvim-ui-config.config")
+        local select = require("lvim-ui-config.select")
+        local opts = ui_config.select({
             "Dark",
             "DarkSoft",
             "Light",
             "Cancel",
-        }, { prompt = "Theme (" .. status .. ")" }, function(choice)
+        }, { prompt = "Theme (" .. status .. ")" }, {})
+        select(opts, function(choice)
             if choice == "Cancel" then
             else
                 local user_choice = string.lower(choice)
                 _G.LVIM_SETTINGS.colorschemes.theme = user_choice
                 vim.cmd("colorscheme lvim-" .. user_choice)
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
-                local ui_config = require("modules.base.configs.ui")
-                ui_config.heirline_nvim()
-                ui_config.nvim_notify()
-                ui_config.nvim_window_picker()
-                ui_config.neo_tree_nvim()
+                local lvim_ui_config = require("modules.base.configs.ui")
+                lvim_ui_config.heirline_nvim()
+                lvim_ui_config.nvim_notify()
+                lvim_ui_config.nvim_window_picker()
+                lvim_ui_config.neo_tree_nvim()
                 local editor_config = require("modules.base.configs.editor")
                 editor_config.tabby_nvim()
                 editor_config.neocomposer_nvim()
             end
-        end, "editor")
+        end)
     end
     vim.api.nvim_create_user_command("LvimTheme", lvim_theme, {})
     local function lvim_auto_format()
-        local select = require("lvim-ui-config.select")
         local status
         if _G.LVIM_SETTINGS.autoformat == true then
             status = "Enabled"
         else
             status = "Disabled"
         end
-        select({
+        local ui_config = require("lvim-ui-config.config")
+        local select = require("lvim-ui-config.select")
+        local opts = ui_config.select({
             "Enable",
             "Disable",
             "Cancel",
-        }, { prompt = "AutoFormat (" .. status .. ")" }, function(choice)
+        }, { prompt = "AutoFormat (" .. status .. ")" }, {})
+        select(opts, function(choice)
             if choice == "Enable" then
                 _G.LVIM_SETTINGS.autoformat = true
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
@@ -69,7 +73,7 @@ configs["base_lvim"] = function()
                 _G.LVIM_SETTINGS.autoformat = false
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
             end
-        end, "editor")
+        end)
     end
     vim.api.nvim_create_user_command("LvimAutoFormat", lvim_auto_format, {})
     vim.api.nvim_create_user_command(

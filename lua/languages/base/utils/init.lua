@@ -2,6 +2,7 @@ local global = require("core.global")
 local funcs = require("core.funcs")
 local lspconfig = require("lspconfig")
 local mason_registry = require("mason-registry")
+local ui_config = require("lvim-ui-config.config")
 local select = require("lvim-ui-config.select")
 
 local M = {}
@@ -162,12 +163,13 @@ M.setup_languages = function(packages_data)
         if next(M.packages_to_install) ~= nil then
             if global.lvim_packages == false then
                 vim.defer_fn(function()
-                    select({
+                    local opts = ui_config.select({
                         "Install packages for " .. M.current_language,
                         "Install packages for all languages",
                         "Don't ask me again",
                         "Cancel",
-                    }, { prompt = "LVIM IDE need to install some packages" }, function(choice)
+                    }, { prompt = "LVIM IDE need to install some packages" }, {})
+                    select(opts, function(choice)
                         if choice == "Install packages for " .. M.current_language then
                             vim.defer_fn(function()
                                 for i = 1, #M.packages_to_install do
@@ -196,7 +198,7 @@ M.setup_languages = function(packages_data)
                                 title = "LVIM IDE",
                             })
                         end
-                    end, "editor")
+                    end)
                 end, 100)
             end
         end

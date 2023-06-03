@@ -7,7 +7,7 @@ local linguistics_hint = [[
                         LINGUISTICS
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Insert mode status          _I_ │ _<C-i>_   Insert mode language
+Insert mode status          _R_ │ _<C-r>_   Insert mode language
 Insert mode toggle      _<C-o>_ │
 
 Spelling status             _P_ │ _<A-p>_     Spelling languages
@@ -35,12 +35,12 @@ M.linguistics = Hydra({
     body = ";u",
     heads = {
         {
-            "I",
+            "R",
             keymap.cmd("LvimLinguisticsMENUInsertModeStatus"),
             { nowait = true, silent = true, desc = "Insert mode status" },
         },
         {
-            "<C-i>",
+            "<C-r>",
             keymap.cmd("LvimLinguisticsMENUInsertModeLanguage"),
             { nowait = true, silent = true, desc = "Insert mode language" },
         },
