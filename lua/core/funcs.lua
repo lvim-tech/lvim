@@ -299,7 +299,6 @@ M.close_float_windows = function()
 end
 
 M.quit = function()
-    local select = require("lvim-ui-config.select")
     local status = true
     for _, v in ipairs(vim.api.nvim_list_bufs()) do
         if vim.bo[v].modified then
@@ -307,18 +306,21 @@ M.quit = function()
         end
     end
     if not status then
-        select({
+        local ui_config = require("lvim-ui-config.config")
+        local select = require("lvim-ui-config.select")
+        local opts = ui_config.select({
             "Save all and Quit",
             "Don't save and Quit",
             "Cancel",
-        }, { prompt = "  Unsaved files" }, function(choice)
+        }, { prompt = "  Unsaved files" }, {})
+        select(opts, function(choice)
             if choice == "Save all and Quit" then
                 vim.cmd("wa")
                 vim.cmd("qa")
             elseif choice == "Don't save and Quit" then
                 vim.cmd("qa!")
             end
-        end, "editor")
+        end)
     else
         vim.cmd("qa")
     end
