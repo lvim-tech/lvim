@@ -7,7 +7,8 @@ local comment_annotation_hint = [[
                 COMMENT, ANNOTATION, FOLD
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Comment toggle line         _L_ │ _b_       Comment toggle block
+Comment toggle line N       _L_ │ _B_     Comment toggle block N
+Comment toggle line V      _vl_ │ _vb_    Comment toggle block V
 
 Neogen file                 _F_ │ _t_                Neogen type
 Neogen class                _c_ │ _f_            Neogen function
@@ -21,7 +22,7 @@ Marker                      _r_ │
 ]]
 
 M.comment_annotation_hint = Hydra({
-    name = "COMMENT and ANNOTATION",
+    name = "COMMENT, ANNOTATION, FOLD",
     hint = comment_annotation_hint,
     config = {
         color = "pink",
@@ -32,17 +33,27 @@ M.comment_annotation_hint = Hydra({
         },
     },
     mode = { "n", "x", "v" },
-    body = ";a",
+    body = ";c",
     heads = {
         {
             "L",
             "<Plug>(comment_toggle_linewise_current)",
-            { nowait = true, silent = true, desc = "Comment toggle line" },
+            { nowait = true, silent = true, desc = "Comment toggle line N" },
         },
         {
-            "b",
-            "<Plug>(comment_toggle_blockwise)",
-            { nowait = true, silent = true, desc = "Comment toggle block" },
+            "B",
+            "<Plug>(comment_toggle_blockwise_current)",
+            { nowait = true, silent = true, desc = "Comment toggle block N" },
+        },
+        {
+            "vl",
+            "<Plug>(comment_toggle_linewise_visual)",
+            { nowait = true, silent = true, desc = "Comment toggle line V " },
+        },
+        {
+            "vb",
+            "<Plug>(comment_toggle_blockwise_visual)",
+            { nowait = true, silent = true, desc = "Comment toggle block V" },
         },
         {
             "F",
