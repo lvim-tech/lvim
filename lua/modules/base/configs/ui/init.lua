@@ -1259,7 +1259,7 @@ config.neozoom_lua = function()
         border = "none",
         scrolloff_on_zoom = 0,
     })
-    vim.keymap.set("n", "<C-space>", require("neo-zoom").neo_zoom, { silent = true, nowait = true, desc = "NeoZoom" })
+    vim.keymap.set("n", "<C-space>", ":NeoZoomToggle<CR>", { silent = true, nowait = true, desc = "NeoZoom" })
 end
 
 config.stay_in_place = function()
