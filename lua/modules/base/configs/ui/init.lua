@@ -759,7 +759,7 @@ config.alpha_nvim = function()
         button("A-,", icons.common.file .. " Search file", ":Telescope find_files<CR>"),
         button("A-.", icons.common.search_in_files .. " Search in files", ":Telescope live_grep<CR>"),
         button("F11", icons.common.help .. "Help", ":LvimHelper<CR>"),
-        button("q", "  Quit", "<Cmd>qa<CR>"),
+        button("q", icons.common.quit .. "Quit", "<Cmd>qa<CR>"),
     }
     alpha_themes_dashboard.section.footer.val = footer()
     alpha_themes_dashboard.section.footer.opts.hl = "AlphaFooter"

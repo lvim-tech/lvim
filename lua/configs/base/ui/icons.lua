@@ -7,7 +7,7 @@ return {
         terminal = " ",
         plugins = " ",
         time = "󱑍 ",
-        project = "󰙅 ",
+        project = " ",
         explorer = " ",
         folder = "󰉋 ",
         folder_close = "󰉋 ",
