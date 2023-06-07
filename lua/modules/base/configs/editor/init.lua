@@ -318,7 +318,12 @@ config.nvim_pqf = function()
         return
     end
     pqf.setup({
-        signs = icons.diagnostics,
+        signs = {
+            error = " " .. icons.diagnostics.error,
+            warning = " " .. icons.diagnostics.warn,
+            info = " " .. icons.diagnostics.info,
+            hint = " " .. icons.diagnostics.hint,
+        },
     })
 end
 
