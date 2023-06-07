@@ -492,7 +492,7 @@ config.nvim_navbuddy = function()
                 },
             },
         },
-        icons = icons,
+        icons = icons.navbuddy,
         lsp = { auto_attach = true },
     })
     vim.keymap.set("n", "<C-c>v", function()
