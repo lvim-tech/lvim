@@ -1,5 +1,6 @@
 local global = require("core.global")
 local funcs = require("core.funcs")
+local icons = require("configs.base.ui.icons")
 
 local lazy_pack = {}
 
@@ -69,19 +70,7 @@ lazy_pack.load = function()
                 height = 0.95,
             },
             border = "none",
-            icons = {
-                cmd = " ",
-                config = " ",
-                event = "",
-                ft = " ",
-                init = " ",
-                keys = " ",
-                plugin = " ",
-                runtime = " ",
-                source = " ",
-                start = "",
-                task = "✔ ",
-            },
+            icons = icons.lazy,
         },
     })
 end
