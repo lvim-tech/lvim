@@ -63,6 +63,7 @@
 *** Icons
 
     Now LvimIDE support Nerd fonts v3
+
     All icons are predefined - `configs/base/ui/icons.lua`
 
 ***  For keybindings - press `F11` or `<C-c>h`
