@@ -1,4 +1,5 @@
 local global = require("core.global")
+local icons = require("configs.base.ui.icons")
 
 local M = {}
 
@@ -312,7 +313,7 @@ M.quit = function()
             "Save all and Quit",
             "Don't save and Quit",
             "Cancel",
-        }, { prompt = "  Unsaved files" }, {})
+        }, { prompt = icons.common.warning .. " Unsaved files" }, {})
         select(opts, function(choice)
             if choice == "Save all and Quit" then
                 vim.cmd("wa")

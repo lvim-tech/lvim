@@ -1,3 +1,5 @@
+local icons = require("configs.base.ui.icons")
+
 local config = {}
 
 config.mason_nvim = function()
@@ -79,11 +81,7 @@ config.mason_nvim = function()
     end
     mason.setup({
         ui = {
-            icons = {
-                package_installed = " ",
-                package_pending = " ",
-                package_uninstalled = " ",
-            },
+            icons = icons.mason,
         },
     })
     require("languages.base.utils").setup_diagnostic()
@@ -457,7 +455,6 @@ config.lsp_inlayhints_nvim = function()
 end
 
 config.nvim_navic = function()
-    local icons = require("configs.base.ui.icons")
     local nvim_navic_status_ok, nvim_navic = pcall(require, "nvim-navic")
     if not nvim_navic_status_ok then
         return
@@ -465,13 +462,12 @@ config.nvim_navic = function()
     nvim_navic.setup({
         icons = icons.lsp,
         highlight = true,
-        separator = " ➤ ",
+        separator = " " .. icons.common.separator,
     })
     vim.g.navic_silence = true
 end
 
 config.nvim_navbuddy = function()
-    local icons = require("configs.base.ui.icons")
     local nvim_navbuddy_status_ok, nvim_navbuddy = pcall(require, "nvim-navbuddy")
     if not nvim_navbuddy_status_ok then
         return
@@ -512,7 +508,6 @@ config.any_jump_nvim = function()
 end
 
 config.symbols_outline_nvim = function()
-    local icons = require("configs.base.ui.icons")
     local symbols_outline_status_ok, symbols_outline = pcall(require, "symbols-outline")
     if not symbols_outline_status_ok then
         return
@@ -537,9 +532,8 @@ config.nvim_dap_ui = function()
         return
     end
     dapui.setup({
-        icons = { expanded = "", collapsed = "", current_frame = "" },
+        icons = icons.dap_ui.base,
         mappings = {
-            -- Use a table to apply multiple mappings
             expand = { "<CR>", "<2-LeftMouse>" },
             open = "o",
             remove = "d",
@@ -581,50 +575,40 @@ config.nvim_dap_ui = function()
         controls = {
             enabled = vim.fn.exists("+winbar") == 1,
             element = "repl",
-            icons = {
-                pause = "",
-                play = "",
-                step_into = "",
-                step_over = "",
-                step_out = "",
-                step_back = "",
-                run_last = "",
-                terminate = "",
-                disconnect = "",
-            },
+            icons = icons.dap_ui.controls,
         },
         render = {
-            max_type_length = nil, -- Can be integer or nil.
-            max_value_lines = 100, -- Can be integer or nil.
+            max_type_length = nil,
+            max_value_lines = 100,
             indent = 1,
         },
     })
     vim.fn.sign_define("DapBreakpoint", {
-        text = "",
+        text = icons.dap_ui.sign.breakpoint,
         texthl = "DapBreakpoint",
         linehl = "",
         numhl = "",
     })
     vim.fn.sign_define("DapBreakpointRejected", {
-        text = "",
+        text = icons.dap_ui.sign.reject,
         texthl = "DapBreakpointRejected",
         linehl = "",
         numhl = "",
     })
     vim.fn.sign_define("DapBreakpointCondition", {
-        text = "",
+        text = icons.dap_ui.sign.condition,
         texthl = "DapBreakpointCondition",
         linehl = "",
         numhl = "",
     })
     vim.fn.sign_define("DapStopped", {
-        text = "",
+        text = icons.dap_ui.sign.stopped,
         texthl = "DapStopped",
         linehl = "",
         numhl = "",
     })
     vim.fn.sign_define("DapLogPoint", {
-        text = "▶",
+        text = icons.dap_ui.sign.log_point,
         texthl = "DapLogPoint",
         linehl = "",
         numhl = "",
@@ -715,7 +699,6 @@ config.vim_dadbod_ui = function()
     vim.g.db_ui_use_nerd_fonts = 1
     vim.g.db_ui_winwidth = 35
     vim.g.db_ui_auto_execute_table_helpers = true
-    -- vim.g.db_ui_disable_mappings = 1
     vim.api.nvim_create_user_command("LspHover", "lua vim.lsp.buf.hover()", {})
 end
 

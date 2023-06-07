@@ -1,3 +1,5 @@
+local icons = require("configs.base.ui.icons")
+
 local M = {}
 
 M.get_statusline = function()
@@ -5,7 +7,6 @@ M.get_statusline = function()
     local heirline_conditions = require("heirline.conditions")
     local heirline_utils = require("heirline.utils")
     local colors = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme]
-    local icons = require("configs.base.ui.icons")
     local space = { provider = " " }
     local align = { provider = "%=" }
 
@@ -84,7 +85,7 @@ M.get_statusline = function()
             },
         },
         provider = function(self)
-            return "   %(" .. self.mode_names[self.mode] .. "%)  "
+            return " " .. icons.common.vim .. " %(" .. self.mode_names[self.mode] .. "%)  "
         end,
         hl = function(self)
             _G.LVIM_SETTINGS.mode = self.mode:sub(1, 1)
@@ -190,21 +191,21 @@ M.get_statusline = function()
         {
             provider = function(self)
                 local count = self.status_dict.added or 0
-                return count > 0 and ("  " .. count)
+                return count > 0 and (" " .. icons.git_status.added .. count)
             end,
             hl = { fg = colors.green_01 },
         },
         {
             provider = function(self)
                 local count = self.status_dict.removed or 0
-                return count > 0 and ("  " .. count)
+                return count > 0 and (" " .. icons.git_status.deleted .. count)
             end,
             hl = { fg = colors.red_02 },
         },
         {
             provider = function(self)
                 local count = self.status_dict.changed or 0
-                return count > 0 and ("  " .. count)
+                return count > 0 and (" " .. icons.git_status.modified .. count)
             end,
             hl = { fg = colors.orange_02 },
         },
@@ -228,10 +229,10 @@ M.get_statusline = function()
     local diagnostics = {
         condition = heirline_conditions.has_diagnostics,
         static = {
-            error_icon = " ",
-            warn_icon = " ",
-            info_icon = " ",
-            hint_icon = " ",
+            error_icon = icons.diagnostics.error,
+            warn_icon = icons.diagnostics.warn,
+            hint_icon = icons.diagnostics.hint,
+            info_icon = icons.diagnostics.info,
         },
         update = { "DiagnosticChanged", "BufEnter" },
         init = function(self)
@@ -290,9 +291,10 @@ M.get_statusline = function()
                 end
             end
             if next(null_ls) == nil then
-                return "  LSP [" .. table.concat(names, ", ") .. "]"
+                return icons.common.lsp .. " LSP [" .. table.concat(names, ", ") .. "]"
             else
-                return "  LSP ["
+                return icons.common.lsp
+                    .. " LSP ["
                     .. table.concat(names, ", ")
                     .. "] | NULL-LS ["
                     .. table.concat(null_ls, ", ")
@@ -323,11 +325,11 @@ M.get_statusline = function()
             local format = vim.bo.fileformat
             if format ~= "" then
                 local symbols = {
-                    unix = "  ",
-                    dos = "  ",
-                    mac = "  ",
+                    unix = icons.common.unix,
+                    dos = icons.common.dos,
+                    mac = icons.common.mac,
                 }
-                return symbols[format]
+                return " " .. symbols[format]
             end
         end,
         hl = { fg = colors.orange_02, bold = true },

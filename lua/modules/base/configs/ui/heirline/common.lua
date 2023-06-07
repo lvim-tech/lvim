@@ -105,7 +105,7 @@ local vi_mode = {
         },
     },
     provider = function(self)
-        return "   %(" .. self.mode_names[self.mode] .. "%)  "
+        return " " .. icons.common.vim .. " %(" .. self.mode_names[self.mode] .. "%)  "
     end,
     hl = function(self)
         _G.LVIM_SETTINGS.mode = self.mode:sub(1, 1)

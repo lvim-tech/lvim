@@ -1,8 +1,10 @@
+local icons = require("configs.base.ui.icons")
+local hl = require("configs.base.ui.highlight")
+
 local M = {}
 
 M.get_winbar = function()
     local colors = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme]
-    local icons = require("configs.base.ui.icons")
     local heirline_conditions = require("heirline.conditions")
     local space = { provider = " " }
 
@@ -59,7 +61,7 @@ M.get_winbar = function()
             return require("nvim-navic").is_available()
         end,
         static = {
-            type_hl = icons.hl,
+            type_hl = hl.winbar,
             enc = function(line, col, winnr)
                 return bit.bor(bit.lshift(line, 16), bit.lshift(col, 6), winnr)
             end,
@@ -94,7 +96,7 @@ M.get_winbar = function()
                 }
                 if #data > 1 and i < #data then
                     table.insert(child, {
-                        provider = " ➤ ",
+                        provider = " " .. icons.common.separator .. " ",
                         hl = { bg = colors.bg, fg = colors.green_01 },
                     })
                 end
@@ -112,7 +114,7 @@ M.get_winbar = function()
     local terminal_name = {
         provider = function()
             local tname, _ = vim.api.nvim_buf_get_name(0):gsub(".*:", "")
-            return " " .. tname
+            return icons.common.terminal .. tname
         end,
         hl = { fg = colors.red_02, bold = true },
     }

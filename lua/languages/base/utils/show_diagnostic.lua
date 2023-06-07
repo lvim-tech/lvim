@@ -53,7 +53,6 @@ local function make_floating_popup_size(contents, opts)
         width = math.min(width, max_width)
         wrap_at = math.min(wrap_at or max_width, max_width)
     end
-
     if not height then
         height = #contents
         if wrap_at and width >= wrap_at then
@@ -73,7 +72,6 @@ local function make_floating_popup_size(contents, opts)
     if max_height then
         height = math.min(height, max_height)
     end
-
     return width, height
 end
 

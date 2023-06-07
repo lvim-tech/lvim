@@ -1,3 +1,5 @@
+local icons = require("configs.base.ui.icons")
+
 local config = {}
 
 config.navigator_nvim = function()
@@ -15,7 +17,7 @@ config.telescope_nvim = function()
     end
     telescope.setup({
         defaults = {
-            prompt_prefix = "   ",
+            prompt_prefix = " " .. icons.common.search .. " ",
             selection_caret = "  ",
             entry_prefix = "  ",
             initial_mode = "insert",
@@ -258,7 +260,7 @@ config.nvim_hlslens = function()
             elseif absRelIdx == 1 then
                 indicator = sfw ~= (relIdx == 1) and "" or ""
             else
-                indicator = ""
+                indicator = icons.common.dot
             end
 
             local lnum, col = unpack(posList[idx])
@@ -304,7 +306,8 @@ config.nvim_bqf = function()
     bqf.setup({
         delay_syntax = 1,
         preview = {
-            border_chars = { "│", "│", "─", "─", "┌", "┐", "└", "┘", "█" },
+            border = "single",
+            winblend = 0,
         },
     })
 end
@@ -315,12 +318,7 @@ config.nvim_pqf = function()
         return
     end
     pqf.setup({
-        signs = {
-            error = "  ",
-            warning = "  ",
-            hint = "  ",
-            info = "  ",
-        },
+        signs = icons.diagnostics,
     })
 end
 
@@ -439,7 +437,7 @@ config.tabby_nvim = function()
             {
                 type = "text",
                 text = {
-                    "    ",
+                    " " .. icons.common.vim .. " ",
                     hl = {
                         bg = hl_tabline.color_04,
                         fg = hl_tabline.color_01,
@@ -867,13 +865,13 @@ config.todo_comments_nvim = function()
     end
     todo_comments.setup({
         keywords = {
-            FIX = { icon = " ", color = "error", alt = { "FIX", "FIXME" } },
-            TODO = { icon = " ", color = "info", alt = { "TODO" } },
-            HACK = { icon = " ", color = "error", alt = { "HACK" } },
-            WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
-            PERF = { icon = "神", color = "warning", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
-            NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
-            TEST = { icon = " ", color = "test", alt = { "TEST", "TESTING", "PASSED", "FAILED" } },
+            FIX = { icon = icons.common.fix, color = "error", alt = { "FIX", "FIXME" } },
+            TODO = { icon = icons.common.todo, color = "info", alt = { "TODO" } },
+            HACK = { icon = icons.common.hack, color = "error", alt = { "HACK" } },
+            WARN = { icon = icons.common.warning, color = "warning", alt = { "WARNING", "XXX" } },
+            PERF = { icon = icons.common.performance, color = "warning", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+            NOTE = { icon = icons.common.note, color = "hint", alt = { "INFO" } },
+            TEST = { icon = icons.common.test, color = "test", alt = { "TEST", "TESTING", "PASSED", "FAILED" } },
         },
         highlight = {
             before = "fg",

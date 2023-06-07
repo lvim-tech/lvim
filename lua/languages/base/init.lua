@@ -71,7 +71,6 @@ M.file_types = {
 M.setup = function()
     local file_type = vim.bo.filetype
     local file_types = funcs.merge(M.file_types, user_file_types)
-
     for language, v in pairs(file_types) do
         for _, v2 in pairs(v) do
             if v2 == file_type then

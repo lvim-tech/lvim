@@ -4,6 +4,7 @@ local lspconfig = require("lspconfig")
 local mason_registry = require("mason-registry")
 local ui_config = require("lvim-ui-config.config")
 local select = require("lvim-ui-config.select")
+local icons = require("configs.base.ui.icons")
 
 local M = {}
 
@@ -274,13 +275,6 @@ M.config_diagnostic = {
     severity_sort = true,
 }
 
-M.icons = {
-    error = " ",
-    warn = " ",
-    hint = " ",
-    info = " ",
-}
-
 M.setup_diagnostic = function()
     vim.diagnostic.config(M.config_diagnostic)
 
@@ -293,19 +287,19 @@ M.setup_diagnostic = function()
     end, { desc = "LspVirtualTextToggle" })
 
     vim.fn.sign_define("DiagnosticSignError", {
-        text = M.icons.error,
+        text = icons.diagnostics.error,
         texthl = "DiagnosticError",
     })
     vim.fn.sign_define("DiagnosticSignWarn", {
-        text = M.icons.warn,
+        text = icons.diagnostics.warn,
         texthl = "DiagnosticWarn",
     })
     vim.fn.sign_define("DiagnosticSignHint", {
-        text = M.icons.hint,
+        text = icons.diagnostics.hint,
         texthl = "DiagnosticHint",
     })
     vim.fn.sign_define("DiagnosticSignInfo", {
-        text = M.icons.info,
+        text = icons.diagnostics.info,
         texthl = "DiagnosticInfo",
     })
 end

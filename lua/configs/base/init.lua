@@ -2,6 +2,7 @@ local global = require("core.global")
 local funcs = require("core.funcs")
 local options = require("configs.base.options")
 local keymaps = require("configs.base.keymaps")
+local icons = require("configs.base.ui.icons")
 local group = vim.api.nvim_create_augroup("LvimIDE", {
     clear = true,
 })
@@ -225,27 +226,7 @@ configs["base_ctrlspace_pre_config"] = function()
     vim.g.CtrlSpaceGlobCommand = "rg --files --follow --hidden -g '!{.git/*,node_modules/*,target/*,vendor/*}'"
     vim.g.CtrlSpaceIgnoredFiles = "\v(tmp|temp)[\\/]"
     vim.g.CtrlSpaceSearchTiming = 10
-    vim.g.CtrlSpaceSymbols = {
-        CS = "",
-        Sin = "",
-        All = "",
-        Vis = "★",
-        File = "",
-        Tabs = "ﱡ",
-        CTab = "ﱢ",
-        NTM = "⁺",
-        WLoad = "ﰬ",
-        WSave = "ﰵ",
-        Zoom = "",
-        SLeft = "",
-        SRight = "",
-        BM = "",
-        Help = "",
-        IV = "",
-        IA = "",
-        IM = " ",
-        Dots = "ﳁ",
-    }
+    vim.g.CtrlSpaceSymbols = icons.ctrlspace
 end
 
 configs["base_ask_packages"] = function()

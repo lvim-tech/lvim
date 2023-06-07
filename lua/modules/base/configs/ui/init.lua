@@ -1,3 +1,5 @@
+local icons = require("configs.base.ui.icons")
+
 local config = {}
 
 config.lvim_colorscheme = function()
@@ -77,7 +79,7 @@ config.nui_nvim = function()
                     winhighlight = "Normal:LvimInputNormal",
                 },
             }, {
-                prompt = "➤ ",
+                prompt = icons.common.separator .. " ",
                 default_value = default_value,
                 on_close = function()
                     on_done(nil)
@@ -208,11 +210,11 @@ config.nvim_notify = function()
         minimum_width = 80,
         background_colour = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
         icons = {
-            DEBUG = " ",
-            ERROR = " ",
-            INFO = " ",
-            TRACE = " ",
-            WARN = " ",
+            DEBUG = icons.common.fix,
+            ERROR = icons.diagnostics.error,
+            WARN = icons.diagnostics.warn,
+            INFO = icons.diagnostics.info,
+            TRACE = icons.common.trace,
         },
         stages = "fade",
         on_open = function(win)
@@ -727,7 +729,12 @@ config.alpha_nvim = function()
             platform = ""
         end
         return string.format(
-            "  %d plugins   %d ms   v%d.%d.%d  %s  %s",
+            icons.common.plugins
+                .. " %d plugins  "
+                .. icons.common.time
+                .. "%d ms  "
+                .. icons.common.vim
+                .. "v%d.%d.%d  %s  %s",
             plugins,
             startup_time,
             v.major,
@@ -747,11 +754,11 @@ config.alpha_nvim = function()
     }
     alpha_themes_dashboard.section.header.opts.hl = "AlphaHeader"
     alpha_themes_dashboard.section.buttons.val = {
-        button("SPC SPC b", "  Projects", ":CtrlSpace b<CR>"),
-        button("A-/", "  File explorer", ":Telescope file_browser<CR>"),
-        button("A-,", "  Search file", ":Telescope find_files<CR>"),
-        button("A-.", "  Search in files", ":Telescope live_grep<CR>"),
-        button("F11", "  Help", ":LvimHelper<CR>"),
+        button("SPC SPC b", icons.common.project .. " Projects", ":CtrlSpace b<CR>"),
+        button("A-/", icons.common.explorer .. " File explorer", ":Telescope file_browser<CR>"),
+        button("A-,", icons.common.file .. " Search file", ":Telescope find_files<CR>"),
+        button("A-.", icons.common.search_in_files .. " Search in files", ":Telescope live_grep<CR>"),
+        button("F11", icons.common.help .. "Help", ":LvimHelper<CR>"),
         button("q", "  Quit", "<Cmd>qa<CR>"),
     }
     alpha_themes_dashboard.section.footer.val = footer()
@@ -904,19 +911,19 @@ config.neo_tree_nvim = function()
             sources = {
                 {
                     source = "filesystem",
-                    display_name = "  DIR  ",
+                    display_name = icons.common.folder .. " DIR  ",
                 },
                 {
                     source = "buffers",
-                    display_name = "  BUF  ",
+                    display_name = icons.common.buffer .. " BUF  ",
                 },
                 {
                     source = "git_status",
-                    display_name = " GIT  ",
+                    display_name = icons.common.git .. " GIT  ",
                 },
                 {
                     source = "diagnostics",
-                    display_name = "  LSP  ",
+                    display_name = icons.common.lsp .. " LSP  ",
                 },
             },
         },
@@ -929,26 +936,16 @@ config.neo_tree_nvim = function()
                 with_expanders = true,
             },
             icon = {
-                folder_closed = "",
-                folder_open = "",
-                folder_empty = "",
+                folder_closed = icons.common.folder_close,
+                folder_open = icons.common.folder_open,
+                folder_empty = icons.common.folder_empty,
                 highlight = "NeoTreeFileIcon",
             },
             modified = {
-                symbol = "",
+                symbol = icons.common.dot,
             },
             git_status = {
-                symbols = {
-                    added = "",
-                    deleted = "",
-                    modified = "",
-                    renamed = "",
-                    untracked = "",
-                    ignored = "",
-                    unstaged = "",
-                    staged = "",
-                    conflict = "",
-                },
+                symbols = icons.git_status,
                 align = "right",
             },
         },
