@@ -8,9 +8,9 @@
 
   * Debug support for c, cpp, cs, dart, elixir, go, haskell, java, javascript/typescript, lua, php, python, ruby, rust, scala
 
-  Current version - 3.2.00 (2023-05-26)
+  Current version - 3.3.00 (2023-06-07)
 
-  129 plugins
+  130 plugins
 
 **  SCREENSHOTS
 
@@ -59,6 +59,11 @@
     * Dynamic debugging activation - DAP
     * Autoinstall the LSP servers, DAP servers, linters, and formatters
     * Custom settings for projects
+
+*** Icons
+
+    Now LvimIDE support Nerd fonts v3
+    All icons are predefined - `configs/base/ui/icons.lua`
 
 ***  For keybindings - press `F11` or `<C-c>h`
 
