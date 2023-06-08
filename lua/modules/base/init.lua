@@ -501,14 +501,6 @@ modules["nvim-treesitter/nvim-treesitter-context"] = {
     config = editor_config.nvim_treesitter_context,
 }
 
-modules["Dkendal/nvim-treeclimber"] = {
-    commit = funcs.get_commit("nvim-treeclimber", plugins_snapshot),
-    dependencies = {
-        "nvim-treesitter/nvim-treesitter",
-    },
-    config = editor_config.nvim_treeclimber,
-}
-
 modules["NTBBloodbath/rest.nvim"] = {
     commit = funcs.get_commit("rest.nvim", plugins_snapshot),
     ft = "http",
