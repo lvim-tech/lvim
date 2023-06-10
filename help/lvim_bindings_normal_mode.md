@@ -49,6 +49,7 @@
 | `<C-c><C-b>`     | `:Neotree buffers left<CR>`       | Neotree filesystem left               |
 | `<C-c><C-g>`     | `:Neotree git_status left<CR>`    | Neotree git_status left               |
 | `<C-c><C-d>`     | `:Neotree diagnostics left<CR>`   | Neotree diagnostics left              |
+| `<S-q>`          | `:Neotree close<CR>`              | Neotree close                         |
 | `<A-e>`          | `:Neotree diagnostics<CR>`        | Neotree diagnostics bottom            |
 | `<S-m>`          | `:MarkdownPreview<CR>`            | Markdown preview                      |
 | `<A-,>`          | `:Telescope find_files<CR>`       | Search files with Telescope           |
