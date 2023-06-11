@@ -213,6 +213,11 @@ end
 configs["base_keymaps"] = function()
     funcs.keymaps("n", { noremap = true, silent = true }, keymaps.normal)
     funcs.keymaps("x", { noremap = true, silent = true }, keymaps.visual)
+    vim.cmd([[inoremap <silent><expr><A-BS>
+    \ (&indentexpr isnot '' ? &indentkeys : &cinkeys) =~? '!\^F' &&
+    \ &backspace =~? '.*eol\&.*start\&.*indent\&' &&
+    \ !search('\S','nbW',line('.')) ? (col('.') != 1 ? "\<C-U>" : "") .
+    \ "\<bs>" . (getline(line('.')-1) =~ '\S' ? "" : "\<C-F>") : "\<bs>"]])
 end
 
 configs["base_ctrlspace_pre_config"] = function()
