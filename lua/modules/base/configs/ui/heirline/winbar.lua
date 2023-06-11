@@ -6,6 +6,7 @@ local M = {}
 M.get_winbar = function()
     local colors = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme]
     local heirline_conditions = require("heirline.conditions")
+    local tabby_filename = require("tabby.filename")
     local space = { provider = " " }
 
     local file_types = {
@@ -29,7 +30,7 @@ M.get_winbar = function()
                 bg = colors.bg,
                 bold = true,
             })
-            local filename = vim.fn.expand("%:t")
+            local filename = tabby_filename.unique(0)
             local extension = vim.fn.expand("%:e")
             if not isempty(filename) then
                 local f_icon, f_icon_color =
