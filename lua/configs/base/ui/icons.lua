@@ -31,6 +31,8 @@ return {
         note = "󰠮 ",
         test = " ",
         trace = " ",
+        down = "",
+        up = "󰁝",
     },
     git_status = {
         added = " ",

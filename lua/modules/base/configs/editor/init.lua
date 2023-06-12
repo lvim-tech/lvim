@@ -256,9 +256,9 @@ config.nvim_hlslens = function()
             local indicator, text, chunks
             local absRelIdx = math.abs(relIdx)
             if absRelIdx > 1 then
-                indicator = ("%d%s"):format(absRelIdx, sfw ~= (relIdx > 1) and "" or "")
+                indicator = ("%d%s"):format(absRelIdx, sfw ~= (relIdx > 1) and icons.common.up or icons.common.down)
             elseif absRelIdx == 1 then
-                indicator = sfw ~= (relIdx == 1) and "" or ""
+                indicator = sfw ~= (relIdx == 1) and icons.common.up or icons.common.down
             else
                 indicator = icons.common.dot
             end
