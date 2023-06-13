@@ -809,19 +809,43 @@ config.nvim_window_picker = function()
         return windows
     end
     window_picker.setup({
+        hint = "statusline-winbar",
         show_prompt = false,
-        autoselect_one = false,
-        include_current_win = true,
         filter_func = special_autoselect,
         filter_rules = {
+            autoselect_one = false,
+            include_current_win = true,
             bo = {
                 filetype = {},
                 buftype = {},
             },
         },
-        fg_color = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
-        current_win_hl_color = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
-        other_win_hl_color = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].green_01,
+        highlights = {
+            statusline = {
+                focused = {
+                    fg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
+                    bg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
+                    bold = true,
+                },
+                unfocused = {
+                    fg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
+                    bg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].red_03,
+                    bold = true,
+                },
+            },
+            winbar = {
+                focused = {
+                    fg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
+                    bg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
+                    bold = true,
+                },
+                unfocused = {
+                    fg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
+                    bg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].red_03,
+                    bold = true,
+                },
+            },
+        },
     })
     vim.api.nvim_create_user_command("WindowPicker", focus_window, {})
     vim.keymap.set("n", "gw", function()
@@ -1256,7 +1280,7 @@ config.neozoom_lua = function()
         border = "none",
         scrolloff_on_zoom = 0,
     })
-    vim.keymap.set("n", "<C-space>", ":NeoZoomToggle<CR>", { silent = true, nowait = true, desc = "NeoZoom" })
+    vim.keymap.set("n", "<C-c>z", ":NeoZoomToggle<CR>", { silent = true, nowait = true, desc = "NeoZoom" })
 end
 
 config.stay_in_place = function()
