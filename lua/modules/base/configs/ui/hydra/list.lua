@@ -18,6 +18,7 @@ local dap = require("modules.base.configs.ui.hydra.dap")
 local neotest = require("modules.base.configs.ui.hydra.neotest")
 local terminal = require("modules.base.configs.ui.hydra.terminal")
 local dependencies_ft = require("modules.base.configs.ui.hydra.dependencies_ft")
+local vimtex = require("modules.base.configs.ui.hydra.vimtex")
 
 local hop_hint = [[
                          HYDRA KEYS
@@ -32,7 +33,7 @@ GIT                        _;g_ │ _;q_                  Quickfix
 Location                   _;o_ │ _;d_               Diagnostics
 Glance                     _;s_ │ _;p_                       DAP
 Neotest                    _;'_ │ _;m_                 Termminal
-Dependencies               _;w_ │
+Dependencies               _;w_ │ _;v_                    Vimtex
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                          exit _<Esc>_
@@ -193,6 +194,13 @@ Hydra({
                 end
             end,
             { nowait = true, silent = true, desc = "Dependencies" },
+        },
+        {
+            ";v",
+            function()
+                vimtex.vimtex:activate()
+            end,
+            { nowait = true, silent = true, desc = "Vimtex" },
         },
         { "<Esc>", nil, { exit = true, desc = false } },
     },
