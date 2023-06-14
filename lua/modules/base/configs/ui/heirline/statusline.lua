@@ -105,7 +105,7 @@ M.get_statusline = function()
     }
     local work_dir = {
         provider = function()
-            local icon = "    "
+            local icon = " " .. icons.common.folder_empty .. " "
             local cwd = vim.fn.getcwd(0)
             cwd = vim.fn.fnamemodify(cwd, ":~")
             if not heirline_conditions.width_percent_below(#cwd, 0.25) then
@@ -152,26 +152,35 @@ M.get_statusline = function()
         end,
         hl = { fg = colors.blue_01 },
     }
-    local file_flags = {
-        {
-            provider = function()
-                if vim.bo.modified then
-                    return "   "
-                end
-            end,
-            hl = { fg = colors.red_01 },
-        },
+    local file_readonly = {
         {
             provider = function()
                 if not vim.bo.modifiable or vim.bo.readonly then
-                    return "   "
+                    return " " .. icons.common.lock
                 end
             end,
             hl = { fg = colors.red_01 },
         },
     }
-    file_name_block =
-        heirline_utils.insert(file_name_block, file_name, icons, file_size, unpack(file_flags), { provider = "%<" })
+    local file_modified = {
+        {
+            provider = function()
+                if vim.bo.modified then
+                    return " " .. icons.common.save
+                end
+            end,
+            hl = { fg = colors.red_01 },
+        },
+    }
+    file_name_block = heirline_utils.insert(
+        file_name_block,
+        file_name,
+        icons,
+        file_size,
+        file_readonly,
+        file_modified,
+        { provider = "%<" }
+    )
     local git = {
         condition = heirline_conditions.is_git_repo,
         init = function(self)
@@ -184,7 +193,7 @@ M.get_statusline = function()
         hl = { fg = colors.orange_02 },
         {
             provider = function(self)
-                return "  " .. self.status_dict.head .. " "
+                return " " .. icons.common.git .. self.status_dict.head .. " "
             end,
             hl = { bold = true },
         },

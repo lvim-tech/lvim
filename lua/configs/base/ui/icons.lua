@@ -33,6 +33,8 @@ return {
         trace = " ",
         down = "",
         up = "󰁝",
+        save = " ",
+        lock = " ",
     },
     git_status = {
         added = " ",
