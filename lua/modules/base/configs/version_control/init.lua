@@ -62,10 +62,6 @@ config.gitsigns_nvim = function()
             },
         },
         linehl = false,
-        keymaps = {
-            noremap = true,
-            buffer = true,
-        },
     })
     vim.api.nvim_create_user_command("GitSignsPreviewHunk", "lua require('gitsigns').preview_hunk()", {})
     vim.api.nvim_create_user_command("GitSignsNextHunk", "lua require('gitsigns').next_hunk()", {})
