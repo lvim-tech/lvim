@@ -817,14 +817,6 @@ modules["nvim-treesitter/nvim-treesitter"] = {
     config = languages_config.nvim_treesitter,
 }
 
-modules["lvimuser/lsp-inlayhints.nvim"] = {
-    commit = funcs.get_commit("lsp-inlayhints.nvim", plugins_snapshot),
-    dependencies = {
-        "neovim/nvim-lspconfig",
-    },
-    config = languages_config.lsp_inlayhints_nvim,
-}
-
 modules["SmiteshP/nvim-navic"] = {
     commit = funcs.get_commit("nvim-navic", plugins_snapshot),
     dependencies = {

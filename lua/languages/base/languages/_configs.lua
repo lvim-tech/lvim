@@ -18,6 +18,7 @@ M.default_config = function(file_types)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
+            languages_setup.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
@@ -41,6 +42,7 @@ M.without_formatting = function(file_types)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
+            languages_setup.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
@@ -79,6 +81,7 @@ M.cpp_config = function(file_types)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
+            languages_setup.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
@@ -104,6 +107,7 @@ M.omnisharp_config = function(file_types)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
+            languages_setup.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
@@ -129,6 +133,7 @@ M.elixir_config = function(file_types)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
+            languages_setup.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
@@ -153,6 +158,7 @@ M.go = function(file_types)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
+            languages_setup.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
@@ -188,6 +194,7 @@ M.lua = function(file_types)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
+            languages_setup.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
@@ -246,6 +253,7 @@ M.groovy_config = function(file_types)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
+            languages_setup.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
@@ -269,6 +277,7 @@ M.angular_config = function(file_types)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
+            languages_setup.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
@@ -291,6 +300,7 @@ M.ember_config = function(file_types)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
             languages_setup.document_formatting(client, bufnr)
+            languages_setup.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
@@ -312,6 +322,7 @@ M.yaml_config = function(file_types)
             languages_setup.omni(client, bufnr)
             languages_setup.tag(client, bufnr)
             languages_setup.document_highlight(client, bufnr)
+            languages_setup.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
