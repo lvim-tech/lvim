@@ -349,7 +349,7 @@ M.document_formatting = function(client, bufnr)
 end
 
 M.inlay_hint = function(client, bufnr)
-    if client.server_capabilities.inlayHintProvider then
+    if client.server_capabilities.inlayHintProvider and _G.LVIM_SETTINGS.inlayhint == true then
         vim.lsp.buf.inlay_hint(bufnr, true)
     end
 end
