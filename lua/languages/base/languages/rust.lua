@@ -39,6 +39,7 @@ local function start_server_tools()
                 languages_setup.tag(client, bufnr)
                 languages_setup.document_highlight(client, bufnr)
                 languages_setup.document_formatting(client, bufnr)
+                languages_setup.inlay_hint(client, bufnr)
                 if client.server_capabilities.documentSymbolProvider then
                     navic.attach(client, bufnr)
                 end

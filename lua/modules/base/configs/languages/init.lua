@@ -330,7 +330,8 @@ config.flutter_tools_nvim = function()
             end,
         },
         closing_tags = {
-            prefix = " ",
+            prefix = icons.common.separator .. " ",
+            highlight = "LspInlayHint",
         },
         lsp = {
             on_attach = function(client, bufnr)
@@ -339,6 +340,7 @@ config.flutter_tools_nvim = function()
                 languages_setup.tag(client, bufnr)
                 languages_setup.document_highlight(client, bufnr)
                 languages_setup.document_formatting(client, bufnr)
+                languages_setup.inlay_hint(client, bufnr)
                 if client.server_capabilities.documentSymbolProvider then
                     navic.attach(client, bufnr)
                 end
