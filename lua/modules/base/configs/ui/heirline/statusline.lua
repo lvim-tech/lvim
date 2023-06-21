@@ -88,7 +88,7 @@ M.get_statusline = function()
             return " " .. icons.common.vim .. " %(" .. self.mode_names[self.mode] .. "%)  "
         end,
         hl = function(self)
-            _G.LVIM_SETTINGS.mode = self.mode:sub(1, 1)
+            _G.LVIM_MODE = self.mode:sub(1, 1)
             return { bg = self.mode_colors[self.mode:sub(1, 1)], fg = colors.bg_01, bold = true }
         end,
         update = {
@@ -135,7 +135,7 @@ M.get_statusline = function()
         end,
         hl = function()
             return {
-                fg = vi_mode.static.mode_colors[_G.LVIM_SETTINGS.mode],
+                fg = vi_mode.static.mode_colors[_G.LVIM_MODE],
                 bold = true,
             }
         end,
@@ -353,7 +353,7 @@ M.get_statusline = function()
     }
     local statistic = {
         provider = function()
-            if _G.LVIM_SETTINGS.mode == "v" or _G.LVIM_SETTINGS.mode == "V" then
+            if _G.LVIM_MODE == "v" or _G.LVIM_MODE == "V" then
                 return " " .. vim.fn.wordcount().visual_words .. "/" .. vim.fn.wordcount().words
             else
                 return " " .. vim.fn.wordcount().words
