@@ -188,10 +188,13 @@ M.setup_languages = function(packages_data)
                         elseif choice == "Don't ask me again" then
                             local notify = require("lvim-ui-config.notify")
                             funcs.write_file(global.cache_path .. "/.lvim_packages", "")
-                            notify.error("To enable ask again run command:\n:AskForPackagesFile\nand restart LVIM IDE", {
-                                timeout = 10000,
-                                title = "LVIM IDE",
-                            })
+                            notify.error(
+                                "To enable ask again run command:\n:AskForPackagesFile\nand restart LVIM IDE",
+                                {
+                                    timeout = 10000,
+                                    title = "LVIM IDE",
+                                }
+                            )
                         elseif choice == "Cancel" then
                             local notify = require("lvim-ui-config.notify")
                             notify.error("Need restart LVIM IDE to install packages for this filetype", {
@@ -342,6 +345,12 @@ M.document_formatting = function(client, bufnr)
             end,
             group = "LvimIDE",
         })
+    end
+end
+
+M.inlay_hint = function(client, bufnr)
+    if client.server_capabilities.inlayHintProvider then
+        vim.lsp.buf.inlay_hint(bufnr, true)
     end
 end
 
