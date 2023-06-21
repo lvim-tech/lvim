@@ -231,7 +231,7 @@ configs["base_ctrlspace_pre_config"] = function()
     vim.g.CtrlSpaceGlobCommand = "rg --files --follow --hidden -g '!{.git/*,node_modules/*,target/*,vendor/*}'"
     vim.g.CtrlSpaceIgnoredFiles = "\v(tmp|temp)[\\/]"
     vim.g.CtrlSpaceSearchTiming = 10
-    vim.g.CtrlSpaceEnableFilesCache = 0
+    vim.g.CtrlSpaceEnableFilesCache = 1
     vim.g.CtrlSpaceSymbols = icons.ctrlspace
 end
 
