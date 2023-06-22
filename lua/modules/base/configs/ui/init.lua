@@ -823,7 +823,7 @@ config.nvim_window_picker = function()
         highlights = {
             statusline = {
                 focused = {
-                    fg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
+                    fg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].red_03,
                     bg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
                     bold = true,
                 },
