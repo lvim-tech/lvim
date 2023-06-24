@@ -929,12 +929,12 @@ modules["dhruvasagar/vim-table-mode"] = {
 modules["nvim-orgmode/orgmode"] = {
     commit = funcs.get_commit("orgmode", plugins_snapshot),
     ft = "org",
+    dependencies = { "lvim-tech/lvim-org-utils" },
     config = languages_config.orgmode,
 }
 
 modules["lvim-tech/lvim-org-utils"] = {
     commit = funcs.get_commit("lvim-org-utils", plugins_snapshot),
-    ft = "org",
     config = languages_config.lvim_org_utils,
 }
 
