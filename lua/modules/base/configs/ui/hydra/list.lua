@@ -3,7 +3,6 @@ local lvim = require("modules.base.configs.ui.hydra.lvim")
 local common = require("modules.base.configs.ui.hydra.common")
 local navigation = require("modules.base.configs.ui.hydra.navigation")
 local replace = require("modules.base.configs.ui.hydra.replace")
-local hop = require("modules.base.configs.ui.hydra.hop")
 local explorer = require("modules.base.configs.ui.hydra.explorer")
 local comment_annotation_fold = require("modules.base.configs.ui.hydra.comment_annotation_fold")
 local linguistics = require("modules.base.configs.ui.hydra.linguistics")
@@ -20,20 +19,20 @@ local terminal = require("modules.base.configs.ui.hydra.terminal")
 local dependencies_ft = require("modules.base.configs.ui.hydra.dependencies_ft")
 local vimtex = require("modules.base.configs.ui.hydra.vimtex")
 
-local hop_hint = [[
+local list_hint = [[
                          HYDRA KEYS
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 LVIM IDE                   _;l_ │ _;a_                    Common
 Navigation                 _;n_ │ _;r_                   Replace
-Hop                        _;h_ │ _;e_                  Explorer
+Vimtex                     _;v_ │ _;e_                  Explorer
 Comment, annotation, fold  _;c_ │ _;u_               Linguistics
 Telescope                  _;t_ │ _;z_                       FZF
 GIT                        _;g_ │ _;q_                  Quickfix
 Location                   _;o_ │ _;d_               Diagnostics
 Glance                     _;s_ │ _;p_                       DAP
 Neotest                    _;'_ │ _;m_                 Termminal
-Dependencies               _;w_ │ _;v_                    Vimtex
+Dependencies               _;w_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
                          exit _<Esc>_
@@ -41,7 +40,7 @@ Dependencies               _;w_ │ _;v_                    Vimtex
 
 Hydra({
     name = "HYDRA KEYS",
-    hint = hop_hint,
+    hint = list_hint,
     config = {
         color = "pink",
         invoke_on_body = true,
@@ -80,13 +79,6 @@ Hydra({
                 replace.replace:activate()
             end,
             { nowait = true, silent = true, desc = "Replace" },
-        },
-        {
-            ";h",
-            function()
-                hop.hop:activate()
-            end,
-            { nowait = true, silent = true, desc = "Hop" },
         },
         {
             ";e",
