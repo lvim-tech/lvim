@@ -369,7 +369,7 @@ modules["nvim-telescope/telescope.nvim"] = {
         { "<A-.>", "<Cmd>Telescope live_grep<CR>", desc = "Telescope live grep" },
         { "<A-/>", "<Cmd>Telescope file_browser<CR>", desc = "Telescope file browser" },
         { "<A-b>", "<Cmd>Telescope buffers<CR>", desc = "Telescope buffers" },
-        { "tt", "<Cmd>Telescope tmux session<CR>", desc = "Telescope tmux session" },
+        { "<C-c>t", "<Cmd>Telescope tmux session<CR>", desc = "Telescope tmux session" },
     },
     dependencies = {
         "nvim-telescope/telescope-fzf-native.nvim",

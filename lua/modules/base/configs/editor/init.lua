@@ -92,7 +92,7 @@ config.telescope_nvim = function()
     telescope.load_extension("fzf")
     telescope.load_extension("file_browser")
     telescope.load_extension("tmux")
-    vim.keymap.set("n", "tt", function()
+    vim.keymap.set("n", "<C-c>t", function()
         vim.cmd("Telescope tmux sessions")
     end, { noremap = true, silent = true, desc = "Telescope tmux sessions" })
     vim.api.nvim_create_autocmd("User", {
@@ -203,9 +203,7 @@ config.rg_nvim = function()
     end
     rg.setup({
         default_keybindings = {
-            enable = true,
-            modes = { "v" },
-            binding = "tr",
+            enable = false,
         },
     })
 end
@@ -671,13 +669,13 @@ config.rest_nvim = function()
     vim.api.nvim_create_user_command("Rest", "lua require('rest-nvim').run()", {})
     vim.api.nvim_create_user_command("RestPreview", "lua require('rest-nvim').run(true)", {})
     vim.api.nvim_create_user_command("RestLast", "lua require('rest-nvim').last()", {})
-    vim.keymap.set("n", "trr", function()
+    vim.keymap.set("n", "rr", function()
         rest_nvim.run()
     end, { noremap = true, silent = true, desc = "Rest" })
-    vim.keymap.set("n", "trp", function()
+    vim.keymap.set("n", "rp", function()
         rest_nvim.run(true)
     end, { noremap = true, silent = true, desc = "RestPreview" })
-    vim.keymap.set("n", "trl", function()
+    vim.keymap.set("n", "rl", function()
         rest_nvim.last()
     end, { noremap = true, silent = true, desc = "RestLast" })
 end
@@ -688,7 +686,7 @@ config.sniprun = function()
         return
     end
     sniprun.setup()
-    vim.keymap.set({ "n", "v" }, "ts", ":SnipRun<CR>", { noremap = true, silent = true, desc = "SnipRun" })
+    vim.keymap.set({ "n", "v" }, "<C-c>u", ":SnipRun<CR>", { noremap = true, silent = true, desc = "SnipRun" })
     vim.keymap.set("n", "<Esc>", "<Esc>:noh<CR>:SnipClose<CR>", { noremap = true, silent = true, desc = "Escape" })
 end
 
@@ -771,7 +769,7 @@ config.ccc_nvim = function()
     ccc.setup({
         alpha_show = "show",
     })
-    vim.keymap.set("n", "<C-c>p", function()
+    vim.keymap.set("n", "<C-c>r", function()
         vim.cmd("CccPick")
     end, { noremap = true, silent = true, desc = "ColorPicker" })
     vim.api.nvim_create_autocmd("Filetype", {
@@ -864,9 +862,6 @@ config.calendar_vim = function()
     vim.g.calendar_diary_path_pattern = "{YYYY}-{MM}-{DD}{EXT}"
     vim.g.calendar_monday = 1
     vim.g.calendar_weeknm = 1
-    vim.keymap.set("n", "tc", function()
-        vim.cmd("CalendarVR")
-    end, { noremap = true, silent = true, desc = "Calendar" })
 end
 
 return config

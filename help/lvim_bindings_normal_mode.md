@@ -24,8 +24,7 @@
 | `<C-c>x`         | `<C-w>c`                          | Close current window                  |
 | `<C-c>o`         | `<C-w>o`                          | Close other windows                   |
 | `<C-c>d`         | `:bdelete<CR>`                    | Bdelete buffer                        |
-| `<C-c>p`         | `:PickColor<CR>`                  | Pick color                            |
-| `<C-c>P`         | `:PickColorInsert<CR>`            | Pick color insert                     |
+| `<C-c>r`         | `:PickColor<CR>`                  | Pick color                            |
 | `<C-c>=`         | `:wincmd=<CR>`                    | Win resize =                          |
 | `<C-n>`          | `:BufSurfForward<CR>`             | Bnext buffer                          |
 | `<C-p>`          | `:BufSurfBack<CR>`                | Bprev buffer                          |
@@ -95,17 +94,15 @@
 | `gpt`            | `:Glance type_definitions<CR>`    | Glance type_definitions               |
 | `gpr`            | `:Glance references<CR>`          | Glance references                     |
 | `gpi`            | `:Glance implementations<CR>`     | Glance implementations                |
-| `ti`             | `:Inspect<CR>`                    | Inspect                               |
-| `ts`             | `:SnipRun<CR>`                    | Snip run                              |
-| `tf`             | `:CloseFloatWindows<CR>`          | Close float qindows                   |
-| `tn`             | `:tabn<CR>`                       | Tab next                              |
-| `tp`             | `:tabp<CR>`                       | Tab prev                              |
-| `tc`             | `:CalendarVR<CR>`                 | Calendar                              |
-| `to`             | `:e ~/Org/notes/notes.org<CR>`    | Open org notes                        |
-| `tt`             | `:Telescope tmux sessions<CR>`    | Telescope tmux session                |
-| `trr`            | `<Plug>RestNvim<CR>`              | Rest nvim                             |
-| `trp`            | `<Plug>RestNvimPreview<CR>`       | Rest nvim preview                     |
-| `trl`            | `<Plug>RestNvimLast<CR>`          | Rest nvim last                        |
+| `<C-c>c`         | `:Inspect<CR>`                    | Inspect                               |
+| `<C-c>u`         | `:SnipRun<CR>`                    | Snip run                              |
+| `<C-c>ff`        | `:CloseFloatWindows<CR>`          | Close float qindows                   |
+| `<C-c>n`         | `:tabn<CR>`                       | Tab next                              |
+| `<C-c>p`         | `:tabp<CR>`                       | Tab prev                              |
+| `<C-c>t`         | `:Telescope tmux sessions<CR>`    | Telescope tmux session                |
+| `rr`             | `<Plug>RestNvim<CR>`              | Rest nvim                             |
+| `rp`             | `<Plug>RestNvimPreview<CR>`       | Rest nvim preview                     |
+| `rl`             | `<Plug>RestNvimLast<CR>`          | Rest nvim last                        |
 | `dc`             | `:LspShowDiagnosticCurrent<CR>`   | Lsp show diagnostic current           |
 | `dn`             | `:LspShowDiagnosticNext<CR>`      | Lsp show diagnostic next              |
 | `dp`             | `:LspShowDiagnosticPrev<CR>`      | Lsp show diagnostic prev              |
