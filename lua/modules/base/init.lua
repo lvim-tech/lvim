@@ -486,14 +486,6 @@ modules["lvim-tech/lvim-move"] = {
     config = editor_config.lvim_move,
 }
 
-modules["nvim-treesitter/nvim-treesitter-textobjects"] = {
-    commit = funcs.get_commit("nvim-treesitter-context", plugins_snapshot),
-    dependencies = {
-        "nvim-treesitter/nvim-treesitter",
-    },
-    config = editor_config.nvim_treesitter_textobject,
-}
-
 modules["nvim-treesitter/nvim-treesitter-context"] = {
     commit = funcs.get_commit("nvim-treesitter-context", plugins_snapshot),
     dependencies = {

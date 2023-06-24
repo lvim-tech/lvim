@@ -569,30 +569,6 @@ config.lvim_move = function()
     lvim_move.setup()
 end
 
-config.nvim_treesitter_textobject = function()
-    require("nvim-treesitter.configs").setup({
-        textobjects = {
-            select = {
-                enable = true,
-                lookahead = true,
-                keymaps = {
-                    ["af"] = "@function.outer",
-                    ["if"] = "@function.inner",
-                    ["ac"] = "@class.outer",
-                    ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
-                    ["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
-                },
-                selection_modes = {
-                    ["@parameter.outer"] = "v",
-                    ["@function.outer"] = "V",
-                    ["@class.outer"] = "<c-v>",
-                },
-                include_surrounding_whitespace = true,
-            },
-        },
-    })
-end
-
 config.nvim_treesitter_context = function()
     local treesitter_context_status_ok, treesitter_context = pcall(require, "treesitter-context")
     if not treesitter_context_status_ok then
