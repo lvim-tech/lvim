@@ -258,7 +258,6 @@ config.noice_nvim = function()
         cmdline = {
             enabled = true,
             view = "cmdline",
-            opts = { buf_options = { filetype = "vim" } },
             format = {
                 cmdline = { pattern = "^:", icon = "", lang = "vim" },
                 search_down = { kind = "search", pattern = "^/", icon = "  ", lang = "regex" },
