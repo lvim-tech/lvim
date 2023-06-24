@@ -94,6 +94,8 @@
 | `gpt`            | `:Glance type_definitions<CR>`    | Glance type_definitions               |
 | `gpr`            | `:Glance references<CR>`          | Glance references                     |
 | `gpi`            | `:Glance implementations<CR>`     | Glance implementations                |
+| `<C-c>.`         |                                   | Flash                                 |
+| `<C-c>,`         |                                   | Flash treesitter                      |
 | `<C-c>c`         | `:Inspect<CR>`                    | Inspect                               |
 | `<C-c>u`         | `:SnipRun<CR>`                    | Snip run                              |
 | `<C-c>ff`        | `:CloseFloatWindows<CR>`          | Close float qindows                   |
