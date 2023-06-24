@@ -575,12 +575,12 @@ modules["uga-rosa/ccc.nvim"] = {
     config = editor_config.ccc_nvim,
 }
 
-modules["phaazon/hop.nvim"] = {
-    commit = funcs.get_commit("hop.nvim", plugins_snapshot),
+modules["folke/flash.nvim"] = {
+    commit = funcs.get_commit("flash.nvim", plugins_snapshot),
     event = {
         "BufRead",
     },
-    config = editor_config.hop_nvim,
+    config = editor_config.flash_nvim,
 }
 
 modules["folke/todo-comments.nvim"] = {

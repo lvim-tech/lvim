@@ -781,12 +781,34 @@ config.suda_vim = function()
     vim.g.suda_smart_edit = 1
 end
 
-config.hop_nvim = function()
-    local hop_status_ok, hop = pcall(require, "hop")
-    if not hop_status_ok then
+config.flash_nvim = function()
+    local flash_status_ok, flash = pcall(require, "flash")
+    if not flash_status_ok then
         return
     end
-    hop.setup()
+    flash.setup({
+        search = {
+            exclude = {
+                "notify",
+                "noice",
+                "cmp_menu",
+                function(win)
+                    return not vim.api.nvim_win_get_config(win).focusable
+                end,
+            },
+        },
+        modes = {
+            char = {
+                enabled = true,
+            },
+        },
+    })
+    vim.keymap.set({ "n", "x", "o" }, "<C-c>.", function()
+        flash.jump()
+    end)
+    vim.keymap.set({ "n", "x", "o" }, "<C-c>,", function()
+        flash.treesitter()
+    end)
 end
 
 config.todo_comments_nvim = function()
