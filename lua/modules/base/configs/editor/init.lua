@@ -779,12 +779,6 @@ config.flash_nvim = function()
             },
         },
     })
-    vim.keymap.set({ "n", "x", "o" }, "<C-c>.", function()
-        flash.jump()
-    end)
-    vim.keymap.set({ "n", "x", "o" }, "<C-c>,", function()
-        flash.treesitter()
-    end)
     local Config = require("flash.config")
     local Char = require("flash.plugins.char")
     for _, motion in ipairs({ "f", "t", "F", "T" }) do
@@ -798,6 +792,15 @@ config.flash_nvim = function()
             }, Char.motions[motion]))
         end)
     end
+    vim.keymap.set({ "n", "x", "o" }, "<C-c>.", function()
+        flash.jump()
+    end)
+    vim.keymap.set({ "n", "x", "o" }, "<C-c>,", function()
+        flash.treesitter()
+    end)
+    vim.keymap.set({ "o" }, "r", function()
+        require("flash").remote()
+    end)
 end
 
 config.todo_comments_nvim = function()
