@@ -9,6 +9,12 @@ M.get_statuscolumn = function()
     local space = { provider = " " }
     local align = { provider = "%=" }
 
+    local file_types_statuscolumn = {}
+    for i, v in ipairs(file_types) do
+        file_types_statuscolumn[i] = v
+    end
+    table.insert(file_types_statuscolumn, "fzf")
+
     local static = {
         click_args = function(self, minwid, clicks, button, mods)
             local args = {
@@ -198,7 +204,7 @@ M.get_statuscolumn = function()
         condition = function()
             return not conditions.buffer_matches({
                 buftype = buf_types,
-                filetype = file_types,
+                filetype = file_types_statuscolumn,
             })
         end,
         static = static,
