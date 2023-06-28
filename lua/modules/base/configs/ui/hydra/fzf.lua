@@ -23,7 +23,7 @@ M.fzf_menu = Hydra({
         color = "pink",
         invoke_on_body = true,
         hint = {
-            position = "bottom-center",
+            position = "top-center",
             border = "single",
         },
     },
@@ -97,7 +97,7 @@ M.fzf_buffers_and_files = Hydra({
         color = "pink",
         invoke_on_body = true,
         hint = {
-            position = "bottom-center",
+            position = "top-center",
             border = "single",
         },
     },
@@ -190,7 +190,7 @@ M.fzf_search = Hydra({
         color = "pink",
         invoke_on_body = true,
         hint = {
-            position = "bottom-center",
+            position = "top-center",
             border = "single",
         },
     },
@@ -291,7 +291,7 @@ M.fzf_tags = Hydra({
         color = "pink",
         invoke_on_body = true,
         hint = {
-            position = "bottom-center",
+            position = "top-center",
             border = "single",
         },
     },
@@ -366,7 +366,7 @@ M.fzf_git = Hydra({
         color = "pink",
         invoke_on_body = true,
         hint = {
-            position = "bottom-center",
+            position = "top-center",
             border = "single",
         },
     },
@@ -441,7 +441,7 @@ M.fzf_lsp = Hydra({
         color = "pink",
         invoke_on_body = true,
         hint = {
-            position = "bottom-center",
+            position = "top-center",
             border = "single",
         },
     },
@@ -561,7 +561,7 @@ M.fzf_dap = Hydra({
         color = "pink",
         invoke_on_body = true,
         hint = {
-            position = "bottom-center",
+            position = "top-center",
             border = "single",
         },
     },
@@ -630,7 +630,7 @@ M.fzf_misc = Hydra({
         color = "pink",
         invoke_on_body = true,
         hint = {
-            position = "bottom-center",
+            position = "top-center",
             border = "single",
         },
     },
