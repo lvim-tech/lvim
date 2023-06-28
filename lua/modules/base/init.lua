@@ -252,13 +252,13 @@ modules["nvim-neo-tree/neo-tree.nvim"] = {
     commit = funcs.get_commit("neo-tree.nvim", plugins_snapshot),
     cmd = "Neotree",
     keys = {
-        { "<S-x>", "<cmd>Neotree filesystem left<cr>", desc = "NeoTree filesystem" },
-        { "<C-c><C-f>", "<cmd>Neotree filesystem left<cr>", desc = "NeoTree filesystem" },
-        { "<C-c><C-b>", "<cmd>Neotree buffers left<cr>", desc = "NeoTree buffers" },
-        { "<C-c><C-g>", "<cmd>Neotree git_status left<cr>", desc = "NeoTree git status" },
-        { "<C-c><C-d>", "<cmd>Neotree diagnostics left<cr>", desc = "NeoTree diagnostics" },
-        { "<A-e>", "<cmd>Neotree diagnostics reveal bottom<cr>", desc = "NeoTree diagnostics" },
-        { "<S-q>", "<cmd>Neotree close<cr>", desc = "NeoTree close" },
+        { "<S-x>", "<cmd>Neotree filesystem left<CR>", desc = "NeoTree filesystem" },
+        { "<C-c><C-f>", "<cmd>Neotree filesystem left<CR>", desc = "NeoTree filesystem" },
+        { "<C-c><C-b>", "<cmd>Neotree buffers left<CR>", desc = "NeoTree buffers" },
+        { "<C-c><C-g>", "<cmd>Neotree git_status left<CR>", desc = "NeoTree git status" },
+        { "<C-c><C-d>", "<cmd>Neotree diagnostics left<CR>", desc = "NeoTree diagnostics" },
+        { "<A-e>", "<cmd>Neotree diagnostics reveal bottom<CR>", desc = "NeoTree diagnostics" },
+        { "<S-q>", "<cmd>Neotree close<CR>", desc = "NeoTree close" },
     },
     dependencies = {
         "nvim-lua/plenary.nvim",
@@ -351,7 +351,7 @@ local editor_config = require("modules.base.configs.editor")
 modules["vim-ctrlspace/vim-ctrlspace"] = {
     commit = funcs.get_commit("vim-ctrlspace", plugins_snapshot),
     keys = {
-        { "<space><space>", "<Cmd>CtrlSpace<CR>", desc = "CtrlSpace" },
+        { "<Leader><Leader>", "<Cmd>CtrlSpace<CR>", desc = "CtrlSpace" },
     },
     cmd = "CtrlSpace",
 }

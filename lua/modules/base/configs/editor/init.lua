@@ -225,8 +225,8 @@ config.neocomposer_nvim = function()
         keymaps = {
             play_macro = "<Leader>q",
             toggle_record = "Q",
-            cycle_next = "<m-n>",
-            cycle_prev = "<m-p>",
+            cycle_next = "<M-n>",
+            cycle_prev = "<M-p>",
         },
     })
 end

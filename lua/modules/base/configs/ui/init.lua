@@ -425,7 +425,7 @@ config.noice_nvim = function()
                 position = "bottom",
                 size = "20%",
                 close = {
-                    keys = { "q", "<esc>" },
+                    keys = { "q", "<ESC>" },
                 },
                 win_options = {
                     winhighlight = { Normal = "NoiceBody", FloatBorder = "NoiceBorder" },
@@ -439,7 +439,7 @@ config.noice_nvim = function()
                 position = "right",
                 size = "20%",
                 close = {
-                    keys = { "q", "<esc>" },
+                    keys = { "q", "<ESC>" },
                 },
                 win_options = {
                     winhighlight = { Normal = "NoiceBody", FloatBorder = "NoiceBorder" },
@@ -977,7 +977,7 @@ config.neo_tree_nvim = function()
             width = 40,
             mappings = {
                 ["Z"] = "expand_all_nodes",
-                ["<space>"] = false,
+                ["<Leader>"] = false,
             },
         },
         filesystem = {
