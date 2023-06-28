@@ -382,6 +382,29 @@ modules["nvim-telescope/telescope.nvim"] = {
 modules["ibhagwan/fzf-lua"] = {
     commit = funcs.get_commit("fzf-lua", plugins_snapshot),
     cmd = "FzfLua",
+    keys = {
+        {
+            "<Leader>f",
+            function()
+                vim.cmd("FzfLua files")
+            end,
+            desc = "FzfLua files",
+        },
+        {
+            "<Leader>s",
+            function()
+                vim.cmd("FzfLua live_grep")
+            end,
+            desc = "FzfLua search",
+        },
+        {
+            "<Leader>m",
+            function()
+                vim.cmd("FzfLua marks")
+            end,
+            desc = "FzfLua marks",
+        },
+    },
     config = editor_config.fzf_lua,
 }
 

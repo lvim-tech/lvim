@@ -172,7 +172,7 @@ local fzf_search = [[
                          FZF SEARCH
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Grep                        _g_ │ _G_                  Live grep
+Live grep                   _g_ │ _G_                       Grep
 Grep last                   _L_ │ _r_           Live grep resume
 Grep cword                  _w_ │ _o_             Live grep glob
 Grep cWORD                  _W_ │ _n_           Live grep native
@@ -199,8 +199,8 @@ M.fzf_search = Hydra({
     heads = {
         {
             "g",
-            keymap.cmd("FzfLua grep"),
-            { nowait = true, silent = true, desc = "FzfLua grep" },
+            keymap.cmd("FzfLua live_grep"),
+            { nowait = true, silent = true, desc = "FzfLua live grep" },
         },
         {
             "L",
@@ -229,8 +229,8 @@ M.fzf_search = Hydra({
         },
         {
             "G",
-            keymap.cmd("FzfLua live_grep"),
-            { nowait = true, silent = true, desc = "FzfLua live grep" },
+            keymap.cmd("FzfLua grep"),
+            { nowait = true, silent = true, desc = "FzfLua grep" },
         },
         {
             "r",

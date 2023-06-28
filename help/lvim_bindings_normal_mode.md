@@ -6,6 +6,9 @@
 | ---------------- | --------------------------------- | ------------------------------------- |
 | `<space><space>` | `:CtrlSpace<CR>`                  | CtrlSpace                             |
 | `<space>=`       | `:LvimFileManager<CR>`            | LvimFileManager                       |
+| `<space>f`       | `:FzfLua files<CR>`               | Fzf search files                      |
+| `<space>s`       | `:FzfLua live_grep<CR>`           | Fzf search in files                   |
+| `<space>m`       | `:FzfLua marks<CR>`               | Fzf marks                             |
 | `Q`              |                                   | Neocomposer toggle macro              |
 | `<space>q`       |                                   | Neocomposer play macro                |
 | `<F1>`           | `:TTOne<CR>`                      | Toggleterm one open                   |
