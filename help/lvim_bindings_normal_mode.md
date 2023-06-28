@@ -20,7 +20,7 @@
 | `<C-c>h`           | `:LvimHelper<CR>`                 | LvimHelper                            |
 | `<C-d>`            |                                   | Scroll down for cmp, hover, signature |
 | `<C-u>`            |                                   | Scroll up for cmp, hover, signature   |
-| `<C-c>n`           | `:enew<CR>`                       | Create empty buffer                   |
+| `<C-c>N`           | `:enew<CR>`                       | Create empty buffer                   |
 | `<C-c>s`           | `:w<CR>`                          | Save                                  |
 | `<C-c>a`           | `:wa<CR>`                         | Save all                              |
 | `<C-c>e`           | `:Quit<CR>`                       | Quit                                  |
