@@ -868,6 +868,10 @@ config.oil_nvim = function()
     if not oil_nvim_status_ok then
         return
     end
+    local oil_actions_status_ok, oil_actions = pcall(require, "oil.actions")
+    if not oil_actions_status_ok then
+        return
+    end
     oil_nvim.setup({
         columns = {
             "icon",
@@ -895,6 +899,22 @@ config.oil_nvim = function()
             win_options = {
                 winblend = 0,
             },
+        },
+        use_default_keymaps = false,
+        keymaps = {
+            ["g?"] = oil_actions.show_help,
+            ["<CR>"] = oil_actions.select,
+            ["<C-s>"] = oil_actions.select_vsplit,
+            ["<C-h>"] = oil_actions.select_split,
+            ["<C-t>"] = oil_actions.select_tab,
+            ["<C-p>"] = oil_actions.preview,
+            ["<C-x>"] = oil_actions.close,
+            ["<C-r>"] = oil_actions.refresh,
+            ["-"] = oil_actions.parent,
+            ["_"] = oil_actions.open_cwd,
+            ["`"] = oil_actions.cd,
+            ["~"] = oil_actions.tcd,
+            ["g."] = oil_actions.toggle_hidden,
         },
         silence_netrw_warning = true,
     })
