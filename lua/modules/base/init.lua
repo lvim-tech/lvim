@@ -404,6 +404,13 @@ modules["ibhagwan/fzf-lua"] = {
             end,
             desc = "FzfLua marks",
         },
+        {
+            "<Leader>b",
+            function()
+                vim.cmd("FzfLua buffers")
+            end,
+            desc = "FzfLua buffers",
+        },
     },
     config = editor_config.fzf_lua,
 }
