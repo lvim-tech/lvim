@@ -811,9 +811,7 @@ modules["simrat39/rust-tools.nvim"] = {
     ft = "rust",
     dependencies = {
         "neovim/nvim-lspconfig",
-        "nvim-lua/popup.nvim",
         "nvim-lua/plenary.nvim",
-        "nvim-telescope/telescope.nvim",
         "mfussenegger/nvim-dap",
     },
 }
