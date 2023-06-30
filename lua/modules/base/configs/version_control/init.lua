@@ -132,7 +132,18 @@ config.lvim_forgit = function()
     if not lvim_forgit_status_ok then
         return
     end
-    lvim_forgit.setup()
+    lvim_forgit.setup({
+        ui = {
+            float = {
+                float_hl = "NormalFloat",
+                height = 0.5,
+                width = 1,
+                x = 0,
+                y = 1,
+                border_hl = "FloatBorder",
+            },
+        },
+    })
     vim.keymap.set("n", "<C-c>fg", function()
         vim.cmd("LvimForgit")
     end, { noremap = true, silent = true, desc = "LvimForgit" })

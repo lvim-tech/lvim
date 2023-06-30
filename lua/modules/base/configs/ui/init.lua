@@ -1109,6 +1109,10 @@ config.lvim_fm = function()
         ui = {
             float = {
                 float_hl = "NormalFloat",
+                height = 0.5,
+                width = 1,
+                x = 0,
+                y = 1,
                 border_hl = "FloatBorder",
             },
         },
