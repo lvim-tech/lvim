@@ -108,7 +108,6 @@ config.fzf_lua = function()
     if not fzf_lua_status_ok then
         return
     end
-    local actions = require("fzf-lua.actions")
     fzf_lua.setup({
         winopts = {
             title = "",
