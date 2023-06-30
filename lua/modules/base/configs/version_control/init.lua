@@ -21,6 +21,11 @@ config.gitsigns_nvim = function()
         return
     end
     gitsigns.setup({
+        current_line_blame_formatter = "➤ <author> ➤ <author_time:%Y-%m-%d> ➤ <summary>",
+        current_line_blame_formatter_nc = "➤ Not Committed Yet",
+        current_line_blame_opts = {
+            delay = 0,
+        },
         numhl = false,
         signcolumn = true,
         signs = {
@@ -73,6 +78,11 @@ config.gitsigns_nvim = function()
     vim.api.nvim_create_user_command("GitSignsBlameLine", "lua require('gitsigns').blame_line()", {})
     vim.api.nvim_create_user_command("GitSignsBlameFull", "lua require('gitsigns').blame_line(full=true)", {})
     vim.api.nvim_create_user_command("GitSignsToggleLinehl", "lua require('gitsigns').toggle_linehl()", {})
+    vim.api.nvim_create_user_command(
+        "GitSignsToggleLineBlame",
+        "lua require('gitsigns').toggle_current_line_blame()",
+        {}
+    )
     vim.keymap.set("n", "<A-]>", function()
         vim.cmd("GitSignsNextHunk")
     end, { noremap = true, silent = true, desc = "GitSignsNextHunk" })
@@ -82,26 +92,9 @@ config.gitsigns_nvim = function()
     vim.keymap.set("n", "<A-;>", function()
         vim.cmd("GitSignsPreviewHunk")
     end, { noremap = true, silent = true, desc = "GitSignsPreviewHunk" })
-end
-
-config.git_blame_nvim = function()
-    vim.g.gitblame_message_when_not_committed = "➤ Not committed yet"
-    vim.g.gitblame_date_format = "%r"
-    vim.g.gitblame_message_template = "➤ <summary> ➤ <date> ➤ <author>"
-    vim.g.gitblame_ignored_filetypes = {
-        "help",
-        "Outline",
-        "git",
-        "dapui_scopes",
-        "dapui_breakpoints",
-        "dapui_stacks",
-        "dapui_watches",
-        "NeogitStatus",
-        "dashboard",
-    }
     vim.keymap.set("n", "<C-c>b", function()
-        vim.cmd("GitBlameToggle")
-    end, { noremap = true, silent = true, desc = "GitBlameToggle" })
+        vim.cmd("GitSignsToggleLineBlame")
+    end, { noremap = true, silent = true, desc = "GitSignsToggleLineBlame" })
 end
 
 config.diffview_nvim = function()

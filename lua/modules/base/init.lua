@@ -690,14 +690,6 @@ modules["lewis6991/gitsigns.nvim"] = {
     config = version_control_config.gitsigns_nvim,
 }
 
-modules["f-person/git-blame.nvim"] = {
-    commit = funcs.get_commit("git-blame.nvim", plugins_snapshot),
-    event = {
-        "BufRead",
-    },
-    config = version_control_config.git_blame_nvim,
-}
-
 modules["sindrets/diffview.nvim"] = {
     commit = funcs.get_commit("diffview.nvim", plugins_snapshot),
     event = "BufRead",
