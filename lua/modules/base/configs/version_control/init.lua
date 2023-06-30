@@ -24,7 +24,7 @@ config.gitsigns_nvim = function()
         current_line_blame_formatter = "➤ <author> ➤ <author_time:%Y-%m-%d> ➤ <summary>",
         current_line_blame_formatter_nc = "➤ Not Committed Yet",
         current_line_blame_opts = {
-            delay = 0,
+            delay = 10,
         },
         numhl = false,
         signcolumn = true,
