@@ -31,7 +31,7 @@
 | `<C-c>=`           | `:wincmd=<CR>`                    | Win resize =                          |
 | `<C-n>`            | `:BufSurfForward<CR>`             | Bnext buffer                          |
 | `<C-p>`            | `:BufSurfBack<CR>`                | Bprev buffer                          |
-| `<C-c>b`           | `:GitBlameToggle<CR>`             | GitBlame toggle                       |
+| `<C-c>b`           | `:GitSignsToggleLineBlame<CR>`    | GitSigns toggle line blame            |
 | `<C-c>z`           | `:NeoZoom<CR>`                    | Zoom toggle                           |
 | `<C-c>fv`          | `:Vifm<CR>`                       | Vifm                                  |
 | `<C-c>fr`          | `:Ranger<CR>`                     | Ranger                                |
