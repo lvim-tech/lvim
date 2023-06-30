@@ -111,9 +111,12 @@ config.fzf_lua = function()
     local actions = require("fzf-lua.actions")
     fzf_lua.setup({
         winopts = {
-            split = "belowright new",
+            title = "",
+            title_pos = "center",
             height = 0.4,
             width = 1.00,
+            row = 1,
+            col = 0,
             border = { " ", " ", " ", " ", " ", " ", " ", " " },
             preview = {
                 vertical = "down:45%",
