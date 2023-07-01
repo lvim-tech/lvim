@@ -280,7 +280,6 @@ M.config_diagnostic = {
 
 M.setup_diagnostic = function()
     vim.diagnostic.config(M.config_diagnostic)
-
     vim.api.nvim_create_user_command("LspVirtualTextToggle", function()
         local config = vim.diagnostic.config
         local vt = config().virtual_text
@@ -288,7 +287,6 @@ M.setup_diagnostic = function()
             virtual_text = not vt,
         })
     end, { desc = "LspVirtualTextToggle" })
-
     vim.fn.sign_define("DiagnosticSignError", {
         text = icons.diagnostics.error,
         texthl = "DiagnosticError",
@@ -350,7 +348,7 @@ end
 
 M.inlay_hint = function(client, bufnr)
     if client.server_capabilities.inlayHintProvider and _G.LVIM_SETTINGS.inlayhint == true then
-        vim.lsp.buf.inlay_hint(bufnr, true)
+        vim.lsp.inlay_hint(bufnr, true)
     end
 end
 
@@ -468,6 +466,9 @@ M.keymaps = function(client, bufnr)
             vim.lsp.buf.hover()
         end
     end, { noremap = true, silent = true, buffer = bufnr, desc = "LspHover" })
+    vim.keymap.set("n", "gt", function()
+        vim.cmd("LspVirtualTextToggle")
+    end, { noremap = true, silent = true, buffer = bufnr, desc = "LspVirtualTextToggle" })
 end
 
 M.dap_local = function()
