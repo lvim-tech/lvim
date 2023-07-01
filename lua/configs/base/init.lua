@@ -37,6 +37,7 @@ configs["base_lvim"] = function()
         end
         local ui_config = require("lvim-ui-config.config")
         local select = require("lvim-ui-config.select")
+        local notify = require("lvim-ui-config.notify")
         local opts = ui_config.select({
             "Lvim Dark",
             "Lvim Dark Soft",
@@ -64,7 +65,9 @@ configs["base_lvim"] = function()
                 local editor_config = require("modules.base.configs.editor")
                 editor_config.tabby_nvim()
                 editor_config.neocomposer_nvim()
-                vim.notify(user_choice)
+                notify.info("Theme: " .. choice, {
+                    title = "LVIM IDE",
+                })
             end
         end)
     end
