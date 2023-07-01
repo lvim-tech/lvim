@@ -8,7 +8,7 @@
 
   * Debug support for c, cpp, cs, dart, elixir, go, haskell, java, javascript/typescript, lua, php, python, ruby, rust, scala
 
-  Current version - 3.3.50 (2023-06-30)
+  Current version - 3.3.52 (2023-07-01)
 
   128 plugins
 
@@ -127,7 +127,7 @@
 
     #+end_src
 
-    - Theme - Dark (default), DarkSoft and Light
+    - Theme - Lvim Dark (default), Lvim Dark Soft, Lvim Light, Lvim Everforest Dark, Lvim Everforest Dark Soft, Lvim Gruvbox Dark, Lvim Gruvbox Dark Soft, Lvim Solarized Dark
 
     #+begin_src lua
 
