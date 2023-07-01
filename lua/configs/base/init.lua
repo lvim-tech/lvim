@@ -53,7 +53,6 @@ configs["base_lvim"] = function()
             else
                 local user_choice = string.lower(choice)
                 user_choice = string.gsub(user_choice, " ", "-")
-                vim.notify(user_choice)
                 _G.LVIM_SETTINGS.theme = user_choice
                 vim.cmd("colorscheme " .. user_choice)
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
@@ -65,6 +64,7 @@ configs["base_lvim"] = function()
                 local editor_config = require("modules.base.configs.editor")
                 editor_config.tabby_nvim()
                 editor_config.neocomposer_nvim()
+                vim.notify(user_choice)
             end
         end)
     end
