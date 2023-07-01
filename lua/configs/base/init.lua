@@ -18,27 +18,44 @@ configs["base_lvim"] = function()
     })
     local function lvim_theme()
         local status
-        if _G.LVIM_SETTINGS.colorschemes.theme == "dark" then
-            status = "Dark"
-        elseif _G.LVIM_SETTINGS.colorschemes.theme == "darksoft" then
-            status = "DarkSoft"
-        elseif _G.LVIM_SETTINGS.colorschemes.theme == "light" then
-            status = "Light"
+        if _G.LVIM_SETTINGS.theme == "lvim-dark" then
+            status = "Lvim Dark"
+        elseif _G.LVIM_SETTINGS.theme == "lvim-dark-soft" then
+            status = "Lvim Dark Soft"
+        elseif _G.LVIM_SETTINGS.theme == "lvim-light" then
+            status = "Lvim Light"
+        elseif _G.LVIM_SETTINGS.theme == "lvim-gruvbox-dark" then
+            status = "Lvim Gruvbox Dark"
+        elseif _G.LVIM_SETTINGS.theme == "lvim-gruvbox-dark-soft" then
+            status = "Lvim Gruvbox Dark Soft"
+        elseif _G.LVIM_SETTINGS.theme == "lvim-everforest-dark" then
+            status = "Lvim Everforest Dark"
+        elseif _G.LVIM_SETTINGS.theme == "lvim-everforest-dark-soft" then
+            status = "Lvim Everforest Dark Soft"
+        elseif _G.LVIM_SETTINGS.theme == "lvim-solarized-dark" then
+            status = "Lvim Solarized Dark"
         end
         local ui_config = require("lvim-ui-config.config")
         local select = require("lvim-ui-config.select")
         local opts = ui_config.select({
-            "Dark",
-            "DarkSoft",
-            "Light",
+            "Lvim Dark",
+            "Lvim Dark Soft",
+            "Lvim Light",
+            "Lvim Everforest Dark",
+            "Lvim Everforest Dark Soft",
+            "Lvim Gruvbox Dark",
+            "Lvim Gruvbox Dark Soft",
+            "Lvim Solarized Dark",
             "Cancel",
         }, { prompt = "Theme (" .. status .. ")" }, {})
         select(opts, function(choice)
             if choice == "Cancel" then
             else
                 local user_choice = string.lower(choice)
-                _G.LVIM_SETTINGS.colorschemes.theme = user_choice
-                vim.cmd("colorscheme lvim-" .. user_choice)
+                user_choice = string.gsub(user_choice, " ", "-")
+                vim.notify(user_choice)
+                _G.LVIM_SETTINGS.theme = user_choice
+                vim.cmd("colorscheme " .. user_choice)
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
                 local lvim_ui_config = require("modules.base.configs.ui")
                 lvim_ui_config.heirline_nvim()
@@ -99,7 +116,7 @@ configs["base_lvim"] = function()
                     if #clients > 0 then
                         for _, client in ipairs(clients) do
                             if client.server_capabilities.inlayHintProvider then
-                                vim.lsp.buf.inlay_hint(bufnr, true)
+                                vim.lsp.inlay_hint(bufnr, true)
                             end
                         end
                     else
@@ -115,7 +132,7 @@ configs["base_lvim"] = function()
                     if #clients > 0 then
                         for _, client in ipairs(clients) do
                             if client.server_capabilities.inlayHintProvider then
-                                vim.lsp.buf.inlay_hint(bufnr, false)
+                                vim.lsp.inlay_hint(bufnr, false)
                             end
                         end
                     else

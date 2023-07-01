@@ -14,6 +14,7 @@ else
     global["diagnostics"]["path"] = vim.fn.getcwd()
     global["diagnostics"]["method"] = "global"
     _G.LVIM_SETTINGS = funcs.read_file(global.lvim_path .. "/.configs/lvim/config.json")
+    _G.LVIM_COLORS = funcs.read_file(global.lvim_path .. "/.configs/lvim/colors.json")
     local lazy = require("core.lazy")
     lazy.is_lazy()
     funcs.configs()

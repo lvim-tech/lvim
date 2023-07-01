@@ -17,7 +17,7 @@ config.lvim_colorscheme = function()
             "neo-tree",
         },
     })
-    vim.cmd("colorscheme lvim-" .. _G.LVIM_SETTINGS.colorschemes.theme)
+    vim.cmd("colorscheme " .. _G.LVIM_SETTINGS.theme)
 end
 
 config.nvim_web_devicons = function()
@@ -208,7 +208,7 @@ config.nvim_notify = function()
     end
     notify.setup({
         minimum_width = 80,
-        background_colour = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
+        background_colour = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].bg,
         icons = {
             DEBUG = icons.common.fix,
             ERROR = icons.diagnostics.error,
@@ -822,25 +822,25 @@ config.nvim_window_picker = function()
         highlights = {
             statusline = {
                 focused = {
-                    fg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].red_03,
-                    bg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
+                    fg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].red_03,
+                    bg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].bg,
                     bold = true,
                 },
                 unfocused = {
-                    fg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
-                    bg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].red_03,
+                    fg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].bg,
+                    bg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].red_03,
                     bold = true,
                 },
             },
             winbar = {
                 focused = {
-                    fg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
-                    bg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
+                    fg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].bg,
+                    bg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].bg,
                     bold = true,
                 },
                 unfocused = {
-                    fg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
-                    bg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].red_03,
+                    fg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].bg,
+                    bg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].red_03,
                     bold = true,
                 },
             },

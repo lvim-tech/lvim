@@ -14,8 +14,8 @@ end
 -- DEPENDENCIES -------------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-modules[_G.LVIM_SETTINGS.colorschemes.theme_plugin] = {
-    commit = funcs.get_commit(_G.LVIM_SETTINGS.colorschemes.theme_name, plugins_snapshot),
+modules["lvim-tech/lvim-colorscheme"] = {
+    commit = funcs.get_commit("lvim-tech/lvim-colorscheme", plugins_snapshot),
     priority = 100,
     config = ui_config.lvim_colorscheme,
 }

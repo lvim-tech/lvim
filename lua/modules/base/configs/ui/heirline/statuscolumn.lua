@@ -1,7 +1,7 @@
 local M = {}
 
 M.get_statuscolumn = function()
-    local colors = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme]
+    local colors = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme]
     local conditions = require("heirline.conditions")
     local gitsigns_avail, gitsigns = pcall(require, "gitsigns")
     local buf_types = require("modules.base.configs.ui.heirline.buf_types")

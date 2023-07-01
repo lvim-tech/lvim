@@ -191,11 +191,11 @@ config.neocomposer_nvim = function()
     neocomposer.setup({
         notify = false,
         colors = {
-            bg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].bg,
-            fg = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].teal_01,
-            red = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].red_02,
-            blue = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].blue_02,
-            green = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme].green_02,
+            bg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].bg,
+            fg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].teal_01,
+            red = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].red_02,
+            blue = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].blue_02,
+            green = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].green_02,
         },
         keymaps = {
             play_macro = "<Leader>q",
@@ -360,12 +360,12 @@ config.tabby_nvim = function()
     if not tabby_filename_status_ok then
         return
     end
-    local theme = _G.LVIM_SETTINGS.colorschemes.theme
+    local theme = _G.LVIM_SETTINGS.theme
     local hl_tabline = {
-        color_01 = _G.LVIM_SETTINGS.colorschemes.colors[theme].bg_01,
-        color_02 = _G.LVIM_SETTINGS.colorschemes.colors[theme].bg_03,
-        color_03 = _G.LVIM_SETTINGS.colorschemes.colors[theme].green_01,
-        color_04 = _G.LVIM_SETTINGS.colorschemes.colors[theme].green_02,
+        color_01 = _G.LVIM_COLORS.colors[theme].bg_01,
+        color_02 = _G.LVIM_COLORS.colors[theme].bg_03,
+        color_03 = _G.LVIM_COLORS.colors[theme].green_01,
+        color_04 = _G.LVIM_COLORS.colors[theme].green_02,
     }
     local get_tab_label = function(tab_number)
         local s, v = pcall(function()

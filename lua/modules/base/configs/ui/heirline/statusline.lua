@@ -6,7 +6,7 @@ M.get_statusline = function()
     local funcs = require("core.funcs")
     local heirline_conditions = require("heirline.conditions")
     local heirline_utils = require("heirline.utils")
-    local colors = _G.LVIM_SETTINGS.colorschemes.colors[_G.LVIM_SETTINGS.colorschemes.theme]
+    local colors = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme]
     local space = { provider = " " }
     local align = { provider = "%=" }
 
