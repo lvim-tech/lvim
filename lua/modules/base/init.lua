@@ -670,7 +670,7 @@ modules["wintermute-cell/gitignore.nvim"] = {
     },
 }
 
-modules["TimUntersberger/neogit"] = {
+modules["NeogitOrg/neogit"] = {
     commit = funcs.get_commit("neogit", plugins_snapshot),
     dependencies = {
         "nvim-lua/plenary.nvim",
