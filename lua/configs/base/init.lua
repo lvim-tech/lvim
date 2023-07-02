@@ -34,6 +34,10 @@ configs["base_lvim"] = function()
             status = "Lvim Everforest Dark Soft"
         elseif _G.LVIM_SETTINGS.theme == "lvim-solarized-dark" then
             status = "Lvim Solarized Dark"
+        elseif _G.LVIM_SETTINGS.theme == "lvim-catppuccin-dark" then
+            status = "Lvim Catppuccin Dark"
+        elseif _G.LVIM_SETTINGS.theme == "lvim-catppuccin-dark-soft" then
+            status = "Lvim Catppuccin Dark Soft"
         end
         local ui_config = require("lvim-ui-config.config")
         local select = require("lvim-ui-config.select")
@@ -46,6 +50,8 @@ configs["base_lvim"] = function()
             "Lvim Everforest Dark Soft",
             "Lvim Gruvbox Dark",
             "Lvim Gruvbox Dark Soft",
+            "Lvim Catppuccin Dark",
+            "Lvim Catppuccin Dark Soft",
             "Lvim Solarized Dark",
             "Cancel",
         }, { prompt = "Theme (" .. status .. ")" }, {})
