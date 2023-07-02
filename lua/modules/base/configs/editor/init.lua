@@ -109,8 +109,23 @@ config.fzf_lua = function()
         return
     end
     fzf_lua.setup({
+        fzf_colors = {
+            ["fg"] = { "fg", "FzfLuaLine" },
+            ["bg"] = { "bg", "FzfLuaNormal" },
+            ["hl"] = { "fg", "FzfLuaItemKindVariable" },
+            ["fg+"] = { "fg", "FzfLuaLinePlus" },
+            ["bg+"] = { "bg", "FzfLuaNormal" },
+            ["hl+"] = { "fg", "FzfLuaItemKindVariable" },
+            ["info"] = { "fg", "FzfLuaPrompt" },
+            ["prompt"] = { "fg", "FzfLuaPrompt" },
+            ["pointer"] = { "fg", "DiagnosticError" },
+            ["marker"] = { "fg", "DiagnosticError" },
+            ["spinner"] = { "fg", "FzfLuaPrompt" },
+            ["header"] = { "fg", "FzfLuaPrompt" },
+            ["gutter"] = { "bg", "FzfLuaNormal" },
+        },
         winopts = {
-            title = "",
+            title = "FZF LUA",
             title_pos = "center",
             height = 0.5,
             width = 1,
