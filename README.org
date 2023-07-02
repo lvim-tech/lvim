@@ -127,7 +127,7 @@
 
     #+end_src
 
-    - Theme - Lvim Dark (default), Lvim Dark Soft, Lvim Light, Lvim Everforest Dark, Lvim Everforest Dark Soft, Lvim Gruvbox Dark, Lvim Gruvbox Dark Soft, Lvim Solarized Dark
+    - Theme - Lvim Dark (default), Lvim Dark Soft, Lvim Light, Lvim Everforest Dark, Lvim Everforest Dark Soft, Lvim Gruvbox Dark, Lvim Gruvbox Dark Soft, Lvim Catppuccin Dark, Lvim Catppuccin Dark Soft, Lvim Solarized Dark
 
     #+begin_src lua
 
