@@ -103,12 +103,6 @@ config.nvim_cmp = function()
                 name = "orgmode",
             },
         },
-        sorting = {
-            comparators = {
-                cmp_config_compare.exact,
-                cmp_config_compare.length,
-            },
-        },
     })
     cmp.setup.cmdline({ ":", "/", "?" }, {
         mapping = cmp.mapping.preset.cmdline(),
