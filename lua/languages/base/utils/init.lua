@@ -271,22 +271,126 @@ M.setup_languages = function(packages_data)
     init(packages_data)
 end
 
+local function get_vt()
+    local vt
+    if _G.LVIM_SETTINGS.virtualdiagnostic then
+        vt = {
+            prefix = icons.common.dot,
+        }
+    else
+        vt = false
+    end
+    return vt
+end
+
 M.config_diagnostic = {
-    virtual_text = false,
+    virtual_text = get_vt(),
     update_in_insert = true,
     underline = true,
     severity_sort = true,
 }
 
 M.setup_diagnostic = function()
+    local function lvim_auto_format()
+        local status
+        if _G.LVIM_SETTINGS.autoformat == true then
+            status = "Enabled"
+        else
+            status = "Disabled"
+        end
+        local opts = ui_config.select({
+            "Enable",
+            "Disable",
+            "Cancel",
+        }, { prompt = "AutoFormat (" .. status .. ")" }, {})
+        select(opts, function(choice)
+            if choice == "Enable" then
+                _G.LVIM_SETTINGS.autoformat = true
+                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+            elseif choice == "Disable" then
+                _G.LVIM_SETTINGS.autoformat = false
+                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+            end
+        end)
+    end
+    vim.api.nvim_create_user_command("LvimAutoFormat", lvim_auto_format, {})
+    local function lvim_inlay_hint()
+        local status
+        if _G.LVIM_SETTINGS.inlayhint == true then
+            status = "Enabled"
+        else
+            status = "Disabled"
+        end
+        local opts = ui_config.select({
+            "Enable",
+            "Disable",
+            "Cancel",
+        }, { prompt = "InlayHint (" .. status .. ")" }, {})
+        select(opts, function(choice)
+            if choice == "Enable" then
+                local buffers = vim.api.nvim_list_bufs()
+                for _, bufnr in ipairs(buffers) do
+                    local clients = vim.lsp.buf_get_clients(bufnr)
+                    if #clients > 0 then
+                        for _, client in ipairs(clients) do
+                            if client.server_capabilities.inlayHintProvider then
+                                vim.lsp.inlay_hint(bufnr, true)
+                            end
+                        end
+                    else
+                        print("No LSP client associated with the buffer")
+                    end
+                end
+                _G.LVIM_SETTINGS.inlayhint = true
+                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+            elseif choice == "Disable" then
+                local buffers = vim.api.nvim_list_bufs()
+                for _, bufnr in ipairs(buffers) do
+                    local clients = vim.lsp.buf_get_clients(bufnr)
+                    if #clients > 0 then
+                        for _, client in ipairs(clients) do
+                            if client.server_capabilities.inlayHintProvider then
+                                vim.lsp.inlay_hint(bufnr, false)
+                            end
+                        end
+                    else
+                        print("No LSP client associated with the buffer")
+                    end
+                end
+                _G.LVIM_SETTINGS.inlayhint = false
+                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+            end
+        end)
+    end
+    vim.api.nvim_create_user_command("LvimInlayHint", lvim_inlay_hint, {})
     vim.diagnostic.config(M.config_diagnostic)
-    vim.api.nvim_create_user_command("LspVirtualTextToggle", function()
-        local config = vim.diagnostic.config
-        local vt = config().virtual_text
-        config({
-            virtual_text = not vt,
-        })
-    end, { desc = "LspVirtualTextToggle" })
+    local function lvim_virtual_diagnostic()
+        local status
+        if _G.LVIM_SETTINGS.virtualdiagnostic == true then
+            status = "Enabled"
+        else
+            status = "Disabled"
+        end
+        local opts = ui_config.select({
+            "Enable",
+            "Disable",
+            "Cancel",
+        }, { prompt = "VirtualDiagnostic (" .. status .. ")" }, {})
+        select(opts, function(choice)
+            if choice == "Enable" then
+                _G.LVIM_SETTINGS.virtualdiagnostic = true
+                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+            elseif choice == "Disable" then
+                _G.LVIM_SETTINGS.virtualdiagnostic = false
+                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+            end
+            local config = vim.diagnostic.config
+            config({
+                virtual_text = get_vt(),
+            })
+        end)
+    end
+    vim.api.nvim_create_user_command("LvimVirtualDiagnostic", lvim_virtual_diagnostic, {})
     vim.fn.sign_define("DiagnosticSignError", {
         text = icons.diagnostics.error,
         texthl = "DiagnosticError",
@@ -509,4 +613,5 @@ M.dap_local = function()
     end)()
     vim.cmd(":luafile " .. project_config)
 end
+
 return M
