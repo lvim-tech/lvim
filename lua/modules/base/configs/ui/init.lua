@@ -259,13 +259,13 @@ config.noice_nvim = function()
             enabled = true,
             view = "cmdline",
             format = {
-                cmdline = { pattern = "^:", icon = "", lang = "vim" },
-                search_down = { kind = "search", pattern = "^/", icon = "  ", lang = "regex" },
-                search_up = { kind = "search", pattern = "^%?", icon = "  ", lang = "regex" },
-                filter = { pattern = "^:%s*!", icon = "$ ", lang = "bash" },
-                lua = { pattern = "^:%s*lua%s+", icon = " ", lang = "lua" },
-                help = { pattern = "^:%s*h%s+", icon = " " },
-                calculator = { pattern = "^=", icon = " ", lang = "vimnormal" },
+                cmdline = { pattern = "^:", icon = "" },
+                search_down = { kind = "search", pattern = "^/", icon = " ", lang = "regex" },
+                search_up = { kind = "search", pattern = "^%?", icon = " ", lang = "regex" },
+                filter = { pattern = "^:%s*!", icon = "$", lang = "bash" },
+                lua = { pattern = "^:%s*lua%s+", icon = "", lang = "lua" },
+                help = { pattern = "^:%s*h%s+", icon = "󰋖" },
+                calculator = { pattern = "^:=", icon = "󰃬", lang = "vimnormal" },
                 input = {},
             },
         },
@@ -613,16 +613,16 @@ config.noice_nvim = function()
                     },
                 },
             },
-            {
-                view = "notify",
-                filter = {
-                    any = {
-                        { event = { "msg_showmode", "msg_showcmd", "msg_ruler" } },
-                        { event = "msg_show", kind = "" },
-                    },
-                },
-                opts = { skip = true },
-            },
+            -- {
+            --     view = "notify",
+            --     filter = {
+            --         any = {
+            --             { event = { "msg_showmode", "msg_showcmd", "msg_ruler" } },
+            --             { event = "msg_show", kind = "" },
+            --         },
+            --     },
+            --     opts = { skip = true },
+            -- },
             {
                 view = "notify",
                 filter = {
