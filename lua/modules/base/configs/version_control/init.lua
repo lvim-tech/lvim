@@ -1,3 +1,5 @@
+local funcs = require("core.funcs")
+
 local config = {}
 
 config.neogit = function()
@@ -125,6 +127,8 @@ config.lvim_forgit = function()
     if not lvim_forgit_status_ok then
         return
     end
+    local colors = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme]
+    local bg = funcs.darken(colors.bg_01, 0.7, colors.corection)
     lvim_forgit.setup({
         ui = {
             float = {
@@ -135,6 +139,59 @@ config.lvim_forgit = function()
                 y = 1,
                 border_hl = "FloatBorder",
             },
+        },
+        env = {
+            FORGIT_FZF_DEFAULT_OPTS = "--height='100%' --preview-window='right:50%' --reverse --color='"
+                .. "fg:"
+                .. colors.fg_07
+                .. ",bg:"
+                .. bg
+                .. ",hl:"
+                .. colors.red_03
+                .. ",fg+:"
+                .. colors.fg_07
+                .. ",bg+:"
+                .. bg
+                .. ",hl+:"
+                .. colors.red_03
+                .. ",pointer:"
+                .. colors.red_03
+                .. ",info:"
+                .. colors.orange_03
+                .. ",spinner:"
+                .. colors.orange_03
+                .. ",header:"
+                .. colors.red_03
+                .. ",prompt:"
+                .. colors.green_03
+                .. ",marker:"
+                .. colors.red_03
+                .. "'",
+
+            COLORS = "fg:"
+                .. colors.fg_07
+                .. ",bg:"
+                .. bg
+                .. ",hl:"
+                .. colors.red_03
+                .. ",fg+:"
+                .. colors.fg_07
+                .. ",bg+:"
+                .. bg
+                .. ",hl+:"
+                .. colors.red_03
+                .. ",pointer:"
+                .. colors.red_03
+                .. ",info:"
+                .. colors.orange_03
+                .. ",spinner:"
+                .. colors.orange_03
+                .. ",header:"
+                .. colors.red_03
+                .. ",prompt:"
+                .. colors.green_03
+                .. ",marker:"
+                .. colors.red_03,
         },
     })
     vim.keymap.set("n", "<C-c>fg", function()

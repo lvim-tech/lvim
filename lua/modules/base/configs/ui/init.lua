@@ -1,3 +1,4 @@
+local funcs = require("core.funcs")
 local icons = require("configs.base.ui.icons")
 
 local config = {}
@@ -1058,6 +1059,7 @@ config.heirline_nvim = function()
     end
     table.insert(file_types_winbar, "qf")
     table.insert(file_types_winbar, "fzf")
+    table.insert(file_types_winbar, "lvim_shell")
     heirline.setup({
         statusline = statusline,
         statuscolumn = statuscolumn,
@@ -1106,6 +1108,8 @@ config.lvim_fm = function()
     if not lvim_fm_status_ok then
         return
     end
+    local colors = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme]
+    local bg = funcs.darken(colors.bg_01, 0.7, colors.corection)
     lvim_fm.setup({
         ui = {
             float = {
@@ -1116,6 +1120,32 @@ config.lvim_fm = function()
                 y = 1,
                 border_hl = "FloatBorder",
             },
+        },
+        env = {
+            COLORS = "fg:"
+                .. colors.fg_07
+                .. ",bg:"
+                .. bg
+                .. ",hl:"
+                .. colors.red_03
+                .. ",fg+:"
+                .. colors.fg_07
+                .. ",bg+:"
+                .. bg
+                .. ",hl+:"
+                .. colors.red_03
+                .. ",pointer:"
+                .. colors.red_03
+                .. ",info:"
+                .. colors.orange_03
+                .. ",spinner:"
+                .. colors.orange_03
+                .. ",header:"
+                .. colors.red_03
+                .. ",prompt:"
+                .. colors.green_03
+                .. ",marker:"
+                .. colors.red_03,
         },
     })
     vim.keymap.set(

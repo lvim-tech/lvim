@@ -68,9 +68,12 @@ configs["base_lvim"] = function()
                 lvim_ui_config.nvim_notify()
                 lvim_ui_config.nvim_window_picker()
                 lvim_ui_config.neo_tree_nvim()
+                lvim_ui_config.lvim_fm()
                 local editor_config = require("modules.base.configs.editor")
                 editor_config.tabby_nvim()
                 editor_config.neocomposer_nvim()
+                local version_control_config = require("modules.base.configs.version_control")
+                version_control_config.lvim_forgit()
                 notify.info("Theme: " .. choice, {
                     title = "LVIM IDE",
                 })

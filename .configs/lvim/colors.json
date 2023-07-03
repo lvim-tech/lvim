@@ -2,6 +2,7 @@
     "colors": {
         "lvim-dark-soft": {
             "white": "#FFFFFF",
+            "corection": "#141414",
             "bg": "#1D2428",
             "bg_01": "#21292E",
             "bg_02": "#232C31",
@@ -38,6 +39,7 @@
         },
         "lvim-dark": {
             "white": "#FFFFFF",
+            "corection": "#141414",
             "bg": "#171C1F",
             "bg_01": "#1B2125",
             "bg_02": "#1D2428",
@@ -107,6 +109,7 @@
         },
         "lvim-everforest-dark-soft": {
             "white": "#FFFFFF",
+            "corection": "#141414",
             "bg": "#212827",
             "bg_01": "#252F2C",
             "bg_02": "#27322F",
@@ -143,6 +146,7 @@
         },
         "lvim-everforest-dark": {
             "white": "#FFFFFF",
+            "corection": "#141414",
             "bg": "#1A201F",
             "bg_01": "#1E2624",
             "bg_02": "#202927",
@@ -179,6 +183,7 @@
         },
         "lvim-gruvbox-dark-soft": {
             "white": "#FFFFFF",
+            "corection": "#141414",
             "bg": "#1C1A19",
             "bg_01": "#242220",
             "bg_02": "#272522",
@@ -215,6 +220,7 @@
         },
         "lvim-gruvbox-dark": {
             "white": "#FFFFFF",
+            "corection": "#141414",
             "bg": "#171514",
             "bg_01": "#1C1A19",
             "bg_02": "#1F1D1B",
@@ -251,6 +257,7 @@
         },
         "lvim-solarized-dark": {
             "white": "#FFFFFF",
+            "corection": "#141414",
             "bg": "#00232C",
             "bg_01": "#002B36",
             "bg_02": "#002F3B",
@@ -287,6 +294,7 @@
         },
         "lvim-catppuccin-dark-soft": {
             "white": "#FFFFFF",
+            "corection": "#141420",
             "bg": "#1F222E",
             "bg_01": "#232634",
             "bg_02": "#252837",
@@ -323,6 +331,7 @@
         },
         "lvim-catppuccin-dark": {
             "white": "#FFFFFF",
+            "corection": "#141420",
             "bg": "#191B25",
             "bg_01": "#1D1F2B",
             "bg_02": "#1F212E",
