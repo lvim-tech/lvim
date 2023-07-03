@@ -167,7 +167,6 @@ config.lvim_forgit = function()
                 .. ",marker:"
                 .. colors.red_03
                 .. "'",
-
             COLORS = "fg:"
                 .. colors.fg_07
                 .. ",bg:"
