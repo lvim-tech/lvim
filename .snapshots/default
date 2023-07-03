@@ -35,7 +35,7 @@
   "inc-rename.nvim": { "branch": "main", "commit": "ed0f6f2b917cac4eb3259f907da0a481b27a3b7e" },
   "indent-blankline.nvim": { "branch": "master", "commit": "7075d7861f7a6bbf0de0298c83f8a13195e6ec01" },
   "lazy.nvim": { "branch": "main", "commit": "f8611632d0f9c6818e8eb54f9bcd1dad122b5a7f" },
-  "lvim-colorscheme": { "branch": "main", "commit": "2b6b21e6b9f00c9239aad5279d7381037cdbaa97" },
+  "lvim-colorscheme": { "branch": "main", "commit": "881281df919630bd94c1ac94977d32c6e63b2f9f" },
   "lvim-fm": { "branch": "main", "commit": "d37974dc6c418bc3a39188adae124f28b10071bf" },
   "lvim-forgit": { "branch": "main", "commit": "8915a1b66c8b41ebc1201c2dbd135de4bdff0ff2" },
   "lvim-helper": { "branch": "main", "commit": "327131f36c05bea6b8f168c679df8168e705cf13" },
