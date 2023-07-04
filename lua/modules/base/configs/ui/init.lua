@@ -869,9 +869,21 @@ config.mini_files = function()
     if not mini_files_status_ok then
         return
     end
-    mini_files = require("mini.files")
     mini_files.setup({
+        mappings = {
+            close = "q",
+            go_in = "L",
+            go_in_plus = "l",
+            go_out = "H",
+            go_out_plus = "h",
+            reset = "<BS>",
+            show_help = "g?",
+            synchronize = "=",
+            trim_left = ".",
+            trim_right = ">",
+        },
         windows = {
+            max_number = math.huge,
             preview = true,
             width_focus = 30,
             width_nofocus = 30,
