@@ -9,6 +9,7 @@
 | `<Leader>f`        | `:FzfLua files<CR>`               | Fzf search files                      |
 | `<Leader>s`        | `:FzfLua live_grep<CR>`           | Fzf search in files                   |
 | `<Leader>m`        | `:FzfLua marks<CR>`               | Fzf marks                             |
+| `<Leader>i`        |                                   | Mini files (explorer)                 |
 | `Q`                |                                   | Neocomposer toggle macro              |
 | `<Leader>q`        |                                   | Neocomposer play macro                |
 | `<F1>`             | `:TTOne<CR>`                      | Toggleterm one open                   |
@@ -45,7 +46,6 @@
 | `<C-Right>`        | `:vertical resize +2<CR>`         | Resize width +                        |
 | `<C-Up>`           | `:resize -2<CR>`                  | Resize height -                       |
 | `<C-Down>`         | `:resize +2<CR>`                  | Resize height +                       |
-| `<C-c>i`           | `:Oil<CR>`                        | Oil file explorer                     |
 | `<S-x>`            | `:Neotree filesystem left<CR>`    | Neotree filesystem left               |
 | `<C-c><C-f>`       | `:Neotree filesystem left<CR>`    | Neotree filesystem left               |
 | `<C-c><C-b>`       | `:Neotree buffers left<CR>`       | Neotree filesystem left               |

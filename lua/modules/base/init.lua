@@ -238,9 +238,18 @@ modules["sindrets/winshift.nvim"] = {
     config = ui_config.winshift_nvim,
 }
 
-modules["stevearc/oil.nvim"] = {
-    commit = funcs.get_commit("oil.nvim", plugins_snapshot),
-    config = ui_config.oil_nvim,
+modules["echasnovski/mini.files"] = {
+    commit = funcs.get_commit("mini.files", plugins_snapshot),
+    keys = {
+        {
+            "<Leader>i",
+            function()
+                require("mini.files").open()
+            end,
+            desc = "Mini files",
+        },
+    },
+    config = ui_config.mini_files,
 }
 
 modules["prichrd/netrw.nvim"] = {

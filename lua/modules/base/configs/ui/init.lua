@@ -864,64 +864,45 @@ config.winshift_nvim = function()
     })
 end
 
-config.oil_nvim = function()
-    local oil_nvim_status_ok, oil_nvim = pcall(require, "oil")
-    if not oil_nvim_status_ok then
+config.mini_files = function()
+    local mini_files_status_ok, mini_files = pcall(require, "mini.files")
+    if not mini_files_status_ok then
         return
     end
-    local oil_actions_status_ok, oil_actions = pcall(require, "oil.actions")
-    if not oil_actions_status_ok then
-        return
-    end
-    oil_nvim.setup({
-        columns = {
-            "icon",
-            "permissions",
-            "size",
-            "mtime",
+    mini_files = require("mini.files")
+    mini_files.setup({
+        windows = {
+            preview = true,
+            width_focus = 30,
+            width_nofocus = 30,
+            width_preview = 80,
         },
-        win_options = {
-            number = false,
-            relativenumber = false,
-            wrap = false,
-            signcolumn = "no",
-            cursorcolumn = false,
-            foldcolumn = "0",
-            spell = false,
-            list = false,
-            conceallevel = 3,
-            concealcursor = "n",
+        options = {
+            permanent_delete = true,
+            use_as_default_explorer = true,
         },
-        view_options = {
-            show_hidden = true,
-        },
-        float = {
-            border = "none",
-            win_options = {
-                winblend = 0,
-            },
-        },
-        use_default_keymaps = false,
-        keymaps = {
-            ["g?"] = oil_actions.show_help,
-            ["<CR>"] = oil_actions.select,
-            ["<C-s>"] = oil_actions.select_vsplit,
-            ["<C-h>"] = oil_actions.select_split,
-            ["<C-t>"] = oil_actions.select_tab,
-            ["<C-p>"] = oil_actions.preview,
-            ["<C-x>"] = oil_actions.close,
-            ["<C-r>"] = oil_actions.refresh,
-            ["-"] = oil_actions.parent,
-            ["_"] = oil_actions.open_cwd,
-            ["`"] = oil_actions.cd,
-            ["~"] = oil_actions.tcd,
-            ["g."] = oil_actions.toggle_hidden,
-        },
-        silence_netrw_warning = true,
     })
-    vim.keymap.set("n", "<C-c>i", function()
-        vim.cmd("Oil")
-    end, { noremap = true, silent = true, desc = "Oil" })
+    local map_split = function(buf_id, lhs, direction)
+        local rhs = function()
+            local new_target_window
+            vim.api.nvim_win_call(mini_files.get_target_window(), function()
+                vim.cmd(direction .. " split")
+                new_target_window = vim.api.nvim_get_current_win()
+            end)
+            mini_files.set_target_window(new_target_window)
+        end
+        local desc = "Split " .. direction
+        vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = desc })
+    end
+
+    vim.api.nvim_create_autocmd("User", {
+        pattern = "MiniFilesBufferCreate",
+        callback = function(args)
+            local buf_id = args.data.buf_id
+            map_split(buf_id, "gs", "belowright horizontal")
+            map_split(buf_id, "gv", "belowright vertical")
+        end,
+    })
 end
 
 config.netrw_nvim = function()
