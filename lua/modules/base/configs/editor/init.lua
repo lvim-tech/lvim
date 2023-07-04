@@ -791,7 +791,7 @@ config.ccc_nvim = function()
         vim.cmd("CccPick")
     end, { noremap = true, silent = true, desc = "ColorPicker" })
     vim.api.nvim_create_autocmd("Filetype", {
-        callback = function(ev)
+        callback = function()
             if
                 not funcs.buffer_matches({
                     buftype = bt_exclude,
