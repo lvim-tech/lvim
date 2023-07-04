@@ -351,4 +351,35 @@ M.lighten = function(hex, amount, fg)
     return M.blend(hex, fg or M.fg, amount)
 end
 
+local function pattern_list_matches(str, pattern_list)
+    for _, pattern in ipairs(pattern_list) do
+        if str:find(pattern) then
+            return true
+        end
+    end
+    return false
+end
+
+local buf_matchers = {
+    filetype = function(bufnr)
+        return vim.bo[bufnr].filetype
+    end,
+    buftype = function(bufnr)
+        return vim.bo[bufnr].buftype
+    end,
+    bufname = function(bufnr)
+        return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":t")
+    end,
+}
+
+function M.buffer_matches(patterns, bufnr)
+    bufnr = bufnr or 0
+    for kind, pattern_list in pairs(patterns) do
+        if pattern_list_matches(buf_matchers[kind](bufnr), pattern_list) then
+            return true
+        end
+    end
+    return false
+end
+
 return M

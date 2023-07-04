@@ -1,3 +1,4 @@
+local funcs = require("core.funcs")
 local icons = require("configs.base.ui.icons")
 
 local config = {}
@@ -781,6 +782,8 @@ config.ccc_nvim = function()
     if not ccc_status_ok then
         return
     end
+    local ft_exclude = require("modules.base.configs.ui.heirline.file_types")
+    local bt_exclude = require("modules.base.configs.ui.heirline.buf_types")
     ccc.setup({
         alpha_show = "show",
     })
@@ -788,7 +791,17 @@ config.ccc_nvim = function()
         vim.cmd("CccPick")
     end, { noremap = true, silent = true, desc = "ColorPicker" })
     vim.api.nvim_create_autocmd("Filetype", {
-        command = "CccHighlighterEnable",
+        callback = function(ev)
+            if
+                not funcs.buffer_matches({
+                    buftype = bt_exclude,
+                    filetype = ft_exclude,
+                })
+            then
+                vim.cmd("CccHighlighterEnable")
+            end
+        end,
+        -- command = "CccHighlighterEnable",
     })
 end
 
