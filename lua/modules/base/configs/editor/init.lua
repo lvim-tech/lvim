@@ -250,7 +250,6 @@ config.nvim_hlslens = function()
             else
                 indicator = icons.common.dot
             end
-
             local lnum, col = unpack(posList[idx])
             if nearest then
                 local cnt = #posList
