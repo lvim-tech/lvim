@@ -445,9 +445,6 @@ modules["winston0410/rg.nvim"] = {
 modules["ecthelionvi/NeoComposer.nvim"] = {
     commit = funcs.get_commit("NeoComposer.nvim", plugins_snapshot),
     dependencies = { "kkharji/sqlite.lua" },
-    event = {
-        "BufRead",
-    },
     config = editor_config.neocomposer_nvim,
 }
 
