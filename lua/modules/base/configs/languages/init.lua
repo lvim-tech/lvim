@@ -366,15 +366,15 @@ config.nvim_lightbulb = function()
     nvim_lightbulb.setup({
         sign = {
             enabled = false,
-            priority = 10,
         },
         virtual_text = {
+            text = "  ",
             enabled = true,
-            text = "",
-            hl_mode = "combine",
+            hl = "LBVirtualText",
         },
         autocmd = {
             enabled = true,
+            updatetime = 1,
         },
     })
 end
