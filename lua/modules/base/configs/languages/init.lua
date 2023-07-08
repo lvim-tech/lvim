@@ -368,7 +368,7 @@ config.nvim_lightbulb = function()
             enabled = false,
         },
         virtual_text = {
-            text = "  ",
+            text = " " .. icons.common.light_bulb .. " ",
             enabled = true,
             hl = "LBVirtualText",
         },
