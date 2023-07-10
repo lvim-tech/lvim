@@ -995,7 +995,10 @@ config.neo_tree_nvim = function()
             },
         },
         filesystem = {
-            follow_current_file = true,
+            follow_current_file = {
+                enabled = true,
+                leave_dirs_open = true,
+            },
             use_libuv_file_watcher = true,
         },
         diagnostics = {
