@@ -626,34 +626,6 @@ config.nvim_treesitter_context = function()
     })
 end
 
-config.nvim_treesitter_textobjects = function()
-    local treesitter_configs_status_ok, treesitter_configs = pcall(require, "nvim-treesitter.configs")
-    if not treesitter_configs_status_ok then
-        return
-    end
-    treesitter_configs.setup({
-        textobjects = {
-            select = {
-                enable = true,
-                lookahead = true,
-                keymaps = {
-                    ["af"] = "@function.outer",
-                    ["if"] = "@function.inner",
-                    ["ac"] = "@class.outer",
-                    ["ic"] = "@class.inner",
-                    ["an"] = "@number.inner",
-                },
-                selection_modes = {
-                    ["@parameter.outer"] = "v",
-                    ["@function.outer"] = "V",
-                    ["@class.outer"] = "<c-v>",
-                },
-                include_surrounding_whitespace = false,
-            },
-        },
-    })
-end
-
 config.nvim_various_textobjs = function()
     local nvim_various_textobjs_status_ok, nvim_various_textobjs = pcall(require, "various-textobjs")
     if not nvim_various_textobjs_status_ok then

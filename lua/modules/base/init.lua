@@ -533,17 +533,6 @@ modules["nvim-treesitter/nvim-treesitter-context"] = {
     config = editor_config.nvim_treesitter_context,
 }
 
-modules["nvim-treesitter/nvim-treesitter-textobjects"] = {
-    commit = funcs.get_commit("nvim-treesitter-textobjects", plugins_snapshot),
-    event = {
-        "BufRead",
-    },
-    dependencies = {
-        "nvim-treesitter/nvim-treesitter",
-    },
-    config = editor_config.nvim_treesitter_textobjects,
-}
-
 modules["chrisgrieser/nvim-various-textobjs"] = {
     commit = funcs.get_commit("nvim-various-textobjs", plugins_snapshot),
     event = {
