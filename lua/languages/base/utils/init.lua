@@ -523,12 +523,12 @@ M.keymaps = function(client, bufnr)
         end
     end, { noremap = true, silent = true, buffer = bufnr, desc = "LspRename" })
     vim.keymap.set("n", "gf", function()
-        if client.server_capabilities.formatProvider then
+        if client.server_capabilities.documentFormattingProvider then
             vim.lsp.buf.format({ async = true })
         end
     end, { noremap = true, silent = true, buffer = bufnr, desc = "LspFormat" })
     vim.keymap.set("v", "g;", function()
-        if client.server_capabilities.formatProvider then
+        if client.server_capabilities.documentRangeFormattingProvider then
             local start_row, _ = unpack(vim.api.nvim_buf_get_mark(0, "<"))
             local end_row, _ = unpack(vim.api.nvim_buf_get_mark(0, ">"))
             vim.lsp.buf.format({
