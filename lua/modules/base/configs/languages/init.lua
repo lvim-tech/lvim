@@ -271,7 +271,7 @@ config.go_nvim = function()
     end
     go.setup({
         lsp_inlay_hints = {
-            enable = false,
+            enable = true,
         },
     })
 end
@@ -335,27 +335,32 @@ config.flutter_tools_nvim = function()
         },
         lsp = {
             on_attach = function(client, bufnr)
+                client.server_capabilities.definitionProvider = true
+                client.server_capabilities.documentFormattingProvider = true
+                client.server_capabilities.renameProvider = {
+                    prepareProvider = true,
+                }
+                client.server_capabilities.codeActionProvider = {
+                    codeActionKinds = {
+                        "source",
+                        "source.organizeImports",
+                        "source.fixAll",
+                        "source.sortMembers",
+                        "quickfix",
+                        "refactor",
+                    },
+                }
+                client.server_capabilities.hoverProvider = true
                 languages_setup.keymaps(client, bufnr)
                 languages_setup.omni(client, bufnr)
                 languages_setup.tag(client, bufnr)
                 languages_setup.document_highlight(client, bufnr)
                 languages_setup.document_formatting(client, bufnr)
-                languages_setup.inlay_hint(client, bufnr)
-                if client.server_capabilities.documentSymbolProvider then
-                    navic.attach(client, bufnr)
-                end
+                navic.attach(client, bufnr)
             end,
             capabilities = languages_setup.get_capabilities(),
         },
     })
-end
-
-config.typescript_nvim = function()
-    local typescript_status_ok, typescript = pcall(require, "typescript")
-    if not typescript_status_ok then
-        return
-    end
-    typescript.setup()
 end
 
 config.nvim_lightbulb = function()
@@ -375,6 +380,9 @@ config.nvim_lightbulb = function()
         autocmd = {
             enabled = true,
             updatetime = 1,
+        },
+        ignore = {
+            -- ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
         },
     })
 end
