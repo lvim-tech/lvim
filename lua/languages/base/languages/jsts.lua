@@ -1,94 +1,23 @@
-local global = require("core.global")
 local languages_setup = require("languages.base.utils")
-local nvim_lsp_util = require("lspconfig/util")
-local navic = require("nvim-navic")
-local default_debouce_time = 150
+local typescript_config = require("languages.base.languages._configs").default_config(
+    { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+    "jsts"
+)
 local dap = require("dap")
 
 local language_configs = {}
-
-local function start_server_tools()
-    local typescript = require("typescript")
-    typescript.setup({
-        disable_commands = false,
-        debug = false,
-        go_to_source_definition = {
-            fallback = true,
-        },
-        server = {
-            flags = {
-                debounce_text_changes = default_debouce_time,
-            },
-            autostart = true,
-            filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-            settings = {
-                typescript = {
-                    inlayHints = {
-                        includeInlayParameterNameHints = "all",
-                        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                        includeInlayFunctionParameterTypeHints = true,
-                        includeInlayVariableTypeHints = true,
-                        includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-                        includeInlayPropertyDeclarationTypeHints = true,
-                        includeInlayFunctionLikeReturnTypeHints = true,
-                        includeInlayEnumMemberValueHints = true,
-                    },
-                },
-                javascript = {
-                    inlayHints = {
-                        includeInlayParameterNameHints = "all",
-                        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                        includeInlayFunctionParameterTypeHints = true,
-                        includeInlayVariableTypeHints = true,
-                        includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-                        includeInlayPropertyDeclarationTypeHints = true,
-                        includeInlayFunctionLikeReturnTypeHints = true,
-                        includeInlayEnumMemberValueHints = true,
-                    },
-                },
-            },
-            on_attach = function(client, bufnr)
-                languages_setup.keymaps(client, bufnr)
-                languages_setup.omni(client, bufnr)
-                languages_setup.tag(client, bufnr)
-                languages_setup.document_highlight(client, bufnr)
-                languages_setup.document_formatting(client, bufnr)
-                languages_setup.inlay_hint(client, bufnr)
-                if client.server_capabilities.documentSymbolProvider then
-                    navic.attach(client, bufnr)
-                end
-            end,
-            capabilities = languages_setup.get_capabilities(),
-            root_dir = function(fname)
-                return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
-            end,
-        },
-    })
-end
 
 language_configs["dependencies"] = { "typescript-language-server", "js-debug-adapter", "prettierd" }
 
 language_configs["lsp"] = function()
     languages_setup.setup_languages({
-        ["language"] = "js-ts",
-        ["typescript-language-server"] = {},
+        ["language"] = "jsts",
+        ["typescript-language-server"] = { "tsserver", typescript_config },
         ["dap"] = { "js-debug-adapter" },
         ["dependencies"] = {
             "prettierd",
         },
     })
-    local function check_status()
-        if global.install_proccess == false then
-            start_server_tools()
-            vim.cmd("LspStart tsserver")
-        else
-            vim.defer_fn(function()
-                check_status()
-            end, 3100)
-        end
-    end
-
-    check_status()
 end
 
 language_configs["dap"] = function()
