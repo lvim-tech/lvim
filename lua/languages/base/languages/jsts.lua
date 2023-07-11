@@ -1,5 +1,5 @@
 local languages_setup = require("languages.base.utils")
-local typescript_config = require("languages.base.languages._configs").default_config(
+local typescript_config = require("languages.base.languages._configs").jsts_config(
     { "javascript", "javascriptreact", "typescript", "typescriptreact" },
     "jsts"
 )

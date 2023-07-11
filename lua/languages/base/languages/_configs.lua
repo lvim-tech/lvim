@@ -265,6 +265,57 @@ M.groovy_config = function(file_types)
     }
 end
 
+M.jsts_config = function(file_types)
+    return {
+        flags = {
+            debounce_text_changes = default_debouce_time,
+        },
+        autostart = true,
+        filetypes = file_types,
+        on_attach = function(client, bufnr)
+            languages_setup.keymaps(client, bufnr)
+            languages_setup.omni(client, bufnr)
+            languages_setup.tag(client, bufnr)
+            languages_setup.document_highlight(client, bufnr)
+            languages_setup.document_formatting(client, bufnr)
+            languages_setup.inlay_hint(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                navic.attach(client, bufnr)
+            end
+        end,
+        capabilities = languages_setup.get_capabilities(),
+        settings = {
+            typescript = {
+                inlayHints = {
+                    includeInlayParameterNameHints = "all",
+                    includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                    includeInlayFunctionParameterTypeHints = true,
+                    includeInlayVariableTypeHints = true,
+                    includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                    includeInlayPropertyDeclarationTypeHints = true,
+                    includeInlayFunctionLikeReturnTypeHints = true,
+                    includeInlayEnumMemberValueHints = true,
+                },
+            },
+            javascript = {
+                inlayHints = {
+                    includeInlayParameterNameHints = "all",
+                    includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                    includeInlayFunctionParameterTypeHints = true,
+                    includeInlayVariableTypeHints = true,
+                    includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                    includeInlayPropertyDeclarationTypeHints = true,
+                    includeInlayFunctionLikeReturnTypeHints = true,
+                    includeInlayEnumMemberValueHints = true,
+                },
+            },
+        },
+        root_dir = function(fname)
+            return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
+        end,
+    }
+end
+
 M.angular_config = function(file_types)
     return {
         flags = {
