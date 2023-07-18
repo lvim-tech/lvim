@@ -1,11 +1,8 @@
 local lsp_manager = require("languages.utils.lsp_manager")
 local ft = {
     "css",
-    "less",
-    "postcss",
-    "sass",
     "scss",
-    "sugarss",
+    "less",
 }
 local stylelint_lsp_config = require("languages.base.languages._configs").without_winbar_config(ft, "_stylelint")
 

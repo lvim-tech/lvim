@@ -3,7 +3,6 @@ local ft = {
     "css",
     "scss",
     "less",
-    "sass",
 }
 local cssls_config = require("languages.base.languages._configs").without_formatting(ft, "css")
 
@@ -15,7 +14,7 @@ language_configs["lsp"] = function()
     lsp_manager.setup_languages({
         ["language"] = "css",
         ["ft"] = ft,
-        -- ["css-lsp"] = { "cssls", cssls_config },
+        ["css-lsp"] = { "cssls", cssls_config },
         ["efm"] = {
             "prettierd",
         },

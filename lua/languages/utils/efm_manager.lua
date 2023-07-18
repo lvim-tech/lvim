@@ -32,7 +32,7 @@ M.setup_efm = function()
             return mason_registry.get_package("efm")
         end)
         if not ok then
-            vim.notify("Package efm not available")
+            vim.notify("Please run ':MasonUpdate' to update registers and restart LVIM IDE")
         else
             p:install():once(
                 "closed",
