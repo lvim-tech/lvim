@@ -22,6 +22,10 @@
 
   [[./LVIM/media/lvim-ide-screenshot_01.png]]
 
+**  Video
+
+  [[https://www.youtube.com/watch?v=KuEeQksIrI0]]
+
 **  INTRODUCTION
 
     * Neovim 0.9.0+ (for NEOVIM < 0.9 use branch NEOVIM-0.8)
