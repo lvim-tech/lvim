@@ -258,6 +258,7 @@ modules["prichrd/netrw.nvim"] = {
 }
 
 modules["nvim-neo-tree/neo-tree.nvim"] = {
+    branch = "v3.x",
     commit = funcs.get_commit("neo-tree.nvim", plugins_snapshot),
     cmd = "Neotree",
     keys = {
@@ -728,19 +729,20 @@ local languages_config = require("modules.base.configs.languages")
 
 modules["folke/neoconf.nvim"] = {
     commit = funcs.get_commit("neoconf.nvim", plugins_snapshot),
-}
-
-modules["williamboman/mason.nvim"] = {
-    commit = funcs.get_commit("mason.nvim", plugins_snapshot),
     dependencies = {
         "neovim/nvim-lspconfig",
     },
-    config = languages_config.mason_nvim,
+    config = languages_config.neoconf_nvim,
 }
 
-modules["jose-elias-alvarez/null-ls.nvim"] = {
-    commit = funcs.get_commit("null-ls.nvim", plugins_snapshot),
-    config = languages_config.null_ls_nvim,
+modules["williamboman/mason.nvim"] = {
+    build = ":MasonUpdate",
+    commit = funcs.get_commit("mason.nvim", plugins_snapshot),
+    dependencies = {
+        "neovim/nvim-lspconfig",
+        "folke/neoconf.nvim",
+    },
+    config = languages_config.mason_nvim,
 }
 
 modules["nvim-neotest/neotest"] = {

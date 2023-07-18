@@ -1,6 +1,12 @@
 local global = require("core.global")
-local languages_setup = require("languages.base.utils")
-local clangd_config = require("languages.base.languages._configs").cpp_config({ "c", "cpp", "objc", "objcpp" }, "cpp")
+local lsp_manager = require("languages.utils.lsp_manager")
+local ft = {
+    "c",
+    "cpp",
+    "objc",
+    "objcpp",
+}
+local clangd_config = require("languages.base.languages._configs").cpp_config(ft, "cpp")
 local dap = require("dap")
 
 local language_configs = {}
@@ -8,11 +14,12 @@ local language_configs = {}
 language_configs["dependencies"] = { "clangd", "cpptools", "cpplint" }
 
 language_configs["lsp"] = function()
-    languages_setup.setup_languages({
+    lsp_manager.setup_languages({
         ["language"] = "cpp",
+        ["ft"] = ft,
         ["dap"] = { "cpptools" },
         ["clangd"] = { "clangd", clangd_config },
-        ["dependencies"] = {
+        ["efm"] = {
             "cpplint",
         },
     })

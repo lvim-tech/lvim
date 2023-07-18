@@ -1,5 +1,5 @@
 local global = require("core.global")
-local languages_setup = require("languages.base.utils")
+local setup_diagnostics = require("languages.utils.setup_diagnostics")
 local nvim_lsp_util = require("lspconfig/util")
 local navic = require("nvim-navic")
 local default_debouce_time = 150
@@ -13,17 +13,17 @@ M.default_config = function(file_types)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            languages_setup.keymaps(client, bufnr)
-            languages_setup.omni(client, bufnr)
-            languages_setup.tag(client, bufnr)
-            languages_setup.document_highlight(client, bufnr)
-            languages_setup.document_formatting(client, bufnr)
-            languages_setup.inlay_hint(client, bufnr)
+            setup_diagnostics.keymaps(client, bufnr)
+            setup_diagnostics.omni(client, bufnr)
+            setup_diagnostics.tag(client, bufnr)
+            setup_diagnostics.document_highlight(client, bufnr)
+            setup_diagnostics.document_formatting(client, bufnr)
+            setup_diagnostics.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
         end,
-        capabilities = languages_setup.get_capabilities(),
+        capabilities = setup_diagnostics.get_capabilities(),
         root_dir = function(fname)
             return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
         end,
@@ -38,16 +38,16 @@ M.without_formatting = function(file_types)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            languages_setup.keymaps(client, bufnr)
-            languages_setup.omni(client, bufnr)
-            languages_setup.tag(client, bufnr)
-            languages_setup.document_highlight(client, bufnr)
-            languages_setup.inlay_hint(client, bufnr)
+            setup_diagnostics.keymaps(client, bufnr)
+            setup_diagnostics.omni(client, bufnr)
+            setup_diagnostics.tag(client, bufnr)
+            setup_diagnostics.document_highlight(client, bufnr)
+            setup_diagnostics.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
         end,
-        capabilities = languages_setup.get_capabilities(),
+        capabilities = setup_diagnostics.get_capabilities(),
         root_dir = function(fname)
             return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
         end,
@@ -76,17 +76,17 @@ M.cpp_config = function(file_types)
         filetypes = file_types,
         on_attach = function(client, bufnr)
             client.offset_encoding = "utf-16"
-            languages_setup.keymaps(client, bufnr)
-            languages_setup.omni(client, bufnr)
-            languages_setup.tag(client, bufnr)
-            languages_setup.document_highlight(client, bufnr)
-            languages_setup.document_formatting(client, bufnr)
-            languages_setup.inlay_hint(client, bufnr)
+            setup_diagnostics.keymaps(client, bufnr)
+            setup_diagnostics.omni(client, bufnr)
+            setup_diagnostics.tag(client, bufnr)
+            setup_diagnostics.document_highlight(client, bufnr)
+            setup_diagnostics.document_formatting(client, bufnr)
+            setup_diagnostics.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
         end,
-        capabilities = languages_setup.get_cpp_capabilities(),
+        capabilities = setup_diagnostics.get_cpp_capabilities(),
         root_dir = function(fname)
             return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
         end,
@@ -102,17 +102,17 @@ M.omnisharp_config = function(file_types)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            languages_setup.keymaps(client, bufnr)
-            languages_setup.omni(client, bufnr)
-            languages_setup.tag(client, bufnr)
-            languages_setup.document_highlight(client, bufnr)
-            languages_setup.document_formatting(client, bufnr)
-            languages_setup.inlay_hint(client, bufnr)
+            setup_diagnostics.keymaps(client, bufnr)
+            setup_diagnostics.omni(client, bufnr)
+            setup_diagnostics.tag(client, bufnr)
+            setup_diagnostics.document_highlight(client, bufnr)
+            setup_diagnostics.document_formatting(client, bufnr)
+            setup_diagnostics.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
         end,
-        capabilities = languages_setup.get_capabilities(),
+        capabilities = setup_diagnostics.get_capabilities(),
         root_dir = function(fname)
             return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
         end,
@@ -128,17 +128,17 @@ M.elixir_config = function(file_types)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            languages_setup.keymaps(client, bufnr)
-            languages_setup.omni(client, bufnr)
-            languages_setup.tag(client, bufnr)
-            languages_setup.document_highlight(client, bufnr)
-            languages_setup.document_formatting(client, bufnr)
-            languages_setup.inlay_hint(client, bufnr)
+            setup_diagnostics.keymaps(client, bufnr)
+            setup_diagnostics.omni(client, bufnr)
+            setup_diagnostics.tag(client, bufnr)
+            setup_diagnostics.document_highlight(client, bufnr)
+            setup_diagnostics.document_formatting(client, bufnr)
+            setup_diagnostics.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
         end,
-        capabilities = languages_setup.get_capabilities(),
+        capabilities = setup_diagnostics.get_capabilities(),
         root_dir = function(fname)
             return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
         end,
@@ -153,12 +153,12 @@ M.go = function(file_types)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            languages_setup.keymaps(client, bufnr)
-            languages_setup.omni(client, bufnr)
-            languages_setup.tag(client, bufnr)
-            languages_setup.document_highlight(client, bufnr)
-            languages_setup.document_formatting(client, bufnr)
-            languages_setup.inlay_hint(client, bufnr)
+            setup_diagnostics.keymaps(client, bufnr)
+            setup_diagnostics.omni(client, bufnr)
+            setup_diagnostics.tag(client, bufnr)
+            setup_diagnostics.document_highlight(client, bufnr)
+            setup_diagnostics.document_formatting(client, bufnr)
+            setup_diagnostics.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
@@ -175,7 +175,7 @@ M.go = function(file_types)
                 },
             },
         },
-        capabilities = languages_setup.get_capabilities(),
+        capabilities = setup_diagnostics.get_capabilities(),
         root_dir = function(fname)
             return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
         end,
@@ -190,11 +190,11 @@ M.lua = function(file_types)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            languages_setup.keymaps(client, bufnr)
-            languages_setup.omni(client, bufnr)
-            languages_setup.tag(client, bufnr)
-            languages_setup.document_highlight(client, bufnr)
-            languages_setup.inlay_hint(client, bufnr)
+            setup_diagnostics.keymaps(client, bufnr)
+            setup_diagnostics.omni(client, bufnr)
+            setup_diagnostics.tag(client, bufnr)
+            setup_diagnostics.document_highlight(client, bufnr)
+            setup_diagnostics.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
@@ -232,7 +232,7 @@ M.lua = function(file_types)
                 },
             },
         },
-        capabilities = languages_setup.get_capabilities(),
+        capabilities = setup_diagnostics.get_capabilities(),
         root_dir = function(fname)
             return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
         end,
@@ -248,17 +248,17 @@ M.groovy_config = function(file_types)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            languages_setup.keymaps(client, bufnr)
-            languages_setup.omni(client, bufnr)
-            languages_setup.tag(client, bufnr)
-            languages_setup.document_highlight(client, bufnr)
-            languages_setup.document_formatting(client, bufnr)
-            languages_setup.inlay_hint(client, bufnr)
+            setup_diagnostics.keymaps(client, bufnr)
+            setup_diagnostics.omni(client, bufnr)
+            setup_diagnostics.tag(client, bufnr)
+            setup_diagnostics.document_highlight(client, bufnr)
+            setup_diagnostics.document_formatting(client, bufnr)
+            setup_diagnostics.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
         end,
-        capabilities = languages_setup.get_capabilities(),
+        capabilities = setup_diagnostics.get_capabilities(),
         root_dir = function(fname)
             return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
         end,
@@ -273,17 +273,17 @@ M.jsts_config = function(file_types)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            languages_setup.keymaps(client, bufnr)
-            languages_setup.omni(client, bufnr)
-            languages_setup.tag(client, bufnr)
-            languages_setup.document_highlight(client, bufnr)
-            languages_setup.document_formatting(client, bufnr)
-            languages_setup.inlay_hint(client, bufnr)
+            setup_diagnostics.keymaps(client, bufnr)
+            setup_diagnostics.omni(client, bufnr)
+            setup_diagnostics.tag(client, bufnr)
+            setup_diagnostics.document_highlight(client, bufnr)
+            setup_diagnostics.document_formatting(client, bufnr)
+            setup_diagnostics.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
         end,
-        capabilities = languages_setup.get_capabilities(),
+        capabilities = setup_diagnostics.get_capabilities(),
         settings = {
             typescript = {
                 inlayHints = {
@@ -324,16 +324,16 @@ M.angular_config = function(file_types)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            languages_setup.keymaps(client, bufnr)
-            languages_setup.omni(client, bufnr)
-            languages_setup.tag(client, bufnr)
-            languages_setup.document_highlight(client, bufnr)
-            languages_setup.inlay_hint(client, bufnr)
+            setup_diagnostics.keymaps(client, bufnr)
+            setup_diagnostics.omni(client, bufnr)
+            setup_diagnostics.tag(client, bufnr)
+            setup_diagnostics.document_highlight(client, bufnr)
+            setup_diagnostics.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
         end,
-        capabilities = languages_setup.get_capabilities(),
+        capabilities = setup_diagnostics.get_capabilities(),
         root_dir = nvim_lsp_util.root_pattern("angular.json"),
     }
 end
@@ -346,17 +346,17 @@ M.ember_config = function(file_types)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            languages_setup.keymaps(client, bufnr)
-            languages_setup.omni(client, bufnr)
-            languages_setup.tag(client, bufnr)
-            languages_setup.document_highlight(client, bufnr)
-            languages_setup.document_formatting(client, bufnr)
-            languages_setup.inlay_hint(client, bufnr)
+            setup_diagnostics.keymaps(client, bufnr)
+            setup_diagnostics.omni(client, bufnr)
+            setup_diagnostics.tag(client, bufnr)
+            setup_diagnostics.document_highlight(client, bufnr)
+            setup_diagnostics.document_formatting(client, bufnr)
+            setup_diagnostics.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
         end,
-        capabilities = languages_setup.get_capabilities(),
+        capabilities = setup_diagnostics.get_capabilities(),
         root_dir = nvim_lsp_util.root_pattern("ember-cli-build.js"),
     }
 end
@@ -369,11 +369,11 @@ M.yaml_config = function(file_types)
         autostart = true,
         filetypes = file_types,
         on_attach = function(client, bufnr)
-            languages_setup.keymaps(client, bufnr)
-            languages_setup.omni(client, bufnr)
-            languages_setup.tag(client, bufnr)
-            languages_setup.document_highlight(client, bufnr)
-            languages_setup.inlay_hint(client, bufnr)
+            setup_diagnostics.keymaps(client, bufnr)
+            setup_diagnostics.omni(client, bufnr)
+            setup_diagnostics.tag(client, bufnr)
+            setup_diagnostics.document_highlight(client, bufnr)
+            setup_diagnostics.inlay_hint(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
@@ -383,7 +383,7 @@ M.yaml_config = function(file_types)
                 keyOrdering = false,
             },
         },
-        capabilities = languages_setup.get_capabilities(),
+        capabilities = setup_diagnostics.get_capabilities(),
         root_dir = function(fname)
             return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
         end,

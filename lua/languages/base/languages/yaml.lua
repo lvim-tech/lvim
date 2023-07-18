@@ -1,15 +1,19 @@
-local languages_setup = require("languages.base.utils")
-local yamlls_config = require("languages.base.languages._configs").yaml_config({ "yaml" }, "yaml")
+local lsp_manager = require("languages.utils.lsp_manager")
+local ft = {
+    "yaml",
+}
+local yamlls_config = require("languages.base.languages._configs").yaml_config(ft, "yaml")
 
 local language_configs = {}
 
-language_configs["dependencies"] = { "yaml-language-server", "yamllint" }
+language_configs["dependencies"] = { "yaml-language-server", "yamllint", "yamlfmt" }
 
 language_configs["lsp"] = function()
-    languages_setup.setup_languages({
+    lsp_manager.setup_languages({
         ["language"] = "yaml",
+        ["ft"] = ft,
         ["yaml-language-server"] = { "yamlls", yamlls_config },
-        ["dependencies"] = {
+        ["efm"] = {
             "yamllint",
             "yamlfmt",
         },

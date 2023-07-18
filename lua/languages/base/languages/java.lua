@@ -1,5 +1,8 @@
 local global = require("core.global")
-local languages_setup = require("languages.base.utils")
+local lsp_manager = require("languages.utils.lsp_manager")
+local ft = {
+    "java",
+}
 
 local language_configs = {}
 
@@ -40,7 +43,7 @@ local function start_server_tools()
             "-data",
             workspace_dir,
         },
-        filetyps = { "java" },
+        filetyps = ft,
         root_dir = vim.fs.dirname(vim.fs.find({ ".gradlew", ".git", "mvnw" }, {
             upward = true,
         })[1]),
@@ -52,11 +55,11 @@ local function start_server_tools()
             bundles = jdtls_bundles,
         },
         on_attach = function(client, bufnr)
-            languages_setup.keymaps(client, bufnr)
-            languages_setup.omni(client, bufnr)
-            languages_setup.tag(client, bufnr)
-            languages_setup.document_highlight(client, bufnr)
-            languages_setup.document_formatting(client, bufnr)
+            lsp_manager.keymaps(client, bufnr)
+            lsp_manager.omni(client, bufnr)
+            lsp_manager.tag(client, bufnr)
+            lsp_manager.document_highlight(client, bufnr)
+            lsp_manager.document_formatting(client, bufnr)
             require("jdtls").setup_dap({ hotcodereplace = "auto" })
             require("jdtls.dap").setup_dap_main_class_configs()
             -- require("jdtls").test_class()
@@ -68,8 +71,9 @@ end
 language_configs["dependencies"] = { "jdtls", "java-debug-adapter", "java-test" }
 
 language_configs["lsp"] = function()
-    languages_setup.setup_languages({
+    lsp_manager.setup_languages({
         ["language"] = "java",
+        ["ft"] = ft,
         ["dap"] = { "java-debug-adapter", "java-test" },
         ["jdtls"] = {},
     })

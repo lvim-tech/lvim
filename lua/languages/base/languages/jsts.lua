@@ -1,22 +1,23 @@
-local languages_setup = require("languages.base.utils")
-local typescript_config = require("languages.base.languages._configs").jsts_config(
-    { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-    "jsts"
-)
+local lsp_manager = require("languages.utils.lsp_manager")
+local ft = {
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+}
+local typescript_config = require("languages.base.languages._configs").jsts_config(ft, "jsts")
 local dap = require("dap")
 
 local language_configs = {}
 
-language_configs["dependencies"] = { "typescript-language-server", "js-debug-adapter", "prettierd" }
+language_configs["dependencies"] = { "typescript-language-server", "js-debug-adapter" }
 
 language_configs["lsp"] = function()
-    languages_setup.setup_languages({
+    lsp_manager.setup_languages({
         ["language"] = "jsts",
+        ["ft"] = ft,
         ["typescript-language-server"] = { "tsserver", typescript_config },
         ["dap"] = { "js-debug-adapter" },
-        ["dependencies"] = {
-            "prettierd",
-        },
     })
 end
 

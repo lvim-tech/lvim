@@ -1,13 +1,17 @@
-local languages_setup = require("languages.base.utils")
+local lsp_manager = require("languages.utils.lsp_manager")
+local ft = {
+    "org",
+}
 
 local language_configs = {}
 
 language_configs["dependencies"] = { "cbfmt" }
 
 language_configs["lsp"] = function()
-    languages_setup.setup_languages({
+    lsp_manager.setup_languages({
         ["language"] = "org",
-        ["dependencies"] = {
+        ["ft"] = ft,
+        ["efm"] = {
             "cbfmt",
         },
     })

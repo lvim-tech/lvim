@@ -1,13 +1,17 @@
-local languages_setup = require("languages.base.utils")
-local volar_config = require("languages.base.languages._configs").default_config({ "vue" }, "vue")
+local lsp_manager = require("languages.utils.lsp_manager")
+local ft = {
+    "vue",
+}
+local volar_config = require("languages.base.languages._configs").default_config(ft, "vue")
 
 local language_configs = {}
 
 language_configs["dependencies"] = { "vue-language-server" }
 
 language_configs["lsp"] = function()
-    languages_setup.setup_languages({
+    lsp_manager.setup_languages({
         ["language"] = "vue",
+        ["ft"] = ft,
         ["vue-language-server"] = { "volar", volar_config },
     })
 end

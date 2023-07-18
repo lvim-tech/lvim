@@ -1,4 +1,4 @@
-local languages_setup = require("languages.base.utils")
+local lsp_manager = require("languages.utils.lsp_manager")
 local navic = require("nvim-navic")
 local dap = require("dap")
 
@@ -28,10 +28,10 @@ language_configs["lsp"] = function()
             },
         },
     }
-
+    local metals = require("metals")
     metals_config.on_attach = function(client, bufnr)
-        languages_setup.keymaps(client, bufnr)
-        require("metals").setup_dap()
+        lsp_manager.keymaps(client, bufnr)
+        metals.setup_dap()
         vim.api.nvim_create_autocmd("BufWritePre", {
             buffer = bufnr,
             callback = function()
@@ -45,7 +45,7 @@ language_configs["lsp"] = function()
             navic.attach(client, bufnr)
         end
     end
-    require("metals").initialize_or_attach(metals_config)
+    metals.initialize_or_attach(metals_config)
 end
 
 return language_configs

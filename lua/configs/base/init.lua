@@ -74,9 +74,7 @@ configs["base_lvim"] = function()
                 editor_config.neocomposer_nvim()
                 local version_control_config = require("modules.base.configs.version_control")
                 version_control_config.lvim_forgit()
-                notify.info("Theme: " .. choice, {
-                    title = "LVIM IDE",
-                })
+                notify.info("Theme: " .. choice, { title = "LVIM IDE" })
             end
         end)
     end
@@ -106,9 +104,7 @@ configs["base_options"] = function()
     vim.g.netrw_list_hide = "(^|ss)\zs.S+"
     vim.g.netrw_localcopydircmd = "cp -r"
     vim.api.nvim_create_autocmd("FileType", {
-        pattern = {
-            "netrw",
-        },
+        pattern = { "netrw" },
         callback = function()
             vim.opt_local.statuscolumn = ""
             vim.api.nvim_set_keymap("n", "<Esc>", "<Cmd>:bd<CR>", {})
@@ -152,7 +148,12 @@ configs["base_events"] = function()
     })
     vim.api.nvim_create_autocmd({ "BufWinEnter", "BufWinLeave" }, {
         callback = function()
-            local buftype = vim.tbl_contains({ "prompt", "nofile", "help", "quickfix" }, vim.bo.buftype)
+            local buftype = vim.tbl_contains({
+                "prompt",
+                "nofile",
+                "help",
+                "quickfix",
+            }, vim.bo.buftype)
             local filetype = vim.tbl_contains({
                 "NeogitStatus",
                 "Outline",
@@ -178,9 +179,7 @@ configs["base_events"] = function()
     })
     vim.api.nvim_create_autocmd({ "BufWinEnter", "BufWinLeave" }, {
         callback = function()
-            local filetype = vim.tbl_contains({
-                "tex",
-            }, vim.bo.filetype)
+            local filetype = vim.tbl_contains({ "tex" }, vim.bo.filetype)
             if filetype then
                 vim.opt_local.cursorcolumn = false
                 vim.opt_local.colorcolumn = "0"
@@ -191,9 +190,10 @@ configs["base_events"] = function()
 end
 
 configs["base_languages"] = function()
-    vim.api.nvim_create_autocmd("BufWinEnter", {
+    -- vim.api.nvim_create_autocmd({ "VimEnter", "BufWinEnter" }, {
+    vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
         callback = function()
-            require("languages.base").setup()
+            require("languages").setup()
         end,
         group = group,
     })

@@ -1,5 +1,9 @@
-local languages_setup = require("languages.base.utils")
-local hls_config = require("languages.base.languages._configs").default_config({ "haskell", "lhaskell" }, "haskell")
+local lsp_manager = require("languages.utils.lsp_manager")
+local ft = {
+    "haskell",
+    "lhaskell",
+}
+local hls_config = require("languages.base.languages._configs").default_config(ft, "haskell")
 local dap = require("dap")
 
 local language_configs = {}
@@ -7,8 +11,9 @@ local language_configs = {}
 language_configs["dependencies"] = { "haskell-language-server" }
 
 language_configs["lsp"] = function()
-    languages_setup.setup_languages({
+    lsp_manager.setup_languages({
         ["language"] = "haskell",
+        ["ft"] = ft,
         ["haskell-language-server"] = { "hls", hls_config },
     })
 end

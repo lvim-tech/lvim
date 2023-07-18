@@ -26,6 +26,7 @@ function global:load_variables()
     self.home = home
     self.mason_path = home .. "/.local/share/nvim/mason"
     self.languages = {}
+    self.efm = false
     self.lvim_packages = false
     self.install_proccess = false
 end

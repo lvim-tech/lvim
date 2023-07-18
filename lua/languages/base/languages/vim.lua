@@ -1,15 +1,19 @@
-local languages_setup = require("languages.base.utils")
-local vimls_config = require("languages.base.languages._configs").default_config({ "vim" }, "vim")
+local lsp_manager = require("languages.utils.lsp_manager")
+local ft = {
+    "vim",
+}
+local vimls_config = require("languages.base.languages._configs").default_config(ft, "vim")
 
 local language_configs = {}
 
 language_configs["dependencies"] = { "vim-language-server", "vint" }
 
 language_configs["lsp"] = function()
-    languages_setup.setup_languages({
+    lsp_manager.setup_languages({
         ["language"] = "vim",
+        ["ft"] = ft,
         ["vim-language-server"] = { "vimls", vimls_config },
-        ["dependencies"] = {
+        ["efm"] = {
             "vint",
         },
     })

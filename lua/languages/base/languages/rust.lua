@@ -1,5 +1,8 @@
 local global = require("core.global")
-local languages_setup = require("languages.base.utils")
+local lsp_manager = require("languages.utils.lsp_manager")
+local ft = {
+    "rust",
+}
 local nvim_lsp_util = require("lspconfig/util")
 local navic = require("nvim-navic")
 local default_debouce_time = 150
@@ -32,19 +35,19 @@ local function start_server_tools()
                 debounce_text_changes = default_debouce_time,
             },
             autostart = true,
-            filetypes = { "rust" },
+            filetypes = ft,
             on_attach = function(client, bufnr)
-                languages_setup.keymaps(client, bufnr)
-                languages_setup.omni(client, bufnr)
-                languages_setup.tag(client, bufnr)
-                languages_setup.document_highlight(client, bufnr)
-                languages_setup.document_formatting(client, bufnr)
-                languages_setup.inlay_hint(client, bufnr)
+                lsp_manager.keymaps(client, bufnr)
+                lsp_manager.omni(client, bufnr)
+                lsp_manager.tag(client, bufnr)
+                lsp_manager.document_highlight(client, bufnr)
+                lsp_manager.document_formatting(client, bufnr)
+                lsp_manager.inlay_hint(client, bufnr)
                 if client.server_capabilities.documentSymbolProvider then
                     navic.attach(client, bufnr)
                 end
             end,
-            capabilities = languages_setup.get_capabilities(),
+            capabilities = lsp_manager.get_capabilities(),
             root_dir = function(fname)
                 return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
             end,
@@ -55,8 +58,9 @@ end
 language_configs["dependencies"] = { "rust-analyzer", "cpptools" }
 
 language_configs["lsp"] = function()
-    languages_setup.setup_languages({
+    lsp_manager.setup_languages({
         ["language"] = "rust",
+        ["ft"] = ft,
         ["dap"] = { "cpptools" },
         ["rust-analyzer"] = {},
     })

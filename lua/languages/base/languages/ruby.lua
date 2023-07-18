@@ -1,5 +1,8 @@
-local languages_setup = require("languages.base.utils")
-local solargraph_config = require("languages.base.languages._configs").default_config({ "ruby" }, "ruby")
+local lsp_manager = require("languages.utils.lsp_manager")
+local ft = {
+    "ruby",
+}
+local solargraph_config = require("languages.base.languages._configs").default_config(ft, "ruby")
 local dap = require("dap")
 
 local language_configs = {}
@@ -7,10 +10,11 @@ local language_configs = {}
 language_configs["dependencies"] = { "solargraph", "rubocop" }
 
 language_configs["lsp"] = function()
-    languages_setup.setup_languages({
+    lsp_manager.setup_languages({
         ["language"] = "ruby",
+        ["ft"] = ft,
         ["solargraph"] = { "solargraph", solargraph_config },
-        ["dependencies"] = {
+        ["efm"] = {
             "rubocop",
         },
     })

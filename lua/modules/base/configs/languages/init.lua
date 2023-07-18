@@ -2,6 +2,14 @@ local icons = require("configs.base.ui.icons")
 
 local config = {}
 
+config.neoconf_nvim = function()
+    local neoconf_status_ok, neoconf = pcall(require, "neoconf")
+    if not neoconf_status_ok then
+        return
+    end
+    neoconf.setup()
+end
+
 config.mason_nvim = function()
     vim.api.nvim_create_user_command(
         "LvimInstallLangDependencies",
@@ -46,20 +54,20 @@ config.mason_nvim = function()
     vim.api.nvim_create_user_command("LspDocumentHighlight", "lua vim.lsp.buf.document_highlight()", {})
     vim.api.nvim_create_user_command(
         "LspShowDiagnosticCurrent",
-        "lua require('languages.base.utils.show_diagnostic').line()",
+        "lua require('languages.utils.show_diagnostics').line()",
         {}
     )
     vim.api.nvim_create_user_command(
         "LspShowDiagnosticNext",
-        "lua require('languages.base.utils.show_diagnostic').goto_next()",
+        "lua require('languages.utils.show_diagnostics').goto_next()",
         {}
     )
     vim.api.nvim_create_user_command(
         "LspShowDiagnosticPrev",
-        "lua require('languages.base.utils.show_diagnostic').goto_prev()",
+        "lua require('languages.utils.show_diagnostics').goto_prev()",
         {}
     )
-    vim.api.nvim_create_user_command("DAPLocal", "lua require('languages.base.utils').dap_local()", {})
+    vim.api.nvim_create_user_command("DAPLocal", "lua require('languages.utils.lsp_manager').dap_local()", {})
     vim.keymap.set("n", "<C-c><C-l>", function()
         vim.cmd("DAPLocal")
     end, { noremap = true, silent = true, desc = "DAPLocal" })
@@ -80,11 +88,15 @@ config.mason_nvim = function()
         return
     end
     mason.setup({
+        log_level = vim.log.levels.DEBUG,
         ui = {
             icons = icons.mason,
         },
     })
-    require("languages.base.utils").setup_diagnostic()
+    require("languages.utils.setup_diagnostics").init_diagnostics()
+    local efm_manager = require("languages.utils.efm_manager")
+    efm_manager.setup_efm()
+    vim.schedule(function() end)
 end
 
 config.null_ls_nvim = function()
@@ -277,7 +289,7 @@ config.go_nvim = function()
 end
 
 config.flutter_tools_nvim = function()
-    local languages_setup = require("languages.base.utils")
+    local lsp_manager = require("languages.utils.lsp_manager")
     local navic = require("nvim-navic")
     local flutter_tools_status_ok, flutter_tools = pcall(require, "flutter-tools")
     if not flutter_tools_status_ok then
@@ -382,7 +394,7 @@ config.nvim_lightbulb = function()
             updatetime = 1,
         },
         ignore = {
-            -- ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+            ft = { "dart" },
         },
     })
 end

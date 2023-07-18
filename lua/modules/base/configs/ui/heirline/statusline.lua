@@ -1,4 +1,6 @@
+local global = require("core.global")
 local icons = require("configs.base.ui.icons")
+local mason_registry = require("mason-registry")
 
 local M = {}
 
@@ -115,12 +117,12 @@ M.get_statusline = function()
             return icon .. cwd .. trail
         end,
         hl = { fg = colors.blue_01, bold = true },
-        -- on_click = {
-        --     callback = function()
-        --         vim.cmd("Neotree position=left")
-        --     end,
-        --     name = "heirline_browser",
-        -- },
+        on_click = {
+            callback = function()
+                vim.cmd("Neotree position=left")
+            end,
+            name = "heirline_browser",
+        },
     }
     local file_name = {
         provider = function(self)
@@ -283,32 +285,48 @@ M.get_statusline = function()
     }
     local lsp_active = {
         condition = heirline_conditions.lsp_attached,
-        update = { "LspAttach", "LspDetach", "BufWinEnter" },
+        update = { "LspAttach", "LspDetach", "WinEnter" },
         provider = function()
-            local names = {}
-            local null_ls = {}
+            local lsp = {}
+            local linters = {}
+            local formatters = {}
+            local p_lsp = nil
+            local p_linters = nil
+            local p_formatters = nil
             for _, server in pairs(vim.lsp.buf_get_clients(0)) do
-                if server.name == "null-ls" then
-                    local sources = require("null-ls.sources")
-                    local ft = vim.api.nvim_buf_get_option(vim.api.nvim_win_get_buf(0), "filetype")
-                    for _, source in ipairs(sources.get_available(ft)) do
-                        table.insert(null_ls, source.name)
-                    end
-                    null_ls = funcs.remove_duplicate(null_ls)
-                else
-                    table.insert(names, server.name)
+                if server.name ~= "efm" then
+                    table.insert(lsp, server.name)
                 end
             end
-            if next(null_ls) == nil then
-                return icons.common.lsp .. " LSP [" .. table.concat(names, ", ") .. "]"
-            else
-                return icons.common.lsp
-                    .. " LSP ["
-                    .. table.concat(names, ", ")
-                    .. "] | NULL-LS ["
-                    .. table.concat(null_ls, ", ")
-                    .. "]"
+            local filetype = vim.bo.filetype
+            local sources = global.efm.settings.languages[filetype]
+            if sources ~= nil then
+                for i = 1, #sources do
+                    if sources[i].lPrefix ~= nil and mason_registry.is_installed(sources[i].lPrefix) then
+                        table.insert(linters, sources[i].lPrefix)
+                    elseif sources[i].fPrefix ~= nil and mason_registry.is_installed(sources[i].fPrefix) then
+                        table.insert(formatters, sources[i].fPrefix)
+                    end
+                end
             end
+            if next(lsp) ~= nil then
+                p_lsp = " LSP [" .. table.concat(lsp, ", ") .. "]"
+            else
+                p_lsp = ""
+            end
+            if next(linters) ~= nil then
+                linters = funcs.remove_duplicate(linters)
+                p_linters = " Li [" .. table.concat(linters, ", ") .. "]"
+            else
+                p_linters = ""
+            end
+            if next(formatters) ~= nil then
+                formatters = funcs.remove_duplicate(formatters)
+                p_formatters = " Fo [" .. table.concat(formatters, ", ") .. "]"
+            else
+                p_formatters = ""
+            end
+            return icons.common.lsp .. p_lsp .. p_linters .. p_formatters
         end,
         hl = { fg = colors.blue_01, bold = true },
         on_click = {

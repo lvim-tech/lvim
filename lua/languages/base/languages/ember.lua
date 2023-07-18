@@ -1,14 +1,19 @@
-local languages_setup = require("languages.base.utils")
-local ember_config =
-    require("languages.base.languages._configs").ember_config({ "handlebars", "typescript", "javascript" }, "ember")
+local lsp_manager = require("languages.utils.lsp_manager")
+local ft = {
+    "handlebars",
+    "typescript",
+    "javascript",
+}
+local ember_config = require("languages.base.languages._configs").ember_config(ft, "ember")
 
 local language_configs = {}
 
 language_configs["dependencies"] = { "ember-language-server" }
 
 language_configs["lsp"] = function()
-    languages_setup.setup_languages({
+    lsp_manager.setup_languages({
         ["language"] = "ember",
+        ["ft"] = ft,
         ["ember-language-server"] = { "ember", ember_config },
     })
 end

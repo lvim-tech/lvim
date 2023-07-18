@@ -1,5 +1,5 @@
-local languages_setup = require("languages.base.utils")
-local eslint_config = require("languages.base.languages._configs").without_winbar_config({
+local lsp_manager = require("languages.utils.lsp_manager")
+local ft = {
     "javascript",
     "javascriptreact",
     "javascript.jsx",
@@ -7,15 +7,17 @@ local eslint_config = require("languages.base.languages._configs").without_winba
     "typescriptreact",
     "typescript.tsx",
     "vue",
-}, "_eslint")
+}
+local eslint_config = require("languages.base.languages._configs").without_winbar_config(ft, "_eslint")
 
 local language_configs = {}
 
-language_configs["dependencies"] = {"eslint-lsp"}
+language_configs["dependencies"] = { "eslint-lsp" }
 
 language_configs["lsp"] = function()
-    languages_setup.setup_languages({
+    lsp_manager.setup_languages({
         ["language"] = "eslint",
+        ["ft"] = ft,
         ["eslint-lsp"] = { "eslint", eslint_config },
     })
 end

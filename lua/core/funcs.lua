@@ -27,6 +27,61 @@ M.sort = function(tbl)
     return tbl
 end
 
+M.has_value = function(table, value)
+    for _, v in ipairs(table) do
+        if v == value then
+            return true
+        end
+    end
+    return false
+end
+
+M.merge_unique = function(table1, table2)
+    local merged = {}
+    for _, v in ipairs(table1) do
+        if not M.has_value(merged, v) then
+            table.insert(merged, v)
+        end
+    end
+    for _, v in ipairs(table2) do
+        if not M.has_value(merged, v) then
+            table.insert(merged, v)
+        end
+    end
+    return merged
+end
+
+-- local a = {"a", "b", "c", "d"}
+-- local order = {"c", "b", "d", "a"}
+-- table.sort(a, M.custom_sort(order))
+M.custom_sort = function(order)
+    return function(a, b)
+        local indexA = 0
+        local indexB = 0
+        for i, value in ipairs(order) do
+            if value == a then
+                indexA = i
+            elseif value == b then
+                indexB = i
+            end
+        end
+        return indexA < indexB
+    end
+end
+
+M.find_key_by_value = function(tbl, search_value)
+    for key, value in pairs(tbl) do
+        if type(value) == "table" then
+            for _, v in ipairs(value) do
+                if v == search_value then
+                    return key
+                end
+            end
+        end
+    end
+    return nil
+end
+
 M.keymaps = function(mode, opts, keymaps)
     for _, keymap in ipairs(keymaps) do
         vim.keymap.set(mode, keymap[1], keymap[2], opts)

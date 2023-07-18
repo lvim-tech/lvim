@@ -1,16 +1,23 @@
-local languages_setup = require("languages.base.utils")
-local bashls_config =
-    require("languages.base.languages._configs").without_formatting({ "sh", "bash", "zsh", "csh", "ksh" }, "shell")
+local lsp_manager = require("languages.utils.lsp_manager")
+local ft = {
+    "sh",
+    "bash",
+    "zsh",
+    "csh",
+    "ksh",
+}
+local bashls_config = require("languages.base.languages._configs").without_formatting(ft, "shell")
 
 local language_configs = {}
 
 language_configs["dependencies"] = { "bash-language-server", "shfmt" }
 
 language_configs["lsp"] = function()
-    languages_setup.setup_languages({
+    lsp_manager.setup_languages({
         ["language"] = "shell",
+        ["ft"] = ft,
         ["bash-language-server"] = { "bashls", bashls_config },
-        ["dependencies"] = {
+        ["efm"] = {
             "shfmt",
         },
     })
