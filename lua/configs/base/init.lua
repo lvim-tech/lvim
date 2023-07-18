@@ -143,7 +143,12 @@ configs["base_events"] = function()
             "objcpp",
             "ruby",
         },
-        command = "setlocal ts=2 sw=2",
+        callback = function()
+            vim.schedule(function()
+                vim.opt_local.tabstop = 2
+                vim.opt_local.shiftwidth = 2
+            end)
+        end,
         group = group,
     })
     vim.api.nvim_create_autocmd({ "BufWinEnter", "BufWinLeave" }, {
@@ -169,10 +174,12 @@ configs["base_events"] = function()
                 "toggleterm",
             }, vim.bo.filetype)
             if buftype or filetype then
-                vim.opt_local.number = false
-                vim.opt_local.relativenumber = false
-                vim.opt_local.cursorcolumn = false
-                vim.opt_local.colorcolumn = "0"
+                vim.schedule(function()
+                    vim.opt_local.number = false
+                    vim.opt_local.relativenumber = false
+                    vim.opt_local.cursorcolumn = false
+                    vim.opt_local.colorcolumn = "0"
+                end)
             end
         end,
         group = group,
@@ -181,8 +188,10 @@ configs["base_events"] = function()
         callback = function()
             local filetype = vim.tbl_contains({ "tex" }, vim.bo.filetype)
             if filetype then
-                vim.opt_local.cursorcolumn = false
-                vim.opt_local.colorcolumn = "0"
+                vim.schedule(function()
+                    vim.opt_local.cursorcolumn = false
+                    vim.opt_local.colorcolumn = "0"
+                end)
             end
         end,
         group = group,
@@ -190,7 +199,6 @@ configs["base_events"] = function()
 end
 
 configs["base_languages"] = function()
-    -- vim.api.nvim_create_autocmd({ "VimEnter", "BufWinEnter" }, {
     vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
         callback = function()
             require("languages").setup()
@@ -217,11 +225,6 @@ end
 configs["base_keymaps"] = function()
     funcs.keymaps("n", { noremap = true, silent = true }, keymaps.normal)
     funcs.keymaps("x", { noremap = true, silent = true }, keymaps.visual)
-    vim.cmd([[inoremap <silent><expr><A-BS>
-    \ (&indentexpr isnot '' ? &indentkeys : &cinkeys) =~? '!\^F' &&
-    \ &backspace =~? '.*eol\&.*start\&.*indent\&' &&
-    \ !search('\S','nbW',line('.')) ? (col('.') != 1 ? "\<C-U>" : "") .
-    \ "\<bs>" . (getline(line('.')-1) =~ '\S' ? "" : "\<C-F>") : "\<bs>"]])
 end
 
 configs["base_ctrlspace_pre_config"] = function()

@@ -290,6 +290,7 @@ end
 
 config.flutter_tools_nvim = function()
     local lsp_manager = require("languages.utils.lsp_manager")
+    local setup_diagnostics = require("languages.utils.setup_diagnostics")
     local navic = require("nvim-navic")
     local flutter_tools_status_ok, flutter_tools = pcall(require, "flutter-tools")
     if not flutter_tools_status_ok then
@@ -363,14 +364,14 @@ config.flutter_tools_nvim = function()
                     },
                 }
                 client.server_capabilities.hoverProvider = true
-                languages_setup.keymaps(client, bufnr)
-                languages_setup.omni(client, bufnr)
-                languages_setup.tag(client, bufnr)
-                languages_setup.document_highlight(client, bufnr)
-                languages_setup.document_formatting(client, bufnr)
+                lsp_manager.keymaps(client, bufnr)
+                lsp_manager.omni(client, bufnr)
+                lsp_manager.tag(client, bufnr)
+                lsp_manager.document_highlight(client, bufnr)
+                lsp_manager.document_formatting(client, bufnr)
                 navic.attach(client, bufnr)
             end,
-            capabilities = languages_setup.get_capabilities(),
+            capabilities = setup_diagnostics.get_capabilities(),
         },
     })
 end
@@ -431,6 +432,9 @@ config.nvim_treesitter = function()
         },
         indent = {
             enable = true,
+            disable = {
+                "dart",
+            },
         },
         autopairs = {
             enable = true,
