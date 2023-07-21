@@ -31,7 +31,7 @@ return {
     },
     prettierd = {
         fPrefix = "prettierd",
-        formatCommand = "prettierd --stdin-filepath ${FILENAME}",
+        formatCommand = "prettierd --tab-width=4 --stdin-filepath ${FILENAME}",
         formatStdin = true,
         -- rootMarkers = { ".prettierrc" },
     },
