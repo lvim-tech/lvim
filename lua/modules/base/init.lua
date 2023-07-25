@@ -772,7 +772,7 @@ modules["folke/trouble.nvim"] = {
     commit = funcs.get_commit("trouble.nvim", plugins_snapshot),
     dependencies = { "nvim-tree/nvim-web-devicons" },
     keys = {
-        { "<C-c>d", "<Cmd>TroubleToggle<CR>", desc = "WinShift" },
+        { "<C-c><C-d>", "<Cmd>TroubleToggle<CR>", desc = "Trouble" },
     },
     config = languages_config.trouble_nvim,
 }
