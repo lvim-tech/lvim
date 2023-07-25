@@ -14,9 +14,9 @@
 
   * Automatically install dependencies (lsp servers, linters, formatters, debbugers) by filetype
 
-  Current version - 4.0.00 (2023-07-03)
+  Current version - 4.0.12 (2023-07-25)
 
-  125 plugins
+  127 plugins
 
 **  SCREENSHOTS
 
