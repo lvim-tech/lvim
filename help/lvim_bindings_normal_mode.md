@@ -50,9 +50,8 @@
 | `<C-c><C-f>`       | `:Neotree filesystem left<CR>`    | Neotree filesystem left               |
 | `<C-c><C-b>`       | `:Neotree buffers left<CR>`       | Neotree filesystem left               |
 | `<C-c><C-g>`       | `:Neotree git_status left<CR>`    | Neotree git_status left               |
-| `<C-c><C-d>`       | `:Neotree diagnostics left<CR>`   | Neotree diagnostics left              |
+| `<C-c><C-d>`       | `:TroubleToggle<CR>`              | Trouble                               |
 | `<S-q>`            | `:Neotree close<CR>`              | Neotree close                         |
-| `<A-e>`            | `:Neotree diagnostics<CR>`        | Neotree diagnostics bottom            |
 | `<S-m>`            | `:MarkdownPreview<CR>`            | Markdown preview                      |
 | `<A-,>`            | `:Telescope find_files<CR>`       | Search files with Telescope           |
 | `<A-.>`            | `:Telescope live_grep<CR>`        | Search word with Telescope            |
