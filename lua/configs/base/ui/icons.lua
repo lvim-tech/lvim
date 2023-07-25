@@ -195,6 +195,7 @@ return {
         warn = " ",
         hint = "󰌵 ",
         info = " ",
+        other = " ",
     },
     lazy = {
         cmd = " ",
