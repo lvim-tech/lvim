@@ -835,7 +835,7 @@ config.nvim_window_picker = function()
             },
             winbar = {
                 focused = {
-                    fg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].bg,
+                    fg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].red_03,
                     bg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].bg,
                     bold = true,
                 },
@@ -939,7 +939,6 @@ config.neo_tree_nvim = function()
             "filesystem",
             "buffers",
             "git_status",
-            "diagnostics",
         },
         source_selector = {
             winbar = true,
@@ -957,10 +956,6 @@ config.neo_tree_nvim = function()
                 {
                     source = "git_status",
                     display_name = icons.common.git .. " GIT  ",
-                },
-                {
-                    source = "diagnostics",
-                    display_name = icons.common.lsp .. " LSP  ",
                 },
             },
         },
