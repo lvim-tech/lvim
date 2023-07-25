@@ -196,7 +196,10 @@ config.inc_rename_nvim = function()
 end
 
 config.glance_nvim = function()
-    local glance = require("glance")
+    local glance_status_ok, glance = pcall(require, "glance")
+    if not glance_status_ok then
+        return
+    end
     local actions = glance.actions
     glance.setup({
         zindex = 20,
@@ -259,6 +262,22 @@ config.glance_nvim = function()
     vim.keymap.set("n", "gpr", "<Cmd>Glance references<CR>")
     vim.keymap.set("n", "gpt", "<Cmd>Glance type_definitions<CR>")
     vim.keymap.set("n", "gpi", "<Cmd>Glance implementations<CR>")
+end
+
+config.trouble_nvim = function()
+    local trouble_status_ok, trouble = pcall(require, "trouble")
+    if not trouble_status_ok then
+        return
+    end
+    trouble.setup({
+        signs = {
+            error = icons.diagnostics.error,
+            warning = icons.diagnostics.warn,
+            hint = icons.diagnostics.hint,
+            information = icons.diagnostics.info,
+            other = icons.diagnostics.other,
+        },
+    })
 end
 
 config.neodev_nvim = function()

@@ -56,12 +56,6 @@ modules["nvim-tree/nvim-web-devicons"] = {
     lazy = true,
 }
 
-modules["mrbjarksen/neo-tree-diagnostics.nvim"] = {
-    commit = funcs.get_commit("neo-tree-diagnostics.nvim", plugins_snapshot),
-    module = "neo-tree.sources.diagnostics",
-    lazy = true,
-}
-
 modules["folke/twilight.nvim"] = {
     commit = funcs.get_commit("twilight.nvim", plugins_snapshot),
     config = ui_config.twilight_nvim,
@@ -266,8 +260,6 @@ modules["nvim-neo-tree/neo-tree.nvim"] = {
         { "<C-c><C-f>", "<cmd>Neotree filesystem left<CR>", desc = "NeoTree filesystem" },
         { "<C-c><C-b>", "<cmd>Neotree buffers left<CR>", desc = "NeoTree buffers" },
         { "<C-c><C-g>", "<cmd>Neotree git_status left<CR>", desc = "NeoTree git status" },
-        { "<C-c><C-d>", "<cmd>Neotree diagnostics left<CR>", desc = "NeoTree diagnostics" },
-        { "<A-e>", "<cmd>Neotree diagnostics reveal bottom<CR>", desc = "NeoTree diagnostics" },
         { "<S-q>", "<cmd>Neotree close<CR>", desc = "NeoTree close" },
     },
     dependencies = {
@@ -776,6 +768,15 @@ modules["DNLHC/glance.nvim"] = {
     config = languages_config.glance_nvim,
 }
 
+modules["folke/trouble.nvim"] = {
+    commit = funcs.get_commit("trouble.nvim", plugins_snapshot),
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    keys = {
+        { "<C-c>d", "<Cmd>TroubleToggle<CR>", desc = "WinShift" },
+    },
+    config = languages_config.trouble_nvim,
+}
+
 modules["folke/neodev.nvim"] = {
     commit = funcs.get_commit("neodev.nvim", plugins_snapshot),
     ft = "lua",
@@ -821,6 +822,15 @@ modules["akinsho/flutter-tools.nvim"] = {
         "nvim-lua/plenary.nvim",
     },
     config = languages_config.flutter_tools_nvim,
+}
+
+modules["pmizio/typescript-tools.nvim"] = {
+    commit = funcs.get_commit("typescript-tools.nvim", plugins_snapshot),
+    ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+    dependencies = {
+        "neovim/nvim-lspconfig",
+        "nvim-lua/plenary.nvim",
+    },
 }
 
 modules["kosayoda/nvim-lightbulb"] = {
