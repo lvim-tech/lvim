@@ -1,7 +1,5 @@
 local global = require("core.global")
 local funcs = require("core.funcs")
-local lspconfig = require("lspconfig")
-local mason_registry = require("mason-registry")
 local ui_config = require("lvim-ui-config.config")
 local select = require("lvim-ui-config.select")
 local icons = require("configs.base.ui.icons")
@@ -228,7 +226,7 @@ M.get_cpp_capabilities = function()
     return capabilities
 end
 
-M.keymaps = function(client, bufnr)
+M.keymaps = function(_, bufnr)
     vim.keymap.set("n", "gd", function()
         vim.lsp.buf.definition()
     end, { noremap = true, silent = true, buffer = bufnr, desc = "LspDefinition" })
