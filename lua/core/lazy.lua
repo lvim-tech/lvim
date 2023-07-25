@@ -45,8 +45,8 @@ lazy_pack.is_lazy = function()
         })
     end
     vim.opt.rtp:prepend(lazy_path)
-    vim.cmd("command! SnapshotFileShow lua require('core.pack').snapshot_file_show()")
-    vim.cmd("command! SnapshotFileChoice lua require('core.pack').snapshot_file_choice()")
+    vim.cmd("command! SnapshotFileShow lua require('core.lazy').snapshot_file_show()")
+    vim.cmd("command! SnapshotFileChoice lua require('core.lazy').snapshot_file_choice()")
 end
 
 lazy_pack.load = function()
