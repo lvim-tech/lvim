@@ -298,11 +298,9 @@ modules["lvim-tech/lvim-fm"] = {
     keys = {
         { "<Leader>=", "<Cmd>LvimFileManager<CR>", desc = "Telescope find files" },
     },
-
     dependencies = {
         "lvim-tech/lvim-shell",
     },
-    event = "BufRead",
     config = ui_config.lvim_fm,
 }
 
