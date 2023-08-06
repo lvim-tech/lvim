@@ -24,19 +24,11 @@ config.telescope_nvim = function()
             initial_mode = "insert",
             selection_strategy = "reset",
             sorting_strategy = "ascending",
-            layout_strategy = "horizontal",
+            layout_strategy = "bottom_pane",
             layout_config = {
-                horizontal = {
-                    prompt_position = "top",
-                    preview_width = 0.5,
-                    results_width = 0.5,
-                },
-                vertical = {
-                    mirror = false,
-                },
-                width = 0.95,
-                height = 0.95,
-                preview_cutoff = 120,
+                height = function()
+                    return math.ceil((vim.api.nvim_get_option("lines") + 4) * _G.LVIM_SETTINGS.floatheight)
+                end,
             },
             vimgrep_arguments = {
                 "rg",
@@ -93,9 +85,9 @@ config.telescope_nvim = function()
     telescope.load_extension("fzf")
     telescope.load_extension("file_browser")
     telescope.load_extension("tmux")
-    vim.keymap.set("n", "<C-c>t", function()
-        vim.cmd("Telescope tmux sessions")
-    end, { noremap = true, silent = true, desc = "Telescope tmux sessions" })
+    -- vim.keymap.set("n", "<C-c>t", function()
+    --     vim.cmd("Telescope tmux sessions")
+    -- end, { noremap = true, silent = true, desc = "Telescope tmux sessions" })
     vim.api.nvim_create_autocmd("User", {
         pattern = "TelescopePreviewerLoaded",
         callback = function()
@@ -125,20 +117,27 @@ config.fzf_lua = function()
             ["header"] = { "fg", "FzfLuaPrompt" },
             ["gutter"] = { "bg", "FzfLuaNormal" },
         },
-        winopts = {
-            title = "FZF LUA",
-            title_pos = "center",
-            height = 0.5,
-            width = 1,
-            row = 1,
-            col = 0,
-            border = { " ", " ", " ", " ", " ", " ", " ", " " },
-            preview = {
-                vertical = "down:45%",
-                horizontal = "right:50%",
-                border = "noborder",
-            },
-        },
+        winopts_fn = function()
+            -- smaller width if neovim win has over 80 columns
+            local win_height = math.ceil(vim.api.nvim_get_option("lines") * _G.LVIM_SETTINGS.floatheight)
+            local win_width = math.ceil(vim.api.nvim_get_option("columns") * 1)
+            local col = math.ceil((vim.api.nvim_get_option("columns") - win_width) * 1)
+            local row = math.ceil((vim.api.nvim_get_option("lines") - win_height) * 1 - 3)
+            return {
+                title = "FZF LUA",
+                title_pos = "center",
+                width = win_width,
+                height = win_height,
+                row = row,
+                col = col,
+                border = { " ", " ", " ", " ", " ", " ", " ", " " },
+                preview = {
+                    vertical = "down:45%",
+                    horizontal = "right:50%",
+                    border = "noborder",
+                },
+            }
+        end,
     })
 end
 

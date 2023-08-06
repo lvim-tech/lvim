@@ -79,6 +79,47 @@ configs["base_lvim"] = function()
         end)
     end
     vim.api.nvim_create_user_command("LvimTheme", lvim_theme, {})
+    local function lvim_float_height()
+        local status
+        if _G.LVIM_SETTINGS.floatheight == "10000" then
+            status = "Full"
+        else
+            status = _G.LVIM_SETTINGS.floatheight
+        end
+        local ui_config = require("lvim-ui-config.config")
+        local select = require("lvim-ui-config.select")
+        local notify = require("lvim-ui-config.notify")
+        local opts = ui_config.select({
+            0.1,
+            0.2,
+            0.3,
+            0.4,
+            0.5,
+            0.6,
+            0.7,
+            0.8,
+            0.9,
+            1.0,
+            "Cancel",
+        }, { prompt = "Float height (current: " .. status .. ")" }, {})
+        select(opts, function(choice)
+            if choice == "Cancel" then
+            else
+                local user_choice = choice
+                notify.info("Float height: " .. choice, { title = "LVIM IDE" })
+                _G.LVIM_SETTINGS.floatheight = user_choice
+                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+                local editor_config = require("modules.base.configs.editor")
+                editor_config.fzf_lua()
+                editor_config.telescope_nvim()
+                local lvim_ui_config = require("modules.base.configs.ui")
+                lvim_ui_config.lvim_fm()
+                local version_control_config = require("modules.base.configs.version_control")
+                version_control_config.lvim_forgit()
+            end
+        end)
+    end
+    vim.api.nvim_create_user_command("LvimFloatHeight", lvim_float_height, {})
     vim.api.nvim_create_user_command(
         "EditorConfigCreate",
         "lua require'core.funcs'.copy_file(require'core.global'.lvim_path .. '/.configs/templates/.editorconfig', vim.fn.getcwd() .. '/.editorconfig')",

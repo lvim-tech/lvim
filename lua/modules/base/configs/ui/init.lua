@@ -1105,12 +1105,10 @@ config.lvim_fm = function()
         ui = {
             float = {
                 float_hl = "NormalFloat",
-                height = 0.5,
-                width = 1,
-                x = 0,
-                y = 1,
+                height = _G.LVIM_SETTINGS.floatheight,
                 border_hl = "FloatBorder",
             },
+            split = "belowright " .. _G.LVIM_SETTINGS.floatheight .. " new",
         },
         env = {
             COLORS = "fg:"
