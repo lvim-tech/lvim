@@ -294,6 +294,11 @@ modules["lvim-tech/lvim-shell"] = {
 
 modules["lvim-tech/lvim-fm"] = {
     commit = funcs.get_commit("lvim-fm", plugins_snapshot),
+    cmd = "LvimFileManager",
+    keys = {
+        { "<Leader>=", "<Cmd>LvimFileManager<CR>", desc = "Telescope find files" },
+    },
+
     dependencies = {
         "lvim-tech/lvim-shell",
     },
