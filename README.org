@@ -116,7 +116,7 @@
 
     #+begin_src lua
 
-    :LvimAutoFormat
+    :LvimFloatHeight
 
     #+end_src
 
