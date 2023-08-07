@@ -24,7 +24,6 @@ return {
     "neo-tree-popup",
     "noice",
     "toggleterm",
-    "LvimShell",
     "oil",
     "org",
 }

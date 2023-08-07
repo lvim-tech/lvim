@@ -27,7 +27,7 @@ config.telescope_nvim = function()
             layout_strategy = "bottom_pane",
             layout_config = {
                 height = function()
-                    return math.ceil((vim.api.nvim_get_option("lines") + 4) * _G.LVIM_SETTINGS.floatheight)
+                    return math.ceil((vim.api.nvim_get_option("lines") + 5) * _G.LVIM_SETTINGS.floatheight)
                 end,
             },
             vimgrep_arguments = {

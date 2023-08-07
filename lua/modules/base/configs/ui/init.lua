@@ -1049,8 +1049,6 @@ config.heirline_nvim = function()
         file_types_winbar[i] = v
     end
     table.insert(file_types_winbar, "qf")
-    table.insert(file_types_winbar, "fzf")
-    table.insert(file_types_winbar, "lvim_shell")
     heirline.setup({
         statusline = statusline,
         statuscolumn = statuscolumn,
