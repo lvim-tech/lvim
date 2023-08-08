@@ -1,6 +1,5 @@
 local global = require("core.global")
 local funcs = require("core.funcs")
-local lsp_manager = require("languages.utils.lsp_manager")
 local base_file_types = require("languages.base.ft")
 local user_file_types = require("languages.user.ft")
 local file_types = funcs.merge(base_file_types, user_file_types)
