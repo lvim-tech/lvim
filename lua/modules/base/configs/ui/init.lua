@@ -917,6 +917,140 @@ config.mini_files = function()
     })
 end
 
+config.mini_clue = function()
+    local mini_clue_status_ok, mini_clue = pcall(require, "mini.clue")
+    if not mini_clue_status_ok then
+        return
+    end
+    mini_clue.setup({
+        window = {
+            config = {
+                width = "auto",
+            },
+            delay = 0,
+            scroll_down = "<C-d>",
+            scroll_up = "<C-u>",
+        },
+        triggers = {
+            { mode = "n", keys = "<Leader>" },
+            { mode = "x", keys = "<Leader>" },
+            { mode = "i", keys = "<C-x>" },
+            { mode = "n", keys = "g" },
+            { mode = "x", keys = "g" },
+            { mode = "n", keys = "'" },
+            { mode = "n", keys = "`" },
+            { mode = "x", keys = "'" },
+            { mode = "x", keys = "`" },
+            { mode = "n", keys = '"' },
+            { mode = "x", keys = '"' },
+            { mode = "i", keys = "<C-r>" },
+            { mode = "c", keys = "<C-r>" },
+            { mode = "n", keys = "<C-w>" },
+            { mode = "n", keys = "z" },
+            { mode = "x", keys = "z" },
+            { mode = "n", keys = ";" },
+            { mode = "n", keys = ";l" },
+            { mode = "n", keys = ";a" },
+            { mode = "n", keys = ";n" },
+            { mode = "n", keys = ";r" },
+            { mode = "n", keys = ";v" },
+            { mode = "n", keys = ";e" },
+            { mode = "n", keys = ";c" },
+            { mode = "n", keys = ";u" },
+            { mode = "n", keys = ";t" },
+            { mode = "n", keys = ";z" },
+            { mode = "n", keys = ";g" },
+            { mode = "n", keys = ";q" },
+            { mode = "n", keys = ";o" },
+            { mode = "n", keys = ";d" },
+            { mode = "n", keys = ";s" },
+            { mode = "n", keys = ";p" },
+            { mode = "n", keys = ";'" },
+            { mode = "n", keys = ";m" },
+            { mode = "n", keys = ";w" },
+            { mode = "n", keys = "<C-c>" },
+            { mode = "n", keys = "d" },
+        },
+        clues = {
+            mini_clue.gen_clues.builtin_completion(),
+            mini_clue.gen_clues.g(),
+            mini_clue.gen_clues.marks(),
+            mini_clue.gen_clues.registers(),
+            mini_clue.gen_clues.windows(),
+            mini_clue.gen_clues.z(),
+        },
+    })
+    local group = vim.api.nvim_create_augroup("ClueStatus", {
+        clear = true,
+    })
+    function enable_disable(status)
+        if status == true then
+            mini_clue.enable_all_triggers()
+            vim.g.miniclue_disable = false
+            vim.api.nvim_create_autocmd("WinEnter", {
+                callback = function()
+                    local filetype = vim.tbl_contains({
+                        "neo-tree",
+                        "spectre_panel",
+                    }, vim.bo.filetype)
+                    if filetype then
+                        vim.opt.timeoutlen = 1000
+                    else
+                        vim.opt.timeoutlen = 0
+                    end
+                end,
+                group = group,
+            })
+        else
+            vim.g.miniclue_disable = true
+            mini_clue.disable_all_triggers()
+            local autocommands = vim.api.nvim_get_autocmds({
+                group = group,
+            })
+            if next(autocommands) == nil then
+            else
+                vim.api.nvim_del_autocmd(autocommands[1]["id"])
+                vim.opt.timeoutlen = 1000
+            end
+        end
+    end
+    if _G.LVIM_SETTINGS.keyshelper == true then
+        enable_disable(true)
+    else
+        enable_disable(false)
+    end
+    local global = require("core.global")
+    local ui_config = require("lvim-ui-config.config")
+    local select = require("lvim-ui-config.select")
+    local function lvim_keys_helper()
+        local status
+        if _G.LVIM_SETTINGS.keyshelper == true then
+            status = "Enabled"
+        else
+            status = "Disabled"
+        end
+        local opts = ui_config.select({
+            "Enable",
+            "Disable",
+            "Cancel",
+        }, { prompt = "KeysHelper (" .. status .. ")" }, {})
+        select(opts, function(choice)
+            if choice == "Enable" then
+                _G.LVIM_SETTINGS.keyshelper = true
+                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+                vim.g.miniclue_disable = false
+                enable_disable(true)
+            elseif choice == "Disable" then
+                _G.LVIM_SETTINGS.keyshelper = false
+                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+                vim.g.miniclue_disable = true
+                enable_disable(false)
+            end
+        end)
+    end
+    vim.api.nvim_create_user_command("LvimKeysHelper", lvim_keys_helper, {})
+end
+
 config.netrw_nvim = function()
     local netrw_nvim_status_ok, netrw_nvim = pcall(require, "netrw")
     if not netrw_nvim_status_ok then
@@ -1135,12 +1269,6 @@ config.lvim_fm = function()
                 .. colors.red_03,
         },
     })
-    vim.keymap.set(
-        "n",
-        "<leader>=",
-        ":LvimFileManager<CR>",
-        { noremap = true, silent = true, desc = "LvimFileManager" }
-    )
 end
 
 config.toggleterm_nvim = function()
