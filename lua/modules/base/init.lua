@@ -246,6 +246,11 @@ modules["echasnovski/mini.files"] = {
     config = ui_config.mini_files,
 }
 
+modules["echasnovski/mini.clue"] = {
+    commit = funcs.get_commit("mini.clue", plugins_snapshot),
+    config = ui_config.mini_clue,
+}
+
 modules["prichrd/netrw.nvim"] = {
     commit = funcs.get_commit("netrw.nvim", plugins_snapshot),
     config = ui_config.netrw_nvim,
@@ -296,7 +301,7 @@ modules["lvim-tech/lvim-fm"] = {
     commit = funcs.get_commit("lvim-fm", plugins_snapshot),
     cmd = "LvimFileManager",
     keys = {
-        { "<Leader>=", "<Cmd>LvimFileManager<CR>", desc = "Telescope find files" },
+        { "<Leader>=", "<Cmd>LvimFileManager<CR>", desc = "Lvim file manager" },
     },
     dependencies = {
         "lvim-tech/lvim-shell",
@@ -870,14 +875,6 @@ modules["SmiteshP/nvim-navbuddy"] = {
     config = languages_config.nvim_navbuddy,
 }
 
-modules["pechorin/any-jump.vim"] = {
-    commit = funcs.get_commit("any-jump.vim", plugins_snapshot),
-    event = {
-        "BufRead",
-    },
-    config = languages_config.any_jump_nvim,
-}
-
 modules["simrat39/symbols-outline.nvim"] = {
     commit = funcs.get_commit("symbols-outline.nvim", plugins_snapshot),
     event = {
@@ -952,13 +949,6 @@ modules["iamcco/markdown-preview.nvim"] = {
 modules["lervag/vimtex"] = {
     commit = funcs.get_commit("vimtex", plugins_snapshot),
     config = languages_config.vimtex,
-}
-
-modules["dhruvasagar/vim-table-mode"] = {
-    commit = funcs.get_commit("vim-table-mode", plugins_snapshot),
-    event = {
-        "BufRead",
-    },
 }
 
 modules["nvim-orgmode/orgmode"] = {

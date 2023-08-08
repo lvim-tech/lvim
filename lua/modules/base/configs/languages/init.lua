@@ -521,13 +521,6 @@ config.nvim_navbuddy = function()
     end, { noremap = true, silent = true, desc = "Navbuddy" })
 end
 
-config.any_jump_nvim = function()
-    vim.g.any_jump_disable_default_keybindings = 1
-    vim.g.any_jump_list_numbers = 1
-    vim.keymap.set("n", "<A-u>", ":AnyJump<CR>", { noremap = true, silent = true, desc = "AnyJump" })
-    vim.keymap.set("v", "<A-u>", ":AnyJumpVisual<CR>", { noremap = true, silent = true, desc = "AnyJumpVisual" })
-end
-
 config.symbols_outline_nvim = function()
     local symbols_outline_status_ok, symbols_outline = pcall(require, "symbols-outline")
     if not symbols_outline_status_ok then
