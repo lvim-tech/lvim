@@ -14,9 +14,9 @@
 
   * Automatically install dependencies (lsp servers, linters, formatters, debbugers) by filetype
 
-  Current version - 4.0.20 (2023-08-26)
+  Current version - 4.0.35 (2023-08-08)
 
-  127 plugins
+  126 plugins
 
 **  SCREENSHOTS
 
@@ -112,7 +112,23 @@
 
     #+end_src
 
-    - Float height - 0.1, 0.2, 0.3, 0.4, 0.5 (default), 0.6, 0.7, 0.8, 0.9, 1.0
+    - Keys helper - true (default), false
+
+    #+begin_src lua
+
+    :LvimKeysHelper
+
+    #+end_src
+
+    - Keys helper delay - 50, 100, 200 (default), 300, 400, 500, 600, 700, 800, 900, 1000 (ms)
+
+    #+begin_src lua
+
+    :LvimKeysHelper
+
+    #+end_src
+
+    - Float height - 0.1, 0.2, 0.3, 0.4 (default), 0.5, 0.6, 0.7, 0.8, 0.9, 1.0
 
     #+begin_src lua
 
