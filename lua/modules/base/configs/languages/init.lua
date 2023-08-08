@@ -258,10 +258,10 @@ config.glance_nvim = function()
             end,
         },
     })
-    vim.keymap.set("n", "gpd", "<Cmd>Glance definitions<CR>")
-    vim.keymap.set("n", "gpr", "<Cmd>Glance references<CR>")
-    vim.keymap.set("n", "gpt", "<Cmd>Glance type_definitions<CR>")
-    vim.keymap.set("n", "gpi", "<Cmd>Glance implementations<CR>")
+    vim.keymap.set("n", "gpd", "<Cmd>Glance definitions<CR>", { desc = "Glance definitions" })
+    vim.keymap.set("n", "gpr", "<Cmd>Glance references<CR>", { desc = "Glance references" })
+    vim.keymap.set("n", "gpt", "<Cmd>Glance type_definitions<CR>", { desc = "Glance type definitions" })
+    vim.keymap.set("n", "gpi", "<Cmd>Glance implementations<CR>", { desc = "Glance implementations" })
 end
 
 config.trouble_nvim = function()
