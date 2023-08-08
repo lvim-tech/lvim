@@ -85,9 +85,6 @@ config.telescope_nvim = function()
     telescope.load_extension("fzf")
     telescope.load_extension("file_browser")
     telescope.load_extension("tmux")
-    -- vim.keymap.set("n", "<C-c>t", function()
-    --     vim.cmd("Telescope tmux sessions")
-    -- end, { noremap = true, silent = true, desc = "Telescope tmux sessions" })
     vim.api.nvim_create_autocmd("User", {
         pattern = "TelescopePreviewerLoaded",
         callback = function()
@@ -213,12 +210,75 @@ config.neocomposer_nvim = function()
             green = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].green_02,
         },
         keymaps = {
-            play_macro = "<Leader>q",
-            toggle_record = "Q",
-            cycle_next = "<M-n>",
-            cycle_prev = "<M-p>",
+            toggle_record = "<Leader>qr",
+            play_macro = "<Leader>qq",
+            yank_macro = "<Leader>qy",
+            stop_macro = "<Leader>qs",
+            cycle_next = "<Leader>qn",
+            cycle_prev = "<Leader>qp",
+            toggle_macro_menu = "<Leader>qm",
         },
     })
+    vim.keymap.set(
+        "n",
+        "<Leader>qr",
+        "<cmd>lua require('NeoComposer.macro').toggle_record()<cr>",
+        { noremap = true, silent = true, desc = "Macro Record Start/Stop" }
+    )
+    vim.keymap.set(
+        { "n", "x" },
+        "<Leader>qq",
+        "<cmd>lua require('NeoComposer.macro').toggle_play_macro()<cr>",
+        { noremap = true, silent = true, desc = "Macro Play" }
+    )
+    vim.keymap.set(
+        "n",
+        "<Leader>qy",
+        "<cmd>lua require('NeoComposer.macro').yank_macro()<cr>",
+        { noremap = true, silent = true, desc = "Macro yank" }
+    )
+    vim.keymap.set(
+        "n",
+        "<Leader>qs",
+        "<cmd>lua require('NeoComposer.macro').halt_macro()<cr>",
+        { noremap = true, silent = true, desc = "Macro stop" }
+    )
+    vim.keymap.set(
+        "n",
+        "<Leader>qn",
+        "<cmd>lua require('NeoComposer.ui').cycle_next()<cr>",
+        { noremap = true, silent = true, desc = "Macro next" }
+    )
+    vim.keymap.set(
+        "n",
+        "<Leader>qp",
+        "<cmd>lua require('NeoComposer.ui').cycle_prev()<cr>",
+        { noremap = true, silent = true, desc = "Macro prev" }
+    )
+    vim.keymap.set(
+        "n",
+        "<Leader>qm",
+        "<cmd>lua require('NeoComposer.ui').toggle_macro_menu()<cr>",
+        { noremap = true, silent = true, desc = "Macro menu" }
+    )
+    vim.keymap.set(
+        "n",
+        "<Leader>qe",
+        "<cmd>lua require('NeoComposer.ui').edit_macros()<cr>",
+        { noremap = true, silent = true, desc = "Macro edit" }
+    )
+    vim.keymap.set(
+        "n",
+        "<Leader>qt",
+        "<cmd>lua require('NeoComposer.macro').toggle_delay()<cr>",
+        { noremap = true, silent = true, desc = "Macro delay toggle" }
+    )
+    vim.keymap.set(
+        "n",
+        "<Leader>qd",
+        "<cmd>lua require('NeoComposer.store').clear_macros()<cr>",
+        { noremap = true, silent = true, desc = "Macro delete all" }
+    )
 end
 
 config.nvim_peekup = function()
@@ -817,10 +877,10 @@ config.flash_nvim = function()
     end
     vim.keymap.set({ "n", "x", "o" }, "<C-c>.", function()
         flash.jump()
-    end)
+    end, { desc = "Flash jump" })
     vim.keymap.set({ "n", "x", "o" }, "<C-c>,", function()
         flash.treesitter()
-    end)
+    end, { desc = "Flash treesitter" })
     vim.keymap.set({ "o" }, "r", function()
         require("flash").remote()
     end)
@@ -849,7 +909,7 @@ config.flash_nvim = function()
                 end
             end,
         })
-    end)
+    end, { desc = "Flash search" })
 end
 
 config.todo_comments_nvim = function()
@@ -925,6 +985,14 @@ config.calendar_vim = function()
     vim.g.calendar_diary_path_pattern = "{YYYY}-{MM}-{DD}{EXT}"
     vim.g.calendar_monday = 1
     vim.g.calendar_weeknm = 1
+    vim.keymap.del("n", "<Leader>cal")
+    vim.keymap.del("n", "<Leader>caL")
+    vim.keymap.set("n", "<Leader>ch", function()
+        vim.cmd("CalendarH")
+    end, { noremap = true, silent = true, desc = "Calendar horizontal" })
+    vim.keymap.set("n", "<Leader>cv", function()
+        vim.cmd("CalendarVR")
+    end, { noremap = true, silent = true, desc = "Calendar vertical" })
 end
 
 return config
