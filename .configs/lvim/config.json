@@ -2,5 +2,8 @@
     "theme": "lvim-dark",
     "autoformat": true,
     "inlayhint": true,
-    "virtualdiagnostic": false
+    "virtualdiagnostic": false,
+    "floatheight": 0.5,
+    "keyshelper": true,
+    "keyshelperdelay": 200
 }
