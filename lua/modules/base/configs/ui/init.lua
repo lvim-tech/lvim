@@ -995,6 +995,7 @@ config.mini_clue = function()
                     local filetype = vim.tbl_contains({
                         "neo-tree",
                         "spectre_panel",
+                        "Outline",
                     }, vim.bo.filetype)
                     if filetype then
                         vim.opt.timeoutlen = 1000
