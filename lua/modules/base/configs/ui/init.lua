@@ -979,8 +979,6 @@ config.mini_clue = function()
                 mini_clue.gen_clues.registers(),
                 mini_clue.gen_clues.windows(),
                 mini_clue.gen_clues.z(),
-                { mode = "x", keys = "zo", desc = "Leader a" },
-                { mode = "x", keys = "zO", desc = "Leader b" },
             },
         })
     end
