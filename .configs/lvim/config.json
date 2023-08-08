@@ -3,7 +3,7 @@
     "autoformat": true,
     "inlayhint": true,
     "virtualdiagnostic": false,
-    "floatheight": 0.5,
+    "floatheight": 0.4,
     "keyshelper": true,
     "keyshelperdelay": 200
 }
