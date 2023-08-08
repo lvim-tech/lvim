@@ -68,7 +68,7 @@ M.init_diagnostics = function()
                     local clients = vim.lsp.buf_get_clients(bufnr)
                     if #clients > 0 then
                         for _, client in ipairs(clients) do
-                            if client.server_capabilities.inlayHintProvider then
+                            if vim.lsp.inlay_hint ~= nil and client.server_capabilities.inlayHintProvider then
                                 vim.lsp.inlay_hint(bufnr, true)
                             end
                         end
@@ -84,7 +84,7 @@ M.init_diagnostics = function()
                     local clients = vim.lsp.buf_get_clients(bufnr)
                     if #clients > 0 then
                         for _, client in ipairs(clients) do
-                            if client.server_capabilities.inlayHintProvider then
+                            if vim.lsp.inlay_hint ~= nil and client.server_capabilities.inlayHintProvider then
                                 vim.lsp.inlay_hint(bufnr, false)
                             end
                         end
@@ -186,7 +186,11 @@ M.document_formatting = function(client, bufnr)
 end
 
 M.inlay_hint = function(client, bufnr)
-    if client.server_capabilities.inlayHintProvider and _G.LVIM_SETTINGS.inlayhint == true then
+    if
+        vim.lsp.inlay_hint ~= nil
+        and client.server_capabilities.inlayHintProvider
+        and _G.LVIM_SETTINGS.inlayhint == true
+    then
         vim.lsp.inlay_hint(bufnr, true)
     end
 end
