@@ -1025,6 +1025,7 @@ config.mini_clue = function()
     local global = require("core.global")
     local ui_config = require("lvim-ui-config.config")
     local select = require("lvim-ui-config.select")
+    local notify = require("lvim-ui-config.notify")
     local function lvim_keys_helper()
         local status
         if _G.LVIM_SETTINGS.keyshelper == true then
@@ -1036,18 +1037,20 @@ config.mini_clue = function()
             "Enable",
             "Disable",
             "Cancel",
-        }, { prompt = "KeysHelper (" .. status .. ")" }, {})
+        }, { prompt = "Keys helper (" .. status .. ")" }, {})
         select(opts, function(choice)
             if choice == "Enable" then
                 _G.LVIM_SETTINGS.keyshelper = true
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
                 vim.g.miniclue_disable = false
                 clue_enable_disable(true)
+                notify.info("Keys helper enabled", { title = "LVIM IDE" })
             elseif choice == "Disable" then
                 _G.LVIM_SETTINGS.keyshelper = false
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
                 vim.g.miniclue_disable = true
                 clue_enable_disable(false)
+                notify.info("Keys helper disabled", { title = "LVIM IDE" })
             end
         end)
     end
@@ -1072,9 +1075,10 @@ config.mini_clue = function()
         select(opts, function(choice)
             if choice == "Cancel" then
             else
-                _G.LVIM_SETTINGS.keyshelperdelay = choice
+                _G.LVIM_SETTINGS.keyshelperdelay = tonumber(choice)
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
                 clue_setup()
+                notify.info("Keys helper delay: " .. choice .. "ms", { title = "LVIM IDE" })
             end
         end)
     end
