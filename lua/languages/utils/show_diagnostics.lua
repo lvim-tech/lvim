@@ -100,8 +100,7 @@ local function open_floating_preview(contents, syntax)
                 .. floating_winnr
                 .. ", true)"
         )
-    end, 50)
-
+    end, 60)
     return floating_bufnr, floating_winnr
 end
 
