@@ -922,68 +922,73 @@ config.mini_clue = function()
     if not mini_clue_status_ok then
         return
     end
-    mini_clue.setup({
-        window = {
-            config = {
-                width = "auto",
+    function clue_setup()
+        mini_clue.setup({
+            window = {
+                config = {
+                    width = "auto",
+                },
+                delay = tonumber(_G.LVIM_SETTINGS.keyshelperdelay),
+                scroll_down = "<C-d>",
+                scroll_up = "<C-u>",
             },
-            delay = 0,
-            scroll_down = "<C-d>",
-            scroll_up = "<C-u>",
-        },
-        triggers = {
-            { mode = "n", keys = "<Leader>" },
-            { mode = "x", keys = "<Leader>" },
-            { mode = "i", keys = "<C-x>" },
-            { mode = "n", keys = "g" },
-            { mode = "x", keys = "g" },
-            { mode = "n", keys = "'" },
-            { mode = "n", keys = "`" },
-            { mode = "x", keys = "'" },
-            { mode = "x", keys = "`" },
-            { mode = "n", keys = '"' },
-            { mode = "x", keys = '"' },
-            { mode = "i", keys = "<C-r>" },
-            { mode = "c", keys = "<C-r>" },
-            { mode = "n", keys = "<C-w>" },
-            { mode = "n", keys = "z" },
-            { mode = "x", keys = "z" },
-            { mode = "n", keys = ";" },
-            { mode = "n", keys = ";l" },
-            { mode = "n", keys = ";a" },
-            { mode = "n", keys = ";n" },
-            { mode = "n", keys = ";r" },
-            { mode = "n", keys = ";v" },
-            { mode = "n", keys = ";e" },
-            { mode = "n", keys = ";c" },
-            { mode = "n", keys = ";u" },
-            { mode = "n", keys = ";t" },
-            { mode = "n", keys = ";z" },
-            { mode = "n", keys = ";g" },
-            { mode = "n", keys = ";q" },
-            { mode = "n", keys = ";o" },
-            { mode = "n", keys = ";d" },
-            { mode = "n", keys = ";s" },
-            { mode = "n", keys = ";p" },
-            { mode = "n", keys = ";'" },
-            { mode = "n", keys = ";m" },
-            { mode = "n", keys = ";w" },
-            { mode = "n", keys = "<C-c>" },
-            { mode = "n", keys = "d" },
-        },
-        clues = {
-            mini_clue.gen_clues.builtin_completion(),
-            mini_clue.gen_clues.g(),
-            mini_clue.gen_clues.marks(),
-            mini_clue.gen_clues.registers(),
-            mini_clue.gen_clues.windows(),
-            mini_clue.gen_clues.z(),
-        },
-    })
+            triggers = {
+                { mode = "n", keys = "<Leader>" },
+                { mode = "x", keys = "<Leader>" },
+                { mode = "i", keys = "<C-x>" },
+                { mode = "n", keys = "g" },
+                { mode = "x", keys = "g" },
+                { mode = "n", keys = "'" },
+                { mode = "n", keys = "`" },
+                { mode = "x", keys = "'" },
+                { mode = "x", keys = "`" },
+                { mode = "n", keys = '"' },
+                { mode = "x", keys = '"' },
+                { mode = "i", keys = "<C-r>" },
+                { mode = "c", keys = "<C-r>" },
+                { mode = "n", keys = "<C-w>" },
+                { mode = "n", keys = "z" },
+                { mode = "x", keys = "z" },
+                { mode = "n", keys = ";" },
+                { mode = "n", keys = ";l" },
+                { mode = "n", keys = ";a" },
+                { mode = "n", keys = ";n" },
+                { mode = "n", keys = ";r" },
+                { mode = "n", keys = ";v" },
+                { mode = "n", keys = ";e" },
+                { mode = "n", keys = ";c" },
+                { mode = "n", keys = ";u" },
+                { mode = "n", keys = ";t" },
+                { mode = "n", keys = ";z" },
+                { mode = "n", keys = ";g" },
+                { mode = "n", keys = ";q" },
+                { mode = "n", keys = ";o" },
+                { mode = "n", keys = ";d" },
+                { mode = "n", keys = ";s" },
+                { mode = "n", keys = ";p" },
+                { mode = "n", keys = ";'" },
+                { mode = "n", keys = ";m" },
+                { mode = "n", keys = ";w" },
+                { mode = "n", keys = "<C-c>" },
+                { mode = "n", keys = "d" },
+            },
+            clues = {
+                mini_clue.gen_clues.builtin_completion(),
+                mini_clue.gen_clues.g(),
+                mini_clue.gen_clues.marks(),
+                mini_clue.gen_clues.registers(),
+                mini_clue.gen_clues.windows(),
+                mini_clue.gen_clues.z(),
+                { mode = "x", keys = "zo", desc = "Leader a" },
+                { mode = "x", keys = "zO", desc = "Leader b" },
+            },
+        })
+    end
+    clue_setup()
     local group = vim.api.nvim_create_augroup("ClueStatus", {
         clear = true,
     })
-    function enable_disable(status)
+    function clue_enable_disable(status)
         if status == true then
             mini_clue.enable_all_triggers()
             vim.g.miniclue_disable = false
@@ -1015,9 +1020,9 @@ config.mini_clue = function()
         end
     end
     if _G.LVIM_SETTINGS.keyshelper == true then
-        enable_disable(true)
+        clue_enable_disable(true)
     else
-        enable_disable(false)
+        clue_enable_disable(false)
     end
     local global = require("core.global")
     local ui_config = require("lvim-ui-config.config")
@@ -1039,16 +1044,43 @@ config.mini_clue = function()
                 _G.LVIM_SETTINGS.keyshelper = true
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
                 vim.g.miniclue_disable = false
-                enable_disable(true)
+                clue_enable_disable(true)
             elseif choice == "Disable" then
                 _G.LVIM_SETTINGS.keyshelper = false
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
                 vim.g.miniclue_disable = true
-                enable_disable(false)
+                clue_enable_disable(false)
             end
         end)
     end
     vim.api.nvim_create_user_command("LvimKeysHelper", lvim_keys_helper, {})
+    local function lvim_keys_helper_delay()
+        local status = _G.LVIM_SETTINGS.keyshelperdelay
+        local opts = ui_config.select({
+            0,
+            50,
+            100,
+            200,
+            300,
+            400,
+            500,
+            600,
+            700,
+            800,
+            900,
+            1000,
+            "Cancel",
+        }, { prompt = "KeysHelperDelay (" .. status .. " ms)" }, {})
+        select(opts, function(choice)
+            if choice == "Cancel" then
+            else
+                _G.LVIM_SETTINGS.keyshelperdelay = choice
+                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+                clue_setup()
+            end
+        end)
+    end
+    vim.api.nvim_create_user_command("LvimKeysHelperDelay", lvim_keys_helper_delay, {})
 end
 
 config.netrw_nvim = function()
@@ -1512,20 +1544,60 @@ config.indent_blankline_nvim = function()
             "nofile",
         },
     })
-    vim.keymap.set("n", "zo", "zo:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
-    vim.keymap.set("n", "zO", "zO:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
-    vim.keymap.set("n", "zc", "zc:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
-    vim.keymap.set("n", "zC", "zC:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
-    vim.keymap.set("n", "za", "za:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
-    vim.keymap.set("n", "zA", "zA:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
-    vim.keymap.set("n", "zv", "zv:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
-    vim.keymap.set("n", "zV", "zV:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
-    vim.keymap.set("n", "zx", "zx:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
-    vim.keymap.set("n", "zX", "zX:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
-    vim.keymap.set("n", "zm", "zm:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
-    vim.keymap.set("n", "zM", "zM:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
-    vim.keymap.set("n", "zr", "zr:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
-    vim.keymap.set("n", "zR", "zR:IndentBlanklineRefresh<CR>", { noremap = true, silent = true })
+    vim.keymap.set("n", "zo", "zo:IndentBlanklineRefresh<CR>", { noremap = true, silent = true, desc = "Open fold" })
+    vim.keymap.set(
+        "n",
+        "zO",
+        "zO:IndentBlanklineRefresh<CR>",
+        { noremap = true, silent = true, desc = "Open folds recursively" }
+    )
+    vim.keymap.set("n", "za", "za:IndentBlanklineRefresh<CR>", { noremap = true, silent = true, desc = "Toggle fold" })
+    vim.keymap.set(
+        "n",
+        "zA",
+        "zA:IndentBlanklineRefresh<CR>",
+        { noremap = true, silent = true, desc = "Toggle folds recursively" }
+    )
+    vim.keymap.set("n", "zc", "zc:IndentBlanklineRefresh<CR>", { noremap = true, silent = true, desc = "Close fold" })
+    vim.keymap.set(
+        "n",
+        "zC",
+        "zC:IndentBlanklineRefresh<CR>",
+        { noremap = true, silent = true, desc = "Close folds recursively" }
+    )
+    vim.keymap.set(
+        "n",
+        "zv",
+        "zv:IndentBlanklineRefresh<CR>",
+        { noremap = true, silent = true, desc = "Open enough folds" }
+    )
+    vim.keymap.set(
+        "n",
+        "zV",
+        "zV:IndentBlanklineRefresh<CR>",
+        { noremap = true, silent = true, desc = "Open enough folds recursively" }
+    )
+    vim.keymap.set(
+        "n",
+        "zx",
+        "zx:IndentBlanklineRefresh<CR>",
+        { noremap = true, silent = true, desc = "Update folds + open enough folds" }
+    )
+    vim.keymap.set("n", "zX", "zX:IndentBlanklineRefresh<CR>", { noremap = true, silent = true, desc = "Update folds" })
+    vim.keymap.set("n", "zm", "zm:IndentBlanklineRefresh<CR>", { noremap = true, silent = true, desc = "Fold more" })
+    vim.keymap.set(
+        "n",
+        "zM",
+        "zM:IndentBlanklineRefresh<CR>",
+        { noremap = true, silent = true, desc = "Close all folds" }
+    )
+    vim.keymap.set("n", "zr", "zr:IndentBlanklineRefresh<CR>", { noremap = true, silent = true, desc = "Fold less" })
+    vim.keymap.set(
+        "n",
+        "zR",
+        "zR:IndentBlanklineRefresh<CR>",
+        { noremap = true, silent = true, desc = "Open all folds" }
+    )
 end
 
 config.lvim_helper = function()
