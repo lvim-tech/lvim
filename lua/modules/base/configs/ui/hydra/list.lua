@@ -35,7 +35,7 @@ Neotest                    _;'_ │ _;m_                 Termminal
 Dependencies               _;w_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<Esc>_
+                         exit _<C-q>_
 ]]
 
 Hydra({
@@ -194,6 +194,6 @@ Hydra({
             end,
             { nowait = true, silent = true, desc = "Vimtex" },
         },
-        { "<Esc>", nil, { exit = true, desc = false } },
+        { "<C-q>", nil, { exit = true, desc = false } },
     },
 })

@@ -13,7 +13,7 @@ Output                      _O_ │ _S_                    Summary
 Stop                        _s_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<Esc>_
+                         exit _<C-q>_
 ]]
 
 M.neotest = Hydra({
@@ -65,7 +65,7 @@ M.neotest = Hydra({
             keymap.cmd("NeotestStop"),
             { nowait = true, silent = true, desc = "Stop" },
         },
-        { "<Esc>", nil, { exit = true, desc = false } },
+        { "<C-q>", nil, { exit = true, desc = false } },
     },
 })
 

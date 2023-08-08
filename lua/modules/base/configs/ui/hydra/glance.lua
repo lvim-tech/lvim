@@ -11,7 +11,7 @@ Definitions                 _d_ │ _t_           Type definitions
 References                  _r_ │ _I_            Implementations
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<Esc>_
+                         exit _<C-q>_
 ]]
 
 M.glance = Hydra({
@@ -48,7 +48,7 @@ M.glance = Hydra({
             keymap.cmd("Glance implementations"),
             { nowait = true, silent = true, desc = "Implementations" },
         },
-        { "<Esc>", nil, { exit = true, desc = false } },
+        { "<C-q>", nil, { exit = true, desc = false } },
     },
 })
 

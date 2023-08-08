@@ -17,7 +17,7 @@ Save config as local        _s_ │ _u_              Update config
 Delete config               _d_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<Esc>_
+                         exit _<C-q>_
 ]]
 
 M.linguistics = Hydra({
@@ -79,7 +79,7 @@ M.linguistics = Hydra({
             keymap.cmd("LvimLinguisticsMENUDeleteLocalConfig"),
             { nowait = true, silent = true, desc = "Delete config" },
         },
-        { "<Esc>", nil, { exit = true, desc = false } },
+        { "<C-q>", nil, { exit = true, desc = false } },
     },
 })
 

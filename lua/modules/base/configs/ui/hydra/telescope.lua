@@ -12,7 +12,7 @@ LSP                         _d_ │ _g_                        GIT
 Treesitter                  _t_ │ _b_               File browser
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<Esc>_
+                         exit _<C-q>_
 ]]
 
 M.telescope_menu = Hydra({
@@ -63,7 +63,7 @@ M.telescope_menu = Hydra({
             keymap.cmd("Telescope file_browser"),
             { nowait = true, silent = true, desc = "File browser" },
         },
-        { "<Esc>", nil, { exit = true, desc = false } },
+        { "<C-q>", nil, { exit = true, desc = false } },
     },
 })
 
@@ -75,7 +75,7 @@ Files                       _f_ │ _g_                  Git files
 Grep string                 _w_ │ _L_                  Live grep
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<Esc>_  │  back => _<BS>_
+               exit => _<C-q>_  │  back => _<BS>_
 ]]
 
 M.telescope_file = Hydra({
@@ -89,8 +89,6 @@ M.telescope_file = Hydra({
             border = "single",
         },
     },
-    -- mode = { "n", "x", "v" },
-    -- body = ";tf",
     heads = {
         {
             "f",
@@ -119,7 +117,7 @@ M.telescope_file = Hydra({
             end,
         },
         {
-            "<Esc>",
+            "<C-q>",
             nil,
             { exit = true, desc = false },
         },
@@ -143,7 +141,7 @@ Keymaps                     _K_ │ _f_                 File types
 Highlights                  _g_ │ _R_                     Resume
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<Esc>_  │  back => _<BS>_
+               exit => _<C-q>_  │  back => _<BS>_
 ]]
 
 M.telescope_vim = Hydra({
@@ -157,8 +155,6 @@ M.telescope_vim = Hydra({
             border = "single",
         },
     },
-    -- mode = { "n", "x", "v" },
-    -- body = ";tv",
     heads = {
         {
             "b",
@@ -277,7 +273,7 @@ M.telescope_vim = Hydra({
             end,
         },
         {
-            "<Esc>",
+            "<C-q>",
             nil,
             { exit = true, desc = false },
         },
@@ -295,7 +291,7 @@ Dynamic workspace symbols  _sy_ │ _g_                Diagnostics
 Incoming calls              _I_ │ _O_             Outgoing calls
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<Esc>_  │  back => _<BS>_
+               exit => _<C-q>_  │  back => _<BS>_
 ]]
 
 M.telescope_lsp = Hydra({
@@ -309,8 +305,6 @@ M.telescope_lsp = Hydra({
             border = "single",
         },
     },
-    -- mode = { "n", "x", "v" },
-    -- body = ";tl",
     heads = {
         {
             "d",
@@ -369,7 +363,7 @@ M.telescope_lsp = Hydra({
             end,
         },
         {
-            "<Esc>",
+            "<C-q>",
             nil,
             { exit = true, desc = false },
         },
@@ -385,7 +379,7 @@ Git branches                _r_ │ _s_                 Git status
 Git stash                   _t_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<Esc>_  │  back => _<BS>_
+               exit => _<C-q>_  │  back => _<BS>_
 ]]
 
 M.telescope_git = Hydra({
@@ -399,8 +393,6 @@ M.telescope_git = Hydra({
             border = "single",
         },
     },
-    -- mode = { "n", "x", "v" },
-    -- body = ";tg",
     heads = {
         {
             "c",
@@ -434,7 +426,7 @@ M.telescope_git = Hydra({
             end,
         },
         {
-            "<Esc>",
+            "<C-q>",
             nil,
             { exit = true, desc = false },
         },

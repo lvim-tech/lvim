@@ -12,7 +12,7 @@ Diffview                    _d_ │ _s_                   GitSigns
 Lvim forgit                 _f_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<Esc>_
+                         exit _<C-q>_
 ]]
 
 M.git_menu = Hydra({
@@ -56,7 +56,7 @@ M.git_menu = Hydra({
             keymap.cmd("LvimForgit"),
             { nowait = true, silent = true, desc = "LvimForgit" },
         },
-        { "<Esc>", nil, { exit = true, desc = false } },
+        { "<C-q>", nil, { exit = true, desc = false } },
     },
 })
 
@@ -70,7 +70,7 @@ DiffView focus files        _F_ │ _f_      DiffView file history
 DiffView toggle files       _t_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<Esc>_  │  back => _<BS>_
+               exit => _<C-q>_  │  back => _<BS>_
 ]]
 
 M.diff_view = Hydra({
@@ -84,8 +84,6 @@ M.diff_view = Hydra({
             border = "single",
         },
     },
-    -- mode = { "n", "x", "v" },
-    -- body = ";gd",
     heads = {
         {
             "o",
@@ -129,7 +127,7 @@ M.diff_view = Hydra({
             end,
         },
         {
-            "<Esc>",
+            "<C-q>",
             nil,
             { exit = true, desc = false },
         },
@@ -162,8 +160,6 @@ M.git_signs = Hydra({
             border = "single",
         },
     },
-    -- mode = { "n", "x", "v" },
-    -- body = ";gs",
     heads = {
         {
             "p",
@@ -227,7 +223,7 @@ M.git_signs = Hydra({
             end,
         },
         {
-            "<Esc>",
+            "<C-q>",
             nil,
             { exit = true, desc = false },
         },

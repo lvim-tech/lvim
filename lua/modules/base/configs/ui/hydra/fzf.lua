@@ -13,7 +13,7 @@ LSP                         _d_ │ _D_                        DAP
 Misc                        _m_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<Esc>_
+                         exit _<C-q>_
 ]]
 
 M.fzf_menu = Hydra({
@@ -72,7 +72,7 @@ M.fzf_menu = Hydra({
                 M.fzf_misc:activate()
             end,
         },
-        { "<Esc>", nil, { exit = true, desc = false } },
+        { "<C-q>", nil, { exit = true, desc = false } },
     },
 })
 
@@ -87,7 +87,7 @@ Blines                      _S_ │ _C_              Loclist stack
 Oldfiles                    _o_ │ _t_                       Tabs
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<Esc>_  │  back => _<BS>_
+               exit => _<C-q>_  │  back => _<BS>_
 ]]
 
 M.fzf_buffers_and_files = Hydra({
@@ -101,8 +101,6 @@ M.fzf_buffers_and_files = Hydra({
             border = "single",
         },
     },
-    -- mode = { "n", "x", "v" },
-    -- body = ";zb",
     heads = {
         {
             "b",
@@ -161,7 +159,7 @@ M.fzf_buffers_and_files = Hydra({
             end,
         },
         {
-            "<Esc>",
+            "<C-q>",
             nil,
             { exit = true, desc = false },
         },
@@ -180,7 +178,7 @@ Grep visual                 _v_ │ _b_                Grep curbuf
 Grep project                _p_ │ _B_               Lgrep curbuf
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<Esc>_  │  back => _<BS>_
+               exit => _<C-q>_  │  back => _<BS>_
 ]]
 
 M.fzf_search = Hydra({
@@ -194,8 +192,6 @@ M.fzf_search = Hydra({
             border = "single",
         },
     },
-    -- mode = { "n", "x", "v" },
-    -- body = ";zs",
     heads = {
         {
             "g",
@@ -264,7 +260,7 @@ M.fzf_search = Hydra({
             end,
         },
         {
-            "<Esc>",
+            "<C-q>",
             nil,
             { exit = true, desc = false },
         },
@@ -281,7 +277,7 @@ Tags grep cword             _w_ │ _L_             Tags live grep
 Tags grep cWORD             _W_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<Esc>_  │  back => _<BS>_
+               exit => _<C-q>_  │  back => _<BS>_
 ]]
 
 M.fzf_tags = Hydra({
@@ -295,8 +291,6 @@ M.fzf_tags = Hydra({
             border = "single",
         },
     },
-    -- mode = { "n", "x", "v" },
-    -- body = ";zt",
     heads = {
         {
             "t",
@@ -340,7 +334,7 @@ M.fzf_tags = Hydra({
             end,
         },
         {
-            "<Esc>",
+            "<C-q>",
             nil,
             { exit = true, desc = false },
         },
@@ -356,7 +350,7 @@ Git commits                 _c_ │ _r_               Git branches
 Git bcommits                _b_ │ _t_                  Git stash
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<Esc>_  │  back => _<BS>_
+               exit => _<C-q>_  │  back => _<BS>_
 ]]
 
 M.fzf_git = Hydra({
@@ -370,8 +364,6 @@ M.fzf_git = Hydra({
             border = "single",
         },
     },
-    -- mode = { "n", "x", "v" },
-    -- body = ";zg",
     heads = {
         {
             "f",
@@ -410,7 +402,7 @@ M.fzf_git = Hydra({
             end,
         },
         {
-            "<Esc>",
+            "<C-q>",
             nil,
             { exit = true, desc = false },
         },
@@ -431,7 +423,7 @@ Lsp workspace symbols      _sw_ │ _gD_       Lsp_doc diagnostics
 Lsp live workspace symbols _sl_ │ _gW_ Lsp workspace diagnostics
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<Esc>_  │  back => _<BS>_
+               exit => _<C-q>_  │  back => _<BS>_
 ]]
 
 M.fzf_lsp = Hydra({
@@ -445,8 +437,6 @@ M.fzf_lsp = Hydra({
             border = "single",
         },
     },
-    -- mode = { "n", "x", "v" },
-    -- body = ";zl",
     heads = {
         {
             "r",
@@ -535,7 +525,7 @@ M.fzf_lsp = Hydra({
             end,
         },
         {
-            "<Esc>",
+            "<C-q>",
             nil,
             { exit = true, desc = false },
         },
@@ -551,7 +541,7 @@ Dap configurations          _c_ │ _f_                 Dap frames
 Dap breakpoints             _b_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<Esc>_  │  back => _<BS>_
+               exit => _<C-q>_  │  back => _<BS>_
 ]]
 
 M.fzf_dap = Hydra({
@@ -565,8 +555,6 @@ M.fzf_dap = Hydra({
             border = "single",
         },
     },
-    -- mode = { "n", "x", "v" },
-    -- body = ";zd",
     heads = {
         {
             "m",
@@ -600,7 +588,7 @@ M.fzf_dap = Hydra({
             end,
         },
         {
-            "<Esc>",
+            "<C-q>",
             nil,
             { exit = true, desc = false },
         },
@@ -620,7 +608,7 @@ Command history             _C_ │ _K_                    Keymaps
 Search history              _I_ │ _f_                  Filetypes
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<Esc>_  │  back => _<BS>_
+               exit => _<C-q>_  │  back => _<BS>_
 ]]
 
 M.fzf_misc = Hydra({
@@ -634,8 +622,6 @@ M.fzf_misc = Hydra({
             border = "single",
         },
     },
-    -- mode = { "n", "x", "v" },
-    -- body = ";zm",
     heads = {
         {
             "t",
@@ -714,7 +700,7 @@ M.fzf_misc = Hydra({
             end,
         },
         {
-            "<Esc>",
+            "<C-q>",
             nil,
             { exit = true, desc = false },
         },

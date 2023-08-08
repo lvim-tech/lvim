@@ -17,7 +17,7 @@ Ranger                      _r_ │ _v_                       Vifm
 Oil                         _O_ │ _f_          LVIM file manager
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<Esc>_
+                         exit _<C-q>_
 ]]
 
 M.explorer = Hydra({
@@ -94,7 +94,7 @@ M.explorer = Hydra({
             keymap.cmd("LvimFileManager"),
             { nowait = true, silent = true, desc = "LVIM file manager" },
         },
-        { "<Esc>", nil, { exit = true, desc = false } },
+        { "<C-q>", nil, { exit = true, desc = false } },
     },
 })
 

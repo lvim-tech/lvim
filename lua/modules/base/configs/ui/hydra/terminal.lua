@@ -16,7 +16,7 @@ Terminal vertical 3         _7_ │ _8_        Terminal vertical 4
 Terminal float              _9_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<Esc>_
+                         exit _<C-q>_
 ]]
 
 M.terminal = Hydra({
@@ -78,7 +78,7 @@ M.terminal = Hydra({
             keymap.cmd("TerminalFloat"),
             { nowait = true, silent = true, desc = "Terminal float" },
         },
-        { "<Esc>", nil, { exit = true, desc = false } },
+        { "<C-q>", nil, { exit = true, desc = false } },
     },
 })
 

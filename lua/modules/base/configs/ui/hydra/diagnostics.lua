@@ -33,7 +33,7 @@ Symbols outline             _U_ │
 Lvim diagnostics        _<C-c>_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<Esc>_
+                         exit _<C-q>_
 ]]
 
 M.diagnostics = Hydra({
@@ -185,7 +185,7 @@ M.diagnostics = Hydra({
             keymap.cmd("LvimDiagnostics"),
             { nowait = true, silent = true, desc = "Lvim diagnostics" },
         },
-        { "<Esc>", nil, { exit = true, desc = false } },
+        { "<C-q>", nil, { exit = true, desc = false } },
     },
 })
 

@@ -12,7 +12,7 @@ Choice                      _c_ │ _d_                     Delete
 Load                        _L_ │ _s_                       Save
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<Esc>_
+                         exit _<C-q>_
 ]]
 
 M.quickfix = Hydra({
@@ -59,7 +59,7 @@ M.quickfix = Hydra({
             keymap.cmd("LvimListQuickFixSave"),
             { nowait = true, silent = true, desc = "Save" },
         },
-        { "<Esc>", nil, { exit = true, desc = false } },
+        { "<C-q>", nil, { exit = true, desc = false } },
     },
 })
 

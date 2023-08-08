@@ -16,7 +16,7 @@ Toggle ignore case          _I_ │ _L_         Resume last search
 Toggle hidden               _H_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<Esc>_
+                         exit _<C-q>_
 ]]
 
 M.replace = Hydra({
@@ -98,7 +98,7 @@ M.replace = Hydra({
             keymap.cmd("SpectreShowOptions"),
             { nowait = true, silent = true, desc = "Show option" },
         },
-        { "<Esc>", nil, { exit = true, desc = false } },
+        { "<C-q>", nil, { exit = true, desc = false } },
     },
 })
 

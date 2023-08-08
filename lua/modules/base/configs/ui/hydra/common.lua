@@ -22,7 +22,7 @@ View hunk                   _v_ │ _b_                 Blame line
 Lazygit                     _L_ │ _g_                Lvim forgit
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<Esc>_
+                         exit _<C-q>_
 ]]
 
 M.common = Hydra({
@@ -119,7 +119,7 @@ M.common = Hydra({
             keymap.cmd("LvimForgit"),
             { nowait = true, silent = true, desc = "LvimForgit" },
         },
-        { "<Esc>", nil, { exit = true, desc = false } },
+        { "<C-q>", nil, { exit = true, desc = false } },
     },
 })
 

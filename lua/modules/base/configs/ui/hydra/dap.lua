@@ -18,7 +18,7 @@ Get session                 _g_ │ _s_                   UI close
 Lua dap launch              _U_ │ _L_           Dap local config
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<Esc>_
+                         exit _<C-q>_
 ]]
 
 M.dap = Hydra({
@@ -125,7 +125,7 @@ M.dap = Hydra({
             keymap.cmd("DAPLocal"),
             { nowait = true, silent = true, desc = "Dap local config" },
         },
-        { "<Esc>", nil, { exit = true, desc = false } },
+        { "<C-q>", nil, { exit = true, desc = false } },
     },
 })
 

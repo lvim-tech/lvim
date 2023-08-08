@@ -16,7 +16,7 @@ Resize -2                   _J_ │ _K_                  Resize +2
 Lazy                        _z_ │ _m_                      Mason
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<Esc>_
+                         exit _<C-q>_
 ]]
 
 M.lvim = Hydra({
@@ -83,7 +83,7 @@ M.lvim = Hydra({
             keymap.cmd("Mason"),
             { nowait = true, silent = true, desc = "Mason" },
         },
-        { "<Esc>", nil, { exit = true, desc = false } },
+        { "<C-q>", nil, { exit = true, desc = false } },
     },
 })
 

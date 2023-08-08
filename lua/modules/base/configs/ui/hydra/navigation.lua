@@ -24,7 +24,7 @@ Create empty buffer         _e_ │ _d_             Bdelete buffer
 Bnext buffer                _n_ │ _p_               Bprev buffer
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<Esc>_
+                         exit _<C-q>_
 ]]
 
 M.navigation = Hydra({
@@ -146,7 +146,7 @@ M.navigation = Hydra({
             keymap.cmd("BufSurfBack"),
             { nowait = true, silent = true, desc = "Bprev buffer" },
         },
-        { "<Esc>", nil, { exit = true, desc = false } },
+        { "<C-q>", nil, { exit = true, desc = false } },
     },
 })
 

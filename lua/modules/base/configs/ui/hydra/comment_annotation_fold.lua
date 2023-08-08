@@ -18,7 +18,7 @@ Expr                        _e_ │ _d_                       Diff
 Marker                      _r_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<Esc>_
+                         exit _<C-q>_
 ]]
 
 M.comment_annotation_hint = Hydra({
@@ -100,7 +100,7 @@ M.comment_annotation_hint = Hydra({
             keymap.cmd("set foldmethod=marker"),
             { nowait = true, silent = true, desc = "Marker" },
         },
-        { "<Esc>", nil, { exit = true, desc = false } },
+        { "<C-q>", nil, { exit = true, desc = false } },
     },
 })
 

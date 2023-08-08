@@ -22,7 +22,7 @@ Vimtex toggle main          _n_ │ _p_          Vimtex imaps list
 Vimtex view                 _v_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<Esc>_
+                         exit _<C-q>_
 ]]
 
 M.vimtex = Hydra({
@@ -164,7 +164,7 @@ M.vimtex = Hydra({
             keymap.cmd("VimtexView"),
             { nowait = true, silent = true, desc = "Vimtex view" },
         },
-        { "<Esc>", nil, { exit = true, desc = false } },
+        { "<C-q>", nil, { exit = true, desc = false } },
     },
 })
 
