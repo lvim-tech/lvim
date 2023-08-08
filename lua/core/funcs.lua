@@ -84,6 +84,11 @@ end
 
 M.keymaps = function(mode, opts, keymaps)
     for _, keymap in ipairs(keymaps) do
+        if keymap[3] ~= nil then
+            opts.desc = keymap[3]
+        else
+            opts.desc = nil
+        end
         vim.keymap.set(mode, keymap[1], keymap[2], opts)
     end
 end
