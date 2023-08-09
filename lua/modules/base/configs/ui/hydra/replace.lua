@@ -8,7 +8,7 @@ local spectre_hint = [[
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 Open                        _O_ │ _P_                Show option
-Toggle line                 _g_ │ _r_        Run current replace
+Toggle line                _dd_ │ _r_        Run current replace
 Select entry             _<CR>_ │ _R_                Run replace
 Send to quickfix            _q_ │ _u_         Toggle live update
 Replace command             _m_ │ _v_                Change view
@@ -39,7 +39,7 @@ M.replace = Hydra({
             { nowait = true, silent = true, desc = "Open" },
         },
         {
-            "g",
+            "dd",
             keymap.cmd("SpectreToggleLine"),
             { nowait = true, silent = true, desc = "Toggle line" },
         },

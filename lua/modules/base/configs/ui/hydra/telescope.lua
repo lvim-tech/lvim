@@ -22,7 +22,7 @@ M.telescope_menu = Hydra({
         color = "pink",
         invoke_on_body = true,
         hint = {
-            position = "bottom-center",
+            position = "top-center",
             border = "single",
         },
     },
@@ -85,7 +85,7 @@ M.telescope_file = Hydra({
         color = "pink",
         invoke_on_body = true,
         hint = {
-            position = "bottom-center",
+            position = "top-center",
             border = "single",
         },
     },
@@ -151,7 +151,7 @@ M.telescope_vim = Hydra({
         color = "pink",
         invoke_on_body = true,
         hint = {
-            position = "bottom-center",
+            position = "top-center",
             border = "single",
         },
     },
@@ -301,7 +301,7 @@ M.telescope_lsp = Hydra({
         color = "pink",
         invoke_on_body = true,
         hint = {
-            position = "bottom-center",
+            position = "top-center",
             border = "single",
         },
     },
@@ -389,7 +389,7 @@ M.telescope_git = Hydra({
         color = "pink",
         invoke_on_body = true,
         hint = {
-            position = "bottom-center",
+            position = "top-center",
             border = "single",
         },
     },

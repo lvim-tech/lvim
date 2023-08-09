@@ -26,7 +26,7 @@ M.terminal = Hydra({
         color = "pink",
         invoke_on_body = true,
         hint = {
-            position = "bottom-center",
+            position = "top-center",
             border = "single",
         },
     },
