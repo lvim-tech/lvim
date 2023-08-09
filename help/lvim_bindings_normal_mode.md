@@ -49,7 +49,7 @@
 | `<S-x>`            | `:Neotree filesystem left<CR>`    | Neotree filesystem left               |
 | `<C-c><C-f>`       | `:Neotree filesystem left<CR>`    | Neotree filesystem left               |
 | `<C-c><C-b>`       | `:Neotree buffers left<CR>`       | Neotree filesystem left               |
-| `<C-c><C-g>`       | `:Neotree git_status left<CR>`    | Neotree git_status left               |
+| `<C-c><C-v>`       | `:Neotree git_status left<CR>`    | Neotree git_status left               |
 | `<C-c><C-d>`       | `:TroubleToggle<CR>`              | Trouble                               |
 | `<S-q>`            | `:Neotree close<CR>`              | Neotree close                         |
 | `<S-m>`            | `:MarkdownPreview<CR>`            | Markdown preview                      |
