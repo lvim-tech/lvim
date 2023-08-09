@@ -66,15 +66,17 @@ M.install_all_packages = function()
     end
     vim.cmd(":Mason")
     for i = 1, #packages do
-        local ok, p = pcall(function()
-            return mason_registry.get_package(packages[i])
-        end)
-        if not ok then
-            notify.error("Package " .. packages[i] .. " not available", {
-                title = "LVIM IDE",
-            })
-        else
-            p:install():once("closed", vim.schedule_wrap(function() end))
+        if not mason_registry.is_installed(packages[i]) then
+            local ok, p = pcall(function()
+                return mason_registry.get_package(packages[i])
+            end)
+            if not ok then
+                notify.error("Package " .. packages[i] .. " not available", {
+                    title = "LVIM IDE",
+                })
+            else
+                p:install():once("closed", vim.schedule_wrap(function() end))
+            end
         end
     end
 end

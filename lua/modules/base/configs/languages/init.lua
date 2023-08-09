@@ -13,7 +13,7 @@ end
 config.mason_nvim = function()
     vim.api.nvim_create_user_command(
         "LvimInstallLangDependencies",
-        "lua require('languages.base.utils').install_all_packages()",
+        "lua require('languages.utils.lsp_manager').install_all_packages()",
         {}
     )
     vim.api.nvim_create_user_command("LspHover", "lua vim.lsp.buf.hover()", {})
