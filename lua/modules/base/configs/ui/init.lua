@@ -990,36 +990,40 @@ config.mini_clue = function()
         if status == true then
             mini_clue.enable_all_triggers()
             vim.g.miniclue_disable = false
+            local buftype = vim.tbl_contains({
+                "prompt",
+                "help",
+                "quickfix",
+            }, vim.bo.buftype)
+            local filetype = vim.tbl_contains({
+                "neo-tree",
+                "spectre_panel",
+                "Outline",
+                "NeogitStatus",
+                "NeogitPopup",
+                "calendar",
+                "dapui_breakpoints",
+                "dapui_scopes",
+                "dapui_stacks",
+                "dapui_watches",
+                "git",
+                "netrw",
+                "octo",
+                "undotree",
+                "diff",
+                "DiffviewFiles",
+                "flutterToolsOutline",
+                "log",
+                "toggleterm",
+                "netrw",
+            }, vim.bo.filetype)
+            if buftype or filetype then
+                vim.opt.timeoutlen = 1000
+            else
+                vim.opt.timeoutlen = 0
+            end
             vim.api.nvim_create_autocmd("BufWinEnter", {
                 callback = function()
-                    local buftype = vim.tbl_contains({
-                        "prompt",
-                        "nofile",
-                        "help",
-                        "quickfix",
-                    }, vim.bo.buftype)
-                    local filetype = vim.tbl_contains({
-                        "neo-tree",
-                        "spectre_panel",
-                        "Outline",
-                        "NeogitStatus",
-                        "NeogitPopup",
-                        "calendar",
-                        "dapui_breakpoints",
-                        "dapui_scopes",
-                        "dapui_stacks",
-                        "dapui_watches",
-                        "git",
-                        "netrw",
-                        "octo",
-                        "undotree",
-                        "diff",
-                        "DiffviewFiles",
-                        "flutterToolsOutline",
-                        "log",
-                        "toggleterm",
-                        "netrw",
-                    }, vim.bo.filetype)
                     if buftype or filetype then
                         vim.opt.timeoutlen = 1000
                     else
