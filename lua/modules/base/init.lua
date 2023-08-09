@@ -782,6 +782,7 @@ modules["DNLHC/glance.nvim"] = {
 modules["folke/trouble.nvim"] = {
     commit = funcs.get_commit("trouble.nvim", plugins_snapshot),
     dependencies = { "nvim-tree/nvim-web-devicons" },
+    cmd = "Trouble",
     keys = {
         { "<C-c><C-d>", "<Cmd>TroubleToggle<CR>", desc = "Trouble" },
     },

@@ -278,7 +278,7 @@ M.get_statusline = function()
         },
         on_click = {
             callback = function()
-                vim.cmd("Neotree diagnostics position=bottom")
+                vim.cmd("Trouble workspace_diagnostics")
             end,
             name = "heirline_diagnostics",
         },
