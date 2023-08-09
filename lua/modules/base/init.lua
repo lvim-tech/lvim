@@ -248,6 +248,9 @@ modules["echasnovski/mini.files"] = {
 
 modules["echasnovski/mini.clue"] = {
     commit = funcs.get_commit("mini.clue", plugins_snapshot),
+    event = {
+        "VimEnter",
+    },
     config = ui_config.mini_clue,
 }
 
