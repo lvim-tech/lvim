@@ -1016,6 +1016,7 @@ config.mini_clue = function()
                 "log",
                 "toggleterm",
                 "netrw",
+                "noice",
             }
             vim.api.nvim_create_autocmd("BufEnter, WinEnter", {
                 callback = function()
