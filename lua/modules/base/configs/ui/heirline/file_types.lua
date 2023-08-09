@@ -1,13 +1,12 @@
 return {
+    "alpha",
     "ctrlspace",
     "ctrlspace_help",
-    "packer",
     "undotree",
     "diff",
     "Outline",
     "NvimTree",
     "LvimHelper",
-    "floaterm",
     "dashboard",
     "vista",
     "spectre_panel",
@@ -24,6 +23,5 @@ return {
     "neo-tree-popup",
     "noice",
     "toggleterm",
-    "oil",
     "org",
 }

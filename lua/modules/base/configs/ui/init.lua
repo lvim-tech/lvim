@@ -1002,6 +1002,23 @@ config.mini_clue = function()
                         "neo-tree",
                         "spectre_panel",
                         "Outline",
+                        "NeogitStatus",
+                        "NeogitPopup",
+                        "calendar",
+                        "dapui_breakpoints",
+                        "dapui_scopes",
+                        "dapui_stacks",
+                        "dapui_watches",
+                        "git",
+                        "netrw",
+                        "octo",
+                        "undotree",
+                        "diff",
+                        "DiffviewFiles",
+                        "flutterToolsOutline",
+                        "log",
+                        "toggleterm",
+                        "netrw",
                     }, vim.bo.filetype)
                     if buftype or filetype then
                         vim.opt.timeoutlen = 1000
