@@ -124,7 +124,7 @@
 
     #+begin_src lua
 
-    :LvimKeysHelper
+    :LvimKeysHelperDelay
 
     #+end_src
 
