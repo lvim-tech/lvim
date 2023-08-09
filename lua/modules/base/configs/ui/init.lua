@@ -990,14 +990,20 @@ config.mini_clue = function()
         if status == true then
             mini_clue.enable_all_triggers()
             vim.g.miniclue_disable = false
-            vim.api.nvim_create_autocmd("WinEnter", {
+            vim.api.nvim_create_autocmd("BufWinEnter", {
                 callback = function()
+                    local buftype = vim.tbl_contains({
+                        "prompt",
+                        "nofile",
+                        "help",
+                        "quickfix",
+                    }, vim.bo.buftype)
                     local filetype = vim.tbl_contains({
                         "neo-tree",
                         "spectre_panel",
                         "Outline",
                     }, vim.bo.filetype)
-                    if filetype then
+                    if buftype or filetype then
                         vim.opt.timeoutlen = 1000
                     else
                         vim.opt.timeoutlen = 0
