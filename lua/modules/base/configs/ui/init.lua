@@ -981,6 +981,7 @@ config.mini_clue = function()
                 "neo-tree",
                 "spectre_panel",
                 "Outline",
+                "Trouble",
                 "NeogitStatus",
                 "NeogitPopup",
                 "calendar",
