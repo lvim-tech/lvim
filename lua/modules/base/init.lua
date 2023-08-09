@@ -784,7 +784,7 @@ modules["folke/trouble.nvim"] = {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     cmd = "Trouble",
     keys = {
-        { "<C-c><C-t>", "<Cmd>TroubleToggle<CR>", desc = "Trouble" },
+        { "<C-c><C-v>", "<Cmd>TroubleToggle<CR>", desc = "Trouble" },
     },
     config = languages_config.trouble_nvim,
 }
