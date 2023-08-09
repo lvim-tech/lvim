@@ -994,6 +994,7 @@ config.mini_clue = function()
                 "prompt",
                 "help",
                 "quickfix",
+                "nofile",
             }
             local filetypes = {
                 "neo-tree",
@@ -1017,16 +1018,21 @@ config.mini_clue = function()
                 "toggleterm",
                 "netrw",
                 "noice",
+                "lazy",
+                "mason",
+                "LvimHelper",
             }
-            vim.api.nvim_create_autocmd("BufEnter, WinEnter", {
+            vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
                 callback = function()
-                    local buftype = vim.tbl_contains(buftypes, vim.bo.buftype)
-                    local filetype = vim.tbl_contains(filetypes, vim.bo.filetype)
-                    if buftype or filetype then
-                        vim.opt.timeoutlen = 1000
-                    else
-                        vim.opt.timeoutlen = 0
-                    end
+                    vim.schedule(function()
+                        local buftype = vim.tbl_contains(buftypes, vim.bo.buftype)
+                        local filetype = vim.tbl_contains(filetypes, vim.bo.filetype)
+                        if buftype or filetype then
+                            vim.opt.timeoutlen = 1000
+                        else
+                            vim.opt.timeoutlen = 0
+                        end
+                    end)
                 end,
                 group = group,
             })
