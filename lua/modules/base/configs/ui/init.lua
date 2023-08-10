@@ -952,6 +952,8 @@ config.mini_clue = function()
                 { mode = "n", keys = ";" },
                 { mode = "n", keys = "<C-c>" },
                 { mode = "n", keys = "d" },
+                { mode = "n", keys = "]" },
+                { mode = "n", keys = "[" },
             },
             clues = {
                 mini_clue.gen_clues.builtin_completion(),
@@ -964,71 +966,15 @@ config.mini_clue = function()
         })
     end
     clue_setup()
-    local group = vim.api.nvim_create_augroup("ClueStatus", {
-        clear = true,
-    })
     function clue_enable_disable(status)
         if status == true then
             mini_clue.enable_all_triggers()
             vim.g.miniclue_disable = false
-            local buftypes = {
-                "prompt",
-                "help",
-                "quickfix",
-                "nofile",
-            }
-            local filetypes = {
-                "neo-tree",
-                "spectre_panel",
-                "Outline",
-                "Trouble",
-                "NeogitStatus",
-                "NeogitPopup",
-                "calendar",
-                "dapui_breakpoints",
-                "dapui_scopes",
-                "dapui_stacks",
-                "dapui_watches",
-                "git",
-                "netrw",
-                "octo",
-                "undotree",
-                "diff",
-                "DiffviewFiles",
-                "flutterToolsOutline",
-                "log",
-                "toggleterm",
-                "netrw",
-                "noice",
-                "lazy",
-                "mason",
-                "LvimHelper",
-            }
-            vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
-                callback = function()
-                    vim.schedule(function()
-                        local buftype = vim.tbl_contains(buftypes, vim.bo.buftype)
-                        local filetype = vim.tbl_contains(filetypes, vim.bo.filetype)
-                        if buftype or filetype then
-                            vim.opt.timeoutlen = 1000
-                        else
-                            vim.opt.timeoutlen = 0
-                        end
-                    end)
-                end,
-                group = group,
-            })
+            funcs.tm_autocmd("start")
         else
             vim.g.miniclue_disable = true
             mini_clue.disable_all_triggers()
-            local autocommands = vim.api.nvim_get_autocmds({
-                group = group,
-            })
-            if next(autocommands) == nil then
-            else
-                vim.api.nvim_del_autocmd(autocommands[1]["id"])
-                vim.opt.timeoutlen = 1000
-            end
+            funcs.tm_autocmd("stop")
         end
     end
     if _G.LVIM_SETTINGS.keyshelper == true then

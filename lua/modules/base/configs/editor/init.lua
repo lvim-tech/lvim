@@ -219,12 +219,15 @@ config.neocomposer_nvim = function()
             toggle_macro_menu = "<Leader>qm",
         },
     })
-    vim.keymap.set(
-        "n",
-        "<Leader>qr",
-        "<cmd>lua require('NeoComposer.macro').toggle_record()<cr>",
-        { noremap = true, silent = true, desc = "Macro Record Start/Stop" }
-    )
+    local state = require("NeoComposer.state")
+    vim.keymap.set("n", "<Leader>qr", function()
+        require("NeoComposer.macro").toggle_record()
+        if state.recording == true then
+            funcs.tm_autocmd("stop")
+        else
+            funcs.tm_autocmd("start")
+        end
+    end, { noremap = true, silent = true, desc = "Macro Record Start/Stop" })
     vim.keymap.set(
         { "n", "x" },
         "<Leader>qq",

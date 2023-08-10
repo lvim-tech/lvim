@@ -29,6 +29,9 @@ function global:load_variables()
     self.efm = false
     self.lvim_packages = false
     self.install_proccess = false
+    self.tm_augroup = vim.api.nvim_create_augroup("ClueStatus", {
+        clear = true,
+    })
 end
 
 global:load_variables()
