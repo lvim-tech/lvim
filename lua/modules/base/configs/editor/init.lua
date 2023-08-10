@@ -222,7 +222,7 @@ config.neocomposer_nvim = function()
     local state = require("NeoComposer.state")
     vim.keymap.set("n", "<Leader>qr", function()
         require("NeoComposer.macro").toggle_record()
-        if state.recording == true then
+        if state.recording == true and _G.LVIM_SETTINGS.keyshelper == true then
             funcs.tm_autocmd("stop")
         else
             funcs.tm_autocmd("start")
