@@ -502,10 +502,13 @@ M.tm_autocmd = function(action)
         local autocommands = vim.api.nvim_get_autocmds({
             group = global.tm_augroup,
         })
+
         if next(autocommands) == nil then
         else
-            vim.api.nvim_del_autocmd(autocommands[1]["id"])
-            vim.opt.timeoutlen = 1000
+            vim.schedule(function()
+                vim.api.nvim_del_autocmd(autocommands[1]["id"])
+                vim.opt.timeoutlen = 1000
+            end)
         end
     end
 end
