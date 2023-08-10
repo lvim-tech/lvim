@@ -264,11 +264,11 @@ modules["nvim-neo-tree/neo-tree.nvim"] = {
     commit = funcs.get_commit("neo-tree.nvim", plugins_snapshot),
     cmd = "Neotree",
     keys = {
-        { "<S-x>", "<cmd>Neotree filesystem left<CR>", desc = "NeoTree filesystem" },
-        { "<C-c><C-f>", "<cmd>Neotree filesystem left<CR>", desc = "NeoTree filesystem" },
-        { "<C-c><C-b>", "<cmd>Neotree buffers left<CR>", desc = "NeoTree buffers" },
-        { "<C-c><C-g>", "<cmd>Neotree git_status left<CR>", desc = "NeoTree git status" },
-        { "<S-q>", "<cmd>Neotree close<CR>", desc = "NeoTree close" },
+        { "<S-x>", "<cmd>Neotree toggle filesystem left<CR>", desc = "NeoTree filesystem" },
+        { "<C-c><C-f>", "<cmd>Neotree toggle filesystem left<CR>", desc = "NeoTree filesystem" },
+        { "<C-c><C-b>", "<cmd>Neotree toggle buffers left<CR>", desc = "NeoTree buffers" },
+        { "<C-c><C-g>", "<cmd>Neotree toggle git_status left<CR>", desc = "NeoTree git status" },
+        { "<S-q>", "<cmd>Neotree toggle close<CR>", desc = "NeoTree close" },
     },
     dependencies = {
         "nvim-lua/plenary.nvim",
