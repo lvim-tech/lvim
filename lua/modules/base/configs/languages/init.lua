@@ -19,6 +19,17 @@ config.mason_nvim = function()
     vim.api.nvim_create_user_command("LspHover", "lua vim.lsp.buf.hover()", {})
     vim.api.nvim_create_user_command("LspRename", "lua vim.lsp.buf.rename()", {})
     vim.api.nvim_create_user_command("LspFormat", "lua vim.lsp.buf.format {async = true}", {})
+    -- vim.api.nvim_create_user_command("LspFormatRange", function()
+    --     local start_row, _ = unpack(vim.api.nvim_buf_get_mark(0, "<"))
+    --     local end_row, _ = unpack(vim.api.nvim_buf_get_mark(0, ">"))
+    --     vim.lsp.buf.format({
+    --         range = {
+    --             ["start"] = { start_row, 0 },
+    --             ["end"] = { end_row, 0 },
+    --         },
+    --         async = true,
+    --     })
+    -- end, {})
     vim.api.nvim_create_user_command("LspCodeAction", "lua vim.lsp.buf.code_action()", {})
     vim.api.nvim_create_user_command(
         "LspShowDiagnosticCurrent",
@@ -80,9 +91,6 @@ config.mason_nvim = function()
     vim.keymap.set("n", "dp", function()
         vim.cmd("LspShowDiagnosticPrev")
     end, { noremap = true, silent = true, desc = "LspShowDiagnosticPrev" })
-    vim.keymap.set("n", "dl", function()
-        vim.diagnostic.setloclist()
-    end, { noremap = true, silent = true, desc = "LspShowDiagnosticInLocList" })
     local mason_status_ok, mason = pcall(require, "mason")
     if not mason_status_ok then
         return
@@ -97,36 +105,6 @@ config.mason_nvim = function()
     local efm_manager = require("languages.utils.efm_manager")
     efm_manager.setup_efm()
     vim.schedule(function() end)
-end
-
-config.null_ls_nvim = function()
-    local null_ls_status_ok, null_ls = pcall(require, "null-ls")
-    if not null_ls_status_ok then
-        return
-    end
-    local generators = require("null-ls.generators")
-    local methods = require("null-ls.methods")
-    null_ls.setup({
-        debug = false,
-        on_attach = function(client, bufnr)
-            if client.server_capabilities.documentFormattingProvider then
-                local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
-                local method = methods.internal.FORMATTING
-                local available = generators.get_available(filetype, method)
-                if next(available) then
-                    vim.api.nvim_create_autocmd("BufWritePre", {
-                        buffer = bufnr,
-                        callback = function()
-                            if _G.LVIM_SETTINGS.autoformat == true then
-                                vim.lsp.buf.format()
-                            end
-                        end,
-                        group = "LvimIDE",
-                    })
-                end
-            end
-        end,
-    })
 end
 
 config.neotest = function()
