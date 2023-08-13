@@ -250,19 +250,11 @@ M.keymaps = function(_, bufnr)
         vim.lsp.buf.rename()
     end, { noremap = true, silent = true, buffer = bufnr, desc = "LspRename" })
     vim.keymap.set("n", "gf", function()
-        vim.lsp.buf.format()
+        vim.cmd("LspFormat")
     end, { noremap = true, silent = true, buffer = bufnr, desc = "LspFormat" })
-    vim.keymap.set("v", "g;", function()
-        local start_row, _ = unpack(vim.api.nvim_buf_get_mark(0, "<"))
-        local end_row, _ = unpack(vim.api.nvim_buf_get_mark(0, ">"))
-        vim.lsp.buf.format({
-            range = {
-                ["start"] = { start_row, 0 },
-                ["end"] = { end_row, 0 },
-            },
-            -- async = true,
-        })
-    end, { noremap = true, silent = true, buffer = bufnr, desc = "LspRangeFormat" })
+    -- vim.keymap.set("x", "g;", function()
+    --     vim.cmd("LspFormatRange")
+    -- end, { noremap = true, silent = true, buffer = bufnr, desc = "LspFormatRange" })
     vim.keymap.set("n", "ga", function()
         vim.lsp.buf.code_action()
     end, { noremap = true, silent = true, buffer = bufnr, desc = "LspCodeAction" })
@@ -281,9 +273,6 @@ M.keymaps = function(_, bufnr)
     vim.keymap.set("n", "K", function()
         vim.lsp.buf.hover()
     end, { noremap = true, silent = true, buffer = bufnr, desc = "LspHover" })
-    vim.keymap.set("n", "gt", function()
-        vim.cmd("LspVirtualTextToggle")
-    end, { noremap = true, silent = true, buffer = bufnr, desc = "LspVirtualTextToggle" })
 end
 
 return M
