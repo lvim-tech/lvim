@@ -2,6 +2,7 @@ local global = require("core.global")
 local funcs = require("core.funcs")
 local options = require("configs.base.options")
 local keymaps = require("configs.base.keymaps")
+local keymaps_ft = require("configs.base.keymaps_ft")
 local icons = require("configs.base.ui.icons")
 local group = vim.api.nvim_create_augroup("LvimIDE", {
     clear = true,
@@ -142,33 +143,6 @@ configs["base_options"] = function()
     vim.g.netrw_keepdir = 1
     vim.g.netrw_list_hide = "(^|ss)\zs.S+"
     vim.g.netrw_localcopydircmd = "cp -r"
-    vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "netrw" },
-        callback = function()
-            vim.opt_local.statuscolumn = ""
-            vim.api.nvim_set_keymap("n", "<Esc>", "<Cmd>:bd<CR>", {})
-            vim.api.nvim_set_keymap("n", ".", "gh", {})
-            vim.api.nvim_set_keymap("n", "P", "<C-w>z", {})
-            vim.api.nvim_set_keymap("n", ".", "gh", {})
-            vim.api.nvim_set_keymap("n", "<TAB>", "mf", {})
-            vim.api.nvim_set_keymap("n", "<S-TAB>", "mF", {})
-            vim.api.nvim_set_keymap("n", "<Leader><TAB>", "mu", {})
-            vim.api.nvim_set_keymap("n", "fc", "mc", {})
-            vim.api.nvim_set_keymap("n", "fC", "mtmc", {})
-            vim.api.nvim_set_keymap("n", "fx", "mm", {})
-            vim.api.nvim_set_keymap("n", "fX", "mtmm", {})
-            vim.api.nvim_set_keymap("n", "f;", "mx", {})
-            vim.api.nvim_set_keymap("n", "bb", "mb", {})
-            vim.api.nvim_set_keymap("n", "bd", "mB", {})
-            vim.api.nvim_set_keymap("n", "bl", "gb", {})
-            vim.api.nvim_set_keymap("n", "H", "u", {})
-            vim.api.nvim_set_keymap("n", "fa", "d", {})
-            vim.api.nvim_set_keymap("n", "ff", [[%:w<CR>]], {})
-            vim.api.nvim_set_keymap("n", "fr", "R", {})
-            vim.api.nvim_set_keymap("n", "fd", "D", {})
-        end,
-        group = group,
-    })
 end
 
 configs["base_events"] = function()
@@ -264,6 +238,7 @@ end
 configs["base_keymaps"] = function()
     funcs.keymaps("n", { noremap = true, silent = true }, keymaps.normal)
     funcs.keymaps("x", { noremap = true, silent = true }, keymaps.visual)
+    keymaps_ft.set_keymaps_ft()
 end
 
 configs["base_ctrlspace_pre_config"] = function()

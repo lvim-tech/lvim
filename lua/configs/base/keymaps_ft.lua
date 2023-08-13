@@ -1,0 +1,86 @@
+local M = {}
+
+M.set_keymaps_ft = function()
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "netrw" },
+        callback = function()
+            vim.opt_local.statuscolumn = ""
+            vim.api.nvim_set_keymap("n", "<Esc>", "<Cmd>:bd<CR>", {})
+            vim.api.nvim_set_keymap("n", ".", "gh", {})
+            vim.api.nvim_set_keymap("n", "P", "<C-w>z", {})
+            vim.api.nvim_set_keymap("n", ".", "gh", {})
+            vim.api.nvim_set_keymap("n", "<TAB>", "mf", {})
+            vim.api.nvim_set_keymap("n", "<S-TAB>", "mF", {})
+            vim.api.nvim_set_keymap("n", "<Leader><TAB>", "mu", {})
+            vim.api.nvim_set_keymap("n", "fc", "mc", {})
+            vim.api.nvim_set_keymap("n", "fC", "mtmc", {})
+            vim.api.nvim_set_keymap("n", "fx", "mm", {})
+            vim.api.nvim_set_keymap("n", "fX", "mtmm", {})
+            vim.api.nvim_set_keymap("n", "f;", "mx", {})
+            vim.api.nvim_set_keymap("n", "bb", "mb", {})
+            vim.api.nvim_set_keymap("n", "bd", "mB", {})
+            vim.api.nvim_set_keymap("n", "bl", "gb", {})
+            vim.api.nvim_set_keymap("n", "H", "u", {})
+            vim.api.nvim_set_keymap("n", "fa", "d", {})
+            vim.api.nvim_set_keymap("n", "ff", [[%:w<CR>]], {})
+            vim.api.nvim_set_keymap("n", "fr", "R", {})
+            vim.api.nvim_set_keymap("n", "fd", "D", {})
+        end,
+        group = "LvimIDE",
+    })
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = {
+            "dart",
+        },
+        callback = function()
+            vim.keymap.set("n", "<C-c><C-c>f", function()
+                vim.cmd("FlutterRun")
+            end, { buffer = true, noremap = true, silent = true, desc = "FlutterRun" })
+            vim.keymap.set("n", "<C-c><C-c>r", function()
+                vim.cmd("FlutterReload")
+            end, { buffer = true, noremap = true, silent = true, desc = "FlutterReload" })
+            vim.keymap.set("n", "<C-c><C-c>R", function()
+                vim.cmd("FlutterRestart")
+            end, { buffer = true, noremap = true, silent = true, desc = "FlutterRestart" })
+            vim.keymap.set("n", "<C-c><C-c>q", function()
+                vim.cmd("FlutterQuit")
+            end, { buffer = true, noremap = true, silent = true, desc = "FlutterQuit" })
+            vim.keymap.set("n", "<C-c><C-c>d", function()
+                vim.cmd("FlutterDevices")
+            end, { buffer = true, noremap = true, silent = true, desc = "FlutterDevices" })
+            vim.keymap.set("n", "<C-c><C-c>m", function()
+                vim.cmd("FlutterEmulators")
+            end, { buffer = true, noremap = true, silent = true, desc = "FlutterEmulators" })
+            vim.keymap.set("n", "<C-c><C-c>o", function()
+                vim.cmd("FlutterOutlineToggle")
+            end, { buffer = true, noremap = true, silent = true, desc = "FlutterOutlineToggle" })
+            vim.keymap.set("n", "<C-c><C-c>t", function()
+                vim.cmd("FlutterDevTools")
+            end, { buffer = true, noremap = true, silent = true, desc = "FlutterDevTools" })
+            vim.keymap.set("n", "<C-c><C-c>T", function()
+                vim.cmd("FlutterDevToolsActivate")
+            end, { buffer = true, noremap = true, silent = true, desc = "FlutterDevToolsActivate" })
+            vim.keymap.set("n", "<C-c><C-c>l", function()
+                vim.cmd("FlutterLspRestart")
+            end, { buffer = true, noremap = true, silent = true, desc = "FlutterLspRestart" })
+            vim.keymap.set("n", "<C-c><C-c>a", function()
+                vim.cmd("FlutterReanalyze")
+            end, { buffer = true, noremap = true, silent = true, desc = "FlutterReanalyze" })
+            vim.keymap.set("n", "<C-c><C-c>e", function()
+                vim.cmd("FlutterRename")
+            end, { buffer = true, noremap = true, silent = true, desc = "FlutterRename" })
+            vim.keymap.set("n", "<C-c><C-c>s", function()
+                vim.cmd("FlutterSuper")
+            end, { buffer = true, noremap = true, silent = true, desc = "FlutterSuper" })
+            vim.keymap.set("n", "<C-c><C-c>D", function()
+                vim.cmd("FlutterDetach")
+            end, { buffer = true, noremap = true, silent = true, desc = "FlutterDetach" })
+            vim.keymap.set("n", "<C-c><C-c>u", function()
+                vim.cmd("FlutterCopyProfilerUrl")
+            end, { buffer = true, noremap = true, silent = true, desc = "FlutterCopyProfilerUrl" })
+        end,
+        group = "LvimIDE",
+    })
+end
+
+return M
