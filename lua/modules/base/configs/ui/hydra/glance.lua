@@ -4,14 +4,14 @@ local keymap = require("hydra.keymap-util")
 local M = {}
 
 local glance_hint = [[
-                           GLANCE
+                                         GLANCE
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Definitions                 _d_ │ _t_           Type definitions
-References                  _r_ │ _I_            Implementations
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Definitions                             _gpd_ │ _gpt_                        Type definitions
+References                              _gpr_ │ _gpi_                         Implementations
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<C-q>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
 ]]
 
 M.glance = Hydra({
@@ -29,22 +29,22 @@ M.glance = Hydra({
     body = ";s",
     heads = {
         {
-            "d",
+            "gpd",
             keymap.cmd("Glance definitions"),
             { nowait = true, silent = true, desc = "Definitions" },
         },
         {
-            "t",
+            "gpt",
             keymap.cmd("Glance type_definitions"),
             { nowait = true, silent = true, desc = "Type definitions" },
         },
         {
-            "r",
+            "gpr",
             keymap.cmd("Glance references"),
             { nowait = true, silent = true, desc = "References" },
         },
         {
-            "I",
+            "gpi",
             keymap.cmd("Glance implementations"),
             { nowait = true, silent = true, desc = "Implementations" },
         },

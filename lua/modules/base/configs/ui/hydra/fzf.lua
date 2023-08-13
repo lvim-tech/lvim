@@ -1,19 +1,20 @@
 local Hydra = require("hydra")
 local keymap = require("hydra.keymap-util")
+local icons = require("configs.base.ui.icons")
 
 local M = {}
 
 local fzf_menu = [[
-                             FZF
+                                           FZF
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Navigation                  _n_ │ _s_                     Search
-Tags                        _t_ │ _g_                        GIT
-LSP                         _d_ │ _D_                        DAP
-Misc                        _m_ │
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Navigation ]] .. icons.common.dot .. [[                              _n_ │ _s_                                  ]] .. icons.common.dot .. [[ Search
+Tags ]] .. icons.common.dot .. [[                                    _t_ │ _i_                                     ]] .. icons.common.dot .. [[ GIT
+LSP ]] .. icons.common.dot .. [[                                     _l_ │ _p_                                     ]] .. icons.common.dot .. [[ DAP
+Misc ]] .. icons.common.dot .. [[                                    _m_ │
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<C-q>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
 ]]
 
 M.fzf_menu = Hydra({
@@ -28,12 +29,12 @@ M.fzf_menu = Hydra({
         },
     },
     mode = { "n", "x", "v" },
-    body = ";z",
+    body = ";f",
     heads = {
         {
             "n",
             function()
-                M.fzf_buffers_and_files:activate()
+                M.fzf_navigation:activate()
             end,
         },
         {
@@ -49,19 +50,19 @@ M.fzf_menu = Hydra({
             end,
         },
         {
-            "g",
+            "i",
             function()
                 M.fzf_git:activate()
             end,
         },
         {
-            "d",
+            "l",
             function()
                 M.fzf_lsp:activate()
             end,
         },
         {
-            "D",
+            "p",
             function()
                 M.fzf_dap:activate()
             end,
@@ -76,23 +77,24 @@ M.fzf_menu = Hydra({
     },
 })
 
-local fzf_buffers_and_files = [[
-                       FZF NAVIGATION
+local fzf_navigation_hydra = [[
+                                     FZF NAVIGATION
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Buffers                     _b_ │ _q_                   Quickfix
-Files                       _f_ │ _Q_             Quickfix stack
-Lines                       _s_ │ _c_                    Loclist
-Blines                      _S_ │ _C_              Loclist stack
-Oldfiles                    _o_ │ _t_                       Tabs
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Buffers                           _<Leader>b_ │ _<C-c><C-c>q_                       Quick fix
+Files                             _<Leader>f_ │ _<C-c><C-c>Q_                 Quick fix stack
+Lines                           _<C-c><C-c>l_ │ _<C-c><C-c>c_                        Loc list
+B lines                         _<C-c><C-c>L_ │ _<C-c><C-c>C_                  Loc list stack
+Old files                       _<C-c><C-c>o_ │ _<C-c><C-c>t_                            Tabs
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<C-q>_  │  back => _<BS>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
+                                       back │ _<BS>_
 ]]
 
-M.fzf_buffers_and_files = Hydra({
+M.fzf_navigation = Hydra({
     name = "FZF BUFFERS AND FILES",
-    hint = fzf_buffers_and_files,
+    hint = fzf_navigation_hydra,
     config = {
         color = "pink",
         invoke_on_body = true,
@@ -103,52 +105,52 @@ M.fzf_buffers_and_files = Hydra({
     },
     heads = {
         {
-            "b",
+            "<Leader>b",
             keymap.cmd("FzfLua buffers"),
             { nowait = true, silent = true, desc = "FzfLua buffers" },
         },
         {
-            "f",
+            "<Leader>f",
             keymap.cmd("FzfLua files"),
             { nowait = true, silent = true, desc = "FzfLua files" },
         },
         {
-            "s",
+            "<C-c><C-c>l",
             keymap.cmd("FzfLua lines"),
             { nowait = true, silent = true, desc = "FzfLua lines" },
         },
         {
-            "S",
+            "<C-c><C-c>L",
             keymap.cmd("FzfLua blines"),
             { nowait = true, silent = true, desc = "FzfLua blines" },
         },
         {
-            "o",
+            "<C-c><C-c>o",
             keymap.cmd("FzfLua oldfiles"),
             { nowait = true, silent = true, desc = "FzfLua oldfiles" },
         },
         {
-            "q",
+            "<C-c><C-c>q",
             keymap.cmd("FzfLua quickfix"),
             { nowait = true, silent = true, desc = "FzfLua quickfix" },
         },
         {
-            "Q",
+            "<C-c><C-c>Q",
             keymap.cmd("FzfLua quickfix_stack"),
             { nowait = true, silent = true, desc = "FzfLua quickfix stack" },
         },
         {
-            "c",
+            "<C-c><C-c>c",
             keymap.cmd("FzfLua loclist"),
             { nowait = true, silent = true, desc = "FzfLua loclist" },
         },
         {
-            "C",
+            "<C-c><C-c>C",
             keymap.cmd("FzfLua loclist_stack"),
             { nowait = true, silent = true, desc = "FzfLua loclist stack" },
         },
         {
-            "t",
+            "<C-c><C-c>t",
             keymap.cmd("FzfLua tabs"),
             { nowait = true, silent = true, desc = "FzfLua tabs" },
         },
@@ -166,24 +168,25 @@ M.fzf_buffers_and_files = Hydra({
     },
 })
 
-local fzf_search = [[
-                         FZF SEARCH
+local fzf_search_hydra = [[
+                                       FZF SEARCH
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Live grep                   _g_ │ _G_                       Grep
-Grep last                   _L_ │ _r_           Live grep resume
-Grep cword                  _w_ │ _o_             Live grep glob
-Grep cWORD                  _W_ │ _n_           Live grep native
-Grep visual                 _v_ │ _b_                Grep curbuf
-Grep project                _p_ │ _B_               Lgrep curbuf
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Live grep                         _<Leader>s_ │ _<C-c><C-c>g_                            Grep
+Grep last                       _<C-c><C-c>l_ │ _<C-c><C-c>r_                Live grep resume
+Grep cword                      _<C-c><C-c>w_ │ _<C-c><C-c>o_                  Live grep glob
+Grep cWORD                      _<C-c><C-c>W_ │ _<C-c><C-c>n_                Live grep native
+Grep visual                     _<C-c><C-c>v_ │ _<C-c><C-c>b_                     Grep curbuf
+Grep project                    _<C-c><C-c>p_ │ _<C-c><C-c>B_                    Lgrep curbuf
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<C-q>_  │  back => _<BS>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
+                                       back │ _<BS>_
 ]]
 
 M.fzf_search = Hydra({
     name = "FZF SEARCH",
-    hint = fzf_search,
+    hint = fzf_search_hydra,
     config = {
         color = "pink",
         invoke_on_body = true,
@@ -194,62 +197,62 @@ M.fzf_search = Hydra({
     },
     heads = {
         {
-            "g",
+            "<Leader>s",
             keymap.cmd("FzfLua live_grep"),
             { nowait = true, silent = true, desc = "FzfLua live grep" },
         },
         {
-            "L",
+            "<C-c><C-c>l",
             keymap.cmd("FzfLua grep_last"),
             { nowait = true, silent = true, desc = "FzfLua grep last" },
         },
         {
-            "w",
+            "<C-c><C-c>w",
             keymap.cmd("FzfLua grep_cword"),
             { nowait = true, silent = true, desc = "FzfLua grep cword" },
         },
         {
-            "W",
+            "<C-c><C-c>W",
             keymap.cmd("FzfLua grep_cWORD"),
             { nowait = true, silent = true, desc = "FzfLua grep cWORD" },
         },
         {
-            "v",
+            "<C-c><C-c>v",
             keymap.cmd("FzfLua grep_visual"),
             { nowait = true, silent = true, desc = "FzfLua grep visual" },
         },
         {
-            "p",
+            "<C-c><C-c>p",
             keymap.cmd("FzfLua grep_project"),
             { nowait = true, silent = true, desc = "FzfLua grep project" },
         },
         {
-            "G",
+            "<C-c><C-c>g",
             keymap.cmd("FzfLua grep"),
             { nowait = true, silent = true, desc = "FzfLua grep" },
         },
         {
-            "r",
+            "<C-c><C-c>r",
             keymap.cmd("FzfLua live_grep_resume"),
             { nowait = true, silent = true, desc = "FzfLua live grep resume" },
         },
         {
-            "o",
+            "<C-c><C-c>o",
             keymap.cmd("FzfLua live_grep_glob"),
             { nowait = true, silent = true, desc = "FzfLua live grep glob" },
         },
         {
-            "n",
+            "<C-c><C-c>n",
             keymap.cmd("FzfLua live_grep_native"),
             { nowait = true, silent = true, desc = "FzfLua live grep native" },
         },
         {
-            "b",
+            "<C-c><C-c>b",
             keymap.cmd("FzfLua grep_curbuf"),
             { nowait = true, silent = true, desc = "FzfLua grep curbuf" },
         },
         {
-            "B",
+            "<C-c><C-c>B",
             keymap.cmd("FzfLua lgrep_curbuf"),
             { nowait = true, silent = true, desc = "FzfLua lgrep curbuf" },
         },
@@ -267,22 +270,23 @@ M.fzf_search = Hydra({
     },
 })
 
-local fzf_tags = [[
-                          FZF TAGS
+local fzf_tags_hydra = [[
+                                        FZF TAGS
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Tags                        _t_ │ _b_                      Btags
-Tags grep                   _g_ │ _v_           Tags grep visual
-Tags grep cword             _w_ │ _L_             Tags live grep
-Tags grep cWORD             _W_ │
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Tags                            _<C-c><C-c>t_ │ _<C-c><C-c>b_                           Btags
+Tags grep                       _<C-c><C-c>g_ │ _<C-c><C-c>v_                Tags grep visual
+Tags grep cword                 _<C-c><C-c>w_ │ _<C-c><C-c>l_                  Tags live grep
+Tags grep cWORD                 _<C-c><C-c>W_ │
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<C-q>_  │  back => _<BS>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
+                                       back │ _<BS>_
 ]]
 
 M.fzf_tags = Hydra({
     name = "FZF TAGS",
-    hint = fzf_tags,
+    hint = fzf_tags_hydra,
     config = {
         color = "pink",
         invoke_on_body = true,
@@ -293,37 +297,37 @@ M.fzf_tags = Hydra({
     },
     heads = {
         {
-            "t",
+            "<C-c><C-c>t",
             keymap.cmd("FzfLua tags"),
             { nowait = true, silent = true, desc = "FzfLua tags" },
         },
         {
-            "g",
+            "<C-c><C-c>g",
             keymap.cmd("FzfLua tags_grep"),
             { nowait = true, silent = true, desc = "FzfLua tags grep" },
         },
         {
-            "w",
+            "<C-c><C-c>w",
             keymap.cmd("FzfLua tags_grep_cword"),
             { nowait = true, silent = true, desc = "FzfLua tags grep cword" },
         },
         {
-            "W",
+            "<C-c><C-c>W",
             keymap.cmd("FzfLua tags_grep_cWORD"),
             { nowait = true, silent = true, desc = "FzfLua tags grep cWORD" },
         },
         {
-            "b",
+            "<C-c><C-c>b",
             keymap.cmd("FzfLua btags"),
             { nowait = true, silent = true, desc = "FzfLua btags" },
         },
         {
-            "v",
+            "<C-c><C-c>v",
             keymap.cmd("FzfLua tags_grep_visual"),
             { nowait = true, silent = true, desc = "FzfLua tags grep visual" },
         },
         {
-            "L",
+            "<C-c><C-c>l",
             keymap.cmd("FzfLua tags_live_grep"),
             { nowait = true, silent = true, desc = "FzfLua tags_live_grep" },
         },
@@ -341,21 +345,22 @@ M.fzf_tags = Hydra({
     },
 })
 
-local fzf_git = [[
-                           FZF GIT
+local fzf_git_hydra = [[
+                                        FZF GIT
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Git files                   _f_ │ _s_                 Git status
-Git commits                 _c_ │ _r_               Git branches
-Git bcommits                _b_ │ _t_                  Git stash
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Git files                       _<C-c><C-c>f_ │ _<C-c><C-c>s_                      Git status
+Git commits                     _<C-c><C-c>c_ │ _<C-c><C-c>r_                    Git branches
+Git bcommits                    _<C-c><C-c>b_ │ _<C-c><C-c>t_                       Git stash
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<C-q>_  │  back => _<BS>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
+                                       back │ _<BS>_
 ]]
 
 M.fzf_git = Hydra({
     name = "FZF GIT",
-    hint = fzf_git,
+    hint = fzf_git_hydra,
     config = {
         color = "pink",
         invoke_on_body = true,
@@ -366,32 +371,32 @@ M.fzf_git = Hydra({
     },
     heads = {
         {
-            "f",
+            "<C-c><C-c>f",
             keymap.cmd("FzfLua git_files"),
             { nowait = true, silent = true, desc = "FzfLua git files" },
         },
         {
-            "c",
+            "<C-c><C-c>c",
             keymap.cmd("FzfLua git_commits"),
             { nowait = true, silent = true, desc = "FzfLua git commits" },
         },
         {
-            "b",
+            "<C-c><C-c>b",
             keymap.cmd("FzfLua git_bcommits"),
             { nowait = true, silent = true, desc = "FzfLua git bcommits" },
         },
         {
-            "s",
+            "<C-c><C-c>s",
             keymap.cmd("FzfLua git_status"),
             { nowait = true, silent = true, desc = "FzfLua git status" },
         },
         {
-            "r",
+            "<C-c><C-c>r",
             keymap.cmd("FzfLua git_branches"),
             { nowait = true, silent = true, desc = "FzfLua git branches" },
         },
         {
-            "t",
+            "<C-c><C-c>t",
             keymap.cmd("FzfLua git_stash"),
             { nowait = true, silent = true, desc = "FzfLua git stash" },
         },
@@ -409,26 +414,27 @@ M.fzf_git = Hydra({
     },
 })
 
-local fzf_lsp = [[
-                          FZF LSP
+local fzf_lsp_hydra = [[
+                                        FZF LSP
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Lsp references              _r_ │ _a_           Lsp code actions
-Lsp definitions             _d_ │ _i_         Lsp incoming calls
-Lsp declarations            _D_ │ _o_         Lsp outgoing calls
-Lsp typedefs                _t_ │ _f_                 Lsp finder
-Lsp implementations         _m_ │ _gd_      Diagnostics document
-Lsp document symbols       _sd_ │ _gw_     Diagnostics workspace
-Lsp workspace symbols      _sw_ │ _gD_       Lsp_doc diagnostics
-Lsp live workspace symbols _sl_ │ _gW_ Lsp workspace diagnostics
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Lsp references                  _<C-c><C-c>r_ │ _<C-c><C-c>a_                Lsp code actions
+Lsp definitions                 _<C-c><C-c>d_ │ _<C-c><C-c>i_              Lsp incoming calls
+Lsp declarations                _<C-c><C-c>D_ │ _<C-c><C-c>o_              Lsp outgoing calls
+Lsp typedefs                    _<C-c><C-c>t_ │ _<C-c><C-c>f_                      Lsp finder
+Lsp implementations             _<C-c><C-c>m_ │ _<C-c><C-c>dd_           Diagnostics document
+Lsp document symbols           _<C-c><C-c>sd_ │ _<C-c><C-c>dw_          Diagnostics workspace
+Lsp workspace symbols          _<C-c><C-c>sw_ │ _<C-c><C-c>ld_       Lsp document diagnostics
+Lsp live workspace symbols     _<C-c><C-c>sl_ │ _<C-c><C-c>lw_      Lsp workspace diagnostics
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<C-q>_  │  back => _<BS>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
+                                       back │ _<BS>_
 ]]
 
 M.fzf_lsp = Hydra({
     name = "FZF LSP",
-    hint = fzf_lsp,
+    hint = fzf_lsp_hydra,
     config = {
         color = "pink",
         invoke_on_body = true,
@@ -439,82 +445,82 @@ M.fzf_lsp = Hydra({
     },
     heads = {
         {
-            "r",
+            "<C-c><C-c>r",
             keymap.cmd("FzfLua lsp_references"),
             { nowait = true, silent = true, desc = "FzfLua lsp references" },
         },
         {
-            "d",
+            "<C-c><C-c>d",
             keymap.cmd("FzfLua lsp_definitions"),
             { nowait = true, silent = true, desc = "FzfLua lsp definitions" },
         },
         {
-            "D",
+            "<C-c><C-c>D",
             keymap.cmd("FzfLua lsp_declarations"),
             { nowait = true, silent = true, desc = "FzfLua lsp declarations" },
         },
         {
-            "t",
+            "<C-c><C-c>t",
             keymap.cmd("FzfLua lsp_typedefs"),
             { nowait = true, silent = true, desc = "FzfLua lsp typedefs" },
         },
         {
-            "m",
+            "<C-c><C-c>m",
             keymap.cmd("FzfLua lsp_implementations"),
             { nowait = true, silent = true, desc = "FzfLua lsp implementations" },
         },
         {
-            "sd",
+            "<C-c><C-c>sd",
             keymap.cmd("FzfLua lsp_document_symbols"),
             { nowait = true, silent = true, desc = "FzfLua lsp document symbols" },
         },
         {
-            "sw",
+            "<C-c><C-c>sw",
             keymap.cmd("FzfLua lsp_workspace_symbols"),
             { nowait = true, silent = true, desc = "FzfLua lsp workspace symbols" },
         },
         {
-            "sl",
+            "<C-c><C-c>sl",
             keymap.cmd("FzfLua lsp_live_workspace_symbols"),
             { nowait = true, silent = true, desc = "FzfLua lsp live workspace symbols" },
         },
         {
-            "a",
+            "<C-c><C-c>a",
             keymap.cmd("FzfLua lsp_code_actions"),
             { nowait = true, silent = true, desc = "FzfLua lsp_code_actions" },
         },
         {
-            "i",
+            "<C-c><C-c>i",
             keymap.cmd("FzfLua lsp_incoming_calls"),
             { nowait = true, silent = true, desc = "FzfLua lsp_incoming_calls" },
         },
         {
-            "o",
+            "<C-c><C-c>o",
             keymap.cmd("FzfLua lsp_outgoing_calls"),
             { nowait = true, silent = true, desc = "FzfLua lsp_outgoing_calls" },
         },
         {
-            "f",
+            "<C-c><C-c>f",
             keymap.cmd("FzfLua lsp_finder"),
             { nowait = true, silent = true, desc = "FzfLua lsp_finder" },
         },
         {
-            "gd",
+            "<C-c><C-c>dd",
             keymap.cmd("FzfLua diagnostics_document"),
             { nowait = true, silent = true, desc = "FzfLua diagnostics_document" },
         },
         {
-            "gw",
+            "<C-c><C-c>dw",
             keymap.cmd("FzfLua diagnostics_workspace"),
             { nowait = true, silent = true, desc = "FzfLua diagnostics_workspace" },
         },
         {
-            "gD",
+            "<C-c><C-c>ld",
             keymap.cmd("FzfLua lsp_document_diagnostics"),
             { nowait = true, silent = true, desc = "FzfLua lsp_document_diagnostics" },
         },
         {
-            "gW",
+            "<C-c><C-c>lw",
             keymap.cmd("FzfLua lsp_workspace_diagnostics"),
             { nowait = true, silent = true, desc = "FzfLua lsp_workspace_diagnostics" },
         },
@@ -532,21 +538,22 @@ M.fzf_lsp = Hydra({
     },
 })
 
-local fzf_dap = [[
-                           FZF DAP
+local fzf_dap_hydra = [[
+                                         FZF DAP
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Dap commands                _m_ │ _v_              Dap variables
-Dap configurations          _c_ │ _f_                 Dap frames
-Dap breakpoints             _b_ │
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Dap commands                    _<C-c><C-c>c_ │ _<C-c><C-c>v_                   Dap variables
+Dap configurations              _<C-c><C-c>f_ │ _<C-c><C-c>i_              Lsp incoming calls
+Dap breakpoints                 _<C-c><C-c>b_ │
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<C-q>_  │  back => _<BS>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
+                                       back │ _<BS>_
 ]]
 
 M.fzf_dap = Hydra({
     name = "FZF DAP",
-    hint = fzf_dap,
+    hint = fzf_dap_hydra,
     config = {
         color = "pink",
         invoke_on_body = true,
@@ -557,27 +564,27 @@ M.fzf_dap = Hydra({
     },
     heads = {
         {
-            "m",
+            "<C-c><C-c>c",
             keymap.cmd("FzfLua dap_commands"),
             { nowait = true, silent = true, desc = "FzfLua dap commands" },
         },
         {
-            "c",
+            "<C-c><C-c>f",
             keymap.cmd("FzfLua dap_configurations"),
             { nowait = true, silent = true, desc = "FzfLua dap configurations" },
         },
         {
-            "b",
+            "<C-c><C-c>b",
             keymap.cmd("FzfLua dap_breakpoints"),
             { nowait = true, silent = true, desc = "FzfLua dap breakpoints" },
         },
         {
-            "v",
+            "<C-c><C-c>v",
             keymap.cmd("FzfLua dap_variables"),
             { nowait = true, silent = true, desc = "FzfLua dap variables" },
         },
         {
-            "f",
+            "<C-c><C-c>i",
             keymap.cmd("FzfLua dap_frames"),
             { nowait = true, silent = true, desc = "FzfLua dap frames" },
         },
@@ -595,25 +602,26 @@ M.fzf_dap = Hydra({
     },
 })
 
-local fzf_misc = [[
-                          FZF MISC
+local fzf_misc_hydra = [[
+                                        FZF MISC
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Help tags                   _t_ │ _m_                      Marks
-Man pages                   _M_ │ _J_                      Jumps
-Highlights                  _H_ │ _g_                    Changes
-Autocmds                    _A_ │ _r_                  Registers
-Commands                    _c_ │ _T_                   Tagstack
-Command history             _C_ │ _K_                    Keymaps
-Search history              _I_ │ _f_                  Filetypes
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Help tags                       _<C-c><C-c>t_ │ _<C-c><C-c>m_                           Marks
+Man pages                       _<C-c><C-c>M_ │ _<C-c><C-c>j_                           Jumps
+Highlights                      _<C-c><C-c>h_ │ _<C-c><C-c>g_                         Changes
+Autocmds                        _<C-c><C-c>a_ │ _<C-c><C-c>r_                       Registers
+Commands                        _<C-c><C-c>c_ │ _<C-c><C-c>T_                        Tagstack
+Command history                 _<C-c><C-c>C_ │ _<C-c><C-c>k_                         Keymaps
+Search history                  _<C-c><C-c>s_ │ _<C-c><C-c>f_                       Filetypes
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<C-q>_  │  back => _<BS>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
+                                       back │ _<BS>_
 ]]
 
 M.fzf_misc = Hydra({
     name = "FZF MISC",
-    hint = fzf_misc,
+    hint = fzf_misc_hydra,
     config = {
         color = "pink",
         invoke_on_body = true,
@@ -624,72 +632,72 @@ M.fzf_misc = Hydra({
     },
     heads = {
         {
-            "t",
+            "<C-c><C-c>t",
             keymap.cmd("FzfLua help_tags"),
             { nowait = true, silent = true, desc = "FzfLua help tags" },
         },
         {
-            "M",
+            "<C-c><C-c>M",
             keymap.cmd("FzfLua man_pages"),
             { nowait = true, silent = true, desc = "FzfLua man pages" },
         },
         {
-            "H",
+            "<C-c><C-c>h",
             keymap.cmd("FzfLua highlights"),
             { nowait = true, silent = true, desc = "FzfLua highlights" },
         },
         {
-            "A",
+            "<C-c><C-c>a",
             keymap.cmd("FzfLua autocmds"),
             { nowait = true, silent = true, desc = "FzfLua autocmds" },
         },
         {
-            "c",
+            "<C-c><C-c>c",
             keymap.cmd("FzfLua commands"),
             { nowait = true, silent = true, desc = "FzfLua commands" },
         },
         {
-            "C",
+            "<C-c><C-c>C",
             keymap.cmd("FzfLua command_history"),
             { nowait = true, silent = true, desc = "FzfLua command history" },
         },
         {
-            "I",
+            "<C-c><C-c>s",
             keymap.cmd("FzfLua search_history"),
             { nowait = true, silent = true, desc = "FzfLua search history" },
         },
         {
-            "m",
+            "<C-c><C-c>m",
             keymap.cmd("FzfLua marks"),
             { nowait = true, silent = true, desc = "FzfLua marks" },
         },
         {
-            "J",
+            "<C-c><C-c>j",
             keymap.cmd("FzfLua jumps"),
             { nowait = true, silent = true, desc = "FzfLua jumps" },
         },
         {
-            "g",
+            "<C-c><C-c>g",
             keymap.cmd("FzfLua changes"),
             { nowait = true, silent = true, desc = "FzfLua changes" },
         },
         {
-            "r",
+            "<C-c><C-c>r",
             keymap.cmd("FzfLua registers"),
             { nowait = true, silent = true, desc = "FzfLua registers" },
         },
         {
-            "T",
+            "<C-c><C-c>T",
             keymap.cmd("FzfLua tagstack"),
             { nowait = true, silent = true, desc = "FzfLua tagstack" },
         },
         {
-            "K",
+            "<C-c><C-c>k",
             keymap.cmd("FzfLua keymaps"),
             { nowait = true, silent = true, desc = "FzfLua keymaps" },
         },
         {
-            "f",
+            "<C-c><C-c>f",
             keymap.cmd("FzfLua filetypes"),
             { nowait = true, silent = true, desc = "FzfLua filetypes" },
         },

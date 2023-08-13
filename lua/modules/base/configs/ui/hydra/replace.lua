@@ -4,19 +4,19 @@ local keymap = require("hydra.keymap-util")
 local M = {}
 
 local spectre_hint = [[
-                           SPECTRE
+                                         SPECTRE
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Open                        _O_ │ _P_                Show option
-Toggle line                _dd_ │ _r_        Run current replace
-Select entry             _<CR>_ │ _R_                Run replace
-Send to quickfix            _q_ │ _u_         Toggle live update
-Replace command             _m_ │ _v_                Change view
-Toggle ignore case          _I_ │ _L_         Resume last search
-Toggle hidden               _H_ │
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Open                            _<C-c><C-c>o_ │ _<C-c><C-c>p_                     Show option
+Toggle line                     _<C-c><C-c>l_ │ _<C-c><C-c>c_             Run current replace
+Select entry                    _<C-c><C-c>e_ │ _<C-c><C-c>r_                     Run replace
+Send to quickfix                _<C-c><C-c>q_ │ _<C-c><C-c>u_              Toggle live update
+Replace command                 _<C-c><C-c>m_ │ _<C-c><C-c>v_                     Change view
+Toggle ignore case              _<C-c><C-c>i_ │ _<C-c><C-c>s_              Resume last search
+Toggle hidden                   _<C-c><C-c>h_ │
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<C-q>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
 ]]
 
 M.replace = Hydra({
@@ -34,67 +34,67 @@ M.replace = Hydra({
     body = ";r",
     heads = {
         {
-            "O",
+            "<C-c><C-c>o",
             keymap.cmd("Spectre"),
             { nowait = true, silent = true, desc = "Open" },
         },
         {
-            "dd",
+            "<C-c><C-c>l",
             keymap.cmd("SpectreToggleLine"),
             { nowait = true, silent = true, desc = "Toggle line" },
         },
         {
-            "<CR>",
+            "<C-c><C-c>e",
             keymap.cmd("SpectreSelectEntry"),
             { nowait = true, silent = true, desc = "Select entry" },
         },
         {
-            "q",
+            "<C-c><C-c>q",
             keymap.cmd("SpectreSendToQF"),
             { nowait = true, silent = true, desc = "Send to quickfix" },
         },
         {
-            "m",
+            "<C-c><C-c>m",
             keymap.cmd("SpectreReplaceCommand"),
             { nowait = true, silent = true, desc = "Replace command" },
         },
         {
-            "r",
+            "<C-c><C-c>c",
             keymap.cmd("SpectreRunCurrentReplace"),
             { nowait = true, silent = true, desc = "Run current replace" },
         },
         {
-            "R",
+            "<C-c><C-c>r",
             keymap.cmd("SpectreRunReplace"),
             { nowait = true, silent = true, desc = "Run replace" },
         },
         {
-            "I",
+            "<C-c><C-c>i",
             keymap.cmd("SpectreIgnoreCase"),
             { nowait = true, silent = true, desc = "Toggle ignore case" },
         },
         {
-            "H",
+            "<C-c><C-c>h",
             keymap.cmd("SpectreHidden"),
             { nowait = true, silent = true, desc = "Toggle hidden" },
         },
         {
-            "u",
+            "<C-c><C-c>u",
             keymap.cmd("SpectreToggleLiveUpdate"),
             { nowait = true, silent = true, desc = "Toggle live update" },
         },
         {
-            "v",
+            "<C-c><C-c>v",
             keymap.cmd("SpectreChangeView"),
             { nowait = true, silent = true, desc = "Change view" },
         },
         {
-            "L",
+            "<C-c><C-c>s",
             keymap.cmd("SpectreResumeLastSearch"),
             { nowait = true, silent = true, desc = "Resume last search" },
         },
         {
-            "P",
+            "<C-c><C-c>p",
             keymap.cmd("SpectreShowOptions"),
             { nowait = true, silent = true, desc = "Show option" },
         },

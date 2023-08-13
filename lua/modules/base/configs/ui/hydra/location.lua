@@ -3,17 +3,20 @@ local keymap = require("hydra.keymap-util")
 
 local M = {}
 
-local location_hint = [[
-                          LOCATION
-
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Prev                        _p_ │ _n_                       Next
-Choice                      _c_ │ _d_                     Delete
-Load                        _L_ │ _s_                       Save
-
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<C-q>_
-]]
+local location_hint = "                                        LOCATION\n\n"
+location_hint = location_hint
+    .. "▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔\n"
+location_hint = location_hint
+    .. "Prev                                     _[[_ │ _[]_                                     Next\n"
+location_hint = location_hint
+    .. "Open                                     _[o_ │ _[q_                              Menu delete\n"
+location_hint = location_hint
+    .. "Menu choice                              _[c_ │ _[d_                              Menu delete\n"
+location_hint = location_hint
+    .. "Load                                     _[l_ │ _[s_                                     Save\n\n"
+location_hint = location_hint
+    .. "▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔\n"
+location_hint = location_hint .. "                                       exit │ _<C-q>_"
 
 M.location = Hydra({
     name = "LOCATION",
@@ -30,33 +33,43 @@ M.location = Hydra({
     body = ";o",
     heads = {
         {
-            "p",
+            "[[",
             keymap.cmd("LvimListLocPrev"),
             { nowait = true, silent = true, desc = "Prev" },
         },
         {
-            "n",
+            "[]",
             keymap.cmd("LvimListLocNext"),
             { nowait = true, silent = true, desc = "Next" },
         },
         {
-            "c",
-            keymap.cmd("LvimListQuicLocChoice"),
-            { nowait = true, silent = true, desc = "Choice" },
+            "[o",
+            keymap.cmd("lopen"),
+            { nowait = true, silent = true, desc = "Open" },
         },
         {
-            "d",
-            keymap.cmd("LvimListQuicLocDelete"),
-            { nowait = true, silent = true, desc = "Delete" },
+            "[q",
+            keymap.cmd("lclose"),
+            { nowait = true, silent = true, desc = "Close" },
         },
         {
-            "L",
-            keymap.cmd("LvimListLocLoad"),
+            "[c",
+            keymap.cmd("LvimListLocMenuChoice"),
+            { nowait = true, silent = true, desc = "Menu choice" },
+        },
+        {
+            "[d",
+            keymap.cmd("LvimListLocMenuDelete"),
+            { nowait = true, silent = true, desc = "Menu delete" },
+        },
+        {
+            "[l",
+            keymap.cmd("LvimListLocMenuLoad"),
             { nowait = true, silent = true, desc = "Load" },
         },
         {
-            "s",
-            keymap.cmd("LvimListLocSave"),
+            "[s",
+            keymap.cmd("LvimListLocMenuSave"),
             { nowait = true, silent = true, desc = "Save" },
         },
         { "<C-q>", nil, { exit = true, desc = false } },

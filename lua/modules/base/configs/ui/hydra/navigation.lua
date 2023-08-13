@@ -4,27 +4,27 @@ local keymap = require("hydra.keymap-util")
 local M = {}
 
 local navigation_hint = [[
-                         NAVIGATION
+                                       NAVIGATION
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Save                        _s_ │ _S_                   Save all
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Save                                 _<C-c>s_ │ _<C-c>a_                             Save all
 
-Tab next                _<C-n>_ │ _<C-p>_               Tab prev
+Tab next                             _<C-c>n_ │ _<C-c>p_                             Tab prev
 
-Close current window        _x_ │ _O_        Close other windows
-Window zoom toggle          _r_ │ _=_            Window resize =
-Window resize width +   _<A-l>_ │ _<A-h>_  Window resize width -
-Window resize height +  _<A-j>_ │ _<A-k>_ Window resize height -
-Window move             _<A-m>_ │
+Close current window                 _<C-c>x_ │ _<C-c>o_                  Close other windows
+Window zoom toggle                   _<C-c>z_ │ _<C-c>=_                      Window resize =
+Vertical resize -2                        _H_ │ _L_                        Vertical resize +2
+Resize -2                                 _J_ │ _K_                                 Resize +2
+Window move                          _<C-c>w_ │
 
-Move to window left         _H_ │ _L_       Move to window right
-Move to window down         _J_ │ _K_          Move to window up
+Move to window left                   _<C-h>_ │ _<C-l>_                  Move to window right
+Move to window down                   _<C-j>_ │ _<C-k>_                     Move to window up
 
-Create empty buffer         _e_ │ _d_             Bdelete buffer
-Bnext buffer                _n_ │ _p_               Bprev buffer
+Create empty buffer                  _<C-c>N_ │ _<C-c>d_                       Bdelete buffer
+Bnext buffer                          _<C-n>_ │ _<C-p>_                          Bprev buffer
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<C-q>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
 ]]
 
 M.navigation = Hydra({
@@ -42,107 +42,110 @@ M.navigation = Hydra({
     body = ";n",
     heads = {
         {
-            "s",
+            "<C-c>s",
             keymap.cmd("w"),
             { nowait = true, silent = true, desc = "Save" },
         },
         {
-            "S",
+            "<C-c>a",
             keymap.cmd("wa"),
             { nowait = true, silent = true, desc = "Save all" },
         },
         {
-            "<C-n>",
+            "<C-c>n",
             keymap.cmd("tabn"),
             { nowait = true, silent = true, desc = "Tab next" },
         },
         {
-            "<C-p>",
+            "<C-c>p",
             keymap.cmd("tabp"),
             { nowait = true, silent = true, desc = "Tab prev" },
         },
         {
-            "x",
+            "<C-c>x",
             "<C-w>c",
             { nowait = true, silent = true, desc = "Close current window" },
         },
         {
-            "O",
+            "<C-c>o",
             "<C-w>o",
             { nowait = true, silent = true, desc = "Close other windows" },
         },
         {
-            "r",
+            "<C-c>z",
             keymap.cmd("NeoZoom"),
             { nowait = true, silent = true, desc = "Window zoom toggle" },
         },
         {
-            "=",
+            "<C-c>=",
             keymap.cmd("wincmd="),
             { nowait = true, silent = true, desc = "Window resize =" },
         },
         {
-            "<A-l>",
+            "L",
             keymap.cmd("vertical resize +2"),
             { nowait = true, silent = true, desc = "Window resize width +" },
         },
         {
-            "<A-h>",
+            "H",
             keymap.cmd("vertical resize -2"),
             { nowait = true, silent = true, desc = "Window resize width -" },
         },
         {
-            "<A-j>",
+            "K",
             keymap.cmd("resize +2"),
             { nowait = true, silent = true, desc = "Window resize height +" },
         },
         {
-            "<A-k>",
+            "J",
             keymap.cmd("resize -2"),
             { nowait = true, silent = true, desc = "Window resize height -" },
         },
         {
-            "<A-m>",
-            keymap.cmd("WinShift"),
+            "<C-c>w",
+            function()
+                keymap.cmd("Neotree close")
+                keymap.cmd("WinShift")
+            end,
             { nowait = true, silent = true, desc = "Window move" },
         },
         {
-            "H",
+            "<C-h>",
             "<C-w>h",
             { nowait = true, silent = true, desc = "Move to window left" },
         },
         {
-            "L",
+            "<C-l>",
             "<C-w>l",
             { nowait = true, silent = true, desc = "Move to window right" },
         },
         {
-            "J",
+            "<C-j>",
             "<C-w>j",
             { nowait = true, silent = true, desc = "Move to window down" },
         },
         {
-            "K",
+            "<C-k>",
             "<C-w>k",
             { nowait = true, silent = true, desc = "Move to window up" },
         },
         {
-            "e",
+            "<C-c>N",
             keymap.cmd("enew"),
             { nowait = true, silent = true, desc = "Create empty buffer" },
         },
         {
-            "d",
+            "<C-c>d",
             keymap.cmd("bdelete"),
             { nowait = true, silent = true, desc = "Bdelete buffer" },
         },
         {
-            "n",
+            "<C-n>",
             keymap.cmd("BufSurfForward"),
             { nowait = true, silent = true, desc = "Bnext buffer" },
         },
         {
-            "p",
+            "<C-p>",
             keymap.cmd("BufSurfBack"),
             { nowait = true, silent = true, desc = "Bprev buffer" },
         },

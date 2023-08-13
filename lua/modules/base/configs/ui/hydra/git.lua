@@ -1,23 +1,24 @@
 local Hydra = require("hydra")
 local keymap = require("hydra.keymap-util")
+local icons = require("configs.base.ui.icons")
 
 local M = {}
 
-local git_menu = [[
-                             GIT
+local git_hint = [[
+                                           GIT
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Neogit                      _n_ │ _L_                    LazyGit
-Diffview                    _d_ │ _s_                   GitSigns
-Lvim forgit                 _f_ │
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Neogit                                _<A-n>_ │ _<A-g>_                               LazyGit
+Diffview ]] .. icons.common.dot .. [[                      _<C-c><C-c>d_ │ _<C-c><C-c>s_                      ]] .. icons.common.dot .. [[ GitSigns
+Lvim forgit                           _<A-t>_ │
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<C-q>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
 ]]
 
 M.git_menu = Hydra({
     name = "GIT",
-    hint = git_menu,
+    hint = git_hint,
     config = {
         color = "pink",
         invoke_on_body = true,
@@ -30,29 +31,29 @@ M.git_menu = Hydra({
     body = ";g",
     heads = {
         {
-            "d",
+            "<A-n>",
+            keymap.cmd("Neogit"),
+            { nowait = true, silent = true, desc = "Neogit" },
+        },
+        {
+            "<A-g>",
+            keymap.cmd("Lazygit"),
+            { nowait = true, silent = true, desc = "Lazygit" },
+        },
+        {
+            "<C-c><C-c>d",
             function()
                 M.diff_view:activate()
             end,
         },
         {
-            "s",
+            "<C-c><C-c>s",
             function()
                 M.git_signs:activate()
             end,
         },
         {
-            "n",
-            keymap.cmd("Neogit"),
-            { nowait = true, silent = true, desc = "Neogit" },
-        },
-        {
-            "L",
-            keymap.cmd("Lazygit"),
-            { nowait = true, silent = true, desc = "Lazygit" },
-        },
-        {
-            "f",
+            "<A-t>",
             keymap.cmd("LvimForgit"),
             { nowait = true, silent = true, desc = "LvimForgit" },
         },
@@ -60,22 +61,23 @@ M.git_menu = Hydra({
     },
 })
 
-local diff_view = [[
-                          DIFF VIEW
+local diffview_hint = [[
+                                        DIFF VIEW
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-DiffView open               _o_ │ _c_             DiffView close
-DiffView log                _g_ │ _r_           DiffView refresh
-DiffView focus files        _F_ │ _f_      DiffView file history
-DiffView toggle files       _t_ │
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+DiffView open                   _<C-c><C-c>o_ │ _<C-c><C-c>c_                  DiffView close
+DiffView log                    _<C-c><C-c>l_ │ _<C-c><C-c>r_                DiffView refresh
+DiffView focus files            _<C-c><C-c>f_ │ _<C-c><C-c>h_           DiffView file history
+DiffView toggle files           _<C-c><C-c>t_ │
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<C-q>_  │  back => _<BS>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
+                                       back │ _<BS>_
 ]]
 
 M.diff_view = Hydra({
     name = "DIFF VIEW",
-    hint = diff_view,
+    hint = diffview_hint,
     config = {
         color = "pink",
         invoke_on_body = true,
@@ -86,37 +88,37 @@ M.diff_view = Hydra({
     },
     heads = {
         {
-            "o",
+            "<C-c><C-c>o",
             keymap.cmd("DiffviewOpen"),
             { nowait = true, silent = true, desc = "DiffView open" },
         },
         {
-            "c",
+            "<C-c><C-c>c",
             keymap.cmd("DiffviewClose"),
             { nowait = true, silent = true, desc = "DiffView close" },
         },
         {
-            "g",
+            "<C-c><C-c>l",
             keymap.cmd("DiffviewLog"),
             { nowait = true, silent = true, desc = "DiffView log" },
         },
         {
-            "r",
+            "<C-c><C-c>r",
             keymap.cmd("DiffviewRefresh"),
             { nowait = true, silent = true, desc = "DiffView refresh" },
         },
         {
-            "F",
+            "<C-c><C-c>f",
             keymap.cmd("DiffviewFocusFiles"),
             { nowait = true, silent = true, desc = "DiffView focus files" },
         },
         {
-            "f",
+            "<C-c><C-c>h",
             keymap.cmd("DiffviewFileHistory"),
             { nowait = true, silent = true, desc = "DiffView file history" },
         },
         {
-            "t",
+            "<C-c><C-c>t",
             keymap.cmd("DiffviewToggleFiles"),
             { nowait = true, silent = true, desc = "DiffView toggle files" },
         },
@@ -134,24 +136,28 @@ M.diff_view = Hydra({
     },
 })
 
-local git_signs = [[
-                          GITSIGNS
+local gitsigns_hint = [[
+                                            GIT
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Previous hunk               _p_ │ _n_                  Next hunk
-View hunk                   _v_ │ _b_                 Blame line
-Stage hunk                  _s_ │ _S_            Undo stage hunk
-Reset hunk                  _r_ │ _R_               Reset buffer
-Blame full                  _f_ │ _q_           Send to quickfix
-Toggle linehl               _H_ │
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Previous hunk                         _<A-[>_ │ _<A-]>_                             Next hunk
+View hunk                             _<A-;>_ │
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<Esc>_  │  back => _<BS>_
+Blame line view                      _<C-c>m_ │ _<C-c>b_                           Blame line
+
+Stage hunk                      _<C-c><C-c>s_ │ _<C-c><C-c>u_                 Undo stage hunk
+Reset hunk                      _<C-c><C-c>r_ │ _<C-c><C-c>R_                    Reset buffer
+Blame full                      _<C-c><C-c>f_ │ _<C-c><C-c>q_                Send to quickfix
+Toggle linehl                   _<C-c><C-c>h_ │
+
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
+                                       back │ _<BS>_
 ]]
 
 M.git_signs = Hydra({
     name = "GIT SIGNS",
-    hint = git_signs,
+    hint = gitsigns_hint,
     config = {
         color = "pink",
         invoke_on_body = true,
@@ -162,57 +168,62 @@ M.git_signs = Hydra({
     },
     heads = {
         {
-            "p",
+            "<A-[>",
             keymap.cmd("GitSignsPreviewHunk"),
             { nowait = true, silent = true, desc = "Previous hunk" },
         },
         {
-            "n",
+            "<A-]>",
             keymap.cmd("GitSignsNextHunk"),
             { nowait = true, silent = true, desc = "Next hunk" },
         },
         {
-            "v",
+            "<A-;>",
             keymap.cmd("GitSignsPreviewHunk"),
             { nowait = true, silent = true, desc = "View hunk" },
         },
         {
-            "b",
-            keymap.cmd("GitSignsBlameLine"),
-            { nowait = true, silent = true, desc = "Blame line" },
+            "<C-c>b",
+            keymap.cmd("GitSignsToggleLineBlame"),
+            { nowait = true, silent = true, desc = "blame line" },
         },
         {
-            "s",
+            "<C-c>m",
+            keymap.cmd("GitSignsBlameLine"),
+            { nowait = true, silent = true, desc = "Blame line view" },
+        },
+        {
+            "<C-c><C-c>s",
             keymap.cmd("GitSignsStageHunk"),
             { nowait = true, silent = true, desc = "Stage hunk" },
         },
         {
-            "S",
+            "<C-c><C-c>u",
             keymap.cmd("GitSignsUndoStageHunk"),
             { nowait = true, silent = true, desc = "Undo stage hunk" },
         },
         {
-            "r",
+            "<C-c><C-c>r",
             keymap.cmd("GitSignsResetHunk"),
             { nowait = true, silent = true, desc = "Reset hunk" },
         },
         {
-            "R",
+            "<C-c><C-c>R",
             keymap.cmd("GitSignsResetBuffer"),
             { nowait = true, silent = true, desc = "Reset buffer" },
         },
         {
-            "f",
+            "<C-c><C-c>f",
             keymap.cmd("GitSignsBlameFull"),
             { nowait = true, silent = true, desc = "Blame full" },
         },
         {
-            "q",
+            "<C-c><C-c>q",
             keymap.cmd("Gitsigns setqflist"),
             { nowait = true, silent = true, desc = "Send to quickfix" },
         },
         {
-            "H",
+            "<C-c><C-c>h",
             keymap.cmd("GitSignsToggleLinehl"),
             { nowait = true, silent = true, desc = "Toggle linehl" },
         },

@@ -4,16 +4,16 @@ local keymap = require("hydra.keymap-util")
 local M = {}
 
 local neotest_hint = [[
-                           NEOTEST
+                                        NEOTEST
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Run                         _r_ │ _c_                Run current
-Run with dap                _d_ │ _A_                     Attach
-Output                      _O_ │ _S_                    Summary
-Stop                        _s_ │
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Run                             _<C-c><C-c>r_ │ _<C-c><C-c>c_                     Run current
+Run with dap                    _<C-c><C-c>d_ │ _<C-c><C-c>a_                          Attach
+Output                          _<C-c><C-c>o_ │ _<C-c><C-c>m_                         Summary
+Stop                            _<C-c><C-c>s_ │
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<C-q>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
 ]]
 
 M.neotest = Hydra({
@@ -31,37 +31,37 @@ M.neotest = Hydra({
     body = ";'",
     heads = {
         {
-            "r",
+            "<C-c><C-c>r",
             keymap.cmd("NeotestRun"),
             { nowait = true, silent = true, desc = "Run" },
         },
         {
-            "c",
+            "<C-c><C-c>c",
             keymap.cmd("NeotestRunCurrent"),
             { nowait = true, silent = true, desc = "Run current" },
         },
         {
-            "d",
+            "<C-c><C-c>d",
             keymap.cmd("NeotestRunDap"),
             { nowait = true, silent = true, desc = "Run with dap" },
         },
         {
-            "A",
+            "<C-c><C-c>a",
             keymap.cmd("NeotestAttach"),
             { nowait = true, silent = true, desc = "Attach" },
         },
         {
-            "O",
+            "<C-c><C-c>o",
             keymap.cmd("NeotestOutput"),
             { nowait = true, silent = true, desc = "Output" },
         },
         {
-            "S",
+            "<C-c><C-c>m",
             keymap.cmd("NeotestSummary"),
             { nowait = true, silent = true, desc = "Summary" },
         },
         {
-            "s",
+            "<C-c><C-c>s",
             keymap.cmd("NeotestStop"),
             { nowait = true, silent = true, desc = "Stop" },
         },

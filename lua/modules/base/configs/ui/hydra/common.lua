@@ -4,25 +4,34 @@ local keymap = require("hydra.keymap-util")
 local M = {}
 
 local location_hint = [[
-                           COMMON
+                                         COMMON
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Neotree                     _e_ │ _u_          LVIM file manager
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Neotree                          _<C-c><C-f>_ │ _<Leader>=_                 LVIM file manager
+Ranger                                _<A-r>_ │ _<A-f>_                                  Vifm
+Mini files                        _<Leader>i_ │
 
-Search files                _f_ │ _w_            Search in files
+Search files (FZF)                _<Leader>f_ │ _<Leader>s_             (FZF) Search in files
+Search buffers (FZF)              _<Leader>b_ │
 
-LvimDiagnostics             _d_ │ _c_    Show diagnostic current
-Show diagnostic next        _n_ │ _p_       Show diagnostic prev
+Search files (Telescope)              _<A-,>_ │ _<A-.>_           (Telescope) Search in files
+Search buffers (Telescope)            _<A-b>_ │
 
-Symbols outline             _O_ │ _t_                   Terminal
+Show diagnostic next                     _dn_ │ _dp_                     Show diagnostic prev
+Show diagnostic current                  _dc_ │
 
-Previous hunk               _[_ │ _]_                  Next hunk
-View hunk                   _v_ │ _b_                 Blame line
+Symbols outline                       _<A-v>_ │ _<C-c>v_                             Navbuddy
+Lvim diagnostics                 _<C-c><C-h>_ │ _<C-c><C-v>_                          Trouble
 
-Lazygit                     _L_ │ _g_                Lvim forgit
+Previous hunk                         _<A-[>_ │ _<A-]>_                             Next hunk
+View hunk                             _<A-;>_ │ _<C-c>b_                           Blame line
+Blame line view                      _<C-c>m_ │
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<C-q>_
+Lazygit                               _<A-g>_ │ _<A-n>_                                Neogit
+Lvim forgit                           _<A-t>_ │
+
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
 ]]
 
 M.common = Hydra({
@@ -40,82 +49,139 @@ M.common = Hydra({
     body = ";a",
     heads = {
         {
-            "e",
-            keymap.cmd("Neotree left"),
+            "<C-c><C-f>",
+            keymap.cmd("Neotree toggle left"),
             { nowait = true, silent = true, desc = "Neotree" },
         },
         {
-            "u",
+            "<Leader>=",
             keymap.cmd("LvimFileManager"),
             { nowait = true, silent = true, desc = "LVIM file manager" },
         },
         {
-            "f",
+            "<A-r>",
+            keymap.cmd("Ranger"),
+            { nowait = true, silent = true, desc = "Ranger" },
+        },
+        {
+            "<A-f>",
+            keymap.cmd("Vifm"),
+            { nowait = true, silent = true, desc = "Vifm" },
+        },
+        {
+            "<Leader>i",
+            function()
+                require("mini.files").open()
+            end,
+            { nowait = true, silent = true, desc = "Mini files" },
+        },
+        {
+            "<Leader>f",
             keymap.cmd("FzfLua files"),
-            { nowait = true, silent = true, desc = "Search files" },
+            { nowait = true, silent = true, desc = "Fzf search files" },
         },
         {
-            "w",
+            "<Leader>s",
             keymap.cmd("FzfLua live_grep"),
-            { nowait = true, silent = true, desc = "Search in files" },
+            { nowait = true, silent = true, desc = "Fzf search in files" },
         },
         {
-            "d",
+            "<Leader>b",
+            keymap.cmd("FzfLua buffers"),
+            { nowait = true, silent = true, desc = "Fzf search buffers" },
+        },
+        {
+            "<A-,>",
+            keymap.cmd("Telescope find_files"),
+            { nowait = true, silent = true, desc = "Telescope search files" },
+        },
+        {
+            "<A-.>",
+            keymap.cmd("Telescope live_grep"),
+            { nowait = true, silent = true, desc = "Telescope search in files" },
+        },
+        {
+            "<A-b>",
+            keymap.cmd("Telescope buffers"),
+            { nowait = true, silent = true, desc = "Telescope search buffers" },
+        },
+        {
+            "<C-c><C-h>",
             keymap.cmd("LvimDiagnostics"),
             { nowait = true, silent = true, desc = "Prev" },
         },
         {
-            "c",
+            "dc",
             keymap.cmd("LspShowDiagnosticCurrent"),
             { nowait = true, silent = true, desc = "Show diagnostic current" },
         },
         {
-            "n",
+            "dn",
             keymap.cmd("LspShowDiagnosticNext"),
             { nowait = true, silent = true, desc = "Show diagnostic next" },
         },
         {
-            "p",
+            "dp",
             keymap.cmd("LspShowDiagnosticPrev"),
             { nowait = true, silent = true, desc = "Show diagnostic prev" },
         },
         {
-            "O",
+            "<A-v>",
             keymap.cmd("SymbolsOutline"),
             { nowait = true, silent = true, desc = "Symbols outline" },
         },
         {
-            "t",
-            keymap.cmd("TerminalHorizontal1"),
-            { nowait = true, silent = true, desc = "Terminal" },
+            "<C-c>v",
+            keymap.cmd("Navbuddy"),
+            { nowait = true, silent = true, desc = "Navbuddy" },
         },
         {
-            "[",
-            keymap.cmd("GitSignsPreviewHunk"),
-            { nowait = true, silent = true, desc = "Previous hunk" },
+            "<C-c><C-h>",
+            keymap.cmd("LvimDiagnostics"),
+            { nowait = true, silent = true, desc = "Lvim diagnostics" },
         },
         {
-            "]",
+            "<C-c><C-v>",
+            keymap.cmd("Trouble"),
+            { nowait = true, silent = true, desc = "Trouble" },
+        },
+        {
+            "<A-[>",
+            keymap.cmd("GitSignsPrevHunk"),
+            { nowait = true, silent = true, desc = "Prev hunk" },
+        },
+        {
+            "<A-]>",
             keymap.cmd("GitSignsNextHunk"),
             { nowait = true, silent = true, desc = "Next hunk" },
         },
         {
-            "v",
+            "<A-;>",
             keymap.cmd("GitSignsPreviewHunk"),
             { nowait = true, silent = true, desc = "View hunk" },
         },
         {
-            "b",
-            keymap.cmd("GitSignsBlameLine"),
+            "<C-c>b",
+            keymap.cmd("GitSignsToggleLineBlame"),
             { nowait = true, silent = true, desc = "Blame line" },
         },
         {
-            "L",
+            "<C-c>m",
+            keymap.cmd("GitSignsBlameLine"),
+            { nowait = true, silent = true, desc = "Blame line view" },
+        },
+        {
+            "<A-g>",
             keymap.cmd("Lazygit"),
             { nowait = true, silent = true, desc = "Lazygit" },
         },
         {
-            "g",
+            "<A-n>",
+            keymap.cmd("Neogit"),
+            { nowait = true, silent = true, desc = "Neogit" },
+        },
+        {
+            "<A-t>",
             keymap.cmd("LvimForgit"),
             { nowait = true, silent = true, desc = "LvimForgit" },
         },

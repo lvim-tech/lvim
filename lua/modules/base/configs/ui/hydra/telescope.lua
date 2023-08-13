@@ -1,18 +1,19 @@
 local Hydra = require("hydra")
 local keymap = require("hydra.keymap-util")
+local icons = require("configs.base.ui.icons")
 
 local M = {}
 
 local telescope_menu = [[
-                         TELESCOPE
+                                       TELESCOPE
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-File                        _f_ │ _v_                        VIM
-LSP                         _d_ │ _g_                        GIT
-Treesitter                  _t_ │ _b_               File browser
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+File ]] .. icons.common.dot .. [[                                    _f_ │ _v_                                     ]] .. icons.common.dot .. [[ VIM
+LSP  ]] .. icons.common.dot .. [[                                    _l_ │ _i_                                     ]] .. icons.common.dot .. [[ GIT
+Treesitter                                _t_ │ _b_                              File browser
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<C-q>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
 ]]
 
 M.telescope_menu = Hydra({
@@ -42,13 +43,13 @@ M.telescope_menu = Hydra({
             end,
         },
         {
-            "d",
+            "l",
             function()
                 M.telescope_lsp:activate()
             end,
         },
         {
-            "g",
+            "i",
             function()
                 M.telescope_git:activate()
             end,
@@ -68,14 +69,15 @@ M.telescope_menu = Hydra({
 })
 
 local telescope_file_pickers = [[
-                      TELESCOPE FILE
+                                     TELESCOPE FILE
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Files                       _f_ │ _g_                  Git files
-Grep string                 _w_ │ _L_                  Live grep
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Files                                 _<A-,>_ │ _<C-c><C-c>g_                       Git files
+Grep string                     _<C-c><C-c>w_ │ _<A-.>_                             Live grep
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<C-q>_  │  back => _<BS>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
+                                       back │ _<BS>_
 ]]
 
 M.telescope_file = Hydra({
@@ -91,22 +93,22 @@ M.telescope_file = Hydra({
     },
     heads = {
         {
-            "f",
+            "<A-,>",
             keymap.cmd("Telescope find_files"),
             { nowait = true, silent = true, desc = "Files" },
         },
         {
-            "g",
+            "<C-c><C-c>g",
             keymap.cmd("Telescope git_files"),
             { nowait = true, silent = true, desc = "Git files" },
         },
         {
-            "w",
+            "<C-c><C-c>w",
             keymap.cmd("Telescope grep_string"),
             { nowait = true, silent = true, desc = "Grep string" },
         },
         {
-            "L",
+            "<A-.>",
             keymap.cmd("Telescope live_grep"),
             { nowait = true, silent = true, desc = "Live grep" },
         },
@@ -125,23 +127,24 @@ M.telescope_file = Hydra({
 })
 
 local telescope_vim_pickers = [[
-                       TELESCOPE VIM
+                                      TELESCOPE VIM
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Buffers                     _b_ │ _o_                  Old files
-Commands                    _c_ │ _t_                       Tags
-Command history             _H_ │ _s_             Search history
-Help tags                   _T_ │ _M_                  Man pages
-Marks                       _m_ │ _O_                Colorscheme
-Quickfix                    _q_ │ _Q_           Quickfix history
-Loc list                    _L_ │ _J_                  Jump list
-Vim options                 _v_ │ _r_                  Registers
-Autocommands                _A_ │ _u_              Spell suggest
-Keymaps                     _K_ │ _f_                 File types
-Highlights                  _g_ │ _R_                     Resume
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Buffers                                _<A-b>_ │ _<C-c><C-c>o_                      Old files
+Commands                         _<C-c><C-c>c_ │ _<C-c><C-c>t_                           Tags
+Command history                  _<C-c><C-c>H_ │ _<C-c><C-c>s_                 Search history
+Help tags                        _<C-c><C-c>T_ │ _<C-c><C-c>M_                      Man pages
+Marks                            _<C-c><C-c>m_ │ _<C-c><C-c>O_                    Colorscheme
+Quickfix                         _<C-c><C-c>q_ │ _<C-c><C-c>Q_               Quickfix history
+Loc list                         _<C-c><C-c>L_ │ _<C-c><C-c>J_                      Jump list
+Vim options                      _<C-c><C-c>v_ │ _<C-c><C-c>r_                      Registers
+Autocommands                     _<C-c><C-c>A_ │ _<C-c><C-c>u_                  Spell suggest
+Keymaps                          _<C-c><C-c>K_ │ _<C-c><C-c>f_                     File types
+Highlights                       _<C-c><C-c>g_ │ _<C-c><C-c>R_                         Resume
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<C-q>_  │  back => _<BS>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
+                                       back │ _<BS>_
 ]]
 
 M.telescope_vim = Hydra({
@@ -157,112 +160,112 @@ M.telescope_vim = Hydra({
     },
     heads = {
         {
-            "b",
+            "<A-b>",
             keymap.cmd("Telescope buffers"),
             { nowait = true, silent = true, desc = "Telescope buffers" },
         },
         {
-            "o",
+            "<C-c><C-c>o",
             keymap.cmd("Telescope oldfiles"),
             { nowait = true, silent = true, desc = "Telescope oldfiles" },
         },
         {
-            "c",
+            "<C-c><C-c>c",
             keymap.cmd("Telescope commands"),
             { nowait = true, silent = true, desc = "Telescope commands" },
         },
         {
-            "t",
+            "<C-c><C-c>t",
             keymap.cmd("Telescope tags"),
             { nowait = true, silent = true, desc = "Telescope tags" },
         },
         {
-            "H",
+            "<C-c><C-c>H",
             keymap.cmd("Telescope command_history"),
             { nowait = true, silent = true, desc = "Telescope command history" },
         },
         {
-            "s",
+            "<C-c><C-c>s",
             keymap.cmd("Telescope search_history"),
             { nowait = true, silent = true, desc = "Telescope command search" },
         },
         {
-            "T",
+            "<C-c><C-c>T",
             keymap.cmd("Telescope help_tags"),
             { nowait = true, silent = true, desc = "Telescope help tags" },
         },
         {
-            "M",
+            "<C-c><C-c>M",
             keymap.cmd("Telescope man_pages"),
             { nowait = true, silent = true, desc = "Telescope man pages" },
         },
         {
-            "m",
+            "<C-c><C-c>m",
             keymap.cmd("Telescope marks"),
             { nowait = true, silent = true, desc = "Telescope marks" },
         },
         {
-            "O",
+            "<C-c><C-c>O",
             keymap.cmd("Telescope colorscheme"),
             { nowait = true, silent = true, desc = "Telescope colorscheme" },
         },
         {
-            "q",
+            "<C-c><C-c>q",
             keymap.cmd("Telescope quickfix"),
             { nowait = true, silent = true, desc = "Telescope quickfix" },
         },
         {
-            "Q",
+            "<C-c><C-c>Q",
             keymap.cmd("Telescope quickfixhistory"),
             { nowait = true, silent = true, desc = "Telescope quickfix history" },
         },
         {
-            "L",
+            "<C-c><C-c>L",
             keymap.cmd("Telescope loclist"),
             { nowait = true, silent = true, desc = "Telescope loc list" },
         },
         {
-            "J",
+            "<C-c><C-c>J",
             keymap.cmd("Telescope jumplist"),
             { nowait = true, silent = true, desc = "Telescope jump list" },
         },
         {
-            "v",
+            "<C-c><C-c>v",
             keymap.cmd("Telescope vim_options"),
             { nowait = true, silent = true, desc = "Telescope vim options" },
         },
         {
-            "r",
+            "<C-c><C-c>r",
             keymap.cmd("Telescope registers"),
             { nowait = true, silent = true, desc = "Telescope registers" },
         },
         {
-            "A",
+            "<C-c><C-c>A",
             keymap.cmd("Telescope autocommands"),
             { nowait = true, silent = true, desc = "Telescope autocommands" },
         },
         {
-            "u",
+            "<C-c><C-c>u",
             keymap.cmd("Telescope spell_suggest"),
             { nowait = true, silent = true, desc = "Telescope spell suggest" },
         },
         {
-            "K",
+            "<C-c><C-c>K",
             keymap.cmd("Telescope keymaps"),
             { nowait = true, silent = true, desc = "Telescope keymaps" },
         },
         {
-            "f",
+            "<C-c><C-c>f",
             keymap.cmd("Telescope filetypes"),
             { nowait = true, silent = true, desc = "Telescope file types" },
         },
         {
-            "g",
+            "<C-c><C-c>g",
             keymap.cmd("Telescope highlights"),
             { nowait = true, silent = true, desc = "Telescope highlights" },
         },
         {
-            "R",
+            "<C-c><C-c>R",
             keymap.cmd("Telescope resume"),
             { nowait = true, silent = true, desc = "Telescope resume" },
         },
@@ -281,17 +284,18 @@ M.telescope_vim = Hydra({
 })
 
 local telescope_lsp_pickers = [[
-                       TELESCOPE LSP
+                                      TELESCOPE LSP
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Definitions                 _d_ │ _t_           Type definitions
-References                  _r_ │ _m_            Implementations
-Document symbols           _sd_ │ _sw_         Workspace symbols
-Dynamic workspace symbols  _sy_ │ _g_                Diagnostics
-Incoming calls              _I_ │ _O_             Outgoing calls
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Definitions                      _<C-c><C-c>d_ │ _<C-c><C-c>t_               Type definitions
+References                       _<C-c><C-c>r_ │ _<C-c><C-c>m_                Implementations
+Document symbols                _<C-c><C-c>sd_ │ _<C-c><C-c>sw_             Workspace symbols
+Dynamic workspace symbols       _<C-c><C-c>sy_ │ _<C-c><C-c>g_                    Diagnostics
+Incoming calls                   _<C-c><C-c>I_ │ _<C-c><C-c>O_                 Outgoing calls
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<C-q>_  │  back => _<BS>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
+                                       back │ _<BS>_
 ]]
 
 M.telescope_lsp = Hydra({
@@ -307,52 +311,52 @@ M.telescope_lsp = Hydra({
     },
     heads = {
         {
-            "d",
+            "<C-c><C-c>d",
             keymap.cmd("Telescope lsp_definitions"),
             { nowait = true, silent = true, desc = "Telescope lsp definitions" },
         },
         {
-            "t",
+            "<C-c><C-c>t",
             keymap.cmd("Telescope lsp_type_definitions"),
             { nowait = true, silent = true, desc = "Telescope lsp type definitions" },
         },
         {
-            "r",
+            "<C-c><C-c>r",
             keymap.cmd("Telescope lsp_references"),
             { nowait = true, silent = true, desc = "Telescope lsp references" },
         },
         {
-            "m",
+            "<C-c><C-c>m",
             keymap.cmd("Telescope lsp_implementations"),
             { nowait = true, silent = true, desc = "Telescope lsp implementations" },
         },
         {
-            "sd",
+            "<C-c><C-c>sd",
             keymap.cmd("Telescope lsp_document_symbols"),
             { nowait = true, silent = true, desc = "Telescope lsp document symbols" },
         },
         {
-            "sw",
+            "<C-c><C-c>sw",
             keymap.cmd("Telescope lsp_workspace_symbols"),
             { nowait = true, silent = true, desc = "Telescope lsp workspace symbols" },
         },
         {
-            "sy",
+            "<C-c><C-c>sy",
             keymap.cmd("Telescope lsp_dynamic_workspace_symbols"),
             { nowait = true, silent = true, desc = "Telescope lsp dynamic workspace symbols" },
         },
         {
-            "g",
+            "<C-c><C-c>g",
             keymap.cmd("Telescope diagnostics"),
             { nowait = true, silent = true, desc = "Telescope diagnostics" },
         },
         {
-            "I",
+            "<C-c><C-c>I",
             keymap.cmd("Telescope lsp_incoming_calls"),
             { nowait = true, silent = true, desc = "Telescope lsp incoming calls" },
         },
         {
-            "O",
+            "<C-c><C-c>O",
             keymap.cmd("Telescope lsp_outgoing_calls"),
             { nowait = true, silent = true, desc = "Telescope lsp outgoing calls" },
         },
@@ -371,15 +375,16 @@ M.telescope_lsp = Hydra({
 })
 
 local telescope_git_pickers = [[
-                       TELESCOPE GIT
+                                     TELESCOPE GIT
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Git commits                 _c_ │ _b_               Git bcommits
-Git branches                _r_ │ _s_                 Git status
-Git stash                   _t_ │
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Git commits                     _<C-c><C-c>c_ │ _<C-c><C-c>b_                    Git bcommits
+Git branches                    _<C-c><C-c>r_ │ _<C-c><C-c>s_                      Git status
+Git stash                       _<C-c><C-c>t_ │
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-               exit => _<C-q>_  │  back => _<BS>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
+                                       back │ _<BS>_
 ]]
 
 M.telescope_git = Hydra({
@@ -395,27 +400,27 @@ M.telescope_git = Hydra({
     },
     heads = {
         {
-            "c",
+            "<C-c><C-c>c",
             keymap.cmd("Telescope git_commits"),
             { nowait = true, silent = true, desc = "FzfLua git commuts" },
         },
         {
-            "b",
+            "<C-c><C-c>b",
             keymap.cmd("Telescope git_bcommits"),
             { nowait = true, silent = true, desc = "FzfLua git bcommits" },
         },
         {
-            "r",
+            "<C-c><C-c>r",
             keymap.cmd("Telescope git_branches"),
             { nowait = true, silent = true, desc = "Telescope git branches" },
         },
         {
-            "s",
+            "<C-c><C-c>s",
             keymap.cmd("Telescope git_status"),
             { nowait = true, silent = true, desc = "Telescope git status" },
         },
         {
-            "t",
+            "<C-c><C-c>t",
             keymap.cmd("Telescope git_stash"),
             { nowait = true, silent = true, desc = "Telescope git stash" },
         },

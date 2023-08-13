@@ -13,7 +13,7 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
         elseif file_name == "Cargo.toml" then
             dependencies_ft.crates()
         elseif file_name == "pubspec.yaml" then
-            dependencies_ft.activate()
+            dependencies_ft.pubspec_assist()
         end
     end,
 })

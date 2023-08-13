@@ -3,17 +3,20 @@ local keymap = require("hydra.keymap-util")
 
 local M = {}
 
-local quickfix_hint = [[
-                          QUICKFIX
-
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Prev                        _p_ │ _n_                       Next
-Choice                      _c_ │ _d_                     Delete
-Load                        _L_ │ _s_                       Save
-
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<C-q>_
-]]
+local quickfix_hint = "                                        QUICKFIX\n\n"
+quickfix_hint = quickfix_hint
+    .. "▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔\n"
+quickfix_hint = quickfix_hint
+    .. "Prev                                     _][_ │ _]]_                                     Next\n"
+quickfix_hint = quickfix_hint
+    .. "Open                                     _]o_ │ _]q_                              Menu delete\n"
+quickfix_hint = quickfix_hint
+    .. "Menu choice                              _]c_ │ _]d_                              Menu delete\n"
+quickfix_hint = quickfix_hint
+    .. "Load                                     _]l_ │ _]s_                                     Save\n\n"
+quickfix_hint = quickfix_hint
+    .. "▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔\n"
+quickfix_hint = quickfix_hint .. "                                       exit │ _<C-q>_"
 
 M.quickfix = Hydra({
     name = "QUICKFIX",
@@ -30,33 +33,43 @@ M.quickfix = Hydra({
     body = ";q",
     heads = {
         {
-            "p",
+            "][",
             keymap.cmd("LvimListQuickFixPrev"),
             { nowait = true, silent = true, desc = "Prev" },
         },
         {
-            "n",
+            "]]",
             keymap.cmd("LvimListQuickFixNext"),
             { nowait = true, silent = true, desc = "Next" },
         },
         {
-            "c",
+            "]o",
+            keymap.cmd("copen"),
+            { nowait = true, silent = true, desc = "Open" },
+        },
+        {
+            "]q",
+            keymap.cmd("cclose"),
+            { nowait = true, silent = true, desc = "Close" },
+        },
+        {
+            "]c",
             keymap.cmd("LvimListQuickFixMenuChoice"),
-            { nowait = true, silent = true, desc = "Choice" },
+            { nowait = true, silent = true, desc = "Menu choice" },
         },
         {
-            "d",
+            "]d",
             keymap.cmd("LvimListQuickFixMenuDelete"),
-            { nowait = true, silent = true, desc = "Delete" },
+            { nowait = true, silent = true, desc = "Menu delete" },
         },
         {
-            "L",
-            keymap.cmd("LvimListQuickFixLoad"),
+            "]l",
+            keymap.cmd("LvimListQuickFixMenuLoad"),
             { nowait = true, silent = true, desc = "Load" },
         },
         {
-            "s",
-            keymap.cmd("LvimListQuickFixSave"),
+            "]s",
+            keymap.cmd("LvimListQuickFixMenuSave"),
             { nowait = true, silent = true, desc = "Save" },
         },
         { "<C-q>", nil, { exit = true, desc = false } },

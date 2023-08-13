@@ -4,7 +4,7 @@ local common = require("modules.base.configs.ui.hydra.common")
 local navigation = require("modules.base.configs.ui.hydra.navigation")
 local replace = require("modules.base.configs.ui.hydra.replace")
 local explorer = require("modules.base.configs.ui.hydra.explorer")
-local comment_annotation_fold = require("modules.base.configs.ui.hydra.comment_annotation_fold")
+local annotation_fold = require("modules.base.configs.ui.hydra.annotation_fold")
 local linguistics = require("modules.base.configs.ui.hydra.linguistics")
 local telescope = require("modules.base.configs.ui.hydra.telescope")
 local fzf = require("modules.base.configs.ui.hydra.fzf")
@@ -17,25 +17,27 @@ local dap = require("modules.base.configs.ui.hydra.dap")
 local neotest = require("modules.base.configs.ui.hydra.neotest")
 local terminal = require("modules.base.configs.ui.hydra.terminal")
 local dependencies_ft = require("modules.base.configs.ui.hydra.dependencies_ft")
-local vimtex = require("modules.base.configs.ui.hydra.vimtex")
+-- local vimtex = require("modules.base.configs.ui.hydra.vimtex")
+-- local flutter = require("modules.base.configs.ui.hydra.flutter")
+local plugins = require("modules.base.configs.ui.hydra.plugins")
 
 local list_hint = [[
-                         HYDRA KEYS
+                                        HYDRA KEYS
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-LVIM IDE                   _;l_ │ _;a_                    Common
-Navigation                 _;n_ │ _;r_                   Replace
-Vimtex                     _;v_ │ _;e_                  Explorer
-Comment, annotation, fold  _;c_ │ _;u_               Linguistics
-Telescope                  _;t_ │ _;z_                       FZF
-GIT                        _;g_ │ _;q_                  Quickfix
-Location                   _;o_ │ _;d_               Diagnostics
-Glance                     _;s_ │ _;p_                       DAP
-Neotest                    _;'_ │ _;m_                 Termminal
-Dependencies               _;w_ │
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+LVIM IDE                                  _;i_ │ _;a_                                  Common
+Navigation                                _;n_ │ _;e_                                Explorer
+Annotation, fold                          _;c_ │ _;m_                                Terminal
+Linguistics                               _;u_ │ _;r_                                 Replace
+Quick fix                                 _;q_ │ _;o_                                Location
+FZF                                       _;f_ │ _;t_                               Telescope
+GIT                                       _;g_ │ _;s_                                  Glance
+LSP                                       _;l_ │ _;d_                                     DAP
+Neotest                                   _;'_ │ _;w_                            Dependencies
+Plugins                                   _;p_ │
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<C-q>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
 ]]
 
 Hydra({
@@ -53,7 +55,7 @@ Hydra({
     body = ";;",
     heads = {
         {
-            ";l",
+            ";i",
             function()
                 lvim.lvim:activate()
             end,
@@ -74,13 +76,6 @@ Hydra({
             { nowait = true, silent = true, desc = "Navigation" },
         },
         {
-            ";r",
-            function()
-                replace.replace:activate()
-            end,
-            { nowait = true, silent = true, desc = "Replace" },
-        },
-        {
             ";e",
             function()
                 explorer.explorer:activate()
@@ -90,9 +85,16 @@ Hydra({
         {
             ";c",
             function()
-                comment_annotation_fold.comment_annotation_hint:activate()
+                annotation_fold.annotation:activate()
             end,
-            { nowait = true, silent = true, desc = "Comment, annotation, fold" },
+            { nowait = true, silent = true, desc = "Annotation, fold" },
+        },
+        {
+            ";m",
+            function()
+                terminal.terminal:activate()
+            end,
+            { nowait = true, silent = true, desc = "Terminal" },
         },
         {
             ";u",
@@ -102,25 +104,11 @@ Hydra({
             { nowait = true, silent = true, desc = "Linguistics" },
         },
         {
-            ";t",
+            ";r",
             function()
-                telescope.telescope_menu:activate()
+                replace.replace:activate()
             end,
-            { nowait = true, silent = true, desc = "Telescope" },
-        },
-        {
-            ";z",
-            function()
-                fzf.fzf_menu:activate()
-            end,
-            { nowait = true, silent = true, desc = "FZF" },
-        },
-        {
-            ";g",
-            function()
-                git.git_menu:activate()
-            end,
-            { nowait = true, silent = true, desc = "GIT" },
+            { nowait = true, silent = true, desc = "Replace" },
         },
         {
             ";q",
@@ -137,11 +125,25 @@ Hydra({
             { nowait = true, silent = true, desc = "Location" },
         },
         {
-            ";d",
+            ";f",
             function()
-                diagnostics.diagnostics:activate()
+                fzf.fzf_menu:activate()
             end,
-            { nowait = true, silent = true, desc = "Diagnostics" },
+            { nowait = true, silent = true, desc = "FZF" },
+        },
+        {
+            ";t",
+            function()
+                telescope.telescope_menu:activate()
+            end,
+            { nowait = true, silent = true, desc = "Telescope" },
+        },
+        {
+            ";g",
+            function()
+                git.git_menu:activate()
+            end,
+            { nowait = true, silent = true, desc = "GIT" },
         },
         {
             ";s",
@@ -151,7 +153,14 @@ Hydra({
             { nowait = true, silent = true, desc = "Glance" },
         },
         {
-            ";p",
+            ";l",
+            function()
+                diagnostics.diagnostics:activate()
+            end,
+            { nowait = true, silent = true, desc = "LSP" },
+        },
+        {
+            ";d",
             function()
                 dap.dap:activate()
             end,
@@ -163,13 +172,6 @@ Hydra({
                 neotest.neotest:activate()
             end,
             { nowait = true, silent = true, desc = "Neotest" },
-        },
-        {
-            ";m",
-            function()
-                terminal.terminal:activate()
-            end,
-            { nowait = true, silent = true, desc = "Terminal" },
         },
         {
             ";w",
@@ -188,11 +190,11 @@ Hydra({
             { nowait = true, silent = true, desc = "Dependencies" },
         },
         {
-            ";v",
+            ";p",
             function()
-                vimtex.vimtex:activate()
+                plugins.plugins:activate()
             end,
-            { nowait = true, silent = true, desc = "Vimtex" },
+            { nowait = true, silent = true, desc = "PlugIns" },
         },
         { "<C-q>", nil, { exit = true, desc = false } },
     },

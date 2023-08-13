@@ -4,20 +4,20 @@ local keymap = require("hydra.keymap-util")
 local M = {}
 
 local linguistics_hint = [[
-                        LINGUISTICS
+                                      LINGUISTICS
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Insert mode status          _R_ │ _<C-r>_   Insert mode language
-Insert mode toggle      _<C-o>_ │
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Insert mode status             _<C-c><C-c>is_ │ _<C-c><C-c>il_           Insert mode language
+Insert mode toggle             _<C-c><C-c>it_ │
 
-Spelling status             _P_ │ _<A-p>_     Spelling languages
-Spelling toggle         _<A-o>_ │
+Spelling status                _<C-c><C-c>ss_ │ _<C-c><C-c>sl_             Spelling languages
+Spelling toggle                _<C-c><C-c>st_ │
 
-Save config as local        _s_ │ _u_              Update config
-Delete config               _d_ │
+Save config as local            _<C-c><C-c>l_ │ _<C-c><C-c>u_                   Update config
+Delete config                   _<C-c><C-c>d_ │
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<C-q>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
 ]]
 
 M.linguistics = Hydra({
@@ -35,47 +35,47 @@ M.linguistics = Hydra({
     body = ";u",
     heads = {
         {
-            "R",
+            "<C-c><C-c>is",
             keymap.cmd("LvimLinguisticsMENUInsertModeStatus"),
             { nowait = true, silent = true, desc = "Insert mode status" },
         },
         {
-            "<C-r>",
+            "<C-c><C-c>il",
             keymap.cmd("LvimLinguisticsMENUInsertModeLanguage"),
             { nowait = true, silent = true, desc = "Insert mode language" },
         },
         {
-            "<C-o>",
+            "<C-c><C-c>it",
             keymap.cmd("LvimLinguisticsTOGGLEInsertModeLanguage"),
             { nowait = true, silent = true, desc = "Insert mode toggle" },
         },
         {
-            "P",
+            "<C-c><C-c>ss",
             keymap.cmd("LvimLinguisticsMENUSpellingStatus"),
             { nowait = true, silent = true, desc = "Spelling status" },
         },
         {
-            "<A-p>",
+            "<C-c><C-c>sl",
             keymap.cmd("LvimLinguisticsMENUSpellLanguages"),
             { nowait = true, silent = true, desc = "Spelling languages" },
         },
         {
-            "<A-o>",
+            "<C-c><C-c>st",
             keymap.cmd("LvimLinguisticsTOGGLESpelling"),
             { nowait = true, silent = true, desc = "Spelling toggle" },
         },
         {
-            "s",
+            "<C-c><C-c>l",
             keymap.cmd("LvimLinguisticsMENUSaveCurrentConfigAsLocal"),
             { nowait = true, silent = true, desc = "Save config as local" },
         },
         {
-            "u",
+            "<C-c><C-c>u",
             keymap.cmd("LvimLinguisticsMENUUpdateLocalConfig"),
             { nowait = true, silent = true, desc = "Update config" },
         },
         {
-            "d",
+            "<C-c><C-c>d",
             keymap.cmd("LvimLinguisticsMENUDeleteLocalConfig"),
             { nowait = true, silent = true, desc = "Delete config" },
         },

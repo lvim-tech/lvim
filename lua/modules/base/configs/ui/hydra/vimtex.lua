@@ -4,25 +4,25 @@ local keymap = require("hydra.keymap-util")
 local M = {}
 
 local vimtex_hint = [[
-                           VIMTEX
+                                         VIMTEX
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Vimtex compile              _c_ │ _g_          Vimtex compile SS
-Vimtex compile selected     _C_ │ _o_      Vimtex compile output
-Vimtex stop                 _s_ │ _S_            Vimtex stop all
-Vimtex reload               _r_ │ _R_        Vimtex reload state
-Vimtex count words          _w_ │ _W_       Vimtex count words !
-Vimtex count letters        _t_ │ _T_     Vimtex count letters !
-Vimtex info                 _f_ │ _F_              Vimtex info !
-Vimtex status               _u_ │ _U_            Vimtex status !
-Vimtex clean                _x_ │ _X_             Vimtex clean !
-Vimtex log                  _m_ │ _e_              Vimtex errors
-Vimtex toc toggle           _K_ │ _d_         Vimtex doc package
-Vimtex toggle main          _n_ │ _p_          Vimtex imaps list
-Vimtex view                 _v_ │
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Vimtex compile                  _<C-c><C-c>c_ │ _<C-c><C-c>g_               Vimtex compile SS
+Vimtex compile selected         _<C-c><C-c>C_ │ _<C-c><C-c>o_           Vimtex compile output
+Vimtex stop                     _<C-c><C-c>s_ │ _<C-c><C-c>S_                 Vimtex stop all
+Vimtex reload                   _<C-c><C-c>r_ │ _<C-c><C-c>R_             Vimtex reload state
+Vimtex count words              _<C-c><C-c>w_ │ _<C-c><C-c>W_            Vimtex count words !
+Vimtex count letters            _<C-c><C-c>t_ │ _<C-c><C-c>T_          Vimtex count letters !
+Vimtex info                     _<C-c><C-c>f_ │ _<C-c><C-c>F_                   Vimtex info !
+Vimtex status                   _<C-c><C-c>u_ │ _<C-c><C-c>U_                 Vimtex status !
+Vimtex clean                    _<C-c><C-c>x_ │ _<C-c><C-c>X_                  Vimtex clean !
+Vimtex log                      _<C-c><C-c>m_ │ _<C-c><C-c>e_                   Vimtex errors
+Vimtex toc toggle               _<C-c><C-c>K_ │ _<C-c><C-c>d_              Vimtex doc package
+Vimtex toggle main              _<C-c><C-c>n_ │ _<C-c><C-c>p_               Vimtex imaps list
+Vimtex view                     _<C-c><C-c>v_ │
 
-▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-                         exit _<C-q>_
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+                                       exit │ _<C-q>_
 ]]
 
 M.vimtex = Hydra({
@@ -37,130 +37,130 @@ M.vimtex = Hydra({
         },
     },
     mode = { "n", "x", "v" },
-    body = ";v",
+    -- body = ";pv",
     heads = {
         {
-            "c",
+            "<C-c><C-c>c",
             keymap.cmd("VimtexCompile"),
             { nowait = true, silent = true, desc = "Vimtex compile" },
         },
         {
-            "g",
+            "<C-c><C-c>g",
             keymap.cmd("VimtexCompileSS"),
             { nowait = true, silent = true, desc = "Vimtex compile SS" },
         },
         {
-            "C",
+            "<C-c><C-c>C",
             keymap.cmd("VimtexCompileSelected"),
             { nowait = true, silent = true, desc = "Vimtex compile selected" },
         },
         {
-            "o",
+            "<C-c><C-c>o",
             keymap.cmd("VimtexCompileOutput"),
             { nowait = true, silent = true, desc = "Vimtex compile output" },
         },
         {
-            "s",
+            "<C-c><C-c>s",
             keymap.cmd("VimtexStop"),
             { nowait = true, silent = true, desc = "Vimtex stop" },
         },
         {
-            "S",
+            "<C-c><C-c>S",
             keymap.cmd("VimtexStopAll"),
             { nowait = true, silent = true, desc = "Vimtex stop all" },
         },
         {
-            "r",
+            "<C-c><C-c>r",
             keymap.cmd("VimtexReload"),
             { nowait = true, silent = true, desc = "Vimtex reload" },
         },
         {
-            "R",
+            "<C-c><C-c>R",
             keymap.cmd("VimtexReloadState"),
             { nowait = true, silent = true, desc = "Vimtex reload state" },
         },
         {
-            "w",
+            "<C-c><C-c>w",
             keymap.cmd("VimtexCountWords"),
             { nowait = true, silent = true, desc = "Vimtex count words" },
         },
         {
-            "W",
+            "<C-c><C-c>W",
             keymap.cmd("VimtexCountWords!"),
             { nowait = true, silent = true, desc = "Vimtex count words !" },
         },
         {
-            "t",
+            "<C-c><C-c>t",
             keymap.cmd("VimtexCountLetters"),
             { nowait = true, silent = true, desc = "Vimtex count letters" },
         },
         {
-            "T",
+            "<C-c><C-c>T",
             keymap.cmd("VimtexCountLetters!"),
             { nowait = true, silent = true, desc = "Vimtex count letters !" },
         },
         {
-            "f",
+            "<C-c><C-c>f",
             keymap.cmd("VimtexInfo"),
             { nowait = true, silent = true, desc = "Vimtex info" },
         },
         {
-            "F",
+            "<C-c><C-c>F",
             keymap.cmd("VimtexInfo!"),
             { nowait = true, silent = true, desc = "Vimtex info !" },
         },
         {
-            "u",
+            "<C-c><C-c>u",
             keymap.cmd("VimtexStatus"),
             { nowait = true, silent = true, desc = "Vimtex status" },
         },
         {
-            "U",
+            "<C-c><C-c>U",
             keymap.cmd("VimtexStatus!"),
             { nowait = true, silent = true, desc = "Vimtex status !" },
         },
         {
-            "x",
+            "<C-c><C-c>x",
             keymap.cmd("VimtexClean"),
             { nowait = true, silent = true, desc = "Vimtex clean" },
         },
         {
-            "X",
+            "<C-c><C-c>X",
             keymap.cmd("VimtexClean!"),
             { nowait = true, silent = true, desc = "Vimtex clean !" },
         },
         {
-            "m",
+            "<C-c><C-c>m",
             keymap.cmd("VimtexLog"),
             { nowait = true, silent = true, desc = "Vimtex log" },
         },
         {
-            "e",
+            "<C-c><C-c>e",
             keymap.cmd("VimtexErrors"),
             { nowait = true, silent = true, desc = "Vimtex errors" },
         },
         {
-            "K",
+            "<C-c><C-c>K",
             keymap.cmd("VimtexTocToggle"),
             { nowait = true, silent = true, desc = "Vimtex toc toggle" },
         },
         {
-            "d",
+            "<C-c><C-c>d",
             keymap.cmd("VimtexDocPackage"),
             { nowait = true, silent = true, desc = "Vimtex doc package" },
         },
         {
-            "n",
+            "<C-c><C-c>n",
             keymap.cmd("VimtexToggleMain"),
             { nowait = true, silent = true, desc = "Vimtex toggle main" },
         },
         {
-            "p",
+            "<C-c><C-c>p",
             keymap.cmd("VimtexImapsList"),
             { nowait = true, silent = true, desc = "Vimtex imaps list" },
         },
         {
-            "v",
+            "<C-c><C-c>v",
             keymap.cmd("VimtexView"),
             { nowait = true, silent = true, desc = "Vimtex view" },
         },
