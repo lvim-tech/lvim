@@ -7,7 +7,7 @@ local flutter_hint = [[
                                         FLUTTER
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Run                             _<C-c><C-c>f_ │ _<C-c><C-c>r_                             Run
+Run                             _<C-c><C-c>f_ │ _<C-c><C-c>r_                          Reload
 Restart                         _<C-c><C-c>R_ │ _<C-c><C-c>q_                            Quit
 Devices                         _<C-c><C-c>d_ │ _<C-c><C-c>m_                       Emulators
 Outline                         _<C-c><C-c>o_ │ _<C-c><C-c>t_                       Dev tools
