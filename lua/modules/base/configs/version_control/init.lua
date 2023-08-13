@@ -97,6 +97,9 @@ config.gitsigns_nvim = function()
     vim.keymap.set("n", "<C-c>b", function()
         vim.cmd("GitSignsToggleLineBlame")
     end, { noremap = true, silent = true, desc = "GitSignsToggleLineBlame" })
+    vim.keymap.set("n", "<C-c>m", function()
+        vim.cmd("GitSignsBlameLine")
+    end, { noremap = true, silent = true, desc = "GitSignsBlameLine" })
 end
 
 config.diffview_nvim = function()

@@ -328,8 +328,8 @@ modules["folke/zen-mode.nvim"] = {
 
 modules["nyngwang/NeoZoom.lua"] = {
     commit = funcs.get_commit("NeoZoom.lua", plugins_snapshot),
-    event = {
-        "BufRead",
+    keys = {
+        { "<C-c>z", "<Cmd>NeoZoomToggle<CR>", desc = "NeoZoom" },
     },
     config = ui_config.neozoom_lua,
 }
@@ -675,6 +675,9 @@ modules["NeogitOrg/neogit"] = {
         "nvim-lua/plenary.nvim",
     },
     cmd = "Neogit",
+    keys = {
+        { "<A-n>", "<Cmd>Neogit<CR>", desc = "Neogit" },
+    },
     config = version_control_config.neogit,
 }
 
@@ -700,7 +703,10 @@ modules["lvim-tech/lvim-forgit"] = {
     dependencies = {
         "lvim-tech/lvim-shell",
     },
-    event = "BufRead",
+    cmd = "LvimForgit",
+    keys = {
+        { "<A-t>", "<Cmd>LvimForgit<CR>", desc = "Lvim forgit" },
+    },
     config = version_control_config.lvim_forgit,
 }
 

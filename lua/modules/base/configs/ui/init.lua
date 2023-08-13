@@ -1206,18 +1206,21 @@ config.lvim_shell = function()
             )
         end
     end
-    if executable("lazygit") == 1 then
-        vim.cmd("command! Lazygit :lua require('modules.base.configs.ui.shell').Lazygit()(<f-args>)")
-    end
-    if executable("lazydocker") == 1 then
-        vim.cmd("command! Lazydocker :lua require('modules.base.configs.ui.shell').Lazydocker()")
-    end
-    vim.keymap.set("n", "<C-c>fr", function()
-        vim.cmd("Ranger")
+    vim.cmd("command! Lazygit :lua require('modules.base.configs.ui.shell').Lazygit()(<f-args>)")
+    vim.cmd("command! Lazydocker :lua require('modules.base.configs.ui.shell').Lazydocker()")
+    local shells = require("modules.base.configs.ui.shell")
+    vim.keymap.set("n", "<A-g>", function()
+        shells.Lazygit()
+    end, { noremap = true, silent = true, desc = "Lazygit" })
+    vim.keymap.set("n", "<A-d>", function()
+        shells.Lazydocker()
+    end, { noremap = true, silent = true, desc = "Lazydocker" })
+    vim.keymap.set("n", "<A-r>", function()
+        shells.Ranger()
     end, { noremap = true, silent = true, desc = "Ranger" })
-    vim.keymap.set("n", "<C-c>fv", function()
-        vim.cmd("Vifm")
-    end, { noremap = true, silent = true, desc = "Vifm" })
+    vim.keymap.set("n", "<A-f>", function()
+        shells.Vifm()
+    end, { noremap = true, silent = true, desc = "Ranger" })
 end
 
 config.lvim_fm = function()
@@ -1443,7 +1446,6 @@ config.neozoom_lua = function()
         border = "none",
         scrolloff_on_zoom = 0,
     })
-    vim.keymap.set("n", "<C-c>z", ":NeoZoomToggle<CR>", { silent = true, nowait = true, desc = "NeoZoom" })
 end
 
 config.stay_in_place = function()
