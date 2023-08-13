@@ -63,7 +63,7 @@ return {
         lPrefix = "yamllint",
         lintCommand = "yamllint -f parsable -",
         lintStdin = true,
-        rootMarkers = {".yamllint", ".yamllint.yaml", ".yamllint.yml"}
+        rootMarkers = { ".yamllint", ".yamllint.yaml", ".yamllint.yml" },
     },
     vint = {
         lPrefix = "vint",
