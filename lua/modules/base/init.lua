@@ -352,6 +352,10 @@ modules["lukas-reineke/indent-blankline.nvim"] = {
 
 modules["lvim-tech/lvim-helper"] = {
     commit = funcs.get_commit("lvim-helper", plugins_snapshot),
+    keys = {
+        { "<F11>", "<Cmd>LvimHelper<CR>", desc = "LvimHelper" },
+        { "<C-c>h", "<Cmd>LvimHelper<CR>", desc = "LvimHelper" },
+    },
     config = ui_config.lvim_helper,
 }
 
@@ -738,6 +742,9 @@ local languages_config = require("modules.base.configs.languages")
 
 modules["folke/neoconf.nvim"] = {
     commit = funcs.get_commit("neoconf.nvim", plugins_snapshot),
+    event = {
+        "BufRead",
+    },
     dependencies = {
         "neovim/nvim-lspconfig",
     },
@@ -747,6 +754,9 @@ modules["folke/neoconf.nvim"] = {
 modules["williamboman/mason.nvim"] = {
     build = ":MasonUpdate",
     commit = funcs.get_commit("mason.nvim", plugins_snapshot),
+    event = {
+        "BufRead",
+    },
     dependencies = {
         "neovim/nvim-lspconfig",
         "folke/neoconf.nvim",
@@ -755,6 +765,10 @@ modules["williamboman/mason.nvim"] = {
 }
 
 modules["nvim-neotest/neotest"] = {
+    commit = funcs.get_commit("neotest", plugins_snapshot),
+    event = {
+        "BufRead",
+    },
     dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-treesitter/nvim-treesitter",

@@ -30,7 +30,6 @@ M.flutter = Hydra({
             position = "bottom-center",
             border = "single",
         },
-        buffer = true,
     },
     mode = { "n", "x", "v" },
     -- body = ";pf",
