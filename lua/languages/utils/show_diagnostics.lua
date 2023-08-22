@@ -151,7 +151,9 @@ end
 
 M.goto_next = function(opts)
     opts = vim.tbl_deep_extend("error", {
-        enable_popup = false,
+        float = {
+            pos = -1000,
+        },
     }, opts or {})
     vim.diagnostic.goto_next(opts)
     local win_id = opts.win_id or vim.api.nvim_get_current_win()
@@ -162,7 +164,9 @@ end
 
 M.goto_prev = function(opts)
     opts = vim.tbl_deep_extend("error", {
-        enable_popup = false,
+        float = {
+            pos = -1000,
+        },
     }, opts or {})
     vim.diagnostic.goto_prev(opts)
     local win_id = opts.win_id or vim.api.nvim_get_current_win()
@@ -173,7 +177,7 @@ end
 
 M.line = function(opts)
     opts = vim.tbl_deep_extend("error", {
-        enable_popup = false,
+        pos = -1000,
     }, opts or {})
     vim.diagnostic.open_float(opts)
     local win_id = opts.win_id or vim.api.nvim_get_current_win()
