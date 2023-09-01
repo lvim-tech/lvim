@@ -61,7 +61,7 @@ configs["base_lvim"] = function()
             else
                 local user_choice = string.lower(choice)
                 user_choice = string.gsub(user_choice, " ", "-")
-                _G.LVIM_SETTINGS.theme = user_choice
+                _G.LVIM_SETTINGS["theme"] = user_choice
                 vim.cmd("colorscheme " .. user_choice)
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
                 local lvim_ui_config = require("modules.base.configs.ui")
@@ -106,7 +106,7 @@ configs["base_lvim"] = function()
             else
                 local user_choice = choice
                 notify.info("Float height: " .. choice, { title = "LVIM IDE" })
-                _G.LVIM_SETTINGS.floatheight = tonumber(user_choice) + 0.0
+                _G.LVIM_SETTINGS["floatheight"] = tonumber(user_choice) + 0.0
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
                 local editor_config = require("modules.base.configs.editor")
                 editor_config.fzf_lua()
@@ -125,7 +125,6 @@ configs["base_lvim"] = function()
         {}
     )
 end
-
 configs["base_options"] = function()
     options.global()
     vim.g.indent_blankline_char = "▏"
@@ -164,48 +163,28 @@ configs["base_events"] = function()
         end,
         group = group,
     })
-    vim.api.nvim_create_autocmd({ "BufWinEnter", "BufWinLeave" }, {
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = {
+            "NeogitStatus",
+            "Outline",
+            "calendar",
+            "dapui_breakpoints",
+            "dapui_scopes",
+            "dapui_stacks",
+            "dapui_watches",
+            "git",
+            "netrw",
+            "octo",
+            "org",
+            "toggleterm",
+        },
         callback = function()
-            local buftype = vim.tbl_contains({
-                "prompt",
-                "nofile",
-                "help",
-                "quickfix",
-            }, vim.bo.buftype)
-            local filetype = vim.tbl_contains({
-                "NeogitStatus",
-                "Outline",
-                "calendar",
-                "dapui_breakpoints",
-                "dapui_scopes",
-                "dapui_stacks",
-                "dapui_watches",
-                "git",
-                "netrw",
-                "octo",
-                "org",
-                "toggleterm",
-            }, vim.bo.filetype)
-            if buftype or filetype then
-                vim.schedule(function()
-                    vim.opt_local.number = false
-                    vim.opt_local.relativenumber = false
-                    vim.opt_local.cursorcolumn = false
-                    vim.opt_local.colorcolumn = "0"
-                end)
-            end
-        end,
-        group = group,
-    })
-    vim.api.nvim_create_autocmd({ "BufWinEnter", "BufWinLeave" }, {
-        callback = function()
-            local filetype = vim.tbl_contains({ "tex" }, vim.bo.filetype)
-            if filetype then
-                vim.schedule(function()
-                    vim.opt_local.cursorcolumn = false
-                    vim.opt_local.colorcolumn = "0"
-                end)
-            end
+            vim.schedule(function()
+                vim.opt_local.number = false
+                vim.opt_local.relativenumber = false
+                vim.opt_local.cursorcolumn = false
+                vim.opt_local.colorcolumn = "0"
+            end)
         end,
         group = group,
     })

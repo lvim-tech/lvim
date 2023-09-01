@@ -36,7 +36,7 @@ local pubspec_assist_hint = [[
                        PUBSPEC ASSIST
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-Add package                 _p_ │ _d_            Add dev package
+Add package                 _p_ │ _P_            Add dev package
 Pick version                _v_ │
 
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
@@ -177,7 +177,7 @@ M.pubspec_assist = function()
                 { nowait = true, silent = true, desc = "Add package" },
             },
             {
-                "d",
+                "P",
                 keymap.cmd("PubspecAssistAddDevPackage"),
                 { nowait = true, silent = true, desc = "Add dev package" },
             },

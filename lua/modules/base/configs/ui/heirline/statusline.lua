@@ -8,7 +8,7 @@ M.get_statusline = function()
     local funcs = require("core.funcs")
     local heirline_conditions = require("heirline.conditions")
     local heirline_utils = require("heirline.utils")
-    local colors = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme]
+    local colors = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme]
     local space = { provider = " " }
     local align = { provider = "%=" }
 
@@ -299,7 +299,7 @@ M.get_statusline = function()
                 end
             end
             local filetype = vim.bo.filetype
-            local sources = global.efm.settings.languages[filetype]
+            local sources = global.efm["settings"].languages[filetype]
             if sources ~= nil then
                 for i = 1, #sources do
                     if sources[i].lPrefix ~= nil and mason_registry.is_installed(sources[i].lPrefix) then

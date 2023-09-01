@@ -40,10 +40,10 @@ M.init_diagnostics = function()
         }, { prompt = "AutoFormat (" .. status .. ")" }, {})
         select(opts, function(choice)
             if choice == "Enable" then
-                _G.LVIM_SETTINGS.autoformat = true
+                _G.LVIM_SETTINGS["autoformat"] = true
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
             elseif choice == "Disable" then
-                _G.LVIM_SETTINGS.autoformat = false
+                _G.LVIM_SETTINGS["autoformat"] = false
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
             end
         end)
@@ -76,7 +76,7 @@ M.init_diagnostics = function()
                         print("No LSP client associated with the buffer")
                     end
                 end
-                _G.LVIM_SETTINGS.inlayhint = true
+                _G.LVIM_SETTINGS["inlayhint"] = true
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
             elseif choice == "Disable" then
                 local buffers = vim.api.nvim_list_bufs()
@@ -92,7 +92,7 @@ M.init_diagnostics = function()
                         print("No LSP client associated with the buffer")
                     end
                 end
-                _G.LVIM_SETTINGS.inlayhint = false
+                _G.LVIM_SETTINGS["inlayhint"] = false
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
             end
         end)
@@ -113,10 +113,10 @@ M.init_diagnostics = function()
         }, { prompt = "VirtualDiagnostic (" .. status .. ")" }, {})
         select(opts, function(choice)
             if choice == "Enable" then
-                _G.LVIM_SETTINGS.virtualdiagnostic = true
+                _G.LVIM_SETTINGS["virtualdiagnostic"] = true
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
             elseif choice == "Disable" then
-                _G.LVIM_SETTINGS.virtualdiagnostic = false
+                _G.LVIM_SETTINGS["virtualdiagnostic"] = false
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
             end
             local config = vim.diagnostic.config
@@ -197,8 +197,8 @@ end
 
 M.get_capabilities = function()
     local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities.textDocument.completion.completionItem.snippetSupport = true
-    capabilities.textDocument.completion.completionItem.resolveSupport = {
+    capabilities.textDocument.completion.completionItem["snippetSupport"] = true
+    capabilities.textDocument.completion.completionItem["resolveSupport"] = {
         properties = {
             "documentation",
             "detail",
@@ -214,8 +214,8 @@ end
 
 M.get_cpp_capabilities = function()
     local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities.textDocument.completion.completionItem.snippetSupport = true
-    capabilities.textDocument.completion.completionItem.resolveSupport = {
+    capabilities.textDocument.completion.completionItem["snippetSupport"] = true
+    capabilities.textDocument.completion.completionItem["resolveSupport"] = {
         properties = {
             "documentation",
             "detail",
@@ -226,7 +226,7 @@ M.get_cpp_capabilities = function()
     if status_ok then
         capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
     end
-    capabilities.offsetEncoding = "utf-16"
+    capabilities["offsetEncoding"] = "utf-16"
     return capabilities
 end
 
