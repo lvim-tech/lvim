@@ -1,7 +1,7 @@
 local heirline = require("heirline")
 local heirline_conditions = require("heirline.conditions")
 local heirline_utils = require("heirline.utils")
-local theme_colors = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme]
+local theme_colors = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme]
 local icons = require("configs.base.ui.icons")
 
 local buftype = {

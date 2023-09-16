@@ -4,7 +4,7 @@ local hl = require("configs.base.ui.highlight")
 local M = {}
 
 M.get_winbar = function()
-    local colors = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme]
+    local colors = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme]
     local heirline_conditions = require("heirline.conditions")
     local tabby_filename = require("tabby.filename")
     local space = { provider = " " }

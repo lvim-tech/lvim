@@ -209,7 +209,7 @@ config.nvim_notify = function()
     end
     notify.setup({
         minimum_width = 80,
-        background_colour = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].bg,
+        background_colour = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].bg,
         icons = {
             DEBUG = icons.common.fix,
             ERROR = icons.diagnostics.error,
@@ -823,25 +823,25 @@ config.nvim_window_picker = function()
         highlights = {
             statusline = {
                 focused = {
-                    fg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].red_03,
-                    bg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].bg,
+                    fg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].red_03,
+                    bg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].bg,
                     bold = true,
                 },
                 unfocused = {
-                    fg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].bg,
-                    bg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].red_03,
+                    fg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].bg,
+                    bg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].red_03,
                     bold = true,
                 },
             },
             winbar = {
                 focused = {
-                    fg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].red_03,
-                    bg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].bg,
+                    fg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].red_03,
+                    bg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].bg,
                     bold = true,
                 },
                 unfocused = {
-                    fg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].bg,
-                    bg = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme].red_03,
+                    fg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].bg,
+                    bg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].red_03,
                     bold = true,
                 },
             },
@@ -1002,13 +1002,13 @@ config.mini_clue = function()
         }, { prompt = "Keys helper (" .. status .. ")" }, {})
         select(opts, function(choice)
             if choice == "Enable" then
-                _G.LVIM_SETTINGS.keyshelper = true
+                _G.LVIM_SETTINGS["keyshelper"] = true
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
                 vim.g.miniclue_disable = false
                 clue_enable_disable(true)
                 notify.info("Keys helper enabled", { title = "LVIM IDE" })
             elseif choice == "Disable" then
-                _G.LVIM_SETTINGS.keyshelper = false
+                _G.LVIM_SETTINGS["keyshelper"] = false
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
                 vim.g.miniclue_disable = true
                 clue_enable_disable(false)
@@ -1037,7 +1037,7 @@ config.mini_clue = function()
         select(opts, function(choice)
             if choice == "Cancel" then
             else
-                _G.LVIM_SETTINGS.keyshelperdelay = tonumber(choice)
+                _G.LVIM_SETTINGS["keyshelperdelay"] = tonumber(choice)
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
                 clue_setup()
                 notify.info("Keys helper delay: " .. choice .. "ms", { title = "LVIM IDE" })
@@ -1230,7 +1230,7 @@ config.lvim_fm = function()
     if not lvim_fm_status_ok then
         return
     end
-    local colors = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme]
+    local colors = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme]
     local bg = funcs.darken(colors.bg_01, 0.7, colors.corection)
     lvim_fm.setup({
         ui = {

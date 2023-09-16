@@ -130,7 +130,7 @@ config.lvim_forgit = function()
     if not lvim_forgit_status_ok then
         return
     end
-    local colors = _G.LVIM_COLORS.colors[_G.LVIM_SETTINGS.theme]
+    local colors = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme]
     local bg = funcs.darken(colors.bg_01, 0.7, colors.corection)
     lvim_forgit.setup({
         ui = {

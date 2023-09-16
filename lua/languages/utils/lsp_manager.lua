@@ -56,8 +56,8 @@ M.install_all_packages = function()
         elseif funcs.file_exists(global.lvim_path .. "/lua/languages/base/languages/" .. k .. ".lua") then
             file = require("languages.base.languages." .. k)
         end
-        if file.dependencies ~= nil then
-            for _, dependency in pairs(file.dependencies) do
+        if file["dependencies"] ~= nil then
+            for _, dependency in pairs(file["dependencies"]) do
                 if not has_value(dependency) then
                     table.insert(packages, dependency)
                 end
@@ -187,14 +187,14 @@ M.setup_languages = function(packages_data)
                     M.current_ft = v
                 elseif k == "efm" then
                     for c = 1, #M.current_ft do
-                        table.insert(global.efm.filetypes, M.current_ft[c])
+                        table.insert(global["efm"]["filetypes"], M.current_ft[c])
                     end
                     for a = 1, #v do
                         for t = 1, #M.current_ft do
-                            if not global.efm.settings.languages[M.current_ft[t]] then
-                                global.efm.settings.languages[M.current_ft[t]] = {}
+                            if not global["efm"]["settings"]["languages"][M.current_ft[t]] then
+                                global["efm"]["settings"]["languages"][M.current_ft[t]] = {}
                             end
-                            table.insert(global.efm.settings.languages[M.current_ft[t]], M.efm[v[a]])
+                            table.insert(global["efm"]["settings"]["languages"][M.current_ft[t]], M.efm[v[a]])
                         end
                         if not mason_registry.is_installed(v[a]) then
                             global.install_proccess = true
@@ -234,7 +234,7 @@ M.setup_languages = function(packages_data)
     end
     init(packages_data)
     vim.keymap.set("n", "dl", function()
-        vim.notify(vim.inspect(global.efm.settings.languages))
+        vim.notify(vim.inspect(global["efm"]["settings"]["languages"]))
     end, { noremap = true, silent = true, desc = "LspShowDiagnosticInLocList" })
 end
 
