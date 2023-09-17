@@ -956,6 +956,10 @@ config.mini_clue = function()
                 { mode = "n", keys = "d" },
                 { mode = "n", keys = "]" },
                 { mode = "n", keys = "[" },
+                { mode = "n", keys = "y" },
+                { mode = "x", keys = "y" },
+                { mode = "n", keys = "c" },
+                { mode = "x", keys = "c" },
             },
             clues = {
                 mini_clue.gen_clues.builtin_completion(),
