@@ -1183,6 +1183,7 @@ config.heirline_nvim = function()
         file_types_winbar[i] = v
     end
     table.insert(file_types_winbar, "qf")
+    table.insert(file_types_winbar, "replacer")
     heirline.setup({
         statusline = statusline,
         statuscolumn = statuscolumn,

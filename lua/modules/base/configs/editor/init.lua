@@ -794,6 +794,20 @@ config.nvim_spectre = function()
     end, { noremap = true, silent = true, desc = "Spectre" })
 end
 
+config.replacer_nvim = function()
+    local replacer_status_ok, replacer = pcall(require, "replacer")
+    if not replacer_status_ok then
+        return
+    end
+    local opts = { rename_files = true, save_on_write = true }
+    vim.keymap.set("n", "dr", function()
+        replacer.run(opts)
+    end, { noremap = true, silent = true, desc = "Replacer run" })
+    vim.keymap.set("n", "dR", function()
+        replacer.save(opts)
+    end, { noremap = true, silent = true, desc = "Replacer save" })
+end
+
 config.comment_nvim = function()
     local comment_status_ok, comment = pcall(require, "Comment")
     if not comment_status_ok then

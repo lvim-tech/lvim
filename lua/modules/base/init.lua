@@ -587,6 +587,14 @@ modules["windwp/nvim-spectre"] = {
     config = editor_config.nvim_spectre,
 }
 
+modules["gabrielpoca/replacer.nvim"] = {
+    commit = funcs.get_commit("replacer.nvim", plugins_snapshot),
+    event = {
+        "BufRead",
+    },
+    config = editor_config.replacer_nvim,
+}
+
 modules["numToStr/Comment.nvim"] = {
     commit = funcs.get_commit("Comment.nvim", plugins_snapshot),
     event = {
