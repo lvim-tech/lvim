@@ -295,6 +295,7 @@ config.nvim_peekup = function()
         group = "LvimIDE",
     })
 end
+
 config.nvim_hlslens = function()
     local hlslens_status_ok, hlslens = pcall(require, "hlslens")
     if not hlslens_status_ok then
