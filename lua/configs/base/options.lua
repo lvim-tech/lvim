@@ -95,6 +95,7 @@ M.global = function()
     vim.opt.foldmethod = "indent"
     vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
     vim.opt.cursorline = true
+    vim.opt.colorcolumn = "120"
 end
 
 return M

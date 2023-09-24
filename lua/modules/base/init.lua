@@ -350,6 +350,14 @@ modules["lukas-reineke/indent-blankline.nvim"] = {
     config = ui_config.indent_blankline_nvim,
 }
 
+modules["lukas-reineke/virt-column.nvim"] = {
+    commit = funcs.get_commit("indent-blankline.nvim", plugins_snapshot),
+    event = {
+        "BufEnter",
+    },
+    config = ui_config.virt_column_nvim,
+}
+
 modules["lvim-tech/lvim-helper"] = {
     commit = funcs.get_commit("lvim-helper", plugins_snapshot),
     keys = {

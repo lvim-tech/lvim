@@ -1571,6 +1571,16 @@ config.indent_blankline_nvim = function()
     )
 end
 
+config.virt_column_nvim = function()
+    local virt_column_status_ok, virt_column = pcall(require, "virt-column")
+    if not virt_column_status_ok then
+        return
+    end
+    virt_column.setup({
+        char = "▏",
+    })
+end
+
 config.lvim_helper = function()
     local lvim_helper_status_ok, lvim_helper = pcall(require, "lvim-helper")
     if not lvim_helper_status_ok then
