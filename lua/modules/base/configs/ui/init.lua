@@ -1502,7 +1502,7 @@ config.indent_blankline_nvim = function()
             enabled = true,
             show_start = true,
             show_end = true,
-            injected_languages = true,
+            injected_languages = false,
             include = {
                 node_type = { ["*"] = { "*" } },
                 -- node_type = {
@@ -1570,17 +1570,6 @@ config.indent_blankline_nvim = function()
                 "nofile",
             },
         },
-    })
-    hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
-end
-
-config.virt_column_nvim = function()
-    local virt_column_status_ok, virt_column = pcall(require, "virt-column")
-    if not virt_column_status_ok then
-        return
-    end
-    virt_column.setup({
-        char = "▏",
     })
 end
 
