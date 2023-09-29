@@ -69,7 +69,6 @@ language_configs["lsp"] = function()
     local function check_status()
         if global.install_proccess == false then
             start_server_tools()
-            vim.cmd("LspStart rust_analyzer")
         else
             vim.defer_fn(function()
                 check_status()
