@@ -11,12 +11,6 @@ local group = vim.api.nvim_create_augroup("LvimIDE", {
 local configs = {}
 
 configs["base_lvim"] = function()
-    vim.api.nvim_create_autocmd("OptionSet", {
-        callback = function()
-            vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
-        end,
-        group = group,
-    })
     local function lvim_theme()
         local status
         if _G.LVIM_SETTINGS.theme == "lvim-dark" then
@@ -125,6 +119,7 @@ configs["base_lvim"] = function()
         {}
     )
 end
+
 configs["base_options"] = function()
     options.global()
     vim.g.indent_blankline_char = "▏"
@@ -156,10 +151,9 @@ configs["base_events"] = function()
             "ruby",
         },
         callback = function()
-            vim.schedule(function()
-                vim.opt_local.tabstop = 2
-                vim.opt_local.shiftwidth = 2
-            end)
+            vim.bo.syntax = ""
+            vim.opt_local.tabstop = 2
+            vim.opt_local.shiftwidth = 2
         end,
         group = group,
     })
@@ -179,12 +173,10 @@ configs["base_events"] = function()
             "toggleterm",
         },
         callback = function()
-            vim.schedule(function()
-                vim.opt_local.number = false
-                vim.opt_local.relativenumber = false
-                vim.opt_local.cursorcolumn = false
-                vim.opt_local.colorcolumn = "0"
-            end)
+            vim.opt_local.number = false
+            vim.opt_local.relativenumber = false
+            vim.opt_local.cursorcolumn = false
+            vim.opt_local.colorcolumn = "0"
         end,
         group = group,
     })
