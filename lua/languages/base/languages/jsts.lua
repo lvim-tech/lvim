@@ -1,4 +1,7 @@
+local global = require("core.global")
 local lsp_manager = require("languages.utils.lsp_manager")
+local setup_diagnostics = require("languages.utils.setup_diagnostics")
+local navic = require("nvim-navic")
 local ft = {
     "javascript",
     "javascriptreact",
@@ -10,15 +13,71 @@ local dap = require("dap")
 
 local language_configs = {}
 
+local function start_server_tools()
+    local ts_tools = require("typescript-tools")
+    ts_tools.setup({
+        on_attach = function(client, bufnr)
+            setup_diagnostics.keymaps(client, bufnr)
+            setup_diagnostics.omni(client, bufnr)
+            setup_diagnostics.tag(client, bufnr)
+            setup_diagnostics.document_highlight(client, bufnr)
+            setup_diagnostics.document_formatting(client, bufnr)
+            setup_diagnostics.inlay_hint(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                navic.attach(client, bufnr)
+            end
+        end,
+        settings = {
+            typescript = {
+                inlayHints = {
+                    includeInlayParameterNameHints = "all",
+                    includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                    includeInlayFunctionParameterTypeHints = true,
+                    includeInlayVariableTypeHints = true,
+                    includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                    includeInlayPropertyDeclarationTypeHints = true,
+                    includeInlayFunctionLikeReturnTypeHints = true,
+                    includeInlayEnumMemberValueHints = true,
+                },
+            },
+            javascript = {
+                inlayHints = {
+                    includeInlayParameterNameHints = "all",
+                    includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                    includeInlayFunctionParameterTypeHints = true,
+                    includeInlayVariableTypeHints = true,
+                    includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                    includeInlayPropertyDeclarationTypeHints = true,
+                    includeInlayFunctionLikeReturnTypeHints = true,
+                    includeInlayEnumMemberValueHints = true,
+                },
+            },
+        },
+    })
+end
+
 language_configs["dependencies"] = { "typescript-language-server", "js-debug-adapter" }
 
 language_configs["lsp"] = function()
     lsp_manager.setup_languages({
         ["language"] = "jsts",
         ["ft"] = ft,
-        ["typescript-language-server"] = { "tsserver", typescript_config },
+        ["typescript-language-server"] = {},
         ["dap"] = { "js-debug-adapter" },
     })
+
+    local function check_status()
+        if global.install_proccess == false then
+            start_server_tools()
+            vim.cmd("LspStart rust_analyzer")
+        else
+            vim.defer_fn(function()
+                check_status()
+            end, 3100)
+        end
+    end
+
+    check_status()
 end
 
 language_configs["dap"] = function()
