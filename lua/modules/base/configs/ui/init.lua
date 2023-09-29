@@ -1464,111 +1464,114 @@ config.stay_in_place = function()
 end
 
 config.indent_blankline_nvim = function()
-    local indent_blankline_status_ok, indent_blankline = pcall(require, "indent_blankline")
+    local colors = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme]
+    local indent_blankline_status_ok, indent_blankline = pcall(require, "ibl")
     if not indent_blankline_status_ok then
         return
     end
+    local highlight = {
+        "RainbowRed",
+        "RainbowYellow",
+        "RainbowBlue",
+        "RainbowOrange",
+        "RainbowGreen",
+        "RainbowViolet",
+        "RainbowCyan",
+    }
+    vim.g.rainbow_delimiters = { highlight = highlight }
+    local hooks = require("ibl.hooks")
+    hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+        vim.api.nvim_set_hl(0, "RainbowRed", { fg = colors.red_02 })
+        vim.api.nvim_set_hl(0, "RainbowYellow", { fg = colors.teal_02 })
+        vim.api.nvim_set_hl(0, "RainbowBlue", { fg = colors.blue_02 })
+        vim.api.nvim_set_hl(0, "RainbowOrange", { fg = colors.orange_02 })
+        vim.api.nvim_set_hl(0, "RainbowGreen", { fg = colors.green_02 })
+        vim.api.nvim_set_hl(0, "RainbowViolet", { fg = colors.fg_07 })
+        vim.api.nvim_set_hl(0, "RainbowCyan", { fg = colors.cyan_02 })
+    end)
     indent_blankline.setup({
-        char = "▏",
-        show_first_indent_level = true,
-        show_trailing_blankline_indent = true,
-        show_current_context = true,
-        context_patterns = {
-            "class",
-            "function",
-            "method",
-            "block",
-            "list_literal",
-            "selector",
-            "^if",
-            "^table",
-            "if_statement",
-            "while",
-            "for",
+        debounce = 200,
+        indent = {
+            -- highlight = highlight,
+            char = "▏",
+            tab_char = "▏",
+            smart_indent_cap = true,
         },
-        filetype_exclude = {
-            "startify",
-            "dashboard",
-            "dotooagenda",
-            "log",
-            "fugitive",
-            "gitcommit",
-            "packer",
-            "vimwiki",
-            "markdown",
-            "json",
-            "txt",
-            "vista",
-            "help",
-            "todoist",
-            "NvimTree",
-            "peekaboo",
-            "git",
-            "TelescopePrompt",
-            "undotree",
-            "org",
-            "flutterToolsOutline",
-            "qf",
+        scope = {
+            char = "▏",
+            enabled = true,
+            show_start = true,
+            show_end = true,
+            injected_languages = true,
+            include = {
+                node_type = { ["*"] = { "*" } },
+                -- node_type = {
+                --     ["*"] = {
+                --         "^argument",
+                --         "^expression",
+                --         "^for",
+                --         "^if",
+                --         "^import",
+                --         "^type",
+                --         "arguments",
+                --         "block",
+                --         "bracket",
+                --         "declaration",
+                --         "field",
+                --         "func_literal",
+                --         "function",
+                --         "import_spec_list",
+                --         "list",
+                --         "return_statement",
+                --         "short_var_declaration",
+                --         "statement",
+                --         "switch_body",
+                --         "try",
+                --         "block_mapping_pair",
+                --     },
+                -- },
+            },
+            exclude = {
+                node_type = {},
+            },
+            highlight = { "IndentBlanklineContextChar" },
         },
-        buftype_exclude = {
-            "terminal",
-            "nofile",
+        whitespace = {
+            highlight = "RainbowViolet",
+            remove_blankline_trail = true,
+        },
+        exclude = {
+            filetypes = {
+                "startify",
+                "dashboard",
+                "dotooagenda",
+                "log",
+                "fugitive",
+                "gitcommit",
+                "packer",
+                "vimwiki",
+                "markdown",
+                "json",
+                "txt",
+                "vista",
+                "help",
+                "todoist",
+                "NvimTree",
+                "peekaboo",
+                "git",
+                "TelescopePrompt",
+                "undotree",
+                "org",
+                "flutterToolsOutline",
+                "qf",
+            },
+            buftypes = {
+                "terminal",
+                "nofile",
+            },
         },
     })
-    vim.keymap.set("n", "zo", "zo:IndentBlanklineRefresh<CR>", { noremap = true, silent = true, desc = "Open fold" })
-    vim.keymap.set(
-        "n",
-        "zO",
-        "zO:IndentBlanklineRefresh<CR>",
-        { noremap = true, silent = true, desc = "Open folds recursively" }
-    )
-    vim.keymap.set("n", "za", "za:IndentBlanklineRefresh<CR>", { noremap = true, silent = true, desc = "Toggle fold" })
-    vim.keymap.set(
-        "n",
-        "zA",
-        "zA:IndentBlanklineRefresh<CR>",
-        { noremap = true, silent = true, desc = "Toggle folds recursively" }
-    )
-    vim.keymap.set("n", "zc", "zc:IndentBlanklineRefresh<CR>", { noremap = true, silent = true, desc = "Close fold" })
-    vim.keymap.set(
-        "n",
-        "zC",
-        "zC:IndentBlanklineRefresh<CR>",
-        { noremap = true, silent = true, desc = "Close folds recursively" }
-    )
-    vim.keymap.set(
-        "n",
-        "zv",
-        "zv:IndentBlanklineRefresh<CR>",
-        { noremap = true, silent = true, desc = "Open enough folds" }
-    )
-    vim.keymap.set(
-        "n",
-        "zV",
-        "zV:IndentBlanklineRefresh<CR>",
-        { noremap = true, silent = true, desc = "Open enough folds recursively" }
-    )
-    vim.keymap.set(
-        "n",
-        "zx",
-        "zx:IndentBlanklineRefresh<CR>",
-        { noremap = true, silent = true, desc = "Update folds + open enough folds" }
-    )
-    vim.keymap.set("n", "zX", "zX:IndentBlanklineRefresh<CR>", { noremap = true, silent = true, desc = "Update folds" })
-    vim.keymap.set("n", "zm", "zm:IndentBlanklineRefresh<CR>", { noremap = true, silent = true, desc = "Fold more" })
-    vim.keymap.set(
-        "n",
-        "zM",
-        "zM:IndentBlanklineRefresh<CR>",
-        { noremap = true, silent = true, desc = "Close all folds" }
-    )
-    vim.keymap.set("n", "zr", "zr:IndentBlanklineRefresh<CR>", { noremap = true, silent = true, desc = "Fold less" })
-    vim.keymap.set(
-        "n",
-        "zR",
-        "zR:IndentBlanklineRefresh<CR>",
-        { noremap = true, silent = true, desc = "Open all folds" }
-    )
+    hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
 end
 
 config.virt_column_nvim = function()
