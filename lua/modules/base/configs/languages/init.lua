@@ -366,6 +366,7 @@ config.flutter_tools_nvim = function()
                 lsp_manager.tag(client, bufnr)
                 lsp_manager.document_highlight(client, bufnr)
                 lsp_manager.document_formatting(client, bufnr)
+                setup_diagnostics.inlay_hint(client, bufnr)
                 navic.attach(client, bufnr)
             end,
             capabilities = setup_diagnostics.get_capabilities(),
