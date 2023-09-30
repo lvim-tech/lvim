@@ -183,18 +183,6 @@ config.lvim_linguistics = function()
     end, { noremap = true, silent = true, desc = "LvimLinguisticsTOGGLESpelling" })
 end
 
-config.rg_nvim = function()
-    local rg_status_ok, rg = pcall(require, "rg")
-    if not rg_status_ok then
-        return
-    end
-    rg.setup({
-        default_keybindings = {
-            enable = false,
-        },
-    })
-end
-
 config.rgflow_nvim = function()
     local rgflow_status_ok, rgflow = pcall(require, "rgflow")
     if not rgflow_status_ok then

@@ -102,7 +102,6 @@
   "rainbow-delimiters.nvim": { "branch": "master", "commit": "ece052dbcb2b3d2980f0f9881e41277929813644" },
   "replacer.nvim": { "branch": "master", "commit": "32e1713230844fa52f7f0598c59295de3c90dc95" },
   "rest.nvim": { "branch": "main", "commit": "16c1c8d80a6a65c409be4342130a8a61a7497f98" },
-  "rg.nvim": { "branch": "master", "commit": "396bd07af3a503acf731eef5235be751e6148c36" },
   "rgflow.nvim": { "branch": "master", "commit": "33212e4fb85e66edbc696cc74c92c85b5204e296" },
   "rust-tools.nvim": { "branch": "master", "commit": "0cc8adab23117783a0292a0c8a2fbed1005dc645" },
   "sniprun": { "branch": "master", "commit": "1c4bc063522946676dd178d01d6fc130d3e41da5" },

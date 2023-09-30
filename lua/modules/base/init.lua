@@ -450,14 +450,6 @@ modules["lvim-tech/lvim-linguistics"] = {
     config = editor_config.lvim_linguistics,
 }
 
-modules["winston0410/rg.nvim"] = {
-    commit = funcs.get_commit("rg.nvim", plugins_snapshot),
-    event = {
-        "BufRead",
-    },
-    config = editor_config.rg_nvim,
-}
-
 modules["mangelozzi/rgflow.nvim"] = {
     commit = funcs.get_commit("rgflow.nvim", plugins_snapshot),
     keys = {
