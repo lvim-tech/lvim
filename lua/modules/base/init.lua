@@ -460,6 +460,65 @@ modules["winston0410/rg.nvim"] = {
 
 modules["mangelozzi/rgflow.nvim"] = {
     commit = funcs.get_commit("rgflow.nvim", plugins_snapshot),
+    keys = {
+        {
+            "<Leader>rG",
+            function()
+                require("rgflow").open()
+            end,
+            desc = "Rgflow open blank",
+        },
+        {
+            "<Leader>rg",
+            function()
+                require("rgflow").open_cword()
+            end,
+            desc = "Rgflow open cword",
+        },
+        {
+            "<Leader>rp",
+            function()
+                require("rgflow").open_cword()
+            end,
+            desc = "Rgflow open and paste",
+        },
+        {
+            "<Leader>ra",
+            function()
+                require("rgflow").open_again()
+            end,
+            desc = "Rgflow open again",
+        },
+        {
+            "<Leader>rx",
+            function()
+                require("rgflow").abort()
+            end,
+            desc = "Rgflow abort",
+        },
+        {
+            "<Leader>rc",
+            function()
+                require("rgflow").print_cmd()
+            end,
+            desc = "Rgflow print cmd",
+        },
+        {
+            "<Leader>r?",
+            function()
+                require("rgflow").print_status()
+            end,
+            desc = "Rgflow print status",
+        },
+        {
+            "<Leader>rg",
+            function()
+                require("rgflow").open_visual()
+            end,
+            mode = "x",
+            desc = "Rgflow open visual",
+        },
+    },
     config = editor_config.rgflow_nvim,
 }
 
