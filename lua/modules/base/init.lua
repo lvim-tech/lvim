@@ -342,11 +342,12 @@ modules["gbprod/stay-in-place.nvim"] = {
     config = ui_config.stay_in_place,
 }
 
-modules["https://gitlab.com/HiPhish/rainbow-delimiters.nvim"] = {
+modules["HiPhish/rainbow-delimiters.nvim"] = {
     commit = funcs.get_commit("rainbow-delimiters.nvim", plugins_snapshot),
     event = {
         "BufRead",
     },
+    config = ui_config.rainbow_delimiters_nvim,
 }
 
 modules["lukas-reineke/indent-blankline.nvim"] = {
@@ -455,6 +456,11 @@ modules["winston0410/rg.nvim"] = {
         "BufRead",
     },
     config = editor_config.rg_nvim,
+}
+
+modules["mangelozzi/rgflow.nvim"] = {
+    commit = funcs.get_commit("rgflow.nvim", plugins_snapshot),
+    config = editor_config.rgflow_nvim,
 }
 
 modules["ecthelionvi/NeoComposer.nvim"] = {

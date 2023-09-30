@@ -195,6 +195,20 @@ config.rg_nvim = function()
     })
 end
 
+config.rgflow_nvim = function()
+    local rgflow_status_ok, rgflow = pcall(require, "rgflow")
+    if not rgflow_status_ok then
+        return
+    end
+    rgflow.setup({
+        cmd_flags = "--smart-case --fixed-strings --ignore --max-columns 200",
+        default_trigger_mappings = true,
+        default_ui_mappings = true,
+        default_quickfix_mappings = true,
+        ui_top_line_char = "",
+    })
+end
+
 config.neocomposer_nvim = function()
     local neocomposer_status_ok, neocomposer = pcall(require, "NeoComposer")
     if not neocomposer_status_ok then
