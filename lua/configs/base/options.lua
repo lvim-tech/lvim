@@ -93,7 +93,8 @@ M.global = function()
     vim.opt.signcolumn = "no"
     vim.opt.conceallevel = 2
     vim.opt.foldmethod = "indent"
-    vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+    vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+    vim.opt.foldtext = "v:lua.get_foldtext()"
     vim.opt.cursorline = true
 end
 

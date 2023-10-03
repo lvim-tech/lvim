@@ -976,43 +976,6 @@ config.todo_comments_nvim = function()
     })
 end
 
-config.pretty_fold_nvim = function()
-    local pretty_fold_status_ok, pretty_fold = pcall(require, "pretty-fold")
-    if not pretty_fold_status_ok then
-        return
-    end
-    pretty_fold.setup({
-        fill_char = "─",
-        sections = {
-            left = {
-                "content",
-            },
-            right = {
-                "┤ ",
-                "number_of_folded_lines",
-                " ├─",
-            },
-        },
-        ft_ignore = { "org" },
-    })
-    local fold_preview_status_ok, fold_preview = pcall(require, "fold-preview")
-    if not fold_preview_status_ok then
-        return
-    end
-    fold_preview.setup({
-        default_keybindings = false,
-    })
-    local map = require("fold-preview").mapping
-    function _G.fold_preview()
-        map.show_close_preview_open_fold()
-        vim.cmd("IndentBlanklineRefresh")
-    end
-    vim.api.nvim_create_user_command("FoldPreview", "lua _G.fold_preview()", {})
-    vim.keymap.set("n", "zp", function()
-        _G.fold_preview()
-    end, { noremap = true, silent = true, desc = "FoldPreview" })
-end
-
 config.calendar_vim = function()
     vim.g.calendar_diary_extension = ".org"
     vim.g.calendar_diary = "~/Org/diary/"

@@ -713,17 +713,6 @@ modules["folke/todo-comments.nvim"] = {
     config = editor_config.todo_comments_nvim,
 }
 
-modules["anuvyklack/pretty-fold.nvim"] = {
-    commit = funcs.get_commit("pretty-fold.nvim", plugins_snapshot),
-    dependencies = {
-        "anuvyklack/fold-preview.nvim",
-    },
-    event = {
-        "BufRead",
-    },
-    config = editor_config.pretty_fold_nvim,
-}
-
 modules["renerocksai/calendar-vim"] = {
     commit = funcs.get_commit("calendar-vim", plugins_snapshot),
     event = {
