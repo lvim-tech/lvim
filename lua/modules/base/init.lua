@@ -91,11 +91,6 @@ modules["neovim/nvim-lspconfig"] = {
     lazy = true,
 }
 
-modules["anuvyklack/pretty-fold.nvim"] = {
-    commit = funcs.get_commit("fold-preview.nvim", plugins_snapshot),
-    lazy = true,
-}
-
 modules["olimorris/neotest-phpunit"] = {
     commit = funcs.get_commit("neotest-phpunit", plugins_snapshot),
     lazy = true,
