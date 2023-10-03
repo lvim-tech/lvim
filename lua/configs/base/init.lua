@@ -4,7 +4,6 @@ local options = require("configs.base.options")
 local keymaps = require("configs.base.keymaps")
 local keymaps_ft = require("configs.base.keymaps_ft")
 local icons = require("configs.base.ui.icons")
-require("configs.base.ui.fold")
 local group = vim.api.nvim_create_augroup("LvimIDE", {
     clear = true,
 })

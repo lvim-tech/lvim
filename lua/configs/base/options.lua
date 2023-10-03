@@ -1,4 +1,5 @@
 local global = require("core.global")
+require("configs.base.ui.fold")
 
 local M = {}
 
@@ -94,7 +95,7 @@ M.global = function()
     vim.opt.conceallevel = 2
     vim.opt.foldmethod = "indent"
     vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-    vim.opt.foldtext = "v:lua.get_foldtext()"
+    vim.opt.foldtext = "v:lua.fold_text()"
     vim.opt.cursorline = true
 end
 
