@@ -104,7 +104,7 @@ config.mason_nvim = function()
     require("languages.utils.setup_diagnostics").init_diagnostics()
     local efm_manager = require("languages.utils.efm_manager")
     efm_manager.setup_efm()
-    vim.schedule(function() end)
+    -- vim.schedule(function() end)
 end
 
 config.neotest = function()
@@ -344,31 +344,17 @@ config.flutter_tools_nvim = function()
             highlight = "LspInlayHint",
         },
         lsp = {
+            auto_attach = true,
             on_attach = function(client, bufnr)
-                client.server_capabilities.definitionProvider = true
-                client.server_capabilities.documentFormattingProvider = true
-                client.server_capabilities.renameProvider = {
-                    prepareProvider = true,
-                }
-                client.server_capabilities.codeActionProvider = {
-                    codeActionKinds = {
-                        "source",
-                        "source.organizeImports",
-                        "source.fixAll",
-                        "source.sortMembers",
-                        "quickfix",
-                        "refactor",
-                    },
-                }
-                client.server_capabilities.hoverProvider = true
+                navic.attach(client, bufnr)
                 lsp_manager.keymaps(client, bufnr)
                 lsp_manager.omni(client, bufnr)
                 lsp_manager.tag(client, bufnr)
                 lsp_manager.document_highlight(client, bufnr)
                 lsp_manager.document_formatting(client, bufnr)
                 setup_diagnostics.inlay_hint(client, bufnr)
-                navic.attach(client, bufnr)
             end,
+            autostart = true,
             capabilities = setup_diagnostics.get_capabilities(),
         },
     })
