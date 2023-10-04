@@ -272,15 +272,15 @@ config.noice_nvim = function()
         },
         messages = {
             enabled = true,
-            view = "notify",
-            view_error = "notify",
-            view_warn = "notify",
+            view = "mini",
+            view_error = "mini",
+            view_warn = "mini",
             view_history = "split",
             view_search = false,
         },
         popupmenu = {
             enabled = true,
-            backend = "nui",
+            backend = "mini",
             kind_icons = {},
         },
         commands = {
@@ -614,18 +614,8 @@ config.noice_nvim = function()
                     },
                 },
             },
-            -- {
-            --     view = "notify",
-            --     filter = {
-            --         any = {
-            --             { event = { "msg_showmode", "msg_showcmd", "msg_ruler" } },
-            --             { event = "msg_show", kind = "" },
-            --         },
-            --     },
-            --     opts = { skip = true },
-            -- },
             {
-                view = "notify",
+                view = "mini",
                 filter = {
                     event = "msg_show",
                     kind = "",
@@ -634,33 +624,33 @@ config.noice_nvim = function()
                 opts = { skip = true },
             },
             {
-                view = "notify",
+                view = "mini",
                 filter = {
                     event = "msg_show",
                     kind = { "", "echo", "echomsg" },
                 },
                 opts = {
-                    replace = true,
-                    merge = true,
+                    replace = false,
+                    merge = false,
                     title = "LVIM IDE",
                 },
             },
             {
-                view = "notify",
+                view = "mini",
                 filter = { error = true },
                 opts = {
                     skip = true,
                 },
             },
             {
-                view = "notify",
+                view = "mini",
                 filter = { warning = true },
                 opts = {
                     skip = true,
                 },
             },
             {
-                view = "notify",
+                view = "mini",
                 filter = { event = "notify" },
                 opts = {
                     title = "LVIM IDE",
@@ -674,7 +664,7 @@ config.noice_nvim = function()
                 },
                 opts = {
                     buf_options = { filetype = "lua" },
-                    replace = true,
+                    replace = false,
                     title = "LVIM IDE",
                 },
             },
@@ -1487,62 +1477,112 @@ config.rainbow_delimiters_nvim = function()
 end
 
 config.indent_blankline_nvim = function()
-    local indent_blankline_status_ok, indent_blankline = pcall(require, "ibl")
+    local indent_blankline_status_ok, indent_blankline = pcall(require, "indent_blankline")
     if not indent_blankline_status_ok then
         return
     end
     indent_blankline.setup({
-        debounce = 200,
-        indent = {
-            char = "▏",
-            tab_char = "▏",
-            smart_indent_cap = true,
+        char = "▏",
+        show_first_indent_level = true,
+        show_trailing_blankline_indent = true,
+        show_current_context = true,
+        show_current_context_start = false,
+        context_patterns = {
+            "class",
+            "function",
+            "method",
+            "block",
+            "list_literal",
+            "selector",
+            "^if",
+            "^table",
+            "if_statement",
+            "while",
+            "for",
         },
-        scope = {
-            char = "▏",
-            enabled = true,
-            show_start = true,
-            show_end = true,
-            injected_languages = false,
-            include = {
-                node_type = { ["*"] = { "*" } },
-            },
-            exclude = {
-                node_type = {},
-            },
-            highlight = { "IndentBlanklineContextChar" },
+        filetype_exclude = {
+            "startify",
+            "dashboard",
+            "dotooagenda",
+            "log",
+            "fugitive",
+            "gitcommit",
+            "packer",
+            "vimwiki",
+            "markdown",
+            "json",
+            "txt",
+            "vista",
+            "help",
+            "todoist",
+            "NvimTree",
+            "peekaboo",
+            "git",
+            "TelescopePrompt",
+            "undotree",
+            "org",
+            "flutterToolsOutline",
+            "qf",
         },
-        exclude = {
-            filetypes = {
-                "startify",
-                "dashboard",
-                "dotooagenda",
-                "log",
-                "fugitive",
-                "gitcommit",
-                "packer",
-                "vimwiki",
-                "markdown",
-                "json",
-                "txt",
-                "vista",
-                "help",
-                "todoist",
-                "NvimTree",
-                "peekaboo",
-                "git",
-                "TelescopePrompt",
-                "undotree",
-                "org",
-                "flutterToolsOutline",
-                "qf",
-            },
-            buftypes = {
-                "terminal",
-                "nofile",
-            },
+        buftype_exclude = {
+            "terminal",
+            "nofile",
         },
     })
+    vim.keymap.set("n", "zo", "zo:IndentBlanklineRefresh<CR>", { noremap = true, silent = true, desc = "Open fold" })
+    vim.keymap.set(
+        "n",
+        "zO",
+        "zO:IndentBlanklineRefresh<CR>",
+        { noremap = true, silent = true, desc = "Open folds recursively" }
+    )
+    vim.keymap.set("n", "za", "za:IndentBlanklineRefresh<CR>", { noremap = true, silent = true, desc = "Toggle fold" })
+    vim.keymap.set(
+        "n",
+        "zA",
+        "zA:IndentBlanklineRefresh<CR>",
+        { noremap = true, silent = true, desc = "Toggle folds recursively" }
+    )
+    vim.keymap.set("n", "zc", "zc:IndentBlanklineRefresh<CR>", { noremap = true, silent = true, desc = "Close fold" })
+    vim.keymap.set(
+        "n",
+        "zC",
+        "zC:IndentBlanklineRefresh<CR>",
+        { noremap = true, silent = true, desc = "Close folds recursively" }
+    )
+    vim.keymap.set(
+        "n",
+        "zv",
+        "zv:IndentBlanklineRefresh<CR>",
+        { noremap = true, silent = true, desc = "Open enough folds" }
+    )
+    vim.keymap.set(
+        "n",
+        "zV",
+        "zV:IndentBlanklineRefresh<CR>",
+        { noremap = true, silent = true, desc = "Open enough folds recursively" }
+    )
+    vim.keymap.set(
+        "n",
+        "zx",
+        "zx:IndentBlanklineRefresh<CR>",
+        { noremap = true, silent = true, desc = "Update folds + open enough folds" }
+    )
+    vim.keymap.set("n", "zX", "zX:IndentBlanklineRefresh<CR>", { noremap = true, silent = true, desc = "Update folds" })
+    vim.keymap.set("n", "zm", "zm:IndentBlanklineRefresh<CR>", { noremap = true, silent = true, desc = "Fold more" })
+    vim.keymap.set(
+        "n",
+        "zM",
+        "zM:IndentBlanklineRefresh<CR>",
+        { noremap = true, silent = true, desc = "Close all folds" }
+    )
+    vim.keymap.set("n", "zr", "zr:IndentBlanklineRefresh<CR>", { noremap = true, silent = true, desc = "Fold less" })
+    vim.keymap.set(
+        "n",
+        "zR",
+        "zR:IndentBlanklineRefresh<CR>",
+        { noremap = true, silent = true, desc = "Open all folds" }
+    )
 end
 
 config.lvim_helper = function()
