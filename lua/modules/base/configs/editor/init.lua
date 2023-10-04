@@ -115,7 +115,6 @@ config.fzf_lua = function()
             ["gutter"] = { "bg", "FzfLuaNormal" },
         },
         winopts_fn = function()
-            -- smaller width if neovim win has over 80 columns
             local win_height = math.ceil(vim.api.nvim_get_option("lines") * _G.LVIM_SETTINGS.floatheight)
             local win_width = math.ceil(vim.api.nvim_get_option("columns") * 1)
             local col = math.ceil((vim.api.nvim_get_option("columns") - win_width) * 1)
