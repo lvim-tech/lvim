@@ -1454,7 +1454,10 @@ config.stay_in_place = function()
 end
 
 config.rainbow_delimiters_nvim = function()
-    local rainbow_delimiters = require("rainbow-delimiters")
+    local rainbow_delimiters_status_ok, rainbow_delimiters = pcall(require, "rainbow-delimiters")
+    if not rainbow_delimiters_status_ok then
+        return
+    end
     vim.g.rainbow_delimiters = {
         strategy = {
             [""] = rainbow_delimiters.strategy["global"],
