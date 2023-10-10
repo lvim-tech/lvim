@@ -209,6 +209,7 @@ end
 configs["base_keymaps"] = function()
     funcs.keymaps("n", { noremap = true, silent = true }, keymaps.normal)
     funcs.keymaps("x", { noremap = true, silent = true }, keymaps.visual)
+    funcs.keymaps("i", { noremap = true, silent = true }, keymaps.insert)
     keymaps_ft.set_keymaps_ft()
 end
 
