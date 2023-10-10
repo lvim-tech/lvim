@@ -38,4 +38,6 @@ keymaps["visual"] = {
     { "#", "<Esc>?\\%V" }, -- Visual search ?
 }
 
+keymaps["insert"] = {}
+
 return keymaps
