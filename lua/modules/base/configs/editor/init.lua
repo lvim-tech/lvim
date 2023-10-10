@@ -722,8 +722,18 @@ config.nvim_various_textobjs = function()
             "aI",
         },
     })
-    vim.keymap.set({ "o", "x" }, "ii", "<cmd>lua require('various-textobjs').indentation(true, true)<CR>")
-    vim.keymap.set({ "o", "x" }, "ai", "<cmd>lua require('various-textobjs').indentation(false, false)<CR>")
+    vim.keymap.set(
+        { "o", "x" },
+        "ii",
+        "<cmd>lua require('various-textobjs').indentation(true, true)<CR>",
+        { noremap = true, silent = true, desc = "inner indentation" }
+    )
+    vim.keymap.set(
+        { "o", "x" },
+        "ai",
+        "<cmd>lua require('various-textobjs').indentation(false, false)<CR>",
+        { noremap = true, silent = true, desc = "outer indentation" }
+    )
 end
 
 config.rest_nvim = function()
