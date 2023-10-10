@@ -233,9 +233,6 @@ M.setup_languages = function(packages_data)
         end
     end
     init(packages_data)
-    vim.keymap.set("n", "dl", function()
-        vim.notify(vim.inspect(global["efm"]["settings"]["languages"]))
-    end, { noremap = true, silent = true, desc = "LspShowDiagnosticInLocList" })
 end
 
 M.dap_local = function()
