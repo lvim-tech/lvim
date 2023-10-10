@@ -47,7 +47,7 @@ config.telescope_nvim = function()
                 "target",
                 "vendor",
             },
-            generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
+            -- generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
             path_display = { shorten = 5 },
             winblend = 0,
             border = {},
@@ -746,14 +746,28 @@ config.rest_nvim = function()
     end, { noremap = true, silent = true, desc = "RestLast" })
 end
 
-config.sniprun = function()
-    local sniprun_status_ok, sniprun = pcall(require, "sniprun")
-    if not sniprun_status_ok then
+config.flow_nvim = function()
+    local flow_status_ok, flow = pcall(require, "flow")
+    if not flow_status_ok then
         return
     end
-    sniprun.setup()
-    vim.keymap.set({ "n", "v" }, "<C-c>u", ":SnipRun<CR>", { noremap = true, silent = true, desc = "SnipRun" })
-    vim.keymap.set("n", "<Esc>", "<Esc>:noh<CR>:SnipClose<CR>", { noremap = true, silent = true, desc = "Escape" })
+    flow.setup({
+        output = {
+            buffer = true,
+            split_cmd = "80vsplit",
+        },
+        filetype_cmd_map = {
+            lua = "lua <<-EOF\n%s\nEOF",
+            python = "python <<-EOF\n%s\nEOF",
+            ruby = "ruby <<-EOF\n%s\nEOF",
+            bash = "bash <<-EOF\n%s\nEOF",
+            sh = "sh <<-EOF\n%s\nEOF",
+            scheme = "scheme <<-EOF\n%s\nEOF",
+            javascript = "node <<-EOF\n%s\nEOF",
+            typescript = "node <<-EOF\n%s\nEOF",
+            go = "go run .",
+        },
+    })
 end
 
 config.code_runner_nvim = function()
@@ -765,6 +779,11 @@ config.code_runner_nvim = function()
     code_runner.setup({
         filetype_path = global.lvim_path .. "/.configs/code_runner/files.json",
         project_path = global.lvim_path .. "/.configs/code_runner/projects.json",
+        mode = "float",
+        -- Focus on runner window(only works on toggle, term and tab mode)
+        focus = true,
+        -- startinsert (see ':h inserting-ex')
+        startinsert = true,
     })
 end
 

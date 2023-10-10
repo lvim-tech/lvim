@@ -614,22 +614,49 @@ modules["NTBBloodbath/rest.nvim"] = {
     config = editor_config.rest_nvim,
 }
 
-modules["michaelb/sniprun"] = {
-    commit = funcs.get_commit("sniprun", plugins_snapshot),
-    dependencies = {
-        "neovim/nvim-lspconfig",
+modules["arjunmahishi/flow.nvim"] = {
+    keys = {
+        {
+            "<Leader>lfs",
+            ":FlowRunSelected<CR>",
+            mode = "x",
+            desc = "Flow run selected",
+        },
+        {
+            "<Leader>lff",
+            ":FlowRunFile<CR>",
+            desc = "Flow run file",
+        },
+        {
+            "<Leader>lfl",
+            ":FlowLauncher<CR>",
+            desc = "Flow launcher",
+        },
     },
-    build = "bash ./install.sh",
-    event = {
-        "BufRead",
-    },
-    config = editor_config.sniprun,
+    config = editor_config.flow_nvim,
 }
 
 modules["CRAG666/code_runner.nvim"] = {
     commit = funcs.get_commit("code_runner.nvim", plugins_snapshot),
     dependencies = {
         "nvim-lua/plenary.nvim",
+    },
+    keys = {
+        {
+            "<Leader>lrp",
+            ":RunProject<CR>",
+            desc = "Run project",
+        },
+        {
+            "<Leader>lrf",
+            ":RunFile<CR>",
+            desc = "Run file",
+        },
+        {
+            "<Leader>lrc",
+            ":RunCode<CR>",
+            desc = "Run code",
+        },
     },
     config = editor_config.code_runner_nvim,
 }

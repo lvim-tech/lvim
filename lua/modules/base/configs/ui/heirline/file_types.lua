@@ -24,4 +24,5 @@ return {
     "noice",
     "toggleterm",
     "org",
+    "git",
 }

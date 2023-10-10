@@ -340,7 +340,7 @@ config.flutter_tools_nvim = function()
             end,
         },
         closing_tags = {
-            prefix = icons.common.separator .. " ",
+            prefix = " " .. icons.common.separator .. " ",
             highlight = "LspInlayHint",
         },
         lsp = {
