@@ -286,7 +286,6 @@ config.go_nvim = function()
 end
 
 config.flutter_tools_nvim = function()
-    local lsp_manager = require("languages.utils.lsp_manager")
     local setup_diagnostics = require("languages.utils.setup_diagnostics")
     local navic = require("nvim-navic")
     local flutter_tools_status_ok, flutter_tools = pcall(require, "flutter-tools")
@@ -346,13 +345,13 @@ config.flutter_tools_nvim = function()
         lsp = {
             auto_attach = true,
             on_attach = function(client, bufnr)
-                navic.attach(client, bufnr)
-                lsp_manager.keymaps(client, bufnr)
-                lsp_manager.omni(client, bufnr)
-                lsp_manager.tag(client, bufnr)
-                lsp_manager.document_highlight(client, bufnr)
-                lsp_manager.document_formatting(client, bufnr)
+                setup_diagnostics.keymaps(client, bufnr)
+                setup_diagnostics.omni(client, bufnr)
+                setup_diagnostics.tag(client, bufnr)
+                setup_diagnostics.document_highlight(client, bufnr)
+                setup_diagnostics.document_formatting(client, bufnr)
                 setup_diagnostics.inlay_hint(client, bufnr)
+                navic.attach(client, bufnr)
             end,
             autostart = true,
             capabilities = setup_diagnostics.get_capabilities(),
