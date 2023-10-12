@@ -119,6 +119,9 @@ return {
     ["markdown"] = {
         "markdown",
     },
+    ["nginx"] = {
+        "nginx",
+    },
     ["ocaml"] = {
         "ocaml",
         "ocaml.menhir",
