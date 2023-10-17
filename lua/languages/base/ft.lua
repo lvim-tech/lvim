@@ -139,6 +139,9 @@ return {
     ["php"] = {
         "php",
     },
+    ["proto"] = {
+        "proto",
+    },
     ["python"] = {
         "python",
     },

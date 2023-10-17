@@ -35,6 +35,15 @@ return {
         formatStdin = true,
         rootMarkers = { ".prettierrc" },
     },
+    buf = {
+        fPrefix = "buf",
+        formatCommand = "buf format ${INPUT}",
+        formatStdin = true,
+        lPrefix = "buf",
+        lintCommand = "buf lint ${INPUT}",
+        lintStdin = true,
+        rootMarkers = { "buf.work.yaml" },
+    },
     ["golangci-lint"] = {
         lPrefix = "golangci-lint",
         lintCommand = "golangci-lint ${INPUT}",
