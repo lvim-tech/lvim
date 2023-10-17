@@ -304,7 +304,8 @@ M.get_statusline = function()
                 for i = 1, #sources do
                     if sources[i].lPrefix ~= nil and mason_registry.is_installed(sources[i].lPrefix) then
                         table.insert(linters, sources[i].lPrefix)
-                    elseif sources[i].fPrefix ~= nil and mason_registry.is_installed(sources[i].fPrefix) then
+                    end
+                    if sources[i].fPrefix ~= nil and mason_registry.is_installed(sources[i].fPrefix) then
                         table.insert(formatters, sources[i].fPrefix)
                     end
                 end
