@@ -36,13 +36,16 @@ return {
         rootMarkers = { ".prettierrc" },
     },
     buf = {
-        fPrefix = "buf",
-        formatCommand = "buf format ${INPUT}",
-        formatStdin = true,
         lPrefix = "buf",
-        lintCommand = "buf lint ${INPUT}",
+        lintCommand = "buf lint --path ${INPUT}",
         lintStdin = true,
-        rootMarkers = { "buf.work.yaml" },
+        rootMarkers = { "buf.yaml", "buf.work.yaml" },
+    },
+    ["clang-format"] = {
+        fPrefix = "clang-format",
+        formatCommand = "clang-format -",
+        formatStdin = true,
+        -- rootMarkers = { "buf.yaml", "buf.work.yaml" },
     },
     ["golangci-lint"] = {
         lPrefix = "golangci-lint",
