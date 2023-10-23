@@ -279,8 +279,8 @@ config.go_nvim = function()
         return
     end
     go.setup({
-        diagnostic = false,
-        lsp_inlay_hints = false,
+        diagnostic = {},
+        lsp_inlay_hints = {},
     })
 end
 

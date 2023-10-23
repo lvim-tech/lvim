@@ -47,7 +47,7 @@ config.telescope_nvim = function()
                 "target",
                 "vendor",
             },
-            -- generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
+            generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
             path_display = { shorten = 5 },
             winblend = 0,
             border = {},
@@ -720,6 +720,7 @@ config.nvim_various_textobjs = function()
             "ai",
             "iI",
             "aI",
+            "gc",
         },
     })
     vim.keymap.set(

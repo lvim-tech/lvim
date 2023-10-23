@@ -52,10 +52,10 @@ config.nui_nvim = function()
         end
         local UIInput = Input:extend("UIInput")
         function UIInput:init(opts, on_done)
-            local border_top_text = get_prompt_text(opts.prompt, "Input")
+            local border_top_text = get_prompt_text(string.gsub(opts.prompt, "\n", ""), "Input")
             local default_value
             if opts.default ~= nil then
-                default_value = tostring(opts.default)
+                default_value = tostring(string.gsub(opts.default, "\n", ""))
             else
                 default_value = ""
             end
