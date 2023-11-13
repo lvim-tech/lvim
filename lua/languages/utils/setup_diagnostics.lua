@@ -69,7 +69,7 @@ M.init_diagnostics = function()
                     if #clients > 0 then
                         for _, client in ipairs(clients) do
                             if vim.lsp.inlay_hint ~= nil and client.server_capabilities.inlayHintProvider then
-                                vim.lsp.inlay_hint(bufnr, true)
+                                vim.lsp.inlay_hint.enable(bufnr, true)
                             end
                         end
                     else
@@ -85,7 +85,7 @@ M.init_diagnostics = function()
                     if #clients > 0 then
                         for _, client in ipairs(clients) do
                             if vim.lsp.inlay_hint ~= nil and client.server_capabilities.inlayHintProvider then
-                                vim.lsp.inlay_hint(bufnr, false)
+                                vim.lsp.inlay_hint.enable(bufnr, false)
                             end
                         end
                     else
@@ -191,7 +191,8 @@ M.inlay_hint = function(client, bufnr)
         and client.server_capabilities.inlayHintProvider
         and _G.LVIM_SETTINGS.inlayhint == true
     then
-        vim.lsp.inlay_hint(bufnr, true)
+        -- vim.lsp.inlay_hint(bufnr, true)
+        vim.lsp.inlay_hint.enable(bufnr, true)
     end
 end
 
