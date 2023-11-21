@@ -950,8 +950,6 @@ config.mini_clue = function()
                 { mode = "x", keys = "y" },
                 { mode = "n", keys = "c" },
                 { mode = "x", keys = "c" },
-                { mode = "x", keys = "a" },
-                { mode = "x", keys = "i" },
             },
             clues = {
                 mini_clue.gen_clues.builtin_completion(),
