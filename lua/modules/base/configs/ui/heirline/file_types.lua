@@ -25,4 +25,5 @@ return {
     "toggleterm",
     "org",
     "git",
+    "",
 }

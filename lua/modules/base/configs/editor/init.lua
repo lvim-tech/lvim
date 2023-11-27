@@ -225,27 +225,18 @@ config.neocomposer_nvim = function()
             toggle_macro_menu = "<Leader>qm",
         },
     })
-    vim.defer_fn(function() end, 100)
-    vim.api.nvim_create_autocmd("FileType", {
-        pattern = {
-            "NeoComposerMenu",
-        },
-        callback = function()
-            vim.api.nvim_set_hl(0, "ComposerNormal", {
-                bg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].bg,
-                fg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].fg_07,
-            })
-            vim.api.nvim_set_hl(0, "ComposerBorder", {
-                bg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].bg,
-                fg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].bg,
-            })
-            vim.api.nvim_set_hl(0, "ComposerTitle", {
-                bg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].bg,
-                fg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].red_02,
-                bold = true,
-            })
-        end,
-        group = "LvimIDE",
+    vim.api.nvim_set_hl(0, "ComposerNormal", {
+        bg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].bg,
+        fg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].fg_07,
+    })
+    vim.api.nvim_set_hl(0, "ComposerBorder", {
+        bg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].bg,
+        fg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].bg,
+    })
+    vim.api.nvim_set_hl(0, "ComposerTitle", {
+        bg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].bg,
+        fg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].red_02,
+        bold = true,
     })
     local state = require("NeoComposer.state")
     vim.keymap.set("n", "<Leader>qr", function()
