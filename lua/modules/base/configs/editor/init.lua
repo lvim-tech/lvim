@@ -225,6 +225,34 @@ config.neocomposer_nvim = function()
             toggle_macro_menu = "<Leader>qm",
         },
     })
+    vim.api.nvim_create_autocmd("WinEnter", {
+        pattern = {
+            "*",
+        },
+        callback = function()
+            vim.schedule(function()
+                local win_id = vim.fn.win_getid()
+                local win_config = vim.api.nvim_win_get_config(win_id)
+                local function contains_string(str, list)
+                    if list then
+                        for _, v in ipairs(list) do
+                            for _, element in ipairs(v) do
+                                if element == str then
+                                    return true
+                                end
+                            end
+                        end
+                    end
+                    return false
+                end
+                if contains_string(" NeoComposer ", win_config.title) then
+                    vim.api.nvim_win_set_option(win_id, "winbar", " ")
+                end
+            end)
+        end,
+        group = "LvimIDE",
+    })
+
     vim.api.nvim_set_hl(0, "ComposerNormal", {
         bg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].bg,
         fg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].fg_07,

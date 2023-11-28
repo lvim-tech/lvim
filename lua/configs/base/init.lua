@@ -142,15 +142,6 @@ end
 configs["base_events"] = function()
     vim.api.nvim_create_autocmd("FileType", {
         pattern = {
-            "netrw",
-        },
-        callback = function()
-            vim.opt_local.signcolumn = "yes:1"
-        end,
-        group = group,
-    })
-    vim.api.nvim_create_autocmd("FileType", {
-        pattern = {
             "c",
             "cpp",
             "dart",

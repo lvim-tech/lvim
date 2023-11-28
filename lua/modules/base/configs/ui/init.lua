@@ -1049,6 +1049,15 @@ config.netrw_nvim = function()
     netrw_nvim.setup({
         use_devicons = true,
     })
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = {
+            "netrw",
+        },
+        callback = function()
+            vim.opt_local.signcolumn = "yes:1"
+        end,
+        group = "LvimIDE",
+    })
 end
 
 config.neo_tree_nvim = function()
@@ -1170,17 +1179,13 @@ config.heirline_nvim = function()
     if not heirline_status_ok then
         return
     end
-    local buf_types_winbar = {}
-    for i, v in ipairs(buf_types) do
-        buf_types_winbar[i] = v
-    end
-    table.insert(buf_types_winbar, "")
     local file_types_winbar = {}
     for i, v in ipairs(file_types) do
         file_types_winbar[i] = v
     end
     table.insert(file_types_winbar, "qf")
     table.insert(file_types_winbar, "replacer")
+    table.insert(file_types_winbar, "NeoComposerMenu")
     heirline.setup({
         statusline = statusline,
         statuscolumn = statuscolumn,
@@ -1188,7 +1193,7 @@ config.heirline_nvim = function()
         opts = {
             disable_winbar_cb = function(args)
                 local buf = args.buf
-                local buftype = vim.tbl_contains(buf_types_winbar, vim.bo[buf].buftype)
+                local buftype = vim.tbl_contains(buf_types, vim.bo[buf].buftype)
                 local filetype = vim.tbl_contains(file_types_winbar, vim.bo[buf].filetype)
                 return buftype or filetype
             end,
