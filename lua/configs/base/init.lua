@@ -132,7 +132,7 @@ configs["base_options"] = function()
     vim.g.netrw_hide = 1
     vim.g.netrw_browse_split = 0
     vim.g.netrw_altv = 1
-    vim.g.netrw_liststyle = 4
+    vim.g.netrw_liststyle = 1
     vim.g.netrw_winsize = 20
     vim.g.netrw_keepdir = 1
     vim.g.netrw_list_hide = "(^|ss)\zs.S+"
@@ -140,6 +140,15 @@ configs["base_options"] = function()
 end
 
 configs["base_events"] = function()
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = {
+            "netrw",
+        },
+        callback = function()
+            vim.opt_local.signcolumn = "yes:1"
+        end,
+        group = group,
+    })
     vim.api.nvim_create_autocmd("FileType", {
         pattern = {
             "c",

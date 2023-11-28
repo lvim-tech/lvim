@@ -25,5 +25,5 @@ return {
     "toggleterm",
     "org",
     "git",
-    "",
+    "netrw",
 }
