@@ -964,13 +964,18 @@ config.mini_clue = function()
     clue_setup()
     function clue_enable_disable(status)
         if status == true then
-            mini_clue.enable_all_triggers()
-            vim.g.miniclue_disable = false
             funcs.tm_autocmd("start")
+            vim.defer_fn(function()
+                mini_clue.enable_all_triggers()
+                vim.g.miniclue_disable = false
+                clue_setup()
+            end, 10)
         else
-            vim.g.miniclue_disable = true
-            mini_clue.disable_all_triggers()
             funcs.tm_autocmd("stop")
+            vim.defer_fn(function()
+                mini_clue.disable_all_triggers()
+                vim.g.miniclue_disable = true
+            end, 10)
         end
     end
     if _G.LVIM_SETTINGS.keyshelper == true then
@@ -998,13 +1003,11 @@ config.mini_clue = function()
             if choice == "Enable" then
                 _G.LVIM_SETTINGS["keyshelper"] = true
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
-                vim.g.miniclue_disable = false
                 clue_enable_disable(true)
                 notify.info("Keys helper enabled", { title = "LVIM IDE" })
             elseif choice == "Disable" then
                 _G.LVIM_SETTINGS["keyshelper"] = false
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
-                vim.g.miniclue_disable = true
                 clue_enable_disable(false)
                 notify.info("Keys helper disabled", { title = "LVIM IDE" })
             end
@@ -1185,7 +1188,6 @@ config.heirline_nvim = function()
     end
     table.insert(file_types_winbar, "qf")
     table.insert(file_types_winbar, "replacer")
-    table.insert(file_types_winbar, "NeoComposerMenu")
     heirline.setup({
         statusline = statusline,
         statuscolumn = statuscolumn,

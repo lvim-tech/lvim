@@ -232,9 +232,20 @@ M.get_statusline = function()
 
     local macro_rec = {
         condition = function()
-            return require("NeoComposer.state")
+            return vim.fn.reg_recording() ~= "" and vim.o.cmdheight == 0
         end,
-        provider = require("NeoComposer.ui").status_recording,
+        provider = " ",
+        hl = { fg = colors.red_01, bold = true },
+        heirline_utils.surround({ "[", "]" }, nil, {
+            provider = function()
+                return vim.fn.reg_recording()
+            end,
+            hl = { fg = colors.green_01, bold = true },
+        }),
+        update = {
+            "RecordingEnter",
+            "RecordingLeave",
+        },
     }
 
     local diagnostics = {

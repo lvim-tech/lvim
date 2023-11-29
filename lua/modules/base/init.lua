@@ -251,6 +251,9 @@ modules["echasnovski/mini.clue"] = {
 
 modules["prichrd/netrw.nvim"] = {
     commit = funcs.get_commit("netrw.nvim", plugins_snapshot),
+    dependencies = {
+        "nvim-tree/nvim-web-devicons",
+    },
     config = ui_config.netrw_nvim,
 }
 
@@ -507,12 +510,6 @@ modules["mangelozzi/rgflow.nvim"] = {
         },
     },
     config = editor_config.rgflow_nvim,
-}
-
-modules["ecthelionvi/NeoComposer.nvim"] = {
-    commit = funcs.get_commit("NeoComposer.nvim", plugins_snapshot),
-    dependencies = { "kkharji/sqlite.lua" },
-    config = editor_config.neocomposer_nvim,
 }
 
 modules["gennaro-tedesco/nvim-peekup"] = {
