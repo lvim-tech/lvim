@@ -936,14 +936,14 @@ modules["akinsho/flutter-tools.nvim"] = {
     config = languages_config.flutter_tools_nvim,
 }
 
-modules["pmizio/typescript-tools.nvim"] = {
-    commit = funcs.get_commit("typescript-tools.nvim", plugins_snapshot),
-    ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-    dependencies = {
-        "neovim/nvim-lspconfig",
-        "nvim-lua/plenary.nvim",
-    },
-}
+-- modules["pmizio/typescript-tools.nvim"] = {
+--     commit = funcs.get_commit("typescript-tools.nvim", plugins_snapshot),
+--     ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+--     dependencies = {
+--         "neovim/nvim-lspconfig",
+--         "nvim-lua/plenary.nvim",
+--     },
+-- }
 
 modules["kosayoda/nvim-lightbulb"] = {
     commit = funcs.get_commit("nvim-lightbulb", plugins_snapshot),
