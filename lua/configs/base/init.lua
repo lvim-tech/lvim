@@ -142,6 +142,17 @@ end
 configs["base_events"] = function()
     vim.api.nvim_create_autocmd("FileType", {
         pattern = {
+            "text",
+            "markdown",
+            "org",
+        },
+        callback = function()
+            vim.opt_local.listchars = "tab:  ,nbsp: ,trail: ,space: ,extends:→,precedes:←"
+        end,
+        group = group,
+    })
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = {
             "c",
             "cpp",
             "dart",

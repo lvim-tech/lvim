@@ -1043,6 +1043,16 @@ modules["akinsho/pubspec-assist.nvim"] = {
     config = languages_config.pubspec_assist_nvim,
 }
 
+modules["dhruvasagar/vim-table-mode"] = {
+    commit = funcs.get_commit("dhruvasagar/vim-table-mode", plugins_snapshot),
+    ft = { "markdown", "text" },
+}
+
+modules["dkarter/bullets.vim"] = {
+    commit = funcs.get_commit("bullets.vim", plugins_snapshot),
+    ft = { "markdown", "text" },
+}
+
 modules["iamcco/markdown-preview.nvim"] = {
     commit = funcs.get_commit("markdown-preview.nvim", plugins_snapshot),
     build = "cd app && npm install",
