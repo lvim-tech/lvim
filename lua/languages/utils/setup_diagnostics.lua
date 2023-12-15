@@ -210,6 +210,9 @@ M.get_capabilities = function()
     if status_ok then
         capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
     end
+    capabilities.experimental = {
+        workspaceWillRename = true,
+    }
     return capabilities
 end
 
@@ -228,6 +231,9 @@ M.get_cpp_capabilities = function()
         capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
     end
     capabilities["offsetEncoding"] = "utf-16"
+    capabilities.experimental = {
+        workspaceWillRename = true,
+    }
     return capabilities
 end
 
