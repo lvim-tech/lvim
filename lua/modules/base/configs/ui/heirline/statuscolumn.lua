@@ -84,10 +84,7 @@ M.get_statuscolumn = function()
             self.has_sign = self.sign ~= nil
         end,
         provider = function(self)
-            if self.has_sign then
-                return vim.fn.sign_getdefined(self.sign.name)[1].text
-            end
-            return "  "
+            return self.sign and self.sign.text or "  "
         end,
         hl = function(self)
             if self.has_sign then
