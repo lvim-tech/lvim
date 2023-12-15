@@ -434,6 +434,76 @@ modules["ibhagwan/fzf-lua"] = {
             end,
             desc = "FzfLua buffers",
         },
+        {
+            "gfd",
+            function()
+                vim.cmd("FzfLua lsp_definitions")
+            end,
+            desc = "FzfLua lsp definitions",
+        },
+        {
+            "gfD",
+            function()
+                vim.cmd("FzfLua lsp_declarations")
+            end,
+            desc = "FzfLua lsp declarations",
+        },
+        {
+            "gft",
+            function()
+                vim.cmd("FzfLua lsp_typedefs")
+            end,
+            desc = "FzfLua lsp type definition",
+        },
+        {
+            "gfr",
+            function()
+                vim.cmd("FzfLua lsp_references")
+            end,
+            desc = "FzfLua lsp references",
+        },
+        {
+            "gfi",
+            function()
+                vim.cmd("FzfLua lsp_implementations")
+            end,
+            desc = "FzfLua lsp implementations",
+        },
+        {
+            "gff",
+            function()
+                vim.cmd("FzfLua lsp_finder")
+            end,
+            desc = "FzfLua lsp finder",
+        },
+        {
+            "gfw",
+            function()
+                vim.cmd("FzfLua lsp_document_diagnostics")
+            end,
+            desc = "FzfLua lsp document diagnostics",
+        },
+        {
+            "gfW",
+            function()
+                vim.cmd("FzfLua lsp_workspace_diagnostics")
+            end,
+            desc = "FzfLua lsp workspace diagnostics",
+        },
+        {
+            "gfs",
+            function()
+                vim.cmd("FzfLua lsp_document_symbols")
+            end,
+            desc = "FzfLua lsp document symbols",
+        },
+        {
+            "gfS",
+            function()
+                vim.cmd("FzfLua lsp_workspace_symbols")
+            end,
+            desc = "FzfLua lsp workspace symbols",
+        },
     },
     config = editor_config.fzf_lua,
 }
@@ -861,6 +931,18 @@ modules["nvim-neotest/neotest"] = {
         "sidlatau/neotest-dart",
     },
     config = languages_config.neotest,
+}
+
+modules["antosha417/nvim-lsp-file-operations"] = {
+    commit = funcs.get_commit("nvim-lsp-file-operations", plugins_snapshot),
+    dependencies = {
+        "nvim-lua/plenary.nvim",
+        "nvim-neo-tree/neo-tree.nvim",
+    },
+    event = {
+        "BufRead",
+    },
+    config = languages_config.nvim_lsp_file_operations,
 }
 
 modules["smjonas/inc-rename.nvim"] = {

@@ -162,6 +162,17 @@ config.neotest = function()
     end, {})
 end
 
+config.nvim_lsp_file_operations = function()
+    local lsp_file_operations_status_ok, lsp_file_operations = pcall(require, "lsp-file-operations")
+    if not lsp_file_operations_status_ok then
+        return
+    end
+    lsp_file_operations.setup({
+        debug = false,
+        timeout_ms = 100000,
+    })
+end
+
 config.inc_rename_nvim = function()
     local inc_rename_status_ok, inc_rename = pcall(require, "inc_rename")
     if not inc_rename_status_ok then
@@ -356,6 +367,9 @@ config.flutter_tools_nvim = function()
             end,
             autostart = true,
             capabilities = setup_diagnostics.get_capabilities(),
+            settings = {
+                renameFilesWithClasses = "prompt",
+            },
         },
     })
 end
