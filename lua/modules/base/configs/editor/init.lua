@@ -892,10 +892,10 @@ config.todo_comments_nvim = function()
     end
     todo_comments.setup({
         keywords = {
-            FIX = { icon = icons.common.fix, color = "error", alt = { "FIX", "FIXME" } },
+            FIX = { icon = icons.common.fix, color = "error", alt = { "FIX", "FIXME", "BUG" } },
             TODO = { icon = icons.common.todo, color = "info", alt = { "TODO" } },
             HACK = { icon = icons.common.hack, color = "error", alt = { "HACK" } },
-            WARN = { icon = icons.common.warning, color = "warning", alt = { "WARNING", "XXX" } },
+            WARN = { icon = icons.common.warning, color = "warning", alt = { "WARNING" } },
             PERF = { icon = icons.common.performance, color = "warning", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
             NOTE = { icon = icons.common.note, color = "hint", alt = { "INFO" } },
             TEST = { icon = icons.common.test, color = "test", alt = { "TEST", "TESTING", "PASSED", "FAILED" } },
