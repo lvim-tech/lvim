@@ -1,4 +1,5 @@
 local funcs = require("core.funcs")
+local icons = require("configs.base.ui.icons")
 
 local config = {}
 
@@ -33,43 +34,43 @@ config.gitsigns_nvim = function()
         signs = {
             add = {
                 hl = "GitSignsAdd",
-                text = "▌",
+                text = icons.common.vline,
                 numhl = "GitSignsAddNr",
                 linehl = "GitSignsAddLn",
             },
             change = {
                 hl = "GitSignsChange",
-                text = "▌",
+                text = icons.common.vline,
                 numhl = "GitSignsChangeNr",
                 linehl = "GitSignsChangeLn",
             },
             delete = {
                 hl = "GitSignsDelete",
-                text = "▌",
+                text = icons.common.vline,
                 numhl = "GitSignsDeleteNr",
                 linehl = "GitSignsDeleteLn",
             },
             topdelete = {
                 hl = "GitSignsTopDelete",
-                text = "▌",
+                text = icons.common.vline,
                 numhl = "GitSignsTopDeleteNr",
                 linehl = "GitSignsTopDeleteLn",
             },
             changedelete = {
                 hl = "GitSignsChangeDelete",
-                text = "▌",
+                text = icons.common.vline,
                 numhl = "GitSignsChangeDeleteNr",
                 linehl = "GitSignsChangeDeleteLn",
             },
             untracked = {
                 hl = "GitSignsUntracked",
-                text = "▌",
+                text = icons.common.vline,
                 numhl = "GitSignsUntrackedNr",
                 linehl = "GitSignsUntrackedLn",
             },
         },
         linehl = false,
-        _extmark_signs = false,
+        _extmark_signs = true,
     })
     vim.api.nvim_create_user_command("GitSignsPreviewHunk", "lua require('gitsigns').preview_hunk()", {})
     vim.api.nvim_create_user_command("GitSignsNextHunk", "lua require('gitsigns').next_hunk()", {})
