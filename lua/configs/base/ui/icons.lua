@@ -4,6 +4,7 @@ return {
         dos = " ",
         mac = " ",
         vim = " ",
+        vline = " ▌",
         terminal = " ",
         plugins = " ",
         time = "󱑍 ",
