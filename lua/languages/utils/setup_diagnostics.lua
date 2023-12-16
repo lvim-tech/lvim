@@ -23,6 +23,14 @@ local config_diagnostic = {
     update_in_insert = true,
     underline = true,
     severity_sort = true,
+    signs = {
+        text = {
+            [vim.diagnostic.severity.ERROR] = icons.diagnostics.error,
+            [vim.diagnostic.severity.WARN] = icons.diagnostics.warn,
+            [vim.diagnostic.severity.HINT] = icons.diagnostics.hint,
+            [vim.diagnostic.severity.INFO] = icons.diagnostics.info,
+        },
+    },
 }
 
 M.init_diagnostics = function()
