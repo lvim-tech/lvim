@@ -2,8 +2,9 @@ local M = {}
 
 M.get_statuscolumn = function()
     local colors = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme]
+    local icons = require("configs.base.ui.icons")
     local conditions = require("heirline.conditions")
-    local gitsigns_avail, gitsigns = pcall(require, "gitsigns")
+    local gitsigns = require("gitsigns")
     local buf_types = require("modules.base.configs.ui.heirline.buf_types")
     local file_types = require("modules.base.configs.ui.heirline.file_types")
     local space = { provider = " " }
@@ -16,6 +17,55 @@ M.get_statuscolumn = function()
     table.insert(file_types_statuscolumn, "fzf")
 
     local static = {
+        get_extmarks_signs = function(self, bufnr, lnum)
+            local signs = {}
+            local extmarks = vim.api.nvim_buf_get_extmarks(
+                0,
+                bufnr,
+                { lnum - 1, 0 },
+                { lnum - 1, -1 },
+                { details = true, type = "sign" }
+            )
+            for _, extmark in pairs(extmarks) do
+                vim.print(vim.inspect(extmark))
+                if extmark[4].ns_id ~= 27 then
+                    signs[#signs + 1] = {
+                        name = extmark[4].sign_hl_group or "",
+                        text = extmark[4].sign_text,
+                        sign_hl_group = extmark[4].sign_hl_group,
+                        priority = extmark[4].priority,
+                    }
+                end
+            end
+            table.sort(signs, function(a, b)
+                return (a.priority or 0) < (b.priority or 0)
+            end)
+            return signs
+        end,
+        get_extmarks_gits = function(self, bufnr, lnum)
+            local gits = {}
+
+            local extmarks = vim.api.nvim_buf_get_extmarks(
+                0,
+                bufnr,
+                { lnum - 1, 0 },
+                { lnum - 1, -1 },
+                { details = true, type = "sign" }
+            )
+
+            for _, extmark in pairs(extmarks) do
+                if extmark[4].ns_id == 27 then
+                    gits[#gits + 1] = {
+                        name = extmark[4].sign_hl_group or "",
+                        text = extmark[4].sign_text,
+                        sign_hl_group = extmark[4].sign_hl_group,
+                        priority = extmark[4].priority,
+                    }
+                end
+            end
+            return gits
+        end,
+        -- ns_git = vim.api.nvim_create_namespace("gitsigns_extmark_signs_"),
         click_args = function(self, minwid, clicks, button, mods)
             local args = {
                 minwid = minwid,
@@ -34,81 +84,59 @@ M.get_statuscolumn = function()
 
             return args
         end,
-        handlers = {},
+        resolve = function(self, name)
+            for pattern, callback in pairs(self.handlers.Signs) do
+                if name:match(pattern) then
+                    return vim.defer_fn(callback, 100)
+                end
+            end
+        end,
+        handlers = {
+            Signs = {
+                ["Neotest.*"] = function(self, args)
+                    require("neotest").run.run()
+                end,
+                ["Debug.*"] = function(self, args)
+                    require("dap").continue()
+                end,
+                ["Diagnostic.*"] = function(self, args)
+                    vim.cmd("LspShowDiagnosticCurrent")
+                end,
+            },
+            Dap = function(self, args)
+                require("dap").toggle_breakpoint()
+            end,
+            GitSigns = function(self, args)
+                vim.defer_fn(function()
+                    gitsigns.preview_hunk()
+                end, 100)
+            end,
+        },
     }
 
     local init = function(self)
         self.signs = {}
-        self.handlers.signs = function()
-            return vim.schedule(vim.cmd("LspShowDiagnosticCurrent"))
-        end
-        self.handlers.line_number = function()
-            local dap_avail, dap = pcall(require, "dap")
-            if dap_avail then
-                vim.schedule(dap.toggle_breakpoint)
-            end
-        end
-        self.handlers.git_signs = function()
-            if gitsigns_avail then
-                vim.schedule(gitsigns.preview_hunk)
-            end
-        end
-        self.handlers.fold = function(args)
-            local lnum = args.mousepos.line
-            if vim.fn.foldlevel(lnum) <= vim.fn.foldlevel(lnum - 1) then
-                return
-            end
-            vim.cmd.execute("'" .. lnum .. "fold" .. (vim.fn.foldclosed(lnum) == -1 and "close" or "open") .. "'")
-        end
     end
 
     local signs = {
         init = function(self)
-            local signs = vim.fn.sign_getplaced(vim.api.nvim_get_current_buf(), {
-                group = "*",
-                lnum = vim.v.lnum,
-            })
-            if #signs == 0 or signs[1].signs == nil then
-                self.sign = nil
-                self.has_sign = false
-                return
-            end
-            signs = vim.tbl_filter(function(sign)
-                return not vim.startswith(sign.group, "gitsigns")
-            end, signs[1].signs)
-            if #signs == 0 then
-                self.sign = nil
-            else
-                self.sign = signs[1]
-            end
-            self.has_sign = self.sign ~= nil
+            local signs = self.get_extmarks_signs(self, -1, vim.v.lnum)
+            self.sign = signs[1]
         end,
         provider = function(self)
             return self.sign and self.sign.text or "  "
         end,
         hl = function(self)
-            if self.has_sign then
-                if self.sign.group == "neotest-status" then
-                    if self.sign.name == "neotest_running" then
-                        return "NeotestRunning"
-                    end
-                    if self.sign.name == "neotest_failed" then
-                        return "NeotestFailed"
-                    end
-                    if self.sign.name == "neotest_passed" then
-                        return "NeotestPassed"
-                    end
-                    return "NeotestSkipped"
-                end
-                local hl = self.sign.name
-                return (vim.fn.hlexists(hl) ~= 0 and hl)
-            end
+            return self.sign and self.sign.sign_hl_group
         end,
         on_click = {
-            name = "sign_click",
+            name = "sc_sign_click",
+            update = true,
             callback = function(self, ...)
-                if self.handlers.signs then
-                    self.handlers.signs(self.click_args(self, ...))
+                local line = self.click_args(self, ...).mousepos.line
+                local sign = self.get_extmarks_signs(self, -1, line)[1]
+                if sign then
+                    self:resolve(sign.name)
                 end
             end,
         },
@@ -125,38 +153,19 @@ M.get_statuscolumn = function()
             return vim.v.relnum
         end,
         on_click = {
-            name = "line_number_click",
+            name = "sc_linenumber_click",
             callback = function(self, ...)
-                if self.handlers.line_number then
-                    self.handlers.line_number(self.click_args(self, ...))
-                end
+                self.handlers.Dap(self.click_args(self, ...))
             end,
         },
     }
 
-    local function fix_git_sign_name(name)
-        if name == "GitSignsAddAdd" then
-            return "GitSignsAdd"
-        elseif name == "GitSignsChangeChange" then
-            return "GitSignsChange"
-        elseif name == "GitSignsDeleteDelete" then
-            return "GitSignsDelete"
-        elseif name == "GitSignsTopDeleteTopDelete" then
-            return "GitSignsTopDelete"
-        elseif name == "GitSignsChangeDeleteChangeDelete" then
-            return "GitSignsChangeDelete"
-        elseif name == "GitSignsUntrackedUntracked" then
-            return "GitSignsUntracked"
-        end
-        return name
-    end
-
-    local git_signs = {
+    local gits = {
         {
             condition = function()
                 return not conditions.is_git_repo() or vim.v.virtnum ~= 0
             end,
-            provider = "▌",
+            provider = icons.common.vline,
             hl = { fg = colors.bg_04 },
         },
         {
@@ -164,31 +173,19 @@ M.get_statuscolumn = function()
                 return conditions.is_git_repo() and vim.v.virtnum == 0
             end,
             init = function(self)
-                ---@diagnostic disable-next-line: redefined-local
-                local signs = vim.fn.sign_getplaced(vim.api.nvim_get_current_buf(), {
-                    group = "gitsigns_vimfn_signs_",
-                    id = vim.v.lnum,
-                    lnum = vim.v.lnum,
-                })
-                if #signs == 0 or signs[1].signs == nil or #signs[1].signs == 0 or signs[1].signs[1].name == nil then
-                    self.sign = nil
-                else
-                    self.sign = signs[1].signs[1]
-                end
-                self.has_sign = self.sign ~= nil
+                local gits = self.get_extmarks_gits(self, -1, vim.v.lnum)
+                self.sign = gits[1]
             end,
-            provider = "▌",
+            provider = function(self)
+                return self.sign and self.sign.text or icons.common.vline
+            end,
             hl = function(self)
-                if self.has_sign then
-                    return fix_git_sign_name(self.sign.name)
-                end
+                return self.sign and self.sign.sign_hl_group
             end,
             on_click = {
-                name = "gitsigns_click",
+                name = "sc_gitsigns_click",
                 callback = function(self, ...)
-                    if self.handlers.git_signs then
-                        self.handlers.git_signs(self.click_args(self, ...))
-                    end
+                    self.handlers.GitSigns(self.click_args(self, ...))
                 end,
             },
         },
@@ -205,9 +202,10 @@ M.get_statuscolumn = function()
         init = init,
         signs,
         align,
+        space,
         line_numbers,
         space,
-        git_signs,
+        gits,
         space,
     }
 
