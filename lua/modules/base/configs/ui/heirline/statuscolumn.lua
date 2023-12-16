@@ -9,7 +9,6 @@ M.get_statuscolumn = function()
     local file_types = require("modules.base.configs.ui.heirline.file_types")
     local space = { provider = " " }
     local align = { provider = "%=" }
-
     local file_types_statuscolumn = {}
     for i, v in ipairs(file_types) do
         file_types_statuscolumn[i] = v
@@ -27,8 +26,14 @@ M.get_statuscolumn = function()
                 { details = true, type = "sign" }
             )
             for _, extmark in pairs(extmarks) do
-                vim.print(vim.inspect(extmark))
-                if extmark[4].ns_id ~= 27 then
+                if
+                    extmark[4].sign_hl_group ~= "GitSignsAdd"
+                    and extmark[4].sign_hl_group ~= "GitSignsChange"
+                    and extmark[4].sign_hl_group ~= "GitSignsDelete"
+                    and extmark[4].sign_hl_group ~= "GitSignsTopDelete"
+                    and extmark[4].sign_hl_group ~= "GitSignsChangeDelete"
+                    and extmark[4].sign_hl_group ~= "GitSignsUntracked"
+                then
                     signs[#signs + 1] = {
                         name = extmark[4].sign_hl_group or "",
                         text = extmark[4].sign_text,
@@ -44,7 +49,6 @@ M.get_statuscolumn = function()
         end,
         get_extmarks_gits = function(self, bufnr, lnum)
             local gits = {}
-
             local extmarks = vim.api.nvim_buf_get_extmarks(
                 0,
                 bufnr,
@@ -52,9 +56,15 @@ M.get_statuscolumn = function()
                 { lnum - 1, -1 },
                 { details = true, type = "sign" }
             )
-
             for _, extmark in pairs(extmarks) do
-                if extmark[4].ns_id == 27 then
+                if
+                    extmark[4].sign_hl_group == "GitSignsAdd"
+                    or extmark[4].sign_hl_group == "GitSignsChange"
+                    or extmark[4].sign_hl_group == "GitSignsDelete"
+                    or extmark[4].sign_hl_group == "GitSignsTopDelete"
+                    or extmark[4].sign_hl_group == "GitSignsChangeDelete"
+                    or extmark[4].sign_hl_group == "GitSignsUntracked"
+                then
                     gits[#gits + 1] = {
                         name = extmark[4].sign_hl_group or "",
                         text = extmark[4].sign_text,
