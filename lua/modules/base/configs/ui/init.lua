@@ -781,27 +781,9 @@ config.nvim_window_picker = function()
         local picked_window_id = window_picker.pick_window() or vim.api.nvim_get_current_win()
         vim.api.nvim_set_current_win(picked_window_id)
     end
-    local filters = window_picker.filter_windows
-    local function special_autoselect(windows)
-        windows = filters(windows)
-        if windows == nil then
-            windows = {}
-        end
-        if #windows > 1 then
-            return windows
-        end
-        local curr_win = vim.api.nvim_get_current_win()
-        for index, window in ipairs(windows) do
-            if window == curr_win then
-                table.remove(windows, index)
-            end
-        end
-        return windows
-    end
     window_picker.setup({
         hint = "statusline-winbar",
         show_prompt = false,
-        filter_func = special_autoselect,
         filter_rules = {
             autoselect_one = false,
             include_current_win = true,
