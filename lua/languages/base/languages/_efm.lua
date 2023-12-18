@@ -43,9 +43,9 @@ return {
     },
     ["clang-format"] = {
         fPrefix = "clang-format",
-        formatCommand = "clang-format -",
+        formatCommand = "clang-format",
         formatStdin = true,
-        -- rootMarkers = { "buf.yaml", "buf.work.yaml" },
+        rootMarkers = { "buf.yaml", "buf.work.yaml" },
     },
     ["golangci-lint"] = {
         lPrefix = "golangci-lint",
