@@ -435,70 +435,70 @@ modules["ibhagwan/fzf-lua"] = {
             desc = "FzfLua buffers",
         },
         {
-            "gfd",
+            "gzd",
             function()
                 vim.cmd("FzfLua lsp_definitions")
             end,
             desc = "FzfLua lsp definitions",
         },
         {
-            "gfD",
+            "gzD",
             function()
                 vim.cmd("FzfLua lsp_declarations")
             end,
             desc = "FzfLua lsp declarations",
         },
         {
-            "gft",
+            "gzt",
             function()
                 vim.cmd("FzfLua lsp_typedefs")
             end,
             desc = "FzfLua lsp type definition",
         },
         {
-            "gfr",
+            "gzr",
             function()
                 vim.cmd("FzfLua lsp_references")
             end,
             desc = "FzfLua lsp references",
         },
         {
-            "gfi",
+            "gzi",
             function()
                 vim.cmd("FzfLua lsp_implementations")
             end,
             desc = "FzfLua lsp implementations",
         },
         {
-            "gff",
+            "gzf",
             function()
                 vim.cmd("FzfLua lsp_finder")
             end,
             desc = "FzfLua lsp finder",
         },
         {
-            "gfw",
+            "gzw",
             function()
                 vim.cmd("FzfLua lsp_document_diagnostics")
             end,
             desc = "FzfLua lsp document diagnostics",
         },
         {
-            "gfW",
+            "gzW",
             function()
                 vim.cmd("FzfLua lsp_workspace_diagnostics")
             end,
             desc = "FzfLua lsp workspace diagnostics",
         },
         {
-            "gfs",
+            "gzs",
             function()
                 vim.cmd("FzfLua lsp_document_symbols")
             end,
             desc = "FzfLua lsp document symbols",
         },
         {
-            "gfS",
+            "gzS",
             function()
                 vim.cmd("FzfLua lsp_workspace_symbols")
             end,
