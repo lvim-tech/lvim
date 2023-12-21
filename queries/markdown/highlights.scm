@@ -4,7 +4,7 @@
 ([(list_marker_minus) (list_marker_plus) (list_marker_star)]
  @punctuation.special
  (#offset-first-n! @punctuation.special 1)
- (#set! conceal "➤"))
+ (#set! conceal ""))
 (list
   (list_item
     (list
@@ -12,7 +12,7 @@
         ([(list_marker_minus) (list_marker_plus) (list_marker_star)]
          @punctuation.special
          (#offset-first-n! @punctuation.special 1)
-         (#set! conceal "➤"))))))
+         (#set! conceal "⭘"))))))
 (list
   (list_item
     (list
@@ -22,7 +22,7 @@
             ([(list_marker_minus) (list_marker_plus) (list_marker_star)]
              @punctuation.special
              (#offset-first-n! @punctuation.special 1)
-             (#set! conceal "➤"))))))))
+             (#set! conceal "◼"))))))))
 (list
   (list_item
     (list
@@ -34,7 +34,7 @@
                 ([(list_marker_minus) (list_marker_plus) (list_marker_star)]
                  @punctuation.special
                  (#offset-first-n! @punctuation.special 1)
-                 (#set! conceal "➤"))))))))))
+                 (#set! conceal "◻"))))))))))
 (list
   (list_item
     (list
@@ -48,61 +48,7 @@
                     ([(list_marker_minus) (list_marker_plus) (list_marker_star)]
                      @punctuation.special
                      (#offset-first-n! @punctuation.special 1)
-                     (#set! conceal "➤"))))))))))))
-(list
-  (list_item
-    (list
-      (list_item
-        (list
-          (list_item
-            (list
-              (list_item
-                (list
-                  (list_item
-                    (list
-                      (list_item
-                        ([(list_marker_minus) (list_marker_plus) (list_marker_star)]
-                        @punctuation.special
-                        (#offset-first-n! @punctuation.special 1)
-                        (#set! conceal "➤"))))))))))))))
-(list
-  (list_item
-    (list
-      (list_item
-        (list
-          (list_item
-            (list
-              (list_item
-                (list
-                  (list_item
-                    (list
-                      (list_item
-                        (list
-                          (list_item
-                            ([(list_marker_minus) (list_marker_plus) (list_marker_star)]
-                            @punctuation.special
-                            (#offset-first-n! @punctuation.special 1)
-                            (#set! conceal "➤"))))))))))))))))
-(list
-  (list_item
-    (list
-      (list_item
-        (list
-          (list_item
-            (list
-              (list_item
-                (list
-                  (list_item
-                    (list
-                      (list_item
-                        (list
-                          (list_item
-                            (list
-                              (list_item
-                                ([(list_marker_minus) (list_marker_plus) (list_marker_star)]
-                                @punctuation.special
-                                (#offset-first-n! @punctuation.special 1)
-                                (#set! conceal "➤"))))))))))))))))))
+                     (#set! conceal "→"))))))))))))
 
 ; Checkbox list items
 ((task_list_marker_unchecked)
@@ -151,12 +97,12 @@
                   (#set! conceal "━"))
 
 ; Headers
-((atx_h1_marker) @text.title.1.marker.markdown (#set! conceal ""))
-((atx_h2_marker) @text.title.2.marker.markdown (#set! conceal "◉"))
-((atx_h3_marker) @text.title.3.marker.markdown (#set! conceal "◎"))
-((atx_h4_marker) @text.title.4.marker.markdown (#set! conceal "○"))
-((atx_h5_marker) @text.title.5.marker.markdown (#set! conceal "◼"))
-((atx_h6_marker) @text.title.6.marker.markdown (#set! conceal "◻"))
+((atx_h1_marker) @text.title.1.marker.markdown (#set! conceal "1"))
+((atx_h2_marker) @text.title.2.marker.markdown (#set! conceal "2"))
+((atx_h3_marker) @text.title.3.marker.markdown (#set! conceal "3"))
+((atx_h4_marker) @text.title.4.marker.markdown (#set! conceal "4"))
+((atx_h5_marker) @text.title.5.marker.markdown (#set! conceal "5"))
+((atx_h6_marker) @text.title.6.marker.markdown (#set! conceal "6"))
 
 ; Ease fenced code block conceals a bit
 ((fenced_code_block_delimiter) @punctuation.delimiter (#set! conceal "~"))
