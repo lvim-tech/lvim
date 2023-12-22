@@ -284,19 +284,6 @@ config.neodev_nvim = function()
     })
 end
 
-config.go_nvim = function()
-    local go_status_ok, go = pcall(require, "go")
-    if not go_status_ok then
-        return
-    end
-    go.setup({
-        diagnostic = false,
-        lsp_inlay_hints = {
-            enable = false,
-        },
-    })
-end
-
 config.flutter_tools_nvim = function()
     local setup_diagnostics = require("languages.utils.setup_diagnostics")
     local navic = require("nvim-navic")

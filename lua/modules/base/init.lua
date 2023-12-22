@@ -126,12 +126,6 @@ modules["sidlatau/neotest-dart"] = {
     lazy = true,
 }
 
-modules["ray-x/guihua.lua"] = {
-    commit = funcs.get_commit("guihua.lua", plugins_snapshot),
-    build = "cd lua/fzy && make",
-    lazy = true,
-}
-
 modules["nvim-treesitter/playground"] = {
     commit = funcs.get_commit("playground", plugins_snapshot),
     lazy = true,
@@ -1000,15 +994,6 @@ modules["simrat39/rust-tools.nvim"] = {
     },
 }
 
-modules["ray-x/go.nvim"] = {
-    commit = funcs.get_commit("go.nvim", plugins_snapshot),
-    dependencies = {
-        "ray-x/guihua.lua",
-    },
-    ft = "go",
-    config = languages_config.go_nvim,
-}
-
 modules["akinsho/flutter-tools.nvim"] = {
     commit = funcs.get_commit("flutter-tools.nvim", plugins_snapshot),
     ft = "dart",
@@ -1017,15 +1002,6 @@ modules["akinsho/flutter-tools.nvim"] = {
     },
     config = languages_config.flutter_tools_nvim,
 }
-
--- modules["pmizio/typescript-tools.nvim"] = {
---     commit = funcs.get_commit("typescript-tools.nvim", plugins_snapshot),
---     ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
---     dependencies = {
---         "neovim/nvim-lspconfig",
---         "nvim-lua/plenary.nvim",
---     },
--- }
 
 modules["kosayoda/nvim-lightbulb"] = {
     commit = funcs.get_commit("nvim-lightbulb", plugins_snapshot),
