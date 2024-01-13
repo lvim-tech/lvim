@@ -1,5 +1,6 @@
 local global = require("core.global")
 local lsp_manager = require("languages.utils.lsp_manager")
+local setup_diagnostics = require("languages.utils.setup_diagnostics")
 local ft = {
     "rust",
 }
@@ -11,25 +12,7 @@ local dap = require("dap")
 local language_configs = {}
 
 local function start_server_tools()
-    local rust_tools = require("rust-tools")
-    rust_tools.setup({
-        tools = {
-            inlay_hints = {
-                auto = false,
-            },
-            hover_actions = {
-                border = {
-                    { "┌", "FloatBorder" },
-                    { "─", "FloatBorder" },
-                    { "┐", "FloatBorder" },
-                    { "│", "FloatBorder" },
-                    { "┘", "FloatBorder" },
-                    { "─", "FloatBorder" },
-                    { "└", "FloatBorder" },
-                    { "│", "FloatBorder" },
-                },
-            },
-        },
+    vim.g.rustaceanvim = {
         server = {
             flags = {
                 debounce_text_changes = default_debouce_time,
@@ -37,22 +20,22 @@ local function start_server_tools()
             autostart = true,
             filetypes = ft,
             on_attach = function(client, bufnr)
-                lsp_manager.keymaps(client, bufnr)
-                lsp_manager.omni(client, bufnr)
-                lsp_manager.tag(client, bufnr)
-                lsp_manager.document_highlight(client, bufnr)
-                lsp_manager.document_formatting(client, bufnr)
-                lsp_manager.inlay_hint(client, bufnr)
+                setup_diagnostics.keymaps(client, bufnr)
+                setup_diagnostics.omni(client, bufnr)
+                setup_diagnostics.tag(client, bufnr)
+                setup_diagnostics.document_highlight(client, bufnr)
+                setup_diagnostics.document_formatting(client, bufnr)
+                setup_diagnostics.inlay_hint(client, bufnr)
                 if client.server_capabilities.documentSymbolProvider then
                     navic.attach(client, bufnr)
                 end
             end,
-            capabilities = lsp_manager.get_capabilities(),
+            capabilities = setup_diagnostics.get_capabilities(),
             root_dir = function(fname)
                 return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
             end,
         },
-    })
+    }
 end
 
 language_configs["dependencies"] = { "rust-analyzer", "cpptools" }

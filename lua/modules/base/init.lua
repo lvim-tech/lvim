@@ -984,8 +984,8 @@ modules["scalameta/nvim-metals"] = {
     ft = { "scala", "sbt" },
 }
 
-modules["simrat39/rust-tools.nvim"] = {
-    commit = funcs.get_commit("rust-tools.nvim", plugins_snapshot),
+modules["mrcjkb/rustaceanvim"] = {
+    commit = funcs.get_commit("rustaceanvim", plugins_snapshot),
     ft = "rust",
     dependencies = {
         "neovim/nvim-lspconfig",
