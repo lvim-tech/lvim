@@ -300,9 +300,6 @@ config.rustaceanvim = function()
             autostart = true,
             filetypes = ft,
             on_attach = function(client, bufnr)
-                vim.defer_fn(function()
-                    vim.notify("hello")
-                end, 1000)
                 setup_diagnostics.keymaps(client, bufnr)
                 setup_diagnostics.omni(client, bufnr)
                 setup_diagnostics.tag(client, bufnr)
