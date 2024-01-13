@@ -284,6 +284,43 @@ config.neodev_nvim = function()
     })
 end
 
+config.rustaceanvim = function()
+    local nvim_lsp_util = require("lspconfig/util")
+    local setup_diagnostics = require("languages.utils.setup_diagnostics")
+    local navic = require("nvim-navic")
+    local default_debouce_time = 150
+    local ft = {
+        "rust",
+    }
+    vim.g.rustaceanvim = {
+        server = {
+            flags = {
+                debounce_text_changes = default_debouce_time,
+            },
+            autostart = true,
+            filetypes = ft,
+            on_attach = function(client, bufnr)
+                vim.defer_fn(function()
+                    vim.notify("hello")
+                end, 1000)
+                setup_diagnostics.keymaps(client, bufnr)
+                setup_diagnostics.omni(client, bufnr)
+                setup_diagnostics.tag(client, bufnr)
+                setup_diagnostics.document_highlight(client, bufnr)
+                setup_diagnostics.document_formatting(client, bufnr)
+                setup_diagnostics.inlay_hint(client, bufnr)
+                if client.server_capabilities.documentSymbolProvider then
+                    navic.attach(client, bufnr)
+                end
+            end,
+            capabilities = setup_diagnostics.get_capabilities(),
+            root_dir = function(fname)
+                return nvim_lsp_util.find_git_ancestor(fname) or vim.fn.getcwd()
+            end,
+        },
+    }
+end
+
 config.flutter_tools_nvim = function()
     local setup_diagnostics = require("languages.utils.setup_diagnostics")
     local navic = require("nvim-navic")
