@@ -992,6 +992,7 @@ modules["mrcjkb/rustaceanvim"] = {
         "nvim-lua/plenary.nvim",
         "mfussenegger/nvim-dap",
     },
+    config = languages_config.rustaceanvim,
 }
 
 modules["akinsho/flutter-tools.nvim"] = {
