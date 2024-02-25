@@ -446,8 +446,7 @@ config.nvim_treesitter = function()
         },
         highlight = {
             enable = true,
-            -- disable = { "markdown" },
-            -- additional_vim_regex_highlighting = { "org" },
+            additional_vim_regex_highlighting = { "org" },
         },
         indent = {
             enable = true,
