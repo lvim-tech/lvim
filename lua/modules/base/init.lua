@@ -266,7 +266,6 @@ modules["nvim-neo-tree/neo-tree.nvim"] = {
         "nvim-lua/plenary.nvim",
         "nvim-tree/nvim-web-devicons",
         "MunifTanjim/nui.nvim",
-        "mrbjarksen/neo-tree-diagnostics.nvim",
     },
     config = ui_config.neo_tree_nvim,
 }
