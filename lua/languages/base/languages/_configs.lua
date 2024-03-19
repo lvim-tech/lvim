@@ -174,6 +174,9 @@ M.go = function(file_types)
                     rangeVariableTypes = true,
                 },
             },
+            opts = {
+                inlay_hints = { enabled = true },
+            },
         },
         capabilities = setup_diagnostics.get_capabilities(),
         root_dir = function(fname)
