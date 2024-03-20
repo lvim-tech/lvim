@@ -30,6 +30,11 @@ modules["nvim-lua/popup.nvim"] = {
     lazy = true,
 }
 
+modules["nvim-neotest/nvim-nio"] = {
+    commit = funcs.get_commit("nvim-nio", plugins_snapshot),
+    lazy = true,
+}
+
 modules["rcarriga/nvim-notify"] = {
     commit = funcs.get_commit("nvim-notify", plugins_snapshot),
     lazy = true,
@@ -1052,6 +1057,7 @@ modules["rcarriga/nvim-dap-ui"] = {
     },
     dependencies = {
         "mfussenegger/nvim-dap",
+        "nvim-neotest/nvim-nio",
         "mxsdev/nvim-dap-vscode-js",
         "jbyuki/one-small-step-for-vimkind",
     },
