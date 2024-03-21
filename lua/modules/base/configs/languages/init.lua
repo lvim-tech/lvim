@@ -278,8 +278,8 @@ config.neodev_nvim = function()
         library = {
             enabled = true,
             runtime = true,
+            plugins = { "nvim-dap-ui" },
             types = true,
-            plugins = false,
         },
     })
 end
