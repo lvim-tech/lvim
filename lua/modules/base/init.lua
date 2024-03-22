@@ -293,7 +293,7 @@ modules["elihunter173/dirbuf.nvim"] = {
     config = ui_config.dirbuf_nvim,
 }
 
-modules["anuvyklack/hydra.nvim"] = {
+modules["nvimtools/hydra.nvim"] = {
     commit = funcs.get_commit("hydra.nvim", plugins_snapshot),
     config = ui_config.hydra_nvim,
 }
@@ -1135,7 +1135,9 @@ modules["akinsho/pubspec-assist.nvim"] = {
 
 modules["MeanderingProgrammer/markdown.nvim"] = {
     commit = funcs.get_commit("markdown.nvim", plugins_snapshot),
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    dependencies = {
+        "nvim-treesitter/nvim-treesitter",
+    },
     config = languages_config.markdown_nvim,
 }
 

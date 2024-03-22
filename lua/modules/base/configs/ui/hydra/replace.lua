@@ -27,7 +27,6 @@ M.replace = Hydra({
         invoke_on_body = true,
         hint = {
             position = "bottom-left",
-            border = "single",
         },
     },
     mode = { "n", "x", "v" },

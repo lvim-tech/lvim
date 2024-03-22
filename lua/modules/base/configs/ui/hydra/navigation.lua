@@ -35,7 +35,6 @@ M.navigation = Hydra({
         invoke_on_body = true,
         hint = {
             position = "bottom-center",
-            border = "single",
         },
     },
     mode = { "n", "x", "v" },
