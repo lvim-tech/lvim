@@ -25,6 +25,9 @@ M.fzf_menu = Hydra({
         invoke_on_body = true,
         hint = {
             position = "top-center",
+            float_opts = {
+                border = "single",
+            },
         },
     },
     mode = { "n", "x", "v" },
@@ -99,6 +102,9 @@ M.fzf_navigation = Hydra({
         invoke_on_body = true,
         hint = {
             position = "top-center",
+            float_opts = {
+                border = "single",
+            },
         },
     },
     heads = {
@@ -190,6 +196,9 @@ M.fzf_search = Hydra({
         invoke_on_body = true,
         hint = {
             position = "top-center",
+            float_opts = {
+                border = "single",
+            },
         },
     },
     heads = {
@@ -289,6 +298,9 @@ M.fzf_tags = Hydra({
         invoke_on_body = true,
         hint = {
             position = "top-center",
+            float_opts = {
+                border = "single",
+            },
         },
     },
     heads = {
@@ -362,6 +374,9 @@ M.fzf_git = Hydra({
         invoke_on_body = true,
         hint = {
             position = "top-center",
+            float_opts = {
+                border = "single",
+            },
         },
     },
     heads = {
@@ -435,6 +450,9 @@ M.fzf_lsp = Hydra({
         invoke_on_body = true,
         hint = {
             position = "top-center",
+            float_opts = {
+                border = "single",
+            },
         },
     },
     heads = {
@@ -553,6 +571,9 @@ M.fzf_dap = Hydra({
         invoke_on_body = true,
         hint = {
             position = "top-center",
+            float_opts = {
+                border = "single",
+            },
         },
     },
     heads = {
@@ -620,6 +641,9 @@ M.fzf_misc = Hydra({
         invoke_on_body = true,
         hint = {
             position = "top-center",
+            float_opts = {
+                border = "single",
+            },
         },
     },
     heads = {

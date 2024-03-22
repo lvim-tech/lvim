@@ -41,6 +41,9 @@ M.diagnostics = Hydra({
         invoke_on_body = true,
         hint = {
             position = "bottom-center",
+            float_opts = {
+                border = "single",
+            },
         },
     },
     mode = { "n", "x", "v" },
