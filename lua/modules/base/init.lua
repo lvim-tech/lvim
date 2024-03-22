@@ -1,7 +1,5 @@
 local funcs = require("core.funcs")
 
-local ui_config = require("modules.base.configs.ui")
-
 local modules = {}
 local plugins_snapshot = {}
 
@@ -14,10 +12,12 @@ end
 -- DEPENDENCIES -------------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+local dependencies_config = require("modules.base.configs.dependencies")
+
 modules["lvim-tech/lvim-colorscheme"] = {
     commit = funcs.get_commit("lvim-tech/lvim-colorscheme", plugins_snapshot),
     priority = 100,
-    config = ui_config.lvim_colorscheme,
+    config = dependencies_config.lvim_colorscheme,
 }
 
 modules["nvim-lua/plenary.nvim"] = {
@@ -38,13 +38,13 @@ modules["nvim-neotest/nvim-nio"] = {
 modules["rcarriga/nvim-notify"] = {
     commit = funcs.get_commit("nvim-notify", plugins_snapshot),
     lazy = true,
-    config = ui_config.nvim_notify,
+    config = dependencies_config.nvim_notify,
 }
 
 modules["MunifTanjim/nui.nvim"] = {
     commit = funcs.get_commit("nui.nvim", plugins_snapshot),
     lazy = true,
-    config = ui_config.nui_nvim,
+    config = dependencies_config.nui_nvim,
 }
 
 modules["lvim-tech/lvim-ui-config"] = {
@@ -63,7 +63,7 @@ modules["nvim-tree/nvim-web-devicons"] = {
 
 modules["folke/twilight.nvim"] = {
     commit = funcs.get_commit("twilight.nvim", plugins_snapshot),
-    config = ui_config.twilight_nvim,
+    config = dependencies_config.twilight_nvim,
     lazy = true,
 }
 
@@ -192,9 +192,21 @@ modules["rafamadriz/friendly-snippets"] = {
     lazy = true,
 }
 
+modules["vhyrro/luarocks.nvim"] = {
+    commit = funcs.get_commit("luarocks.nvim", plugins_snapshot),
+    opts = {
+        rocks = { "lua-curl", "nvim-nio", "mimetypes", "xml2lua" },
+    },
+    priority = 10000,
+    config = true,
+    lazy = true,
+}
+
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- UI -----------------------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+local ui_config = require("modules.base.configs.ui")
 
 modules["folke/noice.nvim"] = {
     commit = funcs.get_commit("noice.nvim", plugins_snapshot),
@@ -676,10 +688,24 @@ modules["chrisgrieser/nvim-various-textobjs"] = {
 modules["NTBBloodbath/rest.nvim"] = {
     commit = funcs.get_commit("rest.nvim", plugins_snapshot),
     ft = "http",
+    dependencies = { "luarocks.nvim" },
+    keys = {
+        {
+            "<Leader>tr",
+            "<cmd>Rest run<cr>",
+            desc = "RestNvim Run",
+        },
+        {
+            "<Leader>tl",
+            "<cmd>Rest last<cr>",
+            desc = "RestNvim Run Last",
+        },
+    },
     config = editor_config.rest_nvim,
 }
 
 modules["arjunmahishi/flow.nvim"] = {
+    commit = funcs.get_commit("flow.nvim", plugins_snapshot),
     keys = {
         {
             "<Leader>lfs",
@@ -1107,13 +1133,14 @@ modules["akinsho/pubspec-assist.nvim"] = {
     config = languages_config.pubspec_assist_nvim,
 }
 
-modules["dhruvasagar/vim-table-mode"] = {
-    commit = funcs.get_commit("dhruvasagar/vim-table-mode", plugins_snapshot),
-    ft = { "markdown", "text" },
+modules["MeanderingProgrammer/markdown.nvim"] = {
+    commit = funcs.get_commit("markdown.nvim", plugins_snapshot),
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    config = languages_config.markdown_nvim,
 }
 
-modules["dkarter/bullets.vim"] = {
-    commit = funcs.get_commit("bullets.vim", plugins_snapshot),
+modules["dhruvasagar/vim-table-mode"] = {
+    commit = funcs.get_commit("dhruvasagar/vim-table-mode", plugins_snapshot),
     ft = { "markdown", "text" },
 }
 

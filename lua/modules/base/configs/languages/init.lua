@@ -795,6 +795,35 @@ config.pubspec_assist_nvim = function()
     })
 end
 
+config.markdown_nvim = function()
+    local markdown_status_ok, markdown = pcall(require, "render-markdown")
+    if not markdown_status_ok then
+        return
+    end
+    markdown.setup({
+        headings = { "", "", "" },
+        bullet = "",
+        highlights = {
+            heading = {
+                backgrounds = { "MarkdownLine" },
+                foregrounds = {
+                    "MarkdownH1",
+                    "MarkdownH2",
+                    "MarkdownH3",
+                    "MarkdownH4",
+                    "MarkdownH5",
+                    "MarkdownH6",
+                },
+            },
+            code = "MarkdownLine",
+            bullet = "MarkdownBullet",
+            table = {
+                row = "Delimiter",
+            },
+        },
+    })
+end
+
 config.markdown_preview_nvim = function()
     vim.keymap.set("n", "<S-m>", function()
         vim.cmd("MarkdownPreviewToggle")
