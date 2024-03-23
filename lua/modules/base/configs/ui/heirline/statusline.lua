@@ -21,7 +21,6 @@ M.get_statusline = function()
         end,
         hl = { fg = colors.orange_02, bold = true },
     }
-
     local vi_mode = {
         init = function(self)
             self.mode = vim.fn.mode(1)
@@ -142,6 +141,23 @@ M.get_statusline = function()
             }
         end,
     }
+    local file_icon = {
+        init = function(self)
+            local filename = self.filename
+            local extension = vim.fn.fnamemodify(filename, ":e")
+            self.icon, self.icon_color =
+                require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
+        end,
+        provider = function(self)
+            return self.icon and (self.icon .. " ")
+        end,
+        hl = function(self)
+            return {
+                fg = self.icon_color,
+                bold = true,
+            }
+        end,
+    }
     local file_size = {
         provider = function()
             local fsize = vim.fn.getfsize(vim.api.nvim_buf_get_name(0))
@@ -177,7 +193,7 @@ M.get_statusline = function()
     file_name_block = heirline_utils.insert(
         file_name_block,
         file_name,
-        icons,
+        file_icon,
         file_size,
         file_readonly,
         file_modified,
