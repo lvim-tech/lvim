@@ -368,6 +368,7 @@ modules["lukas-reineke/indent-blankline.nvim"] = {
 
 modules["lvim-tech/lvim-helper"] = {
     commit = funcs.get_commit("lvim-helper", plugins_snapshot),
+    cmd = "LvimHelper",
     keys = {
         { "<F11>", "<Cmd>LvimHelper<CR>", desc = "LvimHelper" },
         { "<C-c>h", "<Cmd>LvimHelper<CR>", desc = "LvimHelper" },
