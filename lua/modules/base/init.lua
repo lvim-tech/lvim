@@ -359,7 +359,7 @@ modules["HiPhish/rainbow-delimiters.nvim"] = {
 }
 
 modules["lukas-reineke/indent-blankline.nvim"] = {
-    commit = "9637670896b68805430e2f72cf5d16be5b97a22a",
+    commit = funcs.get_commit("indent-blankline.nvim", plugins_snapshot),
     event = {
         "BufRead",
     },
