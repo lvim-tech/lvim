@@ -502,9 +502,9 @@ config.alpha_nvim = function()
     alpha_themes_dashboard.section.header.opts.hl = "AlphaHeader"
     alpha_themes_dashboard.section.buttons.val = {
         button("SPC SPC b", icons.common.project .. " Projects", ":CtrlSpace b<CR>"),
-        button("A-/", icons.common.explorer .. " File explorer", ":Telescope file_browser<CR>"),
-        button("A-,", icons.common.file .. " Search file", ":Telescope find_files<CR>"),
-        button("A-.", icons.common.search_in_files .. " Search in files", ":Telescope live_grep<CR>"),
+        button("<Leader>i", icons.common.explorer .. " File explorer", ":MiniFiles<CR>"),
+        button("<Leader>f", icons.common.file .. " Search file", ":FzfLua files<CR>"),
+        button("<Leader>s", icons.common.search_in_files .. " Search in files", ":FzfLua live_grep<CR>"),
         button("F11", icons.common.help .. "Help", ":LvimHelper<CR>"),
         button("q", icons.common.quit .. "Quit", "<Cmd>qa<CR>"),
     }
@@ -635,7 +635,6 @@ config.mini_files = function()
         local desc = "Split " .. direction
         vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = desc })
     end
-
     vim.api.nvim_create_autocmd("User", {
         pattern = "MiniFilesBufferCreate",
         callback = function(args)
@@ -644,6 +643,10 @@ config.mini_files = function()
             map_split(buf_id, "gv", "belowright vertical")
         end,
     })
+    local function mini_files_open()
+        require("mini.files").open()
+    end
+    vim.api.nvim_create_user_command("MiniFiles", mini_files_open, {})
 end
 
 config.mini_clue = function()

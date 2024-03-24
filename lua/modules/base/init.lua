@@ -249,6 +249,7 @@ modules["echasnovski/mini.files"] = {
             desc = "Mini files",
         },
     },
+    cmd = "MiniFiles",
     config = ui_config.mini_files,
 }
 
