@@ -16,7 +16,7 @@ M.get_statuscolumn = function()
     table.insert(file_types_statuscolumn, "fzf")
 
     local static = {
-        get_extmarks_signs = function(self, bufnr, lnum)
+        get_extmarks_signs = function(_, bufnr, lnum)
             local signs = {}
             local extmarks = vim.api.nvim_buf_get_extmarks(
                 0,
@@ -47,7 +47,7 @@ M.get_statuscolumn = function()
             end)
             return signs
         end,
-        get_extmarks_gits = function(self, bufnr, lnum)
+        get_extmarks_gits = function(_, bufnr, lnum)
             local gits = {}
             local extmarks = vim.api.nvim_buf_get_extmarks(
                 0,
@@ -103,20 +103,20 @@ M.get_statuscolumn = function()
         end,
         handlers = {
             Signs = {
-                ["Neotest.*"] = function(self, args)
+                ["Neotest.*"] = function(_, _)
                     require("neotest").run.run()
                 end,
-                ["Debug.*"] = function(self, args)
+                ["Debug.*"] = function(_, _)
                     require("dap").continue()
                 end,
-                ["Diagnostic.*"] = function(self, args)
+                ["Diagnostic.*"] = function(_, _)
                     vim.cmd("LspShowDiagnosticCurrent")
                 end,
             },
-            Dap = function(self, args)
+            Dap = function(_, _)
                 require("dap").toggle_breakpoint()
             end,
-            GitSigns = function(self, args)
+            GitSigns = function(_, _)
                 vim.defer_fn(function()
                     gitsigns.preview_hunk()
                 end, 100)
@@ -208,6 +208,7 @@ M.get_statuscolumn = function()
                 filetype = file_types_statuscolumn,
             })
         end,
+        hl = { fg = colors.bg_04 },
         static = static,
         init = init,
         space,
