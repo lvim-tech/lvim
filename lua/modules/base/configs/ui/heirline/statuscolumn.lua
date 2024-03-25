@@ -14,6 +14,8 @@ M.get_statuscolumn = function()
         file_types_statuscolumn[i] = v
     end
     table.insert(file_types_statuscolumn, "fzf")
+    table.insert(file_types_statuscolumn, "markdown")
+    table.insert(file_types_statuscolumn, "org")
 
     local static = {
         get_extmarks_signs = function(_, bufnr, lnum)
