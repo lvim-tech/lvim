@@ -160,6 +160,8 @@ configs["base_events"] = function()
             "objc",
             "objcpp",
             "ruby",
+            "markdown",
+            "org",
         },
         callback = function()
             vim.bo.syntax = ""

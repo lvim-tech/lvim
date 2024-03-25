@@ -203,12 +203,19 @@ M.get_statuscolumn = function()
 
     local statuscolumn = {
         condition = function()
-            return not conditions.buffer_matches({
-                buftype = buf_types,
-                filetype = file_types_statuscolumn,
-            })
+            if
+                conditions.buffer_matches({
+                    buftype = buf_types,
+                    filetype = file_types_statuscolumn,
+                })
+            then
+                vim.opt.number = false
+                vim.opt.relativenumber = false
+                return false
+            else
+                return true
+            end
         end,
-        hl = { fg = colors.bg_04 },
         static = static,
         init = init,
         space,

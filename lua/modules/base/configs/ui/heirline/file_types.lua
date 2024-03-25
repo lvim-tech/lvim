@@ -23,8 +23,8 @@ return {
     "neo-tree-popup",
     "noice",
     "toggleterm",
-    -- "org",
-    -- "markdown",
+    "org",
+    "markdown",
     "git",
     "netrw",
 }
