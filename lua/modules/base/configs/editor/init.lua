@@ -607,6 +607,11 @@ config.nvim_treesitter_context = function()
                 "block_mapping_pair",
             },
         },
+        on_attach = function(bufnr)
+            if vim.bo[bufnr].filetype == "markdown" or vim.bo[bufnr].filetype == "org" then
+                return false
+            end
+        end,
         exact_patterns = {},
         zindex = 20,
         mode = "cursor",
