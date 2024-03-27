@@ -1135,14 +1135,6 @@ modules["akinsho/pubspec-assist.nvim"] = {
     config = languages_config.pubspec_assist_nvim,
 }
 
-modules["MeanderingProgrammer/markdown.nvim"] = {
-    commit = funcs.get_commit("markdown.nvim", plugins_snapshot),
-    dependencies = {
-        "nvim-treesitter/nvim-treesitter",
-    },
-    config = languages_config.markdown_nvim,
-}
-
 modules["dhruvasagar/vim-table-mode"] = {
     commit = funcs.get_commit("dhruvasagar/vim-table-mode", plugins_snapshot),
     ft = { "markdown", "text" },
@@ -1153,6 +1145,11 @@ modules["iamcco/markdown-preview.nvim"] = {
     build = "cd app && npm install",
     ft = "markdown",
     config = languages_config.markdown_preview_nvim,
+}
+
+modules["lvim-tech/lvim-md-utils"] = {
+    ft = { "md", "markdown" },
+    config = true,
 }
 
 modules["lervag/vimtex"] = {
