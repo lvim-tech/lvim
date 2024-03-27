@@ -32,7 +32,7 @@
   "indent-blankline.nvim": { "branch": "master", "commit": "3d08501caef2329aba5121b753e903904088f7e6" },
   "lazy.nvim": { "branch": "main", "commit": "e888d5b64c34bc41f7ef2e8850a5e67e4b3e2731" },
   "luarocks.nvim": { "branch": "main", "commit": "d73f4bbbeea9eeb9b66a0c6431db402654f43cb8" },
-  "lvim-colorscheme": { "branch": "main", "commit": "689b87bef0195b2e77bb81c347b6dffacfc6d675" },
+  "lvim-colorscheme": { "branch": "main", "commit": "148dabfc71d9d2d287ffc23b001cfbb565b18a56" },
   "lvim-fm": { "branch": "main", "commit": "2a5165640b5bf50487f2dacab59ab9cf4c547ded" },
   "lvim-forgit": { "branch": "main", "commit": "5f970d48e53aa9570879fd8a6b8d9b899dfaba4c" },
   "lvim-helper": { "branch": "main", "commit": "19c6c97de7850a235a34f60fcda4e58c50b4736a" },
