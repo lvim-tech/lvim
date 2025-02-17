@@ -592,7 +592,7 @@ config.nvim_treesitter_context = function()
     end
     treesitter_context.setup({
         enable = true,
-        max_lines = 0,
+        max_lines = 3,
         trim_scope = "outer",
         min_window_height = 0,
         patterns = {
