@@ -36,6 +36,8 @@ keymaps["normal"] = {
     { "<Leader>tp", ":tabp<CR>", "Tab prev" }, -- Tab prev
     { "<Leader>tmn", ":+tabmove<CR>", "Tab move next" }, -- Tab move next
     { "<Leader>tmp", ":-tabmove<CR>", "Tab move prev" }, -- Tab move prev
+    { "<C-c><C-p>", "p`[v`]" },
+    { "<C-c><C-k>", "P`[v`]" },
 }
 
 keymaps["visual"] = {
@@ -43,6 +45,7 @@ keymaps["visual"] = {
     { "k", "gk" }, -- Re-map k
     { "*", "<Esc>/\\%V" }, -- Visual search /
     { "#", "<Esc>?\\%V" }, -- Visual search ?
+    { "<C-p>", "p`[v`]" },
 }
 
 keymaps["insert"] = {}
