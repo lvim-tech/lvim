@@ -70,7 +70,7 @@ config.blink_cmp = function()
                     enabled = true,
                     max_items = 3,
                     module = "blink.cmp.sources.buffer",
-                    min_keyword_length = 4,
+                    min_keyword_length = 3,
                     score_offset = 15,
                 },
                 snippets = {
@@ -228,6 +228,11 @@ config.blink_cmp = function()
             ["<C-u>"] = { "scroll_documentation_up", "fallback" },
         },
         cmdline = {
+            completion = {
+                menu = {
+                    auto_show = true,
+                },
+            },
             keymap = {
                 ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
                 ["<C-e>"] = { "hide", "fallback" },
