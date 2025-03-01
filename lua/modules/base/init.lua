@@ -833,6 +833,7 @@ modules["mbbill/undotree"] = {
 local languages_config = require("modules.base.configs.languages")
 
 modules["williamboman/mason.nvim"] = {
+    branch = "v2.x",
     build = ":MasonUpdate",
     commit = funcs.get_commit("mason.nvim", plugins_snapshot),
     event = {
