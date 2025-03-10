@@ -23,7 +23,7 @@ M.default_config = function(file_types)
         end,
         capabilities = setup_diagnostics.get_capabilities(),
         root_dir = function(fname)
-            return vim.fs.dirname(vim.fs.find('.git', { path = fname, upward = true })[1])
+            return vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
         end,
     }
 end
@@ -45,7 +45,7 @@ M.without_formatting = function(file_types)
         end,
         capabilities = setup_diagnostics.get_capabilities(),
         root_dir = function(fname)
-            return vim.fs.dirname(vim.fs.find('.git', { path = fname, upward = true })[1])
+            return vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
         end,
     }
 end
@@ -58,7 +58,7 @@ M.without_winbar_config = function(file_types)
         autostart = true,
         filetypes = file_types,
         root_dir = function(fname)
-            return vim.fs.dirname(vim.fs.find('.git', { path = fname, upward = true })[1])
+            return vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
         end,
     }
 end
@@ -69,7 +69,9 @@ M.astro_config = function(file_types)
         filetypes = file_types,
         init_options = {
             typescript = {
-                tsdk = vim.fs.normalize "~/.local/share/nvim/mason/packages/astro-language-server/node_modules/typescript/lib"
+                tsdk = vim.fs.normalize(
+                    "~/.local/share/nvim/mason/packages/astro-language-server/node_modules/typescript/lib"
+                ),
             },
         },
         on_attach = function(client, bufnr)
@@ -82,7 +84,7 @@ M.astro_config = function(file_types)
         end,
         capabilities = setup_diagnostics.get_capabilities(),
         root_dir = function(fname)
-            return vim.fs.dirname(vim.fs.find('.git', { path = fname, upward = true })[1])
+            return vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
         end,
     }
 end
@@ -105,7 +107,7 @@ M.cpp_config = function(file_types)
         end,
         capabilities = setup_diagnostics.get_cpp_capabilities(),
         root_dir = function(fname)
-            return vim.fs.dirname(vim.fs.find('.git', { path = fname, upward = true })[1])
+            return vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
         end,
     }
 end
@@ -129,7 +131,7 @@ M.omnisharp_config = function(file_types)
         end,
         capabilities = setup_diagnostics.get_capabilities(),
         root_dir = function(fname)
-            return vim.fs.dirname(vim.fs.find('.git', { path = fname, upward = true })[1])
+            return vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
         end,
     }
 end
@@ -153,8 +155,40 @@ M.elixir_config = function(file_types)
         end,
         capabilities = setup_diagnostics.get_capabilities(),
         root_dir = function(fname)
-            return vim.fs.dirname(vim.fs.find('.git', { path = fname, upward = true })[1])
+            return vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
         end,
+    }
+end
+
+M.python_config = function(file_types)
+    return {
+        flags = {
+            debounce_text_changes = default_debouce_time,
+        },
+        autostart = true,
+        filetypes = file_types,
+        on_attach = function(client, bufnr)
+            setup_diagnostics.keymaps(client, bufnr)
+            setup_diagnostics.document_highlight(client, bufnr)
+            setup_diagnostics.document_auto_format(client, bufnr)
+            setup_diagnostics.inlay_hint(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                navic.attach(client, bufnr)
+            end
+        end,
+        capabilities = setup_diagnostics.get_capabilities(),
+        root_dir = function(fname)
+            return vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
+        end,
+        settings = {
+            pylsp = {
+                plugins = {
+                    black = { enabled = true, line_length = 79 },
+                    autopep8 = { enabled = false },
+                    yapf = { enabled = false },
+                },
+            },
+        },
     }
 end
 
@@ -197,7 +231,7 @@ M.rust = function(file_types)
         },
         capabilities = setup_diagnostics.get_capabilities(),
         root_dir = function(fname)
-            return vim.fs.dirname(vim.fs.find('.git', { path = fname, upward = true })[1])
+            return vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
         end,
     }
 end
@@ -235,7 +269,7 @@ M.go = function(file_types)
         },
         capabilities = setup_diagnostics.get_capabilities(),
         root_dir = function(fname)
-            return vim.fs.dirname(vim.fs.find('.git', { path = fname, upward = true })[1])
+            return vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
         end,
     }
 end
@@ -290,7 +324,7 @@ M.lua = function(file_types)
         },
         capabilities = setup_diagnostics.get_capabilities(),
         root_dir = function(fname)
-            return vim.fs.dirname(vim.fs.find('.git', { path = fname, upward = true })[1])
+            return vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
         end,
     }
 end
@@ -314,7 +348,7 @@ M.groovy_config = function(file_types)
         end,
         capabilities = setup_diagnostics.get_capabilities(),
         root_dir = function(fname)
-            return vim.fs.dirname(vim.fs.find('.git', { path = fname, upward = true })[1])
+            return vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
         end,
     }
 end
@@ -363,7 +397,7 @@ M.jsts_config = function(file_types)
             },
         },
         root_dir = function(fname)
-            return vim.fs.dirname(vim.fs.find('.git', { path = fname, upward = true })[1])
+            return vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
         end,
     }
 end
@@ -431,7 +465,7 @@ M.yaml_config = function(file_types)
         },
         capabilities = setup_diagnostics.get_capabilities(),
         root_dir = function(fname)
-            return vim.fs.dirname(vim.fs.find('.git', { path = fname, upward = true })[1])
+            return vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
         end,
     }
 end
