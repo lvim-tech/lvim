@@ -693,23 +693,24 @@ config.nvim_various_textobjs = function()
     )
 end
 
-config.rest_nvim = function()
-    local rest_nvim_status_ok, rest_nvim = pcall(require, "rest-nvim")
-    if not rest_nvim_status_ok then
+config.kulala_nvim = function()
+    local kulala_nvim_status_ok, kulala_nvim = pcall(require, "kulala")
+    if not kulala_nvim_status_ok then
         return
     end
-    vim.api.nvim_create_user_command("Rest", "lua require('rest-nvim').run()", {})
-    vim.api.nvim_create_user_command("RestPreview", "lua require('rest-nvim').run(true)", {})
-    vim.api.nvim_create_user_command("RestLast", "lua require('rest-nvim').last()", {})
-    vim.keymap.set("n", "rr", function()
-        rest_nvim.run()
-    end, { noremap = true, silent = true, desc = "Rest" })
-    vim.keymap.set("n", "rp", function()
-        rest_nvim.run(true)
-    end, { noremap = true, silent = true, desc = "RestPreview" })
-    vim.keymap.set("n", "rl", function()
-        rest_nvim.last()
-    end, { noremap = true, silent = true, desc = "RestLast" })
+    vim.notify("kulala_nvim loaded")
+    kulala_nvim.setup({
+        global_keymaps = true,
+        icons = {
+            inlay = {
+                loading = icons.common.hourglass,
+                done = icons.common.todo,
+                error = icons.common.warning,
+            },
+            lualine = icons.common.separator,
+            textHighlight = "WarningMsg",
+        },
+    })
 end
 
 config.flow_nvim = function()

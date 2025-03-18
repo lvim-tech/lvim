@@ -37,6 +37,7 @@ return {
         save = " ",
         lock = " ",
         light_bulb = "",
+        hourglass = "",
     },
     git_status = {
         added = " ",

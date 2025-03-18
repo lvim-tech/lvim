@@ -159,6 +159,15 @@ end
 configs["base_events"] = function()
     vim.api.nvim_create_autocmd("FileType", {
         pattern = {
+            "markdown",
+        },
+        callback = function()
+            vim.opt_local.wrap = false
+        end,
+        group = group,
+    })
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = {
             "text",
             "markdown",
             "org",

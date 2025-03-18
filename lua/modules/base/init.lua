@@ -561,10 +561,10 @@ modules["nvim-treesitter/nvim-treesitter-context"] = {
     config = editor_config.nvim_treesitter_context,
 }
 
-modules["rest-nvim/rest.nvim"] = {
-    commit = funcs.get_commit("rest.nvim", plugins_snapshot),
-    ft = "http",
-    config = editor_config.rest_nvim,
+modules["mistweaverco/kulala.nvim"] = {
+    commit = funcs.get_commit("kulala.nvim", plugins_snapshot),
+    ft = { "http", "rest" },
+    config = editor_config.kulala_nvim,
 }
 
 modules["arjunmahishi/flow.nvim"] = {
@@ -1091,8 +1091,10 @@ modules["iamcco/markdown-preview.nvim"] = {
 
 modules["OXY2DEV/markview.nvim"] = {
     commit = funcs.get_commit("markview-nvim", plugins_snapshot),
+    ft = { "md", "markdown", "Avante" },
     config = languages_config.markview_nvim,
 }
+
 modules["OXY2DEV/helpview.nvim"] = {
     commit = funcs.get_commit("markview-nvim", plugins_snapshot),
     config = languages_config.helpview_nvim,
