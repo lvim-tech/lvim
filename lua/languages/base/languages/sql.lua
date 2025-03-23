@@ -3,7 +3,7 @@ local ft = {
     "sql",
     "mysql",
 }
-local sqls_config = require("languages.base.languages._configs").default_config(ft)
+local language_server_config = require("languages.base.languages._configs").default_config(ft)
 
 local language_configs = {}
 
@@ -13,7 +13,7 @@ language_configs["lsp"] = function()
     lsp_manager.setup_languages({
         ["language"] = "sql",
         ["ft"] = ft,
-        ["sqls"] = { "sqls", sqls_config },
+        ["sqls"] = { "sqls", language_server_config },
     })
 end
 

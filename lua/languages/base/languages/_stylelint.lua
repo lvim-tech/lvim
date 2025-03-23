@@ -4,7 +4,7 @@ local ft = {
     "scss",
     "less",
 }
-local stylelint_lsp_config = require("languages.base.languages._configs").without_winbar_config(ft)
+local language_server_config = require("languages.base.languages._configs").without_winbar_config(ft)
 
 local language_configs = {}
 
@@ -14,7 +14,7 @@ language_configs["lsp"] = function()
     lsp_manager.setup_languages({
         ["language"] = "stylelint",
         ["ft"] = ft,
-        ["stylelint-lsp"] = { "stylelint_lsp", stylelint_lsp_config },
+        ["stylelint-lsp"] = { "stylelint_lsp", language_server_config },
     })
 end
 

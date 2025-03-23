@@ -3,7 +3,7 @@ local lsp_manager = require("languages.utils.lsp_manager")
 local ft = {
     "rust",
 }
-local rust_config = require("languages.base.languages._configs").rust(ft)
+local language_server_config = require("languages.base.languages._configs").rust(ft)
 local dap = require("dap")
 
 local language_configs = {}
@@ -15,7 +15,7 @@ language_configs["lsp"] = function()
         ["language"] = "rust",
         ["ft"] = ft,
         ["dap"] = { "cpptools" },
-        ["rust-analyzer"] = { "rust_analyzer", rust_config },
+        ["rust-analyzer"] = { "rust_analyzer", language_server_config },
     })
 end
 

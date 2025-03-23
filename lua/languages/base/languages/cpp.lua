@@ -6,7 +6,7 @@ local ft = {
     "objc",
     "objcpp",
 }
-local clangd_config = require("languages.base.languages._configs").cpp_config(ft)
+local language_server_config = require("languages.base.languages._configs").cpp_config(ft)
 local dap = require("dap")
 
 local language_configs = {}
@@ -18,7 +18,7 @@ language_configs["lsp"] = function()
         ["language"] = "cpp",
         ["ft"] = ft,
         ["dap"] = { "cpptools" },
-        ["clangd"] = { "clangd", clangd_config },
+        ["clangd"] = { "clangd", language_server_config },
         ["efm"] = {
             "cpplint",
         },

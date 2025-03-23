@@ -178,6 +178,8 @@ config.blink_cmp = function()
                 show_on_insert_on_trigger_character = false,
             },
             menu = {
+                -- border = { " ", " ", " ", " ", " ", " ", " ", " " },
+                border = "padded",
                 draw = {
                     padding = 2,
                     gap = 1,
@@ -186,11 +188,35 @@ config.blink_cmp = function()
                         { "kind_icon" },
                         { "label", "label_description", gap = 1 },
                         { "kind" },
+                        { "source_name" },
                     },
                     components = {
                         label = {
                             text = require("colorful-menu").blink_components_text,
                             highlight = require("colorful-menu").blink_components_highlight,
+                        },
+                        source_name = {
+                            text = function(ctx)
+                                local name = ctx.source_name
+                                if name == "lsp" then
+                                    return "[" .. string.upper(name) .. "]"
+                                else
+                                    return "[" .. name:sub(1, 1):upper() .. name:sub(2) .. "]"
+                                end
+                            end,
+                            highlight = "Directory",
+                            -- highlight = function(ctx)
+                            --     local source = ctx.source_name
+                            --     if source == "lsp" then
+                            --         return "BlinkCmpSourceLSP"
+                            --     elseif source == "Buffer" then
+                            --         return "BlinkCmpSourceBuffer"
+                            --     elseif source == "Path" then
+                            --         return "BlinkCmpSourcePath"
+                            --     else
+                            --         return "BlinkCmpSource"
+                            --     end
+                            -- end,
                         },
                     },
                 },
@@ -207,9 +233,19 @@ config.blink_cmp = function()
                 auto_show = true,
                 auto_show_delay_ms = 10,
                 treesitter_highlighting = true,
+                window = {
+                    border = "padded",
+                    -- border = { " ", " ", " ", " ", " ", " ", " ", " " },
+                },
             },
             ghost_text = {
                 enabled = true,
+            },
+        },
+        signature = {
+            window = {
+                border = "padded",
+                -- border = { " ", " ", " ", " ", " ", " ", " ", " " },
             },
         },
         keymap = {

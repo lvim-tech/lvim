@@ -6,7 +6,7 @@ local ft = {
     "typescriptreact",
     "typescript.tsx",
 }
-local angularls_config = require("languages.base.languages._configs").angular_config(ft)
+local language_server_config = require("languages.base.languages._configs").angular_config(ft)
 
 local language_configs = {}
 
@@ -16,7 +16,7 @@ language_configs["lsp"] = function()
     lsp_manager.setup_languages({
         ["language"] = "angular",
         ["ft"] = ft,
-        ["angular-language-server"] = { "angularls", angularls_config },
+        ["angular-language-server"] = { "angularls", language_server_config },
     })
 end
 

@@ -6,7 +6,7 @@ local ft = {
     "csh",
     "ksh",
 }
-local bashls_config = require("languages.base.languages._configs").without_formatting(ft)
+local language_server_config = require("languages.base.languages._configs").without_formatting(ft)
 
 local language_configs = {}
 
@@ -16,7 +16,7 @@ language_configs["lsp"] = function()
     lsp_manager.setup_languages({
         ["language"] = "shell",
         ["ft"] = ft,
-        ["bash-language-server"] = { "bashls", bashls_config },
+        ["bash-language-server"] = { "bashls", language_server_config },
         ["efm"] = {
             "shfmt",
         },

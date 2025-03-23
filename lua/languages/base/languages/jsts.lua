@@ -5,7 +5,8 @@ local ft = {
     "typescript",
     "typescriptreact",
 }
-local typescript_config = require("languages.base.languages._configs").jsts_config(ft)
+local language_server_config = require("languages.base.languages._configs").jsts_config(ft)
+
 local dap = require("dap")
 
 local language_configs = {}
@@ -16,7 +17,7 @@ language_configs["lsp"] = function()
     lsp_manager.setup_languages({
         ["language"] = "jsts",
         ["ft"] = ft,
-        ["typescript-language-server"] = { "ts_ls", typescript_config },
+        ["typescript-language-server"] = { "ts_ls", language_server_config },
         ["dap"] = { "js-debug-adapter" },
     })
 end

@@ -3,7 +3,7 @@ local ft = {
     "zig",
     "zir",
 }
-local zls_config = require("languages.base.languages._configs").default_config(ft)
+local language_server_config = require("languages.base.languages._configs").default_config(ft)
 
 local language_configs = {}
 
@@ -13,7 +13,7 @@ language_configs["lsp"] = function()
     lsp_manager.setup_languages({
         ["language"] = "zig",
         ["ft"] = ft,
-        ["zls"] = { "zls", zls_config },
+        ["zls"] = { "zls", language_server_config },
     })
 end
 

@@ -4,7 +4,7 @@ local ft = {
     "cs",
     "vb",
 }
-local omnisharp_config = require("languages.base.languages._configs").omnisharp_config(ft)
+local language_server_config = require("languages.base.languages._configs").omnisharp_config(ft)
 local dap = require("dap")
 
 local language_configs = {}
@@ -16,7 +16,7 @@ language_configs["lsp"] = function()
         ["language"] = "cs",
         ["ft"] = ft,
         ["dap"] = { "netcoredbg" },
-        ["omnisharp"] = { "omnisharp", omnisharp_config },
+        ["omnisharp"] = { "omnisharp", language_server_config },
     })
 end
 

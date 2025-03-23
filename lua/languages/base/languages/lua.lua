@@ -2,7 +2,7 @@ local lsp_manager = require("languages.utils.lsp_manager")
 local ft = {
     "lua",
 }
-local lua_lsp_config = require("languages.base.languages._configs").lua(ft)
+local language_server_config = require("languages.base.languages._configs").lua(ft)
 local dap = require("dap")
 
 local language_configs = {}
@@ -13,7 +13,7 @@ language_configs["lsp"] = function()
     lsp_manager.setup_languages({
         ["language"] = "lua",
         ["ft"] = ft,
-        ["lua-language-server"] = { "lua_ls", lua_lsp_config },
+        ["lua-language-server"] = { "lua_ls", language_server_config },
         ["efm"] = {
             "stylua",
         },

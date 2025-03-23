@@ -3,7 +3,7 @@ local ft = {
     "go",
     "gomod",
 }
-local gopls_config = require("languages.base.languages._configs").go(ft)
+local language_server_config = require("languages.base.languages._configs").go(ft)
 local dap = require("dap")
 
 local language_configs = {}
@@ -15,7 +15,7 @@ language_configs["lsp"] = function()
         ["language"] = "go",
         ["ft"] = ft,
         ["dap"] = { "delve" },
-        ["gopls"] = { "gopls", gopls_config },
+        ["gopls"] = { "gopls", language_server_config },
         ["efm"] = {
             "golangci-lint",
         },

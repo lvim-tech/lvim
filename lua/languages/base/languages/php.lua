@@ -3,7 +3,8 @@ local lsp_manager = require("languages.utils.lsp_manager")
 local ft = {
     "php",
 }
-local intelephense_config = require("languages.base.languages._configs").default_config(ft)
+local language_server_config = require("languages.base.languages._configs").default_config(ft)
+
 local dap = require("dap")
 
 local language_configs = {}
@@ -15,7 +16,7 @@ language_configs["lsp"] = function()
         ["language"] = "php",
         ["ft"] = ft,
         ["dap"] = { "php-debug-adapter" },
-        ["intelephense"] = { "intelephense", intelephense_config },
+        ["intelephense"] = { "intelephense", language_server_config },
     })
 end
 

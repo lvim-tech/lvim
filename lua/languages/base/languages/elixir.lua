@@ -4,7 +4,7 @@ local ft = {
     "elixir",
     "eelixir",
 }
-local elixirls_config = require("languages.base.languages._configs").elixir_config(ft)
+local language_server_config = require("languages.base.languages._configs").elixir_config(ft)
 local dap = require("dap")
 
 local language_configs = {}
@@ -15,7 +15,7 @@ language_configs["lsp"] = function()
     lsp_manager.setup_languages({
         ["language"] = "elixir",
         ["ft"] = ft,
-        ["elixir-ls"] = { "elixirls", elixirls_config },
+        ["elixir-ls"] = { "elixirls", language_server_config },
     })
 end
 

@@ -4,7 +4,7 @@ local ft = {
     "typescript",
     "javascript",
 }
-local ember_config = require("languages.base.languages._configs").ember_config(ft)
+local language_server_config = require("languages.base.languages._configs").ember_config(ft)
 
 local language_configs = {}
 
@@ -14,7 +14,7 @@ language_configs["lsp"] = function()
     lsp_manager.setup_languages({
         ["language"] = "ember",
         ["ft"] = ft,
-        ["ember-language-server"] = { "ember", ember_config },
+        ["ember-language-server"] = { "ember", language_server_config },
     })
 end
 

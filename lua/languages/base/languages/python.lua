@@ -3,7 +3,8 @@ local lsp_manager = require("languages.utils.lsp_manager")
 local ft = {
     "python",
 }
-local pyright_config = require("languages.base.languages._configs").python_config(ft)
+local language_server_config = require("languages.base.languages._configs").python_config(ft)
+
 local dap = require("dap")
 
 local language_configs = {}
@@ -15,7 +16,7 @@ language_configs["lsp"] = function()
         ["language"] = "python",
         ["ft"] = ft,
         ["dap"] = { "debugpy" },
-        ["python-lsp-server"] = { "pylsp", pyright_config },
+        ["python-lsp-server"] = { "pylsp", language_server_config },
         ["efm"] = {
             "black",
             -- "flake8",

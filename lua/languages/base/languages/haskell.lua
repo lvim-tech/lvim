@@ -3,7 +3,7 @@ local ft = {
     "haskell",
     "lhaskell",
 }
-local hls_config = require("languages.base.languages._configs").default_config(ft)
+local language_server_config = require("languages.base.languages._configs").default_config(ft)
 local dap = require("dap")
 
 local language_configs = {}
@@ -14,7 +14,7 @@ language_configs["lsp"] = function()
     lsp_manager.setup_languages({
         ["language"] = "haskell",
         ["ft"] = ft,
-        ["haskell-language-server"] = { "hls", hls_config },
+        ["haskell-language-server"] = { "hls", language_server_config },
     })
 end
 

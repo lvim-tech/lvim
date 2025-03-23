@@ -8,7 +8,7 @@ local ft = {
     "typescript.tsx",
     "vue",
 }
-local eslint_config = require("languages.base.languages._configs").without_winbar_config(ft)
+local language_server_config = require("languages.base.languages._configs").without_winbar_config(ft)
 
 local language_configs = {}
 
@@ -18,7 +18,7 @@ language_configs["lsp"] = function()
     lsp_manager.setup_languages({
         ["language"] = "eslint",
         ["ft"] = ft,
-        ["eslint-lsp"] = { "eslint", eslint_config },
+        ["eslint-lsp"] = { "eslint", language_server_config },
     })
 end
 
