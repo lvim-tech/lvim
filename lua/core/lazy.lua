@@ -10,8 +10,7 @@ function lazy_pack.snapshot_file_show()
     if file_content ~= nil then
         plugins_snapshot = file_content
     end
-    local notify = require("lvim-ui-config.notify")
-    notify.info(vim.inspect(plugins_snapshot), {
+    vim.notify(vim.inspect(plugins_snapshot), vim.log.levels.INFO, {
         title = "LVIM IDE",
     })
 end
