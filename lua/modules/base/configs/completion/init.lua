@@ -9,7 +9,7 @@ config.blink_cmp = function()
     local lsp_symbols = icons.cmp
     -- local ext = { "lazydev", "ripgrep", "emoji", "dictionary" }
     local ext = { "lazydev", "ripgrep", "emoji" }
-    local default_sources = vim.list_extend({ "lsp", "path", "snippets", "buffer" }, ext)
+    local default_sources = vim.list_extend({ "lsp", "path", "snippets", "buffer", "dadbod" }, ext)
     local trigger_text = ";"
     blink_cmp.setup({
         enabled = function()
@@ -137,6 +137,10 @@ config.blink_cmp = function()
                     name = "Emoji",
                     score_offset = 15,
                     opts = { insert = true },
+                },
+                dadbod = {
+                    name = "Dadbod",
+                    module = "vim_dadbod_completion.blink",
                 },
                 -- dictionary = {
                 --     module = "blink-cmp-dictionary",
