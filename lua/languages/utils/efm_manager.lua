@@ -1,15 +1,9 @@
 local global = require("core.global")
--- local funcs = require("core.funcs")
 local lspconfig = require("lspconfig")
--- local nvim_lsp_util = require("lspconfig/util")
 local setup_diagnostics = require("languages.utils.setup_diagnostics")
-
--- local efm_base = require("languages.base.languages._efm")
--- local efm_user = require("languages.user.languages._efm")
 
 local M = {}
 
--- local efm = funcs.merge(efm_base, efm_user)
 if global.efm == false then
     global.efm = {
         init_options = { documentFormatting = true },

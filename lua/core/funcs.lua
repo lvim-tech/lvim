@@ -118,19 +118,18 @@ M.remove_duplicate = function(tbl)
 end
 
 M.sudo_exec = function(cmd)
-    local notify = require("lvim-ui-config.notify")
     vim.fn.inputsave()
     local password = vim.fn.inputsecret("Password: ")
     vim.fn.inputrestore()
     if not password or #password == 0 then
-        notify.error("Invalid password, sudo aborted!", {
+        vim.notify("Invalid password, sudo aborted!", vim.log.levels.ERROR, {
             title = "LVIM IDE",
         })
         return false
     end
     vim.fn.system(string.format("sudo -p '' -S %s", cmd), password)
     if vim.v.shell_error ~= 0 then
-        notify.error("Shell error or invalid password, sudo aborted!", {
+        vim.notify("Shell error or invalid password, sudo aborted!", vim.log.levels.ERROR, {
             title = "LVIM IDE",
         })
         return false
@@ -139,7 +138,6 @@ M.sudo_exec = function(cmd)
 end
 
 M.sudo_write = function(tmpfile, filepath)
-    local notify = require("lvim-ui-config.notify")
     if not tmpfile then
         tmpfile = vim.fn.tempname()
     end
@@ -147,7 +145,7 @@ M.sudo_write = function(tmpfile, filepath)
         filepath = vim.fn.expand("%")
     end
     if not filepath or #filepath == 0 then
-        notify.error("No file name!", {
+        vim.notify("No file name!", vim.log.levels.ERROR, {
             title = "LVIM IDE",
         })
         return
@@ -155,7 +153,7 @@ M.sudo_write = function(tmpfile, filepath)
     local cmd = string.format("dd if=%s of=%s bs=1048576", vim.fn.shellescape(tmpfile), vim.fn.shellescape(filepath))
     vim.api.nvim_command(string.format("write! %s", tmpfile))
     if M.sudo_exec(cmd) then
-        notify.info(string.format('"%s" written!', filepath), {
+        vim.notify(string.format('"%s" written!', filepath), vim.log.levels.INFO, {
             title = "LVIM IDE",
         })
         vim.cmd("e!")

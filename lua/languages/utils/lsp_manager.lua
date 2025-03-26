@@ -5,7 +5,6 @@ local lspconfigs = require("lspconfig/configs")
 local mason_registry = require("mason-registry")
 local ui_config = require("lvim-ui-config.config")
 local select = require("lvim-ui-config.select")
-local notify = require("lvim-ui-config.notify")
 local efm_base = require("languages.base.languages._efm")
 local efm_user = require("languages.user.languages._efm")
 
@@ -71,7 +70,7 @@ M.install_all_packages = function()
                 return mason_registry.get_package(packages[i])
             end)
             if not ok then
-                notify.error("Package " .. packages[i] .. " not available", {
+                vim.notify("Package " .. packages[i] .. " not available", vim.log.levels.ERROR, {
                     title = "LVIM IDE",
                 })
             else
@@ -86,7 +85,7 @@ M.package_to_install = function(package, action)
         return mason_registry.get_package(package[1])
     end)
     if not ok then
-        notify.error("Package " .. package[1] .. " not available", {
+        vim.notify("Package " .. package[1] .. " not available", vim.log.levels.ERROR, {
             title = "LVIM IDE",
         })
     else
@@ -145,18 +144,23 @@ M.setup_languages = function(packages_data)
                             end, 100)
                         elseif choice == "Don't ask me again" then
                             funcs.write_file(global.cache_path .. "/.lvim_packages", "")
-                            notify.error(
+                            vim.notify(
                                 "To enable ask again run command:\n:AskForPackagesFile\nand restart LVIM IDE",
+                                vim.log.levels.ERROR,
                                 {
                                     timeout = 10000,
                                     title = "LVIM IDE",
                                 }
                             )
                         elseif choice == "Cancel" then
-                            notify.error("Need restart LVIM IDE to install packages for this filetype", {
-                                timeout = 10000,
-                                title = "LVIM IDE",
-                            })
+                            vim.notify(
+                                "Need restart LVIM IDE to install packages for this filetype",
+                                vim.log.levels.ERROR,
+                                {
+                                    timeout = 10000,
+                                    title = "LVIM IDE",
+                                }
+                            )
                         end
                     end)
                 end, 1000)
@@ -238,7 +242,7 @@ end
 M.dap_local = function()
     local config_paths = { "./.nvim-dap/nvim-dap.lua", "./.nvim-dap.lua", "./.nvim/nvim-dap.lua" }
     if not pcall(require, "dap") then
-        notify.error("Not found DAP plugin!", {
+        vim.notify("Not found DAP plugin!", vim.log.levels.ERROR, {
             title = "LVIM IDE",
         })
         return
@@ -253,15 +257,16 @@ M.dap_local = function()
         end
     end
     if project_config == "" then
-        notify.info(
+        vim.notify(
             "You can define DAP configuration in './.nvim-dap/nvim-dap.lua', './.nvim-dap.lua', './.nvim/nvim-dap.lua'",
+            vim.log.levels.INFO,
             {
                 title = "LVIM IDE",
             }
         )
         return
     end
-    notify.info("Found DAP configuration at " .. project_config, {
+    vim.notify("Found DAP configuration at " .. project_config, vim.log.levels.INFO, {
         title = "LVIM IDE",
     })
     require("dap").adapters = (function()

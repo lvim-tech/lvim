@@ -18,15 +18,14 @@ end
 function lazy_pack.snapshot_file_choice()
     local snapshot_file = vim.fn.input("Rollback from file: ", global.snapshot_path .. "/", "file")
     local file_content = funcs.read_file(snapshot_file)
-    local notify = require("lvim-ui-config.notify")
     if file_content ~= nil then
         _G.LVIM_SNAPSHOT = snapshot_file
         funcs.write_file(global.cache_path .. "/.lvim_snapshot", '{"snapshot": "' .. _G.LVIM_SNAPSHOT .. '"}')
-        notify.warning("Run\n:Lazy sync", {
+        vim.notify("Run\n:Lazy sync", vim.log.levels.WARN, {
             title = "LVIM IDE",
         })
     else
-        notify.error("The file does not exist or is wrong", {
+        vim.notify("The file does not exist or is wrong", vim.log.levels.ERROR, {
             title = "LVIM IDE",
         })
     end

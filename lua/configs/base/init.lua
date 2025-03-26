@@ -53,7 +53,6 @@ configs["base_lvim"] = function()
             status = "1.0"
         end
         local select = require("lvim-ui-config.select")
-        local notify = require("lvim-ui-config.notify")
         local opts = ui_config.select({
             "0.1",
             "0.2",
@@ -71,7 +70,9 @@ configs["base_lvim"] = function()
             if choice == "Cancel" then
             else
                 local user_choice = choice
-                notify.info("Float height: " .. choice, { title = "LVIM IDE" })
+                vim.notify("Float height: " .. choice, vim.log.levels.INFO, {
+                    title = "LVIM IDE",
+                })
                 _G.LVIM_SETTINGS["floatheight"] = tonumber(user_choice) + 0.0
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
                 editor_config.fzf_lua()
@@ -256,7 +257,6 @@ configs["base_which_key"] = function()
     local function lvim_keys_helper()
         ui_config = require("lvim-ui-config.config")
         local select = require("lvim-ui-config.select")
-        local notify = require("lvim-ui-config.notify")
         local status
         if _G.LVIM_SETTINGS.keyshelper == true then
             status = "Enabled"
@@ -272,11 +272,15 @@ configs["base_which_key"] = function()
             if choice == "Enable" then
                 _G.LVIM_SETTINGS["keyshelper"] = true
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
-                notify.info("Keys helper enabled. LVIM IDE needs to be restarted", { title = "LVIM IDE" })
+                vim.notify("Keys helper enabled. LVIM IDE needs to be restarted", vim.log.levels.INFO, {
+                    title = "LVIM IDE",
+                })
             elseif choice == "Disable" then
                 _G.LVIM_SETTINGS["keyshelper"] = false
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
-                notify.info("Keys helper disabled. LVIM IDE needs to be restarted", { title = "LVIM IDE" })
+                vim.notify("Keys helper disabled. LVIM IDE needs to be restarted", vim.log.levels.INFO, {
+                    title = "LVIM IDE",
+                })
             end
         end)
     end
@@ -284,7 +288,6 @@ configs["base_which_key"] = function()
     local function lvim_keys_helper_delay()
         ui_config = require("lvim-ui-config.config")
         local select = require("lvim-ui-config.select")
-        local notify = require("lvim-ui-config.notify")
         local status = _G.LVIM_SETTINGS.keyshelperdelay
         local opts = ui_config.select({
             0,
@@ -307,7 +310,9 @@ configs["base_which_key"] = function()
                 _G.LVIM_SETTINGS["keyshelperdelay"] = tonumber(choice)
                 funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
                 vim.cmd("Lazy reload which-key.nvim")
-                notify.info("Keys helper delay: " .. choice .. "ms", { title = "LVIM IDE" })
+                vim.notify("Keys helper delay: " .. choice .. "ms", vim.log.levels.INFO, {
+                    title = "LVIM IDE",
+                })
             end
         end)
     end
