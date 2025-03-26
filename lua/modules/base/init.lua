@@ -1029,6 +1029,29 @@ modules["mfussenegger/nvim-dap"] = {
     config = languages_config.nvim_dap,
 }
 
+modules["lvim-tech/vim-dadbod-ui"] = {
+    dependencies = {
+        "tpope/vim-dadbod",
+        "kristijanhusak/vim-dadbod-completion",
+        "pbogut/vim-dadbod-ssh",
+    },
+    cmd = {
+        "DBUIToggle",
+        "DBUIAddConnection",
+        "DBUI",
+        "DBUIFindBuffer",
+        "DBUIRenameBuffer",
+    },
+    keys = {
+        {
+            "<Leader>dd",
+            "<cmd>DBUIToggle<cr>",
+            desc = "Dadbod toggle",
+        },
+    },
+    init = languages_config.vim_dadbod_ui,
+}
+
 modules["kndndrj/nvim-dbee"] = {
     dependencies = { "MunifTanjim/nui.nvim" },
     cmd = "Dbee",
