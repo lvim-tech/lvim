@@ -15,6 +15,7 @@ local version_control_config = require("modules.base.configs.version_control")
 local configs = {}
 
 configs["base_lvim"] = function()
+    vim.deprecate = function() end
     local function lvim_theme()
         local status
         if _G.LVIM_SETTINGS.theme == "lvim-dark" then
