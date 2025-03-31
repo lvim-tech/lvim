@@ -162,7 +162,6 @@ modules["prichrd/netrw.nvim"] = {
 }
 
 modules["nvim-neo-tree/neo-tree.nvim"] = {
-    branch = "v3.x",
     commit = funcs.get_commit("neo-tree.nvim", plugins_snapshot),
     cmd = "Neotree",
     keys = {
