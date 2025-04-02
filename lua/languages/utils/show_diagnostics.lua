@@ -80,7 +80,7 @@ local function open_floating_preview(contents, syntax)
     })
     local floating_bufnr = api.nvim_create_buf(false, true)
     if syntax then
-        api.nvim_set_option_value('filetype', syntax, { buf = floating_bufnr })
+        api.nvim_set_option_value("filetype", syntax, { buf = floating_bufnr })
     end
     local float_option = util.make_floating_popup_options(width, height)
     local floating_winnr = api.nvim_open_win(floating_bufnr, true, float_option)
@@ -95,8 +95,8 @@ local function open_floating_preview(contents, syntax)
     vim.defer_fn(function()
         api.nvim_command(
             "autocmd CursorMoved,CursorMovedI,BufHidden,InsertCharPre <buffer> lua pcall(vim.api.nvim_win_close, "
-            .. floating_winnr
-            .. ", true)"
+                .. floating_winnr
+                .. ", true)"
         )
     end, 60)
     return floating_bufnr, floating_winnr
@@ -132,7 +132,7 @@ M.show_line_diagnostics = function()
     end
     local popup_bufnr, winnr = open_floating_preview(lines, "plaintext")
     api.nvim_buf_set_var(popup_bufnr, "buftype", "prompt")
-    local ns_id = vim.api.nvim_create_namespace('diagnostics_popup')
+    local ns_id = vim.api.nvim_create_namespace("diagnostics_popup")
     for i, hi in ipairs(highlights) do
         local prefixlen, hiname = unpack(hi)
         vim.highlight.range(
@@ -159,11 +159,9 @@ end
 M.goto_next = function()
     vim.diagnostic.jump({
         count = 1,
-        float = false
+        float = false,
     })
-    vim.schedule(function()
-        M.show_line_diagnostics()
-    end)
+    M.show_line_diagnostics()
 end
 
 M.goto_prev = function()
@@ -171,9 +169,7 @@ M.goto_prev = function()
         count = -1,
         float = false,
     })
-    vim.schedule(function()
-        M.show_line_diagnostics()
-    end)
+    M.show_line_diagnostics()
 end
 
 M.line = function(opts)

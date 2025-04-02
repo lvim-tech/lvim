@@ -518,7 +518,7 @@ config.snacks_nvim = function()
     end
 
     snacks.setup({
-        scroll = { enabled = true },
+        scroll = { enabled = false },
         animate = { enabled = true },
         image = { enables = true },
         dashboard = {
@@ -1181,7 +1181,7 @@ config.lvim_fm = function()
                 .. ",prompt:"
                 .. _G.LVIM_COLORS.green
                 .. ",marker:"
-                .. _G.LVIM_COLORS.red
+                .. _G.LVIM_COLORS.red,
         },
     })
 end
