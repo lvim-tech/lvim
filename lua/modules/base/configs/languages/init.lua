@@ -768,6 +768,10 @@ config.markview_nvim = function()
         height = { 3, 0.75 },
         debounce = 50,
     })
+    require("markview.extras.checkboxes").setup()
+    vim.keymap.set("n", "<Leader>cb", function()
+        vim.cmd("Checkbox interactive")
+    end, { noremap = true, silent = true, desc = "Checkbox choice" })
 end
 
 config.helpview_nvim = function()
