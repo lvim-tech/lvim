@@ -97,10 +97,17 @@ M.package_to_install = function(package, action)
             "closed",
             vim.schedule_wrap(function()
                 if package[2] == "efm" then
-                    lspconfig.efm.setup(global.efm)
+                    -- lspconfig.efm.setup(global.efm)
+                    vim.lsp.config("efm", {
+                        ["efm"] = global.efm,
+                    })
                 elseif package[2] ~= nil and action then
-                    lspconfig[package[2]].setup(package[3])
-                    vim.cmd("LspStart " .. package[2])
+                    -- lspconfig[package[2]].setup(package[3])
+                    -- vim.cmd("LspStart " .. package[2])
+                    vim.lsp.config(package[2], {
+                        [package[2]] = package[3],
+                    })
+                    vim.lsp.enable(package[2])
                 end
                 vim.defer_fn(function()
                     global.install_proccess = false
@@ -223,8 +230,12 @@ M.setup_languages = function(packages_data)
                         table.insert(M.servers_to_install, { k, v[1], v[2] })
                     else
                         if v[1] ~= nil and v[2] ~= nil then
-                            lspconfig[v[1]].setup(v[2])
-                            vim.cmd("LspStart " .. v[1])
+                            -- lspconfig[v[1]].setup(v[2])
+                            -- vim.cmd("LspStart " .. v[1])
+                            vim.lsp.config(v[1], {
+                                [v[1]] = v[2],
+                            })
+                            vim.lsp.enable(v[1])
                         end
                     end
                 end

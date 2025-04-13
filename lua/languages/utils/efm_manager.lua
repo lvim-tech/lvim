@@ -34,14 +34,22 @@ M.setup_efm = function()
             p:install():once(
                 "closed",
                 vim.schedule_wrap(function()
-                    lspconfig.efm.setup(global.efm)
+                    -- lspconfig.efm.setup(global.efm)
+                    vim.lsp.config("efm", {
+                        ["efm"] = global.efm,
+                    })
                     -- vim.cmd(":LspStart efm")
                     global.install_proccess = false
                 end)
             )
         end
     else
-        lspconfig.efm.setup(global.efm)
+        -- lspconfig.efm.setup(global.efm)
+        vim.lsp.config("efm", {
+            settings = {
+                ["efm"] = global.efm,
+            },
+        })
         -- vim.cmd(":LspStart efm")
     end
 end
