@@ -9,7 +9,7 @@ local lsp_server_name = "serve-d"
 local lsp_server_config = {
     name = "d",
     cmd = { "serve-d" },
-    filetypes = _G.file_types.toml,
+    filetypes = _G.file_types.d,
     root_markers = { "dub.json", "dub.sdl", ".git" },
     on_attach = function(client, bufnr)
         setup_diagnostics.keymaps(client, bufnr)
