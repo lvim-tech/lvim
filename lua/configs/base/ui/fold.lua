@@ -84,3 +84,30 @@ _G.fold_text = function()
     end
     return result
 end
+
+_G.md_fold_text = function()
+    local spec_available, spec = pcall(require, "markview.spec")
+    if spec_available == false then
+        return ""
+    end
+    local from, to = vim.v.foldstart, vim.v.foldend
+    local line = vim.api.nvim_buf_get_lines(0, from - 1, from, false)[1]
+    if line:match("^%s*#+") then
+        local before, marker, content = line:match("^([%s%>]*)(%#+)(.*)$")
+        local level = marker:len()
+        local config = spec.get({ "markdown", "headings", "heading_" .. level }, { fallback = {} })
+        return {
+            { before, config.hl },
+            { config.corner_left or "", config.corner_left_hl or config.hl },
+            { config.padding_left or "", config.padding_left_hl or config.hl },
+            { config.icon or "", config.icon_hl or config.hl },
+            { content:gsub("^%s*", ""), config.hl },
+            { config.padding_right or "", config.padding_right_hl or config.hl },
+            { config.corner_right or "", config.corner_right_hl or config.hl },
+            { " " },
+            { "├─ +" .. (to - from) .. " lines ", "FoldedText" },
+        }
+    else
+        return ""
+    end
+end
