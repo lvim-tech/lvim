@@ -14,8 +14,6 @@
 
 > Current version - 6.0.00 (2025-04-26)
 
-> 122 plugins
-
 ## INTRODUCTION
 
 - Neovim 0.12.0+ (for NEOVIM < 0.12 use branch NEOVIM-0.11)
