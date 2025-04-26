@@ -1,6 +1,6 @@
 # LVIM IDE
 
-![LVIM IDE](/LVIM/media/lvim-ide-logo.png)
+![LVIM IDE](/assets/lvim-ide-logo.png)
 
 ## DESCRIPTION
 
