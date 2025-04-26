@@ -1,5 +1,4 @@
 local global = require("core.global")
-local funcs = require("core.funcs")
 local options = require("configs.base.options")
 local keymaps = require("configs.base.keymaps")
 local keymaps_ft = require("configs.base.keymaps_ft")
@@ -11,6 +10,9 @@ local lvim_ui_config = require("modules.base.configs.ui")
 local editor_config = require("modules.base.configs.editor")
 local ui_config = require("modules.base.configs.ui")
 local version_control_config = require("modules.base.configs.version_control")
+local funcs = require("core.funcs")
+local base_file_types = require("languages.base.file_types")
+local user_file_types = require("languages.user.file_types")
 
 local configs = {}
 
@@ -117,6 +119,18 @@ configs["base_lvim"] = function()
             local diag_warn = funcs.get_highlight("DiagnosticWarn").fg
             local diag_hint = funcs.get_highlight("DiagnosticHint").fg
             local diag_info = funcs.get_highlight("DiagnosticInfo").fg
+            local blue_bh = funcs.blend(blue, 0.1, bg)
+            local blue_bl = funcs.blend(blue, 0.3, bg)
+            local green_bh = funcs.blend(green, 0.1, bg)
+            local green_bl = funcs.blend(green, 0.3, bg)
+            local orange_bh = funcs.blend(orange, 0.1, bg)
+            local orange_bl = funcs.blend(orange, 0.3, bg)
+            local red_bh = funcs.blend(red, 0.1, bg)
+            local red_bl = funcs.blend(red, 0.3, bg)
+            local cyan_bh = funcs.blend(cyan, 0.1, bg)
+            local cyan_bl = funcs.blend(cyan, 0.3, bg)
+            local purple_bh = funcs.blend(purple, 0.1, bg)
+            local purple_bl = funcs.blend(purple, 0.3, bg)
             _G.LVIM_COLORS = {
                 bg = vim.o.background == "dark" and bg or fg,
                 bg_dark = vim.o.background == "dark" and bg_dark or fg_light,
@@ -126,10 +140,22 @@ configs["base_lvim"] = function()
                 gray = gray,
                 blue = blue,
                 green = green,
-                red = red,
                 orange = orange,
+                red = red,
                 cyan = cyan,
                 purple = purple,
+                blue_bh = blue_bh,
+                blue_bl = blue_bl,
+                green_bh = green_bh,
+                green_bl = green_bl,
+                orange_bh = orange_bh,
+                orange_bl = orange_bl,
+                red_bh = red_bh,
+                red_bl = red_bl,
+                cyan_bh = cyan_bh,
+                cyan_bl = cyan_bl,
+                purple_bh = purple_bh,
+                purple_bl = purple_bl,
                 diag_error = diag_error,
                 diag_warn = diag_warn,
                 diag_hint = diag_hint,
@@ -143,25 +169,13 @@ configs["base_lvim"] = function()
             editor_config.neocomposer_nvim()
             version_control_config.lvim_forgit()
         end,
+        group = group,
     })
+    vim.api.nvim_create_user_command("SortLuaTable", funcs.sort_lua_table, {})
 end
 
 configs["base_options"] = function()
     options.global()
-    vim.g.gitblame_enabled = 0
-    vim.g.gitblame_highlight_group = "CursorLine"
-    pcall(function()
-        vim.opt.splitkeep = "screen"
-    end)
-    vim.g.netrw_banner = 0
-    vim.g.netrw_hide = 1
-    vim.g.netrw_browse_split = 0
-    vim.g.netrw_altv = 1
-    vim.g.netrw_liststyle = 1
-    vim.g.netrw_winsize = 20
-    vim.g.netrw_keepdir = 1
-    vim.g.netrw_list_hide = "(^|ss)\zs.S+"
-    vim.g.netrw_localcopydircmd = "cp -r"
 end
 
 configs["base_events"] = function()
@@ -170,6 +184,9 @@ configs["base_events"] = function()
             "markdown",
         },
         callback = function()
+            vim.opt_local.foldtext = "v:lua.md_fold_text()"
+            vim.opt_local.foldmethod = "expr"
+            vim.opt_local.conceallevel = 2
             vim.opt_local.wrap = false
         end,
         group = group,
@@ -198,7 +215,6 @@ configs["base_events"] = function()
             "org",
         },
         callback = function()
-            vim.bo.syntax = ""
             vim.opt_local.tabstop = 2
             vim.opt_local.shiftwidth = 2
         end,
@@ -215,7 +231,6 @@ configs["base_events"] = function()
             "dapui_watches",
             "git",
             "netrw",
-            "octo",
             "org",
             "toggleterm",
         },
@@ -230,12 +245,7 @@ configs["base_events"] = function()
 end
 
 configs["base_languages"] = function()
-    vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
-        callback = function()
-            require("languages").setup()
-        end,
-        group = group,
-    })
+    _G.file_types = funcs.merge(base_file_types, user_file_types)
 end
 
 configs["base_commands"] = function()
@@ -342,12 +352,12 @@ configs["base_ctrlspace_pre_config"] = function()
     vim.g.CtrlSpaceWorkspaceFile = global.lvim_path .. "/.cache/nvim/ctrlspace_workspaces"
 end
 
-configs["base_ask_packages"] = function()
-    local lvim_packages_file = global.cache_path .. "/.lvim_packages"
-    if funcs.file_exists(lvim_packages_file) then
-        global.lvim_packages = true
-    end
-    vim.api.nvim_create_user_command("AskForPackagesFile", "lua require('core.funcs').delete_packages_file()", {})
-end
+-- configs["base_ask_packages"] = function()
+--     local lvim_packages_file = global.cache_path .. "/.lvim_packages"
+--     if funcs.file_exists(lvim_packages_file) then
+--         global.lvim_packages = true
+--     end
+--     vim.api.nvim_create_user_command("AskForPackagesFile", "lua require('core.funcs').delete_packages_file()", {})
+-- end
 
 return configs
