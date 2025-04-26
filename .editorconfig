@@ -1,19 +1,21 @@
-root = true
-
-[*]
-; utf-8  latin1 utf-8-bom utf-16be utf-16le
-charset = utf-8
-; lf, cr, or crlf
-end_of_line = lf
-tab or space
-indent_style = space
--- n
-indent_size = 4
-; true, false
-insert_final_newline = true
-; 120
-max_line_length = 120
-; n
-tab_width = 4
-; true, false
-trim_trailing_whitespace = true
+# # EditorConfig root configuration
+# root = true
+#
+# # Apply to all files
+# [*]
+# # Character encoding (options: utf-8, latin1, utf-8-bom, utf-16be, utf-16le)
+# charset = utf-8
+# # Line ending style (options: lf, cr, crlf)
+# end_of_line = lf
+# # Indentation style (options: tab, space)
+# indent_style = space
+# # Number of spaces per indentation level
+# indent_size = 4
+# # Ensure file ends with a newline (options: true, false)
+# insert_final_newline = true
+# # Max characters per line
+# max_line_length = 120
+# # Width of tab characters
+# tab_width = 4
+# # Remove trailing whitespace (options: true, false)
+# trim_trailing_whitespace = true
