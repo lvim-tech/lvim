@@ -29,6 +29,7 @@ keymaps["normal"] = {
     { "<C-c>ff", ":CloseFloatWindows<CR>", "Close float windows" }, -- Close float windows
     { "<C-c>c", ":Inspect<CR>", "Inspect" }, -- Inspect
     { "<C-c>O", ":lua vim.ui.open(vim.fn.expand('%'))<CR>", "Open in browser" }, -- Open in browser
+    { "<Leader>m", ":messages<CR>", "Messages" }, -- New file
     { "<Leader>n", ":ene | startinsert<CR>", "New file" }, -- New file
     { "<Leader>to", ":$tabnew<CR>", "Tab new" }, -- Tne new
     { "<Leader>tc", ":$tabclose<CR>", "Tab close" }, -- Tne close
