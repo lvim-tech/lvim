@@ -1,0 +1,235 @@
+local navic = require("nvim-navic")
+
+local setup_diagnostics = require("languages.utils.setup_diagnostics")
+local lsp_utils = require("languages.utils")
+
+local lsp_server_name = "texlab"
+
+-- LSP
+local function client_with_fn(fn)
+    return function()
+        local bufnr = vim.api.nvim_get_current_buf()
+        local client = vim.lsp.get_clients({ bufnr = bufnr, name = "latex" })[1]
+        if not client then
+            return vim.notify(("texlab client not found in bufnr %d"):format(bufnr), vim.log.levels.ERROR)
+        end
+        fn(client, bufnr)
+    end
+end
+
+local function buf_build(client, bufnr)
+    local win = vim.api.nvim_get_current_win()
+    local params = vim.lsp.util.make_position_params(win, client.offset_encoding)
+    client.request("textDocument/build", params, function(err, result)
+        if err then
+            error(tostring(err))
+        end
+        local texlab_build_status = {
+            [0] = "Success",
+            [1] = "Error",
+            [2] = "Failure",
+            [3] = "Cancelled",
+        }
+        vim.notify("Build " .. texlab_build_status[result.status], vim.log.levels.INFO)
+    end, bufnr)
+end
+
+local function buf_search(client, bufnr)
+    local win = vim.api.nvim_get_current_win()
+    local params = vim.lsp.util.make_position_params(win, client.offset_encoding)
+    client.request("textDocument/forwardSearch", params, function(err, result)
+        if err then
+            error(tostring(err))
+        end
+        local texlab_forward_status = {
+            [0] = "Success",
+            [1] = "Error",
+            [2] = "Failure",
+            [3] = "Unconfigured",
+        }
+        vim.notify("Search " .. texlab_forward_status[result.status], vim.log.levels.INFO)
+    end, bufnr)
+end
+
+local function buf_cancel_build(client, bufnr)
+    vim.notify("Build cancelled", vim.log.levels.INFO)
+    return client:exec_cmd({
+        title = "cancel",
+        command = "texlab.cancelBuild",
+    }, { bufnr = bufnr })
+end
+
+local function dependency_graph(client)
+    client:exec_cmd({ command = "texlab.showDependencyGraph" }, { bufnr = 0 }, function(err, result)
+        if err then
+            return vim.notify(err.code .. ": " .. err.message, vim.log.levels.ERROR)
+        end
+        vim.notify("The dependency graph has been generated:\n" .. result, vim.log.levels.INFO)
+    end)
+end
+
+local function command_factory(cmd)
+    local cmd_tbl = {
+        Auxiliary = "texlab.cleanAuxiliary",
+        Artifacts = "texlab.cleanArtifacts",
+        CancelBuild = "texlab.cancelBuild",
+    }
+    return function(client, bufnr)
+        return client:exec_cmd({
+            title = ("clean_%s"):format(cmd),
+            command = cmd_tbl[cmd],
+            arguments = { { uri = vim.uri_from_bufnr(bufnr) } },
+        }, { bufnr = bufnr }, function(err, _)
+            if err then
+                vim.notify(("Failed to clean %s files: %s"):format(cmd, err.message), vim.log.levels.ERROR)
+            else
+                vim.notify(("command %s executed successfully"):format(cmd), vim.log.levels.INFO)
+            end
+        end)
+    end
+end
+
+local function buf_find_envs(client, bufnr)
+    local win = vim.api.nvim_get_current_win()
+    client:exec_cmd({
+        command = "texlab.findEnvironments",
+        arguments = { vim.lsp.util.make_position_params(win, client.offset_encoding) },
+    }, { bufnr = bufnr }, function(err, result)
+        if err then
+            return vim.notify(err.code .. ": " .. err.message, vim.log.levels.ERROR)
+        end
+        local env_names = {}
+        local max_length = 1
+        for _, env in ipairs(result) do
+            table.insert(env_names, env.name.text)
+            max_length = math.max(max_length, string.len(env.name.text))
+        end
+        for i, name in ipairs(env_names) do
+            env_names[i] = string.rep(" ", i - 1) .. name
+        end
+        vim.lsp.util.open_floating_preview(env_names, "", {
+            height = #env_names,
+            width = math.max((max_length + #env_names - 1), (string.len("Environments"))),
+            focusable = false,
+            focus = false,
+            border = "single",
+            title = "Environments",
+        })
+    end)
+end
+
+local function buf_change_env(client, bufnr)
+    local new = vim.fn.input("Enter the new environment name: ")
+    if not new or new == "" then
+        return vim.notify("No environment name provided", vim.log.levels.WARN)
+    end
+    local pos = vim.api.nvim_win_get_cursor(0)
+    return client:exec_cmd({
+        title = "change_environment",
+        command = "texlab.changeEnvironment",
+        arguments = {
+            {
+                textDocument = { uri = vim.uri_from_bufnr(bufnr) },
+                position = { line = pos[1] - 1, character = pos[2] },
+                newName = tostring(new),
+            },
+        },
+    }, { bufnr = bufnr })
+end
+
+local lsp_server_config = {
+    name = "latex",
+    cmd = { "texlab" },
+    filetypes = _G.file_types.latex,
+    root_markers = { ".git", ".latexmkrc", ".texlabroot", "texlabroot", "Tectonic.toml" },
+    settings = {
+        texlab = {
+            rootDirectory = nil,
+            build = {
+                executable = "latexmk",
+                args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
+                onSave = false,
+                forwardSearchAfter = false,
+            },
+            forwardSearch = {
+                executable = nil,
+                args = {},
+            },
+            chktex = {
+                onOpenAndSave = false,
+                onEdit = false,
+            },
+            diagnosticsDelay = 300,
+            latexFormatter = "latexindent",
+            latexindent = {
+                ["local"] = nil,
+                modifyLineBreaks = false,
+            },
+            bibtexFormatter = "texlab",
+            formatterLineLength = 80,
+        },
+    },
+    on_attach = function(client, bufnr)
+        setup_diagnostics.keymaps(client, bufnr)
+        setup_diagnostics.document_highlight(client, bufnr)
+        setup_diagnostics.document_auto_format(client, bufnr)
+        setup_diagnostics.inlay_hint(client, bufnr)
+        if client.server_capabilities.documentSymbolProvider then
+            navic.attach(client, bufnr)
+        end
+        vim.api.nvim_buf_create_user_command(0, "LspTexlabBuild", client_with_fn(buf_build), {
+            desc = "Build the current buffer",
+        })
+        vim.api.nvim_buf_create_user_command(0, "LspTexlabForward", client_with_fn(buf_search), {
+            desc = "Forward search from current position",
+        })
+        vim.api.nvim_buf_create_user_command(0, "LspTexlabCancelBuild", client_with_fn(buf_cancel_build), {
+            desc = "Cancel the current build",
+        })
+        vim.api.nvim_buf_create_user_command(0, "LspTexlabDependencyGraph", client_with_fn(dependency_graph), {
+            desc = "Show the dependency graph",
+        })
+        vim.api.nvim_buf_create_user_command(
+            0,
+            "LspTexlabCleanArtifacts",
+            client_with_fn(command_factory("Artifacts")),
+            {
+                desc = "Clean the artifacts",
+            }
+        )
+        vim.api.nvim_buf_create_user_command(
+            0,
+            "LspTexlabCleanAuxiliary",
+            client_with_fn(command_factory("Auxiliary")),
+            {
+                desc = "Clean the auxiliary files",
+            }
+        )
+        vim.api.nvim_buf_create_user_command(0, "LspTexlabFindEnvironments", client_with_fn(buf_find_envs), {
+            desc = "Find the environments at current position",
+        })
+        vim.api.nvim_buf_create_user_command(0, "LspTexlabChangeEnvironment", client_with_fn(buf_change_env), {
+            desc = "Change the environment at current position",
+        })
+    end,
+    capabilities = setup_diagnostics.get_capabilities(),
+}
+
+local lsp_server_async = lsp_utils.is_lsp_server_installed(lsp_server_name)
+
+local lsp_server_result
+while not lsp_server_result do
+    lsp_server_result = lsp_server_async()
+    vim.wait(100)
+end
+
+_G.latex_lsp_config = lsp_server_config
+
+if lsp_server_result then
+    return lsp_server_config
+else
+    vim.notify("An error occurred while setting up the LSP (" .. lsp_server_name .. ")!", vim.log.levels.ERROR)
+end
+-- LSP
+
+-- vim: foldmethod=indent foldlevel=0

@@ -222,6 +222,31 @@ M.keymaps = function(_, bufnr)
             end
         end
     end
+
+    local _border = {
+        { "🭽", "FloatBorder" },
+        { "▔", "FloatBorder" },
+        { "🭾", "FloatBorder" },
+        { "▕", "FloatBorder" },
+        { "🭿", "FloatBorder" },
+        { "▁", "FloatBorder" },
+        { "🭼", "FloatBorder" },
+        { "▏", "FloatBorder" },
+    }
+
+    local function bordered_hover(_opts)
+        _opts = _opts or {}
+        return vim.lsp.buf.hover(vim.tbl_deep_extend("force", _opts, {
+            border = _border,
+        }))
+    end
+    local function bordered_signature_help(_opts)
+        _opts = _opts or {}
+        return vim.lsp.buf.signature_help(vim.tbl_deep_extend("force", _opts, {
+            border = _border,
+        }))
+    end
+
     local mappings = {
         {
             mode = "n",
@@ -276,7 +301,7 @@ M.keymaps = function(_, bufnr)
             mode = "n",
             lhs = "gs",
             capability = "signatureHelpProvider",
-            command = vim.lsp.buf.signature_help,
+            command = bordered_signature_help,
             desc = "LspSignatureHelp",
         },
         {
@@ -304,10 +329,11 @@ M.keymaps = function(_, bufnr)
             mode = "n",
             lhs = "K",
             capability = "hoverProvider",
-            command = vim.lsp.buf.hover,
+            command = bordered_hover,
             desc = "LspHover",
         },
     }
+
     local function setup_format_mappings()
         local has_format_capability = false
         local clients = vim.lsp.get_clients({ bufnr = bufnr })
@@ -323,6 +349,7 @@ M.keymaps = function(_, bufnr)
             end, { noremap = true, silent = true, buffer = bufnr, desc = "LspFormat" })
         end
     end
+
     for _, mapping in ipairs(mappings) do
         vim.keymap.set(mapping.mode, mapping.lhs, create_safe_command(mapping.capability, mapping.command), {
             noremap = true,
@@ -331,6 +358,7 @@ M.keymaps = function(_, bufnr)
             desc = mapping.desc,
         })
     end
+
     setup_format_mappings()
 end
 
