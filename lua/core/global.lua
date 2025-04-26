@@ -35,10 +35,6 @@ function global:load_variables()
     self.custom_config = home .. "/.config/nvim/lua/config/custom"
     self.home = home
     self.mason_path = home .. "/.local/share/nvim/mason"
-    self.languages = {}
-    self.efm = false
-    self.lvim_packages = false
-    self.install_proccess = false
 end
 
 global:load_variables()
