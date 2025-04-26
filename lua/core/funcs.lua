@@ -403,6 +403,26 @@ M.quit = function()
     end
 end
 
+M.is_helm = function()
+    local filepath = vim.fn.expand("%:p")
+    local filename = vim.fn.expand("%:t")
+    if
+        string.match(filepath, ".+/templates/.+%.yaml$")
+        or string.match(filepath, ".+/templates/.+%.yml$")
+        or string.match(filepath, ".+/templates/.+%.tpl$")
+        or string.match(filepath, ".+/templates/.+%.txt$")
+    then
+        return true
+    end
+    if string.match(filename, ".+%.gotmpl$") then
+        return true
+    end
+    if string.match(filename, "helmfile.+%.yaml$") or string.match(filename, "helmfile.+%.yml$") then
+        return true
+    end
+    return false
+end
+
 M.get_highlight = function(hl_group)
     local hl_details = vim.api.nvim_get_hl(0, { name = hl_group })
 

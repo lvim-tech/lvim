@@ -36,6 +36,9 @@ return {
         "go",
         "gomod",
     },
+    ["helm"] = {
+        "helm",
+    },
     ["html"] = {
         "html",
     },

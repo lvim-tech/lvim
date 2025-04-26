@@ -242,6 +242,22 @@ configs["base_events"] = function()
         end,
         group = group,
     })
+    vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+        pattern = "*",
+        callback = function()
+            if funcs.is_helm() then
+                vim.bo.filetype = "helm"
+            end
+        end,
+        group = group,
+    })
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = "helm",
+        callback = function()
+            vim.bo.commentstring = "{{/* %s */}}"
+        end,
+        group = group,
+    })
 end
 
 configs["base_languages"] = function()
