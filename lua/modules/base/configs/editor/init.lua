@@ -257,9 +257,9 @@ config.nvim_hlslens = function()
             local indicator, text, chunks
             local absRelIdx = math.abs(relIdx)
             if absRelIdx > 1 then
-                indicator = ("%d%s"):format(absRelIdx, sfw ~= (relIdx > 1) and icons.common.up or icons.common.down)
+                indicator = ("%d%s"):format(absRelIdx, sfw ~= (relIdx > 1) and icons.common.up2 or icons.common.down2)
             elseif absRelIdx == 1 then
-                indicator = sfw ~= (relIdx == 1) and icons.common.up or icons.common.down
+                indicator = sfw ~= (relIdx == 1) and icons.common.up2 or icons.common.down2
             else
                 indicator = icons.common.dot
             end
@@ -849,6 +849,8 @@ config.nvim_highlight_colors = function()
     highlight_colors.setup({
         render = "virtual",
         virtual_symbol = "●",
+        enable_tailwind = true,
+        exclude_buftypes = { "nofile" },
     })
 end
 
