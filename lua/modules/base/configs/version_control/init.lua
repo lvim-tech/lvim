@@ -67,12 +67,12 @@ config.gitsigns_nvim = function()
         signcolumn = true,
         signs_staged_enable = false,
         signs = {
-            untracked = { text = icons.common.vline },
-            changedelete = { text = icons.common.vline },
-            topdelete = { text = icons.common.vline },
-            delete = { text = icons.common.vline },
-            change = { text = icons.common.vline },
-            add = { text = icons.common.vline },
+            untracked = { text = " " .. icons.common.vline },
+            changedelete = { text = " " .. icons.common.vline },
+            topdelete = { text = " " .. icons.common.vline },
+            delete = { text = " " .. icons.common.vline },
+            change = { text = " " .. icons.common.vline },
+            add = { text = " " .. icons.common.vline },
         },
         linehl = false,
     })
