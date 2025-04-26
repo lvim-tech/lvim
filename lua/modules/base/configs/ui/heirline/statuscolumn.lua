@@ -235,7 +235,7 @@ M.get_statuscolumn = function()
     local diagnostics = {
         {
             provider = function(self)
-                return self.sign and icons.diagnostics.global or " "
+                return self.sign and icons.diagnostics.global .. " " or " "
             end,
             init = function(self)
                 local diag_sign = self.get_extmarks_diagnostics(self, -1, vim.v.lnum)
@@ -254,12 +254,13 @@ M.get_statuscolumn = function()
         },
     }
 
+    local vline = " " .. icons.common.vline
     local gits = {
         {
             condition = function()
                 return not conditions.is_git_repo() or vim.v.virtnum ~= 0
             end,
-            provider = icons.common.vline,
+            provider = vline,
         },
         {
             condition = function()
@@ -270,7 +271,7 @@ M.get_statuscolumn = function()
                 self.sign = gits[1]
             end,
             provider = function(self)
-                return self.sign and self.sign.text or icons.common.vline
+                return self.sign and self.sign.text or vline
             end,
             hl = function(self)
                 return self.sign and self.sign.sign_hl_group

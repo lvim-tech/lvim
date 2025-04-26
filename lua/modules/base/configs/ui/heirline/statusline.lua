@@ -85,7 +85,7 @@ M.get_statusline = function()
             },
         },
         provider = function(self)
-            return " " .. icons.common.vim .. " %(" .. self.mode_names[self.mode] .. "%)  "
+            return " " .. icons.common.vim .. " " .. " %(" .. self.mode_names[self.mode] .. "%)  "
         end,
         hl = function(self)
             _G.LVIM_MODE = self.mode:sub(1, 1)
@@ -177,7 +177,7 @@ M.get_statusline = function()
         {
             provider = function()
                 if not vim.bo.modifiable or vim.bo.readonly then
-                    return " " .. icons.common.lock
+                    return " " .. icons.common.lock .. " "
                 end
             end,
             hl = { fg = _G.LVIM_COLORS.red },
@@ -187,7 +187,7 @@ M.get_statusline = function()
         {
             provider = function()
                 if vim.bo.modified then
-                    return " " .. icons.common.save
+                    return " " .. icons.common.save .. " "
                 end
             end,
             hl = { fg = _G.LVIM_COLORS.red },
@@ -214,28 +214,28 @@ M.get_statusline = function()
         hl = { fg = _G.LVIM_COLORS.orange },
         {
             provider = function(self)
-                return " " .. icons.common.git .. self.status_dict.head .. " "
+                return " " .. icons.common.git .. " " .. self.status_dict.head .. " "
             end,
             hl = { bold = true },
         },
         {
             provider = function(self)
                 local count = self.status_dict.added or 0
-                return count > 0 and (" " .. icons.git_status.added .. count)
+                return count > 0 and (" " .. icons.git_status.added .. " " .. count)
             end,
             hl = { fg = _G.LVIM_COLORS.green },
         },
         {
             provider = function(self)
                 local count = self.status_dict.removed or 0
-                return count > 0 and (" " .. icons.git_status.deleted .. count)
+                return count > 0 and (" " .. icons.git_status.deleted .. " " .. count)
             end,
             hl = { fg = _G.LVIM_COLORS.red },
         },
         {
             provider = function(self)
                 local count = self.status_dict.changed or 0
-                return count > 0 and (" " .. icons.git_status.modified .. count)
+                return count > 0 and (" " .. icons.git_status.modified .. " " .. count)
             end,
             hl = { fg = _G.LVIM_COLORS.orange },
         },
@@ -277,10 +277,10 @@ M.get_statusline = function()
     local diagnostics = {
         condition = heirline_conditions.has_diagnostics,
         static = {
-            error_icon = icons.diagnostics.error,
-            warn_icon = icons.diagnostics.warn,
-            hint_icon = icons.diagnostics.hint,
-            info_icon = icons.diagnostics.info,
+            error_icon = icons.diagnostics.error .. " ",
+            warn_icon = icons.diagnostics.warn .. " ",
+            hint_icon = icons.diagnostics.hint .. " ",
+            info_icon = icons.diagnostics.info .. " ",
         },
         update = { "DiagnosticChanged", "BufEnter" },
         init = function(self)
@@ -340,10 +340,10 @@ M.get_statusline = function()
             local sources = global.efm["settings"].languages[filetype]
             if sources ~= nil then
                 for i = 1, #sources do
-                    if sources[i].lPrefix ~= nil and mason_registry.is_installed(sources[i].lPrefix) then
+                    if sources[i].lPrefix ~= nil and mason_registry.is_installed(sources[i].server_name) then
                         table.insert(linters, sources[i].lPrefix)
                     end
-                    if sources[i].fPrefix ~= nil and mason_registry.is_installed(sources[i].fPrefix) then
+                    if sources[i].fPrefix ~= nil and mason_registry.is_installed(sources[i].server_name) then
                         table.insert(formatters, sources[i].fPrefix)
                     end
                 end
@@ -355,17 +355,17 @@ M.get_statusline = function()
             end
             if next(linters) ~= nil then
                 linters = funcs.remove_duplicate(linters)
-                p_linters = " Li [" .. table.concat(linters, ", ") .. "]"
+                p_linters = " | Li [" .. table.concat(linters, ", ") .. "]"
             else
                 p_linters = ""
             end
             if next(formatters) ~= nil then
                 formatters = funcs.remove_duplicate(formatters)
-                p_formatters = " Fo [" .. table.concat(formatters, ", ") .. "]"
+                p_formatters = " | Fo [" .. table.concat(formatters, ", ") .. "]"
             else
                 p_formatters = ""
             end
-            return icons.common.lsp .. p_lsp .. p_linters .. p_formatters
+            return icons.common.lsp .. " " .. p_lsp .. p_linters .. p_formatters
         end,
         hl = { fg = _G.LVIM_COLORS.blue, bold = true },
         on_click = {
@@ -391,9 +391,9 @@ M.get_statusline = function()
             local format = vim.bo.fileformat
             if format ~= "" then
                 local symbols = {
-                    unix = icons.common.unix,
-                    dos = icons.common.dos,
-                    mac = icons.common.mac,
+                    unix = icons.common.unix .. " ",
+                    dos = icons.common.dos .. " ",
+                    mac = icons.common.mac .. " ",
                 }
                 return " " .. symbols[format]
             end
