@@ -3,6 +3,16 @@ local icons = require("configs.base.ui.icons")
 local config = {}
 
 config.mason_nvim = function()
+    local mason_status_ok, mason = pcall(require, "mason")
+    if not mason_status_ok then
+        return
+    end
+    mason.setup({
+        log_level = vim.log.levels.DEBUG,
+        ui = {
+            icons = icons.mason,
+        },
+    })
     vim.api.nvim_create_user_command(
         "LvimInstallLangDependencies",
         "lua require('languages.utils.lsp_manager').install_all_packages()",
@@ -59,7 +69,7 @@ config.mason_nvim = function()
         "lua require('languages.utils.show_diagnostics').goto_prev()",
         {}
     )
-    vim.api.nvim_create_user_command("DAPLocal", "lua require('languages.utils.lsp_manager').dap_local()", {})
+    vim.api.nvim_create_user_command("DAPLocal", "lua require('languages.utils').dap_local()", {})
     vim.keymap.set("n", "<C-c><C-l>", function()
         vim.cmd("DAPLocal")
     end, { noremap = true, silent = true, desc = "DAPLocal" })
@@ -72,19 +82,9 @@ config.mason_nvim = function()
     vim.keymap.set("n", "dp", function()
         vim.cmd("LspShowDiagnosticPrev")
     end, { noremap = true, silent = true, desc = "LspShowDiagnosticPrev" })
-    local mason_status_ok, mason = pcall(require, "mason")
-    if not mason_status_ok then
-        return
-    end
-    mason.setup({
-        log_level = vim.log.levels.DEBUG,
-        ui = {
-            icons = icons.mason,
-        },
-    })
+
+    require("languages").init()
     require("languages.utils.setup_diagnostics").init_diagnostics()
-    local efm_manager = require("languages.utils.efm_manager")
-    efm_manager.setup_efm()
 end
 
 config.neotest = function()
@@ -296,22 +296,228 @@ config.flutter_tools_nvim = function()
                 navic.attach(client, bufnr)
             end,
             autostart = true,
-            capabilities = {
-                textDocument = {
-                    formatting = {
-                        dynamicRegistration = false,
-                    },
-                    codeAction = {
-                        dynamicRegistration = false,
-                    },
-                    hover = {
-                        dynamicRegistration = false,
-                    },
-                    rename = {
-                        dynamicRegistration = false,
-                    },
-                },
-            },
+            -- capabilities = {
+            --     textDocument = {
+            --         formatting = {
+            --             dynamicRegistration = false,
+            --         },
+            --         codeAction = {
+            --             dynamicRegistration = false,
+            --         },
+            --         hover = {
+            --             dynamicRegistration = false,
+            --         },
+            --         rename = {
+            --             dynamicRegistration = false,
+            --         },
+            --         completion = {
+            --             dynamicRegistration = false,
+            --             completionItem = {
+            --                 snippetSupport = true,
+            --                 commitCharactersSupport = true,
+            --                 documentationFormat = { "markdown", "plaintext" },
+            --                 deprecatedSupport = true,
+            --                 preselectSupport = true,
+            --                 insertReplaceSupport = true,
+            --                 labelDetailsSupport = true,
+            --                 resolveSupport = {
+            --                     properties = { "documentation", "detail", "additionalTextEdits" },
+            --                 },
+            --             },
+            --             completionItemKind = {
+            --                 valueSet = (function()
+            --                     local result = {}
+            --                     for i = 1, 25 do
+            --                         table.insert(result, i)
+            --                     end
+            --                     return result
+            --                 end)(),
+            --             },
+            --             contextSupport = true,
+            --         },
+            --         declaration = {
+            --             dynamicRegistration = false,
+            --             linkSupport = true,
+            --         },
+            --         definition = {
+            --             dynamicRegistration = false,
+            --             linkSupport = true,
+            --         },
+            --         typeDefinition = {
+            --             dynamicRegistration = false,
+            --             linkSupport = true,
+            --         },
+            --         implementation = {
+            --             dynamicRegistration = false,
+            --             linkSupport = true,
+            --         },
+            --         references = {
+            --             dynamicRegistration = false,
+            --         },
+            --         documentHighlight = {
+            --             dynamicRegistration = false,
+            --         },
+            --         documentSymbol = {
+            --             dynamicRegistration = false,
+            --             symbolKind = {
+            --                 valueSet = (function()
+            --                     local result = {}
+            --                     for i = 1, 26 do
+            --                         table.insert(result, i)
+            --                     end
+            --                     return result
+            --                 end)(),
+            --             },
+            --             hierarchicalDocumentSymbolSupport = true,
+            --         },
+            --         signatureHelp = {
+            --             dynamicRegistration = false,
+            --             signatureInformation = {
+            --                 documentationFormat = { "markdown", "plaintext" },
+            --                 parameterInformation = {
+            --                     labelOffsetSupport = true,
+            --                 },
+            --                 activeParameterSupport = true,
+            --             },
+            --         },
+            --         documentFormatting = {
+            --             dynamicRegistration = false,
+            --         },
+            --         documentRangeFormatting = {
+            --             dynamicRegistration = false,
+            --         },
+            --         documentOnTypeFormatting = {
+            --             dynamicRegistration = false,
+            --         },
+            --         publishDiagnostics = {
+            --             dynamicRegistration = false,
+            --             relatedInformation = true,
+            --             tagSupport = {
+            --                 valueSet = { 1, 2 },
+            --             },
+            --             versionSupport = true,
+            --             codeDescriptionSupport = true,
+            --             dataSupport = true,
+            --         },
+            --         foldingRange = {
+            --             dynamicRegistration = false,
+            --             lineFoldingOnly = true,
+            --         },
+            --         selectionRange = {
+            --             dynamicRegistration = false,
+            --         },
+            --         callHierarchy = {
+            --             dynamicRegistration = false,
+            --         },
+            --         semanticTokens = {
+            --             dynamicRegistration = false,
+            --             requests = {
+            --                 range = true,
+            --                 full = {
+            --                     delta = true,
+            --                 },
+            --             },
+            --             tokenTypes = {
+            --                 "namespace", "type", "class", "enum", "interface",
+            --                 "struct", "typeParameter", "parameter", "variable", "property",
+            --                 "enumMember", "event", "function", "method", "macro",
+            --                 "keyword", "modifier", "comment", "string", "number",
+            --                 "regexp", "operator", "decorator",
+            --             },
+            --             tokenModifiers = {
+            --                 "declaration", "definition", "readonly", "static",
+            --                 "deprecated", "abstract", "async", "modification",
+            --                 "documentation", "defaultLibrary",
+            --             },
+            --             formats = { "relative" },
+            --             overlappingTokenSupport = false,
+            --             multilineTokenSupport = false,
+            --         },
+            --         linkedEditingRange = {
+            --             dynamicRegistration = false,
+            --         },
+            --         inlayHint = {
+            --             dynamicRegistration = false,
+            --             resolveSupport = {
+            --                 properties = { "tooltip", "textEdits", "label.tooltip", "label.location" },
+            --             },
+            --         },
+            --     },
+            --     window = {
+            --         showMessage = {
+            --             messageActionItem = {
+            --                 additionalPropertiesSupport = true,
+            --             },
+            --         },
+            --         showDocument = {
+            --             support = true,
+            --         },
+            --         workDoneProgress = true,
+            --     },
+            --     workspace = {
+            --         applyEdit = true,
+            --         workspaceEdit = {
+            --             documentChanges = true,
+            --             resourceOperations = { "create", "rename", "delete" },
+            --             failureHandling = "textOnlyTransactional",
+            --             normalizesLineEndings = true,
+            --             changeAnnotationSupport = {
+            --                 groupsOnLabel = true,
+            --             },
+            --         },
+            --         didChangeConfiguration = {
+            --             dynamicRegistration = false,
+            --         },
+            --         didChangeWatchedFiles = {
+            --             dynamicRegistration = false,
+            --             relativePatternSupport = true,
+            --         },
+            --         symbol = {
+            --             dynamicRegistration = false,
+            --             symbolKind = {
+            --                 valueSet = (function()
+            --                     local result = {}
+            --                     for i = 1, 26 do
+            --                         table.insert(result, i)
+            --                     end
+            --                     return result
+            --                 end)(),
+            --             },
+            --         },
+            --         executeCommand = {
+            --             dynamicRegistration = false,
+            --         },
+            --         workspaceFolders = true,
+            --         configuration = true,
+            --         semanticTokens = {
+            --             refreshSupport = true,
+            --         },
+            --         fileOperations = {
+            --             dynamicRegistration = true,
+            --             didCreate = true,
+            --             didRename = true,
+            --             didDelete = true,
+            --             willCreate = true,
+            --             willRename = true,
+            --             willDelete = true,
+            --         },
+            --         inlayHint = {
+            --             refreshSupport = true,
+            --         },
+            --     },
+            --     experimental = {},
+            --     general = {
+            --         regularExpressions = {
+            --             engine = "oniguruma",
+            --             version = "2",
+            --         },
+            --         markdown = {
+            --             parser = "marked",
+            --             version = "1.1.0",
+            --         },
+            --         positionEncodings = { "utf-16" },
+            --     },
+            -- },
             settings = {
                 renameFilesWithClasses = "prompt",
             },
@@ -324,14 +530,29 @@ config.tailwind_tools_nvim = function()
     if not tailwind_tools_status_ok then
         return
     end
-    tailwind_tools.setup({
-        document_color = {
-            enabled = false,
-            kind = "inline",
-            inline_symbol = " ● ",
-            debounce = 200,
-        },
-    })
+
+    local lsp_utils = require("languages.utils")
+    local server_name = "tailwindcss-language-server"
+    local async_op = lsp_utils.is_lsp_server_installed(server_name)
+    local result
+    while not result do
+        result = async_op()
+        vim.wait(100)
+    end
+    if result then
+        tailwind_tools.setup({
+            server = {
+                override = true,
+                settings = {},
+            },
+            document_color = {
+                enabled = false,
+                kind = "inline",
+                inline_symbol = " ● ",
+                debounce = 200,
+            },
+        })
+    end
 end
 
 config.nvim_px_to_rem = function()
@@ -565,6 +786,7 @@ function config.vim_dadbod_ui()
                 vim.api.nvim_set_hl(0, "dbui_saved_query", { fg = _G.LVIM_COLORS.orange })
             end)
         end,
+        group = "LvimIDE",
     })
 end
 
@@ -632,8 +854,17 @@ config.nvim_dap = function()
         dap.toggle_breakpoint()
     end, { noremap = true, silent = true, desc = "DapToggleBreakpoint" })
     vim.keymap.set("n", "<A-2>", function()
-        dap.continue()
-    end, { noremap = true, silent = true, desc = "DapContinue" })
+        local ft = vim.bo.filetype
+        if ft == "lua" then
+            if not require("dap").session() then
+                require("osv").run_this()
+            else
+                require("dap").continue()
+            end
+        else
+            require("dap").continue()
+        end
+    end, { noremap = true, silent = true, desc = "Debug Start/Continue" })
     vim.keymap.set("n", "<A-3>", function()
         dap.step_into()
     end, { noremap = true, silent = true, desc = "DapStepInto" })
@@ -762,6 +993,7 @@ config.markview_nvim = function()
             tables = require("modules.base.configs.languages.markview.tables"),
             list_items = require("modules.base.configs.languages.markview.list_items"),
         },
+        yaml = require("modules.base.configs.languages.markview.yaml"),
     })
     require("markview.extras.editor").setup({
         width = { 10, 0.75 },
@@ -780,22 +1012,6 @@ config.helpview_nvim = function()
         return
     end
     helpview.setup()
-end
-
-config.mkdnflow_nvim = function()
-    local mkdnflow_nvim_status_ok, mkdnflow_nvim = pcall(require, "mkdnflow")
-    if not mkdnflow_nvim_status_ok then
-        return
-    end
-    mkdnflow_nvim.setup({
-        to_do = {
-            symbols = { "", "󱑁", "" },
-            update_parents = true,
-            not_started = "",
-            in_progress = "󱑁",
-            complete = "",
-        },
-    })
 end
 
 config.vimtex = function()

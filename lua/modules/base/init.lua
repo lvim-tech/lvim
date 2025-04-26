@@ -33,7 +33,6 @@ modules["nvim-lua/popup.nvim"] = {
 modules["MunifTanjim/nui.nvim"] = {
     commit = funcs.get_commit("nui.nvim", plugins_snapshot),
     lazy = true,
-    config = dependencies_config.nui_nvim,
 }
 
 modules["lvim-tech/lvim-ui-config"] = {
@@ -58,19 +57,8 @@ modules["junegunn/fzf"] = {
     lazy = true,
 }
 
-modules["neovim/nvim-lspconfig"] = {
-    commit = funcs.get_commit("nvim-lspconfig", plugins_snapshot),
-    dependencies = { "saghen/blink.cmp" },
-    lazy = true,
-}
-
 modules["nvim-treesitter/playground"] = {
     commit = funcs.get_commit("playground", plugins_snapshot),
-    lazy = true,
-}
-
-modules["mfussenegger/nvim-dap"] = {
-    commit = funcs.get_commit("nvim-dap", plugins_snapshot),
     lazy = true,
 }
 
@@ -95,17 +83,14 @@ modules["rafamadriz/friendly-snippets"] = {
 
 local ui_config = require("modules.base.configs.ui")
 
-modules["folke/noice.nvim"] = {
-    commit = funcs.get_commit("noice.nvim", plugins_snapshot),
-    dependencies = {
-        "MunifTanjim/nui.nvim",
-    },
-    config = ui_config.noice_nvim,
-}
-
 modules["folke/snacks.nvim"] = {
     commit = funcs.get_commit("snacks.nvim", plugins_snapshot),
     config = ui_config.snacks_nvim,
+}
+
+modules["OXY2DEV/ui.nvim"] = {
+    commit = funcs.get_commit("ui.nvim", plugins_snapshot),
+    config = ui_config.ui_nvim,
 }
 
 modules["s1n7ax/nvim-window-picker"] = {
@@ -168,7 +153,8 @@ modules["nvim-neo-tree/neo-tree.nvim"] = {
         { "<S-x>", "<cmd>Neotree toggle filesystem left<CR>", desc = "NeoTree filesystem" },
         { "<C-c><C-f>", "<cmd>Neotree toggle filesystem left<CR>", desc = "NeoTree filesystem" },
         { "<C-c><C-b>", "<cmd>Neotree toggle buffers left<CR>", desc = "NeoTree buffers" },
-        { "<C-c><C-g>", "<cmd>Neotree toggle git_status left<CR>", desc = "NeoTree git status" },
+        { "<C-c><C-g>", "<cmd>Neotree toggle git_status left<CR>", desc = "NeoTree git" },
+        { "<C-c><C-m>", "<cmd>Neotree toggle document_symbols left<CR>", desc = "NeoTree symbols" },
         { "<S-q>", "<cmd>Neotree toggle close<CR>", desc = "NeoTree close" },
     },
     dependencies = {
@@ -212,11 +198,6 @@ modules["lvim-tech/lvim-fm"] = {
     dependencies = { "lvim-tech/lvim-shell" },
     config = ui_config.lvim_fm,
 }
-
--- modules["nvimtools/hydra.nvim"] = {
---     commit = funcs.get_commit("hydra.nvim", plugins_snapshot),
---     config = ui_config.hydra_nvim,
--- }
 
 modules["rebelot/heirline.nvim"] = {
     commit = funcs.get_commit("heirline.nvim", plugins_snapshot),
@@ -302,7 +283,7 @@ modules["ibhagwan/fzf-lua"] = {
             desc = "FzfLua search",
         },
         {
-            "<Leader>m",
+            "<Leader>M",
             function()
                 vim.cmd("FzfLua marks")
             end,
@@ -777,7 +758,6 @@ modules["NeogitOrg/neogit"] = {
 }
 
 modules["tanvirtin/vgit.nvim"] = {
-    branch = "v1.0.x",
     commit = funcs.get_commit("vgit.nvim", plugins_snapshot),
     dependencies = {
         "nvim-lua/plenary.nvim",
@@ -835,12 +815,6 @@ modules["williamboman/mason.nvim"] = {
     branch = "v2.x",
     build = ":MasonUpdate",
     commit = funcs.get_commit("mason.nvim", plugins_snapshot),
-    event = {
-        "BufRead",
-    },
-    dependencies = {
-        "neovim/nvim-lspconfig",
-    },
     config = languages_config.mason_nvim,
 }
 
@@ -856,7 +830,6 @@ modules["nvim-neotest/neotest"] = {
         "rouge8/neotest-rust",
         "nvim-neotest/neotest-go",
         "nvim-neotest/neotest-python",
-        -- "MrcJkb/neotest-haskell",
         "jfpedroza/neotest-elixir",
         "sidlatau/neotest-dart",
     },
@@ -926,9 +899,11 @@ modules["akinsho/flutter-tools.nvim"] = {
 
 modules["luckasRanarison/tailwind-tools.nvim"] = {
     commit = funcs.get_commit("tailwind-tools.nvim", plugins_snapshot),
+    build = ":UpdateRemotePlugins",
+    ft = "astro",
     dependencies = {
         "nvim-treesitter/nvim-treesitter",
-        "neovim/nvim-lspconfig",
+        -- "neovim/nvim-lspconfig",
     },
     config = languages_config.tailwind_tools_nvim,
 }
@@ -974,16 +949,12 @@ modules["nvim-treesitter/nvim-treesitter"] = {
 
 modules["SmiteshP/nvim-navic"] = {
     commit = funcs.get_commit("nvim-navic", plugins_snapshot),
-    dependencies = {
-        "neovim/nvim-lspconfig",
-    },
     config = languages_config.nvim_navic,
 }
 
 modules["SmiteshP/nvim-navbuddy"] = {
     commit = funcs.get_commit("nvim-navbuddy", plugins_snapshot),
     dependencies = {
-        "neovim/nvim-lspconfig",
         "SmiteshP/nvim-navic",
         "MunifTanjim/nui.nvim",
     },
@@ -1122,12 +1093,6 @@ modules["OXY2DEV/helpview.nvim"] = {
     config = languages_config.helpview_nvim,
 }
 
-modules["jakewvincent/mkdnflow.nvim"] = {
-    commit = funcs.get_commit("mkdnflow-nvim", plugins_snapshot),
-    ft = { "md", "markdown" },
-    config = languages_config.mkdnflow_nvim,
-}
-
 modules["lervag/vimtex"] = {
     commit = funcs.get_commit("vimtex", plugins_snapshot),
     config = languages_config.vimtex,
@@ -1136,7 +1101,7 @@ modules["lervag/vimtex"] = {
 modules["nvim-orgmode/orgmode"] = {
     commit = funcs.get_commit("orgmode", plugins_snapshot),
     ft = "org",
-    dependencies = { "lvim-tech/lvim-org-utils" },
+    -- dependencies = { "lvim-tech/lvim-org-utils" },
     config = languages_config.orgmode,
 }
 
@@ -1159,9 +1124,6 @@ modules["Saghen/blink.cmp"] = {
         "niuiic/blink-cmp-rg.nvim",
         "xzbdmw/colorful-menu.nvim",
         "moyiz/blink-emoji.nvim",
-    },
-    event = {
-        "InsertEnter",
     },
     build = "cargo build --release",
     config = completion_config.blink_cmp,
