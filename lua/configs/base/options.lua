@@ -4,6 +4,22 @@ require("configs.base.ui.fold")
 local M = {}
 
 M.global = function()
+    -- vim.g
+    vim.g.gitblame_enabled = 0
+    vim.g.gitblame_highlight_group = "CursorLine"
+    vim.g.netrw_banner = 0
+    vim.g.netrw_hide = 1
+    vim.g.netrw_browse_split = 0
+    vim.g.netrw_altv = 1
+    vim.g.netrw_liststyle = 1
+    vim.g.netrw_winsize = 20
+    vim.g.netrw_keepdir = 1
+    vim.g.netrw_list_hide = "(^|ss)\zs.S+"
+    vim.g.netrw_localcopydircmd = "cp -r"
+    pcall(function()
+        vim.opt.splitkeep = "screen"
+    end)
+    -- vim.opt
     vim.opt.shortmess = "ltToOCFI"
     vim.opt.termguicolors = true
     vim.opt.mouse = "nv"
@@ -51,7 +67,7 @@ M.global = function()
     vim.opt.splitright = true
     vim.opt.switchbuf = "useopen"
     vim.opt.backspace = "indent,eol,start"
-    vim.opt.diffopt = "internal,filler,closeoff,indent-heuristic,linematch:60,algorithm:histogram"
+    -- vim.opt.diffopt = "internal,filler,closeoff,indent-heuristic,linematch:60,algorithm:histogram"
     vim.opt.completeopt = "menu,menuone,noselect"
     vim.opt.jumpoptions = "stack"
     vim.opt.showmode = false
@@ -74,7 +90,7 @@ M.global = function()
     vim.opt.display = "lastline"
     vim.opt.showbreak = "↳  "
     vim.opt.listchars = "tab:  ,nbsp: ,trail: ,space: ,extends:→,precedes:←"
-    vim.opt.fillchars = "eob: ,fold:─"
+    -- vim.opt.fillchars = "eob: ,fold:─"
     vim.opt.pumblend = 0
     vim.opt.winblend = 0
     vim.opt.undofile = true
@@ -97,7 +113,24 @@ M.global = function()
     vim.opt.foldmethod = "indent"
     vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
     vim.opt.foldtext = "v:lua.fold_text()"
+    vim.opt.foldmethod = "indent"
     vim.opt.cursorline = true
+    vim.opt.fillchars = {
+        diff = "╱",
+        eob = " ",
+        fold = "─",
+    }
+    vim.opt.diffopt = "internal,filler,closeoff,indent-heuristic,linematch:60,algorithm:histogram"
+    vim.opt.diffopt = {
+        "internal",
+        "filler",
+        "closeoff",
+        "context:6",
+        "algorithm:histogram",
+        "linematch:60",
+        "indent-heuristic",
+    }
+    vim.opt.diffopt:append({ "vertical,context:100,linematch:100" })
 end
 
 return M
