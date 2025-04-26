@@ -27,6 +27,22 @@ M.sort = function(tbl)
     return tbl
 end
 
+M.sort_lua_table = function()
+    local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+    local sorted_lines = {}
+    local inner_lines = {}
+    for _, line in ipairs(lines) do
+        if line:match('%[".*"%]') then
+            table.insert(sorted_lines, line)
+        else
+            table.insert(inner_lines, line)
+        end
+    end
+    table.sort(sorted_lines)
+    vim.api.nvim_buf_set_lines(0, 0, -1, false, sorted_lines)
+    vim.api.nvim_buf_set_lines(0, #sorted_lines, -1, false, inner_lines)
+end
+
 M.has_value = function(table, value)
     for _, v in ipairs(table) do
         if v == value then
