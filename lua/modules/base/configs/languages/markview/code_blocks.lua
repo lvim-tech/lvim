@@ -1,8 +1,8 @@
 return {
     enable = true,
+    label_direction = "right",
+    style = "block",
     icons = "devicons",
-    style = "language",
-    language_direction = "left",
     min_width = 60,
     pad_char = " ",
     pad_amount = 3,
