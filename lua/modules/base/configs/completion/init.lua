@@ -7,7 +7,6 @@ config.blink_cmp = function()
     end
     local icons = require("configs.base.ui.icons")
     local lsp_symbols = icons.cmp
-    -- local ext = { "lazydev", "ripgrep", "emoji", "dictionary" }
     local ext = { "lazydev", "ripgrep", "emoji" }
     local default_sources = vim.list_extend({ "lsp", "path", "snippets", "buffer", "dadbod" }, ext)
     local trigger_text = ";"
@@ -25,6 +24,9 @@ config.blink_cmp = function()
                     and node ~= nil
                     and vim.tbl_contains({ "comment", "line_comment", "block_comment" }, node:type())
                 )
+            disabled = disabled or vim.g.__ui_cmdline_active == true
+            disabled = disabled or vim.g.__ui_confirm_msg ~= nil
+            disabled = disabled or vim.g.__ui_list_msg ~= nil
             return not disabled
         end,
         snippets = {
@@ -231,7 +233,7 @@ config.blink_cmp = function()
                         return { pos[1] - 1, pos[2] }
                     end
                     local height = (vim.o.cmdheight == 0) and 1 or vim.o.cmdheight
-                    return { vim.o.lines - height, 0 }
+                    return { vim.o.lines - height - 1, 0 } -- Subtracted 1 to move one line up
                 end,
             },
             documentation = {
