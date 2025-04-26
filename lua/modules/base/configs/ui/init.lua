@@ -602,7 +602,7 @@ config.snacks_nvim = function()
             },
         },
         notifier = {
-            enabled = true,
+            enabled = false,
             style = function(buf, notif, ctx)
                 local title = notif.icon .. " " .. (notif.title or "")
                 if title ~= "" then
@@ -834,6 +834,14 @@ config.snacks_nvim = function()
     })
 end
 
+config.ui_nvim = function()
+    local ui_status_ok, ui = pcall(require, "modules.base.configs.ui.ui")
+    if not ui_status_ok then
+        return
+    end
+    ui.set_ui()
+end
+
 config.nvim_window_picker = function()
     local window_picker_status_ok, window_picker = pcall(require, "window-picker")
     if not window_picker_status_ok then
@@ -850,7 +858,7 @@ config.nvim_window_picker = function()
                 selection_display = function(char, _)
                     return "%=" .. char .. "%="
                 end,
-                use_winbar = "always",
+                -- use_winbar = "always",
             },
         },
         show_prompt = false,
@@ -858,7 +866,7 @@ config.nvim_window_picker = function()
             autoselect_one = false,
             include_current_win = true,
             bo = {
-                filetype = {},
+                filetype = { "nofile" },
                 buftype = {},
             },
         },
@@ -1037,6 +1045,7 @@ config.neo_tree_nvim = function()
             "filesystem",
             "buffers",
             "git_status",
+            "document_symbols",
         },
         source_selector = {
             winbar = true,
@@ -1054,6 +1063,10 @@ config.neo_tree_nvim = function()
                 {
                     source = "git_status",
                     display_name = icons.common.git .. " GIT  ",
+                },
+                {
+                    source = "document_symbols",
+                    display_name = icons.common.symbol .. " SYM  ",
                 },
             },
         },
@@ -1185,17 +1198,6 @@ config.lvim_fm = function()
         },
     })
 end
-
--- config.hydra_nvim = function()
---     local global = require("core.global")
---     local all_hydras = global.modules_path .. "/base/configs/ui/hydra/"
---     local path_list = vim.split(vim.fn.glob(all_hydras .. "*.lua", true), "\n")
---     for _, path in ipairs(path_list) do
---         local name = vim.fn.fnamemodify(path, ":t:r")
---         local f = "modules.base.configs.ui.hydra." .. name
---         require(f)
---     end
--- end
 
 config.heirline_nvim = function()
     local statusline = require("modules.base.configs.ui.heirline.statusline").get_statusline()
