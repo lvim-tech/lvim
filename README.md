@@ -12,7 +12,7 @@
 - Formatters with efm ("stylua", "yamlfmt", "shfmt", "cbfmt", "prettierd")
 - Automatically install dependencies (lsp servers, linters, formatters, debbugers) by filetype
 
-> Current version - 6.0.00 (2025-04-26)
+> Current version - 6.0.00 (2025-04-27)
 
 ## INTRODUCTION
 
@@ -217,14 +217,14 @@ modules["name_of_your/plugin"] = { -- add new plugin
 - Disable filetypes
 
 ```lua
--- lua/languages/user/ft.lua
+-- lua/languages/user/filetypes.lua
 ["shell"] = {} -- disable shell support
 ```
 
 - Rewrite filetypes
 
 ```lua
--- lua/languages/user/ft.lua
+-- lua/languages/user/filetypes.lua
 ["shell"] = { -- add support for shell
     "sh",
     "bash",
@@ -235,7 +235,7 @@ modules["name_of_your/plugin"] = { -- add new plugin
 - Add filetypes
 
 ```lua
--- lua/languages/user/ft.lua
+-- lua/languages/user/filetypes.lua
 ["shell"] = { -- add support for shell (if shell not defined in "lua/languages/base/ft.lua")
     "sh",
     "bash",
