@@ -28,7 +28,7 @@ lsp_utils.setup_efm(_G.file_types.yaml, efm_config)
 
 -- LSP
 local lsp_server_config = {
-    name = "jaml",
+    name = "yaml",
     cmd = { "yaml-language-server", "--stdio" },
     filetypes = _G.file_types.yaml,
     root_markers = { ".git" },
