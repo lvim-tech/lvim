@@ -296,230 +296,263 @@ config.flutter_tools_nvim = function()
                 navic.attach(client, bufnr)
             end,
             autostart = true,
-            -- capabilities = {
-            --     textDocument = {
-            --         formatting = {
-            --             dynamicRegistration = false,
-            --         },
-            --         codeAction = {
-            --             dynamicRegistration = false,
-            --         },
-            --         hover = {
-            --             dynamicRegistration = false,
-            --         },
-            --         rename = {
-            --             dynamicRegistration = false,
-            --         },
-            --         completion = {
-            --             dynamicRegistration = false,
-            --             completionItem = {
-            --                 snippetSupport = true,
-            --                 commitCharactersSupport = true,
-            --                 documentationFormat = { "markdown", "plaintext" },
-            --                 deprecatedSupport = true,
-            --                 preselectSupport = true,
-            --                 insertReplaceSupport = true,
-            --                 labelDetailsSupport = true,
-            --                 resolveSupport = {
-            --                     properties = { "documentation", "detail", "additionalTextEdits" },
-            --                 },
-            --             },
-            --             completionItemKind = {
-            --                 valueSet = (function()
-            --                     local result = {}
-            --                     for i = 1, 25 do
-            --                         table.insert(result, i)
-            --                     end
-            --                     return result
-            --                 end)(),
-            --             },
-            --             contextSupport = true,
-            --         },
-            --         declaration = {
-            --             dynamicRegistration = false,
-            --             linkSupport = true,
-            --         },
-            --         definition = {
-            --             dynamicRegistration = false,
-            --             linkSupport = true,
-            --         },
-            --         typeDefinition = {
-            --             dynamicRegistration = false,
-            --             linkSupport = true,
-            --         },
-            --         implementation = {
-            --             dynamicRegistration = false,
-            --             linkSupport = true,
-            --         },
-            --         references = {
-            --             dynamicRegistration = false,
-            --         },
-            --         documentHighlight = {
-            --             dynamicRegistration = false,
-            --         },
-            --         documentSymbol = {
-            --             dynamicRegistration = false,
-            --             symbolKind = {
-            --                 valueSet = (function()
-            --                     local result = {}
-            --                     for i = 1, 26 do
-            --                         table.insert(result, i)
-            --                     end
-            --                     return result
-            --                 end)(),
-            --             },
-            --             hierarchicalDocumentSymbolSupport = true,
-            --         },
-            --         signatureHelp = {
-            --             dynamicRegistration = false,
-            --             signatureInformation = {
-            --                 documentationFormat = { "markdown", "plaintext" },
-            --                 parameterInformation = {
-            --                     labelOffsetSupport = true,
-            --                 },
-            --                 activeParameterSupport = true,
-            --             },
-            --         },
-            --         documentFormatting = {
-            --             dynamicRegistration = false,
-            --         },
-            --         documentRangeFormatting = {
-            --             dynamicRegistration = false,
-            --         },
-            --         documentOnTypeFormatting = {
-            --             dynamicRegistration = false,
-            --         },
-            --         publishDiagnostics = {
-            --             dynamicRegistration = false,
-            --             relatedInformation = true,
-            --             tagSupport = {
-            --                 valueSet = { 1, 2 },
-            --             },
-            --             versionSupport = true,
-            --             codeDescriptionSupport = true,
-            --             dataSupport = true,
-            --         },
-            --         foldingRange = {
-            --             dynamicRegistration = false,
-            --             lineFoldingOnly = true,
-            --         },
-            --         selectionRange = {
-            --             dynamicRegistration = false,
-            --         },
-            --         callHierarchy = {
-            --             dynamicRegistration = false,
-            --         },
-            --         semanticTokens = {
-            --             dynamicRegistration = false,
-            --             requests = {
-            --                 range = true,
-            --                 full = {
-            --                     delta = true,
-            --                 },
-            --             },
-            --             tokenTypes = {
-            --                 "namespace", "type", "class", "enum", "interface",
-            --                 "struct", "typeParameter", "parameter", "variable", "property",
-            --                 "enumMember", "event", "function", "method", "macro",
-            --                 "keyword", "modifier", "comment", "string", "number",
-            --                 "regexp", "operator", "decorator",
-            --             },
-            --             tokenModifiers = {
-            --                 "declaration", "definition", "readonly", "static",
-            --                 "deprecated", "abstract", "async", "modification",
-            --                 "documentation", "defaultLibrary",
-            --             },
-            --             formats = { "relative" },
-            --             overlappingTokenSupport = false,
-            --             multilineTokenSupport = false,
-            --         },
-            --         linkedEditingRange = {
-            --             dynamicRegistration = false,
-            --         },
-            --         inlayHint = {
-            --             dynamicRegistration = false,
-            --             resolveSupport = {
-            --                 properties = { "tooltip", "textEdits", "label.tooltip", "label.location" },
-            --             },
-            --         },
-            --     },
-            --     window = {
-            --         showMessage = {
-            --             messageActionItem = {
-            --                 additionalPropertiesSupport = true,
-            --             },
-            --         },
-            --         showDocument = {
-            --             support = true,
-            --         },
-            --         workDoneProgress = true,
-            --     },
-            --     workspace = {
-            --         applyEdit = true,
-            --         workspaceEdit = {
-            --             documentChanges = true,
-            --             resourceOperations = { "create", "rename", "delete" },
-            --             failureHandling = "textOnlyTransactional",
-            --             normalizesLineEndings = true,
-            --             changeAnnotationSupport = {
-            --                 groupsOnLabel = true,
-            --             },
-            --         },
-            --         didChangeConfiguration = {
-            --             dynamicRegistration = false,
-            --         },
-            --         didChangeWatchedFiles = {
-            --             dynamicRegistration = false,
-            --             relativePatternSupport = true,
-            --         },
-            --         symbol = {
-            --             dynamicRegistration = false,
-            --             symbolKind = {
-            --                 valueSet = (function()
-            --                     local result = {}
-            --                     for i = 1, 26 do
-            --                         table.insert(result, i)
-            --                     end
-            --                     return result
-            --                 end)(),
-            --             },
-            --         },
-            --         executeCommand = {
-            --             dynamicRegistration = false,
-            --         },
-            --         workspaceFolders = true,
-            --         configuration = true,
-            --         semanticTokens = {
-            --             refreshSupport = true,
-            --         },
-            --         fileOperations = {
-            --             dynamicRegistration = true,
-            --             didCreate = true,
-            --             didRename = true,
-            --             didDelete = true,
-            --             willCreate = true,
-            --             willRename = true,
-            --             willDelete = true,
-            --         },
-            --         inlayHint = {
-            --             refreshSupport = true,
-            --         },
-            --     },
-            --     experimental = {},
-            --     general = {
-            --         regularExpressions = {
-            --             engine = "oniguruma",
-            --             version = "2",
-            --         },
-            --         markdown = {
-            --             parser = "marked",
-            --             version = "1.1.0",
-            --         },
-            --         positionEncodings = { "utf-16" },
-            --     },
-            -- },
+            capabilities = {
+                textDocument = {
+                    formatting = {
+                        dynamicRegistration = false,
+                    },
+                    codeAction = {
+                        dynamicRegistration = false,
+                    },
+                    hover = {
+                        dynamicRegistration = false,
+                    },
+                    rename = {
+                        dynamicRegistration = false,
+                    },
+                    completion = {
+                        dynamicRegistration = false,
+                        completionItem = {
+                            snippetSupport = true,
+                            commitCharactersSupport = true,
+                            documentationFormat = { "markdown", "plaintext" },
+                            deprecatedSupport = true,
+                            preselectSupport = true,
+                            insertReplaceSupport = true,
+                            labelDetailsSupport = true,
+                            resolveSupport = {
+                                properties = { "documentation", "detail", "additionalTextEdits" },
+                            },
+                        },
+                        completionItemKind = {
+                            valueSet = (function()
+                                local result = {}
+                                for i = 1, 25 do
+                                    table.insert(result, i)
+                                end
+                                return result
+                            end)(),
+                        },
+                        contextSupport = true,
+                    },
+                    declaration = {
+                        dynamicRegistration = false,
+                        linkSupport = true,
+                    },
+                    definition = {
+                        dynamicRegistration = false,
+                        linkSupport = true,
+                    },
+                    typeDefinition = {
+                        dynamicRegistration = false,
+                        linkSupport = true,
+                    },
+                    implementation = {
+                        dynamicRegistration = false,
+                        linkSupport = true,
+                    },
+                    references = {
+                        dynamicRegistration = false,
+                    },
+                    documentHighlight = {
+                        dynamicRegistration = false,
+                    },
+                    documentSymbol = {
+                        dynamicRegistration = false,
+                        symbolKind = {
+                            valueSet = (function()
+                                local result = {}
+                                for i = 1, 26 do
+                                    table.insert(result, i)
+                                end
+                                return result
+                            end)(),
+                        },
+                        hierarchicalDocumentSymbolSupport = true,
+                    },
+                    signatureHelp = {
+                        dynamicRegistration = false,
+                        signatureInformation = {
+                            documentationFormat = { "markdown", "plaintext" },
+                            parameterInformation = {
+                                labelOffsetSupport = true,
+                            },
+                            activeParameterSupport = true,
+                        },
+                    },
+                    documentFormatting = {
+                        dynamicRegistration = false,
+                    },
+                    documentRangeFormatting = {
+                        dynamicRegistration = false,
+                    },
+                    documentOnTypeFormatting = {
+                        dynamicRegistration = false,
+                    },
+                    publishDiagnostics = {
+                        dynamicRegistration = false,
+                        relatedInformation = true,
+                        tagSupport = {
+                            valueSet = { 1, 2 },
+                        },
+                        versionSupport = true,
+                        codeDescriptionSupport = true,
+                        dataSupport = true,
+                    },
+                    foldingRange = {
+                        dynamicRegistration = false,
+                        lineFoldingOnly = true,
+                    },
+                    selectionRange = {
+                        dynamicRegistration = false,
+                    },
+                    callHierarchy = {
+                        dynamicRegistration = false,
+                    },
+                    semanticTokens = {
+                        dynamicRegistration = false,
+                        requests = {
+                            range = true,
+                            full = {
+                                delta = true,
+                            },
+                        },
+                        tokenTypes = {
+                            "namespace",
+                            "type",
+                            "class",
+                            "enum",
+                            "interface",
+                            "struct",
+                            "typeParameter",
+                            "parameter",
+                            "variable",
+                            "property",
+                            "enumMember",
+                            "event",
+                            "function",
+                            "method",
+                            "macro",
+                            "keyword",
+                            "modifier",
+                            "comment",
+                            "string",
+                            "number",
+                            "regexp",
+                            "operator",
+                            "decorator",
+                        },
+                        tokenModifiers = {
+                            "declaration",
+                            "definition",
+                            "readonly",
+                            "static",
+                            "deprecated",
+                            "abstract",
+                            "async",
+                            "modification",
+                            "documentation",
+                            "defaultLibrary",
+                        },
+                        formats = { "relative" },
+                        overlappingTokenSupport = false,
+                        multilineTokenSupport = false,
+                    },
+                    linkedEditingRange = {
+                        dynamicRegistration = false,
+                    },
+                    inlayHint = {
+                        dynamicRegistration = false,
+                        resolveSupport = {
+                            properties = { "tooltip", "textEdits", "label.tooltip", "label.location" },
+                        },
+                    },
+                },
+                window = {
+                    showMessage = {
+                        messageActionItem = {
+                            additionalPropertiesSupport = true,
+                        },
+                    },
+                    showDocument = {
+                        support = true,
+                    },
+                    workDoneProgress = true,
+                },
+                workspace = {
+                    applyEdit = true,
+                    workspaceEdit = {
+                        documentChanges = true,
+                        resourceOperations = { "create", "rename", "delete" },
+                        failureHandling = "textOnlyTransactional",
+                        normalizesLineEndings = true,
+                        changeAnnotationSupport = {
+                            groupsOnLabel = true,
+                        },
+                    },
+                    didChangeConfiguration = {
+                        dynamicRegistration = false,
+                    },
+                    didChangeWatchedFiles = {
+                        dynamicRegistration = false,
+                        relativePatternSupport = true,
+                    },
+                    symbol = {
+                        dynamicRegistration = false,
+                        symbolKind = {
+                            valueSet = (function()
+                                local result = {}
+                                for i = 1, 26 do
+                                    table.insert(result, i)
+                                end
+                                return result
+                            end)(),
+                        },
+                    },
+                    executeCommand = {
+                        dynamicRegistration = false,
+                    },
+                    workspaceFolders = true,
+                    configuration = true,
+                    semanticTokens = {
+                        refreshSupport = true,
+                    },
+                    fileOperations = {
+                        dynamicRegistration = true,
+                        didCreate = true,
+                        didRename = true,
+                        didDelete = true,
+                        willCreate = true,
+                        willRename = true,
+                        willDelete = true,
+                    },
+                    inlayHint = {
+                        refreshSupport = true,
+                    },
+                },
+                experimental = {},
+                general = {
+                    regularExpressions = {
+                        engine = "oniguruma",
+                        version = "2",
+                    },
+                    markdown = {
+                        parser = "marked",
+                        version = "1.1.0",
+                    },
+                    positionEncodings = { "utf-16" },
+                },
+            },
             settings = {
-                renameFilesWithClasses = "prompt",
+                dart = {
+                    completeFunctionCalls = true,
+                    showTodos = true,
+                    analysisExcludedFolders = {},
+                    updateImportsOnRename = true,
+                    renameFilesWithClasses = "prompt",
+                    enableSnippets = true,
+                    lineLength = 80,
+                },
             },
         },
     })
