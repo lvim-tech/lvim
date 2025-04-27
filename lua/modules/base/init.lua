@@ -183,22 +183,6 @@ modules["stevearc/oil.nvim"] = {
     config = ui_config.oil_nvim,
 }
 
-modules["lvim-tech/lvim-fm"] = {
-    commit = funcs.get_commit("lvim-fm", plugins_snapshot),
-    cmd = "LvimFileManager",
-    keys = {
-        {
-            "<Leader>=",
-            function()
-                vim.cmd("LvimFileManager")
-            end,
-            desc = "LvimFileManager",
-        },
-    },
-    dependencies = { "lvim-tech/lvim-shell" },
-    config = ui_config.lvim_fm,
-}
-
 modules["rebelot/heirline.nvim"] = {
     commit = funcs.get_commit("heirline.nvim", plugins_snapshot),
     config = ui_config.heirline_nvim,

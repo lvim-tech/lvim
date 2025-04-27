@@ -524,15 +524,6 @@ config.snacks_nvim = function()
         dashboard = {
             enabled = true,
             sections = {
-                --                     {
-                --                         header = [[
-                -- ██     ██    ██ ██ ███    ███
-                -- ██     ██    ██ ██ ████  ████
-                -- ██     ██    ██ ██ ██ ████ ██
-                -- ██      ██  ██  ██ ██  ██  ██
-                -- ███████  ████   ██ ██      ██
-                -- ]],
-                --                     },
                 {
                     header = [[
 ██╗    ██╗   ██╗██╗███╗   ███╗
@@ -544,7 +535,7 @@ config.snacks_nvim = function()
 ]],
                 },
                 { icon = " ", key = "<Leader><Leader>b", desc = "Projects", action = ":CtrlSpace b" },
-                { icon = " ", key = "<Leader>=", desc = "Fzf File Manager", action = ":LvimFileManager" },
+                { icon = " ", key = "<Leader>=", desc = "Fzf File Manager", action = ":Yazi" },
                 { icon = " ", key = "<Leader>f", desc = "Find File", action = ":FzfLua files" },
                 { icon = " ", key = "<Leader>nn", desc = "New File", action = ":ene | startinsert" },
                 { icon = " ", key = "<Leader>w", desc = "Find Text", action = ":FzfLua live_grep" },
@@ -760,9 +751,9 @@ config.snacks_nvim = function()
             },
         })
     end
-    vim.keymap.set("n", "<Leader>sn", function()
-        Snacks.notifier.show_history()
-    end, { noremap = true, silent = true, desc = "Notify history" })
+    -- vim.keymap.set("n", "<Leader>sn", function()
+    --     Snacks.notifier.show_history()
+    -- end, { noremap = true, silent = true, desc = "Notify history" })
     vim.keymap.set("n", "<C-c>z", function()
         Snacks.zen.zoom()
     end, { noremap = true, silent = true, desc = "Zoom" })
@@ -1162,43 +1153,6 @@ config.oil_nvim = function()
     })
 end
 
-config.lvim_fm = function()
-    local lvim_fm_status_ok, lvim_fm = pcall(require, "lvim-fm")
-    if not lvim_fm_status_ok then
-        return
-    end
-    lvim_fm.setup({
-        env = {
-            COLORS = "fg:"
-                .. _G.LVIM_COLORS.blue
-                .. ",bg:"
-                .. _G.LVIM_COLORS.bg_float
-                .. ",hl:"
-                .. _G.LVIM_COLORS.red
-                .. ",fg+:"
-                .. _G.LVIM_COLORS.blue
-                .. ",bg+:"
-                .. _G.LVIM_COLORS.bg_float
-                .. ",hl+:"
-                .. _G.LVIM_COLORS.red
-                .. ",pointer:"
-                .. _G.LVIM_COLORS.red
-                .. ",info:"
-                .. _G.LVIM_COLORS.orange
-                .. ",gutter:"
-                .. _G.LVIM_COLORS.bg_float
-                .. ",spinner:"
-                .. _G.LVIM_COLORS.orange
-                .. ",header:"
-                .. _G.LVIM_COLORS.red
-                .. ",prompt:"
-                .. _G.LVIM_COLORS.green
-                .. ",marker:"
-                .. _G.LVIM_COLORS.red,
-        },
-    })
-end
-
 config.heirline_nvim = function()
     local statusline = require("modules.base.configs.ui.heirline.statusline").get_statusline()
     local statuscolumn = require("modules.base.configs.ui.heirline.statuscolumn").get_statuscolumn()
@@ -1252,6 +1206,9 @@ config.lvim_shell = function()
     vim.api.nvim_create_user_command("LazyDocker", function()
         require("modules.base.configs.ui.shell").LazyDocker()
     end, {})
+    vim.api.nvim_create_user_command("Yazi", function()
+        require("modules.base.configs.ui.shell").Yazi()
+    end, {})
     local shells = require("modules.base.configs.ui.shell")
     vim.keymap.set("n", "<Leader>sg", function()
         shells.LazyGit()
@@ -1259,7 +1216,7 @@ config.lvim_shell = function()
     vim.keymap.set("n", "<Leader>sd", function()
         shells.LazyDocker()
     end, { noremap = true, silent = true, desc = "LazyDocker" })
-    vim.keymap.set("n", "<Leader>sy", function()
+    vim.keymap.set("n", "<Leader>=", function()
         shells.Yazi()
     end, { noremap = true, silent = true, desc = "Yazi" })
     vim.keymap.set("n", "<Leader>sm", function()
