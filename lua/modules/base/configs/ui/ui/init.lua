@@ -24,10 +24,16 @@ M.set_ui = function()
                         set = {
                             icon = { { "▌ " .. icons.common.set .. "  ", "UICmdlineDefaultIcon" } },
                         },
+                        shell = {
+                            icon = { { "▌ " .. icons.common.symbol2 .. "  ", "UICmdlineEvalIcon" } },
+                        },
                         lua = {
                             icon = { { "▌ " .. icons.common.lua .. "  ", "UICmdlineLuaIcon" } },
                         },
-                        zz_prompt = {
+                        lua_eval = {
+                            icon = { { "▌ " .. icons.common.eval .. "  ", "UICmdlineEvalIcon" } },
+                        },
+                        prompt = {
                             title = function(state)
                                 local output = {}
                                 local lines = utils.text_wrap({ state.prompt or "" }, math.floor(vim.o.columns * 0.8))
