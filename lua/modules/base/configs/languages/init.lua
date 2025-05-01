@@ -530,7 +530,6 @@ config.flutter_tools_nvim = function()
                         refreshSupport = true,
                     },
                 },
-                experimental = {},
                 general = {
                     regularExpressions = {
                         engine = "oniguruma",
