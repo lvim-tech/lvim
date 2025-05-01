@@ -47,6 +47,8 @@ return {
         prompt = "",
         question = "󱜸",
         symbol = "",
+        symbol2 = "",
+        eval = "",
     },
     git_status = {
         added = "",
