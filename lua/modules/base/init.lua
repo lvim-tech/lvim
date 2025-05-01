@@ -253,7 +253,7 @@ modules["ibhagwan/fzf-lua"] = {
             desc = "FzfLua files",
         },
         {
-            "<Leader>o",
+            "<Leader>O",
             function()
                 vim.cmd("FzfLua oldfiles")
             end,
