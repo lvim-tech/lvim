@@ -1,4 +1,3 @@
-local global = require("core.global")
 local options = require("configs.base.options")
 local keymaps = require("configs.base.keymaps")
 local keymaps_ft = require("configs.base.keymaps_ft")
@@ -51,7 +50,7 @@ configs["base_lvim"] = function()
                 user_choice = string.gsub(user_choice, " ", "-")
                 _G.LVIM_SETTINGS["theme"] = user_choice
                 vim.cmd("colorscheme " .. user_choice)
-                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+                funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
             end
         end)
     end
@@ -83,7 +82,7 @@ configs["base_lvim"] = function()
                     title = "LVIM IDE",
                 })
                 _G.LVIM_SETTINGS["floatheight"] = tonumber(user_choice) + 0.0
-                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+                funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
                 editor_config.fzf_lua()
                 version_control_config.lvim_forgit()
             end
@@ -92,8 +91,8 @@ configs["base_lvim"] = function()
     vim.api.nvim_create_user_command("LvimFloatHeight", lvim_float_height, {})
     vim.api.nvim_create_user_command(
         "EditorConfigCreate",
-        "lua require'core.funcs'.copy_file(require'core.global'.lvim_path .. '/.configs/templates/.editorconfig', vim.fn.getcwd() .. '/.editorconfig')",
-        {}
+        "lua require'core.funcs'.copy_file(_G.global.lvim_path .. '/.configs/templates/.editorconfig', vim.fn.getcwd() .. '/.editorconfig')",
+        { desc = "Create .editorconfig file from template" }
     )
     vim.api.nvim_create_user_command("RemoveComments", "lua require'core.funcs'.remove_comments()", {})
     vim.keymap.set("n", "gcd", function()

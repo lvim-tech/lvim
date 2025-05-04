@@ -1,4 +1,3 @@
-local global = require("core.global")
 local funcs = require("core.funcs")
 local icons = require("configs.base.ui.icons")
 
@@ -55,7 +54,7 @@ function lazy_pack.snapshot_file_show()
 end
 
 function lazy_pack.snapshot_file_choice()
-    local snapshot_dir = global.snapshot_path
+    local snapshot_dir = _G.global.snapshot_path
     local files = vim.fn.glob(snapshot_dir .. "/*", true, true)
     if #files == 0 then
         vim.notify("No snapshot files found in " .. snapshot_dir, vim.log.levels.WARN, {
@@ -80,7 +79,7 @@ function lazy_pack.snapshot_file_choice()
         local file_content = funcs.read_file(snapshot_file)
         if file_content ~= nil then
             _G.LVIM_SNAPSHOT = snapshot_file
-            funcs.write_file(global.cache_path .. "/.lvim_snapshot", '{"snapshot": "' .. _G.LVIM_SNAPSHOT .. '"}')
+            funcs.write_file(_G.global.cache_path .. "/.lvim_snapshot", '{"snapshot": "' .. _G.LVIM_SNAPSHOT .. '"}')
             vim.notify("Run\n:Lazy sync", vim.log.levels.WARN, {
                 title = "LVIM IDE",
             })

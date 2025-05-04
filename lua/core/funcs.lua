@@ -1,4 +1,3 @@
-local global = require("core.global")
 local icons = require("configs.base.ui.icons")
 
 local M = {}
@@ -224,7 +223,7 @@ M.delete_file = function(f)
 end
 
 M.delete_packages_file = function()
-    local lvim_packages_file = global.cache_path .. "/.lvim_packages"
+    local lvim_packages_file = _G.global.cache_path .. "/.lvim_packages"
     os.remove(lvim_packages_file)
 end
 
@@ -341,13 +340,13 @@ M.file_size = function(size, options)
 end
 
 M.get_snapshot = function()
-    local file_content = M.read_file(global.cache_path .. "/.lvim_snapshot")
+    local file_content = M.read_file(_G.global.cache_path .. "/.lvim_snapshot")
     if file_content ~= nil then
         if file_content["snapshot"] ~= nil then
             return file_content["snapshot"]
         end
     end
-    return global.snapshot_path .. "/default"
+    return _G.global.snapshot_path .. "/default"
 end
 
 M.get_commit = function(plugin, plugins_snapshot)
@@ -613,11 +612,11 @@ M.tm_autocmd = function(action)
                     end
                 end)
             end,
-            group = global.tm_augroup,
+            group = _G.global.tm_augroup,
         })
     elseif action == "stop" then
         local autocommands = vim.api.nvim_get_autocmds({
-            group = global.tm_augroup,
+            group = _G.global.tm_augroup,
         })
 
         if next(autocommands) == nil then

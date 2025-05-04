@@ -1,4 +1,3 @@
-local global = require("core.global")
 require("configs.base.ui.fold")
 
 local M = {}
@@ -40,10 +39,10 @@ M.global = function()
     vim.opt.backup = false
     vim.opt.writebackup = false
     vim.opt.swapfile = false
-    vim.opt.directory = global.cache_path .. "/swag/"
-    vim.opt.undodir = global.cache_path .. "/undo/"
-    vim.opt.backupdir = global.cache_path .. "/backup/"
-    vim.opt.viewdir = global.cache_path .. "/view/"
+    vim.opt.directory = _G.global.cache_path .. "/swag/"
+    vim.opt.undodir = _G.global.cache_path .. "/undo/"
+    vim.opt.backupdir = _G.global.cache_path .. "/backup/"
+    vim.opt.viewdir = _G.global.cache_path .. "/view/"
     vim.opt.history = 2000
     vim.opt.shada = "!,'300,<50,@100,s10,h"
     vim.opt.backupskip = "/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*,.vault.vim"
