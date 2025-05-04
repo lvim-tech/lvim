@@ -8,7 +8,7 @@ config.mason_nvim = function()
         return
     end
     mason.setup({
-        log_level = vim.log.levels.DEBUG,
+        -- log_level = vim.log.levels.DEBUG,
         ui = {
             icons = icons.mason,
         },
