@@ -431,32 +431,23 @@ M.command_output = function()
         if not input or input == "" then
             return
         end
-
         local output
         local success = true
         local is_command = input:match("^:")
-
         if is_command then
-            -- Execute as Vim command
             output = vim.api.nvim_exec2(input, { output = true }).output
         else
-            -- Execute as Lua code
             local func, load_err = loadstring("return " .. input)
             if not func then
-                -- Try without return in case it's a statement rather than expression
                 func, load_err = loadstring(input)
                 if not func then
                     output = "Error loading Lua code: " .. tostring(load_err)
                     success = false
                 end
             end
-
             if func then
-                -- Capture print output
                 local original_print = print
                 local print_output = {}
-
-                -- Override print function to capture output
                 _G.print = function(...)
                     local args = { ... }
                     local str_args = {}
@@ -465,31 +456,21 @@ M.command_output = function()
                     end
                     table.insert(print_output, table.concat(str_args, "\t"))
                 end
-
-                -- Execute function and capture output and errors
                 local results = { pcall(func) }
-                _G.print = original_print -- Restore print function
-
+                _G.print = original_print
                 if not results[1] then
-                    -- Error occurred
                     output = "Lua execution error: " .. tostring(results[2])
                     success = false
                 else
-                    -- Combine printed output and return values
-                    table.remove(results, 1) -- Remove success flag
-
+                    table.remove(results, 1)
                     local return_values = {}
                     for i, v in ipairs(results) do
                         return_values[i] = vim.inspect(v)
                     end
-
                     local return_output = #return_values > 0 and "Return values:\n" .. table.concat(return_values, "\n")
                         or ""
-
                     local print_content = #print_output > 0 and "Printed output:\n" .. table.concat(print_output, "\n")
                         or ""
-
-                    -- Combine all outputs
                     if #return_output > 0 and #print_content > 0 then
                         output = print_content .. "\n\n" .. return_output
                     else
@@ -498,27 +479,21 @@ M.command_output = function()
                 end
             end
         end
-
         if output == "" then
             vim.notify("No output from " .. (is_command and "command" or "Lua code"), vim.log.levels.INFO)
             return
         end
-
         local buf = vim.api.nvim_create_buf(false, true)
         vim.bo[buf].bufhidden = "wipe"
-
         local lines = {}
         for line in output:gmatch("([^\n]*)\n?") do
             table.insert(lines, line)
         end
-
         vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-
         local width = math.min(80, vim.o.columns - 4)
         local height = math.min(#lines + 2, math.max(5, vim.o.lines - 4))
         local col = math.floor((vim.o.columns - width) / 2)
         local row = math.floor((vim.o.lines - height) / 2)
-
         local opts = {
             relative = "editor",
             width = width,
@@ -530,12 +505,10 @@ M.command_output = function()
             title = success and " Output: " .. input .. " " or " Error: " .. input .. " ",
             title_pos = "center",
         }
-
         local win = vim.api.nvim_open_win(buf, true, opts)
         vim.bo[buf].modifiable = false
         vim.wo[win].wrap = true
         vim.wo[win].cursorline = true
-
         local keys = { "q", "<Esc>" }
         for _, key in ipairs(keys) do
             vim.api.nvim_buf_set_keymap(
@@ -546,7 +519,6 @@ M.command_output = function()
                 { noremap = true, silent = true, desc = "Close window" }
             )
         end
-
         vim.api.nvim_buf_set_name(buf, "[Output]")
         vim.notify("Press 'q' or <Esc> to close the window", vim.log.levels.INFO)
     end)
