@@ -172,6 +172,15 @@ configs["base_lvim"] = function()
         group = group,
     })
     vim.api.nvim_create_user_command("SortLuaTable", funcs.sort_lua_table, {})
+    vim.api.nvim_create_user_command("CommandOutput", funcs.command_output, {
+        desc = "Execute command and show output in window",
+    })
+    vim.keymap.set(
+        "n",
+        "<Leader>co",
+        funcs.command_output,
+        { noremap = true, silent = true, desc = "Execute command with output window" }
+    )
 end
 
 configs["base_options"] = function()
@@ -261,6 +270,10 @@ configs["base_events"] = function()
 end
 
 configs["base_languages"] = function()
+    -- _G.global.efm = {
+    --     filetypes = {},
+    --     settings = { languages = {} },
+    -- }
     _G.file_types = funcs.merge(base_file_types, user_file_types)
 end
 
