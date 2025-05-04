@@ -1,4 +1,3 @@
-local global = require("core.global")
 local funcs = require("core.funcs")
 local ui_config = require("lvim-ui-config.config")
 local select = require("lvim-ui-config.select")
@@ -41,10 +40,10 @@ M.init_diagnostics = function()
         select(opts, function(choice)
             if choice == "Enable" then
                 _G.LVIM_SETTINGS["autoformat"] = true
-                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+                funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
             elseif choice == "Disable" then
                 _G.LVIM_SETTINGS["autoformat"] = false
-                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+                funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
             end
         end)
     end
@@ -70,7 +69,7 @@ M.init_diagnostics = function()
                     end
                 end
                 _G.LVIM_SETTINGS["inlayhint"] = true
-                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+                funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
             elseif choice == "Disable" then
                 local buffers = vim.api.nvim_list_bufs()
                 for _, bufnr in ipairs(buffers) do
@@ -79,7 +78,7 @@ M.init_diagnostics = function()
                     end
                 end
                 _G.LVIM_SETTINGS["inlayhint"] = false
-                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+                funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
             end
         end)
     end
@@ -128,7 +127,7 @@ M.init_diagnostics = function()
                     lines = false,
                 }
             end
-            funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+            funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
             virtualdiagnostic = _G.LVIM_SETTINGS.virtualdiagnostic
             local config = vim.diagnostic.config
             config({

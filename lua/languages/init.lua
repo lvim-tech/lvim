@@ -1,4 +1,4 @@
-local lsp_utils = require("languages.utils")
+local lsp_manager = require("languages.lsp_manager")
 
 local group = vim.api.nvim_create_augroup("LvimLSPEnable", {
     clear = true,
@@ -7,7 +7,7 @@ local group = vim.api.nvim_create_augroup("LvimLSPEnable", {
 local M = {}
 
 M.init = function()
-    lsp_utils.setup_session_lsp_autoload()
+    lsp_manager.setup_session_lsp_autoload()
     M.lsp_enable()
 end
 
@@ -32,7 +32,7 @@ M.lsp_enable = function()
             for _, match in ipairs(matches) do
                 local buf_servers = _G.lsp_servers_enabled_for_buf[bufnr] or {}
                 if not buf_servers[match] then
-                    lsp_utils.lsp_enable(match)
+                    lsp_manager.lsp_enable(match)
                     if not _G.lsp_servers_enabled_for_buf[bufnr] then
                         _G.lsp_servers_enabled_for_buf[bufnr] = {}
                     end
