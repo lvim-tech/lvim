@@ -1,4 +1,3 @@
-local global = require("core.global")
 local icons = require("configs.base.ui.icons")
 local mason_registry = require("mason-registry")
 
@@ -337,13 +336,40 @@ M.get_statusline = function()
                 end
             end
             local filetype = vim.bo.filetype
-            local sources = global.efm["settings"].languages[filetype]
-            if sources ~= nil then
+            local sources = nil
+            if
+                _G.global
+                and _G.global.efm
+                and _G.global.efm.settings
+                and _G.global.efm.settings.languages
+                and _G.global.efm.settings.languages[filetype]
+            then
+                sources = _G.global.efm.settings.languages[filetype]
+            end
+            if not sources then
+                local efm_client = nil
+                for _, client in ipairs(vim.lsp.get_clients()) do
+                    if client.name == "efm" then
+                        efm_client = client
+                        break
+                    end
+                end
+                if
+                    efm_client
+                    and efm_client.config
+                    and efm_client.config.settings
+                    and efm_client.config.settings.languages
+                    and efm_client.config.settings.languages[filetype]
+                then
+                    sources = efm_client.config.settings.languages[filetype]
+                end
+            end
+            if sources then
                 for i = 1, #sources do
-                    if sources[i].lPrefix ~= nil and mason_registry.is_installed(sources[i].server_name) then
+                    if sources[i].lPrefix and mason_registry.is_installed(sources[i].server_name) then
                         table.insert(linters, sources[i].lPrefix)
                     end
-                    if sources[i].fPrefix ~= nil and mason_registry.is_installed(sources[i].server_name) then
+                    if sources[i].fPrefix and mason_registry.is_installed(sources[i].server_name) then
                         table.insert(formatters, sources[i].fPrefix)
                     end
                 end
@@ -377,6 +403,7 @@ M.get_statusline = function()
             name = "heirline_LSP",
         },
     }
+
     local file_encoding = {
         provider = function()
             local enc = vim.opt.fileencoding:get()
