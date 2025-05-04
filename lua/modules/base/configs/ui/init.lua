@@ -1,4 +1,3 @@
-local global = require("core.global")
 local icons = require("configs.base.ui.icons")
 
 local config = {}
@@ -560,9 +559,9 @@ config.snacks_nvim = function()
                     local v = vim.version()
                     local datetime = os.date(" %d-%m-%Y")
                     local platform
-                    if global.os == "linux" then
+                    if _G.global.os == "linux" then
                         platform = " Linux"
-                    elseif global.os == "mac" then
+                    elseif _G.global.os == "mac" then
                         platform = " macOS"
                     else
                         platform = ""
@@ -1028,7 +1027,7 @@ config.neo_tree_nvim = function()
         return
     end
     neo_tree.setup({
-        use_popups_for_input = false,
+        use_popups_for_input = true,
         popup_border_style = { " ", " ", " ", " ", " ", " ", " ", " " },
         enable_git_status = true,
         enable_diagnostics = true,
