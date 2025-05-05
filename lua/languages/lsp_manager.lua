@@ -1,9 +1,3 @@
---[[
-  LSP Utilities Module
-  Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): 2025-05-04 13:37:17
-  Current User's Login: lvim-tech
-]]--
-
 local efm = require("languages.efm")
 local M = {}
 
@@ -443,38 +437,5 @@ M.setup_session_lsp_autoload = function()
     })
     setup_diagnostic_filter()
 end
-
-vim.api.nvim_create_user_command("LvimEFMStart", function()
-    local efm_id = efm.start(true)
-    if efm_id then
-        for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-            if vim.api.nvim_buf_is_valid(bufnr) then
-                local ft = vim.bo[bufnr].filetype
-                if
-                    ft
-                    and ft ~= ""
-                    and _G.global
-                    and _G.global.efm
-                    and _G.global.efm.filetypes
-                    and vim.tbl_contains(_G.global.efm.filetypes, ft)
-                then
-                    vim.lsp.buf_attach_client(bufnr, efm_id)
-                end
-            end
-        end
-    else
-        print("Failed to start EFM!")
-        if _G.global and _G.global.efm then
-            print("EFM filetypes: " .. vim.inspect(_G.global.efm.filetypes or {}))
-            if _G.global.efm.settings and _G.global.efm.settings.languages then
-                print("EFM languages: " .. vim.inspect(vim.tbl_keys(_G.global.efm.settings.languages)))
-            else
-                print("EFM settings not properly initialized!")
-            end
-        else
-            print("_G.global.efm not available!")
-        end
-    end
-end, {})
 
 return M
