@@ -85,6 +85,7 @@ config.mason_nvim = function()
 
     require("languages").init()
     require("languages.utils.setup_diagnostics").init_diagnostics()
+    require("languages.lsp_commands")
 end
 
 config.neotest = function()

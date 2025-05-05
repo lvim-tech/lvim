@@ -535,18 +535,18 @@ modules["arjunmahishi/flow.nvim"] = {
     commit = funcs.get_commit("flow.nvim", plugins_snapshot),
     keys = {
         {
-            "<Leader>lfs",
+            "<Leader>lls",
             ":FlowRunSelected<CR>",
             mode = "x",
             desc = "Flow run selected",
         },
         {
-            "<Leader>lff",
+            "<Leader>llf",
             ":FlowRunFile<CR>",
             desc = "Flow run file",
         },
         {
-            "<Leader>lfl",
+            "<Leader>lll",
             ":FlowLauncher<CR>",
             desc = "Flow launcher",
         },

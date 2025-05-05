@@ -265,14 +265,12 @@ M.get_statusline = function()
     --         "RecordingLeave",
     --     },
     -- }
-
     local macro_rec = {
         condition = function()
             return require("NeoComposer.state")
         end,
         provider = require("NeoComposer.ui").status_recording,
     }
-
     local diagnostics = {
         condition = heirline_conditions.has_diagnostics,
         static = {
@@ -319,79 +317,81 @@ M.get_statusline = function()
             name = "heirline_diagnostics",
         },
     }
-
     local lsp_active = {
         condition = heirline_conditions.lsp_attached,
         update = { "LspAttach", "LspDetach", "BufWinEnter" },
         provider = function()
+            local lsp_manager = require("languages.lsp_manager")
             local lsp = {}
             local linters = {}
             local formatters = {}
-            local p_lsp = nil
-            local p_linters = nil
-            local p_formatters = nil
-            for _, server in pairs(vim.lsp.get_clients({ bufnr = 0 })) do
+            local p_lsp = ""
+            local p_linters = ""
+            local p_formatters = ""
+            local current_buf = vim.api.nvim_get_current_buf()
+            local efm_disabled = lsp_manager.is_server_disabled_globally("efm") or lsp_manager.is_server_disabled_for_buffer("efm", current_buf)
+            for _, server in pairs(vim.lsp.get_clients({ bufnr = current_buf })) do
                 if server.name ~= "efm" then
                     table.insert(lsp, server.name)
                 end
             end
-            local filetype = vim.bo.filetype
-            local sources = nil
-            if
-                _G.global
-                and _G.global.efm
-                and _G.global.efm.settings
-                and _G.global.efm.settings.languages
-                and _G.global.efm.settings.languages[filetype]
-            then
-                sources = _G.global.efm.settings.languages[filetype]
-            end
-            if not sources then
-                local efm_client = nil
-                for _, client in ipairs(vim.lsp.get_clients()) do
-                    if client.name == "efm" then
-                        efm_client = client
-                        break
-                    end
-                end
+            if not efm_disabled then
+                local filetype = vim.bo.filetype
+                local sources = nil
                 if
-                    efm_client
-                    and efm_client.config
-                    and efm_client.config.settings
-                    and efm_client.config.settings.languages
-                    and efm_client.config.settings.languages[filetype]
+                    _G.global
+                    and _G.global.efm
+                    and _G.global.efm.settings
+                    and _G.global.efm.settings.languages
+                    and _G.global.efm.settings.languages[filetype]
                 then
-                    sources = efm_client.config.settings.languages[filetype]
+                    sources = _G.global.efm.settings.languages[filetype]
                 end
-            end
-            if sources then
-                for i = 1, #sources do
-                    if sources[i].lPrefix and mason_registry.is_installed(sources[i].server_name) then
-                        table.insert(linters, sources[i].lPrefix)
+                if not sources then
+                    local efm_client = nil
+                    for _, client in ipairs(vim.lsp.get_clients({ bufnr = current_buf })) do
+                        if client.name == "efm" then
+                            efm_client = client
+                            break
+                        end
                     end
-                    if sources[i].fPrefix and mason_registry.is_installed(sources[i].server_name) then
-                        table.insert(formatters, sources[i].fPrefix)
+                    if
+                        efm_client
+                        and efm_client.config
+                        and efm_client.config.settings
+                        and efm_client.config.settings.languages
+                        and efm_client.config.settings.languages[filetype]
+                    then
+                        sources = efm_client.config.settings.languages[filetype]
                     end
+                end
+                if sources then
+                    for i = 1, #sources do
+                        if sources[i].lPrefix and mason_registry.is_installed(sources[i].server_name) then
+                            table.insert(linters, sources[i].lPrefix)
+                        end
+                        if sources[i].fPrefix and mason_registry.is_installed(sources[i].server_name) then
+                            table.insert(formatters, sources[i].fPrefix)
+                        end
+                    end
+                end
+                if next(linters) ~= nil then
+                    linters = funcs.remove_duplicate(linters)
+                    p_linters = " | Li [" .. table.concat(linters, ", ") .. "]"
+                end
+                if next(formatters) ~= nil then
+                    formatters = funcs.remove_duplicate(formatters)
+                    p_formatters = " | Fo [" .. table.concat(formatters, ", ") .. "]"
                 end
             end
             if next(lsp) ~= nil then
                 p_lsp = " LSP [" .. table.concat(lsp, ", ") .. "]"
-            else
-                p_lsp = ""
             end
-            if next(linters) ~= nil then
-                linters = funcs.remove_duplicate(linters)
-                p_linters = " | Li [" .. table.concat(linters, ", ") .. "]"
-            else
-                p_linters = ""
+            local result = icons.common.lsp .. p_lsp .. p_linters .. p_formatters
+            if result == icons.common.lsp then
+                return ""
             end
-            if next(formatters) ~= nil then
-                formatters = funcs.remove_duplicate(formatters)
-                p_formatters = " | Fo [" .. table.concat(formatters, ", ") .. "]"
-            else
-                p_formatters = ""
-            end
-            return icons.common.lsp .. " " .. p_lsp .. p_linters .. p_formatters
+            return result
         end,
         hl = { fg = _G.LVIM_COLORS.blue, bold = true },
         on_click = {
@@ -403,7 +403,6 @@ M.get_statusline = function()
             name = "heirline_LSP",
         },
     }
-
     local file_encoding = {
         provider = function()
             local enc = vim.opt.fileencoding:get()
