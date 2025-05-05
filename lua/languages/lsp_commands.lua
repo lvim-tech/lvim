@@ -1062,8 +1062,9 @@ vim.api.nvim_create_user_command("LvimLspInfo", lvim_lsp_info, {})
 
 local keymap = vim.keymap.set
 
-keymap("n", "<Leader>ld", "<cmd>LvimVirtualDiagnostic<CR>", { desc = "Toggle virtual diagnostics" })
-keymap("n", "<Leader>lf", "<cmd>LvimAutoFormat<CR>", { desc = "Toggle auto format" })
-keymap("n", "<Leader>li", "<cmd>LvimInlayHint<CR>", { desc = "Toggle inlay hints" })
-keymap("n", "<Leader>ls", "<cmd>LvimLspToggleServers<CR>", { desc = "Toggle LSP servers globally" })
-keymap("n", "<Leader>lb", "<cmd>LvimLspToggleServersForBuffer<CR>", { desc = "Toggle LSP servers for buffer" })
+keymap("n", "<Leader>ld", "<cmd>LvimVirtualDiagnostic<CR>", { desc = "Lvim Toggle virtual diagnostics" })
+keymap("n", "<Leader>lf", "<cmd>LvimAutoFormat<CR>", { desc = "Lvim Toggle auto format" })
+keymap("n", "<Leader>lh", "<cmd>LvimInlayHint<CR>", { desc = "Lvim Toggle inlay hints" })
+keymap("n", "<Leader>ls", "<cmd>LvimLspToggleServers<CR>", { desc = "Lvim Toggle LSP servers globally" })
+keymap("n", "<Leader>lb", "<cmd>LvimLspToggleServersForBuffer<CR>", { desc = "Lvim Toggle LSP servers for buffer" })
+keymap("n", "<Leader>li", "<cmd>LvimLspInfo<CR>", { desc = "Lvim LSP info" })
