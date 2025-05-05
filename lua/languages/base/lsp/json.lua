@@ -4,14 +4,14 @@ local setup_diagnostics = require("languages.utils.setup_diagnostics")
 local lsp_manager = require("languages.lsp_manager")
 local lsp_installer = require("languages.lsp_installer")
 
-local lsp_server_name = "vscode-json-language-server"
-
-lsp_installer.ensure_mason_tools({
+local lsp_dependencies = {
     "json-lsp",
-}, function()
+}
+
+lsp_installer.ensure_mason_tools(lsp_dependencies, function()
     local lsp_server_config = {
         name = "json",
-        cmd = { lsp_server_name, "--stdio" },
+        cmd = { "vscode-json-language-server", "--stdio" },
         filetypes = _G.file_types.json,
         root_markers = { ".git" },
         init_options = {
@@ -30,7 +30,7 @@ lsp_installer.ensure_mason_tools({
     }
 
     _G.json_lsp_config = lsp_server_config
-    lsp_manager.start_language_server("json", true, lsp_server_config)
+    lsp_manager.start_language_server("json", true)
 
     return lsp_server_config
 end)

@@ -14,9 +14,23 @@ local function init_globals()
     if _G.lsp_installation_in_progress == nil then
         _G.lsp_installation_in_progress = false
     end
+    if _G.lsp_disabled_servers == nil then
+        _G.lsp_disabled_servers = {}
+    end
+    if _G.lsp_disabled_for_buffer == nil then
+        _G.lsp_disabled_for_buffer = {}
+    end
 end
 
 init_globals()
+
+M.is_server_disabled_globally = function(server_name)
+    return _G.lsp_disabled_servers[server_name] == true
+end
+
+M.is_server_disabled_for_buffer = function(server_name, bufnr)
+    return _G.lsp_disabled_for_buffer[bufnr] and _G.lsp_disabled_for_buffer[bufnr][server_name] == true
+end
 
 M.is_lsp_compatible_with_ft = function(server_name, ft)
     if not ft or ft == "" then
@@ -73,6 +87,9 @@ M.safe_detach_client = function(bufnr, client_id)
         return false
     end
     if is_client_attached_to_buffer(client_id, bufnr) then
+        pcall(function()
+            vim.lsp.buf.clear_references()
+        end)
         pcall(vim.lsp.buf_detach_client, bufnr, client_id)
         return true
     end
@@ -106,6 +123,9 @@ M.lsp_enable = function(server_name, force)
     if _G.lsp_installation_in_progress then
         return nil
     end
+    if not force and M.is_server_disabled_globally(server_name) then
+        return nil
+    end
     if server_name == "efm" then
         if M.is_lsp_server_running("efm") and not force then
             return true
@@ -133,7 +153,12 @@ M.lsp_enable = function(server_name, force)
     for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
         if vim.api.nvim_buf_is_valid(bufnr) and vim.api.nvim_buf_is_loaded(bufnr) then
             local ft = vim.bo[bufnr].filetype
-            if ft and ft ~= "" and M.is_lsp_compatible_with_ft(server_name, ft) then
+            if
+                ft
+                and ft ~= ""
+                and M.is_lsp_compatible_with_ft(server_name, ft)
+                and not M.is_server_disabled_for_buffer(server_name, bufnr)
+            then
                 table.insert(compatible_buffers, bufnr)
             end
         end
@@ -168,6 +193,12 @@ M.lsp_enable = function(server_name, force)
             return
         end
         local ft = vim.bo[bufnr].filetype
+        if M.is_server_disabled_for_buffer(client.name, bufnr) then
+            vim.schedule(function()
+                M.safe_detach_client(bufnr, client.id)
+            end)
+            return
+        end
         if not ft or ft == "" or not M.is_lsp_compatible_with_ft(client.name, ft) then
             vim.schedule(function()
                 M.safe_detach_client(bufnr, client.id)
@@ -187,6 +218,7 @@ M.lsp_enable = function(server_name, force)
             and _G.global.efm
             and _G.global.efm.filetypes
             and vim.tbl_contains(_G.global.efm.filetypes, ft)
+            and not M.is_server_disabled_globally("efm")
         then
             vim.defer_fn(function()
                 M.lsp_enable("efm", false)
@@ -205,10 +237,11 @@ M.lsp_enable = function(server_name, force)
     end)
     if success and client_id then
         _G.active_lsp_clients[server_name] = client_id
+        _G.lsp_disabled_servers[server_name] = nil
         if #compatible_buffers > 1 then
             for i = 2, #compatible_buffers do
                 local bufnr = compatible_buffers[i]
-                if vim.api.nvim_buf_is_valid(bufnr) then
+                if vim.api.nvim_buf_is_valid(bufnr) and not M.is_server_disabled_for_buffer(server_name, bufnr) then
                     pcall(vim.lsp.buf_attach_client, bufnr, client_id)
                     if not _G.lsp_buffer_status[bufnr] then
                         _G.lsp_buffer_status[bufnr] = {}
@@ -224,6 +257,7 @@ M.lsp_enable = function(server_name, force)
             if client.name == server_name then
                 _G.active_lsp_clients[server_name] = client.id
                 _G.lsp_activation_locks[server_name] = false
+                _G.lsp_disabled_servers[server_name] = nil
                 return client.id
             end
         end
@@ -245,23 +279,31 @@ M.activate_lsp_for_buffer = function(bufnr)
         _G.lsp_buffer_status[bufnr] = {}
     end
     for _, server_name in ipairs(compatible_servers) do
-        _G.lsp_buffer_status[bufnr][server_name] = true
-        local already_attached = false
-        for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
-            if client.name == server_name then
-                already_attached = true
-                break
+        if
+            not M.is_server_disabled_globally(server_name) and not M.is_server_disabled_for_buffer(server_name, bufnr)
+        then
+            _G.lsp_buffer_status[bufnr][server_name] = true
+            local already_attached = false
+            for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
+                if client.name == server_name then
+                    already_attached = true
+                    break
+                end
             end
-        end
-        if not already_attached then
-            local client_id = M.lsp_enable(server_name, false)
-            if client_id and vim.api.nvim_buf_is_valid(bufnr) then
-                pcall(vim.lsp.buf_attach_client, bufnr, client_id)
+            if not already_attached then
+                local client_id = M.lsp_enable(server_name, false)
+                if client_id and vim.api.nvim_buf_is_valid(bufnr) then
+                    pcall(vim.lsp.buf_attach_client, bufnr, client_id)
+                end
             end
         end
     end
     for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
-        if not vim.tbl_contains(compatible_servers, client.name) then
+        if
+            not vim.tbl_contains(compatible_servers, client.name)
+            or M.is_server_disabled_globally(client.name)
+            or M.is_server_disabled_for_buffer(client.name, bufnr)
+        then
             M.safe_detach_client(bufnr, client.id)
         end
     end
@@ -302,6 +344,9 @@ M.setup_efm = function(filetypes, configs)
             end
         end
     end
+    if M.is_server_disabled_globally("efm") then
+        return false
+    end
     local efm_id = efm.start(need_restart, _G.global.efm.filetypes, _G.global.efm.settings)
     return efm_id ~= nil
 end
@@ -310,38 +355,10 @@ M.start_language_server = function(server_name, force)
     if _G.lsp_installation_in_progress then
         return nil
     end
-    local client_id = M.lsp_enable(server_name, force)
-    if client_id and server_name ~= "efm" then
-        local cmd_name = "Format" .. server_name:gsub("^%l", string.upper)
-        vim.api.nvim_create_user_command(cmd_name, function()
-            pcall(vim.lsp.buf.format, {
-                timeout_ms = 5000,
-                filter = function(client)
-                    return client.name == "efm"
-                end,
-            })
-        end, { desc = "Format " .. server_name .. " file with EFM" })
-        vim.defer_fn(function()
-            local need_efm = false
-            for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-                local ft = vim.bo[bufnr].filetype
-                if
-                    ft
-                    and ft ~= ""
-                    and _G.global
-                    and _G.global.efm
-                    and _G.global.efm.filetypes
-                    and vim.tbl_contains(_G.global.efm.filetypes, ft)
-                then
-                    need_efm = true
-                    break
-                end
-            end
-            if need_efm then
-                M.lsp_enable("efm", false)
-            end
-        end, 200)
+    if not force and M.is_server_disabled_globally(server_name) then
+        return nil
     end
+    local client_id = M.lsp_enable(server_name, force)
     return client_id
 end
 
@@ -355,11 +372,12 @@ M.set_installation_status = function(status)
 end
 
 local function setup_diagnostic_filter()
-    local original_publish_diagnostics = vim.lsp.handlers["textDocument/publishDiagnostics"]
+    local original_handler = vim.lsp.handlers["textDocument/publishDiagnostics"]
+    ---@diagnostic disable-next-line: duplicate-set-field
     vim.lsp.handlers["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
         local client = vim.lsp.get_client_by_id(ctx.client_id)
         if not client then
-            return original_publish_diagnostics(err, result, ctx, config)
+            return original_handler(err, result, ctx, config)
         end
         local uri = result.uri
         local bufnr = vim.uri_to_bufnr(uri)
@@ -367,7 +385,7 @@ local function setup_diagnostic_filter()
         if not M.is_lsp_compatible_with_ft(client.name, filetype) then
             return
         end
-        return original_publish_diagnostics(err, result, ctx, config)
+        return original_handler(err, result, ctx, config)
     end
 end
 
@@ -375,6 +393,78 @@ M.ensure_lsp_for_all_buffers = function()
     for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
         if bufnr > 0 and vim.api.nvim_buf_is_valid(bufnr) and vim.api.nvim_buf_is_loaded(bufnr) then
             M.activate_lsp_for_buffer(bufnr)
+        end
+    end
+    return true
+end
+
+M.disable_lsp_server_globally = function(server_name)
+    _G.lsp_disabled_servers[server_name] = true
+    for _, client in ipairs(vim.lsp.get_clients()) do
+        if client.name == server_name then
+            for _, bufnr in ipairs(vim.lsp.get_buffers_by_client_id(client.id) or {}) do
+                if vim.api.nvim_buf_is_valid(bufnr) then
+                    M.safe_detach_client(bufnr, client.id)
+                end
+            end
+            vim.lsp.stop_client(client.id, true)
+            break
+        end
+    end
+    return true
+end
+
+M.disable_lsp_server_for_buffer = function(server_name, bufnr)
+    if not _G.lsp_disabled_for_buffer[bufnr] then
+        _G.lsp_disabled_for_buffer[bufnr] = {}
+    end
+    _G.lsp_disabled_for_buffer[bufnr][server_name] = true
+    for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
+        if client.name == server_name then
+            M.safe_detach_client(bufnr, client.id)
+            break
+        end
+    end
+    return true
+end
+
+M.enable_lsp_server_globally = function(server_name)
+    _G.lsp_disabled_servers[server_name] = nil
+    return true
+end
+
+M.enable_lsp_server_for_buffer = function(server_name, bufnr)
+    if _G.lsp_disabled_for_buffer[bufnr] then
+        _G.lsp_disabled_for_buffer[bufnr][server_name] = nil
+    end
+    if M.is_server_disabled_globally(server_name) then
+        return false
+    end
+    local ft = vim.bo[bufnr].filetype
+    if ft and ft ~= "" and M.is_lsp_compatible_with_ft(server_name, ft) then
+        local already_attached = false
+        for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
+            if client.name == server_name then
+                already_attached = true
+                break
+            end
+        end
+        if not already_attached then
+            local client_id
+            for _, client in ipairs(vim.lsp.get_clients()) do
+                if client.name == server_name then
+                    client_id = client.id
+                    break
+                end
+            end
+            if client_id then
+                pcall(vim.lsp.buf_attach_client, bufnr, client_id)
+            else
+                client_id = M.lsp_enable(server_name, false)
+                if client_id then
+                    pcall(vim.lsp.buf_attach_client, bufnr, client_id)
+                end
+            end
         end
     end
     return true
@@ -423,6 +513,12 @@ M.setup_session_lsp_autoload = function()
                 return
             end
             local ft = vim.bo[bufnr].filetype
+            if M.is_server_disabled_globally(client.name) or M.is_server_disabled_for_buffer(client.name, bufnr) then
+                vim.schedule(function()
+                    M.safe_detach_client(bufnr, client.id)
+                end)
+                return
+            end
             if not ft or ft == "" or not M.is_lsp_compatible_with_ft(client.name, ft) then
                 vim.schedule(function()
                     M.safe_detach_client(bufnr, client.id)

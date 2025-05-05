@@ -1,43 +1,35 @@
 local navic = require("nvim-navic")
-
 local setup_diagnostics = require("languages.utils.setup_diagnostics")
-local lsp_utils = require("languages.utils")
+local lsp_manager = require("languages.lsp_manager")
+local lsp_installer = require("languages.lsp_installer")
 
-local lsp_server_name = "taplo"
-
--- LSP
-local lsp_server_config = {
-    name = "toml",
-    cmd = { "taplo", "lsp", "stdio" },
-    filetypes = _G.file_types.toml,
-    root_markers = { ".git" },
-    on_attach = function(client, bufnr)
-        setup_diagnostics.keymaps(client, bufnr)
-        setup_diagnostics.document_highlight(client, bufnr)
-        setup_diagnostics.document_auto_format(client, bufnr)
-        setup_diagnostics.inlay_hint(client, bufnr)
-        if client.server_capabilities.documentSymbolProvider then
-            navic.attach(client, bufnr)
-        end
-    end,
-    capabilities = setup_diagnostics.get_capabilities(),
+local lsp_dependencies = {
+    "taplo",
 }
 
-local lsp_server_async = lsp_utils.is_lsp_server_installed(lsp_server_name)
+lsp_installer.ensure_mason_tools(lsp_dependencies, function()
+    local lsp_server_config = {
+        name = "toml",
+        cmd = { "taplo", "lsp", "stdio" },
+        filetypes = _G.file_types.toml,
+        root_markers = { ".git" },
+        on_attach = function(client, bufnr)
+            setup_diagnostics.keymaps(client, bufnr)
+            setup_diagnostics.document_highlight(client, bufnr)
+            setup_diagnostics.document_auto_format(client, bufnr)
+            setup_diagnostics.inlay_hint(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                navic.attach(client, bufnr)
+            end
+        end,
+        capabilities = setup_diagnostics.get_capabilities(),
+    }
 
-local lsp_server_result
-while not lsp_server_result do
-    lsp_server_result = lsp_server_async()
-    vim.wait(100)
-end
+    _G.toml_lsp_config = lsp_server_config
+    lsp_manager.start_language_server("toml", true)
 
-_G.toml_lsp_config = lsp_server_config
-
-if lsp_server_result then
     return lsp_server_config
-else
-    vim.notify("An error occurred while setting up the LSP (" .. lsp_server_name .. ")!", vim.log.levels.ERROR)
-end
--- LSP
 
--- vim: foldmethod=indent foldlevel=0
+end)
+
+-- vim: foldmethod=indent foldlevel=1

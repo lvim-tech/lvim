@@ -4,13 +4,13 @@ local setup_diagnostics = require("languages.utils.setup_diagnostics")
 local lsp_manager = require("languages.lsp_manager")
 local lsp_installer = require("languages.lsp_installer")
 
-local lsp_server_name = "lua-language-server"
-
-lsp_installer.ensure_mason_tools({
+local lsp_dependencies = {
     "efm",
     "lua-language-server",
     "stylua",
-}, function()
+}
+
+lsp_installer.ensure_mason_tools(lsp_dependencies, function()
     local efm_config = {
         {
             server_name = "stylua",
@@ -55,7 +55,7 @@ lsp_installer.ensure_mason_tools({
 
     local lsp_server_config = {
         name = "lua",
-        cmd = { lsp_server_name },
+        cmd = { "lua-language-server" },
         filetypes = _G.file_types.lua,
         root_markers = {
             ".luarc.json",
@@ -116,7 +116,7 @@ lsp_installer.ensure_mason_tools({
     }
 
     _G.lua_lsp_config = lsp_server_config
-    lsp_manager.start_language_server("lua", true, lsp_server_config)
+    lsp_manager.start_language_server("lua", true)
 
     return lsp_server_config
 end)

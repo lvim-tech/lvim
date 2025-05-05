@@ -143,7 +143,7 @@ M.start = function(force, direct_filetypes, direct_settings)
         vim.wait(500)
     end
     local client_id
-    local success, result = pcall(function()
+    local success, _ = pcall(function()
         client_id = vim.lsp.start(config)
         return client_id
     end)

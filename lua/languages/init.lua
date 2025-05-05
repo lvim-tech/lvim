@@ -30,14 +30,20 @@ M.lsp_enable = function()
                 _G.lsp_servers_enabled_for_buf = {}
             end
             for _, match in ipairs(matches) do
-                local buf_servers = _G.lsp_servers_enabled_for_buf[bufnr] or {}
-                if not buf_servers[match] then
-                    lsp_manager.lsp_enable(match)
-                    if not _G.lsp_servers_enabled_for_buf[bufnr] then
-                        _G.lsp_servers_enabled_for_buf[bufnr] = {}
+                -- Проверяем, не отключен ли сервер глобально или для этого буфера
+                if
+                    not lsp_manager.is_server_disabled_globally(match)
+                    and not lsp_manager.is_server_disabled_for_buffer(match, bufnr)
+                then
+                    local buf_servers = _G.lsp_servers_enabled_for_buf[bufnr] or {}
+                    if not buf_servers[match] then
+                        lsp_manager.lsp_enable(match)
+                        if not _G.lsp_servers_enabled_for_buf[bufnr] then
+                            _G.lsp_servers_enabled_for_buf[bufnr] = {}
+                        end
+                        _G.lsp_servers_enabled_for_buf[bufnr][match] = true
+                        enabled_count = enabled_count + 1
                     end
-                    _G.lsp_servers_enabled_for_buf[bufnr][match] = true
-                    enabled_count = enabled_count + 1
                 end
             end
         end,
