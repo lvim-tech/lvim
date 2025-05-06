@@ -45,6 +45,7 @@ local allin1 = {
     timers = {},
     ns = api.nvim_create_namespace("custom_mason_progress"),
     callbacks = {},
+    closed = false,
 }
 
 local function make_bar(percent)
@@ -107,6 +108,19 @@ local function build_lines(tools, states)
 end
 
 local function update_popup()
+    if allin1.closed then
+        return
+    end
+
+    if not allin1.tools or #allin1.tools == 0 then
+        if allin1.win and api.nvim_win_is_valid(allin1.win) then
+            api.nvim_win_close(allin1.win, true)
+        end
+        allin1.win = nil
+        allin1.bufnr = nil
+        return
+    end
+
     local tools = allin1.tools
     local states = allin1.states
     local height = #tools * 3 + 1
@@ -179,15 +193,21 @@ local function update_popup()
 end
 
 local function close_popup()
+    allin1.closed = true
+
     if allin1.win and api.nvim_win_is_valid(allin1.win) then
         api.nvim_win_close(allin1.win, true)
     end
     allin1.win = nil
     allin1.bufnr = nil
-    allin1.tools = {}
-    allin1.states = {}
-    allin1.timers = {}
-    allin1.callbacks = {}
+
+    vim.defer_fn(function()
+        allin1.tools = {}
+        allin1.states = {}
+        allin1.timers = {}
+        allin1.callbacks = {}
+        allin1.closed = false
+    end, 200)
 end
 
 local function add_tools(new_tools)
@@ -261,6 +281,14 @@ local function start_progress(tool)
         0,
         SPINNER_INTERVAL,
         vim.schedule_wrap(function()
+            if allin1.closed then
+                if allin1.timers[tool] then
+                    allin1.timers[tool]:stop()
+                    allin1.timers[tool]:close()
+                    allin1.timers[tool] = nil
+                end
+                return
+            end
             if allin1.states[tool].status ~= "pending" then
                 allin1.timers[tool]:stop()
                 allin1.timers[tool]:close()
@@ -310,6 +338,7 @@ M.ensure_mason_tools = function(tools, cb)
         check_callbacks()
         return
     end
+    allin1.closed = false
     update_popup()
     for _, tool in ipairs(tools) do
         if allin1.states[tool] and allin1.states[tool].status == "pending" and not allin1.timers[tool] then
@@ -340,6 +369,9 @@ M.ensure_mason_tools = function(tools, cb)
         end
     end
     vim.defer_fn(function()
+        if allin1.closed then
+            return
+        end
         for _, tool in ipairs(tools) do
             if allin1.states[tool] and allin1.states[tool].status == "pending" then
                 if allin1.timers[tool] then
@@ -354,7 +386,7 @@ M.ensure_mason_tools = function(tools, cb)
         update_popup()
         lsp_manager.set_installation_status(false)
         check_callbacks()
-    end, 8000)
+    end, 12000)
 end
 
 return M
