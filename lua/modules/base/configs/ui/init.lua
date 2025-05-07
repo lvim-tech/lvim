@@ -534,7 +534,7 @@ config.snacks_nvim = function()
 ]],
                 },
                 { icon = " ", key = "<Leader><Leader>b", desc = "Projects", action = ":CtrlSpace b" },
-                { icon = " ", key = "<Leader>=", desc = "Fzf File Manager", action = ":Yazi" },
+                { icon = " ", key = "<Leader>=", desc = "File Explorer", action = ":Yazi" },
                 { icon = " ", key = "<Leader>f", desc = "Find File", action = ":FzfLua files" },
                 { icon = " ", key = "<Leader>nn", desc = "New File", action = ":ene | startinsert" },
                 { icon = " ", key = "<Leader>w", desc = "Find Text", action = ":FzfLua live_grep" },
@@ -986,7 +986,7 @@ config.neo_tree_nvim = function()
         return
     end
     neo_tree.setup({
-        use_popups_for_input = true,
+        use_popups_for_input = false,
         popup_border_style = { " ", " ", " ", " ", " ", " ", " ", " " },
         enable_git_status = true,
         enable_diagnostics = true,
