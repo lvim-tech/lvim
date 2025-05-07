@@ -31,21 +31,43 @@ local HL_ICON_ERROR = "MasonIconError"
 local HL_ICON_WARN = "MasonIconWarn"
 
 local SPINNER_FRAMES = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
-local SPINNER_INTERVAL = 120
+local SPINNER_INTERVAL = 80
 
-local ICON_OK = ""
-local ICON_ERROR = ""
-local ICON_WARN = ""
+local ICON_OK = ""
+local ICON_ERROR = ""
+local ICON_WARN = ""
+
+-- Константни значения за статуса на инсталацията
+local STATUS = {
+    PENDING = "pending",
+    OK = "ok",
+    FAIL = "fail",
+    TIMEOUT = "timeout",
+}
+
+-- Константни текстове за статуса
+local STATUS_TEXT = {
+    [STATUS.PENDING] = "Installing",
+    [STATUS.OK] = "Installed",
+    [STATUS.FAIL] = "Error",
+    [STATUS.TIMEOUT] = "Timeout",
+}
+
+-- Общ таймер за обновяване на UI
+local refresh_timer = nil
+
+-- Лимит за инсталация (2 минути)
+local INSTALLATION_TIMEOUT = 120000
 
 local allin1 = {
     tools = {},
     win = nil,
     bufnr = nil,
     states = {},
-    timers = {},
     ns = api.nvim_create_namespace("custom_mason_progress"),
     callbacks = {},
     closed = false,
+    start_time = nil,
 }
 
 local function make_bar(percent)
@@ -69,40 +91,50 @@ local function build_lines(tools, states)
     local bar_infos = {}
     for _, tool in ipairs(tools) do
         local s = states[tool]
+        if not s then
+            goto continue
+        end
+
         table.insert(lines, tool)
         table.insert(line_meta, { pkg_name = true })
+
         local bar, n_fill, n_total = make_bar(s.percent or 0)
         table.insert(lines, bar)
         table.insert(line_meta, { bar = { n_fill = n_fill, n_total = n_total } })
         table.insert(bar_infos, { n_fill = n_fill, n_total = n_total })
-        local status_str, icon_str, icon_hl
-        if s.status == "pending" then
-            local frame = s.spinner_frame or 1
-            icon_str = SPINNER_FRAMES[frame]
-            status_str = " Installing"
+
+        local status_text, icon_str, icon_hl
+        local spinner_frame = (s.spinner_frame or 1) % #SPINNER_FRAMES
+
+        if s.status == STATUS.PENDING then
+            icon_str = SPINNER_FRAMES[spinner_frame + 1]
+            status_text = s.message or STATUS_TEXT[s.status]
             icon_hl = HL_ICON_PROGRESS
-        elseif s.status == "ok" then
+        elseif s.status == STATUS.OK then
             icon_str = ICON_OK
-            status_str = " Installed"
+            status_text = STATUS_TEXT[s.status]
             icon_hl = HL_ICON_OK
-        elseif s.status == "fail" then
+        elseif s.status == STATUS.FAIL then
             icon_str = ICON_ERROR
-            status_str = " Error"
+            status_text = STATUS_TEXT[s.status]
             icon_hl = HL_ICON_ERROR
-        elseif s.status == "timeout" then
+        elseif s.status == STATUS.TIMEOUT then
             icon_str = ICON_WARN
-            status_str = " Timeout"
+            status_text = STATUS_TEXT[s.status]
             icon_hl = HL_ICON_WARN
         else
             icon_str = ""
-            status_str = ""
+            status_text = ""
             icon_hl = nil
         end
-        table.insert(lines, icon_str .. status_str)
+
+        table.insert(lines, icon_str .. " " .. status_text)
         table.insert(line_meta, {
             icon_len = vim.str_utfindex(icon_str, "utf-8", #icon_str),
             icon_hl = icon_hl,
         })
+
+        ::continue::
     end
     return lines, bar_infos, line_meta
 end
@@ -132,14 +164,14 @@ local function update_popup()
         table.insert(lines, "")
     end
     if allin1.win and api.nvim_win_is_valid(allin1.win) then
-        api.nvim_win_set_config(allin1.win, {
+        pcall(api.nvim_win_set_config, allin1.win, {
             relative = "editor",
             width = width,
             height = height,
             row = row,
             col = col,
         })
-        api.nvim_buf_set_lines(allin1.bufnr, 0, -1, false, lines)
+        pcall(api.nvim_buf_set_lines, allin1.bufnr, 0, -1, false, lines)
     else
         local bufnr = api.nvim_create_buf(false, true)
         vim.bo[bufnr].bufhidden = "wipe"
@@ -164,19 +196,31 @@ local function update_popup()
         )
     end
     if allin1.bufnr then
-        api.nvim_buf_clear_namespace(allin1.bufnr, allin1.ns, 0, -1)
-        vim.hl.range(allin1.bufnr, allin1.ns, HL_TITLE, { 0, 0 }, { 0, -1 })
+        pcall(api.nvim_buf_clear_namespace, allin1.bufnr, allin1.ns, 0, -1)
+        pcall(vim.highlight.range, allin1.bufnr, allin1.ns, HL_TITLE, { 0, 0 }, { 0, -1 })
         for i, _ in ipairs(tools) do
             local name_line = 1 + (i - 1) * 3
             local bar_line = name_line + 1
             local status_line = name_line + 2
             local barinfo = bar_infos[i]
-            vim.hl.range(allin1.bufnr, allin1.ns, HL_PKG_NAME, { name_line, 0 }, { name_line, -1 })
+            if not barinfo then
+                goto continue
+            end
+
+            pcall(vim.highlight.range, allin1.bufnr, allin1.ns, HL_PKG_NAME, { name_line, 0 }, { name_line, -1 })
             if barinfo.n_fill > 0 then
-                vim.hl.range(allin1.bufnr, allin1.ns, HL_BAR_PROGRESS, { bar_line, 0 }, { bar_line, barinfo.n_fill })
+                pcall(
+                    vim.highlight.range,
+                    allin1.bufnr,
+                    allin1.ns,
+                    HL_BAR_PROGRESS,
+                    { bar_line, 0 },
+                    { bar_line, barinfo.n_fill }
+                )
             end
             if barinfo.n_total > barinfo.n_fill then
-                vim.hl.range(
+                pcall(
+                    vim.highlight.range,
                     allin1.bufnr,
                     allin1.ns,
                     HL_BAR_BG,
@@ -186,13 +230,28 @@ local function update_popup()
             end
             local meta = line_meta[status_line + 1]
             if meta and meta.icon_hl and meta.icon_len > 0 then
-                vim.hl.range(allin1.bufnr, allin1.ns, meta.icon_hl, { status_line, 0 }, { status_line, meta.icon_len })
+                pcall(
+                    vim.highlight.range,
+                    allin1.bufnr,
+                    allin1.ns,
+                    meta.icon_hl,
+                    { status_line, 0 },
+                    { status_line, meta.icon_len }
+                )
             end
+
+            ::continue::
         end
     end
 end
 
 local function close_popup()
+    if refresh_timer and not refresh_timer:is_closing() then
+        refresh_timer:stop()
+        refresh_timer:close()
+        refresh_timer = nil
+    end
+
     allin1.closed = true
 
     if allin1.win and api.nvim_win_is_valid(allin1.win) then
@@ -204,7 +263,6 @@ local function close_popup()
     vim.defer_fn(function()
         allin1.tools = {}
         allin1.states = {}
-        allin1.timers = {}
         allin1.callbacks = {}
         allin1.closed = false
     end, 200)
@@ -212,7 +270,12 @@ end
 
 local function add_tools(new_tools)
     local added = false
-    local mason_registry = require("mason-registry")
+    local mason_registry_ok, mason_registry = pcall(require, "mason-registry")
+    if not mason_registry_ok then
+        vim.notify("Грешка при зареждане на mason-registry", vim.log.levels.ERROR)
+        return false
+    end
+
     for _, tool in ipairs(new_tools) do
         local name = tool
         local already = false
@@ -226,7 +289,13 @@ local function add_tools(new_tools)
             local ok, pkg = pcall(mason_registry.get_package, name)
             if ok and pkg and not pkg:is_installed() then
                 table.insert(allin1.tools, name)
-                allin1.states[name] = { status = "pending", percent = 0, spinner_frame = 1 }
+                allin1.states[name] = {
+                    status = STATUS.PENDING,
+                    percent = 0,
+                    spinner_frame = 0,
+                    message = "Preparing...",
+                    start_time = os.time(),
+                }
                 added = true
             end
         end
@@ -236,7 +305,7 @@ end
 
 local function are_tools_completed(tools)
     for _, tool in ipairs(tools) do
-        if allin1.states[tool] and allin1.states[tool].status == "pending" then
+        if allin1.states[tool] and allin1.states[tool].status == STATUS.PENDING then
             return false
         end
     end
@@ -259,56 +328,103 @@ local function check_callbacks()
     if #allin1.callbacks == 0 then
         local all_done = true
         for _, s in pairs(allin1.states) do
-            if s.status == "pending" then
+            if s.status == STATUS.PENDING then
                 all_done = false
                 break
             end
         end
         if all_done then
-            local lsp_manager = require("languages.lsp_manager")
-            lsp_manager.set_installation_status(false)
+            local lsp_manager_ok, lsp_manager = pcall(require, "languages.lsp_manager")
+            if lsp_manager_ok and lsp_manager then
+                pcall(lsp_manager.set_installation_status, false)
+            end
             vim.defer_fn(close_popup, 10000)
         end
     end
 end
 
-local function start_progress(tool)
-    local progress = 0
-    local step = 2
-    allin1.states[tool].spinner_frame = 1
-    allin1.timers[tool] = vim.uv.new_timer()
-    allin1.timers[tool]:start(
+-- Глобален таймер за обновяване на UI и прогрес
+local function start_ui_refresh_timer()
+    if refresh_timer and not refresh_timer:is_closing() then
+        refresh_timer:stop()
+        refresh_timer:close()
+    end
+
+    refresh_timer = vim.loop.new_timer()
+    refresh_timer:start(
         0,
-        SPINNER_INTERVAL,
+        50,
         vim.schedule_wrap(function()
             if allin1.closed then
-                if allin1.timers[tool] then
-                    allin1.timers[tool]:stop()
-                    allin1.timers[tool]:close()
-                    allin1.timers[tool] = nil
+                if refresh_timer and not refresh_timer:is_closing() then
+                    refresh_timer:stop()
+                    refresh_timer:close()
+                    refresh_timer = nil
                 end
                 return
             end
-            if allin1.states[tool].status ~= "pending" then
-                allin1.timers[tool]:stop()
-                allin1.timers[tool]:close()
-                allin1.timers[tool] = nil
-                return
+
+            local now = os.time()
+            local elapsed_total = now - (allin1.start_time or now)
+
+            -- Обновяваме прогрес индикатори за всеки инструмент
+            for _, tool in ipairs(allin1.tools) do
+                local state = allin1.states[tool]
+                if state and state.status == STATUS.PENDING then
+                    -- Увеличаваме spinner frame индекса за анимацията
+                    state.spinner_frame = (state.spinner_frame or 0) + 1
+
+                    -- Изчисляваме прогреса на базата на времето
+                    local elapsed = now - (state.start_time or now)
+                    local estimated_duration = 45 -- прибл. продължителност на инсталация в секунди
+
+                    -- Максимум 95% за автоматичен прогрес (последните 5% са reserved за финализиране)
+                    local auto_progress = math.min(95, (elapsed / estimated_duration) * 100)
+
+                    -- Ако нямаме real progress и auto_progress е по-голям от текущия, обновяваме
+                    if not state.has_real_progress and auto_progress > state.percent then
+                        state.percent = auto_progress
+
+                        -- Актуализираме и съобщението според прогреса
+                        if state.percent < 20 then
+                            state.message = "Downloading..."
+                        elseif state.percent < 50 then
+                            state.message = "Extracting files..."
+                        elseif state.percent < 80 then
+                            state.message = "Installing components..."
+                        else
+                            state.message = "Finalizing..."
+                        end
+                    end
+                end
             end
-            if progress < 100 then
-                progress = math.min(progress + step, 100)
-                allin1.states[tool].percent = progress
-            end
-            allin1.states[tool].spinner_frame = (allin1.states[tool].spinner_frame % #SPINNER_FRAMES) + 1
-            update_popup()
+
+            -- Обновяваме интерфейса
+            pcall(update_popup)
         end)
     )
 end
 
 local M = {}
 M.ensure_mason_tools = function(tools, cb)
-    local mason_registry = require("mason-registry")
-    local lsp_manager = require("languages.lsp_manager")
+    local mason_registry_ok, mason_registry = pcall(require, "mason-registry")
+    if not mason_registry_ok then
+        vim.notify("Грешка при зареждане на mason-registry", vim.log.levels.ERROR)
+        if cb then
+            cb()
+        end
+        return
+    end
+
+    local lsp_manager_ok, lsp_manager = pcall(require, "languages.lsp_manager")
+    if not lsp_manager_ok then
+        vim.notify("Грешка при зареждане на lsp_manager", vim.log.levels.ERROR)
+        if cb then
+            cb()
+        end
+        return
+    end
+
     tools = tools or {}
     if #tools == 0 then
         if cb then
@@ -316,7 +432,9 @@ M.ensure_mason_tools = function(tools, cb)
         end
         return
     end
+
     lsp_manager.set_installation_status(true)
+
     if cb then
         local original_callback = cb
         local wrapped_callback = function()
@@ -332,61 +450,113 @@ M.ensure_mason_tools = function(tools, cb)
             callback = wrapped_callback,
         })
     end
+
+    allin1.start_time = os.time()
+
     local some_added = add_tools(tools)
     if not some_added then
-        lsp_manager.set_installation_status(false)
+        if lsp_manager then
+            lsp_manager.set_installation_status(false)
+        end
         check_callbacks()
         return
     end
+
     allin1.closed = false
+
+    -- Стартираме глобалния таймер за обновяване на прогрес
+    start_ui_refresh_timer()
+
     update_popup()
+
     for _, tool in ipairs(tools) do
-        if allin1.states[tool] and allin1.states[tool].status == "pending" and not allin1.timers[tool] then
-            start_progress(tool)
+        if allin1.states[tool] and allin1.states[tool].status == STATUS.PENDING then
             local pkg = mason_registry.get_package(tool)
-            pkg:install():once(
+            local handle = pkg:install()
+
+            -- Слушаме за real-time прогрес събития
+            handle:on(
+                "progress",
+                vim.schedule_wrap(function(progress)
+                    if allin1.closed or not allin1.states or not allin1.states[tool] then
+                        return
+                    end
+
+                    -- Бележим, че имаме реален прогрес
+                    allin1.states[tool].has_real_progress = true
+
+                    -- Актуализираме съобщението ако имаме
+                    if progress.message then
+                        allin1.states[tool].message = progress.message
+                    end
+
+                    -- Актуализираме процента ако имаме
+                    if progress.percent then
+                        allin1.states[tool].percent = math.min(95, math.floor(progress.percent))
+                    end
+
+                    -- Не е нужно да викаме update_popup тук, тъй като глобалният таймер ще го направи
+                end)
+            )
+
+            -- Handle за завършване на инсталацията
+            handle:once(
                 "closed",
                 vim.schedule_wrap(function()
                     vim.defer_fn(function()
-                        local installed = pkg:is_installed()
-                        if allin1.timers[tool] then
-                            allin1.timers[tool]:stop()
-                            allin1.timers[tool]:close()
-                            allin1.timers[tool] = nil
+                        if not allin1 or not allin1.states or not allin1.states[tool] then
+                            return
                         end
-                        if installed then
-                            allin1.states[tool].status = "ok"
-                            allin1.states[tool].percent = 100
-                        else
-                            allin1.states[tool].status = "fail"
-                            allin1.states[tool].percent = 0
+
+                        -- Проверяваме дали инсталацията е успешна
+                        local installed = false
+                        pcall(function()
+                            if pkg and pkg.is_installed then
+                                installed = pkg:is_installed()
+                            end
+                        end)
+
+                        -- Актуализираме състоянието
+                        if allin1.states and allin1.states[tool] then
+                            if installed then
+                                allin1.states[tool].status = STATUS.OK
+                                allin1.states[tool].percent = 100
+                                allin1.states[tool].message = "Installation complete"
+                            else
+                                allin1.states[tool].status = STATUS.FAIL
+                                allin1.states[tool].percent = 0
+                                allin1.states[tool].message = "Installation failed"
+                            end
                         end
-                        update_popup()
-                        check_callbacks()
-                    end, 1000)
+
+                        -- Не е нужно да викаме update_popup, тъй като глобалният таймер ще го направи
+                        pcall(check_callbacks)
+                    end, 500)
                 end)
             )
         end
     end
+
+    -- Таймаут за инсталацията
     vim.defer_fn(function()
         if allin1.closed then
             return
         end
         for _, tool in ipairs(tools) do
-            if allin1.states[tool] and allin1.states[tool].status == "pending" then
-                if allin1.timers[tool] then
-                    allin1.timers[tool]:stop()
-                    allin1.timers[tool]:close()
-                    allin1.timers[tool] = nil
-                end
-                allin1.states[tool].status = "timeout"
+            if allin1.states[tool] and allin1.states[tool].status == STATUS.PENDING then
+                allin1.states[tool].status = STATUS.TIMEOUT
                 allin1.states[tool].percent = 0
+                allin1.states[tool].message = "Installation timed out"
             end
         end
-        update_popup()
-        lsp_manager.set_installation_status(false)
-        check_callbacks()
-    end, 12000)
+
+        local manager_ok, manager = pcall(require, "languages.lsp_manager")
+        if manager_ok and manager then
+            manager.set_installation_status(false)
+        end
+
+        pcall(check_callbacks)
+    end, INSTALLATION_TIMEOUT)
 end
 
 return M

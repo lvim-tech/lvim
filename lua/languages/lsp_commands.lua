@@ -709,8 +709,8 @@ local function lvim_lsp_info()
         table.insert(lines, server_line)
         add_highlight(#lines - 1, client.name, "LspInfoServerName")
         if client.name == "efm" then
-            local global_efm = _G.global and _G.global.efm
-            if global_efm and global_efm.settings and global_efm.settings.languages then
+            -- МОДИФИЦИРАНА ЧАСТ: Използваме _G.efm_configs вместо _G.global.efm
+            if _G.efm_configs then
                 table.insert(lines, "")
                 table.insert(lines, "  " .. preview_icons.section .. " EFM Tools by Filetype")
                 add_highlight(#lines - 1, "EFM Tools by Filetype", "LspInfoSection")
@@ -730,7 +730,7 @@ local function lvim_lsp_info()
                     end
                 end
                 local has_tools = false
-                for filetype, configs in pairs(global_efm.settings.languages) do
+                for filetype, configs in pairs(_G.efm_configs) do
                     local formatters, linters = {}, {}
                     for _, config in ipairs(configs) do
                         local tool_name = config.server_name or config.fPrefix or config.lPrefix or "Unknown"
@@ -796,7 +796,8 @@ local function lvim_lsp_info()
                     add_highlight(#lines - 1, preview_icons.cross, "LspInfoKey")
                 end
             end
-            local filetypes = global_efm and global_efm.filetypes or (client.config and client.config.filetypes or {})
+            -- Получаваме поддържаните filetypes от клиента
+            local filetypes = client.config and client.config.filetypes or {}
             if #filetypes > 0 then
                 table.insert(lines, "")
                 table.insert(lines, "  " .. preview_icons.section .. " Supported Filetypes")

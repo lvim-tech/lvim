@@ -385,9 +385,9 @@ M.get_statusline = function()
                 end
             end
             if next(lsp) ~= nil then
-                p_lsp = " LSP [" .. table.concat(lsp, ", ") .. "]"
+                p_lsp = "LSP [" .. table.concat(lsp, ", ") .. "]"
             end
-            local result = icons.common.lsp .. p_lsp .. p_linters .. p_formatters
+            local result = icons.common.lsp .. "  " .. p_lsp .. p_linters .. p_formatters
             if result == icons.common.lsp then
                 return ""
             end
