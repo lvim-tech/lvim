@@ -12,7 +12,7 @@
 - Formatters with efm ("stylua", "yamlfmt", "shfmt", "cbfmt", "prettierd")
 - Automatically install dependencies (lsp servers, linters, formatters, debbugers) by filetype
 
-> Current version - 6.0.15 (2025-05-01)
+> Current version - 6.1.0 (2025-05-07)
 
 ## INTRODUCTION
 
@@ -42,7 +42,7 @@
 
 ## INSTALL
 
-```bash
+```sh
 git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 ```
 
