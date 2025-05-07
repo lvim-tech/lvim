@@ -1,13 +1,25 @@
-local dap = require("dap")
 local navic = require("nvim-navic")
 local setup_diagnostics = require("languages.utils.setup_diagnostics")
 local lsp_manager = require("languages.lsp_manager")
 local lsp_installer = require("languages.lsp_installer")
+local dap = require("dap")
 
 local lsp_dependencies = {
     "efm",
     "lua-language-server",
     "stylua",
+}
+
+local lsp_config = nil
+local root_markers = {
+    ".luarc.json",
+    ".luarc.jsonc",
+    ".luacheckrc",
+    ".stylua.toml",
+    "stylua.toml",
+    "selene.toml",
+    "selene.yml",
+    ".git",
 }
 
 lsp_installer.ensure_mason_tools(lsp_dependencies, function()
@@ -25,7 +37,9 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
     dap.adapters.nlua = function(callback, config)
         callback({ type = "server", host = config.host, port = config.port })
     end
-
+    ---@type table<string, any>
+    dap.configurations = dap.configurations or {}
+    dap.configurations.lua = dap.configurations.lua or {}
     dap.configurations.lua = {
         {
             type = "nlua",
@@ -53,20 +67,11 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
         },
     }
 
-    local lsp_server_config = {
+    lsp_config = {
         name = "lua",
         cmd = { "lua-language-server" },
         filetypes = _G.file_types.lua,
-        root_markers = {
-            ".luarc.json",
-            ".luarc.jsonc",
-            ".luacheckrc",
-            ".stylua.toml",
-            "stylua.toml",
-            "selene.toml",
-            "selene.yml",
-            ".git",
-        },
+        root_dir = nil,
         settings = {
             Lua = {
                 format = {
@@ -114,11 +119,16 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
         end,
         capabilities = setup_diagnostics.get_capabilities(),
     }
-
-    _G.lua_lsp_config = lsp_server_config
-    lsp_manager.start_language_server("lua", true)
-
-    return lsp_server_config
 end)
+
+return setmetatable({}, {
+    __index = function(_, key)
+        if key == "config" then
+            return lsp_config
+        elseif key == "root_patterns" then
+            return root_markers
+        end
+    end,
+})
 
 -- vim: foldmethod=indent foldlevel=1

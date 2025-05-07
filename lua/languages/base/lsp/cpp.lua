@@ -1,86 +1,27 @@
-local global = require("core.global")
-local dap = require("dap")
 local navic = require("nvim-navic")
-
 local setup_diagnostics = require("languages.utils.setup_diagnostics")
-local lsp_utils = require("languages.utils")
+local lsp_manager = require("languages.lsp_manager")
+local lsp_installer = require("languages.lsp_installer")
+local dap_utils = require("languages.utils.dap")
+local dap = require("dap")
 
-local lsp_server_name = "clangd"
-local debbuger_server_name = "cpptools"
-
--- EFM
-local efm_config = {
-    {
-        server_name = "cpplint",
-        lPrefix = "cpplint",
-        lintCommand = "cpplint ${INPUT}",
-        lintStdin = true,
-        rootMarkers = { "cpplint.cfg" },
-    },
+local lsp_dependencies = {
+    "efm",
+    "clangd",
+    "cpptools",
 }
 
-lsp_utils.setup_efm(_G.file_types.cpp, efm_config)
--- EFM
+local lsp_config = nil
+local root_markers = {
+    ".clangd",
+    ".clang-tidy",
+    ".clang-format",
+    "compile_commands.json",
+    "compile_flags.txt",
+    "configure.ac",
+    ".git",
+}
 
--- DAP
-local debbuger_server_async = lsp_utils.is_lsp_server_installed(debbuger_server_name)
-
-local debbuger_server_result
-while not debbuger_server_result do
-    debbuger_server_result = debbuger_server_async()
-    vim.wait(100)
-end
-
-if debbuger_server_result then
-    dap.adapters.cppdbg = {
-        id = "cppdbg",
-        type = "executable",
-        command = global.mason_path .. "/packages/cpptools/extension/debugAdapters/bin/OpenDebugAD7",
-    }
-    dap.configurations.cpp = {
-        {
-            name = "Launch file",
-            type = "cppdbg",
-            request = "launch",
-            program = function()
-                return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-            end,
-            cwd = "${workspaceFolder}",
-            stopOnEntry = true,
-            setupCommands = {
-                {
-                    text = "-enable-pretty-printing",
-                    description = "enable pretty printing",
-                    ignoreFailures = false,
-                },
-            },
-        },
-        {
-            name = "Attach to gdbserver :1234",
-            type = "cppdbg",
-            request = "attach",
-            processId = lsp_utils.fzf_process_picker,
-            MIMode = "gdb",
-            miDebuggerServerAddress = "localhost:1234",
-            miDebuggerPath = "/usr/bin/gdb",
-            cwd = "${workspaceFolder}",
-            program = function()
-                return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-            end,
-            useExtendedRemote = true,
-            setupCommands = {
-                {
-                    text = "-enable-pretty-printing",
-                    description = "enable pretty printing",
-                    ignoreFailures = false,
-                },
-            },
-        },
-    }
-end
--- DAP
-
--- LSP
 local function switch_source_header(bufnr)
     local method_name = "textDocument/switchSourceHeader"
     local client = vim.lsp.get_clients({ bufnr = bufnr, name = "clangd" })[1]
@@ -105,6 +46,7 @@ end
 local function symbol_info()
     local bufnr = vim.api.nvim_get_current_buf()
     local clangd_client = vim.lsp.get_clients({ bufnr = bufnr, name = "clangd" })[1]
+    ---@diagnostic disable-next-line: missing-parameter
     if not clangd_client or not clangd_client.supports_method("textDocument/symbolInfo") then
         return vim.notify("Clangd client not found", vim.log.levels.ERROR)
     end
@@ -128,52 +70,98 @@ local function symbol_info()
     end, bufnr)
 end
 
-local lsp_server_config = {
-    name = "cpp",
-    cmd = { "clangd" },
-    filetypes = _G.file_types.cpp,
-    root_markers = {
-        ".clangd",
-        ".clang-tidy",
-        ".clang-format",
-        "compile_commands.json",
-        "compile_flags.txt",
-        "configure.ac", -- AutoTools
-        ".git",
-    },
-    on_attach = function(client, bufnr)
-        setup_diagnostics.keymaps(client, bufnr)
-        setup_diagnostics.document_highlight(client, bufnr)
-        setup_diagnostics.document_auto_format(client, bufnr)
-        setup_diagnostics.inlay_hint(client, bufnr)
-        if client.server_capabilities.documentSymbolProvider then
-            navic.attach(client, bufnr)
+lsp_installer.ensure_mason_tools(lsp_dependencies, function()
+    local efm_config = {
+        {
+            server_name = "cpplint",
+            lPrefix = "cpplint",
+            lintCommand = "cpplint ${INPUT}",
+            lintStdin = true,
+            rootMarkers = { "cpplint.cfg" },
+        },
+    }
+    lsp_manager.setup_efm(_G.file_types.cpp, efm_config)
+
+    dap.adapters.cppdbg = {
+        id = "cppdbg",
+        type = "executable",
+        command = global.mason_path .. "/packages/cpptools/extension/debugAdapters/bin/OpenDebugAD7",
+    }
+    ---@type table<string, any>
+    dap.configurations = dap.configurations or {}
+    dap.configurations.cpp = dap.configurations.cpp or {}
+    dap.configurations.cpp = {
+        {
+            name = "Launch file",
+            type = "cppdbg",
+            request = "launch",
+            program = function()
+                return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+            end,
+            cwd = "${workspaceFolder}",
+            stopOnEntry = true,
+            setupCommands = {
+                {
+                    text = "-enable-pretty-printing",
+                    description = "enable pretty printing",
+                    ignoreFailures = false,
+                },
+            },
+        },
+        {
+            name = "Attach to gdbserver :1234",
+            type = "cppdbg",
+            request = "attach",
+            processId = dap_utils.fzf_process_picker,
+            MIMode = "gdb",
+            miDebuggerServerAddress = "localhost:1234",
+            miDebuggerPath = "/usr/bin/gdb",
+            cwd = "${workspaceFolder}",
+            program = function()
+                return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+            end,
+            useExtendedRemote = true,
+            setupCommands = {
+                {
+                    text = "-enable-pretty-printing",
+                    description = "enable pretty printing",
+                    ignoreFailures = false,
+                },
+            },
+        },
+    }
+
+    lsp_config = {
+        name = "cpp",
+        cmd = { "clangd" },
+        filetypes = _G.file_types.cpp,
+        on_attach = function(client, bufnr)
+            setup_diagnostics.keymaps(client, bufnr)
+            setup_diagnostics.document_highlight(client, bufnr)
+            setup_diagnostics.document_auto_format(client, bufnr)
+            setup_diagnostics.inlay_hint(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                navic.attach(client, bufnr)
+            end
+            vim.api.nvim_buf_create_user_command(0, "LspClangdSwitchSourceHeader", function()
+                switch_source_header(0)
+            end, { desc = "Switch between source/header" })
+            vim.api.nvim_buf_create_user_command(0, "LspClangdShowSymbolInfo", function()
+                symbol_info()
+            end, { desc = "Show symbol info" })
+        end,
+        capabilities = setup_diagnostics.get_capabilities(),
+    }
+end)
+
+return setmetatable({}, {
+    __index = function(_, key)
+        if key == "config" then
+            return lsp_config
+        elseif key == "root_patterns" then
+            return root_markers
         end
-        vim.api.nvim_buf_create_user_command(0, "LspClangdSwitchSourceHeader", function()
-            switch_source_header(0)
-        end, { desc = "Switch between source/header" })
-        vim.api.nvim_buf_create_user_command(0, "LspClangdShowSymbolInfo", function()
-            symbol_info()
-        end, { desc = "Show symbol info" })
     end,
-    capabilities = setup_diagnostics.get_capabilities(),
-}
+})
 
-local lsp_server_async = lsp_utils.is_lsp_server_installed(lsp_server_name)
-
-local lsp_server_result
-while not lsp_server_result do
-    lsp_server_result = lsp_server_async()
-    vim.wait(100)
-end
-
-_G.cpp_lsp_config = lsp_server_config
-
-if lsp_server_result then
-    return lsp_server_config
-else
-    vim.notify("An error occurred while setting up the LSP (" .. lsp_server_name .. ")!", vim.log.levels.ERROR)
-end
--- LSP
-
--- vim: foldmethod=indent foldlevel=0
+-- vim: foldmethod=indent foldlevel=1

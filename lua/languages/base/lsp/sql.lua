@@ -1,43 +1,42 @@
 local navic = require("nvim-navic")
-
 local setup_diagnostics = require("languages.utils.setup_diagnostics")
-local lsp_utils = require("languages.utils")
+local lsp_installer = require("languages.lsp_installer")
 
-local lsp_server_name = "sqls"
-
--- LSP
-local lsp_server_config = {
-    name = "xml",
-    cmd = { "sqls" },
-    filetypes = _G.file_types.sql,
-    root_markers = { "config.yml" },
-    on_attach = function(client, bufnr)
-        setup_diagnostics.keymaps(client, bufnr)
-        setup_diagnostics.document_highlight(client, bufnr)
-        setup_diagnostics.document_auto_format(client, bufnr)
-        setup_diagnostics.inlay_hint(client, bufnr)
-        if client.server_capabilities.documentSymbolProvider then
-            navic.attach(client, bufnr)
-        end
-    end,
-    capabilities = setup_diagnostics.get_capabilities(),
+local lsp_dependencies = {
+    "sqls",
 }
 
-local lsp_server_async = lsp_utils.is_lsp_server_installed(lsp_server_name)
+local lsp_config = nil
+local root_markers = {
+    "config.yml",
+}
 
-local lsp_server_result
-while not lsp_server_result do
-    lsp_server_result = lsp_server_async()
-    vim.wait(100)
-end
+lsp_installer.ensure_mason_tools(lsp_dependencies, function()
+    lsp_config = {
+        name = "sql",
+        cmd = { "sqls" },
+        filetypes = _G.file_types.sql,
+        on_attach = function(client, bufnr)
+            setup_diagnostics.keymaps(client, bufnr)
+            setup_diagnostics.document_highlight(client, bufnr)
+            setup_diagnostics.document_auto_format(client, bufnr)
+            setup_diagnostics.inlay_hint(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                navic.attach(client, bufnr)
+            end
+        end,
+        capabilities = setup_diagnostics.get_capabilities(),
+    }
+end)
 
-_G.sql_lsp_config = lsp_server_config
+return setmetatable({}, {
+    __index = function(_, key)
+        if key == "config" then
+            return lsp_config
+        elseif key == "root_patterns" then
+            return root_markers
+        end
+    end,
+})
 
-if lsp_server_result then
-    return lsp_server_config
-else
-    vim.notify("An error occurred while setting up the LSP (" .. lsp_server_name .. ")!", vim.log.levels.ERROR)
-end
--- LSP
-
--- vim: foldmethod=indent foldlevel=0
+-- vim: foldmethod=indent foldlevel=1

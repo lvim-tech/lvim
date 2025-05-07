@@ -1,15 +1,18 @@
 local navic = require("nvim-navic")
-
 local setup_diagnostics = require("languages.utils.setup_diagnostics")
-local lsp_manager = require("languages.lsp_manager")
 local lsp_installer = require("languages.lsp_installer")
 
 local lsp_dependencies = {
     "json-lsp",
 }
 
+local lsp_config = nil
+local root_markers = {
+    ".git",
+}
+
 lsp_installer.ensure_mason_tools(lsp_dependencies, function()
-    local lsp_server_config = {
+    lsp_config = {
         name = "json",
         cmd = { "vscode-json-language-server", "--stdio" },
         filetypes = _G.file_types.json,
@@ -28,11 +31,16 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
         end,
         capabilities = setup_diagnostics.get_capabilities(),
     }
-
-    _G.json_lsp_config = lsp_server_config
-    lsp_manager.start_language_server("json", true)
-
-    return lsp_server_config
 end)
+
+return setmetatable({}, {
+    __index = function(_, key)
+        if key == "config" then
+            return lsp_config
+        elseif key == "root_patterns" then
+            return root_markers
+        end
+    end,
+})
 
 -- vim: foldmethod=indent foldlevel=1

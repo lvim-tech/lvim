@@ -1,18 +1,23 @@
 local navic = require("nvim-navic")
 local setup_diagnostics = require("languages.utils.setup_diagnostics")
-local lsp_manager = require("languages.lsp_manager")
 local lsp_installer = require("languages.lsp_installer")
 
 local lsp_dependencies = {
     "taplo",
 }
 
+local lsp_config = nil
+local root_markers = {
+    ".taplo.toml",
+    "taplo.toml",
+    ".git",
+}
+
 lsp_installer.ensure_mason_tools(lsp_dependencies, function()
-    local lsp_server_config = {
+    lsp_config = {
         name = "toml",
         cmd = { "taplo", "lsp", "stdio" },
         filetypes = _G.file_types.toml,
-        root_markers = { ".git" },
         on_attach = function(client, bufnr)
             setup_diagnostics.keymaps(client, bufnr)
             setup_diagnostics.document_highlight(client, bufnr)
@@ -24,12 +29,16 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
         end,
         capabilities = setup_diagnostics.get_capabilities(),
     }
-
-    _G.toml_lsp_config = lsp_server_config
-    lsp_manager.start_language_server("toml", true)
-
-    return lsp_server_config
-
 end)
+
+return setmetatable({}, {
+    __index = function(_, key)
+        if key == "config" then
+            return lsp_config
+        elseif key == "root_patterns" then
+            return root_markers
+        end
+    end,
+})
 
 -- vim: foldmethod=indent foldlevel=1

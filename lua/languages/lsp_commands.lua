@@ -3,6 +3,7 @@ local select = require("lvim-ui-config.select")
 local funcs = require("core.funcs")
 local icons = require("configs.base.ui.icons")
 local lsp_manager = require("languages.lsp_manager")
+local setup_diagnostics = require("languages.utils.setup_diagnostics")
 
 local function lvim_auto_format()
     local status
@@ -113,6 +114,31 @@ local function lvim_virtual_diagnostic()
             virtual_text = (not is_empty and virtualdiagnostic.text) and { prefix = icons.common.dot } or false,
             virtual_lines = not is_empty and virtualdiagnostic.lines or false,
         })
+    end)
+end
+
+local function lvim_lsp_progress()
+    local status
+    if _G.LVIM_SETTINGS.lspprogress == true then
+        status = "Enabled"
+    else
+        status = "Disabled"
+    end
+    local opts = ui_config.select({
+        "Enable",
+        "Disable",
+        "Cancel",
+    }, { prompt = "LspProgress (" .. status .. ")" }, {})
+    select(opts, function(choice)
+        if choice == "Enable" then
+            _G.LVIM_SETTINGS["lspprogress"] = true
+            funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+            setup_diagnostics.enable_lsp_progress()
+        elseif choice == "Disable" then
+            _G.LVIM_SETTINGS["lspprogress"] = false
+            funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+            setup_diagnostics.disable_lsp_progress()
+        end
     end)
 end
 
@@ -1054,18 +1080,80 @@ local function lvim_lsp_info()
     }
 end
 
+-- BASE
+vim.api.nvim_create_user_command("LspHover", "lua vim.lsp.buf.hover()", {})
+vim.api.nvim_create_user_command("LspRename", "lua vim.lsp.buf.rename()", {})
+vim.api.nvim_create_user_command("LspFormat", "lua vim.lsp.buf.format {async = false}", {})
+vim.api.nvim_create_user_command("LspCodeAction", "lua vim.lsp.buf.code_action()", {})
+vim.api.nvim_create_user_command("LspDefinition", "lua vim.lsp.buf.definition()", {})
+vim.api.nvim_create_user_command("LspTypeDefinition", "lua vim.lsp.buf.type_definition()", {})
+vim.api.nvim_create_user_command("LspDeclaration", "lua vim.lsp.buf.declaration()", {})
+vim.api.nvim_create_user_command("LspReferences", "lua vim.lsp.buf.references()", {})
+vim.api.nvim_create_user_command("LspImplementation", "lua vim.lsp.buf.implementation()", {})
+vim.api.nvim_create_user_command("LspSignatureHelp", "lua vim.lsp.buf.signature_help()", {})
+vim.api.nvim_create_user_command("LspDocumentSymbol", "lua vim.lsp.buf.document_symbol()", {})
+vim.api.nvim_create_user_command("LspWorkspaceSymbol", "lua vim.lsp.buf.workspace_symbol()", {})
+vim.api.nvim_create_user_command("LspCodeLensRefresh", "lua vim.lsp.codelens.refresh()", {})
+vim.api.nvim_create_user_command("LspCodeLensRun", "lua vim.lsp.codelens.run()", {})
+vim.api.nvim_create_user_command("LspAddToWorkspaceFolder", "lua vim.lsp.buf.add_workspace_folder()", {})
+vim.api.nvim_create_user_command("LspRemoveWorkspaceFolder", "lua vim.lsp.buf.remove_workspace_folder()", {})
+vim.api.nvim_create_user_command("LspListWorkspaceFolders", "lua vim.lsp.buf.list_workspace_folders()", {})
+vim.api.nvim_create_user_command("LspIncomingCalls", "lua vim.lsp.buf.incoming_calls()", {})
+vim.api.nvim_create_user_command("LspOutgoingCalls", "lua vim.lsp.buf.outgoing_calls()", {})
+vim.api.nvim_create_user_command("LspClearReferences", "lua vim.lsp.buf.clear_references()", {})
+vim.api.nvim_create_user_command("LspDocumentHighlight", "lua vim.lsp.buf.document_highlight()", {})
+vim.api.nvim_create_user_command(
+    "LspShowDiagnosticCurrent",
+    "lua require('languages.utils.show_diagnostics').line()",
+    {}
+)
+vim.api.nvim_create_user_command(
+    "LspShowDiagnosticNext",
+    "lua require('languages.utils.show_diagnostics').goto_next()",
+    {}
+)
+vim.api.nvim_create_user_command(
+    "LspShowDiagnosticPrev",
+    "lua require('languages.utils.show_diagnostics').goto_prev()",
+    {}
+)
+vim.api.nvim_create_user_command("DAPLocal", "lua require('languages.utils.dap').dap_local()", {})
+
+-- KeyMaps
+
+vim.keymap.set("n", "<C-c><C-l>", function()
+    vim.cmd("DAPLocal")
+end, { noremap = true, silent = true, desc = "DAPLocal" })
+vim.keymap.set("n", "dc", function()
+    vim.cmd("LspShowDiagnosticCurrent")
+end, { noremap = true, silent = true, desc = "LspShowDiagnosticCurrent" })
+vim.keymap.set("n", "dn", function()
+    vim.cmd("LspShowDiagnosticNext")
+end, { noremap = true, silent = true, desc = "LspShowDiagnosticNext" })
+vim.keymap.set("n", "dp", function()
+    vim.cmd("LspShowDiagnosticPrev")
+end, { noremap = true, silent = true, desc = "LspShowDiagnosticPrev" })
+
+-- EXTRA
 vim.api.nvim_create_user_command("LvimVirtualDiagnostic", lvim_virtual_diagnostic, {})
 vim.api.nvim_create_user_command("LvimAutoFormat", lvim_auto_format, {})
 vim.api.nvim_create_user_command("LvimInlayHint", lvim_inlay_hint, {})
+vim.api.nvim_create_user_command("LvimLspProgress", lvim_lsp_progress, {})
 vim.api.nvim_create_user_command("LvimLspToggleServers", lvim_toggle_lsp_server, {})
 vim.api.nvim_create_user_command("LvimLspToggleServersForBuffer", lvim_toggle_lsp_for_buffer, {})
 vim.api.nvim_create_user_command("LvimLspInfo", lvim_lsp_info, {})
 
-local keymap = vim.keymap.set
+-- KeyMaps
 
-keymap("n", "<Leader>ld", "<cmd>LvimVirtualDiagnostic<CR>", { desc = "Lvim Toggle virtual diagnostics" })
-keymap("n", "<Leader>lf", "<cmd>LvimAutoFormat<CR>", { desc = "Lvim Toggle auto format" })
-keymap("n", "<Leader>lh", "<cmd>LvimInlayHint<CR>", { desc = "Lvim Toggle inlay hints" })
-keymap("n", "<Leader>ls", "<cmd>LvimLspToggleServers<CR>", { desc = "Lvim Toggle LSP servers globally" })
-keymap("n", "<Leader>lb", "<cmd>LvimLspToggleServersForBuffer<CR>", { desc = "Lvim Toggle LSP servers for buffer" })
-keymap("n", "<Leader>li", "<cmd>LvimLspInfo<CR>", { desc = "Lvim LSP info" })
+vim.keymap.set("n", "<Leader>ld", "<cmd>LvimVirtualDiagnostic<CR>", { desc = "Lvim Toggle virtual diagnostics" })
+vim.keymap.set("n", "<Leader>lf", "<cmd>LvimAutoFormat<CR>", { desc = "Lvim Toggle auto format" })
+vim.keymap.set("n", "<Leader>lh", "<cmd>LvimInlayHint<CR>", { desc = "Lvim Toggle inlay hints" })
+vim.keymap.set("n", "<Leader>lp", "<cmd>LvimLspProgress<CR>", { desc = "Lvim Toggle lsp progress" })
+vim.keymap.set("n", "<Leader>ls", "<cmd>LvimLspToggleServers<CR>", { desc = "Lvim Toggle LSP servers globally" })
+vim.keymap.set(
+    "n",
+    "<Leader>lb",
+    "<cmd>LvimLspToggleServersForBuffer<CR>",
+    { desc = "Lvim Toggle LSP servers for buffer" }
+)
+vim.keymap.set("n", "<Leader>li", "<cmd>LvimLspInfo<CR>", { desc = "Lvim LSP info" })

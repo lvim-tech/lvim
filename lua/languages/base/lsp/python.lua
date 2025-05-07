@@ -1,42 +1,51 @@
-local global = require("core.global")
-local dap = require("dap")
 local navic = require("nvim-navic")
-
 local setup_diagnostics = require("languages.utils.setup_diagnostics")
-local lsp_utils = require("languages.utils")
+local lsp_manager = require("languages.lsp_manager")
+local lsp_installer = require("languages.lsp_installer")
+local dap = require("dap")
 
-local lsp_server_name = "python-lsp-server"
-local debbuger_server_name = "debugpy"
-
--- EFM
-local efm_config = {
-    {
-        server_name = "black",
-        fPrefix = "black",
-        formatCommand = "black -q -",
-        formatStdin = true,
-        rootMarkers = { "pyproject.toml" },
-    },
+local lsp_dependencies = {
+    "efm",
+    "python-lsp-server",
+    "debugpy",
+    "black",
 }
 
-lsp_utils.setup_efm(_G.file_types.python, efm_config)
--- EFM
+local lsp_config = nil
+local root_markers = {
+    "pyproject.toml",
+    "setup.py",
+    "setup.cfg",
+    "requirements.txt",
+    "Pipfile",
+    ".git",
+}
 
--- DAP
-local debbuger_server_async = lsp_utils.is_lsp_server_installed(debbuger_server_name)
+lsp_installer.ensure_mason_tools(lsp_dependencies, function()
+    local efm_config = {
+        {
+            server_name = "black",
+            fPrefix = "black",
+            formatCommand = "black -q -",
+            formatStdin = true,
+            rootMarkers = { "pyproject.toml" },
+        },
+    }
+    lsp_manager.setup_efm(_G.file_types.python, efm_config)
+        dap.adapters.python = {
+        type = "executable",
+        command = global.mason_path .. "/packages/debugpy/venv/bin/python",
+        args = { "-m", "debugpy.adapter" },
+    }
 
-local debbuger_server_result
-while not debbuger_server_result do
-    debbuger_server_result = debbuger_server_async()
-    vim.wait(100)
-end
-
-if debbuger_server_result then
     dap.adapters.python = {
         type = "executable",
         command = global.mason_path .. "/packages/debugpy/venv/bin/python",
         args = { "-m", "debugpy.adapter" },
     }
+    ---@type table<string, any>
+    dap.configurations = dap.configurations or {}
+    dap.configurations.python = dap.configurations.python or {}
     dap.configurations.python = {
         {
             type = "python",
@@ -84,58 +93,49 @@ if debbuger_server_result then
             end,
         },
     }
-end
--- DAP
 
--- LSP
-local lsp_server_config = {
-    name = "python",
-    cmd = { "pylsp" },
-    filetypes = _G.file_types.python,
-    root_markers = {
-        "pyproject.toml",
-        "setup.py",
-        "setup.cfg",
-        "requirements.txt",
-        "Pipfile",
-        ".git",
-    },
-    settings = {
-        pylsp = {
-            plugins = {
-                black = { enabled = true, line_length = 79 },
-                autopep8 = { enabled = false },
-                yapf = { enabled = false },
+    lsp_config = {
+        name = "python",
+        cmd = { "pylsp" },
+        filetypes = _G.file_types.python,
+        root_markers = {
+            "pyproject.toml",
+            "setup.py",
+            "setup.cfg",
+            "requirements.txt",
+            "Pipfile",
+            ".git",
+        },
+        settings = {
+            pylsp = {
+                plugins = {
+                    black = { enabled = true, line_length = 79 },
+                    autopep8 = { enabled = false },
+                    yapf = { enabled = false },
+                },
             },
         },
-    },
-    on_attach = function(client, bufnr)
-        setup_diagnostics.keymaps(client, bufnr)
-        setup_diagnostics.document_highlight(client, bufnr)
-        setup_diagnostics.document_auto_format(client, bufnr)
-        setup_diagnostics.inlay_hint(client, bufnr)
-        if client.server_capabilities.documentSymbolProvider then
-            navic.attach(client, bufnr)
+        on_attach = function(client, bufnr)
+            setup_diagnostics.keymaps(client, bufnr)
+            setup_diagnostics.document_highlight(client, bufnr)
+            setup_diagnostics.document_auto_format(client, bufnr)
+            setup_diagnostics.inlay_hint(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                navic.attach(client, bufnr)
+            end
+        end,
+        capabilities = setup_diagnostics.get_capabilities(),
+    }
+end)
+
+return setmetatable({}, {
+    __index = function(_, key)
+        if key == "config" then
+            return lsp_config
+        elseif key == "root_patterns" then
+            return root_markers
         end
     end,
-    capabilities = setup_diagnostics.get_capabilities(),
-}
+})
 
-local lsp_server_async = lsp_utils.is_lsp_server_installed(lsp_server_name)
-
-local lsp_server_result
-while not lsp_server_result do
-    lsp_server_result = lsp_server_async()
-    vim.wait(100)
-end
-
-_G.python_lsp_config = lsp_server_config
-
-if lsp_server_result then
-    return lsp_server_config
-else
-    vim.notify("An error occurred while setting up the LSP (" .. lsp_server_name .. ")!", vim.log.levels.ERROR)
-end
--- LSP
-
--- vim: foldmethod=indent foldlevel=0
+-- vim: foldmethod=indent foldlevel=1
