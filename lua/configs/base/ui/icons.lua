@@ -49,6 +49,8 @@ return {
         symbol = "",
         symbol2 = "",
         eval = "",
+        substitute1 = "",
+        substitute2 = "",
     },
     git_status = {
         added = "",
