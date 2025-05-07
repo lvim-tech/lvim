@@ -33,6 +33,7 @@ modules["nvim-lua/popup.nvim"] = {
 modules["MunifTanjim/nui.nvim"] = {
     commit = funcs.get_commit("nui.nvim", plugins_snapshot),
     lazy = true,
+    config = dependencies_config.nui_nvim,
 }
 
 modules["lvim-tech/lvim-ui-config"] = {
