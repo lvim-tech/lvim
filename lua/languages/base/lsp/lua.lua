@@ -71,7 +71,6 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
         name = "lua",
         cmd = { "lua-language-server" },
         filetypes = _G.file_types.lua,
-        root_dir = nil,
         settings = {
             Lua = {
                 format = {
