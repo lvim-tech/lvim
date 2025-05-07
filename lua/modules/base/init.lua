@@ -796,7 +796,7 @@ modules["mbbill/undotree"] = {
 local languages_config = require("modules.base.configs.languages")
 
 modules["williamboman/mason.nvim"] = {
-    branch = "v2.x",
+    -- branch = "v2.x",
     build = ":MasonUpdate",
     commit = funcs.get_commit("mason.nvim", plugins_snapshot),
     config = languages_config.mason_nvim,
@@ -879,17 +879,6 @@ modules["akinsho/flutter-tools.nvim"] = {
         "nvim-lua/plenary.nvim",
     },
     config = languages_config.flutter_tools_nvim,
-}
-
-modules["luckasRanarison/tailwind-tools.nvim"] = {
-    commit = funcs.get_commit("tailwind-tools.nvim", plugins_snapshot),
-    build = ":UpdateRemotePlugins",
-    ft = "astro",
-    dependencies = {
-        "nvim-treesitter/nvim-treesitter",
-        -- "neovim/nvim-lspconfig",
-    },
-    config = languages_config.tailwind_tools_nvim,
 }
 
 modules["jsongerber/nvim-px-to-rem"] = {
