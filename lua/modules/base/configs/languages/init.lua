@@ -488,36 +488,6 @@ config.flutter_tools_nvim = function()
     })
 end
 
-config.tailwind_tools_nvim = function()
-    local tailwind_tools_status_ok, tailwind_tools = pcall(require, "tailwind-tools")
-    if not tailwind_tools_status_ok then
-        return
-    end
-
-    local lsp_utils = require("languages.utils")
-    local server_name = "tailwindcss-language-server"
-    local async_op = lsp_utils.is_lsp_server_installed(server_name)
-    local result
-    while not result do
-        result = async_op()
-        vim.wait(100)
-    end
-    if result then
-        tailwind_tools.setup({
-            server = {
-                override = true,
-                settings = {},
-            },
-            document_color = {
-                enabled = false,
-                kind = "inline",
-                inline_symbol = " ● ",
-                debounce = 200,
-            },
-        })
-    end
-end
-
 config.nvim_px_to_rem = function()
     local nvim_px_to_rem_status_ok, nvim_px_to_rem = pcall(require, "nvim-px-to-rem")
     if not nvim_px_to_rem_status_ok then
