@@ -13,76 +13,6 @@ config.mason_nvim = function()
             icons = icons.mason,
         },
     })
-    vim.api.nvim_create_user_command(
-        "LvimInstallLangDependencies",
-        "lua require('languages.utils.lsp_manager').install_all_packages()",
-        {}
-    )
-    vim.api.nvim_create_user_command("LspHover", "lua vim.lsp.buf.hover()", {})
-    vim.api.nvim_create_user_command("LspRename", "lua vim.lsp.buf.rename()", {})
-    vim.api.nvim_create_user_command("LspFormat", "lua vim.lsp.buf.format {async = false}", {})
-    vim.api.nvim_create_user_command("LspCodeAction", "lua vim.lsp.buf.code_action()", {})
-    vim.api.nvim_create_user_command(
-        "LspShowDiagnosticCurrent",
-        "lua require('languages.base.utils.show_diagnostic').line()",
-        {}
-    )
-    vim.api.nvim_create_user_command(
-        "LspShowDiagnosticNext",
-        "lua require('languages.base.utils.show_diagnostic').goto_next()",
-        {}
-    )
-    vim.api.nvim_create_user_command(
-        "LspShowDiagnosticPrev",
-        "lua require('languages.base.utils.show_diagnostic').goto_prev()",
-        {}
-    )
-    vim.api.nvim_create_user_command("LspDefinition", "lua vim.lsp.buf.definition()", {})
-    vim.api.nvim_create_user_command("LspTypeDefinition", "lua vim.lsp.buf.type_definition()", {})
-    vim.api.nvim_create_user_command("LspDeclaration", "lua vim.lsp.buf.declaration()", {})
-    vim.api.nvim_create_user_command("LspReferences", "lua vim.lsp.buf.references()", {})
-    vim.api.nvim_create_user_command("LspImplementation", "lua vim.lsp.buf.implementation()", {})
-    vim.api.nvim_create_user_command("LspSignatureHelp", "lua vim.lsp.buf.signature_help()", {})
-    vim.api.nvim_create_user_command("LspDocumentSymbol", "lua vim.lsp.buf.document_symbol()", {})
-    vim.api.nvim_create_user_command("LspWorkspaceSymbol", "lua vim.lsp.buf.workspace_symbol()", {})
-    vim.api.nvim_create_user_command("LspCodeLensRefresh", "lua vim.lsp.codelens.refresh()", {})
-    vim.api.nvim_create_user_command("LspCodeLensRun", "lua vim.lsp.codelens.run()", {})
-    vim.api.nvim_create_user_command("LspAddToWorkspaceFolder", "lua vim.lsp.buf.add_workspace_folder()", {})
-    vim.api.nvim_create_user_command("LspRemoveWorkspaceFolder", "lua vim.lsp.buf.remove_workspace_folder()", {})
-    vim.api.nvim_create_user_command("LspListWorkspaceFolders", "lua vim.lsp.buf.list_workspace_folders()", {})
-    vim.api.nvim_create_user_command("LspIncomingCalls", "lua vim.lsp.buf.incoming_calls()", {})
-    vim.api.nvim_create_user_command("LspOutgoingCalls", "lua vim.lsp.buf.outgoing_calls()", {})
-    vim.api.nvim_create_user_command("LspClearReferences", "lua vim.lsp.buf.clear_references()", {})
-    vim.api.nvim_create_user_command("LspDocumentHighlight", "lua vim.lsp.buf.document_highlight()", {})
-    vim.api.nvim_create_user_command(
-        "LspShowDiagnosticCurrent",
-        "lua require('languages.utils.show_diagnostics').line()",
-        {}
-    )
-    vim.api.nvim_create_user_command(
-        "LspShowDiagnosticNext",
-        "lua require('languages.utils.show_diagnostics').goto_next()",
-        {}
-    )
-    vim.api.nvim_create_user_command(
-        "LspShowDiagnosticPrev",
-        "lua require('languages.utils.show_diagnostics').goto_prev()",
-        {}
-    )
-    vim.api.nvim_create_user_command("DAPLocal", "lua require('languages.utils').dap_local()", {})
-    vim.keymap.set("n", "<C-c><C-l>", function()
-        vim.cmd("DAPLocal")
-    end, { noremap = true, silent = true, desc = "DAPLocal" })
-    vim.keymap.set("n", "dc", function()
-        vim.cmd("LspShowDiagnosticCurrent")
-    end, { noremap = true, silent = true, desc = "LspShowDiagnosticCurrent" })
-    vim.keymap.set("n", "dn", function()
-        vim.cmd("LspShowDiagnosticNext")
-    end, { noremap = true, silent = true, desc = "LspShowDiagnosticNext" })
-    vim.keymap.set("n", "dp", function()
-        vim.cmd("LspShowDiagnosticPrev")
-    end, { noremap = true, silent = true, desc = "LspShowDiagnosticPrev" })
-
     require("languages").init()
     require("languages.utils.setup_diagnostics").init_diagnostics()
     require("languages.lsp_commands")
@@ -888,14 +818,20 @@ config.nvim_dap = function()
     end, { noremap = true, silent = true, desc = "DapToggleBreakpoint" })
     vim.keymap.set("n", "<A-2>", function()
         local ft = vim.bo.filetype
+        local dap = require("dap")
         if ft == "lua" then
-            if not require("dap").session() then
-                require("osv").run_this()
+            if not dap.session() then
+                local ok, err = pcall(function()
+                    require("osv").run_this()
+                end)
+                if not ok then
+                    vim.notify("Could not start Lua debug session: " .. tostring(err), vim.log.levels.ERROR)
+                end
             else
-                require("dap").continue()
+                dap.continue()
             end
         else
-            require("dap").continue()
+            dap.continue()
         end
     end, { noremap = true, silent = true, desc = "Debug Start/Continue" })
     vim.keymap.set("n", "<A-3>", function()
