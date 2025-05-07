@@ -33,6 +33,19 @@ M.set_ui = function()
                         lua_eval = {
                             icon = { { "▌ " .. icons.common.eval .. "  ", "UICmdlineEvalIcon" } },
                         },
+                        substitute = {
+                            icon = function(_, lines)
+                                if string.match(lines[#lines], "^s/") then
+                                    return {
+                                        { "▌ " .. icons.common.substitute1 .. "  ", "UICmdlineSubstituteIcon" },
+                                    }
+                                else
+                                    return {
+                                        { "▌ " .. icons.common.substitute2 .. "  ", "UICmdlineSubstituteIcon" },
+                                    }
+                                end
+                            end,
+                        },
                         prompt = {
                             title = function(state)
                                 local output = {}
@@ -205,7 +218,7 @@ M.set_ui = function()
                         if package.loaded["ui.message"] then
                             local message = package.loaded["ui.message"]
                             if
-                                message.confirm_window
+                                type(message.confirm_window) == "table"
                                 and message.confirm_window[tab]
                                 and vim.api.nvim_win_is_valid(message.confirm_window[tab])
                             then
@@ -215,7 +228,7 @@ M.set_ui = function()
                                 vim.g.__ui_confirm_msg = nil
                             end
                             if
-                                message.list_window
+                                type(message.list_window) == "table"
                                 and message.list_window[tab]
                                 and vim.api.nvim_win_is_valid(message.list_window[tab])
                             then
@@ -248,7 +261,7 @@ M.set_ui = function()
                                 cmdline.hide()
                             elseif cmdline.__status and cmdline.__status() then
                                 if
-                                    cmdline.window
+                                    type(cmdline.window) == "table"
                                     and cmdline.window[tab]
                                     and vim.api.nvim_win_is_valid(cmdline.window[tab])
                                 then
