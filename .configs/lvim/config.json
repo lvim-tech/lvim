@@ -1,1 +1,13 @@
-{"keyshelper": true, "virtualdiagnostic": false, "autoformat": true, "theme": "lvim-dark", "inlayhint": true, "keyshelperdelay": 0, "floatheight": 0.4}
+{
+    "keyshelper": true,
+    "lspprogress": true,
+    "theme": "lvim-dark",
+    "virtualdiagnostic": {
+        "lines": false,
+        "text": false
+    },
+    "autoformat": true,
+    "keyshelperdelay": 200,
+    "inlayhint": true,
+    "floatheight": 0.4
+}
