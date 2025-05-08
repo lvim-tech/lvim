@@ -34,6 +34,17 @@ local function root_pattern(...)
     end
 end
 
+local function is_real_file_buffer(bufnr)
+    if not bufnr or not vim.api.nvim_buf_is_valid(bufnr) then
+        return false
+    end
+    local name = vim.api.nvim_buf_get_name(bufnr)
+    if not name or name == "" then
+        return false
+    end
+    return true
+end
+
 local function is_client_attached_to_buffer(client_id, bufnr)
     if not client_id or not bufnr then
         return false
@@ -95,7 +106,7 @@ M.get_compatible_lsp_for_ft = function(ft)
 end
 
 M.ensure_lsp_for_buffer = function(server_name, bufnr)
-    if not bufnr or not vim.api.nvim_buf_is_valid(bufnr) then
+    if not is_real_file_buffer(bufnr) then
         return nil
     end
     if M.is_server_disabled_globally(server_name) or M.is_server_disabled_for_buffer(server_name, bufnr) then
@@ -162,11 +173,6 @@ M.ensure_lsp_for_buffer = function(server_name, bufnr)
     }, {
         bufnr = bufnr,
     })
-    -- INFO: old - need check nil
-    -- if new_client_id then
-    --     _G.lsp_clients_by_root[server_name][root_dir] = new_client_id
-    --     return new_client_id
-    -- end
     if new_client_id then
         if _G.lsp_clients_by_root == nil then
             _G.lsp_clients_by_root = {}
@@ -244,7 +250,7 @@ M.enable_lsp_server_for_buffer = function(server_name, bufnr)
         return false
     end
     local ft = vim.bo[bufnr].filetype
-    if ft and ft ~= "" and M.is_lsp_compatible_with_ft(server_name, ft) then
+    if ft and ft ~= "" and M.is_lsp_compatible_with_ft(server_name, ft) and is_real_file_buffer(bufnr) then
         local already_attached = false
         for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
             if client.name == server_name then
@@ -277,28 +283,41 @@ M.start_language_server = function(server_name, force)
     if not force and M.is_server_disabled_globally(server_name) then
         return nil
     end
-    local bufnr = vim.api.nvim_get_current_buf()
-    local ft = vim.bo[bufnr].filetype
-    if not force and ft ~= "" and not M.is_lsp_compatible_with_ft(server_name, ft) then
-        local found_compatible_buffer = false
+
+    local function find_compatible_buf()
         for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-            if vim.api.nvim_buf_is_valid(buf) then
+            if is_real_file_buffer(buf) then
                 local buf_ft = vim.bo[buf].filetype
                 if buf_ft ~= "" and M.is_lsp_compatible_with_ft(server_name, buf_ft) then
-                    bufnr = buf
-                    found_compatible_buffer = true
-                    break
+                    return buf, buf_ft
                 end
             end
         end
-        if not found_compatible_buffer and not force then
-            return nil
+        return nil, nil
+    end
+
+    local bufnr = vim.api.nvim_get_current_buf()
+    local ft = vim.bo[bufnr].filetype
+
+    if not is_real_file_buffer(bufnr) or not M.is_lsp_compatible_with_ft(server_name, ft) then
+        bufnr, ft = find_compatible_buf()
+        if not bufnr or not is_real_file_buffer(bufnr) or not M.is_lsp_compatible_with_ft(server_name, ft) then
+            if not force then
+                return nil
+            end
+            bufnr = nil
         end
     end
+
+    if not bufnr or not is_real_file_buffer(bufnr) then
+        return nil
+    end
+
     local client_id = M.ensure_lsp_for_buffer(server_name, bufnr)
+
     if force and client_id then
         for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-            if buf ~= bufnr and vim.api.nvim_buf_is_valid(buf) then
+            if buf ~= bufnr and is_real_file_buffer(buf) then
                 local buf_ft = vim.bo[buf].filetype
                 if buf_ft ~= "" and M.is_lsp_compatible_with_ft(server_name, buf_ft) then
                     if not M.is_server_disabled_for_buffer(server_name, buf) then
@@ -404,7 +423,6 @@ M.setup_efm = function(filetypes, tools_config)
     end
 end
 
--- M.set_installation_status = function(_, _) end
 M.set_installation_status = function(status)
     local previous_status = _G.lsp_installation_in_progress
     _G.lsp_installation_in_progress = status
@@ -426,7 +444,7 @@ M.set_installation_status = function(status)
             end
             vim.defer_fn(function()
                 for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-                    if vim.api.nvim_buf_is_valid(bufnr) then
+                    if is_real_file_buffer(bufnr) then
                         local ft = vim.bo[bufnr].filetype
                         if ft and ft ~= "" then
                             local servers = M.get_compatible_lsp_for_ft(ft)
