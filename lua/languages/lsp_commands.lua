@@ -174,7 +174,11 @@ local function lvim_toggle_lsp_server()
             }
         end
     end
+    local has_efm = false
     if _G.global and _G.global.efm and _G.global.efm.filetypes and #_G.global.efm.filetypes > 0 then
+        has_efm = true
+    end
+    if has_efm or running_servers["efm"] or disabled_servers["efm"] then
         servers_info["efm"] = {
             name = "efm",
             status = disabled_servers["efm"] and "Disabled" or running_servers["efm"] and "Running" or "Not Running",
@@ -535,6 +539,80 @@ local function lvim_toggle_lsp_for_buffer()
     end)
 end
 
+local function lvim_lsp_restart()
+    local running_clients = vim.lsp.get_clients()
+    if #running_clients == 0 then
+        vim.notify("No LSP servers are running.", vim.log.levels.INFO)
+        return
+    end
+    local running_servers = {}
+    for _, client in ipairs(running_clients) do
+        running_servers[client.name] = true
+    end
+    local menu_items = {}
+    for server_name in pairs(running_servers) do
+        table.insert(menu_items, {
+            text = string.format("Restart: %s", server_name),
+            server = server_name,
+            action = "restart",
+        })
+    end
+    table.sort(menu_items, function(a, b)
+        return a.server < b.server
+    end)
+    table.insert(menu_items, { text = "Cancel", action = "cancel" })
+    local display_items = {}
+    for _, item in ipairs(menu_items) do
+        table.insert(display_items, item.text)
+    end
+    local opts = ui_config.select(display_items, { prompt = "Restart LSP Server..." }, {})
+    select(opts, function(choice)
+        if not choice or choice == "Cancel" then
+            return
+        end
+        local selected_item
+        for _, item in ipairs(menu_items) do
+            if item.text == choice then
+                selected_item = item
+                break
+            end
+        end
+        if not selected_item or not selected_item.server then
+            return
+        end
+        local server_name = selected_item.server
+        local attached_bufs = {}
+        for _, client in ipairs(running_clients) do
+            if client.name == server_name then
+                for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+                    for _, c in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
+                        if c.id == client.id then
+                            table.insert(attached_bufs, bufnr)
+                        end
+                    end
+                end
+                vim.lsp.stop_client(client.id, true)
+            end
+        end
+        vim.defer_fn(function()
+            local ok, new_client_id = pcall(function()
+                return lsp_manager.start_language_server(server_name, true)
+            end)
+            if ok and new_client_id then
+                for _, bufnr in ipairs(attached_bufs) do
+                    pcall(vim.lsp.buf_attach_client, bufnr, new_client_id)
+                end
+                vim.notify("Restarted and re-attached LSP server: " .. server_name, vim.log.levels.INFO)
+            else
+                vim.notify(
+                    "Restarted LSP server: " .. server_name .. " (auto-attach may not be possible)",
+                    vim.log.levels.INFO
+                )
+            end
+        end, 500)
+    end)
+end
+
 local function setup_lsp_error_filter()
     local original_notify = vim.notify
     --- @diagnostic disable-next-line: duplicate-set-field
@@ -553,7 +631,6 @@ setup_lsp_error_filter()
 
 local function lvim_lsp_info()
     local api = vim.api
-
     local lsp_icons = {
         shape_square = "■",
         shape_diamond = "◆",
@@ -563,17 +640,12 @@ local function lvim_lsp_info()
         cross = "✗",
         check = "✓",
     }
-
-    -- Indentation constants for uniform alignment
     local INDENT_L0 = ""
     local INDENT_L1 = "  "
     local INDENT_L2 = "    "
     local INDENT_L3 = "      "
     local INDENT_L4 = "        "
-
-    -- Highlight groups
     api.nvim_set_hl(0, "LspIcon", { fg = _G.LVIM_COLORS.blue, bg = "NONE", bold = true })
-    api.nvim_set_hl(0, "LspActiveBuffers", { fg = _G.LVIM_COLORS.yellow, bg = "NONE", bold = true })
     api.nvim_set_hl(0, "LspInfoBG", { bg = _G.LVIM_COLORS.bg_float })
     api.nvim_set_hl(0, "LspInfoTitle", { fg = _G.LVIM_COLORS.red, bg = "NONE", bold = true })
     api.nvim_set_hl(0, "LspInfoServerName", { fg = _G.LVIM_COLORS.orange, bg = "NONE", bold = true })
@@ -589,20 +661,16 @@ local function lvim_lsp_info()
     api.nvim_set_hl(0, "LspInfoConfig", { fg = _G.LVIM_COLORS.fg, bg = "NONE" })
     api.nvim_set_hl(0, "LspInfoConfigKey", { fg = _G.LVIM_COLORS.cyan, bg = "NONE", italic = true })
     api.nvim_set_hl(0, "LspInfoFold", { fg = _G.LVIM_COLORS.yellow, bg = "NONE", bold = true })
-
     local clients = vim.lsp.get_clients()
     if #clients == 0 then
         vim.notify("No active LSP clients found", vim.log.levels.INFO)
         return
     end
-
     local popup_width = math.floor(vim.o.columns * 0.8)
-
     local function center_text(text, width)
         local pad = math.max(0, math.floor((width - vim.fn.strdisplaywidth(text)) / 2))
         return string.rep(" ", pad) .. text
     end
-
     local function format_value(val)
         if type(val) == "string" then
             return '"' .. val .. '"'
@@ -614,7 +682,6 @@ local function lvim_lsp_info()
             return tostring(val)
         end
     end
-
     local function deep_copy_table(t)
         if type(t) ~= "table" then
             return t
@@ -629,8 +696,6 @@ local function lvim_lsp_info()
         end
         return result
     end
-
-    -- Returns true if table is an array (all integer keys, 1-based, no holes)
     local function is_array(t)
         if type(t) ~= "table" then
             return false
@@ -648,12 +713,10 @@ local function lvim_lsp_info()
         end
         return n == max and n > 0
     end
-
     local lines = {}
     local ns = api.nvim_create_namespace("lsp_info_popup")
     local highlights = {}
     local folds = {}
-
     local function add_tool_highlight(line_idx, tool_name, indent)
         local prefix = (indent or INDENT_L2) .. lsp_icons.shape_circle .. " "
         local col_start = #prefix
@@ -665,7 +728,6 @@ local function lvim_lsp_info()
             hl_group = "LspInfoToolName",
         })
     end
-
     local function add_icon_highlight(line_idx, icon)
         local line_text = lines[line_idx + 1]
         local s, e = string.find(line_text, vim.pesc(icon), 1, true)
@@ -678,10 +740,9 @@ local function lvim_lsp_info()
             })
         end
     end
-
     local function add_highlight(line_idx, substr, hl_group)
         local line_text = lines[line_idx + 1]
-        local s, e = string.find(line_text, vim.pesc(substr), 1, true)
+        local s, e = string.find(line_text, substr, 1, true)
         if s and e then
             table.insert(highlights, {
                 line = line_idx,
@@ -691,7 +752,6 @@ local function lvim_lsp_info()
             })
         end
     end
-
     local function add_separator(hl_group)
         local separator = string.rep("─", popup_width)
         table.insert(lines, separator)
@@ -703,8 +763,6 @@ local function lvim_lsp_info()
             hl_group = hl_group,
         })
     end
-
-    -- Pretty table rendering, correctly handles arrays and objects
     local function display_table(tbl, line_list, highlight_list, indent, fold_info)
         if not tbl or type(tbl) ~= "table" then
             return
@@ -759,14 +817,11 @@ local function lvim_lsp_info()
             fold_info.end_line = #line_list - 1
         end
     end
-
     local title = "LSP SERVERS INFORMATION"
     local centered_title = center_text(title, popup_width)
     table.insert(lines, centered_title)
     add_highlight(#lines - 1, title, "LspInfoTitle")
     add_separator("LspInfoTitle")
-
-    -- SORT CLIENTS: efm always first if present and running
     local efm_client, other_clients = nil, {}
     for _, client in ipairs(clients) do
         if client.name == "efm" then
@@ -775,7 +830,6 @@ local function lvim_lsp_info()
             table.insert(other_clients, client)
         end
     end
-
     local sorted_clients = {}
     if efm_client then
         table.insert(sorted_clients, efm_client)
@@ -783,16 +837,13 @@ local function lvim_lsp_info()
     for _, c in ipairs(other_clients) do
         table.insert(sorted_clients, c)
     end
-
     for _, client in ipairs(sorted_clients) do
         table.insert(lines, "")
         local server_line = INDENT_L0 .. lsp_icons.shape_square .. " " .. client.name .. " (ID: " .. client.id .. ")"
         table.insert(lines, server_line)
         add_highlight(#lines - 1, client.name, "LspInfoServerName")
         add_icon_highlight(#lines - 1, lsp_icons.shape_square)
-
         if client.name == "efm" then
-            -- EFM Linters and Formatters
             local buffers_by_filetype = {}
             if client.attached_buffers then
                 for bufnr, _ in pairs(client.attached_buffers) do
@@ -808,13 +859,10 @@ local function lvim_lsp_info()
                     end
                 end
             end
-
             local linter_by_name = {}
             local formatter_by_name = {}
-
             for filetype, configs in pairs(_G.efm_configs or {}) do
                 for _, config in ipairs(configs) do
-                    -- Linters
                     if config.lPrefix or (config.lintCommand and config.lintCommand ~= "") then
                         local name = config.server_name or config.lPrefix or "Unknown"
                         if not linter_by_name[name] then
@@ -823,7 +871,6 @@ local function lvim_lsp_info()
                         table.insert(linter_by_name[name].filetypes, filetype)
                         linter_by_name[name].filetype_to_buffers[filetype] = buffers_by_filetype[filetype]
                     end
-                    -- Formatters
                     if config.fPrefix or (config.formatCommand and config.formatCommand ~= "") then
                         local name = config.server_name or config.fPrefix or "Unknown"
                         if not formatter_by_name[name] then
@@ -834,8 +881,6 @@ local function lvim_lsp_info()
                     end
                 end
             end
-
-            -- LINTERS SECTION
             if next(linter_by_name) then
                 local linter_line = INDENT_L1 .. lsp_icons.shape_diamond .. " Linters: " .. lsp_icons.bracket
                 table.insert(lines, linter_line)
@@ -860,11 +905,9 @@ local function lvim_lsp_info()
                     table.insert(lines, tool_line)
                     add_tool_highlight(#lines - 1, linter_name, INDENT_L2)
                     add_icon_highlight(#lines - 1, lsp_icons.shape_circle)
-
                     local fold_info = { id = "linter_" .. linter_name }
                     table.insert(folds, fold_info)
                     display_table(linter_info.config, lines, highlights, INDENT_L3, fold_info)
-                    -- Buffers per filetype for this linter
                     for _, ft in ipairs(linter_info.filetypes) do
                         if linter_info.filetype_to_buffers[ft] and #linter_info.filetype_to_buffers[ft] > 0 then
                             local buffer_line = INDENT_L3 .. lsp_icons.shape_diamond .. " Buffers"
@@ -889,8 +932,6 @@ local function lvim_lsp_info()
                     end
                 end
             end
-
-            -- FORMATTERS SECTION
             if next(formatter_by_name) then
                 local formatter_line = INDENT_L1 .. lsp_icons.shape_diamond .. " Formatters: " .. lsp_icons.bracket
                 table.insert(lines, formatter_line)
@@ -943,7 +984,6 @@ local function lvim_lsp_info()
                     end
                 end
             end
-            -- Supported filetypes section
             local filetypes = client.config and client.config.filetypes or {}
             if #filetypes > 0 then
                 table.insert(lines, "")
@@ -970,8 +1010,6 @@ local function lvim_lsp_info()
                 add_highlight(#lines - 1, "Command:", "LspInfoKey")
             end
         end
-
-        -- SERVER CONFIG, CAPABILITIES, BUFFERS ... (unchanged)
         if client.config then
             table.insert(lines, "")
             table.insert(lines, INDENT_L1 .. lsp_icons.shape_diamond .. " Server Configuration")
@@ -1126,16 +1164,13 @@ local function lvim_lsp_info()
         table.insert(lines, "")
         add_separator()
     end
-
     local bufnr = api.nvim_create_buf(false, true)
     vim.bo[bufnr].bufhidden = "wipe"
     api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
-
     local width = popup_width
     local height = math.min(#lines, math.floor(vim.o.lines * 0.8))
     local col = math.floor((vim.o.columns - width) / 2)
     local row = math.floor((vim.o.lines - height) / 2)
-
     local win = api.nvim_open_win(bufnr, true, {
         style = "minimal",
         relative = "editor",
@@ -1146,9 +1181,7 @@ local function lvim_lsp_info()
         border = "rounded",
         zindex = 250,
     })
-
     vim.wo[win].winhighlight = "Normal:LspInfoBG,NormalNC:LspInfoBG"
-
     for _, hl in ipairs(highlights) do
         pcall(function()
             if hl.col_end == -1 then
@@ -1158,10 +1191,8 @@ local function lvim_lsp_info()
             end
         end)
     end
-
     vim.wo[win].foldenable = true
     vim.wo[win].foldmethod = "manual"
-
     for _, fold in ipairs(folds) do
         if fold.start_line and fold.end_line then
             pcall(function()
@@ -1171,7 +1202,6 @@ local function lvim_lsp_info()
             end)
         end
     end
-
     vim.api.nvim_buf_set_keymap(bufnr, "n", "<CR>", "<cmd>normal! za<CR>", {
         noremap = true,
         silent = true,
@@ -1196,7 +1226,6 @@ local function lvim_lsp_info()
         noremap = true,
         silent = true,
     })
-
     vim.api.nvim_buf_set_keymap(bufnr, "n", "q", "<cmd>close<CR>", {
         noremap = true,
         silent = true,
@@ -1207,7 +1236,6 @@ local function lvim_lsp_info()
         silent = true,
         nowait = true,
     })
-
     return {
         bufnr = bufnr,
         win = win,
@@ -1280,6 +1308,7 @@ vim.api.nvim_create_user_command("LvimInlayHint", lvim_inlay_hint, {})
 vim.api.nvim_create_user_command("LvimLspProgress", lvim_lsp_progress, {})
 vim.api.nvim_create_user_command("LvimLspToggleServers", lvim_toggle_lsp_server, {})
 vim.api.nvim_create_user_command("LvimLspToggleServersForBuffer", lvim_toggle_lsp_for_buffer, {})
+vim.api.nvim_create_user_command("LvimLspRestart", lvim_lsp_restart, {})
 vim.api.nvim_create_user_command("LvimLspInfo", lvim_lsp_info, {})
 
 -- KeyMaps
@@ -1295,4 +1324,5 @@ vim.keymap.set(
     "<cmd>LvimLspToggleServersForBuffer<CR>",
     { desc = "Lvim Toggle LSP servers for buffer" }
 )
+vim.keymap.set("n", "<Leader>lr", "<cmd>LvimLspRestart<CR>", { desc = "Lvim LSP restart" })
 vim.keymap.set("n", "<Leader>li", "<cmd>LvimLspInfo<CR>", { desc = "Lvim LSP info" })

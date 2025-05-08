@@ -67,7 +67,8 @@ M.init = function()
             callback = function()
                 vim.defer_fn(function()
                     require("languages.lsp_manager").stop_servers_for_old_project()
-                end, 1000)
+                    vim.cmd("Fidget clear")
+                end, 5000)
             end,
             desc = "Stops LSP servers from other projects when directory is changed",
         })
