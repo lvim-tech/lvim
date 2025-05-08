@@ -1,13 +1,13 @@
 {
     "keyshelper": true,
-    "lspprogress": true,
-    "theme": "lvim-dark",
+    "lspprogress": "fidget",
     "virtualdiagnostic": {
         "lines": false,
         "text": false
     },
     "autoformat": true,
-    "keyshelperdelay": 200,
+    "floatheight": 0.4,
     "inlayhint": true,
-    "floatheight": 0.4
+    "keyshelperdelay": 200,
+    "theme": "lvim-kanagawa"
 }

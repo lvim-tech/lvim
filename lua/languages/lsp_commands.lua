@@ -4,6 +4,7 @@ local funcs = require("core.funcs")
 local icons = require("configs.base.ui.icons")
 local lsp_manager = require("languages.lsp_manager")
 local setup_diagnostics = require("languages.utils.setup_diagnostics")
+local fidget = require("fidget")
 
 local function lvim_auto_format()
     local status
@@ -118,25 +119,39 @@ local function lvim_virtual_diagnostic()
 end
 
 local function lvim_lsp_progress()
-    local status
-    if _G.LVIM_SETTINGS.lspprogress == true then
-        status = "Enabled"
+    local status = _G.LVIM_SETTINGS.lspprogress
+    local status_str
+    if status == "fidget" then
+        status_str = "Enabled (with fidget)"
+    elseif status == "notify" then
+        status_str = "Enabled (with notify)"
     else
-        status = "Disabled"
+        status_str = "Disabled"
     end
     local opts = ui_config.select({
-        "Enable",
+        "Enable (with notify)",
+        "Enable (with fidget)",
         "Disable",
         "Cancel",
-    }, { prompt = "LspProgress (" .. status .. ")" }, {})
+    }, { prompt = "LspProgress " .. status_str .. "" }, {})
     select(opts, function(choice)
-        if choice == "Enable" then
-            _G.LVIM_SETTINGS["lspprogress"] = true
+        if choice == "Enable (with notify)" then
+            _G.LVIM_SETTINGS.lspprogress = "notify"
             funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+            fidget.progress.suppress(true)
+            fidget.notification.suppress(true)
             setup_diagnostics.enable_lsp_progress()
-        elseif choice == "Disable" then
-            _G.LVIM_SETTINGS["lspprogress"] = false
+        elseif choice == "Enable (with fidget)" then
+            _G.LVIM_SETTINGS.lspprogress = "fidget"
             funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+            fidget.progress.suppress(false)
+            fidget.notification.suppress(false)
+            setup_diagnostics.disable_lsp_progress()
+        elseif choice == "Disable" then
+            _G.LVIM_SETTINGS.lspprogress = false
+            funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+            fidget.progress.suppress(true)
+            fidget.notification.suppress(true)
             setup_diagnostics.disable_lsp_progress()
         end
     end)

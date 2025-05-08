@@ -1,3 +1,4 @@
+local fidget = require("fidget")
 local icons = require("configs.base.ui.icons")
 
 local M = {}
@@ -40,8 +41,18 @@ M.init_diagnostics = function()
         text = icons.diagnostics.info,
         texthl = "DiagnosticInfo",
     })
-    if _G.LVIM_SETTINGS.lspprogress then
+    if _G.LVIM_SETTINGS.lspprogress == "fidget" then
+        fidget.progress.suppress(false)
+        fidget.notification.suppress(false)
+        M.disable_lsp_progress()
+    elseif _G.LVIM_SETTINGS.lspprogress == "notify" then
+        fidget.progress.suppress(true)
+        fidget.notification.suppress(true)
         M.enable_lsp_progress()
+    else
+        fidget.progress.suppress(true)
+        fidget.notification.suppress(true)
+        M.disable_lsp_progress()
     end
 end
 
