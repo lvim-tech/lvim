@@ -587,6 +587,38 @@ config.nvim_treesitter = function()
     })
 end
 
+config.fidget_nvim = function()
+    local fidget_status_ok, fidget = pcall(require, "fidget")
+    if not fidget_status_ok then
+        return
+    end
+    fidget.setup({
+        progress = {
+            display = {
+                done_style = "FidgetDone",
+                progress_style = "FidgetProgress",
+                group_style = "FidgetGroup",
+                icon_style = "FidgetIcon",
+            },
+        },
+        notification = {
+            view = {
+                icon_separator = " ",
+                group_separator = "─────",
+                group_separator_hl = "Error",
+            },
+            override_vim_notify = false,
+            window = {
+                normal_hl = "FidgetWindow",
+                x_padding = 0,
+                y_padding = 1,
+                winblend = 0,
+                align = "top",
+            },
+        },
+    })
+end
+
 config.nvim_navic = function()
     local nvim_navic_status_ok, nvim_navic = pcall(require, "nvim-navic")
     if not nvim_navic_status_ok then

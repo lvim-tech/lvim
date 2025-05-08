@@ -921,6 +921,11 @@ modules["nvim-treesitter/nvim-treesitter"] = {
     config = languages_config.nvim_treesitter,
 }
 
+modules["j-hui/fidget.nvim"] = {
+    commit = funcs.get_commit("fidget.nvim", plugins_snapshot),
+    config = languages_config.fidget_nvim,
+}
+
 modules["SmiteshP/nvim-navic"] = {
     commit = funcs.get_commit("nvim-navic", plugins_snapshot),
     config = languages_config.nvim_navic,
