@@ -573,6 +573,7 @@ local function lvim_lsp_info()
 
     -- Highlight groups
     api.nvim_set_hl(0, "LspIcon", { fg = _G.LVIM_COLORS.blue, bg = "NONE", bold = true })
+    api.nvim_set_hl(0, "LspActiveBuffers", { fg = _G.LVIM_COLORS.yellow, bg = "NONE", bold = true })
     api.nvim_set_hl(0, "LspInfoBG", { bg = _G.LVIM_COLORS.bg_float })
     api.nvim_set_hl(0, "LspInfoTitle", { fg = _G.LVIM_COLORS.red, bg = "NONE", bold = true })
     api.nvim_set_hl(0, "LspInfoServerName", { fg = _G.LVIM_COLORS.orange, bg = "NONE", bold = true })
@@ -629,15 +630,23 @@ local function lvim_lsp_info()
         return result
     end
 
+    -- Returns true if table is an array (all integer keys, 1-based, no holes)
     local function is_array(t)
         if type(t) ~= "table" then
             return false
         end
-        local count = 0
-        for _ in pairs(t) do
-            count = count + 1
+        local max, n = 0, 0
+        for k, _ in pairs(t) do
+            if type(k) == "number" and k > 0 and math.floor(k) == k then
+                if k > max then
+                    max = k
+                end
+                n = n + 1
+            else
+                return false
+            end
         end
-        return count > 0 and t[1] ~= nil
+        return n == max and n > 0
     end
 
     local lines = {}
@@ -695,6 +704,7 @@ local function lvim_lsp_info()
         })
     end
 
+    -- Pretty table rendering, correctly handles arrays and objects
     local function display_table(tbl, line_list, highlight_list, indent, fold_info)
         if not tbl or type(tbl) ~= "table" then
             return
@@ -716,54 +726,34 @@ local function lvim_lsp_info()
         for _, k in ipairs(keys) do
             local v = tbl[k]
             if type(v) ~= "function" then
-                local key_str
-                if type(k) == "number" then
-                    key_str = "[" .. k .. "]"
-                else
-                    key_str = k
-                end
-
+                local key_str = tostring(k)
                 if type(v) == "table" then
                     if vim.tbl_isempty(v) then
-                        table.insert(line_list, indent_str .. "  " .. key_str .. ": {}")
+                        table.insert(line_list, indent_str .. INDENT_L1 .. key_str .. ": {}")
                         add_highlight(#line_list - 1, key_str, "LspInfoConfigKey")
-                    else
-                        if is_array(v) and #v <= 5 then
-                            local is_simple_array = true
-                            for _, item in ipairs(v) do
-                                if type(item) == "table" then
-                                    is_simple_array = false
-                                    break
-                                end
-                            end
-                            if is_simple_array then
-                                local items = {}
-                                for _, item in ipairs(v) do
-                                    table.insert(items, format_value(item))
-                                end
-                                local items_str = table.concat(items, ", ")
-                                table.insert(line_list, indent_str .. "  " .. key_str .. ": [" .. items_str .. "]")
-                                add_highlight(#line_list - 1, key_str, "LspInfoConfigKey")
+                    elseif is_array(v) then
+                        table.insert(line_list, indent_str .. INDENT_L1 .. key_str .. ": {")
+                        add_highlight(#line_list - 1, key_str, "LspInfoConfigKey")
+                        for _, item in ipairs(v) do
+                            if type(item) == "table" then
+                                display_table(item, line_list, highlight_list, indent .. INDENT_L2)
                             else
-                                table.insert(line_list, indent_str .. "  " .. key_str .. ": {")
-                                add_highlight(#line_list - 1, key_str, "LspInfoConfigKey")
-                                display_table(v, line_list, highlight_list, indent .. "  ")
-                                table.insert(line_list, indent_str .. "  }")
+                                table.insert(line_list, indent .. INDENT_L2 .. format_value(item))
                             end
-                        else
-                            table.insert(line_list, indent_str .. "  " .. key_str .. ": {")
-                            add_highlight(#line_list - 1, key_str, "LspInfoConfigKey")
-                            display_table(v, line_list, highlight_list, indent .. "  ")
-                            table.insert(line_list, indent_str .. "  }")
                         end
+                        table.insert(line_list, indent_str .. INDENT_L1 .. "}")
+                    else
+                        table.insert(line_list, indent_str .. INDENT_L1 .. key_str .. ": {")
+                        add_highlight(#line_list - 1, key_str, "LspInfoConfigKey")
+                        display_table(v, line_list, highlight_list, indent .. INDENT_L2)
+                        table.insert(line_list, indent_str .. INDENT_L1 .. "}")
                     end
                 else
-                    table.insert(line_list, indent_str .. "  " .. key_str .. ": " .. format_value(v))
+                    table.insert(line_list, indent_str .. INDENT_L1 .. key_str .. ": " .. format_value(v))
                     add_highlight(#line_list - 1, key_str, "LspInfoConfigKey")
                 end
             end
         end
-
         table.insert(line_list, indent_str .. "}")
         if fold_info then
             fold_info.end_line = #line_list - 1
