@@ -554,16 +554,25 @@ setup_lsp_error_filter()
 local function lvim_lsp_info()
     local api = vim.api
 
-    local preview_icons = {
-        server = "■",
-        section = "◆",
-        bullet = "•",
-        triangle = "▶",
-        fold = "[+]",
+    local lsp_icons = {
+        shape_square = "■",
+        shape_diamond = "◆",
+        shape_circle = "●",
+        arrow = "➤",
+        bracket = "[+]",
         cross = "✗",
         check = "✓",
     }
 
+    -- Indentation constants for uniform alignment
+    local INDENT_L0 = ""
+    local INDENT_L1 = "  "
+    local INDENT_L2 = "    "
+    local INDENT_L3 = "      "
+    local INDENT_L4 = "        "
+
+    -- Highlight groups
+    api.nvim_set_hl(0, "LspIcon", { fg = _G.LVIM_COLORS.blue, bg = "NONE", bold = true })
     api.nvim_set_hl(0, "LspInfoBG", { bg = _G.LVIM_COLORS.bg_float })
     api.nvim_set_hl(0, "LspInfoTitle", { fg = _G.LVIM_COLORS.red, bg = "NONE", bold = true })
     api.nvim_set_hl(0, "LspInfoServerName", { fg = _G.LVIM_COLORS.orange, bg = "NONE", bold = true })
@@ -571,8 +580,9 @@ local function lvim_lsp_info()
     api.nvim_set_hl(0, "LspInfoKey", { fg = _G.LVIM_COLORS.green, bg = "NONE", bold = true })
     api.nvim_set_hl(0, "LspInfoValue", { fg = _G.LVIM_COLORS.fg, bg = "NONE" })
     api.nvim_set_hl(0, "LspInfoSeparator", { fg = _G.LVIM_COLORS.blue, bg = "NONE" })
-    api.nvim_set_hl(0, "LspInfoLinter", { fg = _G.LVIM_COLORS.yellow, bg = "NONE", bold = true })
+    api.nvim_set_hl(0, "LspInfoLinter", { fg = _G.LVIM_COLORS.purple, bg = "NONE", bold = true })
     api.nvim_set_hl(0, "LspInfoFormatter", { fg = _G.LVIM_COLORS.purple, bg = "NONE", bold = true })
+    api.nvim_set_hl(0, "LspInfoToolName", { fg = _G.LVIM_COLORS.green, bg = "NONE", bold = true })
     api.nvim_set_hl(0, "LspInfoBuffer", { fg = _G.LVIM_COLORS.cyan, bg = "NONE", italic = true })
     api.nvim_set_hl(0, "LspInfoDate", { fg = _G.LVIM_COLORS.fg, bg = "NONE", italic = true })
     api.nvim_set_hl(0, "LspInfoConfig", { fg = _G.LVIM_COLORS.fg, bg = "NONE" })
@@ -609,7 +619,6 @@ local function lvim_lsp_info()
             return t
         end
         local result = {}
-
         for k, v in pairs(t) do
             if type(v) == "table" then
                 result[k] = deep_copy_table(v)
@@ -617,7 +626,6 @@ local function lvim_lsp_info()
                 result[k] = v
             end
         end
-
         return result
     end
 
@@ -636,6 +644,31 @@ local function lvim_lsp_info()
     local ns = api.nvim_create_namespace("lsp_info_popup")
     local highlights = {}
     local folds = {}
+
+    local function add_tool_highlight(line_idx, tool_name, indent)
+        local prefix = (indent or INDENT_L2) .. lsp_icons.shape_circle .. " "
+        local col_start = #prefix
+        local col_end = col_start + #tool_name
+        table.insert(highlights, {
+            line = line_idx,
+            col_start = col_start,
+            col_end = col_end,
+            hl_group = "LspInfoToolName",
+        })
+    end
+
+    local function add_icon_highlight(line_idx, icon)
+        local line_text = lines[line_idx + 1]
+        local s, e = string.find(line_text, vim.pesc(icon), 1, true)
+        if s and e then
+            table.insert(highlights, {
+                line = line_idx,
+                col_start = s - 1,
+                col_end = e,
+                hl_group = "LspIcon",
+            })
+        end
+    end
 
     local function add_highlight(line_idx, substr, hl_group)
         local line_text = lines[line_idx + 1]
@@ -666,8 +699,8 @@ local function lvim_lsp_info()
         if not tbl or type(tbl) ~= "table" then
             return
         end
-        indent = indent or 0
-        local indent_str = string.rep(" ", indent)
+        indent = indent or INDENT_L4
+        local indent_str = indent
         table.insert(line_list, indent_str .. "{")
         if fold_info then
             fold_info.start_line = #line_list - 1
@@ -714,13 +747,13 @@ local function lvim_lsp_info()
                             else
                                 table.insert(line_list, indent_str .. "  " .. key_str .. ": {")
                                 add_highlight(#line_list - 1, key_str, "LspInfoConfigKey")
-                                display_table(v, line_list, highlight_list, indent + 4)
+                                display_table(v, line_list, highlight_list, indent .. "  ")
                                 table.insert(line_list, indent_str .. "  }")
                             end
                         else
                             table.insert(line_list, indent_str .. "  " .. key_str .. ": {")
                             add_highlight(#line_list - 1, key_str, "LspInfoConfigKey")
-                            display_table(v, line_list, highlight_list, indent + 4)
+                            display_table(v, line_list, highlight_list, indent .. "  ")
                             table.insert(line_list, indent_str .. "  }")
                         end
                     end
@@ -741,115 +774,199 @@ local function lvim_lsp_info()
     local centered_title = center_text(title, popup_width)
     table.insert(lines, centered_title)
     add_highlight(#lines - 1, title, "LspInfoTitle")
-
     add_separator("LspInfoTitle")
 
+    -- SORT CLIENTS: efm always first if present and running
+    local efm_client, other_clients = nil, {}
     for _, client in ipairs(clients) do
+        if client.name == "efm" then
+            efm_client = client
+        else
+            table.insert(other_clients, client)
+        end
+    end
+
+    local sorted_clients = {}
+    if efm_client then
+        table.insert(sorted_clients, efm_client)
+    end
+    for _, c in ipairs(other_clients) do
+        table.insert(sorted_clients, c)
+    end
+
+    for _, client in ipairs(sorted_clients) do
         table.insert(lines, "")
-        local server_line = preview_icons.server .. " " .. client.name .. " (ID: " .. client.id .. ")"
+        local server_line = INDENT_L0 .. lsp_icons.shape_square .. " " .. client.name .. " (ID: " .. client.id .. ")"
         table.insert(lines, server_line)
         add_highlight(#lines - 1, client.name, "LspInfoServerName")
+        add_icon_highlight(#lines - 1, lsp_icons.shape_square)
+
         if client.name == "efm" then
-            -- МОДИФИЦИРАНА ЧАСТ: Използваме _G.efm_configs вместо _G.global.efm
-            if _G.efm_configs then
-                table.insert(lines, "")
-                table.insert(lines, "  " .. preview_icons.section .. " EFM Tools by Filetype")
-                add_highlight(#lines - 1, "EFM Tools by Filetype", "LspInfoSection")
-                local buffers_by_filetype = {}
-                if client.attached_buffers then
-                    for bufnr, _ in pairs(client.attached_buffers) do
-                        local buf_name = vim.api.nvim_buf_get_name(bufnr)
-                        local display_name = buf_name ~= "" and vim.fn.fnamemodify(buf_name, ":~:.") or "[No Name]"
-                        local filetype = vim.bo[bufnr].filetype
-                        if not buffers_by_filetype[filetype] then
-                            buffers_by_filetype[filetype] = {}
-                        end
+            -- EFM Linters and Formatters
+            local buffers_by_filetype = {}
+            if client.attached_buffers then
+                for bufnr, _ in pairs(client.attached_buffers) do
+                    local buf_name = vim.api.nvim_buf_get_name(bufnr)
+                    local display_name = buf_name ~= "" and vim.fn.fnamemodify(buf_name, ":~:.") or "[No Name]"
+                    local filetype = vim.bo[bufnr].filetype
+                    if filetype and filetype ~= "" then
+                        buffers_by_filetype[filetype] = buffers_by_filetype[filetype] or {}
                         table.insert(buffers_by_filetype[filetype], {
                             bufnr = bufnr,
                             name = display_name,
                         })
                     end
                 end
-                local has_tools = false
-                for filetype, configs in pairs(_G.efm_configs) do
-                    local formatters, linters = {}, {}
-                    for _, config in ipairs(configs) do
-                        local tool_name = config.server_name or config.fPrefix or config.lPrefix or "Unknown"
-                        if config.fPrefix or (config.formatCommand and config.formatCommand ~= "") then
-                            table.insert(formatters, { name = tool_name, config = config })
-                        elseif config.lPrefix or (config.lintCommand and config.lintCommand ~= "") then
-                            table.insert(linters, { name = tool_name, config = config })
+            end
+
+            local linter_by_name = {}
+            local formatter_by_name = {}
+
+            for filetype, configs in pairs(_G.efm_configs or {}) do
+                for _, config in ipairs(configs) do
+                    -- Linters
+                    if config.lPrefix or (config.lintCommand and config.lintCommand ~= "") then
+                        local name = config.server_name or config.lPrefix or "Unknown"
+                        if not linter_by_name[name] then
+                            linter_by_name[name] = { config = config, filetypes = {}, filetype_to_buffers = {} }
                         end
+                        table.insert(linter_by_name[name].filetypes, filetype)
+                        linter_by_name[name].filetype_to_buffers[filetype] = buffers_by_filetype[filetype]
                     end
-                    if #formatters > 0 or #linters > 0 then
-                        has_tools = true
-                        table.insert(lines, "")
-                        local filetype_line = "    " .. preview_icons.bullet .. " Filetype: " .. filetype
-                        table.insert(lines, filetype_line)
-                        add_highlight(#lines - 1, "Filetype: " .. filetype, "LspInfoKey")
-                        if #linters > 0 then
-                            local linter_line = "      " .. preview_icons.triangle .. " Linters: " .. preview_icons.fold
-                            table.insert(lines, linter_line)
-                            add_highlight(#lines - 1, "Linters:", "LspInfoLinter")
-                            add_highlight(#lines - 1, preview_icons.fold, "LspInfoFold")
-                            for i, linter in ipairs(linters) do
-                                local fold_info = { id = "linter_" .. filetype .. "_" .. i }
-                                table.insert(folds, fold_info)
-                                table.insert(lines, "        - " .. linter.name)
-                                display_table(linter.config, lines, highlights, 10, fold_info)
-                            end
+                    -- Formatters
+                    if config.fPrefix or (config.formatCommand and config.formatCommand ~= "") then
+                        local name = config.server_name or config.fPrefix or "Unknown"
+                        if not formatter_by_name[name] then
+                            formatter_by_name[name] = { config = config, filetypes = {}, filetype_to_buffers = {} }
                         end
-                        if #formatters > 0 then
-                            local formatter_line = "      "
-                                .. preview_icons.triangle
-                                .. " Formatters: "
-                                .. preview_icons.fold
-                            table.insert(lines, formatter_line)
-                            add_highlight(#lines - 1, "Formatters:", "LspInfoFormatter")
-                            add_highlight(#lines - 1, preview_icons.fold, "LspInfoFold")
-                            for i, formatter in ipairs(formatters) do
-                                local fold_info = { id = "formatter_" .. filetype .. "_" .. i }
-                                table.insert(folds, fold_info)
-                                table.insert(lines, "        - " .. formatter.name)
-                                display_table(formatter.config, lines, highlights, 10, fold_info)
-                            end
-                        end
-                        if buffers_by_filetype[filetype] and #buffers_by_filetype[filetype] > 0 then
-                            local buffer_line = "      "
-                                .. preview_icons.triangle
-                                .. " Active Buffers: "
-                                .. preview_icons.fold
-                            table.insert(lines, buffer_line)
-                            add_highlight(#lines - 1, "Active Buffers:", "LspInfoFormatter")
-                            add_highlight(#lines - 1, preview_icons.fold, "LspInfoFold")
-                            local fold_info = { id = "buffers_" .. filetype }
-                            table.insert(folds, fold_info)
-                            fold_info.start_line = #lines
-                            for _, buf in ipairs(buffers_by_filetype[filetype]) do
-                                table.insert(lines, "        - Buffer " .. buf.bufnr .. ": " .. buf.name)
-                            end
-                            fold_info.end_line = #lines - 1
-                        end
+                        table.insert(formatter_by_name[name].filetypes, filetype)
+                        formatter_by_name[name].filetype_to_buffers[filetype] = buffers_by_filetype[filetype]
                     end
-                end
-                if not has_tools then
-                    table.insert(lines, "    " .. preview_icons.cross .. " No tools configured for EFM")
-                    add_highlight(#lines - 1, preview_icons.cross, "LspInfoKey")
                 end
             end
-            -- Получаваме поддържаните filetypes от клиента
+
+            -- LINTERS SECTION
+            if next(linter_by_name) then
+                local linter_line = INDENT_L1 .. lsp_icons.shape_diamond .. " Linters: " .. lsp_icons.bracket
+                table.insert(lines, linter_line)
+                add_highlight(#lines - 1, "Linters:", "LspInfoLinter")
+                add_icon_highlight(#lines - 1, lsp_icons.shape_diamond)
+                add_icon_highlight(#lines - 1, lsp_icons.bracket)
+                local linter_names = {}
+                for k in pairs(linter_by_name) do
+                    table.insert(linter_names, k)
+                end
+                table.sort(linter_names)
+                for _, linter_name in ipairs(linter_names) do
+                    local linter_info = linter_by_name[linter_name]
+                    local ft_str = table.concat(linter_info.filetypes, ", ")
+                    local tool_line = INDENT_L2
+                        .. lsp_icons.shape_circle
+                        .. " "
+                        .. linter_name
+                        .. " (Filetypes: "
+                        .. ft_str
+                        .. ")"
+                    table.insert(lines, tool_line)
+                    add_tool_highlight(#lines - 1, linter_name, INDENT_L2)
+                    add_icon_highlight(#lines - 1, lsp_icons.shape_circle)
+
+                    local fold_info = { id = "linter_" .. linter_name }
+                    table.insert(folds, fold_info)
+                    display_table(linter_info.config, lines, highlights, INDENT_L3, fold_info)
+                    -- Buffers per filetype for this linter
+                    for _, ft in ipairs(linter_info.filetypes) do
+                        if linter_info.filetype_to_buffers[ft] and #linter_info.filetype_to_buffers[ft] > 0 then
+                            local buffer_line = INDENT_L3 .. lsp_icons.shape_diamond .. " Buffers"
+                            table.insert(lines, buffer_line)
+                            add_highlight(#lines - 1, "Buffers", "LspInfoSection")
+                            add_icon_highlight(#lines - 1, lsp_icons.shape_diamond)
+                            for _, buf in ipairs(linter_info.filetype_to_buffers[ft]) do
+                                local buffer_info = INDENT_L4
+                                    .. lsp_icons.shape_circle
+                                    .. " Buffer "
+                                    .. buf.bufnr
+                                    .. ": "
+                                    .. buf.name
+                                    .. " ("
+                                    .. ft
+                                    .. ")"
+                                table.insert(lines, buffer_info)
+                                add_icon_highlight(#lines - 1, lsp_icons.shape_circle)
+                                add_highlight(#lines - 1, "Buffer", "LspInfoBuffer")
+                            end
+                        end
+                    end
+                end
+            end
+
+            -- FORMATTERS SECTION
+            if next(formatter_by_name) then
+                local formatter_line = INDENT_L1 .. lsp_icons.shape_diamond .. " Formatters: " .. lsp_icons.bracket
+                table.insert(lines, formatter_line)
+                add_highlight(#lines - 1, "Formatters:", "LspInfoFormatter")
+                add_icon_highlight(#lines - 1, lsp_icons.shape_diamond)
+                add_icon_highlight(#lines - 1, lsp_icons.bracket)
+                local formatter_names = {}
+                for k in pairs(formatter_by_name) do
+                    table.insert(formatter_names, k)
+                end
+                table.sort(formatter_names)
+                for _, formatter_name in ipairs(formatter_names) do
+                    local formatter_info = formatter_by_name[formatter_name]
+                    local ft_str = table.concat(formatter_info.filetypes, ", ")
+                    local tool_line = INDENT_L2
+                        .. lsp_icons.shape_circle
+                        .. " "
+                        .. formatter_name
+                        .. " (Filetypes: "
+                        .. ft_str
+                        .. ")"
+                    table.insert(lines, tool_line)
+                    add_tool_highlight(#lines - 1, formatter_name, INDENT_L2)
+                    add_icon_highlight(#lines - 1, lsp_icons.shape_circle)
+                    local fold_info = { id = "formatter_" .. formatter_name }
+                    table.insert(folds, fold_info)
+                    display_table(formatter_info.config, lines, highlights, INDENT_L3, fold_info)
+                    -- Buffers per filetype for this formatter
+                    for _, ft in ipairs(formatter_info.filetypes) do
+                        if formatter_info.filetype_to_buffers[ft] and #formatter_info.filetype_to_buffers[ft] > 0 then
+                            local buffer_line = INDENT_L3 .. lsp_icons.shape_diamond .. " Buffers"
+                            table.insert(lines, buffer_line)
+                            add_highlight(#lines - 1, "Buffers", "LspInfoSection")
+                            add_icon_highlight(#lines - 1, lsp_icons.shape_diamond)
+                            for _, buf in ipairs(formatter_info.filetype_to_buffers[ft]) do
+                                local buffer_info = INDENT_L4
+                                    .. lsp_icons.shape_circle
+                                    .. " Buffer "
+                                    .. buf.bufnr
+                                    .. ": "
+                                    .. buf.name
+                                    .. " ("
+                                    .. ft
+                                    .. ")"
+                                table.insert(lines, buffer_info)
+                                add_icon_highlight(#lines - 1, lsp_icons.shape_circle)
+                                add_highlight(#lines - 1, "Buffer", "LspInfoBuffer")
+                            end
+                        end
+                    end
+                end
+            end
+            -- Supported filetypes section
             local filetypes = client.config and client.config.filetypes or {}
             if #filetypes > 0 then
                 table.insert(lines, "")
-                table.insert(lines, "  " .. preview_icons.section .. " Supported Filetypes")
+                table.insert(lines, INDENT_L1 .. lsp_icons.shape_diamond .. " Supported Filetypes")
                 add_highlight(#lines - 1, "Supported Filetypes", "LspInfoSection")
+                add_icon_highlight(#lines - 1, lsp_icons.shape_diamond)
                 local filetypes_str = table.concat(filetypes, ", ")
-                table.insert(lines, "    " .. filetypes_str)
+                table.insert(lines, INDENT_L2 .. filetypes_str)
             end
         else
             if client.config and client.config.filetypes and #client.config.filetypes > 0 then
                 local filetypes = table.concat(client.config.filetypes, ", ")
-                local filetype_line = "  Filetypes: " .. filetypes
+                local filetype_line = INDENT_L1 .. "Filetypes: " .. filetypes
                 table.insert(lines, filetype_line)
                 add_highlight(#lines - 1, "Filetypes:", "LspInfoKey")
             end
@@ -858,62 +975,69 @@ local function lvim_lsp_info()
                 if #cmd_str > popup_width - 10 then
                     cmd_str = cmd_str:sub(1, popup_width - 13) .. "..."
                 end
-                local cmd_line = "  Command: " .. cmd_str
+                local cmd_line = INDENT_L1 .. "Command: " .. cmd_str
                 table.insert(lines, cmd_line)
                 add_highlight(#lines - 1, "Command:", "LspInfoKey")
             end
         end
+
+        -- SERVER CONFIG, CAPABILITIES, BUFFERS ... (unchanged)
         if client.config then
             table.insert(lines, "")
-            table.insert(lines, "  " .. preview_icons.section .. " Server Configuration")
+            table.insert(lines, INDENT_L1 .. lsp_icons.shape_diamond .. " Server Configuration")
             add_highlight(#lines - 1, "Server Configuration", "LspInfoSection")
+            add_icon_highlight(#lines - 1, lsp_icons.shape_diamond)
             local has_config = false
             local expanded_settings = deep_copy_table(client.config.settings or {})
             local expanded_init_options = deep_copy_table(client.config.init_options or {})
             local expanded_capabilities = deep_copy_table(client.config.capabilities or {})
             if client.config.settings and not vim.tbl_isempty(client.config.settings) then
                 has_config = true
-                local settings_line = "    " .. preview_icons.bullet .. " Settings: " .. preview_icons.fold
+                local settings_line = INDENT_L2 .. lsp_icons.shape_circle .. " Settings: " .. lsp_icons.bracket
                 table.insert(lines, settings_line)
                 add_highlight(#lines - 1, "Settings:", "LspInfoKey")
-                add_highlight(#lines - 1, preview_icons.fold, "LspInfoFold")
+                add_icon_highlight(#lines - 1, lsp_icons.shape_circle)
+                add_icon_highlight(#lines - 1, lsp_icons.bracket)
                 local fold_info = { id = "settings_" .. client.name }
                 table.insert(folds, fold_info)
-                display_table(expanded_settings, lines, highlights, 6, fold_info)
+                display_table(expanded_settings, lines, highlights, INDENT_L3, fold_info)
             end
             if client.config.init_options and not vim.tbl_isempty(client.config.init_options) then
                 has_config = true
-                local init_options_line = "    "
-                    .. preview_icons.bullet
+                local init_options_line = INDENT_L2
+                    .. lsp_icons.shape_circle
                     .. " Initialization Options: "
-                    .. preview_icons.fold
+                    .. lsp_icons.bracket
                 table.insert(lines, init_options_line)
                 add_highlight(#lines - 1, "Initialization Options:", "LspInfoKey")
-                add_highlight(#lines - 1, preview_icons.fold, "LspInfoFold")
+                add_icon_highlight(#lines - 1, lsp_icons.shape_circle)
+                add_icon_highlight(#lines - 1, lsp_icons.bracket)
                 local fold_info = { id = "init_options_" .. client.name }
                 table.insert(folds, fold_info)
-                display_table(expanded_init_options, lines, highlights, 6, fold_info)
+                display_table(expanded_init_options, lines, highlights, INDENT_L3, fold_info)
             end
             if client.config.root_dir then
                 has_config = true
-                local root_dir_line = "    " .. preview_icons.bullet .. " Root Dir:"
+                local root_dir_line = INDENT_L2 .. lsp_icons.shape_circle .. " Root Dir:"
                 table.insert(lines, root_dir_line)
                 add_highlight(#lines - 1, "Root Dir:", "LspInfoKey")
+                add_icon_highlight(#lines - 1, lsp_icons.shape_circle)
                 if type(client.config.root_dir) == "function" then
-                    table.insert(lines, "      <function>")
+                    table.insert(lines, INDENT_L3 .. "<function>")
                 else
-                    table.insert(lines, "      " .. tostring(client.config.root_dir))
+                    table.insert(lines, INDENT_L3 .. tostring(client.config.root_dir))
                 end
             end
             if client.config.capabilities and not vim.tbl_isempty(client.config.capabilities) then
                 has_config = true
-                local capabilities_line = "    " .. preview_icons.bullet .. " Capabilities: " .. preview_icons.fold
+                local capabilities_line = INDENT_L2 .. lsp_icons.shape_circle .. " Capabilities: " .. lsp_icons.bracket
                 table.insert(lines, capabilities_line)
                 add_highlight(#lines - 1, "Capabilities:", "LspInfoKey")
-                add_highlight(#lines - 1, preview_icons.fold, "LspInfoFold")
+                add_icon_highlight(#lines - 1, lsp_icons.shape_circle)
+                add_icon_highlight(#lines - 1, lsp_icons.bracket)
                 local fold_info = { id = "capabilities_" .. client.name }
                 table.insert(folds, fold_info)
-                display_table(expanded_capabilities, lines, highlights, 6, fold_info)
+                display_table(expanded_capabilities, lines, highlights, INDENT_L3, fold_info)
             end
             local other_config = {}
             for k, v in pairs(client.config) do
@@ -932,22 +1056,28 @@ local function lvim_lsp_info()
             end
             if not vim.tbl_isempty(other_config) then
                 has_config = true
-                local other_options_line = "    " .. preview_icons.bullet .. " Other Options: " .. preview_icons.fold
+                local other_options_line = INDENT_L2
+                    .. lsp_icons.shape_circle
+                    .. " Other Options: "
+                    .. lsp_icons.bracket
                 table.insert(lines, other_options_line)
                 add_highlight(#lines - 1, "Other Options:", "LspInfoKey")
-                add_highlight(#lines - 1, preview_icons.fold, "LspInfoFold")
+                add_icon_highlight(#lines - 1, lsp_icons.shape_circle)
+                add_icon_highlight(#lines - 1, lsp_icons.bracket)
                 local fold_info = { id = "other_options_" .. client.name }
                 table.insert(folds, fold_info)
-                display_table(other_config, lines, highlights, 6, fold_info)
+                display_table(other_config, lines, highlights, INDENT_L3, fold_info)
             end
             if not has_config then
-                table.insert(lines, "    " .. preview_icons.cross .. " No detailed configuration available")
-                add_highlight(#lines - 1, preview_icons.cross, "LspInfoKey")
+                table.insert(lines, INDENT_L2 .. lsp_icons.cross .. " No detailed configuration available")
+                add_icon_highlight(#lines - 1, lsp_icons.cross)
+                add_highlight(#lines - 1, lsp_icons.cross, "LspInfoKey")
             end
         end
         table.insert(lines, "")
-        table.insert(lines, "  " .. preview_icons.section .. " Capabilities")
+        table.insert(lines, INDENT_L1 .. lsp_icons.shape_diamond .. " Capabilities")
         add_highlight(#lines - 1, "Capabilities", "LspInfoSection")
+        add_icon_highlight(#lines - 1, lsp_icons.shape_diamond)
         local has_capabilities = false
         if client.server_capabilities then
             local capabilities = {
@@ -966,19 +1096,22 @@ local function lvim_lsp_info()
             for _, cap in ipairs(capabilities) do
                 if cap.check then
                     has_capabilities = true
-                    local cap_line = "    " .. preview_icons.check .. " " .. cap.name
+                    local cap_line = INDENT_L2 .. lsp_icons.check .. " " .. cap.name
                     table.insert(lines, cap_line)
-                    add_highlight(#lines - 1, preview_icons.check, "LspInfoKey")
+                    add_icon_highlight(#lines - 1, lsp_icons.check)
+                    add_highlight(#lines - 1, lsp_icons.check, "LspInfoKey")
                 end
             end
         end
         if not has_capabilities then
-            table.insert(lines, "    " .. preview_icons.cross .. " No specific capabilities detected")
-            add_highlight(#lines - 1, preview_icons.cross, "LspInfoKey")
+            table.insert(lines, INDENT_L2 .. lsp_icons.cross .. " No specific capabilities detected")
+            add_icon_highlight(#lines - 1, lsp_icons.cross)
+            add_highlight(#lines - 1, lsp_icons.cross, "LspInfoKey")
         end
         table.insert(lines, "")
-        table.insert(lines, "  " .. preview_icons.section .. " Attached Buffers")
+        table.insert(lines, INDENT_L1 .. lsp_icons.shape_diamond .. " Attached Buffers")
         add_highlight(#lines - 1, "Attached Buffers", "LspInfoSection")
+        add_icon_highlight(#lines - 1, lsp_icons.shape_diamond)
         local has_buffers = false
         if client.attached_buffers then
             for bufnr, _ in pairs(client.attached_buffers) do
@@ -986,17 +1119,19 @@ local function lvim_lsp_info()
                 local buf_name = vim.api.nvim_buf_get_name(bufnr)
                 local display_name = buf_name ~= "" and vim.fn.fnamemodify(buf_name, ":~:.") or "[No Name]"
                 local filetype = vim.bo[bufnr].filetype
-                local buffer_info = "    " .. preview_icons.bullet .. " Buffer " .. bufnr .. ": " .. display_name
+                local buffer_info = INDENT_L2 .. lsp_icons.shape_circle .. " Buffer " .. bufnr .. ": " .. display_name
                 if filetype and filetype ~= "" then
                     buffer_info = buffer_info .. " (" .. filetype .. ")"
                 end
                 table.insert(lines, buffer_info)
-                add_highlight(#lines - 1, preview_icons.bullet, "LspInfoKey")
+                add_icon_highlight(#lines - 1, lsp_icons.shape_circle)
+                add_highlight(#lines - 1, "Buffer", "LspInfoBuffer")
             end
         end
         if not has_buffers then
-            table.insert(lines, "    " .. preview_icons.cross .. " No buffers attached")
-            add_highlight(#lines - 1, preview_icons.cross, "LspInfoKey")
+            table.insert(lines, INDENT_L2 .. lsp_icons.cross .. " No buffers attached")
+            add_icon_highlight(#lines - 1, lsp_icons.cross)
+            add_highlight(#lines - 1, lsp_icons.cross, "LspInfoKey")
         end
         table.insert(lines, "")
         add_separator()
@@ -1072,7 +1207,6 @@ local function lvim_lsp_info()
         silent = true,
     })
 
-    -- Add key mapping to close the window
     vim.api.nvim_buf_set_keymap(bufnr, "n", "q", "<cmd>close<CR>", {
         noremap = true,
         silent = true,
