@@ -746,14 +746,13 @@ config.transfer_nvim = function()
 end
 
 config.code_runner_nvim = function()
-    local global = require("core.global")
     local code_runner_status_ok, code_runner = pcall(require, "code_runner")
     if not code_runner_status_ok then
         return
     end
     code_runner.setup({
-        filetype_path = global.lvim_path .. "/.configs/code_runner/files.json",
-        project_path = global.lvim_path .. "/.configs/code_runner/projects.json",
+        filetype_path = _G.global.lvim_path .. "/.configs/code_runner/files.json",
+        project_path = _G.global.lvim_path .. "/.configs/code_runner/projects.json",
         mode = "float",
         focus = true,
         startinsert = true,

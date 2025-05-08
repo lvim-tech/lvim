@@ -610,17 +610,17 @@ modules["CRAG666/code_runner.nvim"] = {
     },
     keys = {
         {
-            "<Leader>lrp",
+            "<Leader>lcp",
             ":RunProject<CR>",
             desc = "Run project",
         },
         {
-            "<Leader>lrf",
+            "<Leader>lcf",
             ":RunFile<CR>",
             desc = "Run file",
         },
         {
-            "<Leader>lrc",
+            "<Leader>lcc",
             ":RunCode<CR>",
             desc = "Run code",
         },
@@ -796,7 +796,7 @@ modules["mbbill/undotree"] = {
 
 local languages_config = require("modules.base.configs.languages")
 
-modules["williamboman/mason.nvim"] = {
+modules["mason-org/mason.nvim"] = {
     -- branch = "v2.x",
     build = ":MasonUpdate",
     commit = funcs.get_commit("mason.nvim", plugins_snapshot),
