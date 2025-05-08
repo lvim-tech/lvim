@@ -12,7 +12,7 @@
 - Formatters with efm ("stylua", "yamlfmt", "shfmt", "cbfmt", "prettierd")
 - Automatically install dependencies (lsp servers, linters, formatters, debbugers) by filetype
 
-> Current version - 6.1.0 (2025-05-07)
+> Current version - 6.1.10 (2025-05-08)
 
 ## INTRODUCTION
 
@@ -126,6 +126,15 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 
 ```lua
 :LvimInlayHint
+```
+
+- LspProgress
+    - Enable with fidget (default)
+    - Enable with notify
+    - Disable
+
+```lua
+:LvimLspProgress
 ```
 
 ## SNAPSHOTS
