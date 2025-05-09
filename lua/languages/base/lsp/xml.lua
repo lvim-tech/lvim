@@ -16,7 +16,6 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
         name = "xml",
         cmd = { "lemminx" },
         filetypes = _G.file_types.xml,
-        root_markers = { ".git" },
         on_attach = function(client, bufnr)
             setup_diagnostics.keymaps(client, bufnr)
             setup_diagnostics.document_highlight(client, bufnr)

@@ -32,7 +32,7 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
         },
     }
     lsp_manager.setup_efm(_G.file_types.python, efm_config)
-        dap.adapters.python = {
+    dap.adapters.python = {
         type = "executable",
         command = global.mason_path .. "/packages/debugpy/venv/bin/python",
         args = { "-m", "debugpy.adapter" },
@@ -98,14 +98,6 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
         name = "python",
         cmd = { "pylsp" },
         filetypes = _G.file_types.python,
-        root_markers = {
-            "pyproject.toml",
-            "setup.py",
-            "setup.cfg",
-            "requirements.txt",
-            "Pipfile",
-            ".git",
-        },
         settings = {
             pylsp = {
                 plugins = {
