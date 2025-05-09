@@ -28,10 +28,16 @@ local STATUS = {
     PENDING = "pending",
     OK = "ok",
     FAIL = "fail",
-    TIMEOUT = "timeout",
+}
+
+local STATUS_TEXT = {
+    [STATUS.PENDING] = "Installing",
+    [STATUS.OK] = "Installed",
+    [STATUS.FAIL] = "Error",
 }
 
 local refresh_timer = nil
+local keep_alive_timer = nil
 
 local allin1 = {
     tools = {},
@@ -42,6 +48,8 @@ local allin1 = {
     callbacks = {},
     closed = false,
     start_time = nil,
+    active_installations = 0,
+    is_installing = false, -- Track global installation state
 }
 
 local function center_text(text, width)
@@ -52,6 +60,8 @@ end
 local function build_lines(tools, states)
     local lines = {}
     local line_meta = {}
+
+    -- Use the updated date/time and user provided
     local title = center_text("LVIM INSTALLER", POPUP_WIDTH)
     table.insert(lines, title)
     table.insert(line_meta, {})
@@ -61,6 +71,10 @@ local function build_lines(tools, states)
         if not s then
             goto continue
         end
+
+        -- Add package name (without icon)
+        table.insert(lines, tool)
+        table.insert(line_meta, { pkg_name = true })
 
         -- Get the status icon for the package
         local icon_str, icon_hl
@@ -72,7 +86,7 @@ local function build_lines(tools, states)
         elseif s.status == STATUS.OK then
             icon_str = ICON_OK
             icon_hl = HL_ICON_OK
-        elseif s.status == STATUS.FAIL or s.status == STATUS.TIMEOUT then
+        elseif s.status == STATUS.FAIL then
             icon_str = ICON_ERROR
             icon_hl = HL_ICON_ERROR
         else
@@ -80,15 +94,16 @@ local function build_lines(tools, states)
             icon_hl = nil
         end
 
-        -- Add package name with icon
-        table.insert(lines, icon_str .. " " .. tool)
+        -- Add status line with icon at the beginning - NOW BEFORE CURRENT ACTION
+        local status_text = STATUS_TEXT[s.status] or ""
+        table.insert(lines, "    " .. icon_str .. " " .. status_text)
         table.insert(line_meta, {
-            pkg_name = true,
+            status = true,
             icon_hl = icon_hl,
-            icon_len = vim.fn.strdisplaywidth(icon_str) + 1, -- +1 for the space
+            icon_len = vim.fn.strdisplaywidth(icon_str) + 1, -- +1 for space
         })
 
-        -- Current action line in green
+        -- Current action line in green (AFTER icon/status)
         local current_action = s.current_action or ""
         table.insert(lines, "    " .. current_action)
         table.insert(line_meta, { current_action = true })
@@ -170,27 +185,7 @@ local function update_popup()
             local line_idx = i - 1 -- 0-indexed for highlight
 
             if meta.pkg_name then
-                -- First highlight the icon
-                if meta.icon_hl and meta.icon_len > 0 then
-                    pcall(
-                        vim.highlight.range,
-                        allin1.bufnr,
-                        allin1.ns,
-                        meta.icon_hl,
-                        { line_idx, 0 },
-                        { line_idx, meta.icon_len }
-                    )
-                end
-
-                -- Then highlight the package name
-                pcall(
-                    vim.highlight.range,
-                    allin1.bufnr,
-                    allin1.ns,
-                    HL_PKG_NAME,
-                    { line_idx, meta.icon_len },
-                    { line_idx, -1 }
-                )
+                pcall(vim.highlight.range, allin1.bufnr, allin1.ns, HL_PKG_NAME, { line_idx, 0 }, { line_idx, -1 })
             elseif meta.current_action then
                 pcall(
                     vim.highlight.range,
@@ -200,16 +195,37 @@ local function update_popup()
                     { line_idx, 0 },
                     { line_idx, -1 }
                 )
+            elseif meta.status and meta.icon_hl and meta.icon_len > 0 then
+                -- Highlight the icon in the status line
+                pcall(
+                    vim.highlight.range,
+                    allin1.bufnr,
+                    allin1.ns,
+                    meta.icon_hl,
+                    { line_idx, 4 }, -- 4 spaces for indentation
+                    { line_idx, 4 + meta.icon_len }
+                )
             end
         end
     end
 end
 
-local function close_popup()
+local function close_popup(force)
+    if not force and allin1.is_installing then
+        -- Don't close if installation is in progress
+        return
+    end
+
     if refresh_timer and not refresh_timer:is_closing() then
         refresh_timer:stop()
         refresh_timer:close()
         refresh_timer = nil
+    end
+
+    if keep_alive_timer and not keep_alive_timer:is_closing() then
+        keep_alive_timer:stop()
+        keep_alive_timer:close()
+        keep_alive_timer = nil
     end
 
     allin1.closed = true
@@ -225,6 +241,8 @@ local function close_popup()
         allin1.states = {}
         allin1.callbacks = {}
         allin1.closed = false
+        allin1.active_installations = 0
+        allin1.is_installing = false
     end, 200)
 end
 
@@ -257,6 +275,31 @@ local function update_current_action(tool, line)
     update_popup()
 end
 
+-- Start a keep-alive timer to prevent premature closing
+local function start_keep_alive_timer()
+    if keep_alive_timer and not keep_alive_timer:is_closing() then
+        keep_alive_timer:stop()
+        keep_alive_timer:close()
+    end
+
+    keep_alive_timer = vim.loop.new_timer()
+    keep_alive_timer:start(
+        1000, -- Check every second
+        1000,
+        vim.schedule_wrap(function()
+            -- Check if Mason registry shows any installations in progress
+            if allin1.is_installing then
+                -- Don't close if installations are active
+                if not allin1.win or not api.nvim_win_is_valid(allin1.win) then
+                    -- Reopen the window if needed
+                    allin1.closed = false
+                    update_popup()
+                end
+            end
+        end)
+    )
+end
+
 local function add_tools(new_tools)
     local mason_registry_ok, mason_registry = pcall(require, "mason-registry")
     if not mason_registry_ok then
@@ -283,6 +326,8 @@ local function add_tools(new_tools)
                     message = "Preparing...",
                     start_time = os.time(),
                 }
+                allin1.active_installations = allin1.active_installations + 1
+                allin1.is_installing = true
                 table.insert(actually_added, name)
             end
         end
@@ -312,12 +357,17 @@ local function check_callbacks()
     for i = #callbacks_to_remove, 1, -1 do
         table.remove(allin1.callbacks, callbacks_to_remove[i])
     end
-    if are_tools_completed(allin1.tools) then
+
+    -- Only set installation status to false when all installations are truly done
+    if are_tools_completed(allin1.tools) and allin1.active_installations == 0 then
         local lsp_manager_ok, lsp_manager = pcall(require, "languages.lsp_manager")
         if lsp_manager_ok and lsp_manager then
             pcall(lsp_manager.set_installation_status, false)
         end
-        vim.defer_fn(close_popup, 10000)
+        allin1.is_installing = false
+        vim.defer_fn(function()
+            close_popup(false)
+        end, 10000)
     end
 end
 
@@ -340,6 +390,8 @@ local function start_ui_refresh_timer()
                 end
                 return
             end
+
+            local now = os.time()
 
             for _, tool in ipairs(allin1.tools) do
                 local state = allin1.states[tool]
@@ -372,14 +424,14 @@ local function start_ui_refresh_timer()
                 end
                 changed = true
             end
-            if changed then
-                if #allin1.tools == 0 then
-                    if allin1.win and api.nvim_win_is_valid(allin1.win) then
-                        api.nvim_win_close(allin1.win, true)
-                    end
-                    allin1.win = nil
-                    allin1.bufnr = nil
+
+            -- Never close the window if installations are still in progress
+            if changed and #allin1.tools == 0 and not allin1.is_installing then
+                if allin1.win and api.nvim_win_is_valid(allin1.win) then
+                    api.nvim_win_close(allin1.win, true)
                 end
+                allin1.win = nil
+                allin1.bufnr = nil
             end
 
             pcall(update_popup)
@@ -416,6 +468,7 @@ M.ensure_mason_tools = function(tools, cb)
     end
 
     lsp_manager.set_installation_status(true)
+    allin1.is_installing = true
 
     if cb then
         local original_callback = cb
@@ -440,21 +493,56 @@ M.ensure_mason_tools = function(tools, cb)
         if lsp_manager then
             lsp_manager.set_installation_status(false)
         end
+        allin1.is_installing = false
         check_callbacks()
         return
     end
 
     allin1.closed = false
 
+    -- Start both UI refresh and keep-alive timers
     start_ui_refresh_timer()
+    start_keep_alive_timer()
     update_popup()
 
     for _, tool in ipairs(new_tools) do
         if allin1.states[tool] and allin1.states[tool].status == STATUS.PENDING then
             local pkg = mason_registry.get_package(tool)
-            local handle = pkg:install()
+
+            -- Make sure the package exists before proceeding
+            if not pkg then
+                allin1.states[tool].status = STATUS.FAIL
+                allin1.states[tool].current_action = "Package not found"
+                allin1.active_installations = math.max(0, allin1.active_installations - 1)
+                update_popup()
+                goto continue
+            end
 
             update_current_action(tool, "Starting installation...")
+
+            -- Start installation with safeguards
+            local handle = nil
+            local install_ok, install_result = pcall(function()
+                return pkg:install()
+            end)
+
+            if not install_ok then
+                allin1.states[tool].status = STATUS.FAIL
+                allin1.states[tool].current_action = "Failed to start installation: " .. tostring(install_result)
+                allin1.active_installations = math.max(0, allin1.active_installations - 1)
+                update_popup()
+                goto continue
+            end
+
+            handle = install_result
+
+            if not handle then
+                allin1.states[tool].status = STATUS.FAIL
+                allin1.states[tool].current_action = "No installation handle returned"
+                allin1.active_installations = math.max(0, allin1.active_installations - 1)
+                update_popup()
+                goto continue
+            end
 
             -- Capture stdout
             handle:on(
@@ -546,6 +634,17 @@ M.ensure_mason_tools = function(tools, cb)
                                 allin1.states[tool].status = STATUS.FAIL
                                 allin1.states[tool].message = "Installation failed"
                             end
+
+                            allin1.active_installations = math.max(0, allin1.active_installations - 1)
+
+                            -- Only mark as not installing if all installations are done
+                            if allin1.active_installations == 0 then
+                                vim.defer_fn(function()
+                                    if allin1.active_installations == 0 then
+                                        allin1.is_installing = false
+                                    end
+                                end, 1000)
+                            end
                         end
 
                         update_popup()
@@ -553,7 +652,29 @@ M.ensure_mason_tools = function(tools, cb)
                     end, 500)
                 end)
             )
+
+            ::continue::
         end
+    end
+end
+
+-- Debug function to help diagnose issues
+M.status = function()
+    local tools_list = table.concat(allin1.tools, ", ")
+    local status_msg = string.format(
+        "Installation status: Active = %d, Installing = %s, Tools: %s",
+        allin1.active_installations,
+        allin1.is_installing and "YES" or "NO",
+        #allin1.tools > 0 and tools_list or "none"
+    )
+
+    vim.notify(status_msg, vim.log.levels.INFO)
+
+    for tool, state in pairs(allin1.states) do
+        vim.notify(
+            string.format("%s: %s, Action: %s", tool, state.status or "unknown", state.current_action or ""),
+            vim.log.levels.INFO
+        )
     end
 end
 
