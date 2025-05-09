@@ -1,4 +1,11 @@
 return {
+    ["angular"] = {
+        "typescript",
+        "html",
+        "typescriptreact",
+        "typescript.tsx",
+        "htmlangular",
+    },
     ["astro"] = {
         "astro",
     },
@@ -52,6 +59,9 @@ return {
         "javascriptreact",
         "typescriptreact",
     },
+    ["kotlin"] = {
+        "kotlin",
+    },
     ["latex"] = {
         "bib",
         "tex",
@@ -63,11 +73,30 @@ return {
         "markdown",
         "markdown.mdx",
     },
+    ["nginx"] = {
+        "nginx",
+    },
+    ["ocaml"] = {
+        "ocaml",
+        "menhir",
+        "ocamlinterface",
+        "ocamllex",
+        "reason",
+        "dune",
+    },
+    ["perl"] = {
+        "perl",
+    },
     ["php"] = {
         "php",
     },
     ["python"] = {
         "python",
+    },
+    ["r"] = {
+        "r",
+        "rmd",
+        "quarto",
     },
     ["rust"] = {
         "rust",
@@ -157,6 +186,9 @@ return {
     ["vim"] = {
         "vim",
     },
+    ["vue"] = {
+        "vue",
+    },
     ["xml"] = {
         "xml",
         "xsd",
@@ -166,6 +198,10 @@ return {
     },
     ["yaml"] = {
         "yaml",
+    },
+    ["zig"] = {
+        "zig",
+        "zir",
     },
 }
 
