@@ -1,41 +1,28 @@
 local api = vim.api
 
-local POPUP_WIDTH = 40
-local BAR_MARGIN = 2
-local PROGRESS_CHAR = "="
-local REMAIN_CHAR = "="
-local BAR_WIDTH_CHARS = POPUP_WIDTH - BAR_MARGIN
-
-local HIDE_INSTALLED_DELAY = 2
+local POPUP_WIDTH = 80
+local HIDE_INSTALLED_DELAY = 5 -- Set to 5 seconds as requested
 
 api.nvim_set_hl(0, "MasonPopupBG", { bg = _G.LVIM_COLORS.bg_float })
-api.nvim_set_hl(0, "MasonBarBG", { fg = _G.LVIM_COLORS.fg, bg = "NONE" })
-api.nvim_set_hl(0, "MasonBarFG", { fg = _G.LVIM_COLORS.blue, bg = "NONE", bold = true })
 api.nvim_set_hl(0, "MasonTitle", { fg = _G.LVIM_COLORS.red, bg = "NONE", bold = true })
 api.nvim_set_hl(0, "MasonPkgName", { fg = _G.LVIM_COLORS.orange, bg = "NONE", bold = true })
 api.nvim_set_hl(0, "MasonIconProgress", { fg = _G.LVIM_COLORS.blue, bg = "NONE", bold = true })
 api.nvim_set_hl(0, "MasonIconOk", { fg = _G.LVIM_COLORS.green, bg = "NONE", bold = true })
 api.nvim_set_hl(0, "MasonIconError", { fg = _G.LVIM_COLORS.red, bg = "NONE", bold = true })
-api.nvim_set_hl(0, "MasonIconWarn", { fg = _G.LVIM_COLORS.orange, bg = "NONE", bold = true })
-api.nvim_set_hl(0, "MasonStatusOk", { fg = _G.LVIM_COLORS.green, bg = "NONE", bold = true })
-api.nvim_set_hl(0, "MasonStatusError", { fg = _G.LVIM_COLORS.red, bg = "NONE", bold = true })
-api.nvim_set_hl(0, "MasonStatusWarn", { fg = _G.LVIM_COLORS.orange, bg = "NONE", bold = true })
+api.nvim_set_hl(0, "MasonCurrentAction", { fg = _G.LVIM_COLORS.green, bg = "NONE" })
 
-local HL_BAR_BG = "MasonBarBG"
-local HL_BAR_PROGRESS = "MasonBarFG"
 local HL_TITLE = "MasonTitle"
 local HL_POPUP_BG = "MasonPopupBG"
 local HL_PKG_NAME = "MasonPkgName"
 local HL_ICON_PROGRESS = "MasonIconProgress"
 local HL_ICON_OK = "MasonIconOk"
 local HL_ICON_ERROR = "MasonIconError"
-local HL_ICON_WARN = "MasonIconWarn"
+local HL_CURRENT_ACTION = "MasonCurrentAction"
 
 local SPINNER_FRAMES = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
 
-local ICON_OK    = ""
+local ICON_OK = ""
 local ICON_ERROR = ""
-local ICON_WARN  = ""
 
 local STATUS = {
     PENDING = "pending",
@@ -44,16 +31,7 @@ local STATUS = {
     TIMEOUT = "timeout",
 }
 
-local STATUS_TEXT = {
-    [STATUS.PENDING] = "Installing",
-    [STATUS.OK] = "Installed",
-    [STATUS.FAIL] = "Error",
-    [STATUS.TIMEOUT] = "Timeout",
-}
-
 local refresh_timer = nil
-
-local INSTALLATION_TIMEOUT = 120000
 
 local allin1 = {
     tools = {},
@@ -66,13 +44,6 @@ local allin1 = {
     start_time = nil,
 }
 
-local function make_bar(percent)
-    local n_fill = math.floor(BAR_WIDTH_CHARS * percent / 100 + 0.5)
-    local n_empty = BAR_WIDTH_CHARS - n_fill
-    local bar = string.rep(PROGRESS_CHAR, n_fill) .. string.rep(REMAIN_CHAR, n_empty)
-    return bar, n_fill, BAR_WIDTH_CHARS
-end
-
 local function center_text(text, width)
     local pad = math.max(0, math.floor((width - #text) / 2))
     return string.rep(" ", pad) .. text
@@ -84,55 +55,52 @@ local function build_lines(tools, states)
     local title = center_text("LVIM INSTALLER", POPUP_WIDTH)
     table.insert(lines, title)
     table.insert(line_meta, {})
-    local bar_infos = {}
+
     for _, tool in ipairs(tools) do
         local s = states[tool]
         if not s then
             goto continue
         end
 
-        table.insert(lines, tool)
-        table.insert(line_meta, { pkg_name = true })
-
-        local bar, n_fill, n_total = make_bar(s.percent or 0)
-        table.insert(lines, bar)
-        table.insert(line_meta, { bar = { n_fill = n_fill, n_total = n_total } })
-        table.insert(bar_infos, { n_fill = n_fill, n_total = n_total })
-
-        local status_text, icon_str, icon_hl
+        -- Get the status icon for the package
+        local icon_str, icon_hl
         local spinner_frame = (s.spinner_frame or 1) % #SPINNER_FRAMES
 
         if s.status == STATUS.PENDING then
             icon_str = SPINNER_FRAMES[spinner_frame + 1]
-            status_text = s.message or STATUS_TEXT[s.status]
             icon_hl = HL_ICON_PROGRESS
         elseif s.status == STATUS.OK then
             icon_str = ICON_OK
-            status_text = STATUS_TEXT[s.status]
             icon_hl = HL_ICON_OK
-        elseif s.status == STATUS.FAIL then
+        elseif s.status == STATUS.FAIL or s.status == STATUS.TIMEOUT then
             icon_str = ICON_ERROR
-            status_text = STATUS_TEXT[s.status]
             icon_hl = HL_ICON_ERROR
-        elseif s.status == STATUS.TIMEOUT then
-            icon_str = ICON_WARN
-            status_text = STATUS_TEXT[s.status]
-            icon_hl = HL_ICON_WARN
         else
-            icon_str = ""
-            status_text = ""
+            icon_str = " "
             icon_hl = nil
         end
 
-        table.insert(lines, icon_str .. " " .. status_text)
+        -- Add package name with icon
+        table.insert(lines, icon_str .. " " .. tool)
         table.insert(line_meta, {
-            icon_len = vim.str_utfindex(icon_str, "utf-8", #icon_str),
+            pkg_name = true,
             icon_hl = icon_hl,
+            icon_len = vim.fn.strdisplaywidth(icon_str) + 1, -- +1 for the space
         })
+
+        -- Current action line in green
+        local current_action = s.current_action or ""
+        table.insert(lines, "    " .. current_action)
+        table.insert(line_meta, { current_action = true })
+
+        -- Add a blank line after each package
+        table.insert(lines, "")
+        table.insert(line_meta, {})
 
         ::continue::
     end
-    return lines, bar_infos, line_meta
+
+    return lines, line_meta
 end
 
 local function update_popup()
@@ -151,14 +119,12 @@ local function update_popup()
 
     local tools = allin1.tools
     local states = allin1.states
-    local height = #tools * 3 + 1
+    local lines, line_meta = build_lines(tools, states)
+    local height = #lines
     local width = POPUP_WIDTH
     local col = vim.o.columns - width
     local row = 1
-    local lines, bar_infos, line_meta = build_lines(tools, states)
-    while #lines < height do
-        table.insert(lines, "")
-    end
+
     if allin1.win and api.nvim_win_is_valid(allin1.win) then
         pcall(api.nvim_win_set_config, allin1.win, {
             relative = "editor",
@@ -171,6 +137,7 @@ local function update_popup()
     else
         local bufnr = api.nvim_create_buf(false, true)
         vim.bo[bufnr].bufhidden = "wipe"
+        vim.bo[bufnr].modifiable = true
         api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
         allin1.win = api.nvim_open_win(bufnr, false, {
             style = "minimal",
@@ -191,52 +158,49 @@ local function update_popup()
             { win = allin1.win }
         )
     end
+
     if allin1.bufnr then
         pcall(api.nvim_buf_clear_namespace, allin1.bufnr, allin1.ns, 0, -1)
+
+        -- Title highlighting
         pcall(vim.highlight.range, allin1.bufnr, allin1.ns, HL_TITLE, { 0, 0 }, { 0, -1 })
-        for i, _ in ipairs(tools) do
-            local name_line = 1 + (i - 1) * 3
-            local bar_line = name_line + 1
-            local status_line = name_line + 2
-            local barinfo = bar_infos[i]
-            if not barinfo then
-                goto continue
-            end
 
-            pcall(vim.highlight.range, allin1.bufnr, allin1.ns, HL_PKG_NAME, { name_line, 0 }, { name_line, -1 })
-            if barinfo.n_fill > 0 then
-                pcall(
-                    vim.highlight.range,
-                    allin1.bufnr,
-                    allin1.ns,
-                    HL_BAR_PROGRESS,
-                    { bar_line, 0 },
-                    { bar_line, barinfo.n_fill }
-                )
-            end
-            if barinfo.n_total > barinfo.n_fill then
-                pcall(
-                    vim.highlight.range,
-                    allin1.bufnr,
-                    allin1.ns,
-                    HL_BAR_BG,
-                    { bar_line, barinfo.n_fill },
-                    { bar_line, barinfo.n_total }
-                )
-            end
-            local meta = line_meta[status_line + 1]
-            if meta and meta.icon_hl and meta.icon_len > 0 then
-                pcall(
-                    vim.highlight.range,
-                    allin1.bufnr,
-                    allin1.ns,
-                    meta.icon_hl,
-                    { status_line, 0 },
-                    { status_line, meta.icon_len }
-                )
-            end
+        -- Highlight each line according to its metadata
+        for i, meta in ipairs(line_meta) do
+            local line_idx = i - 1 -- 0-indexed for highlight
 
-            ::continue::
+            if meta.pkg_name then
+                -- First highlight the icon
+                if meta.icon_hl and meta.icon_len > 0 then
+                    pcall(
+                        vim.highlight.range,
+                        allin1.bufnr,
+                        allin1.ns,
+                        meta.icon_hl,
+                        { line_idx, 0 },
+                        { line_idx, meta.icon_len }
+                    )
+                end
+
+                -- Then highlight the package name
+                pcall(
+                    vim.highlight.range,
+                    allin1.bufnr,
+                    allin1.ns,
+                    HL_PKG_NAME,
+                    { line_idx, meta.icon_len },
+                    { line_idx, -1 }
+                )
+            elseif meta.current_action then
+                pcall(
+                    vim.highlight.range,
+                    allin1.bufnr,
+                    allin1.ns,
+                    HL_CURRENT_ACTION,
+                    { line_idx, 0 },
+                    { line_idx, -1 }
+                )
+            end
         end
     end
 end
@@ -264,10 +228,39 @@ local function close_popup()
     end, 200)
 end
 
+-- Update the current action for a package
+local function update_current_action(tool, line)
+    if not allin1.states[tool] then
+        return
+    end
+
+    -- Trim whitespace and empty lines
+    line = vim.trim(line)
+    if line == "" then
+        return
+    end
+
+    -- Remove "ERROR: " prefix that we might have added in stderr handler
+    if line:match("^ERROR: ") then
+        line = line:gsub("^ERROR: ", "")
+    end
+
+    -- Update the current action
+    allin1.states[tool].current_action = line
+
+    -- Also update the message status for consistency
+    if #line < 30 then
+        allin1.states[tool].message = line
+    end
+
+    -- Update UI immediately on action change
+    update_popup()
+end
+
 local function add_tools(new_tools)
     local mason_registry_ok, mason_registry = pcall(require, "mason-registry")
     if not mason_registry_ok then
-        vim.notify("Грешка при зареждане на mason-registry", vim.log.levels.ERROR)
+        vim.notify("Error loading mason-registry", vim.log.levels.ERROR)
         return {}
     end
     local actually_added = {}
@@ -285,7 +278,7 @@ local function add_tools(new_tools)
                 table.insert(allin1.tools, name)
                 allin1.states[name] = {
                     status = STATUS.PENDING,
-                    percent = 0,
+                    current_action = "Preparing installation...",
                     spinner_frame = 0,
                     message = "Preparing...",
                     start_time = os.time(),
@@ -335,7 +328,6 @@ local function start_ui_refresh_timer()
     end
 
     refresh_timer = vim.loop.new_timer()
-    ---@diagnostic disable-next-line: need-check-nil
     refresh_timer:start(
         0,
         50,
@@ -349,27 +341,10 @@ local function start_ui_refresh_timer()
                 return
             end
 
-            local now = os.time()
-
             for _, tool in ipairs(allin1.tools) do
                 local state = allin1.states[tool]
                 if state and state.status == STATUS.PENDING then
                     state.spinner_frame = (state.spinner_frame or 0) + 1
-                    local elapsed = now - (state.start_time or now)
-                    local estimated_duration = 45
-                    local auto_progress = math.min(95, (elapsed / estimated_duration) * 100)
-                    if not state.has_real_progress and auto_progress > state.percent then
-                        state.percent = auto_progress
-                        if state.percent < 20 then
-                            state.message = "Downloading..."
-                        elseif state.percent < 50 then
-                            state.message = "Extracting files..."
-                        elseif state.percent < 80 then
-                            state.message = "Installing components..."
-                        else
-                            state.message = "Finalizing..."
-                        end
-                    end
                 end
             end
 
@@ -416,7 +391,7 @@ local M = {}
 M.ensure_mason_tools = function(tools, cb)
     local mason_registry_ok, mason_registry = pcall(require, "mason-registry")
     if not mason_registry_ok then
-        vim.notify("Грешка при зареждане на mason-registry", vim.log.levels.ERROR)
+        vim.notify("Error loading mason-registry", vim.log.levels.ERROR)
         if cb then
             cb()
         end
@@ -425,7 +400,7 @@ M.ensure_mason_tools = function(tools, cb)
 
     local lsp_manager_ok, lsp_manager = pcall(require, "languages.lsp_manager")
     if not lsp_manager_ok then
-        vim.notify("Грешка при зареждане на lsp_manager", vim.log.levels.ERROR)
+        vim.notify("Error loading lsp_manager", vim.log.levels.ERROR)
         if cb then
             cb()
         end
@@ -479,22 +454,71 @@ M.ensure_mason_tools = function(tools, cb)
             local pkg = mason_registry.get_package(tool)
             local handle = pkg:install()
 
+            update_current_action(tool, "Starting installation...")
+
+            -- Capture stdout
+            handle:on(
+                "stdout",
+                vim.schedule_wrap(function(chunk)
+                    if allin1.closed or not allin1.states or not allin1.states[tool] then
+                        return
+                    end
+
+                    if chunk and #chunk > 0 then
+                        -- Find the most meaningful line in the chunk
+                        local best_line = ""
+                        for line in chunk:gmatch("[^\r\n]+") do
+                            if line and #line > 0 then
+                                -- Skip lines that are just asterisks/simple markers
+                                if not line:match("^%s*%*+%s*$") then
+                                    best_line = line
+                                end
+                            end
+                        end
+
+                        if best_line ~= "" then
+                            update_current_action(tool, best_line)
+                        end
+                    end
+                end)
+            )
+
+            -- Capture stderr
+            handle:on(
+                "stderr",
+                vim.schedule_wrap(function(chunk)
+                    if allin1.closed or not allin1.states or not allin1.states[tool] then
+                        return
+                    end
+
+                    if chunk and #chunk > 0 then
+                        for line in chunk:gmatch("[^\r\n]+") do
+                            if line and #line > 0 then
+                                update_current_action(tool, line)
+                            end
+                        end
+                    end
+                end)
+            )
+
+            -- Process progress events
             handle:on(
                 "progress",
                 vim.schedule_wrap(function(progress)
                     if allin1.closed or not allin1.states or not allin1.states[tool] then
                         return
                     end
-                    allin1.states[tool].has_real_progress = true
+
                     if progress.message then
+                        update_current_action(tool, progress.message)
                         allin1.states[tool].message = progress.message
                     end
-                    if progress.percent then
-                        allin1.states[tool].percent = math.min(95, math.floor(progress.percent))
-                    end
+
+                    update_popup()
                 end)
             )
 
+            -- Handle completion
             handle:once(
                 "closed",
                 vim.schedule_wrap(function()
@@ -512,44 +536,25 @@ M.ensure_mason_tools = function(tools, cb)
 
                         if allin1.states and allin1.states[tool] then
                             if installed then
+                                update_current_action(tool, "Installation completed successfully")
                                 allin1.states[tool].status = STATUS.OK
-                                allin1.states[tool].percent = 100
                                 allin1.states[tool].message = "Installation complete"
                                 allin1.states[tool].hide_timer_started = false
                                 allin1.states[tool].hide_time = nil
                             else
+                                update_current_action(tool, "Installation failed")
                                 allin1.states[tool].status = STATUS.FAIL
-                                allin1.states[tool].percent = 0
                                 allin1.states[tool].message = "Installation failed"
                             end
                         end
 
+                        update_popup()
                         pcall(check_callbacks)
                     end, 500)
                 end)
             )
         end
     end
-
-    vim.defer_fn(function()
-        if allin1.closed then
-            return
-        end
-        for _, tool in ipairs(tools) do
-            if allin1.states[tool] and allin1.states[tool].status == STATUS.PENDING then
-                allin1.states[tool].status = STATUS.TIMEOUT
-                allin1.states[tool].percent = 0
-                allin1.states[tool].message = "Installation timed out"
-            end
-        end
-
-        local manager_ok, manager = pcall(require, "languages.lsp_manager")
-        if manager_ok and manager then
-            manager.set_installation_status(false)
-        end
-
-        pcall(check_callbacks)
-    end, INSTALLATION_TIMEOUT)
 end
 
 return M
