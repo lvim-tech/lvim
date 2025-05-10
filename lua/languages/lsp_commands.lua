@@ -615,7 +615,6 @@ end
 
 local function setup_lsp_error_filter()
     local original_notify = vim.notify
-    --- @diagnostic disable-next-line: duplicate-set-field
     vim.notify = function(msg, level, opts)
         if
             type(msg) == "string"
@@ -959,7 +958,6 @@ local function lvim_lsp_info()
                     local fold_info = { id = "formatter_" .. formatter_name }
                     table.insert(folds, fold_info)
                     display_table(formatter_info.config, lines, highlights, INDENT_L3, fold_info)
-                    -- Buffers per filetype for this formatter
                     for _, ft in ipairs(formatter_info.filetypes) do
                         if formatter_info.filetype_to_buffers[ft] and #formatter_info.filetype_to_buffers[ft] > 0 then
                             local buffer_line = INDENT_L3 .. lsp_icons.shape_diamond .. " Buffers"

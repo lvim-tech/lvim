@@ -1,7 +1,7 @@
 local api = vim.api
 
 local POPUP_WIDTH = 80
-local HIDE_INSTALLED_DELAY = 5 -- Set to 5 seconds as requested
+local HIDE_INSTALLED_DELAY = 5
 
 api.nvim_set_hl(0, "MasonPopupBG", { bg = _G.LVIM_COLORS.bg_float })
 api.nvim_set_hl(0, "MasonTitle", { fg = _G.LVIM_COLORS.red, bg = "NONE", bold = true })
@@ -358,7 +358,6 @@ local function check_callbacks()
         table.remove(allin1.callbacks, callbacks_to_remove[i])
     end
 
-    -- Only set installation status to false when all installations are truly done
     if are_tools_completed(allin1.tools) and allin1.active_installations == 0 then
         local lsp_manager_ok, lsp_manager = pcall(require, "languages.lsp_manager")
         if lsp_manager_ok and lsp_manager then
@@ -390,8 +389,6 @@ local function start_ui_refresh_timer()
                 end
                 return
             end
-
-            local now = os.time()
 
             for _, tool in ipairs(allin1.tools) do
                 local state = allin1.states[tool]
@@ -425,7 +422,6 @@ local function start_ui_refresh_timer()
                 changed = true
             end
 
-            -- Never close the window if installations are still in progress
             if changed and #allin1.tools == 0 and not allin1.is_installing then
                 if allin1.win and api.nvim_win_is_valid(allin1.win) then
                     api.nvim_win_close(allin1.win, true)
@@ -500,7 +496,6 @@ M.ensure_mason_tools = function(tools, cb)
 
     allin1.closed = false
 
-    -- Start both UI refresh and keep-alive timers
     start_ui_refresh_timer()
     start_keep_alive_timer()
     update_popup()
@@ -509,7 +504,6 @@ M.ensure_mason_tools = function(tools, cb)
         if allin1.states[tool] and allin1.states[tool].status == STATUS.PENDING then
             local pkg = mason_registry.get_package(tool)
 
-            -- Make sure the package exists before proceeding
             if not pkg then
                 allin1.states[tool].status = STATUS.FAIL
                 allin1.states[tool].current_action = "Package not found"
@@ -520,7 +514,6 @@ M.ensure_mason_tools = function(tools, cb)
 
             update_current_action(tool, "Starting installation...")
 
-            -- Start installation with safeguards
             local handle = nil
             local install_ok, install_result = pcall(function()
                 return pkg:install()
@@ -544,7 +537,6 @@ M.ensure_mason_tools = function(tools, cb)
                 goto continue
             end
 
-            -- Capture stdout
             handle:on(
                 "stdout",
                 vim.schedule_wrap(function(chunk)
@@ -553,11 +545,9 @@ M.ensure_mason_tools = function(tools, cb)
                     end
 
                     if chunk and #chunk > 0 then
-                        -- Find the most meaningful line in the chunk
                         local best_line = ""
                         for line in chunk:gmatch("[^\r\n]+") do
                             if line and #line > 0 then
-                                -- Skip lines that are just asterisks/simple markers
                                 if not line:match("^%s*%*+%s*$") then
                                     best_line = line
                                 end
@@ -571,7 +561,6 @@ M.ensure_mason_tools = function(tools, cb)
                 end)
             )
 
-            -- Capture stderr
             handle:on(
                 "stderr",
                 vim.schedule_wrap(function(chunk)
@@ -589,7 +578,6 @@ M.ensure_mason_tools = function(tools, cb)
                 end)
             )
 
-            -- Process progress events
             handle:on(
                 "progress",
                 vim.schedule_wrap(function(progress)
@@ -606,7 +594,6 @@ M.ensure_mason_tools = function(tools, cb)
                 end)
             )
 
-            -- Handle completion
             handle:once(
                 "closed",
                 vim.schedule_wrap(function()
@@ -637,7 +624,6 @@ M.ensure_mason_tools = function(tools, cb)
 
                             allin1.active_installations = math.max(0, allin1.active_installations - 1)
 
-                            -- Only mark as not installing if all installations are done
                             if allin1.active_installations == 0 then
                                 vim.defer_fn(function()
                                     if allin1.active_installations == 0 then
@@ -658,7 +644,6 @@ M.ensure_mason_tools = function(tools, cb)
     end
 end
 
--- Debug function to help diagnose issues
 M.status = function()
     local tools_list = table.concat(allin1.tools, ", ")
     local status_msg = string.format(
