@@ -1,6 +1,10 @@
 {
     "diagnostics.disable": [
         "redundant-parameter",
-        "param-type-mismatch"
+        "param-type-mismatch",
+        "cast-local-type",
+        "inject-field",
+        "duplicate-set-field",
+        "need-check-nil"
     ]
 }
