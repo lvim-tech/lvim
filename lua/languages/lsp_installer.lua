@@ -49,7 +49,7 @@ local allin1 = {
     closed = false,
     start_time = nil,
     active_installations = 0,
-    is_installing = false, -- Track global installation state
+    is_installing = false,
 }
 
 local function center_text(text, width)
@@ -61,7 +61,6 @@ local function build_lines(tools, states)
     local lines = {}
     local line_meta = {}
 
-    -- Use the updated date/time and user provided
     local title = center_text("LVIM INSTALLER", POPUP_WIDTH)
     table.insert(lines, title)
     table.insert(line_meta, {})
@@ -72,11 +71,9 @@ local function build_lines(tools, states)
             goto continue
         end
 
-        -- Add package name (without icon)
         table.insert(lines, tool)
         table.insert(line_meta, { pkg_name = true })
 
-        -- Get the status icon for the package
         local icon_str, icon_hl
         local spinner_frame = (s.spinner_frame or 1) % #SPINNER_FRAMES
 
@@ -94,21 +91,18 @@ local function build_lines(tools, states)
             icon_hl = nil
         end
 
-        -- Add status line with icon at the beginning - NOW BEFORE CURRENT ACTION
         local status_text = STATUS_TEXT[s.status] or ""
         table.insert(lines, "    " .. icon_str .. " " .. status_text)
         table.insert(line_meta, {
             status = true,
             icon_hl = icon_hl,
-            icon_len = vim.fn.strdisplaywidth(icon_str) + 1, -- +1 for space
+            icon_len = vim.fn.strdisplaywidth(icon_str) + 1,
         })
 
-        -- Current action line in green (AFTER icon/status)
         local current_action = s.current_action or ""
         table.insert(lines, "    " .. current_action)
         table.insert(line_meta, { current_action = true })
 
-        -- Add a blank line after each package
         table.insert(lines, "")
         table.insert(line_meta, {})
 
@@ -177,12 +171,10 @@ local function update_popup()
     if allin1.bufnr then
         pcall(api.nvim_buf_clear_namespace, allin1.bufnr, allin1.ns, 0, -1)
 
-        -- Title highlighting
         pcall(vim.highlight.range, allin1.bufnr, allin1.ns, HL_TITLE, { 0, 0 }, { 0, -1 })
 
-        -- Highlight each line according to its metadata
         for i, meta in ipairs(line_meta) do
-            local line_idx = i - 1 -- 0-indexed for highlight
+            local line_idx = i - 1
 
             if meta.pkg_name then
                 pcall(vim.highlight.range, allin1.bufnr, allin1.ns, HL_PKG_NAME, { line_idx, 0 }, { line_idx, -1 })
@@ -196,13 +188,12 @@ local function update_popup()
                     { line_idx, -1 }
                 )
             elseif meta.status and meta.icon_hl and meta.icon_len > 0 then
-                -- Highlight the icon in the status line
                 pcall(
                     vim.highlight.range,
                     allin1.bufnr,
                     allin1.ns,
                     meta.icon_hl,
-                    { line_idx, 4 }, -- 4 spaces for indentation
+                    { line_idx, 4 },
                     { line_idx, 4 + meta.icon_len }
                 )
             end
@@ -212,7 +203,6 @@ end
 
 local function close_popup(force)
     if not force and allin1.is_installing then
-        -- Don't close if installation is in progress
         return
     end
 
@@ -246,36 +236,29 @@ local function close_popup(force)
     end, 200)
 end
 
--- Update the current action for a package
 local function update_current_action(tool, line)
     if not allin1.states[tool] then
         return
     end
 
-    -- Trim whitespace and empty lines
     line = vim.trim(line)
     if line == "" then
         return
     end
 
-    -- Remove "ERROR: " prefix that we might have added in stderr handler
     if line:match("^ERROR: ") then
         line = line:gsub("^ERROR: ", "")
     end
 
-    -- Update the current action
     allin1.states[tool].current_action = line
 
-    -- Also update the message status for consistency
     if #line < 30 then
         allin1.states[tool].message = line
     end
 
-    -- Update UI immediately on action change
     update_popup()
 end
 
--- Start a keep-alive timer to prevent premature closing
 local function start_keep_alive_timer()
     if keep_alive_timer and not keep_alive_timer:is_closing() then
         keep_alive_timer:stop()
@@ -284,14 +267,11 @@ local function start_keep_alive_timer()
 
     keep_alive_timer = vim.loop.new_timer()
     keep_alive_timer:start(
-        1000, -- Check every second
+        1000,
         1000,
         vim.schedule_wrap(function()
-            -- Check if Mason registry shows any installations in progress
             if allin1.is_installing then
-                -- Don't close if installations are active
                 if not allin1.win or not api.nvim_win_is_valid(allin1.win) then
-                    -- Reopen the window if needed
                     allin1.closed = false
                     update_popup()
                 end
