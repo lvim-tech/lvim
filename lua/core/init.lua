@@ -24,7 +24,6 @@ else
     os = "other"
 end
 
--- Инициализирам глобалната таблица
 local global = {
     os = os,
     lvim_path = home .. "/.config/nvim",
@@ -39,30 +38,20 @@ local global = {
     efm = {
         filetypes = {},
         settings = { languages = {} },
-    }
+    },
 }
 
--- Глобално достъпна променлива за EFM и други модули
 _G.global = global
 
--- Проверка дали ОС е поддържана
 if global.os == "unsuported" then
     print("Your OS is not supported!")
 else
-    -- Инициализация на основните компоненти
     local funcs = require("core.funcs")
-    _G.LVIM_SNAPSHOT = funcs.get_snapshot()
-    
-    -- Настройка на leader клавиш
     vim.g.mapleader = " "
     vim.g.maplocalleader = " "
     vim.keymap.set("n", " ", "", { noremap = true })
     vim.keymap.set("x", " ", "", { noremap = true })
-    
-    -- Зареждане на конфигурацията
     _G.LVIM_SETTINGS = funcs.read_file(global.lvim_path .. "/.configs/lvim/config.json")
-    
-    -- Инициализация и зареждане на плъгините
     local lazy = require("core.lazy")
     lazy.is_lazy()
     funcs.configs()
