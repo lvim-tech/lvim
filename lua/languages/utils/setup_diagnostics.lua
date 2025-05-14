@@ -290,7 +290,7 @@ M.keymaps = function(_, bufnr)
         local has_format_capability = false
         local clients = vim.lsp.get_clients({ bufnr = bufnr })
         for _, client in ipairs(clients) do
-            if client.server_capabilities and client.server_capabilities.documentFormattingProvider then
+            if client.server_capabilities and client.server_capabilities["documentFormattingProvider"] then
                 has_format_capability = true
                 break
             end
@@ -299,6 +299,12 @@ M.keymaps = function(_, bufnr)
             vim.keymap.set("n", "gf", function()
                 vim.cmd("LspFormat")
             end, { noremap = true, silent = true, buffer = bufnr, desc = "LspFormat" })
+            vim.keymap.set(
+                "v",
+                "gF",
+                vim.cmd("LspFormatRange")
+                { noremap = true, silent = true, buffer = bufnr, desc = "LspFormatRange" }
+            )
         end
     end
 
