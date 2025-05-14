@@ -7,7 +7,7 @@ config.blink_cmp = function()
     end
     local icons = require("configs.base.ui.icons")
     local lsp_symbols = icons.cmp
-    local ext = { "lazydev", "ripgrep", "emoji" }
+    local ext = { "ripgrep", "emoji" }
     local default_sources = vim.list_extend({ "lsp", "path", "snippets", "buffer", "dadbod" }, ext)
     local trigger_text = ";"
     blink_cmp.setup({
@@ -51,7 +51,7 @@ config.blink_cmp = function()
                     name = "lsp",
                     enabled = true,
                     module = "blink.cmp.sources.lsp",
-                    fallbacks = { "lazydev", "snippets", "buffer" },
+                    fallbacks = { "snippets", "buffer" },
                     score_offset = 90,
                 },
                 path = {
@@ -108,10 +108,6 @@ config.blink_cmp = function()
                         end)
                         return items
                     end,
-                },
-                lazydev = {
-                    name = "LazyDev",
-                    module = "lazydev.integrations.blink",
                 },
                 ripgrep = {
                     module = "blink-cmp-rg",

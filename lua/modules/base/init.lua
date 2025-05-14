@@ -854,12 +854,6 @@ modules["folke/trouble.nvim"] = {
     config = languages_config.trouble_nvim,
 }
 
-modules["folke/lazydev.nvim"] = {
-    commit = funcs.get_commit("lazydev.nvim", plugins_snapshot),
-    ft = "lua",
-    config = languages_config.lazydev_nvim,
-}
-
 modules["mfussenegger/nvim-jdtls"] = {
     commit = funcs.get_commit("nvim-jdtls", plugins_snapshot),
     ft = "java",
@@ -944,7 +938,7 @@ modules["bassamsdata/namu.nvim"] = {
     commit = funcs.get_commit("namu.nvim", plugins_snapshot),
     keys = {
         {
-            "<Leader>ns",
+            "<Leader>n",
             function()
                 local namu = require("namu.namu_symbols")
                 namu.show()
@@ -952,15 +946,19 @@ modules["bassamsdata/namu.nvim"] = {
             desc = "Namu symbols",
         },
     },
-    config = function()
-        require("namu").setup()
-    end,
+    config = languages_config.namu_nvim,
 }
 
 modules["hedyhli/outline.nvim"] = {
     commit = funcs.get_commit("outline.nvim", plugins_snapshot),
-    event = {
-        "BufRead",
+    keys = {
+        {
+            "<Leader>u",
+            function()
+                vim.cmd("Outline")
+            end,
+            desc = "Outline",
+        },
     },
     config = languages_config.outline_nvim,
 }
@@ -1001,7 +999,7 @@ modules["lvim-tech/vim-dadbod-ui"] = {
     init = languages_config.vim_dadbod_ui,
 }
 
-modules["kndndrj/nvim-dbee"] = {
+modules["lvim-tech/nvim-dbee"] = {
     dependencies = { "MunifTanjim/nui.nvim" },
     cmd = "Dbee",
     keys = {

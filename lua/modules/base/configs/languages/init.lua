@@ -188,20 +188,6 @@ config.trouble_nvim = function()
     })
 end
 
-config.lazydev_nvim = function()
-    local lazydev_status_ok, lazydev = pcall(require, "lazydev")
-    if not lazydev_status_ok then
-        return
-    end
-    lazydev.setup({
-        library = {
-            { path = "/usr/share/nvim/runtime/lua" },
-            { path = "/usr/local/share/nvim/runtime/lua" },
-            { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-        },
-    })
-end
-
 config.flutter_tools_nvim = function()
     local setup_diagnostics = require("languages.utils.setup_diagnostics")
     local navic = require("nvim-navic")
@@ -690,9 +676,6 @@ config.outline_nvim = function()
             icons = icons.outline,
         },
     })
-    vim.keymap.set("n", "<A-v>", function()
-        vim.cmd("Outline")
-    end, { noremap = true, silent = true, desc = "Outline" })
 end
 
 function config.vim_dadbod_ui()
@@ -735,7 +718,7 @@ function config.vim_dadbod_ui()
     })
     vim.api.nvim_set_keymap("n", "<leader>dr", ":DBUIRenameBuffer<CR>", {
         noremap = true,
-        silent = true,
+        -- silent = true,
     })
     vim.api.nvim_set_keymap("n", "<leader>dl", ":DBUILastQueryInfo<CR>", {
         noremap = true,
@@ -820,7 +803,6 @@ config.nvim_dap = function()
     end, { noremap = true, silent = true, desc = "DapToggleBreakpoint" })
     vim.keymap.set("n", "<A-2>", function()
         local ft = vim.bo.filetype
-        local dap = require("dap")
         if ft == "lua" then
             if not dap.session() then
                 local ok, err = pcall(function()
