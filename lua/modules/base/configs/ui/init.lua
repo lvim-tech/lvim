@@ -847,7 +847,7 @@ config.nvim_window_picker = function()
         },
     })
     vim.api.nvim_create_user_command("WindowPicker", focus_window, {})
-    vim.keymap.set("n", "gw", function()
+    vim.keymap.set("n", "gpp", function()
         vim.cmd("WindowPicker")
     end, { noremap = true, silent = true, desc = "WindowPicker" })
 end
