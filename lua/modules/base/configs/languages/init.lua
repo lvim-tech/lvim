@@ -23,6 +23,7 @@ config.neotest = function()
     if not neotest_status_ok then
         return
     end
+
     local neotest_ns = vim.api.nvim_create_namespace("neotest")
     vim.diagnostic.config({
         virtual_text = {
@@ -32,16 +33,14 @@ config.neotest = function()
             end,
         },
     }, neotest_ns)
+
     neotest.setup({
         adapters = {
+            require("neotest-plenary"),
             require("neotest-phpunit"),
             require("neotest-rust"),
             require("neotest-go"),
-            require("neotest-python")({
-                dap = { justMyCode = false },
-                args = { "--log-level", "DEBUG" },
-                runner = "pytest",
-            }),
+            require("neotest-python"),
             require("neotest-elixir"),
             require("neotest-dart")({
                 command = "flutter",
@@ -49,6 +48,7 @@ config.neotest = function()
             }),
         },
     })
+
     vim.api.nvim_create_user_command("NeotestRun", function()
         require("neotest").run.run()
     end, {})

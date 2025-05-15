@@ -805,11 +805,10 @@ modules["mason-org/mason.nvim"] = {
 
 modules["nvim-neotest/neotest"] = {
     commit = funcs.get_commit("neotest", plugins_snapshot),
-    event = {
-        "BufRead",
-    },
     dependencies = {
+        "nvim-neotest/nvim-nio",
         "nvim-lua/plenary.nvim",
+        "antoinemadec/FixCursorHold.nvim",
         "nvim-treesitter/nvim-treesitter",
         "olimorris/neotest-phpunit",
         "rouge8/neotest-rust",
@@ -817,6 +816,7 @@ modules["nvim-neotest/neotest"] = {
         "nvim-neotest/neotest-python",
         "jfpedroza/neotest-elixir",
         "sidlatau/neotest-dart",
+        "nvim-neotest/neotest-plenary",
     },
     config = languages_config.neotest,
 }
