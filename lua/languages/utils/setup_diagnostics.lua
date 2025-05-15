@@ -147,177 +147,110 @@ M.disable_lsp_progress = function()
     vim.api.nvim_clear_autocmds({ group = group })
 end
 
+local cached_capabilities = nil
+
 M.get_capabilities = function()
+    if cached_capabilities then
+        return cached_capabilities
+    end
     local capabilities = vim.lsp.protocol.make_client_capabilities()
-    -- capabilities["offsetEncoding"] = "utf-8"
-    return require("blink.cmp").get_lsp_capabilities(capabilities)
+    local ok, enhanced_capabilities = pcall(require, "blink.cmp")
+    if ok and enhanced_capabilities and type(enhanced_capabilities.get_lsp_capabilities) == "function" then
+        enhanced_capabilities = enhanced_capabilities.get_lsp_capabilities(capabilities)
+        cached_capabilities = enhanced_capabilities
+        return enhanced_capabilities
+    end
+    return capabilities
 end
 
-M.get_cpp_capabilities = function()
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    return require("blink.cmp").get_lsp_capabilities(capabilities)
-end
-
-M.keymaps = function(_, bufnr)
-    local function create_safe_command(capability_name, command)
-        return function()
-            local clients = vim.lsp.get_clients({ bufnr = bufnr })
-            local has_capability = false
-            for _, client in ipairs(clients) do
-                if client.server_capabilities and client.server_capabilities[capability_name] then
-                    has_capability = true
-                    break
-                end
-            end
-            if has_capability then
-                pcall(command)
-            end
+M.keymaps = function(client, bufnr)
+    local function buf_set_keymap(mode, lhs, command, desc, capability_check)
+        if not capability_check or capability_check(client) then
+            vim.keymap.set(mode, lhs, command, {
+                buffer = bufnr,
+                desc = desc
+            })
         end
     end
 
-    local _border = {
-        { "🭽", "FloatBorder" },
-        { "▔", "FloatBorder" },
-        { "🭾", "FloatBorder" },
-        { "▕", "FloatBorder" },
-        { "🭿", "FloatBorder" },
-        { "▁", "FloatBorder" },
-        { "🭼", "FloatBorder" },
-        { "▏", "FloatBorder" },
-    }
+    -- Basic LSP navigation functions
+    buf_set_keymap("n", "gd", "<cmd>LspDefinition<CR>", "Go to definition",
+        function(c) return c.server_capabilities.definitionProvider end)
 
-    local function bordered_hover(_opts)
-        _opts = _opts or {}
-        return vim.lsp.buf.hover(vim.tbl_deep_extend("force", _opts, {
-            border = _border,
-        }))
-    end
-    local function bordered_signature_help(_opts)
-        _opts = _opts or {}
-        return vim.lsp.buf.signature_help(vim.tbl_deep_extend("force", _opts, {
-            border = _border,
-        }))
-    end
+    buf_set_keymap("n", "gD", "<cmd>LspDeclaration<CR>", "Go to declaration",
+        function(c) return c.server_capabilities.declarationProvider end)
 
-    local mappings = {
-        {
-            mode = "n",
-            lhs = "gd",
-            capability = "definitionProvider",
-            command = vim.lsp.buf.definition,
-            desc = "LspDefinition",
-        },
-        {
-            mode = "n",
-            lhs = "gD",
-            capability = "declarationProvider",
-            command = vim.lsp.buf.declaration,
-            desc = "LspDeclaration",
-        },
-        {
-            mode = "n",
-            lhs = "gt",
-            capability = "typeDefinitionProvider",
-            command = vim.lsp.buf.type_definition,
-            desc = "LspTypeDefinition",
-        },
-        {
-            mode = "n",
-            lhs = "gr",
-            capability = "referencesProvider",
-            command = vim.lsp.buf.references,
-            desc = "LspReferences",
-        },
-        {
-            mode = "n",
-            lhs = "gi",
-            capability = "implementationProvider",
-            command = vim.lsp.buf.implementation,
-            desc = "LspImplementation",
-        },
-        {
-            mode = "n",
-            lhs = "ge",
-            capability = "renameProvider",
-            command = vim.lsp.buf.rename,
-            desc = "LspRename",
-        },
-        {
-            mode = "n",
-            lhs = "ga",
-            capability = "codeActionProvider",
-            command = vim.lsp.buf.code_action,
-            desc = "LspCodeAction",
-        },
-        {
-            mode = "n",
-            lhs = "gs",
-            capability = "signatureHelpProvider",
-            command = bordered_signature_help,
-            desc = "LspSignatureHelp",
-        },
-        {
-            mode = "n",
-            lhs = "gL",
-            capability = "codeLensProvider",
-            command = vim.lsp.codelens.refresh,
-            desc = "LspCodeLensRefresh",
-        },
-        {
-            mode = "n",
-            lhs = "gl",
-            capability = "codeLensProvider",
-            command = vim.lsp.codelens.run,
-            desc = "LspCodeLensRun",
-        },
-        {
-            mode = "n",
-            lhs = "gh",
-            capability = "hoverProvider",
-            command = vim.lsp.buf.hover,
-            desc = "LspHover",
-        },
-        {
-            mode = "n",
-            lhs = "K",
-            capability = "hoverProvider",
-            command = bordered_hover,
-            desc = "LspHover",
-        },
-    }
+    buf_set_keymap("n", "gt", "<cmd>LspTypeDefinition<CR>", "Go to type definition",
+        function(c) return c.server_capabilities.typeDefinitionProvider end)
 
-    local function setup_format_mappings()
-        local has_format_capability = false
-        local clients = vim.lsp.get_clients({ bufnr = bufnr })
-        for _, client in ipairs(clients) do
-            if client.server_capabilities and client.server_capabilities["documentFormattingProvider"] then
-                has_format_capability = true
-                break
-            end
-        end
-        if has_format_capability then
-            vim.keymap.set("n", "gf", function()
-                vim.cmd("LspFormat")
-            end, { noremap = true, silent = true, buffer = bufnr, desc = "LspFormat" })
-            vim.keymap.set(
-                "v",
-                "gF",
-                vim.cmd("LspFormatRange")
-                { noremap = true, silent = true, buffer = bufnr, desc = "LspFormatRange" }
-            )
-        end
-    end
+    buf_set_keymap("n", "gi", "<cmd>LspImplementation<CR>", "Go to implementation",
+        function(c) return c.server_capabilities.implementationProvider end)
 
-    for _, mapping in ipairs(mappings) do
-        vim.keymap.set(mapping.mode, mapping.lhs, create_safe_command(mapping.capability, mapping.command), {
-            noremap = true,
-            silent = true,
-            buffer = bufnr,
-            desc = mapping.desc,
-        })
-    end
+    buf_set_keymap("n", "gr", "<cmd>LspReferences<CR>", "Find references",
+        function(c) return c.server_capabilities.referencesProvider end)
 
-    setup_format_mappings()
+    -- Informational functions
+    buf_set_keymap("n", "K", "<cmd>LspHover<CR>", "Show hover information",
+        function(c) return c.server_capabilities.hoverProvider end)
+
+    buf_set_keymap("i", "<C-k>", "<cmd>LspSignatureHelp<CR>", "Show signature help",
+        function(c) return c.server_capabilities.signatureHelpProvider end)
+
+    -- Formatting and code actions
+    buf_set_keymap("n", "ge", "<cmd>LspRename<CR>", "Rename symbol",
+        function(c) return c.server_capabilities.renameProvider end)
+
+    buf_set_keymap("n", "ga", "<cmd>LspCodeAction<CR>", "Code action",
+        function(c) return c.server_capabilities.codeActionProvider end)
+
+    buf_set_keymap("n", "gf", "<cmd>LspFormat<CR>", "Format document",
+        function(c) return c.server_capabilities.documentFormattingProvider end)
+
+    buf_set_keymap("v", "gF", "<cmd>LspRangeFormat<CR>", "Format selection",
+        function(c) return c.server_capabilities.documentRangeFormattingProvider end)
+
+    -- Symbols and structure
+    buf_set_keymap("n", "gs", "<cmd>LspDocumentSymbol<CR>", "Document symbols",
+        function(c) return c.server_capabilities.documentSymbolProvider end)
+
+    buf_set_keymap("n", "gS", "<cmd>LspWorkspaceSymbol<CR>", "Workspace symbols",
+        function(c) return c.server_capabilities.workspaceSymbolProvider end)
+
+    -- Diagnostics - не изискват специфични capabilities
+    buf_set_keymap("n", "dc", "<cmd>LspShowDiagnosticCurrent<CR>", "Show line diagnostics")
+    buf_set_keymap("n", "dn", "<cmd>LspShowDiagnosticPrev<CR>", "Previous diagnostic")
+    buf_set_keymap("n", "dp", "<cmd>LspShowDiagnosticNext<CR>", "Next diagnostic")
+
+    -- CodeLens
+    buf_set_keymap("n", "gL", "<cmd>LspCodeLensRun<CR>", "Run CodeLens",
+        function(c) return c.server_capabilities.codeLensProvider end)
+
+    -- Call Hierarchy
+    buf_set_keymap("n", "glc", "<cmd>LspIncomingCalls<CR>", "Incoming calls",
+        function(c) return c.server_capabilities.callHierarchyProvider end)
+
+    buf_set_keymap("n", "glC", "<cmd>LspOutgoingCalls<CR>", "Outgoing calls",
+        function(c) return c.server_capabilities.callHierarchyProvider end)
+
+    -- Document Highlight
+    buf_set_keymap("n", "ghr", "<cmd>LspDocumentHighlight<CR>", "Highlight references",
+        function(c) return c.server_capabilities.documentHighlightProvider end)
+
+    buf_set_keymap("n", "ghc", "<cmd>LspClearReferences<CR>", "Clear highlights",
+        function(c) return c.server_capabilities.documentHighlightProvider end)
+
+    -- Workspace Folders
+    buf_set_keymap("n", "goa", "<cmd>LspAddToWorkspaceFolder<CR>", "Add folder to workspace",
+        function(c) return c.server_capabilities.workspace and c.server_capabilities.workspace.workspaceFolders end)
+
+    buf_set_keymap("n", "gor", "<cmd>LspRemoveWorkspaceFolder<CR>", "Remove folder from workspace",
+        function(c) return c.server_capabilities.workspace and c.server_capabilities.workspace.workspaceFolders end)
+
+    buf_set_keymap("n", "gol", "<cmd>LspListWorkspaceFolders<CR>", "List workspace folders",
+        function(c) return c.server_capabilities.workspace and c.server_capabilities.workspace.workspaceFolders end)
+
+    -- Debugging - не изисква специфични capabilities
+    buf_set_keymap("n", "<Leader>dp", "<cmd>DAPLocal<CR>", "Start local debugging")
 end
 
 return M

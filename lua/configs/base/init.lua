@@ -269,10 +269,12 @@ configs["base_events"] = function()
 end
 
 configs["base_languages"] = function()
-    -- _G.global.efm = {
-    --     filetypes = {},
-    --     settings = { languages = {} },
-    -- }
+    vim.keymap.del("n", "grn")
+    vim.keymap.del({ "n", "v" }, "gra")
+    vim.keymap.del("n", "grr")
+    vim.keymap.del("n", "gri")
+    vim.keymap.del("n", "gO")
+    vim.keymap.del("i", "<C-s>")
     _G.file_types = funcs.merge(base_file_types, user_file_types)
 end
 

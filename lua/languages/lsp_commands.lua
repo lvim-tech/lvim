@@ -1107,17 +1107,17 @@ local function lvim_lsp_info()
         local has_capabilities = false
         if client.server_capabilities then
             local capabilities = {
-                { name = "Completion",          check = client.server_capabilities.completionProvider },
-                { name = "Hover",               check = client.server_capabilities.hoverProvider },
-                { name = "Go to Definition",    check = client.server_capabilities.definitionProvider },
-                { name = "Find References",     check = client.server_capabilities.referencesProvider },
+                { name = "Completion", check = client.server_capabilities.completionProvider },
+                { name = "Hover", check = client.server_capabilities.hoverProvider },
+                { name = "Go to Definition", check = client.server_capabilities.definitionProvider },
+                { name = "Find References", check = client.server_capabilities.referencesProvider },
                 { name = "Document Formatting", check = client.server_capabilities.documentFormattingProvider },
-                { name = "Document Symbols",    check = client.server_capabilities.documentSymbolProvider },
-                { name = "Workspace Symbols",   check = client.server_capabilities.workspaceSymbolProvider },
-                { name = "Rename",              check = client.server_capabilities.renameProvider },
-                { name = "Code Action",         check = client.server_capabilities.codeActionProvider },
-                { name = "Signature Help",      check = client.server_capabilities.signatureHelpProvider },
-                { name = "Document Highlight",  check = client.server_capabilities.documentHighlightProvider },
+                { name = "Document Symbols", check = client.server_capabilities.documentSymbolProvider },
+                { name = "Workspace Symbols", check = client.server_capabilities.workspaceSymbolProvider },
+                { name = "Rename", check = client.server_capabilities.renameProvider },
+                { name = "Code Action", check = client.server_capabilities.codeActionProvider },
+                { name = "Signature Help", check = client.server_capabilities.signatureHelpProvider },
+                { name = "Document Highlight", check = client.server_capabilities.documentHighlightProvider },
             }
             for _, cap in ipairs(capabilities) do
                 if cap.check then
@@ -1246,119 +1246,340 @@ local function lvim_lsp_info()
 end
 
 -- BASE
+local _border = {
+    { " ", "FloatBorder" },
+    { " ", "FloatBorder" },
+    { " ", "FloatBorder" },
+    { " ", "FloatBorder" },
+    { " ", "FloatBorder" },
+    { " ", "FloatBorder" },
+    { " ", "FloatBorder" },
+    { " ", "FloatBorder" },
+}
+
+-- LspHover with a custom border
 vim.api.nvim_create_user_command("LspHover", function()
-    vim.lsp.buf.hover()
-end, {})
-
-vim.api.nvim_create_user_command("LspRename", function()
-    vim.lsp.buf.rename()
-end, {})
-
-vim.api.nvim_create_user_command("LspFormat", function()
-    vim.lsp.buf.format({ async = false })
-end, {})
-
-vim.api.nvim_create_user_command("LspFormatRange", function()
-    local start_row, _ = unpack(vim.api.nvim_buf_get_mark(0, "<"))
-    local end_row, _ = unpack(vim.api.nvim_buf_get_mark(0, ">"))
-    vim.lsp.buf.format({
-        range = {
-            ["start"] = { start_row, 0 },
-            ["end"] = { end_row, 0 },
-        },
-        async = false,
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "textDocument/hover",
     })
+    if #clients > 0 then
+        vim.lsp.buf.hover({ border = _border })
+    else
+        vim.notify("No active LSP client supporting hover found", vim.log.levels.WARN)
+    end
+end, {})
+
+-- LspRename with a custom border
+vim.api.nvim_create_user_command("LspRename", function()
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "textDocument/rename",
+    })
+    if #clients > 0 then
+        vim.lsp.buf.rename(nil, { border = _border })
+    else
+        vim.notify("No active LSP client supporting rename found", vim.log.levels.WARN)
+    end
+end, {})
+
+-- LspFormat with validation
+vim.api.nvim_create_user_command("LspFormat", function()
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "textDocument/formatting",
+    })
+    if #clients > 0 then
+        vim.lsp.buf.format({ async = false })
+    else
+        vim.notify("No active LSP client supporting formatting found", vim.log.levels.WARN)
+    end
+end, {})
+
+-- LspRangeFormat with validation
+vim.api.nvim_create_user_command("LspRangeFormat", function()
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "textDocument/rangeFormatting",
+    })
+    if #clients > 0 then
+        local start_row, _ = unpack(vim.api.nvim_buf_get_mark(0, "<"))
+        local end_row, _ = unpack(vim.api.nvim_buf_get_mark(0, ">"))
+        vim.lsp.buf.format({
+            range = {
+                ["start"] = { start_row, 0 },
+                ["end"] = { end_row, 0 },
+            },
+            async = false,
+        })
+    else
+        vim.notify("No active LSP client supporting range formatting found", vim.log.levels.WARN)
+    end
 end, { range = true })
 
+-- LspCodeAction with a custom border
 vim.api.nvim_create_user_command("LspCodeAction", function()
-    vim.lsp.buf.code_action()
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "textDocument/codeAction",
+    })
+    if #clients > 0 then
+        vim.lsp.buf.code_action({ border = _border })
+    else
+        vim.notify("No active LSP client supporting code actions found", vim.log.levels.WARN)
+    end
 end, {})
 
+-- LspDefinition
 vim.api.nvim_create_user_command("LspDefinition", function()
-    vim.lsp.buf.definition()
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "textDocument/definition",
+    })
+    if #clients > 0 then
+        vim.lsp.buf.definition()
+    else
+        vim.notify("No active LSP client supporting definition found", vim.log.levels.WARN)
+    end
 end, {})
 
+-- LspTypeDefinition
 vim.api.nvim_create_user_command("LspTypeDefinition", function()
-    vim.lsp.buf.type_definition()
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "textDocument/typeDefinition",
+    })
+    if #clients > 0 then
+        vim.lsp.buf.type_definition()
+    else
+        vim.notify("No active LSP client supporting type definition found", vim.log.levels.WARN)
+    end
 end, {})
 
+-- LspDeclaration
 vim.api.nvim_create_user_command("LspDeclaration", function()
-    vim.lsp.buf.declaration()
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "textDocument/declaration",
+    })
+    if #clients > 0 then
+        vim.lsp.buf.declaration()
+    else
+        vim.notify("No active LSP client supporting declaration found", vim.log.levels.WARN)
+    end
 end, {})
 
+-- LspReferences with a custom border
 vim.api.nvim_create_user_command("LspReferences", function()
-    vim.lsp.buf.references()
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "textDocument/references",
+    })
+    if #clients > 0 then
+        vim.lsp.buf.references(nil, { border = _border })
+    else
+        vim.notify("No active LSP client supporting references found", vim.log.levels.WARN)
+    end
 end, {})
 
+-- LspImplementation
 vim.api.nvim_create_user_command("LspImplementation", function()
-    vim.lsp.buf.implementation()
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "textDocument/implementation",
+    })
+    if #clients > 0 then
+        vim.lsp.buf.implementation()
+    else
+        vim.notify("No active LSP client supporting implementation found", vim.log.levels.WARN)
+    end
 end, {})
 
+-- LspSignatureHelp with a custom border
 vim.api.nvim_create_user_command("LspSignatureHelp", function()
-    vim.lsp.buf.signature_help()
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "textDocument/signatureHelp",
+    })
+    if #clients > 0 then
+        vim.lsp.buf.signature_help({ border = _border })
+    else
+        vim.notify("No active LSP client supporting signature help found", vim.log.levels.WARN)
+    end
 end, {})
 
+-- LspDocumentSymbol
 vim.api.nvim_create_user_command("LspDocumentSymbol", function()
-    vim.lsp.buf.document_symbol()
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "textDocument/documentSymbol",
+    })
+    if #clients > 0 then
+        vim.lsp.buf.document_symbol()
+    else
+        vim.notify("No active LSP client supporting document symbols found", vim.log.levels.WARN)
+    end
 end, {})
 
+-- LspWorkspaceSymbol
 vim.api.nvim_create_user_command("LspWorkspaceSymbol", function()
-    vim.lsp.buf.workspace_symbol()
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "workspace/symbol",
+    })
+    if #clients > 0 then
+        vim.lsp.buf.workspace_symbol()
+    else
+        vim.notify("No active LSP client supporting workspace symbols found", vim.log.levels.WARN)
+    end
 end, {})
 
+-- LspCodeLensRefresh
 vim.api.nvim_create_user_command("LspCodeLensRefresh", function()
-    vim.lsp.codelens.refresh()
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "textDocument/codeLens",
+    })
+    if #clients > 0 then
+        vim.lsp.codelens.refresh()
+    else
+        vim.notify("No active LSP client supporting code lens found", vim.log.levels.WARN)
+    end
 end, {})
 
+-- LspCodeLensRun
 vim.api.nvim_create_user_command("LspCodeLensRun", function()
-    vim.lsp.codelens.run()
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "textDocument/codeLens",
+    })
+    if #clients > 0 then
+        vim.lsp.codelens.run()
+    else
+        vim.notify("No active LSP client supporting code lens found", vim.log.levels.WARN)
+    end
 end, {})
 
+-- LspAddToWorkspaceFolder
 vim.api.nvim_create_user_command("LspAddToWorkspaceFolder", function()
-    vim.lsp.buf.add_workspace_folder()
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "workspace/didChangeWorkspaceFolders",
+    })
+    if #clients > 0 then
+        vim.lsp.buf.add_workspace_folder()
+    else
+        vim.notify("No active LSP client supporting workspace folders found", vim.log.levels.WARN)
+    end
 end, {})
 
+-- LspRemoveWorkspaceFolder
 vim.api.nvim_create_user_command("LspRemoveWorkspaceFolder", function()
-    vim.lsp.buf.remove_workspace_folder()
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "workspace/didChangeWorkspaceFolders",
+    })
+    if #clients > 0 then
+        vim.lsp.buf.remove_workspace_folder()
+    else
+        vim.notify("No active LSP client supporting workspace folders found", vim.log.levels.WARN)
+    end
 end, {})
 
+-- LspListWorkspaceFolders
 vim.api.nvim_create_user_command("LspListWorkspaceFolders", function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    local clients = vim.lsp.get_clients({ bufnr = 0 })
+    if #clients > 0 then
+        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    else
+        vim.notify("No active LSP client found", vim.log.levels.WARN)
+    end
 end, {})
 
+-- LspIncomingCalls
 vim.api.nvim_create_user_command("LspIncomingCalls", function()
-    vim.lsp.buf.incoming_calls()
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "callHierarchy/incomingCalls",
+    })
+    if #clients > 0 then
+        vim.lsp.buf.incoming_calls()
+    else
+        vim.notify("No active LSP client supporting incoming calls found", vim.log.levels.WARN)
+    end
 end, {})
 
+-- LspOutgoingCalls
 vim.api.nvim_create_user_command("LspOutgoingCalls", function()
-    vim.lsp.buf.outgoing_calls()
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "callHierarchy/outgoingCalls",
+    })
+    if #clients > 0 then
+        vim.lsp.buf.outgoing_calls()
+    else
+        vim.notify("No active LSP client supporting outgoing calls found", vim.log.levels.WARN)
+    end
 end, {})
 
+-- LspClearReferences
 vim.api.nvim_create_user_command("LspClearReferences", function()
-    vim.lsp.buf.clear_references()
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "textDocument/documentHighlight",
+    })
+    if #clients > 0 then
+        vim.lsp.buf.clear_references()
+    else
+        vim.notify("No active LSP client supporting document highlights found", vim.log.levels.WARN)
+    end
 end, {})
 
+-- LspDocumentHighlight
 vim.api.nvim_create_user_command("LspDocumentHighlight", function()
-    vim.lsp.buf.document_highlight()
+    local clients = vim.lsp.get_clients({
+        bufnr = 0,
+        method = "textDocument/documentHighlight",
+    })
+    if #clients > 0 then
+        vim.lsp.buf.document_highlight()
+    else
+        vim.notify("No active LSP client supporting document highlights found", vim.log.levels.WARN)
+    end
 end, {})
+
+-- LspShowDiagnosticCurrent (специфичната функция от вашия модул)
 vim.api.nvim_create_user_command("LspShowDiagnosticCurrent", function()
-    require("languages.utils.show_diagnostics").line()
+    local clients = vim.lsp.get_clients({ bufnr = 0 })
+    if #clients > 0 then
+        require("languages.utils.show_diagnostics").line()
+    else
+        vim.notify("No active LSP client found", vim.log.levels.WARN)
+    end
 end, {})
+
+-- LspShowDiagnosticNext (специфичната функция от вашия модул)
 vim.api.nvim_create_user_command("LspShowDiagnosticNext", function()
-    require("languages.utils.show_diagnostics").goto_next()
+    local clients = vim.lsp.get_clients({ bufnr = 0 })
+    if #clients > 0 then
+        require("languages.utils.show_diagnostics").goto_next()
+    else
+        vim.notify("No active LSP client found", vim.log.levels.WARN)
+    end
 end, {})
+
+-- LspShowDiagnosticPrev (специфичната функция от вашия модул)
 vim.api.nvim_create_user_command("LspShowDiagnosticPrev", function()
-    require("languages.utils.show_diagnostics").goto_prev()
+    local clients = vim.lsp.get_clients({ bufnr = 0 })
+    if #clients > 0 then
+        require("languages.utils.show_diagnostics").goto_prev()
+    else
+        vim.notify("No active LSP client found", vim.log.levels.WARN)
+    end
 end, {})
 vim.api.nvim_create_user_command("DAPLocal", function()
     require("languages.utils.dap").dap_local()
 end, {})
-
--- KeyMaps
-vim.keymap.set("n", "<C-c><C-l>", require("languages.utils.dap").dap_local, { desc = "DAPLocal" })
-vim.keymap.set("n", "dc", require("languages.utils.show_diagnostics").line, { desc = "LspShowDiagnosticCurrent" })
-vim.keymap.set("n", "dn", require("languages.utils.show_diagnostics").goto_next, { desc = "LspShowDiagnosticNext" })
-vim.keymap.set("n", "dp", require("languages.utils.show_diagnostics").goto_prev, { desc = "LspShowDiagnosticPrev" })
 
 -- EXTRA
 vim.api.nvim_create_user_command("LvimVirtualDiagnostic", lvim_virtual_diagnostic, {})
