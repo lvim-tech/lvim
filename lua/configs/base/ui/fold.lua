@@ -1,20 +1,28 @@
-local parse_line = function(linenr)
+local function parse_line(linenr)
     local bufnr = vim.api.nvim_get_current_buf()
     local line = vim.api.nvim_buf_get_lines(bufnr, linenr - 1, linenr, false)[1]
     if not line then
         return nil
     end
+
     local ok, parser = pcall(vim.treesitter.get_parser, bufnr)
-    if not ok then
+    if not ok or not parser then
         return nil
     end
+
     local query = vim.treesitter.query.get(parser:lang(), "highlights")
     if not query then
         return nil
     end
+
     local tree = parser:parse({ linenr - 1, linenr })[1]
+    if not tree then
+        return nil
+    end
+
     local result = {}
     local line_pos = 0
+
     for id, node, metadata in query:iter_captures(tree:root(), 0, linenr - 1, linenr) do
         local name = query.captures[id]
         local start_row, start_col, end_row, end_col = node:range()
@@ -32,6 +40,7 @@ local parse_line = function(linenr)
             table.insert(result, { text, { { "@" .. name, priority } }, range = { start_col, end_col } })
         end
     end
+
     local i = 1
     while i <= #result do
         local j = i + 1
@@ -58,6 +67,7 @@ local parse_line = function(linenr)
             i = i + 1
         end
     end
+
     return result
 end
 
@@ -87,7 +97,7 @@ end
 
 _G.md_fold_text = function()
     local spec_available, spec = pcall(require, "markview.spec")
-    if spec_available == false then
+    if not spec_available then
         return ""
     end
     local from, to = vim.v.foldstart, vim.v.foldend
