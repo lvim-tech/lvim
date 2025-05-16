@@ -160,6 +160,7 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
             local capabilities = setup_diagnostics.get_capabilities()
             capabilities.textDocument.codeLens = {
                 dynamicRegistration = true,
+                resolveProvider = true,
             }
             return capabilities
         end)(),

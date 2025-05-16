@@ -45,6 +45,7 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
             capabilities.textDocument = capabilities.textDocument or {}
             capabilities.textDocument.codeLens = {
                 dynamicRegistration = true,
+                resolveProvider = true,
             }
             capabilities.workspace = capabilities.workspace or {}
             capabilities.workspace.codeLens = {

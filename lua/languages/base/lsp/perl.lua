@@ -25,7 +25,14 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                 navic.attach(client, bufnr)
             end
         end,
-        capabilities = setup_diagnostics.get_capabilities(),
+        capabilities = (function()
+            local capabilities = setup_diagnostics.get_capabilities()
+            capabilities.textDocument.codeLens = {
+                dynamicRegistration = true,
+                resolveProvider = true,
+            }
+            return capabilities
+        end)(),
     }
 end)
 

@@ -73,9 +73,18 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
         filetypes = _G.file_types.lua,
         settings = {
             Lua = {
-        codeLens = {
-            enable = true
-        },
+                codeLens = {
+                    enable = true,
+                    referencesCodeLens = {
+                        enable = true, -- Активира CodeLens за референции (колко пъти се използва функция/променлива)
+                    },
+                    implementationsCodeLens = {
+                        enable = true, -- Активира CodeLens за имплементации
+                    },
+                    definitionCodeLens = {
+                        enable = true, -- Активира CodeLens за дефиниции
+                    },
+                },
                 format = {
                     enable = false,
                 },
@@ -89,7 +98,18 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                     setType = true,
                 },
                 workspace = {
-                    library = vim.api.nvim_get_runtime_file("", true),
+                    library = {
+                        vim.fn.expand("$VIMRUNTIME/lua"),
+                        vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
+                        vim.fn.expand("~/.config/nvim"),
+                    },
+                    maxPreload = 2000,
+                    preloadFileSize = 150,
+                    ignoreDir = {
+                        ".git",
+                        "node_modules",
+                        ".cache",
+                    },
                     checkThirdParty = false,
                 },
                 runtime = {
@@ -97,6 +117,7 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                     special = {
                         reload = "require",
                     },
+                    pathStrict = true,
                 },
                 diagnostics = {
                     globals = {
@@ -105,18 +126,32 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                         "packer_plugins",
                         "NOREF_NOERR_TRUNC",
                     },
+                    workspaceDelay = 3000,
+                    workspaceRate = 100,
                 },
                 telemetry = {
                     enable = false,
                 },
+                completion = {
+                    workspaceWord = false,
+                    showWord = "Disable",
+                },
             },
         },
         on_attach = function(client, bufnr)
-            setup_diagnostics.keymaps(client, bufnr)
-            setup_diagnostics.document_highlight(client, bufnr)
-            setup_diagnostics.inlay_hint(client, bufnr)
-            if client.server_capabilities.documentSymbolProvider then
-                navic.attach(client, bufnr)
+            -- Ограничаваме функционалността за големи файлове
+            local file_size = vim.fn.getfsize(vim.api.nvim_buf_get_name(bufnr))
+            if file_size > 100 * 1024 then -- 100 KB
+                client.server_capabilities.semanticTokensProvider = nil
+                -- Деактивираме inlay hints за големи файлове
+                vim.lsp.inlay_hint(bufnr, false)
+            else
+                setup_diagnostics.keymaps(client, bufnr)
+                setup_diagnostics.document_highlight(client, bufnr)
+                setup_diagnostics.inlay_hint(client, bufnr)
+                if client.server_capabilities.documentSymbolProvider then
+                    navic.attach(client, bufnr)
+                end
             end
         end,
         capabilities = setup_diagnostics.get_capabilities(),

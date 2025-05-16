@@ -231,8 +231,8 @@ M.keymaps = function(client, bufnr)
 
     -- Diagnostics - не изискват специфични capabilities
     buf_set_keymap("n", "dc", "<cmd>LspShowDiagnosticCurrent<CR>", "Show line diagnostics")
-    buf_set_keymap("n", "dn", "<cmd>LspShowDiagnosticPrev<CR>", "Previous diagnostic")
-    buf_set_keymap("n", "dp", "<cmd>LspShowDiagnosticNext<CR>", "Next diagnostic")
+    buf_set_keymap("n", "dn", "<cmd>LspShowDiagnosticNext<CR>", "Next diagnostic")
+    buf_set_keymap("n", "dp", "<cmd>LspShowDiagnosticPrev<CR>", "Previous diagnostic")
 
     -- CodeLens
     buf_set_keymap("n", "gL", "<cmd>LspCodeLensRun<CR>", "Run CodeLens", function(c)
