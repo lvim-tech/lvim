@@ -16,6 +16,14 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
         name = "r",
         cmd = { "r-languageserver" },
         filetypes = _G.file_types.r,
+        settings = {
+            r = {
+                lsp = {
+                    diagnostics = true,
+                    rich_documentation = true,
+                },
+            },
+        },
         on_attach = function(client, bufnr)
             setup_diagnostics.keymaps(client, bufnr)
             setup_diagnostics.document_highlight(client, bufnr)
@@ -25,7 +33,18 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                 navic.attach(client, bufnr)
             end
         end,
-        capabilities = setup_diagnostics.get_capabilities(),
+        capabilities = (function()
+            local capabilities = setup_diagnostics.get_capabilities()
+            capabilities.textDocument = capabilities.textDocument or {}
+            capabilities.textDocument.codeLens = {
+                dynamicRegistration = true,
+            }
+            capabilities.workspace = capabilities.workspace or {}
+            capabilities.workspace.codeLens = {
+                refreshSupport = true,
+            }
+            return capabilities
+        end)(),
     }
 end)
 

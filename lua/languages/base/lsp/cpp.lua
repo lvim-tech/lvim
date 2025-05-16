@@ -133,7 +133,13 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
 
     lsp_config = {
         name = "cpp",
-        cmd = { "clangd" },
+        cmd = {
+            "clangd",
+            "--clang-tidy",
+            "--header-insertion=iwyu",
+            "--background-index",
+            "--suggest-missing-includes",
+        },
         filetypes = _G.file_types.cpp,
         on_attach = function(client, bufnr)
             setup_diagnostics.keymaps(client, bufnr)
@@ -150,7 +156,21 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                 symbol_info()
             end, { desc = "Show symbol info" })
         end,
-        capabilities = setup_diagnostics.get_capabilities(),
+        capabilities = (function()
+            local capabilities = setup_diagnostics.get_capabilities()
+            capabilities.textDocument.codeLens = {
+                dynamicRegistration = true,
+            }
+            return capabilities
+        end)(),
+        settings = {
+            clangd = {
+                callHierarchy = true,
+                semanticHighlighting = true,
+                checkUpdates = true,
+                fallbackFlags = { "-std=c++17" },
+            },
+        },
     }
 end)
 

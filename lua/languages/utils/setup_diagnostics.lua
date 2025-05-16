@@ -168,53 +168,66 @@ M.keymaps = function(client, bufnr)
         if not capability_check or capability_check(client) then
             vim.keymap.set(mode, lhs, command, {
                 buffer = bufnr,
-                desc = desc
+                desc = desc,
             })
         end
     end
 
     -- Basic LSP navigation functions
-    buf_set_keymap("n", "gd", "<cmd>LspDefinition<CR>", "Go to definition",
-        function(c) return c.server_capabilities.definitionProvider end)
+    buf_set_keymap("n", "gd", "<cmd>LspDefinition<CR>", "Go to definition", function(c)
+        return c.server_capabilities.definitionProvider
+    end)
 
-    buf_set_keymap("n", "gD", "<cmd>LspDeclaration<CR>", "Go to declaration",
-        function(c) return c.server_capabilities.declarationProvider end)
+    buf_set_keymap("n", "gD", "<cmd>LspDeclaration<CR>", "Go to declaration", function(c)
+        return c.server_capabilities.declarationProvider
+    end)
 
-    buf_set_keymap("n", "gt", "<cmd>LspTypeDefinition<CR>", "Go to type definition",
-        function(c) return c.server_capabilities.typeDefinitionProvider end)
+    buf_set_keymap("n", "gt", "<cmd>LspTypeDefinition<CR>", "Go to type definition", function(c)
+        return c.server_capabilities.typeDefinitionProvider
+    end)
 
-    buf_set_keymap("n", "gi", "<cmd>LspImplementation<CR>", "Go to implementation",
-        function(c) return c.server_capabilities.implementationProvider end)
+    buf_set_keymap("n", "gi", "<cmd>LspImplementation<CR>", "Go to implementation", function(c)
+        return c.server_capabilities.implementationProvider
+    end)
 
-    buf_set_keymap("n", "gr", "<cmd>LspReferences<CR>", "Find references",
-        function(c) return c.server_capabilities.referencesProvider end)
+    buf_set_keymap("n", "gr", "<cmd>LspReferences<CR>", "Find references", function(c)
+        return c.server_capabilities.referencesProvider
+    end)
 
     -- Informational functions
-    buf_set_keymap("n", "K", "<cmd>LspHover<CR>", "Show hover information",
-        function(c) return c.server_capabilities.hoverProvider end)
+    buf_set_keymap("n", "K", "<cmd>LspHover<CR>", "Show hover information", function(c)
+        return c.server_capabilities.hoverProvider
+    end)
 
-    buf_set_keymap("i", "<C-k>", "<cmd>LspSignatureHelp<CR>", "Show signature help",
-        function(c) return c.server_capabilities.signatureHelpProvider end)
+    buf_set_keymap("i", "<C-k>", "<cmd>LspSignatureHelp<CR>", "Show signature help", function(c)
+        return c.server_capabilities.signatureHelpProvider
+    end)
 
     -- Formatting and code actions
-    buf_set_keymap("n", "ge", "<cmd>LspRename<CR>", "Rename symbol",
-        function(c) return c.server_capabilities.renameProvider end)
+    buf_set_keymap("n", "ge", "<cmd>LspRename<CR>", "Rename symbol", function(c)
+        return c.server_capabilities.renameProvider
+    end)
 
-    buf_set_keymap("n", "ga", "<cmd>LspCodeAction<CR>", "Code action",
-        function(c) return c.server_capabilities.codeActionProvider end)
+    buf_set_keymap("n", "ga", "<cmd>LspCodeAction<CR>", "Code action", function(c)
+        return c.server_capabilities.codeActionProvider
+    end)
 
-    buf_set_keymap("n", "gf", "<cmd>LspFormat<CR>", "Format document",
-        function(c) return c.server_capabilities.documentFormattingProvider end)
+    buf_set_keymap("n", "gf", "<cmd>LspFormat<CR>", "Format document", function(c)
+        return c.server_capabilities.documentFormattingProvider
+    end)
 
-    buf_set_keymap("v", "gF", "<cmd>LspRangeFormat<CR>", "Format selection",
-        function(c) return c.server_capabilities.documentRangeFormattingProvider end)
+    buf_set_keymap("v", "gF", "<cmd>LspRangeFormat<CR>", "Format selection", function(c)
+        return c.server_capabilities.documentRangeFormattingProvider
+    end)
 
     -- Symbols and structure
-    buf_set_keymap("n", "gs", "<cmd>LspDocumentSymbol<CR>", "Document symbols",
-        function(c) return c.server_capabilities.documentSymbolProvider end)
+    buf_set_keymap("n", "gs", "<cmd>LspDocumentSymbol<CR>", "Document symbols", function(c)
+        return c.server_capabilities.documentSymbolProvider
+    end)
 
-    buf_set_keymap("n", "gS", "<cmd>LspWorkspaceSymbol<CR>", "Workspace symbols",
-        function(c) return c.server_capabilities.workspaceSymbolProvider end)
+    buf_set_keymap("n", "gS", "<cmd>LspWorkspaceSymbol<CR>", "Workspace symbols", function(c)
+        return c.server_capabilities.workspaceSymbolProvider
+    end)
 
     -- Diagnostics - не изискват специфични capabilities
     buf_set_keymap("n", "dc", "<cmd>LspShowDiagnosticCurrent<CR>", "Show line diagnostics")
@@ -222,34 +235,41 @@ M.keymaps = function(client, bufnr)
     buf_set_keymap("n", "dp", "<cmd>LspShowDiagnosticNext<CR>", "Next diagnostic")
 
     -- CodeLens
-    buf_set_keymap("n", "gL", "<cmd>LspCodeLensRun<CR>", "Run CodeLens",
-        function(c) return c.server_capabilities.codeLensProvider end)
+    buf_set_keymap("n", "gL", "<cmd>LspCodeLensRun<CR>", "Run CodeLens", function(c)
+        return c.server_capabilities.codeLensProvider
+    end)
 
     -- Call Hierarchy
-    buf_set_keymap("n", "glc", "<cmd>LspIncomingCalls<CR>", "Incoming calls",
-        function(c) return c.server_capabilities.callHierarchyProvider end)
+    buf_set_keymap("n", "glc", "<cmd>LspIncomingCalls<CR>", "Incoming calls", function(c)
+        return c.server_capabilities.callHierarchyProvider
+    end)
 
-    buf_set_keymap("n", "glC", "<cmd>LspOutgoingCalls<CR>", "Outgoing calls",
-        function(c) return c.server_capabilities.callHierarchyProvider end)
+    buf_set_keymap("n", "glC", "<cmd>LspOutgoingCalls<CR>", "Outgoing calls", function(c)
+        return c.server_capabilities.callHierarchyProvider
+    end)
 
     -- Document Highlight
-    buf_set_keymap("n", "ghr", "<cmd>LspDocumentHighlight<CR>", "Highlight references",
-        function(c) return c.server_capabilities.documentHighlightProvider end)
+    buf_set_keymap("n", "ghr", "<cmd>LspDocumentHighlight<CR>", "Highlight references", function(c)
+        return c.server_capabilities.documentHighlightProvider
+    end)
 
-    buf_set_keymap("n", "ghc", "<cmd>LspClearReferences<CR>", "Clear highlights",
-        function(c) return c.server_capabilities.documentHighlightProvider end)
+    buf_set_keymap("n", "ghc", "<cmd>LspClearReferences<CR>", "Clear highlights", function(c)
+        return c.server_capabilities.documentHighlightProvider
+    end)
 
     -- Workspace Folders
-    buf_set_keymap("n", "goa", "<cmd>LspAddToWorkspaceFolder<CR>", "Add folder to workspace",
-        function(c) return c.server_capabilities.workspace and c.server_capabilities.workspace.workspaceFolders end)
+    buf_set_keymap("n", "goa", "<cmd>LspAddToWorkspaceFolder<CR>", "Add folder to workspace", function(c)
+        return c.server_capabilities.workspace and c.server_capabilities.workspace.workspaceFolders
+    end)
 
-    buf_set_keymap("n", "gor", "<cmd>LspRemoveWorkspaceFolder<CR>", "Remove folder from workspace",
-        function(c) return c.server_capabilities.workspace and c.server_capabilities.workspace.workspaceFolders end)
+    buf_set_keymap("n", "gor", "<cmd>LspRemoveWorkspaceFolder<CR>", "Remove folder from workspace", function(c)
+        return c.server_capabilities.workspace and c.server_capabilities.workspace.workspaceFolders
+    end)
 
-    buf_set_keymap("n", "gol", "<cmd>LspListWorkspaceFolders<CR>", "List workspace folders",
-        function(c) return c.server_capabilities.workspace and c.server_capabilities.workspace.workspaceFolders end)
+    buf_set_keymap("n", "gol", "<cmd>LspListWorkspaceFolders<CR>", "List workspace folders", function(c)
+        return c.server_capabilities.workspace and c.server_capabilities.workspace.workspaceFolders
+    end)
 
-    -- Debugging - не изисква специфични capabilities
     buf_set_keymap("n", "<Leader>dp", "<cmd>DAPLocal<CR>", "Start local debugging")
 end
 

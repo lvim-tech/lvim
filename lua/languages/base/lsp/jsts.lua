@@ -69,6 +69,13 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                     includeInlayFunctionLikeReturnTypeHints = true,
                     includeInlayEnumMemberValueHints = true,
                 },
+                implementationsCodeLens = {
+                    enabled = true,
+                },
+                referencesCodeLens = {
+                    enabled = true,
+                },
+                codeLens = true,
             },
             javascript = {
                 inlayHints = {
@@ -81,6 +88,13 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                     includeInlayFunctionLikeReturnTypeHints = true,
                     includeInlayEnumMemberValueHints = true,
                 },
+                implementationsCodeLens = {
+                    enabled = true,
+                },
+                referencesCodeLens = {
+                    enabled = true,
+                },
+                codeLens = true,
             },
         },
         on_attach = function(client, bufnr)

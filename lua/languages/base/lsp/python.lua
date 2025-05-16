@@ -104,6 +104,14 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                     black = { enabled = true, line_length = 79 },
                     autopep8 = { enabled = false },
                     yapf = { enabled = false },
+                    jedi_references = { enabled = true },
+                    preload = { enabled = true },
+                    pycodestyle = { enabled = true },
+                },
+                configurationSources = { "flake8" },
+                rope = {
+                    extensionModules = "",
+                    ropeFolder = "",
                 },
             },
         },
@@ -116,7 +124,22 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                 navic.attach(client, bufnr)
             end
         end,
-        capabilities = setup_diagnostics.get_capabilities(),
+        capabilities = (function()
+            local capabilities = setup_diagnostics.get_capabilities()
+            -- Добавяне на CodeLens поддръжка
+            capabilities.textDocument = capabilities.textDocument or {}
+            capabilities.textDocument.codeLens = {
+                dynamicRegistration = true,
+            }
+
+            -- Добавяне на workspace CodeLens refresh поддръжка
+            capabilities.workspace = capabilities.workspace or {}
+            capabilities.workspace.codeLens = {
+                refreshSupport = true,
+            }
+
+            return capabilities
+        end)(),
     }
 end)
 

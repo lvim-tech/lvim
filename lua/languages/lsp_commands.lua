@@ -1435,30 +1435,30 @@ vim.api.nvim_create_user_command("LspWorkspaceSymbol", function()
 end, {})
 
 -- LspCodeLensRefresh
-vim.api.nvim_create_user_command("LspCodeLensRefresh", function()
-    local clients = vim.lsp.get_clients({
-        bufnr = 0,
-        method = "textDocument/codeLens",
-    })
-    if #clients > 0 then
-        vim.lsp.codelens.refresh()
-    else
-        vim.notify("No active LSP client supporting code lens found", vim.log.levels.WARN)
-    end
-end, {})
+-- vim.api.nvim_create_user_command("LspCodeLensRefresh", function()
+--     local clients = vim.lsp.get_clients({
+--         bufnr = 0,
+--         method = "textDocument/codeLens",
+--     })
+--     if #clients > 0 then
+--         vim.lsp.codelens.refresh()
+--     else
+--         vim.notify("No active LSP client supporting code lens found", vim.log.levels.WARN)
+--     end
+-- end, {})
 
 -- LspCodeLensRun
-vim.api.nvim_create_user_command("LspCodeLensRun", function()
-    local clients = vim.lsp.get_clients({
-        bufnr = 0,
-        method = "textDocument/codeLens",
-    })
-    if #clients > 0 then
-        vim.lsp.codelens.run()
-    else
-        vim.notify("No active LSP client supporting code lens found", vim.log.levels.WARN)
-    end
-end, {})
+-- vim.api.nvim_create_user_command("LspCodeLensRun", function()
+--     local clients = vim.lsp.get_clients({
+--         bufnr = 0,
+--         method = "textDocument/codeLens",
+--     })
+--     if #clients > 0 then
+--         vim.lsp.codelens.run()
+--     else
+--         vim.notify("No active LSP client supporting code lens found", vim.log.levels.WARN)
+--     end
+-- end, {})
 
 -- LspAddToWorkspaceFolder
 vim.api.nvim_create_user_command("LspAddToWorkspaceFolder", function()

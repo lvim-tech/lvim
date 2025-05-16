@@ -73,6 +73,9 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
         filetypes = _G.file_types.lua,
         settings = {
             Lua = {
+        codeLens = {
+            enable = true
+        },
                 format = {
                     enable = false,
                 },

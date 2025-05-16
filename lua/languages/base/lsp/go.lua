@@ -90,6 +90,19 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                     parameterNames = true,
                     rangeVariableTypes = true,
                 },
+                analyses = {
+                    unusedparams = true,
+                },
+                staticcheck = true,
+                codelenses = {
+                    gc_details = true,
+                    generate = true,
+                    test = true,
+                    tidy = true,
+                    vendor = true,
+                    regenerate_cgo = true,
+                    upgrade_dependency = true,
+                },
             },
             opts = {
                 inlay_hints = { enabled = true },

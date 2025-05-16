@@ -69,6 +69,15 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                         enable = true,
                     },
                 },
+                lens = {
+                    enable = true,
+                    implementations = { enable = true },
+                    references = { enable = true },
+                    run = { enable = true },
+                    debug = { enable = true },
+                    methodReferences = { enable = true },
+                    enumVariantReferences = { enable = true },
+                },
             },
         },
         before_init = function(init_params, config)
@@ -88,7 +97,18 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                 reload_workspace(0)
             end, { desc = "Reload current cargo workspace" })
         end,
-        capabilities = setup_diagnostics.get_capabilities(),
+        capabilities = (function()
+            local capabilities = setup_diagnostics.get_capabilities()
+            capabilities.textDocument = capabilities.textDocument or {}
+            capabilities.textDocument.codeLens = {
+                dynamicRegistration = true,
+            }
+            capabilities.workspace = capabilities.workspace or {}
+            capabilities.workspace.codeLens = {
+                refreshSupport = true,
+            }
+            return capabilities
+        end)(),
     }
 end)
 

@@ -68,6 +68,12 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                 format = {
                     enable = true,
                 },
+                codeLens = {
+                    enable = true,
+                    references = true,
+                    implementations = true,
+                    testFramework = true,
+                },
             },
         },
         on_attach = function(client, bufnr)
@@ -81,6 +87,9 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
         end,
         capabilities = {
             textDocument = {
+                codeLens = {
+                    dynamicRegistration = true,
+                },
                 formatting = {
                     dynamicRegistration = false,
                 },
@@ -309,6 +318,9 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                     refreshSupport = true,
                 },
                 inlayHint = {
+                    refreshSupport = true,
+                },
+                codeLens = {
                     refreshSupport = true,
                 },
             },

@@ -17,7 +17,20 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
     lsp_config = {
         name = "zig",
         cmd = { "zls" },
-        filetypes = _G.file_types.r,
+        filetypes = _G.file_types.zig,
+        settings = {
+            zls = {
+                enable_semantic_tokens = true,
+                enable_snippets = true,
+                enable_inlay_hints = true,
+                inlay_hints_show_builtin = true,
+                inlay_hints_show_variable_type_hints = true,
+                inlay_hints_show_parameter_name = true,
+                warn_style = true,
+                enable_autofix = true,
+                analyze_with_same_ast = true,
+            },
+        },
         on_attach = function(client, bufnr)
             setup_diagnostics.keymaps(client, bufnr)
             setup_diagnostics.document_highlight(client, bufnr)
@@ -27,7 +40,18 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                 navic.attach(client, bufnr)
             end
         end,
-        capabilities = setup_diagnostics.get_capabilities(),
+        capabilities = (function()
+            local capabilities = setup_diagnostics.get_capabilities()
+            capabilities.textDocument = capabilities.textDocument or {}
+            capabilities.textDocument.codeLens = {
+                dynamicRegistration = true,
+            }
+            capabilities.workspace = capabilities.workspace or {}
+            capabilities.workspace.codeLens = {
+                refreshSupport = true,
+            }
+            return capabilities
+        end)(),
     }
 end)
 
