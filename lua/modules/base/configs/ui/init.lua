@@ -1182,137 +1182,24 @@ config.lvim_shell = function()
     end, { noremap = true, silent = true, desc = "Neomutt" })
 end
 
-config.toggleterm_nvim = function()
-    local toggleterm_status_ok, toggleterm = pcall(require, "toggleterm")
-    if not toggleterm_status_ok then
+config.betterTerm_nvim = function()
+    local betterTerm_status_ok, betterTerm = pcall(require, "betterTerm")
+    if not betterTerm_status_ok then
         return
     end
-    local toggleterm_terminal_status_ok, toggleterm_terminal = pcall(require, "toggleterm.terminal")
-    if not toggleterm_terminal_status_ok then
-        return
+    betterTerm.setup({
+        active_tab_hl = "BetterTermActive",
+        inactive_tab_hl = "BetterTermInactive",
+        new_tab_hl = "BetterTermAdd",
+        new_tab_icon = "+",
+    })
+    local terminal_count = 9
+    for i = 1, terminal_count do
+        vim.keymap.set({ "n", "t" }, "<C-c>" .. i, function()
+            betterTerm.open(i)
+        end, { desc = "Open terminal " .. i, noremap = true, silent = true })
     end
-    toggleterm.setup({
-        size = function(term)
-            if term.direction == "horizontal" then
-                return 20
-            elseif term.direction == "vertical" then
-                return vim.o.columns * 0.4
-            end
-        end,
-        start_in_insert = false,
-        on_open = function()
-            vim.keymap.set("n", "<C-q>", "<cmd>close<CR>", { buffer = true, noremap = true, silent = true })
-            vim.keymap.set(
-                "t",
-                "<C-q>",
-                "<C-\\><C-n><cmd>close<CR><C-w><C-p>",
-                { buffer = true, noremap = true, silent = true }
-            )
-            vim.keymap.set("t", "<C-x>", "<C-\\><C-n>", { buffer = true, noremap = true, silent = true })
-            vim.wo.cursorcolumn = false
-            vim.wo.cursorline = false
-            vim.cmd("wincmd=")
-        end,
-        highlights = {
-            Normal = {
-                link = "NormalFloat",
-            },
-            NormalFloat = {
-                link = "NormalFloat",
-            },
-            FloatBorder = {
-                link = "FloatBorder",
-            },
-        },
-        float_opts = {
-            border = { " ", " ", " ", " ", " ", " ", " ", " " },
-            winblend = 0,
-            width = vim.o.columns - 20,
-            height = vim.o.lines - 9,
-            highlights = {
-                border = "FloatBorder",
-                background = "NormalFloat",
-            },
-        },
-    })
-    local terminal_1 = toggleterm_terminal.Terminal:new({
-        count = 1,
-        direction = "horizontal",
-    })
-    local terminal_2 = toggleterm_terminal.Terminal:new({
-        count = 2,
-        direction = "horizontal",
-    })
-    local terminal_3 = toggleterm_terminal.Terminal:new({
-        count = 3,
-        direction = "horizontal",
-    })
-    local terminal_4 = toggleterm_terminal.Terminal:new({
-        count = 4,
-        direction = "horizontal",
-    })
-    local terminal_5 = toggleterm_terminal.Terminal:new({
-        count = 5,
-        direction = "vertical",
-    })
-    local terminal_6 = toggleterm_terminal.Terminal:new({
-        count = 6,
-        direction = "vertical",
-    })
-    local terminal_7 = toggleterm_terminal.Terminal:new({
-        count = 7,
-        direction = "vertical",
-    })
-    local terminal_8 = toggleterm_terminal.Terminal:new({
-        count = 8,
-        direction = "vertical",
-    })
-    local terminal_9 = toggleterm_terminal.Terminal:new({
-        count = 9,
-        direction = "float",
-    })
-    vim.api.nvim_create_user_command("TerminalHorizontal1", function()
-        terminal_1:toggle()
-    end, {})
-    vim.api.nvim_create_user_command("TerminalHorizontal2", function()
-        terminal_2:toggle()
-    end, {})
-    vim.api.nvim_create_user_command("TerminalHorizontal3", function()
-        terminal_3:toggle()
-    end, {})
-    vim.api.nvim_create_user_command("TerminalHorizontal4", function()
-        terminal_4:toggle()
-    end, {})
-    vim.api.nvim_create_user_command("TerminalVertical1", function()
-        terminal_5:toggle()
-    end, {})
-    vim.api.nvim_create_user_command("TerminalVertical2", function()
-        terminal_6:toggle()
-    end, {})
-    vim.api.nvim_create_user_command("TerminalVertical3", function()
-        terminal_7:toggle()
-    end, {})
-    vim.api.nvim_create_user_command("TerminalVertical4", function()
-        terminal_8:toggle()
-    end, {})
-    vim.api.nvim_create_user_command("TerminalVertical4", function()
-        terminal_8:toggle()
-    end, {})
-    vim.api.nvim_create_user_command("TerminalFloat", function()
-        terminal_9:toggle()
-    end, {})
-    vim.keymap.set("n", "<F1>", function()
-        terminal_1:toggle()
-    end, { noremap = true, silent = true, desc = "Terminal One" })
-    vim.keymap.set("n", "<F2>", function()
-        terminal_2:toggle()
-    end, { noremap = true, silent = true, desc = "Terminal Two" })
-    vim.keymap.set("n", "<F3>", function()
-        terminal_3:toggle()
-    end, { noremap = true, silent = true, desc = "Terminal Three" })
-    vim.keymap.set("n", "<F4>", function()
-        terminal_9:toggle()
-    end, { noremap = true, silent = true, desc = "Terminal Float" })
+    vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
 end
 
 config.stay_in_place = function()

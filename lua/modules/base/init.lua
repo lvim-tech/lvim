@@ -194,9 +194,9 @@ modules["lvim-tech/lvim-shell"] = {
     config = ui_config.lvim_shell,
 }
 
-modules["akinsho/toggleterm.nvim"] = {
-    commit = funcs.get_commit("toggleterm.nvim", plugins_snapshot),
-    config = ui_config.toggleterm_nvim,
+modules["CRAG666/betterTerm.nvim"] = {
+    commit = funcs.get_commit("betterTerm.nvim", plugins_snapshot),
+    config = ui_config.betterTerm_nvim,
 }
 
 modules["gbprod/stay-in-place.nvim"] = {
