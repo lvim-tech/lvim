@@ -938,7 +938,7 @@ modules["bassamsdata/namu.nvim"] = {
     commit = funcs.get_commit("namu.nvim", plugins_snapshot),
     keys = {
         {
-            "<Leader>n",
+            "<Leader>on",
             function()
                 local namu = require("namu.namu_symbols")
                 namu.show()
@@ -953,7 +953,7 @@ modules["hedyhli/outline.nvim"] = {
     commit = funcs.get_commit("outline.nvim", plugins_snapshot),
     keys = {
         {
-            "<Leader>u",
+            "<Leader>oo",
             function()
                 vim.cmd("Outline")
             end,
