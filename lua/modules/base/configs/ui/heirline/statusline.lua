@@ -329,7 +329,8 @@ M.get_statusline = function()
             local p_linters = ""
             local p_formatters = ""
             local current_buf = vim.api.nvim_get_current_buf()
-            local efm_disabled = lsp_manager.is_server_disabled_globally("efm") or lsp_manager.is_server_disabled_for_buffer("efm", current_buf)
+            local efm_disabled = lsp_manager.is_server_disabled_globally("efm")
+                or lsp_manager.is_server_disabled_for_buffer("efm", current_buf)
             for _, server in pairs(vim.lsp.get_clients({ bufnr = current_buf })) do
                 if server.name ~= "efm" then
                     table.insert(lsp, server.name)
