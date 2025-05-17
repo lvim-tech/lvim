@@ -39,7 +39,8 @@ end
 
 M.setup_codelens_autocmds = function()
     local group = vim.api.nvim_create_augroup("AutoCodeLens", { clear = true })
-    vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "LspAttach", "ColorScheme" }, {
+    vim.api.nvim_create_autocmd({ "LspAttach", "TextChanged", "TextChangedI" }, {
+        -- vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "LspAttach", "ColorScheme" }, {
         callback = function()
             vim.defer_fn(function()
                 if M.is_codelens_enabled() and vim.lsp.codelens and vim.lsp.codelens.refresh then
@@ -52,7 +53,7 @@ M.setup_codelens_autocmds = function()
     return group
 end
 
-M.ToggleCodeLens = function()
+M.toggle_code_lens = function()
     local status
     if M.is_codelens_enabled() then
         status = "Enabled"
@@ -93,7 +94,7 @@ M.ToggleCodeLens = function()
     end)
 end
 
-M.LspCodeLensRun = function()
+M.lsp_code_lens_run = function()
     if not M.is_codelens_enabled() then
         vim.notify("CodeLens is disabled", vim.log.levels.WARN)
         return
@@ -173,14 +174,11 @@ M.setup = function()
         end
         vim.api.nvim_input("<2-LeftMouse>")
     end, { noremap = true, silent = true })
-    vim.api.nvim_create_user_command("ToggleCodeLens", function()
-        M.ToggleCodeLens()
-    end, {})
     vim.api.nvim_create_user_command("LspCodeLensRun", function()
-        M.LspCodeLensRun()
+        M.lsp_code_lens_run()
     end, {})
     vim.api.nvim_create_user_command("LvimCodeLens", function()
-        M.ToggleCodeLens()
+        M.toggle_code_lens()
     end, {})
 end
 
