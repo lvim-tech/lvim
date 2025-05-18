@@ -158,18 +158,6 @@ config.rgflow_nvim = function()
     })
 end
 
-config.nvim_peekup = function()
-    vim.api.nvim_create_autocmd("FileType", {
-        pattern = {
-            "peek",
-        },
-        callback = function()
-            vim.opt_local.clipboard = "unnamed"
-        end,
-        group = "LvimIDE",
-    })
-end
-
 config.vessel_nvim = function()
     local vessel_status_ok, vessel = pcall(require, "vessel")
     if not vessel_status_ok then
@@ -182,6 +170,8 @@ config.vessel_nvim = function()
     vessel.opt.marks.highlights.lnum = "Error"
     vessel.opt.marks.highlights.col = "CursorLineNr"
     vessel.opt.marks.highlights.line = "Folded"
+    vessel.opt.marks.show_colnr = true
+    vessel.opt.buffers.preview = true
     vessel.setup({
         create_commands = true,
         commands = {
@@ -194,8 +184,25 @@ config.vessel_nvim = function()
     vim.keymap.set("n", "mb", "<Plug>(VesselViewBufferMarks)", { desc = "Marks view buffer" })
     vim.keymap.set("n", "me", "<Plug>(VesselViewExternalMarks)", { desc = "Marks view external" })
     -- Marks set
-    vim.keymap.set("n", "mm", "<Plug>(VesselSetLocalMark)", { desc = "Marks set local" })
-    vim.keymap.set("n", "mM", "<Plug>(VesselSetGlobalMark)", { desc = "Marks set global" })
+    local function set_mark(lhs)
+        vim.keymap.set("n", lhs, function()
+            vim.api.nvim_feedkeys(
+                vim.api.nvim_replace_termcodes(
+                    lhs == "mm" and "<Plug>(VesselSetLocalMark)" or "<Plug>(VesselSetGlobalMark)",
+                    true,
+                    false,
+                    true
+                ),
+                "n",
+                false
+            )
+            vim.schedule(function()
+                vim.cmd("redrawstatus")
+            end)
+        end, { desc = "Marks set " .. (lhs == "mm" and "local" or "global"), silent = true })
+    end
+    set_mark("mm")
+    set_mark("mM")
     -- Jumps
     vim.keymap.set("n", "mjj", function()
         vessel.view_jumps()

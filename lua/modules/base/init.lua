@@ -186,6 +186,10 @@ modules["stevearc/oil.nvim"] = {
 
 modules["rebelot/heirline.nvim"] = {
     commit = funcs.get_commit("heirline.nvim", plugins_snapshot),
+    dependencies = {
+        "tanvirtin/vgit.nvim",
+        "NeogitOrg/neogit",
+    },
     config = ui_config.heirline_nvim,
 }
 
@@ -426,14 +430,6 @@ modules["mangelozzi/rgflow.nvim"] = {
         },
     },
     config = editor_config.rgflow_nvim,
-}
-
-modules["gennaro-tedesco/nvim-peekup"] = {
-    commit = funcs.get_commit("nvim-peekup", plugins_snapshot),
-    event = {
-        "BufRead",
-    },
-    config = editor_config.nvim_peekup,
 }
 
 modules["gcmt/vessel.nvim"] = {
@@ -735,7 +731,6 @@ modules["NeogitOrg/neogit"] = {
         "sindrets/diffview.nvim",
         "ibhagwan/fzf-lua",
     },
-    cmd = "Neogit",
     keys = {
         { "<Leader>gn", "<Cmd>Neogit<CR>", desc = "Neogit" },
     },
@@ -752,33 +747,10 @@ modules["tanvirtin/vgit.nvim"] = {
     config = version_control_config.vgit,
 }
 
-modules["lewis6991/gitsigns.nvim"] = {
-    commit = funcs.get_commit("gitsigns.nvim", plugins_snapshot),
-    dependencies = {
-        "nvim-lua/plenary.nvim",
-    },
-    event = {
-        "BufRead",
-    },
-    config = version_control_config.gitsigns_nvim,
-}
-
 modules["sindrets/diffview.nvim"] = {
     commit = funcs.get_commit("diffview.nvim", plugins_snapshot),
     event = "BufRead",
     config = version_control_config.diffview_nvim,
-}
-
-modules["lvim-tech/lvim-forgit"] = {
-    commit = funcs.get_commit("lvim-forgit", plugins_snapshot),
-    dependencies = {
-        "lvim-tech/lvim-shell",
-    },
-    cmd = "LvimForgit",
-    keys = {
-        { "<A-t>", "<Cmd>LvimForgit<CR>", desc = "Lvim forgit" },
-    },
-    config = version_control_config.lvim_forgit,
 }
 
 modules["mbbill/undotree"] = {

@@ -8,7 +8,6 @@ local group = vim.api.nvim_create_augroup("LvimIDE", {
 local lvim_ui_config = require("modules.base.configs.ui")
 local editor_config = require("modules.base.configs.editor")
 local ui_config = require("modules.base.configs.ui")
-local version_control_config = require("modules.base.configs.version_control")
 local funcs = require("core.funcs")
 local base_file_types = require("languages.base.file_types")
 local user_file_types = require("languages.user.file_types")
@@ -84,7 +83,6 @@ configs["base_lvim"] = function()
                 _G.LVIM_SETTINGS["floatheight"] = tonumber(user_choice) + 0.0
                 funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
                 editor_config.fzf_lua()
-                version_control_config.lvim_forgit()
             end
         end)
     end
@@ -166,7 +164,6 @@ configs["base_lvim"] = function()
             lvim_ui_config.nvim_window_picker()
             editor_config.tabby_nvim()
             editor_config.neocomposer_nvim()
-            version_control_config.lvim_forgit()
         end,
         group = group,
     })

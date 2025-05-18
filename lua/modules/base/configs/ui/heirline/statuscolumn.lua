@@ -1,5 +1,18 @@
 local M = {}
 
+local function mark_sign()
+    -- local marks = vim.fn.getmarklist(vim.api.nvim_get_current_buf())
+    local marks = vim.list_extend(vim.fn.getmarklist(), vim.fn.getmarklist(vim.api.nvim_get_current_buf()))
+    local line = vim.v.lnum
+    for _, m in ipairs(marks) do
+        local letter = m.mark:match("^'([a-zA-Z])$")
+        if letter and m.pos[2] == line then
+            return letter
+        end
+    end
+    return ""
+end
+
 M.get_statuscolumn = function()
     local icons = require("configs.base.ui.icons")
     local conditions = require("heirline.conditions")
@@ -29,9 +42,6 @@ M.get_statuscolumn = function()
                     extmark[4].sign_hl_group ~= "GitSignsAdd"
                     and extmark[4].sign_hl_group ~= "GitSignsChange"
                     and extmark[4].sign_hl_group ~= "GitSignsDelete"
-                    and extmark[4].sign_hl_group ~= "GitSignsTopDelete"
-                    and extmark[4].sign_hl_group ~= "GitSignsChangeDelete"
-                    and extmark[4].sign_hl_group ~= "GitSignsUntracked"
                     and extmark[4].sign_hl_group ~= "DiagnosticSignError"
                     and extmark[4].sign_hl_group ~= "DiagnosticSignWarn"
                     and extmark[4].sign_hl_group ~= "DiagnosticSignInfo"
@@ -87,13 +97,9 @@ M.get_statuscolumn = function()
             )
             for _, extmark in pairs(extmarks) do
                 if
-                    extmark[4].sign_hl_group == "GitSignsAddLn"
-                    or extmark[4].sign_hl_group == "GitSignsAdd"
+                    extmark[4].sign_hl_group == "GitSignsAdd"
                     or extmark[4].sign_hl_group == "GitSignsChange"
                     or extmark[4].sign_hl_group == "GitSignsDelete"
-                    or extmark[4].sign_hl_group == "GitSignsTopDelete"
-                    or extmark[4].sign_hl_group == "GitSignsChangeDelete"
-                    or extmark[4].sign_hl_group == "GitSignsUntracked"
                 then
                     gits[#gits + 1] = {
                         name = extmark[4].sign_hl_group or "",
@@ -185,7 +191,26 @@ M.get_statuscolumn = function()
             end,
         },
     }
-
+    local mark_component = {
+        provider = function()
+            if vim.bo.filetype == "qf" or vim.bo.filetype == "org" or vim.v.virtnum ~= 0 then
+                return ""
+            end
+            local mark = mark_sign()
+            return (mark ~= " ") and (mark .. " ") or "" -- ← тук е разликата
+        end,
+        hl = { fg = _G.LVIM_COLORS.blue, bold = true },
+        on_click = {
+            name = "sc_mark_click",
+            callback = function(_, minwid, _, button, _)
+                if button == "m" then
+                    local letter = string.char(minwid)
+                    vim.cmd("delmarks " .. letter)
+                    vim.notify("Mark '" .. letter .. "' removed")
+                end
+            end,
+        },
+    }
     local function get_max_line_number_length(bufnr)
         local max_length = 0
         local total_lines = vim.api.nvim_buf_line_count(bufnr)
@@ -258,13 +283,15 @@ M.get_statuscolumn = function()
     local gits = {
         {
             condition = function()
-                return not conditions.is_git_repo() or vim.v.virtnum ~= 0
+                return (_G.LVIM_GIT == nil) or vim.v.virtnum ~= 0
+                -- return false
             end,
             provider = vline,
         },
         {
             condition = function()
-                return conditions.is_git_repo() and vim.v.virtnum == 0
+                return (_G.LVIM_GIT ~= nil) and vim.v.virtnum == 0
+                -- return true
             end,
             init = function(self)
                 local gits = self.get_extmarks_gits(self, -1, vim.v.lnum)
@@ -302,7 +329,8 @@ M.get_statuscolumn = function()
         end,
         static = static,
         init = init,
-        space,
+        mark_component,
+        -- space,
         signs,
         diagnostics,
         align,

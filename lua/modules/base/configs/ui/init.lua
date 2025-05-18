@@ -1121,6 +1121,8 @@ config.heirline_nvim = function()
     if not heirline_status_ok then
         return
     end
+    local git_utils = require("modules.base.configs.ui.heirline.git")
+    git_utils.start()
     local file_types_winbar = {}
     for i, v in ipairs(file_types) do
         file_types_winbar[i] = v

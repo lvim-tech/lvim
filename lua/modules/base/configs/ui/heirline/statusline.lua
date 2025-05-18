@@ -9,7 +9,6 @@ M.get_statusline = function()
     local heirline_utils = require("heirline.utils")
     local space = { provider = " " }
     local align = { provider = "%=" }
-
     local file_types = {
         provider = function()
             local file_type = vim.bo.filetype
@@ -168,7 +167,7 @@ M.get_statusline = function()
                 return
             end
             local file_size = require("core.funcs").file_size(fsize)
-            return " " .. file_size
+            return " " .. file_size .. " "
         end,
         hl = { fg = _G.LVIM_COLORS.blue },
     }
@@ -202,18 +201,21 @@ M.get_statusline = function()
         { provider = "%<" }
     )
     local git = {
-        condition = heirline_conditions.is_git_repo,
+        condition = function()
+            return type(_G.LVIM_GIT) == "table" and _G.LVIM_GIT.head ~= nil
+        end,
         init = function(self)
-            ---@diagnostic disable-next-line: undefined-field
-            self.status_dict = vim.b.gitsigns_status_dict
-            self.has_changes = self.status_dict.added ~= 0
-                or self.status_dict.removed ~= 0
-                or self.status_dict.changed ~= 0
+            self.status_dict = vim.b.vgit_status or { added = 0, removed = 0, changed = 0 }
         end,
         hl = { fg = _G.LVIM_COLORS.orange },
         {
-            provider = function(self)
-                return " " .. icons.common.git .. " " .. self.status_dict.head .. " "
+            provider = function()
+                local head = _G.LVIM_GIT and _G.LVIM_GIT.head
+                return head
+                        and head.branch
+                        and head.abbrev
+                        and (" " .. icons.common.git .. " " .. head.branch .. " (" .. head.abbrev .. ") ")
+                    or ""
             end,
             hl = { bold = true },
         },
