@@ -1,15 +1,26 @@
 local M = {}
 
 local function mark_sign()
-    -- local marks = vim.fn.getmarklist(vim.api.nvim_get_current_buf())
-    local marks = vim.list_extend(vim.fn.getmarklist(), vim.fn.getmarklist(vim.api.nvim_get_current_buf()))
-    local line = vim.v.lnum
-    for _, m in ipairs(marks) do
-        local letter = m.mark:match("^'([a-zA-Z])$")
-        if letter and m.pos[2] == line then
-            return letter
+    local cur_buf = vim.api.nvim_get_current_buf()
+    local cur_line = vim.v.lnum
+
+    local marks = vim.fn.getmarklist()
+    local marks_local = vim.fn.getmarklist(cur_buf)
+
+    local all_marks = vim.list_extend(marks, marks_local)
+
+    for _, m in ipairs(all_marks) do
+        local letter = m.mark:match("^'([a-zA-Z])$") or m.mark:match("^([a-zA-Z])$")
+
+        if letter then
+            local buf = m.pos[1]
+            local line = m.pos[2]
+            if buf == cur_buf and line == cur_line then
+                return letter
+            end
         end
     end
+
     return ""
 end
 
@@ -191,13 +202,13 @@ M.get_statuscolumn = function()
             end,
         },
     }
-    local mark_component = {
+    local marks = {
         provider = function()
             if vim.bo.filetype == "qf" or vim.bo.filetype == "org" or vim.v.virtnum ~= 0 then
                 return ""
             end
             local mark = mark_sign()
-            return (mark ~= " ") and (mark .. " ") or "" -- ← тук е разликата
+            return (mark ~= " ") and (mark .. " ") or ""
         end,
         hl = { fg = _G.LVIM_COLORS.blue, bold = true },
         on_click = {
@@ -246,7 +257,6 @@ M.get_statuscolumn = function()
             if vim.v.relnum == 0 then
                 local lnum = vim.v.lnum
                 return format_line_number(lnum, max_length)
-                -- return vim.v.lnum
             end
             return vim.v.relnum
         end,
@@ -329,7 +339,7 @@ M.get_statuscolumn = function()
         end,
         static = static,
         init = init,
-        mark_component,
+        marks,
         -- space,
         signs,
         diagnostics,
