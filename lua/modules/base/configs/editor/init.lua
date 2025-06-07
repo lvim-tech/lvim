@@ -7,7 +7,25 @@ config.lvim_space = function()
     if not lvim_space_status_ok then
         return
     end
-    lvim_space.setup()
+    lvim_space.setup({
+        ui = {
+            icons = {
+                error = " ",
+                warn = " ",
+                info = " ",
+                project = " ",
+                project_active = " ",
+                workspace = " ",
+                workspace_active = " ",
+                tab = " ",
+                tab_active = " ",
+                file = " ",
+                file_active = " ",
+                empty = "󰇘 ",
+                pre = "➤ ",
+            },
+        },
+    })
 end
 
 config.navigator_nvim = function()

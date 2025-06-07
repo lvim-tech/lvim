@@ -1,80 +1,422 @@
-local modules = {}
-
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- HELP ---------------------------------------------------------
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
--- Disable of default Module (Plug-in) (from lua/modules/base/init.lua)
-
--- You can disable of any default Module (Plug-in)
--- modules["folke/noice.nvim"] = false
-
--- Rewrite of settings of default Module (Plug-in) (from lua/modules/base/init.lua)
-
--- You can rewrite of settings of any of default Module (Plug-in)
--- modules["folke/noice.nvim"] = {
---     -- your code
+-- local modules = {}
+--
+-- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- -- HELP ---------------------------------------------------------
+-- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+--
+-- -- Disable of default Module (Plug-in) (from lua/modules/base/init.lua)
+--
+-- -- You can disable of any default Module (Plug-in)
+-- -- modules["folke/noice.nvim"] = false
+--
+-- -- Rewrite of settings of default Module (Plug-in) (from lua/modules/base/init.lua)
+--
+-- -- You can rewrite of settings of any of default Module (Plug-in)
+-- -- modules["folke/noice.nvim"] = {
+-- --     -- your code
+-- -- }
+--
+-- -- Add new Module (Plug-in)
+--
+-- -- You can add new Module (Plug-in)
+-- -- modules["name_of_your/plugin"] = {
+-- --     your code
+-- -- }
+--
+-- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- -- HELP ---------------------------------------------------------
+-- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+--
+-- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- -- UI -----------------------------------------------------------
+-- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+--
+-- -- local ui_config = require("modules.user.configs.ui")
+--
+-- -- modules["name_of_your/plugin"] = {
+-- --     config = ui_config.name_of_your_function
+-- -- }
+--
+-- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- -- Editor -------------------------------------------------------
+-- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+--
+-- -- local editor_config = require("modules.user.configs.editor")
+--
+-- -- modules["name_of_your/plugin"] = {
+-- --     config = editor_config.name_of_your_function
+-- -- }
+--
+-- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- -- Version control ----------------------------------------------
+-- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+--
+-- -- local version_control_config = require("modules.user.configs.version_control")
+--
+-- -- modules["name_of_your/plugin"] = {
+-- --     config = version_control_config.name_of_your_function
+-- -- }
+--
+-- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- -- Languages ----------------------------------------------------
+-- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+--
+-- -- local languages_config = require("modules.user.configs.editor")
+--
+-- -- modules["name_of_your/plugin"] = {
+-- --     config = languages_config.name_of_your_function
+-- -- }
+--
+-- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- -- Completion ---------------------------------------------------
+-- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+--
+-- -- local completion_config = require("modules.user.configs.editor")
+--
+-- -- modules["name_of_your/module"] = {
+-- --     config = completion_config.name_of_your_function
+-- -- }
+--
+-- -- CUSTOM
+-- --
+-- local funcs = require("core.funcs")
+-- local plugins_snapshot = {}
+-- local file_content = funcs.read_file(_G.LVIM_SNAPSHOT)
+-- if file_content ~= nil then
+--     plugins_snapshot = file_content
+-- end
+--
+-- -- https://github.com/CKolkey/config/blob/master/nvim/lua/ckolkey/plugins/ui/statuscolumn.lua
+-- -- E17A-E9E5
+-- --
+-- -- modules["zbirenbaum/copilot.lua"] = {
+-- --     cmd = "Copilot",
+-- --     build = ":Copilot auth",
+-- --     event = "BufReadPost",
+-- --     config = function()
+-- --         require("copilot").setup({
+-- --             suggestion = {
+-- --                 enabled = not vim.g.ai_cmp,
+-- --                 auto_trigger = true,
+-- --                 hide_during_completion = vim.g.ai_cmp,
+-- --                 keymap = {
+-- --                     jump_prev = "[[",
+-- --                     jump_next = "]]",
+-- --                     accept = "<C-i>",
+-- --                     refresh = "gr",
+-- --                     open = "<M-CR>",
+-- --                 },
+-- --             },
+-- --         })
+-- --     end,
+-- -- }
+--
+-- modules["yetone/avante.nvim"] = {
+--     commit = funcs.get_commit("avante.nvim", plugins_snapshot),
+--     build = "make BUILD_FROM_SOURCE=true",
+--     dependencies = {
+--         "nvim-treesitter/nvim-treesitter",
+--         "nvim-lua/plenary.nvim",
+--         "MunifTanjim/nui.nvim",
+--         "ibhagwan/fzf-lua",
+--         "nvim-tree/nvim-web-devicons",
+--         "zbirenbaum/copilot.lua",
+--     },
+--     config = function()
+--         require("avante").setup({
+--             build = "make",
+--             provider = "copilot",
+--             providers = {
+--                 copilot = {
+--                     -- model = "claude-3.7-sonnet",
+--                     model = "gpt-4o",
+--                     -- temperature = 0,
+--                     -- max_tokens = 8192,
+--                 },
+--             },
+--         })
+--     end,
 -- }
-
--- Add new Module (Plug-in)
-
--- You can add new Module (Plug-in)
--- modules["name_of_your/plugin"] = {
---     your code
+--
+-- modules["echasnovski/mini.doc"] = {
+--     commit = funcs.get_commit("mini.doc", plugins_snapshot),
+--     config = function()
+--         require("mini.doc").setup()
+--     end,
 -- }
-
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- HELP ---------------------------------------------------------
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- UI -----------------------------------------------------------
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
--- local ui_config = require("modules.user.configs.ui")
-
--- modules["name_of_your/plugin"] = {
---     config = ui_config.name_of_your_function
+--
+-- modules["obsidian-nvim/obsidian.nvim"] = {
+--     commit = funcs.get_commit("obsidian.nvim", plugins_snapshot),
+--     config = function()
+--         require("obsidian").setup({
+--             workspaces = {
+--                 {
+--                     name = "Literature",
+--                     path = "~/obsidian/literature",
+--                 },
+--                 {
+--                     name = "School",
+--                     path = "~/obsidian/school",
+--                 },
+--                 {
+--                     name = "Cli",
+--                     path = "~/obsidian/cli",
+--                 },
+--                 {
+--                     name = "Development",
+--                     path = "~/obsidian/development",
+--                 },
+--             },
+--             daily_notes = {
+--                 folder = "notes",
+--                 date_format = "%Y-%m-%d",
+--                 alias_format = "%B %-d, %Y",
+--                 default_tags = { "daily-notes" },
+--                 template = nil,
+--             },
+--
+--             ui = {
+--                 checkboxes = {},
+--             },
+--             completion = {
+--                 nvim_cmp = false,
+--                 blink = {
+--                     enabled = true,
+--                     obsidian = { score_offset = 10 },
+--                     obsidian_tags = {
+--                         score_offset = 10,
+--                         transform_items = function(_, items)
+--                             for _, item in ipairs(items) do
+--                                 item.kind = 10
+--                             end
+--                             return items
+--                         end,
+--                     },
+--                 },
+--                 min_chars = 0,
+--             },
+--         })
+--         vim.api.nvim_set_hl(0, "ObsidianRefText", { fg = _G.LVIM_COLORS.red })
+--         vim.api.nvim_set_hl(0, "ObsidianExtLinkIcon", { fg = _G.LVIM_COLORS.red })
+--         local map = vim.keymap.set
+--         local opts = { noremap = true, silent = true }
+--         map(
+--             "n",
+--             "<leader>od",
+--             "<cmd>ObsidianToday<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Open today's note" })
+--         )
+--         map(
+--             "n",
+--             "<leader>oy",
+--             "<cmd>ObsidianYesterday<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Open yesterday's note" })
+--         )
+--         map(
+--             "n",
+--             "<leader>ot",
+--             "<cmd>ObsidianTomorrow<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Open tomorrow's note" })
+--         )
+--         map(
+--             "n",
+--             "<leader>oD",
+--             "<cmd>ObsidianDailies<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Browse daily notes" })
+--         )
+--         map(
+--             "n",
+--             "<leader>on",
+--             "<cmd>ObsidianNew<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Create new note" })
+--         )
+--         map(
+--             "n",
+--             "<leader>oN",
+--             "<cmd>ObsidianNewFromTemplate<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: New from template" })
+--         )
+--         map(
+--             "v",
+--             "<leader>oe",
+--             "<cmd>ObsidianExtractNote<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Extract to new note" })
+--         )
+--         map(
+--             "n",
+--             "<leader>of",
+--             "<cmd>ObsidianFollowLink<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Follow link under cursor" })
+--         )
+--         map(
+--             "v",
+--             "<leader>ol",
+--             "<cmd>ObsidianLink<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Link to existing note" })
+--         )
+--         map(
+--             "v",
+--             "<leader>oL",
+--             "<cmd>ObsidianLinkNew<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Link to new note" })
+--         )
+--         map(
+--             "n",
+--             "<leader>ob",
+--             "<cmd>ObsidianBacklinks<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Show backlinks" })
+--         )
+--         map(
+--             "n",
+--             "<leader>ol",
+--             "<cmd>ObsidianLinks<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Show all links" })
+--         )
+--         map(
+--             "n",
+--             "<leader>os",
+--             "<cmd>ObsidianSearch<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Search vault" })
+--         )
+--         map(
+--             "n",
+--             "<leader>oq",
+--             "<cmd>ObsidianQuickSwitch<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Quick switch note" })
+--         )
+--         map(
+--             "n",
+--             "<leader>oo",
+--             "<cmd>ObsidianOpen<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Open in app" })
+--         )
+--         map(
+--             "n",
+--             "<leader>op",
+--             "<cmd>ObsidianPasteImg<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Paste image" })
+--         )
+--         map(
+--             "n",
+--             "<leader>oc",
+--             "<cmd>ObsidianToggleCheckbox<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Toggle checkbox" })
+--         )
+--         map(
+--             "n",
+--             "<leader>oi",
+--             "<cmd>ObsidianTemplate<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Insert template" })
+--         )
+--         map(
+--             "n",
+--             "<leader>og",
+--             "<cmd>ObsidianTags<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Browse tags" })
+--         )
+--         map(
+--             "n",
+--             "<leader>o.",
+--             "<cmd>ObsidianTOC<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Table of Contents" })
+--         )
+--         map(
+--             "n",
+--             "<leader>ow",
+--             "<cmd>ObsidianWorkspace<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Workspace" })
+--         )
+--         map(
+--             "n",
+--             "<leader>or",
+--             "<cmd>ObsidianRename<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Rename note" })
+--         )
+--         map(
+--             "n",
+--             "<leader>o?",
+--             "<cmd>ObsidianCheck<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Check for issues" })
+--         )
+--         map(
+--             "n",
+--             "<leader>o!",
+--             "<cmd>ObsidianDebug<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Debug information" })
+--         )
+--         map(
+--             "n",
+--             "<leader>oO",
+--             "<cmd>Obsidian<CR>",
+--             vim.tbl_extend("force", opts, { desc = "Obsidian: Generic command" })
+--         )
+--     end,
 -- }
-
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- Editor -------------------------------------------------------
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
--- local editor_config = require("modules.user.configs.editor")
-
--- modules["name_of_your/plugin"] = {
---     config = editor_config.name_of_your_function
+--
+-- modules["mikesmithgh/kitty-scrollback.nvim"] = {
+--     lazy = true,
+--     cmd = {
+--         "KittyScrollbackGenerateKittens",
+--         "KittyScrollbackCheckHealth",
+--         "KittyScrollbackGenerateCommandLineEditing",
+--     },
+--     event = { "User KittyScrollbackLaunch" },
+--     config = function()
+--         require("kitty-scrollback").setup()
+--     end,
 -- }
-
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- Version control ----------------------------------------------
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
--- local version_control_config = require("modules.user.configs.version_control")
-
--- modules["name_of_your/plugin"] = {
---     config = version_control_config.name_of_your_function
+--
+-- modules["nvzone/showkeys"] = {
+--     cmd = "ShowkeysToggle",
+--     config = function()
+--         require("showkeys").setup({
+--             timeout = 5, -- in secs
+--             maxkeys = 6,
+--             show_count = true,
+--             position = "bottom-center",
+--         })
+--     end,
 -- }
-
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- Languages ----------------------------------------------------
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
--- local languages_config = require("modules.user.configs.editor")
-
--- modules["name_of_your/plugin"] = {
---     config = languages_config.name_of_your_function
+--
+-- modules["nvzone/typr"] = {
+--     cmd = { "Typr", "TyprStats" },
+--     dependencies = "nvzone/volt",
+--     config = function()
+--         require("typr").setup({
+--             kblayout = {
+--                 { "q", "w", "e", "r", "t", "y", "u", "i", "o", "p" },
+--                 { "a", "s", "d", "f", "g", "h", "j", "k", "l", ";" },
+--                 { "z", "x", "c", "v", "b", "n", "m", ",", ".", "/" },
+--             },
+--         })
+--     end,
 -- }
-
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- Completion ---------------------------------------------------
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
--- local completion_config = require("modules.user.configs.editor")
-
--- modules["name_of_your/module"] = {
---     config = completion_config.name_of_your_function
+--
+-- modules["wakatime/vim-wakatime"] = {
+--     event = "BufRead",
 -- }
-
-return modules
+--
+-- modules["dundalek/bloat.nvim"] = {
+--     cmd = "Bloat",
+-- }
+--
+-- modules["kevinhwang91/nvim-fundo"] = {
+--     commit = funcs.get_commit("nvim-fundo", plugins_snapshot),
+--     dependencies = {
+--         "kevinhwang91/promise-async",
+--     },
+--     build = function()
+--         require("fundo").install()
+--     end,
+--     config = function()
+--         local fundo_status_ok, fundo = pcall(require, "fundo")
+--         if not fundo_status_ok then
+--             return
+--         end
+--         fundo.setup({
+--             archives_dir = "/mnt/storage/biserstoilov/.fundo",
+--         })
+--     end,
+-- }
+--
+-- return modules
