@@ -207,7 +207,7 @@ config.vessel_nvim = function()
     vim.keymap.set("n", "mg", "<Plug>(VesselViewGlobalMarks)", { desc = "Marks view global" })
     vim.keymap.set("n", "mb", "<Plug>(VesselViewBufferMarks)", { desc = "Marks view buffer" })
     vim.keymap.set("n", "me", "<Plug>(VesselViewExternalMarks)", { desc = "Marks view external" })
-    -- Marks set
+
     local function set_mark(lhs)
         vim.keymap.set("n", lhs, function()
             vim.api.nvim_feedkeys(
@@ -227,7 +227,7 @@ config.vessel_nvim = function()
     end
     set_mark("mm")
     set_mark("mM")
-    -- Jumps
+
     vim.keymap.set("n", "mjj", function()
         vessel.view_jumps()
     end, { desc = "Jumps all" })
@@ -440,13 +440,12 @@ config.tabby_nvim = function()
         return
     end
 
-    -- Функция за получаване на табове от lvim-space
     local get_lvim_space_tabs = function()
         local pub_status_ok, pub = pcall(require, "lvim-space.pub")
         if pub_status_ok then
             return pub.get_tab_info()
         else
-            return {}
+            return { workspace_name = "Unknown", tabs = {} }
         end
     end
 
@@ -526,9 +525,9 @@ config.tabby_nvim = function()
             hl = { bg = _G.LVIM_COLORS.bg_dark, fg = _G.LVIM_COLORS.bg_dark },
         })
 
-        -- Заменяме vim табовете с lvim-space табове
-        local lvim_tabs = get_lvim_space_tabs()
-        for _, tab in ipairs(lvim_tabs) do
+        local lvim_data = get_lvim_space_tabs()
+
+        for _, tab in ipairs(lvim_data.tabs or {}) do
             if tab.active then
                 hl = { bg = _G.LVIM_COLORS.green, fg = _G.LVIM_COLORS.bg_dark, style = "bold" }
             else
@@ -542,6 +541,18 @@ config.tabby_nvim = function()
                 },
             })
         end
+
+        table.insert(comps, {
+            type = "text",
+            text = {
+                "  " .. (lvim_data.workspace_name or "Unknown") .. "  ",
+                hl = {
+                    bg = _G.LVIM_COLORS.orange,
+                    fg = _G.LVIM_COLORS.bg_dark,
+                    style = "bold",
+                },
+            },
+        })
 
         return comps
     end
