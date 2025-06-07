@@ -533,7 +533,7 @@ config.snacks_nvim = function()
 ╚══════╝ ╚═══╝  ╚═╝╚═╝     ╚═╝
 ]],
                 },
-                { icon = " ", key = "<Leader><Leader>b", desc = "Projects", action = ":CtrlSpace b" },
+                { icon = " ", key = "<C-Space>", desc = "Lvim Space", action = ":LvimSpace" },
                 { icon = " ", key = "<Leader>=", desc = "File Explorer", action = ":Yazi" },
                 { icon = " ", key = "<Leader>f", desc = "Find File", action = ":FzfLua files" },
                 { icon = " ", key = "<Leader>nn", desc = "New File", action = ":ene | startinsert" },
@@ -949,16 +949,6 @@ config.which_key_nvim = function()
         which_key.setup(options)
     end
     wk()
-end
-
-config.mini_cursorword = function()
-    local mini_cursorword_status_ok, mini_cursorword = pcall(require, "mini.cursorword")
-    if not mini_cursorword_status_ok then
-        return
-    end
-    mini_cursorword.setup({
-        delay = 0,
-    })
 end
 
 config.netrw_nvim = function()

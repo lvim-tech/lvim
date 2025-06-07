@@ -10,7 +10,8 @@ local function mark_sign()
     local all_marks = vim.list_extend(marks, marks_local)
 
     for _, m in ipairs(all_marks) do
-        local letter = m.mark:match("^'([a-zA-Z])$") or m.mark:match("^([a-zA-Z])$")
+        -- local letter = m.mark:match("^'([a-zA-Z])$") or m.mark:match("^([a-zA-Z])$")
+        local letter = m.mark:match("^[`']?([a-zA-Z0-9])$")
 
         if letter then
             local buf = m.pos[1]
@@ -339,7 +340,7 @@ M.get_statuscolumn = function()
         end,
         static = static,
         init = init,
-        marks,
+        -- marks,
         -- space,
         signs,
         diagnostics,

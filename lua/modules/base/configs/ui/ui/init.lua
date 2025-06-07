@@ -1,7 +1,6 @@
 local M = {}
 local funcs = require("core.funcs")
 local icons = require("configs.base.ui.icons")
-local message = require("ui.message")
 local utils = require("ui.utils")
 local ui = require("ui")
 

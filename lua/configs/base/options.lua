@@ -19,6 +19,7 @@ M.global = function()
         vim.opt.splitkeep = "screen"
     end)
     -- vim.opt
+    vim.opt.guicursor = "n-v-c:block-Cursor/lCursor,i-ci-ve:ver25-Cursor/lCursor,r-cr:hor20,o:hor50"
     vim.opt.shortmess = "ltToOCFI"
     vim.opt.termguicolors = true
     vim.opt.mouse = "nv"
@@ -44,7 +45,7 @@ M.global = function()
     vim.opt.backupdir = _G.global.cache_path .. "/backup/"
     vim.opt.viewdir = _G.global.cache_path .. "/view/"
     vim.opt.history = 2000
-    vim.opt.shada = "!,'300,<50,@100,s10,h"
+    vim.opt.shada = "!,'300,<50,@100,s1000,h,c"
     vim.opt.backupskip = "/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*,.vault.vim"
     vim.opt.smarttab = true
     vim.opt.shiftround = true

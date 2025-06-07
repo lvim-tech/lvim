@@ -2,6 +2,14 @@ local icons = require("configs.base.ui.icons")
 
 local config = {}
 
+config.lvim_space = function()
+    local lvim_space_status_ok, lvim_space = pcall(require, "lvim-space")
+    if not lvim_space_status_ok then
+        return
+    end
+    lvim_space.setup()
+end
+
 config.navigator_nvim = function()
     local navigator_status_ok, navigator = pcall(require, "Navigator")
     if not navigator_status_ok then
@@ -170,8 +178,6 @@ config.vessel_nvim = function()
     vessel.opt.marks.highlights.lnum = "Error"
     vessel.opt.marks.highlights.col = "CursorLineNr"
     vessel.opt.marks.highlights.line = "Folded"
-    vessel.opt.marks.show_colnr = true
-    vessel.opt.buffers.preview = true
     vessel.setup({
         create_commands = true,
         commands = {
@@ -415,20 +421,17 @@ config.tabby_nvim = function()
     if not tabby_future_win_name_status_ok then
         return
     end
-    local get_tab_label = function(tab_number)
-        local s, v = pcall(function()
-            return vim.api.nvim_eval("ctrlspace#util#Gettabvar(" .. tab_number .. ", 'CtrlSpaceLabel')")
-        end)
-        if s then
-            if v == "" then
-                return tab_number
-            else
-                return tab_number .. ": " .. v
-            end
+
+    -- Функция за получаване на табове от lvim-space
+    local get_lvim_space_tabs = function()
+        local pub_status_ok, pub = pcall(require, "lvim-space.pub")
+        if pub_status_ok then
+            return pub.get_tab_info()
         else
-            return tab_number .. ": " .. v
+            return {}
         end
     end
+
     local components = function()
         local exclude = {
             "ctrlspace",
@@ -472,13 +475,12 @@ config.tabby_nvim = function()
                 },
             },
         }
-        local tabs = vim.api.nvim_list_tabpages()
         local current_tab = vim.api.nvim_get_current_tabpage()
-        local name_of_buf
         local wins = tabby_module_api.get_tab_wins(current_tab)
         local top_win = vim.api.nvim_tabpage_get_win(current_tab)
         local hl
         local win_name
+
         for _, win_id in ipairs(wins) do
             local ft = vim.api.nvim_get_option_value("filetype", { buf = vim.api.nvim_win_get_buf(win_id) })
             win_name = tabby_future_win_name.get(win_id, { mode = "unique" })
@@ -499,30 +501,33 @@ config.tabby_nvim = function()
                 })
             end
         end
+
         table.insert(comps, {
             type = "text",
             text = { "%=" },
             hl = { bg = _G.LVIM_COLORS.bg_dark, fg = _G.LVIM_COLORS.bg_dark },
         })
-        for _, tab_id in ipairs(tabs) do
-            local tab_number = vim.api.nvim_tabpage_get_number(tab_id)
-            name_of_buf = get_tab_label(tab_number)
-            if tab_id == current_tab then
+
+        -- Заменяме vim табовете с lvim-space табове
+        local lvim_tabs = get_lvim_space_tabs()
+        for _, tab in ipairs(lvim_tabs) do
+            if tab.active then
                 hl = { bg = _G.LVIM_COLORS.green, fg = _G.LVIM_COLORS.bg_dark, style = "bold" }
             else
                 hl = { bg = _G.LVIM_COLORS.bg_dark, fg = _G.LVIM_COLORS.green, style = "bold" }
             end
             table.insert(comps, {
-                type = "tab",
-                tabid = tab_id,
-                label = {
-                    "  " .. name_of_buf .. "  ",
+                type = "text",
+                text = {
+                    "  " .. tab.name .. "  ",
                     hl = hl,
                 },
             })
         end
+
         return comps
     end
+
     tabby.setup({
         components = components,
     })

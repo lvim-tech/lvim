@@ -233,12 +233,11 @@ modules["lukas-reineke/indent-blankline.nvim"] = {
 
 local editor_config = require("modules.base.configs.editor")
 
-modules["vim-ctrlspace/vim-ctrlspace"] = {
-    commit = funcs.get_commit("vim-ctrlspace", plugins_snapshot),
-    keys = {
-        { "<Leader><Leader>", "<Cmd>CtrlSpace<CR>", desc = "CtrlSpace" },
+modules["lvim-tech/lvim-space"] = {
+    dependencies = {
+        "kkharji/sqlite.lua",
     },
-    cmd = "CtrlSpace",
+    config = editor_config.lvim_space,
 }
 
 modules["numToStr/Navigator.nvim"] = {
@@ -479,7 +478,7 @@ modules["lvim-tech/lvim-qf-loc"] = {
 modules["nanozuki/tabby.nvim"] = {
     commit = funcs.get_commit("tabby.nvim", plugins_snapshot),
     dependencies = {
-        "vim-ctrlspace/vim-ctrlspace",
+        "lvim-tech/lvim-space",
     },
     event = {
         "BufRead",

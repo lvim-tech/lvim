@@ -66,9 +66,6 @@ M.merge_unique = function(table1, table2)
     return merged
 end
 
--- local a = {"a", "b", "c", "d"}
--- local order = {"c", "b", "d", "a"}
--- table.sort(a, M.custom_sort(order))
 M.custom_sort = function(order)
     return function(a, b)
         local indexA = 0
@@ -629,72 +626,116 @@ M.tm_autocmd = function(action)
     end
 end
 
-local multi_line_patterns = {
-    "%-%-%[%[.-%]%]", -- --[[ multi-line comment ]]
-    "/%*.-%*/", -- /* multi-line comment */
-    "<!%-%-.-%-%->", -- <!-- multi-line comment -->
-}
-
-local single_line_patterns = {
-    "^%s*%-%-[^%-%[].*$", -- -- single-line comment (but not ---)
-    "^%s*//.*$", -- // single-line comment
-    "^%s*#[^%x%d].*$", -- # single-line comment (but not #hex)
-    "^%s*;.*$", -- ; single-line comment
-    "^%s*{{!.-}}%s*$", -- {{! handlebars single-line comment }}
-    "^%s*{#.-#}%s*$", -- {# django/jinja single-line comment #}
-    "%s%-%-[^%-%[].*$", -- inline -- comment
-    "%s//.*$", -- inline // comment
-    "%s#[^%x%d].*$", -- inline # comment (but not #hex)
-    "%s;.*$", -- inline ; comment
-}
-
 M.remove_comments = function()
     local bufnr = vim.api.nvim_get_current_buf()
-    local original_lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-    local content = table.concat(original_lines, "\n")
-    local multi_line_comment_count = 0
-    local multi_line_total_lines = 0
-    for _, pattern in ipairs(multi_line_patterns) do
-        content = content:gsub(pattern, function(match)
-            multi_line_comment_count = multi_line_comment_count + 1
-            local line_count = select(2, match:gsub("\n", "")) + 1
-            multi_line_total_lines = multi_line_total_lines + line_count
-            return string.rep("\n", line_count)
-        end)
+    local ft = vim.bo[bufnr].filetype
+
+    local ok, parser = pcall(vim.treesitter.get_parser, bufnr)
+    if not ok or not parser then
+        vim.notify("Treesitter parser not available for " .. ft, vim.log.levels.WARN)
+        return
     end
-    local lines = vim.split(content, "\n", { trimempty = false })
-    local result_lines = {}
-    local single_line_comment_count = 0
-    for i, line in ipairs(lines) do
-        local modified_line = line
-        local is_original_empty = original_lines[i] and original_lines[i]:match("^%s*$") or false
-        if not modified_line:match("#%x%x%x%x%x%x?") then
-            for _, pattern in ipairs(single_line_patterns) do
-                local before = #modified_line
-                modified_line = modified_line:gsub(pattern, "")
-                if #modified_line < before then
-                    single_line_comment_count = single_line_comment_count + 1
+
+    local lang = parser:lang()
+
+    local queries = {
+        javascript = [[ (comment) @comment ]],
+        typescript = [[ (comment) @comment ]],
+        java = [[
+            (line_comment) @comment
+            (block_comment) @block_comment
+        ]],
+        lua = [[ (comment) @comment ]],
+        python = [[ (comment) @comment ]],
+        go = [[ (comment) @comment ]],
+        c = [[ (comment) @comment ]],
+        cpp = [[ (comment) @comment ]],
+        rust = [[ (line_comment) @comment ]],
+        html = [[ (comment) @comment ]],
+        css = [[ (comment) @comment ]],
+        yaml = [[ (comment) @comment ]],
+        toml = [[ (comment) @comment ]],
+        bash = [[ (comment) @comment ]],
+        sh = [[ (comment) @comment ]],
+    }
+
+    local query_str = queries[lang] or [[ (comment) @comment ]]
+
+    local ok_query, query = pcall(vim.treesitter.query.parse, lang, query_str)
+    if not ok_query then
+        vim.notify("Failed to parse treesitter query for " .. lang, vim.log.levels.WARN)
+        return
+    end
+
+    local tree = parser:parse()[1]
+    local root = tree:root()
+
+    local lines_to_delete = {}
+    local edits = {}
+
+    local capture_names = query.captures or {}
+
+    for id, node in query:iter_captures(root, bufnr, 0, -1) do
+        local capture_name = capture_names[id] or "comment"
+        local srow, scol, erow, ecol = node:range()
+
+        if capture_name == "block_comment" then
+            for i = srow, erow do
+                lines_to_delete[i] = true
+            end
+        elseif capture_name == "comment" then
+            if srow == erow then
+                local line = vim.api.nvim_buf_get_lines(bufnr, srow, srow + 1, false)[1]
+
+                if scol == 0 and ecol == #line then
+                    lines_to_delete[srow] = true
+                else
+                    table.insert(edits, {
+                        row = srow,
+                        start_col = scol,
+                        end_col = ecol,
+                        type = "partial",
+                    })
+                end
+            else
+                for i = srow, erow do
+                    lines_to_delete[i] = true
                 end
             end
         end
-        modified_line = modified_line:gsub("%s+$", "")
-        if modified_line:match("%S") or is_original_empty then
-            table.insert(result_lines, modified_line)
+    end
+
+    table.sort(edits, function(a, b)
+        if a.row == b.row then
+            return a.start_col > b.start_col
+        end
+        return a.row > b.row
+    end)
+
+    for _, edit in ipairs(edits) do
+        if not lines_to_delete[edit.row] then
+            local line = vim.api.nvim_buf_get_lines(bufnr, edit.row, edit.row + 1, false)[1]
+            local before = line:sub(1, edit.start_col)
+            local after = line:sub(edit.end_col + 1)
+            vim.api.nvim_buf_set_lines(bufnr, edit.row, edit.row + 1, false, { before .. after })
         end
     end
-    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, result_lines)
-    vim.notify(
-        "Deleted comments: \n"
-            .. "Single-line: "
-            .. single_line_comment_count
-            .. "\n"
-            .. "Multi-line: "
-            .. multi_line_comment_count
-            .. " (Total lines: "
-            .. multi_line_total_lines
-            .. ")",
-        vim.log.levels.INFO
-    )
+
+    local rows_to_delete = {}
+    for row in pairs(lines_to_delete) do
+        table.insert(rows_to_delete, row)
+    end
+    table.sort(rows_to_delete, function(a, b)
+        return a > b
+    end)
+
+    for _, row in ipairs(rows_to_delete) do
+        vim.api.nvim_buf_set_lines(bufnr, row, row + 1, false, {})
+    end
+
+    vim.schedule(function()
+        vim.lsp.buf.format({ async = true })
+    end)
 end
 
 return M

@@ -1,7 +1,6 @@
 local options = require("configs.base.options")
 local keymaps = require("configs.base.keymaps")
 local keymaps_ft = require("configs.base.keymaps_ft")
-local icons = require("configs.base.ui.icons")
 local group = vim.api.nvim_create_augroup("LvimIDE", {
     clear = true,
 })
@@ -362,29 +361,5 @@ configs["base_which_key"] = function()
     end
     vim.api.nvim_create_user_command("LvimKeysHelperDelay", lvim_keys_helper_delay, {})
 end
-
-configs["base_ctrlspace_pre_config"] = function()
-    vim.g.ctrlspace_use_tablineend = 1
-    vim.g.CtrlSpaceLoadLastWorkspaceOnStart = 0
-    vim.g.CtrlSpaceSaveWorkspaceOnSwitch = 1
-    vim.g.CtrlSpaceSaveWorkspaceOnExit = 1
-    vim.g.CtrlSpaceUseTabline = 0
-    vim.g.CtrlSpaceUseArrowsInTerm = 1
-    vim.g.CtrlSpaceUseMouseAndArrowsInTerm = 1
-    vim.g.CtrlSpaceGlobCommand = "rg --files --follow --hidden -g '!{.git/*,node_modules/*,target/*,vendor/*}'"
-    vim.g.CtrlSpaceIgnoredFiles = "\v(tmp|temp)[\\/]"
-    vim.g.CtrlSpaceSearchTiming = 10
-    vim.g.CtrlSpaceEnableFilesCache = 1
-    vim.g.CtrlSpaceSymbols = icons.ctrlspace
-    vim.g.CtrlSpaceWorkspaceFile = global.lvim_path .. "/.cache/nvim/ctrlspace_workspaces"
-end
-
--- configs["base_ask_packages"] = function()
---     local lvim_packages_file = global.cache_path .. "/.lvim_packages"
---     if funcs.file_exists(lvim_packages_file) then
---         global.lvim_packages = true
---     end
---     vim.api.nvim_create_user_command("AskForPackagesFile", "lua require('core.funcs').delete_packages_file()", {})
--- end
 
 return configs
