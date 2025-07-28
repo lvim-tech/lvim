@@ -8,6 +8,7 @@ config.lvim_space = function()
         return
     end
     lvim_space.setup({
+        log = true,
         ui = {
             icons = {
                 error = " ",
@@ -445,7 +446,7 @@ config.tabby_nvim = function()
         if pub_status_ok then
             return pub.get_tab_info()
         else
-            return { workspace_name = "Unknown", tabs = {} }
+            return { project_name = nil, workspace_name = nil, tabs = {} }
         end
     end
 
@@ -527,32 +528,50 @@ config.tabby_nvim = function()
 
         local lvim_data = get_lvim_space_tabs()
 
-        for _, tab in ipairs(lvim_data.tabs or {}) do
-            if tab.active then
-                hl = { bg = _G.LVIM_COLORS.green, fg = _G.LVIM_COLORS.bg_dark, style = "bold" }
-            else
-                hl = { bg = _G.LVIM_COLORS.bg_dark, fg = _G.LVIM_COLORS.green, style = "bold" }
+        if lvim_data.tabs and #lvim_data.tabs > 0 then
+            for _, tab in ipairs(lvim_data.tabs) do
+                if tab.active then
+                    hl = { bg = _G.LVIM_COLORS.green, fg = _G.LVIM_COLORS.bg_dark, style = "bold" }
+                else
+                    hl = { bg = _G.LVIM_COLORS.bg_dark, fg = _G.LVIM_COLORS.green, style = "bold" }
+                end
+                table.insert(comps, {
+                    type = "text",
+                    text = {
+                        "  " .. tab.name .. "  ",
+                        hl = hl,
+                    },
+                })
             end
+        end
+
+        if lvim_data.workspace_name and lvim_data.workspace_name ~= "Unknown" and lvim_data.workspace_name ~= "" then
             table.insert(comps, {
                 type = "text",
                 text = {
-                    "  " .. tab.name .. "  ",
-                    hl = hl,
+                    "  " .. lvim_data.workspace_name .. "  ",
+                    hl = {
+                        bg = _G.LVIM_COLORS.orange,
+                        fg = _G.LVIM_COLORS.bg_dark,
+                        style = "bold",
+                    },
                 },
             })
         end
 
-        table.insert(comps, {
-            type = "text",
-            text = {
-                "  " .. (lvim_data.workspace_name or "Unknown") .. "  ",
-                hl = {
-                    bg = _G.LVIM_COLORS.orange,
-                    fg = _G.LVIM_COLORS.bg_dark,
-                    style = "bold",
+        if lvim_data.project_name and lvim_data.project_name ~= "Unknown" and lvim_data.project_name ~= "" then
+            table.insert(comps, {
+                type = "text",
+                text = {
+                    "  " .. lvim_data.project_name .. "  ",
+                    hl = {
+                        bg = _G.LVIM_COLORS.red,
+                        fg = _G.LVIM_COLORS.bg_dark,
+                        style = "bold",
+                    },
                 },
-            },
-        })
+            })
+        end
 
         return comps
     end

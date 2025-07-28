@@ -123,6 +123,22 @@ modules["echasnovski/mini.files"] = {
     config = ui_config.mini_files,
 }
 
+modules["A7Lavinraj/fyler.nvim"] = {
+    commit = funcs.get_commit("fyler.nvim", plugins_snapshot),
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    keys = {
+        {
+            "<Leader>F",
+            function()
+                require("fyler").open()
+            end,
+            desc = "Fyler",
+        },
+    },
+    cmd = "Fyler",
+    config = ui_config.fyler_nvim,
+}
+
 modules["folke/which-key.nvim"] = {
     commit = funcs.get_commit("which-key.nvim", plugins_snapshot),
     cond = function()
@@ -768,7 +784,6 @@ modules["mbbill/undotree"] = {
 local languages_config = require("modules.base.configs.languages")
 
 modules["mason-org/mason.nvim"] = {
-    -- branch = "v2.x",
     build = ":MasonUpdate",
     commit = funcs.get_commit("mason.nvim", plugins_snapshot),
     config = languages_config.mason_nvim,

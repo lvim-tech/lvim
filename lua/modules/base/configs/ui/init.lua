@@ -919,6 +919,44 @@ config.mini_files = function()
     vim.api.nvim_create_user_command("MiniFiles", mini_files_open, {})
 end
 
+config.fyler_nvim = function()
+    local fyler_nvim_status_ok, fyler_nvim = pcall(require, "fyler")
+    if not fyler_nvim_status_ok then
+        return
+    end
+    fyler_nvim.setup({
+        icon_provider = "nvim-web-devicons",
+        views = {
+            confirm = {
+                win = {
+                    win_opts = {
+                        winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,FloatTitle:FloatTitle",
+                    },
+                },
+            },
+            explorer = {
+                indentscope = {
+                    enabled = true,
+                    group = "FylerIndentMarker",
+                    marker = "▏",
+                },
+                win = {
+                    kind = "split_right",
+                    win_opts = {
+                        concealcursor = "nvic",
+                        conceallevel = 3,
+                        cursorline = false,
+                        number = false,
+                        relativenumber = false,
+                        winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,FloatTitle:FloatTitle",
+                        wrap = false,
+                    },
+                },
+            },
+        },
+    })
+end
+
 config.which_key_nvim = function()
     local which_key_status_ok, which_key = pcall(require, "which-key")
     if not which_key_status_ok then

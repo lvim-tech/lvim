@@ -84,7 +84,7 @@ config.vgit = function()
                 edge_navigation = true,
             },
             live_blame = {
-                enabled = true,
+                enabled = false,
                 format = function(blame, git_config)
                     local config_author = git_config["user.name"]
                     local author = blame.author

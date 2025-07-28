@@ -217,6 +217,7 @@ configs["base_events"] = function()
             "ruby",
             "markdown",
             "org",
+            "fyler",
         },
         callback = function()
             vim.opt_local.tabstop = 2

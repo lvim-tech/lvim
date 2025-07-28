@@ -26,4 +26,5 @@ return {
     "git",
     "netrw",
     "dbee",
+    "fyler",
 }

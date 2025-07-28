@@ -16,6 +16,8 @@ config.blink_cmp = function()
             local success, node = pcall(vim.treesitter.get_node)
             disabled = disabled or (vim.bo.buftype == "prompt")
             disabled = disabled or (vim.bo.filetype == "typr")
+            disabled = disabled or (vim.bo.filetype == "lvim-space-search-input")
+            disabled = disabled or (vim.bo.filetype == "lvim-space-tabs-input")
             disabled = disabled or (vim.fn.reg_recording() ~= "")
             disabled = disabled or (vim.fn.reg_executing() ~= "")
             disabled = disabled
