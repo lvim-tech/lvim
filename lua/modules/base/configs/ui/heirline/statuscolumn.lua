@@ -154,7 +154,8 @@ M.get_statuscolumn = function()
                     require("neotest").run.run()
                 end,
                 ["Debug.*"] = function(_, _)
-                    require("dap").continue()
+                    local dap = require("dap")
+                    dap.continue()
                 end,
                 ["Diagnostic.*"] = function(_, _)
                     vim.cmd("LspShowDiagnosticCurrent")

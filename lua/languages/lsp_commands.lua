@@ -1552,7 +1552,8 @@ vim.api.nvim_create_user_command("LspShowDiagnosticPrev", function()
     end
 end, {})
 vim.api.nvim_create_user_command("DAPLocal", function()
-    require("languages.utils.dap").dap_local()
+    local dap_utils = require("languages.utils.dap_fn")
+    dap_utils.dap_local()
 end, {})
 
 -- EXTRA

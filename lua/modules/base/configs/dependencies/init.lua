@@ -110,7 +110,7 @@ config.nui_nvim = function()
         vim.ui.input = function(opts, on_confirm)
             assert(type(on_confirm) == "function", "missing on_confirm function")
             if input_ui then
-                vim.api.nvim_err_writeln("busy: another input is pending!")
+                vim.notify("busy: another select is pending!", vim.log.levels.ERROR)
                 return
             end
             input_ui = UIInput(opts, function(value)
@@ -195,7 +195,7 @@ config.nui_nvim = function()
         vim.ui.select = function(items, opts, on_choice)
             assert(type(on_choice) == "function", "missing on_choice function")
             if select_ui then
-                vim.api.nvim_err_writeln("busy: another select is pending!")
+                vim.notify("busy: another select is pending!", vim.log.levels.ERROR)
                 return
             end
             select_ui = UISelect(items, opts, function(item, index)

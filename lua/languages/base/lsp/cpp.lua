@@ -2,7 +2,7 @@ local navic = require("nvim-navic")
 local setup_diagnostics = require("languages.utils.setup_diagnostics")
 local lsp_manager = require("languages.lsp_manager")
 local lsp_installer = require("languages.lsp_installer")
-local dap_utils = require("languages.utils.dap")
+local dap_utils = require("languages.utils.dap_fn")
 local dap = require("dap")
 
 local lsp_dependencies = {

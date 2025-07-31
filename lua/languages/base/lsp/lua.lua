@@ -76,13 +76,13 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                 codeLens = {
                     enable = true,
                     referencesCodeLens = {
-                        enable = true, -- Активира CodeLens за референции (колко пъти се използва функция/променлива)
+                        enable = true,
                     },
                     implementationsCodeLens = {
-                        enable = true, -- Активира CodeLens за имплементации
+                        enable = true,
                     },
                     definitionCodeLens = {
-                        enable = true, -- Активира CodeLens за дефиниции
+                        enable = true,
                     },
                 },
                 format = {
@@ -117,7 +117,6 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                     special = {
                         reload = "require",
                     },
-                    pathStrict = true,
                 },
                 diagnostics = {
                     globals = {
@@ -139,19 +138,11 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
             },
         },
         on_attach = function(client, bufnr)
-            -- Ограничаваме функционалността за големи файлове
-            local file_size = vim.fn.getfsize(vim.api.nvim_buf_get_name(bufnr))
-            if file_size > 100 * 1024 then -- 100 KB
-                client.server_capabilities.semanticTokensProvider = nil
-                -- Деактивираме inlay hints за големи файлове
-                vim.lsp.inlay_hint(bufnr, false)
-            else
-                setup_diagnostics.keymaps(client, bufnr)
-                setup_diagnostics.document_highlight(client, bufnr)
-                setup_diagnostics.inlay_hint(client, bufnr)
-                if client.server_capabilities.documentSymbolProvider then
-                    navic.attach(client, bufnr)
-                end
+            setup_diagnostics.keymaps(client, bufnr)
+            setup_diagnostics.document_highlight(client, bufnr)
+            setup_diagnostics.inlay_hint(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                navic.attach(client, bufnr)
             end
         end,
         capabilities = setup_diagnostics.get_capabilities(),
