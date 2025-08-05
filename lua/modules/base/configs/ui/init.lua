@@ -781,6 +781,9 @@ config.snacks_nvim = function()
         local git_root = Snacks.git.get_root()
         vim.cmd("cd " .. git_root)
     end, { noremap = true, silent = true, desc = "Cd to git root" })
+    vim.keymap.set("n", "<C-c>u", function()
+        Snacks.picker.undo()
+    end, { noremap = true, silent = true, desc = "Undo" })
 end
 
 config.ui_nvim = function()
