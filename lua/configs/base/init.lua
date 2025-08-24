@@ -162,7 +162,6 @@ configs["base_lvim"] = function()
             lvim_ui_config.heirline_nvim()
             lvim_ui_config.nvim_window_picker()
             editor_config.tabby_nvim()
-            editor_config.neocomposer_nvim()
         end,
         group = group,
     })
@@ -288,6 +287,9 @@ configs["base_commands"] = function()
             end)
         end)
     end, {})
+
+    require("core.gxplus").setup()
+    vim.keymap.set("n", "gx", "<cmd>GxPlus<CR>", { silent = true, desc = "GxPlus" })
 end
 
 configs["base_keymaps"] = function()
