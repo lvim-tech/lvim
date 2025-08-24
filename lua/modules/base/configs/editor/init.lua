@@ -240,41 +240,19 @@ config.vessel_nvim = function()
     end, { desc = "Jumps External" })
 end
 
-config.neocomposer_nvim = function()
-    local neocomposer_status_ok, neocomposer = pcall(require, "NeoComposer")
-    if not neocomposer_status_ok then
+config.macrobank_nvim = function()
+    local macrobank_status_ok, macrobank = pcall(require, "macrobank")
+    if not macrobank_status_ok then
         return
     end
-    neocomposer.setup({
-        window = {
-            width = 120,
-            height = 26,
-        },
-        colors = {
-            bg = _G.LVIM_COLORS.bg_dark,
-            fg = _G.LVIM_COLORS.cyan,
-            red = _G.LVIM_COLORS.red,
-            blue = _G.LVIM_COLORS.blue,
-            green = _G.LVIM_COLORS.green,
-        },
-        keymaps = {
-            play_macro = "<Leader>q",
-            yank_macro = "<Leader>ky",
-            stop_macro = "<Leader>ks",
-            toggle_record = "q",
-            cycle_next = "<Leader>kn",
-            cycle_prev = "<Leader>kp",
-            toggle_macro_menu = "<Leader>km",
-        },
+    macrobank.setup({
+        store_path_global = vim.fn.stdpath("config") .. "/macrobank_store.json",
+        project_store_paths = ".nvim/macrobank.json",
     })
-    vim.api.nvim_set_hl(0, "ComposerBorder", {
-        bg = _G.LVIM_COLORS.bg_dark,
-        fg = _G.LVIM_COLORS.bg_dark,
-    })
-    vim.api.nvim_set_hl(0, "ComposerTitle", {
-        bg = _G.LVIM_COLORS.bg_dark,
-        fg = _G.LVIM_COLORS.red,
-    })
+    vim.keymap.set("n", "mce", ":MacroBankLive<CR>", { desc = "Edit macros" })
+    vim.keymap.set("n", "mco", ":MacroBank<CR>", { desc = "Edit saved macros" })
+    vim.keymap.set("n", "mcs", ":MacroBankSelect<CR>", { desc = "Select macro" })
+    vim.keymap.set("n", "mcp", ":MacroBankPlay<CR>", { desc = "Play macro" })
 end
 
 config.nvim_hlslens = function()

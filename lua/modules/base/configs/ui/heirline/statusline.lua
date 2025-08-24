@@ -250,29 +250,29 @@ M.get_statusline = function()
         },
     }
 
-    -- local macro_rec = {
-    --     condition = function()
-    --         return vim.fn.reg_recording() ~= "" and vim.o.cmdheight == 0
-    --     end,
-    --     provider = " ",
-    --     hl = { fg = colors.red_01, bold = true },
-    --     heirline_utils.surround({ "[", "]" }, nil, {
-    --         provider = function()
-    --             return vim.fn.reg_recording()
-    --         end,
-    --         hl = { fg = colors.green_01, bold = true },
-    --     }),
-    --     update = {
-    --         "RecordingEnter",
-    --         "RecordingLeave",
-    --     },
-    -- }
     local macro_rec = {
         condition = function()
-            return require("NeoComposer.state")
+            return vim.fn.reg_recording() ~= "" and vim.o.cmdheight == 0
         end,
-        provider = require("NeoComposer.ui").status_recording,
+        provider = " ",
+        hl = { fg = _G.LVIM_COLORS.red_01, bold = true },
+        heirline_utils.surround({ "[", "]" }, nil, {
+            provider = function()
+                return vim.fn.reg_recording()
+            end,
+            hl = { fg = _G.LVIM_COLORS.green_01, bold = true },
+        }),
+        update = {
+            "RecordingEnter",
+            "RecordingLeave",
+        },
     }
+    -- local macro_rec = {
+    --     condition = function()
+    --         return require("NeoComposer.state")
+    --     end,
+    --     provider = require("NeoComposer.ui").status_recording,
+    -- }
     local diagnostics = {
         condition = heirline_conditions.has_diagnostics,
         static = {
