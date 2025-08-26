@@ -1225,6 +1225,7 @@ config.betterTerm_nvim = function()
         inactive_tab_hl = "BetterTermInactive",
         new_tab_hl = "BetterTermAdd",
         new_tab_icon = "+",
+        size = 20,
     })
     local terminal_count = 9
     for i = 1, terminal_count do
