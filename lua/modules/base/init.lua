@@ -108,7 +108,7 @@ modules["sindrets/winshift.nvim"] = {
     config = ui_config.winshift_nvim,
 }
 
-modules["echasnovski/mini.files"] = {
+modules["nvim-mini/mini.files"] = {
     commit = funcs.get_commit("mini.files", plugins_snapshot),
     keys = {
         {
@@ -147,7 +147,7 @@ modules["folke/which-key.nvim"] = {
     config = ui_config.which_key_nvim,
 }
 
-modules["echasnovski/mini.cursorword"] = {
+modules["nvim-mini/mini.cursorword"] = {
     commit = funcs.get_commit("mini.cursorword", plugins_snapshot),
     event = {
         "BufEnter",
