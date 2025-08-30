@@ -1226,6 +1226,7 @@ config.betterTerm_nvim = function()
         new_tab_hl = "BetterTermAdd",
         new_tab_icon = "+",
         size = 20,
+        jump_tab_mapping = "<A-$tab>",
     })
     local terminal_count = 9
     for i = 1, terminal_count do
