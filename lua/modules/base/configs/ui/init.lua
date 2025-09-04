@@ -928,7 +928,7 @@ config.fyler_nvim = function()
         return
     end
     fyler_nvim.setup({
-        icon_provider = "nvim-web-devicons",
+        icon_provider = "nvim_web_devicons",
         views = {
             confirm = {
                 win = {

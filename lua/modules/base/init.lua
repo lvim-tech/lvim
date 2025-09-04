@@ -130,7 +130,7 @@ modules["A7Lavinraj/fyler.nvim"] = {
         {
             "<Leader>F",
             function()
-                require("fyler").open()
+                vim.cmd("Fyler")
             end,
             desc = "Fyler",
         },
