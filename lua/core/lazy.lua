@@ -69,7 +69,8 @@ function lazy_pack.snapshot_file_choice()
     vim.ui.select(display_files, {
         prompt = "Choose snapshot to rollback:",
         format_item = function(item)
-            return icons.common.symbol .. " " .. item
+            local str = item.__raw_item or item.name or tostring(item)
+            return (icons.common.symbol or "") .. " " .. str
         end,
     }, function(selected)
         if not selected then

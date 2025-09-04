@@ -51,6 +51,12 @@ else
     vim.g.maplocalleader = " "
     vim.keymap.set("n", " ", "", { noremap = true })
     vim.keymap.set("x", " ", "", { noremap = true })
+    local snapshot = funcs.read_file(global.cache_path .. "/.lvim_snapshot")
+    if type(snapshot) == "table" then
+        _G.LVIM_SNAPSHOT = snapshot.snapshot
+    else
+        _G.LVIM_SNAPSHOT = global.lvim_path .. "/.snapshots/default"
+    end
     _G.LVIM_SETTINGS = funcs.read_file(global.lvim_path .. "/.configs/lvim/config.json")
     local lazy = require("core.lazy")
     lazy.is_lazy()
