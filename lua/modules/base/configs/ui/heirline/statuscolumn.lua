@@ -10,8 +10,7 @@ local function mark_sign()
     local all_marks = vim.list_extend(marks, marks_local)
 
     for _, m in ipairs(all_marks) do
-        -- local letter = m.mark:match("^'([a-zA-Z])$") or m.mark:match("^([a-zA-Z])$")
-        local letter = m.mark:match("^[`']?([a-zA-Z0-9])$")
+        local letter = m.mark:match("^[`']?([a-zA-Z])$")
 
         if letter then
             local buf = m.pos[1]
@@ -204,50 +203,33 @@ M.get_statuscolumn = function()
             end,
         },
     }
-    local marks = {
-        provider = function()
-            if vim.bo.filetype == "qf" or vim.bo.filetype == "org" or vim.v.virtnum ~= 0 then
-                return ""
-            end
-            local mark = mark_sign()
-            return (mark ~= " ") and (mark .. " ") or ""
-        end,
-        hl = { fg = _G.LVIM_COLORS.blue, bold = true },
-        on_click = {
-            name = "sc_mark_click",
-            callback = function(_, minwid, _, button, _)
-                if button == "m" then
-                    local letter = string.char(minwid)
-                    vim.cmd("delmarks " .. letter)
-                    vim.notify("Mark '" .. letter .. "' removed")
-                end
-            end,
-        },
-    }
-    local function get_max_line_number_length(bufnr)
-        local max_length = 0
-        local total_lines = vim.api.nvim_buf_line_count(bufnr)
 
-        for lnum = 1, total_lines do
-            local line_number_length = tostring(lnum):len()
-            if line_number_length > max_length then
-                max_length = line_number_length
-            end
-        end
-
-        return max_length
-    end
-
-    local function format_line_number(lnum, max_length)
-        local number_str = tostring(lnum)
-        local spaces_needed = max_length - #number_str
-        return string.rep(" ", spaces_needed) .. number_str
-    end
-
-    local max_length = get_max_line_number_length(0)
+    -- local marks = {
+    --     provider = function()
+    --         if vim.bo.filetype == "qf" or vim.bo.filetype == "org" or vim.v.virtnum ~= 0 then
+    --             return ""
+    --         end
+    --         local mark = mark_sign()
+    --         return (mark ~= " ") and (mark .. " ") or ""
+    --     end,
+    --     hl = { fg = _G.LVIM_COLORS.blue, bold = true },
+    --     on_click = {
+    --         name = "sc_mark_click",
+    --         callback = function(_, minwid, _, button, _)
+    --             if button == "m" then
+    --                 local letter = string.char(minwid)
+    --                 vim.cmd("delmarks " .. letter)
+    --                 vim.notify("Mark '" .. letter .. "' removed")
+    --             end
+    --         end,
+    --     },
+    -- }
 
     local line_numbers = {
-        provider = function()
+        init = function(self)
+            self.mark = mark_sign()
+        end,
+        provider = function(self)
             if
                 vim.bo.filetype == "qf"
                 or vim.bo.filetype == "replacer"
@@ -256,11 +238,31 @@ M.get_statuscolumn = function()
             then
                 return ""
             end
+
+            local max_len = tostring(vim.api.nvim_buf_line_count(0)):len()
+            local mark = self.mark
+
+            if mark ~= "" then
+                if vim.v.relnum == 0 then
+                    return string.rep(" ", math.max(0, max_len - 1)) .. mark
+                else
+                    return mark
+                end
+            end
+
             if vim.v.relnum == 0 then
                 local lnum = vim.v.lnum
-                return format_line_number(lnum, max_length)
+                local number_str = tostring(lnum)
+                local spaces_needed = max_len - #number_str
+                return string.rep(" ", spaces_needed) .. number_str
             end
-            return vim.v.relnum
+            return tostring(vim.v.relnum)
+        end,
+        hl = function(self)
+            if self.mark ~= "" then
+                return { fg = _G.LVIM_COLORS.blue }
+            end
+            return nil
         end,
         on_click = {
             name = "sc_linenumber_click",
@@ -269,18 +271,46 @@ M.get_statuscolumn = function()
             end,
         },
     }
+
     local diagnostics = {
         {
-            provider = function(self)
-                return self.sign and icons.diagnostics.global .. " " or " "
-            end,
             init = function(self)
                 local diag_sign = self.get_extmarks_diagnostics(self, -1, vim.v.lnum)
                 self.sign = diag_sign[1]
             end,
+            provider = function(self)
+                if not self.sign then
+                    return " "
+                end
+
+                if self.sign.sign_hl_group == "DiagnosticSignError" then
+                    return icons.diagnostics.error .. " "
+                elseif self.sign.sign_hl_group == "DiagnosticSignWarn" then
+                    return icons.diagnostics.warn .. " "
+                elseif self.sign.sign_hl_group == "DiagnosticSignInfo" then
+                    return icons.diagnostics.info .. " "
+                elseif self.sign.sign_hl_group == "DiagnosticSignHint" then
+                    return icons.diagnostics.hint .. " "
+                else
+                    return icons.diagnostics.global .. " "
+                end
+            end,
             hl = function(self)
-                -- return self.sign and "DiagnosticSignError"
-                return self.sign and self.sign.sign_hl_group
+                if not self.sign then
+                    return nil
+                end
+
+                if self.sign.sign_hl_group == "DiagnosticSignError" then
+                    return { fg = _G.LVIM_COLORS.diag_error }
+                elseif self.sign.sign_hl_group == "DiagnosticSignWarn" then
+                    return { fg = _G.LVIM_COLORS.diag_warn }
+                elseif self.sign.sign_hl_group == "DiagnosticSignInfo" then
+                    return { fg = _G.LVIM_COLORS.diag_info }
+                elseif self.sign.sign_hl_group == "DiagnosticSignHint" then
+                    return { fg = _G.LVIM_COLORS.diag_hint }
+                else
+                    return self.sign.sign_hl_group
+                end
             end,
             on_click = {
                 name = "sc_diagnostics_click",
@@ -296,14 +326,12 @@ M.get_statuscolumn = function()
         {
             condition = function()
                 return (_G.LVIM_GIT == nil) or vim.v.virtnum ~= 0
-                -- return false
             end,
             provider = vline,
         },
         {
             condition = function()
                 return (_G.LVIM_GIT ~= nil) and vim.v.virtnum == 0
-                -- return true
             end,
             init = function(self)
                 local gits = self.get_extmarks_gits(self, -1, vim.v.lnum)
@@ -341,8 +369,8 @@ M.get_statuscolumn = function()
         end,
         static = static,
         init = init,
+        space,
         -- marks,
-        -- space,
         signs,
         diagnostics,
         align,

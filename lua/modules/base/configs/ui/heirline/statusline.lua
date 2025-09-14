@@ -304,13 +304,13 @@ M.get_statusline = function()
             provider = function(self)
                 return self.info > 0 and (self.info_icon .. self.info .. " ")
             end,
-            hl = { fg = _G.LVIM_COLORS.diag_hint },
+            hl = { fg = _G.LVIM_COLORS.diag_info }, -- Поправено: трябва да е diag_info
         },
         {
             provider = function(self)
                 return self.hints > 0 and (self.hint_icon .. self.hints .. " ")
             end,
-            hl = { fg = _G.LVIM_COLORS.diag_info },
+            hl = { fg = _G.LVIM_COLORS.diag_hint }, -- Поправено: трябва да е diag_hint
         },
         on_click = {
             callback = function()
