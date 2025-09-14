@@ -208,6 +208,56 @@ config.vessel_nvim = function()
     vim.keymap.set("n", "mg", "<Plug>(VesselViewGlobalMarks)", { desc = "Marks view global" })
     vim.keymap.set("n", "mb", "<Plug>(VesselViewBufferMarks)", { desc = "Marks view buffer" })
     vim.keymap.set("n", "me", "<Plug>(VesselViewExternalMarks)", { desc = "Marks view external" })
+    local function jump_mark(direction)
+        local bufnr = vim.api.nvim_get_current_buf()
+        local current_line = vim.api.nvim_win_get_cursor(0)[1]
+        local last_line = vim.api.nvim_buf_line_count(bufnr)
+
+        local marks_local = vim.fn.getmarklist(bufnr)
+        local valid_marks = {}
+
+        for _, m in ipairs(marks_local) do
+            if m.mark and m.mark:match("^'?%a$") and m.pos and m.pos[1] == bufnr then
+                local line = m.pos[2]
+                if line >= 1 and line <= last_line then
+                    table.insert(valid_marks, { line = line })
+                end
+            end
+        end
+
+        if #valid_marks == 0 then
+            return
+        end
+
+        table.sort(valid_marks, function(a, b)
+            return a.line < b.line
+        end)
+
+        if direction == "next" then
+            for _, m in ipairs(valid_marks) do
+                if m.line > current_line then
+                    vim.api.nvim_win_set_cursor(0, { m.line, 0 })
+                    return
+                end
+            end
+            vim.api.nvim_win_set_cursor(0, { valid_marks[1].line, 0 })
+        else
+            for i = #valid_marks, 1, -1 do
+                if valid_marks[i].line < current_line then
+                    vim.api.nvim_win_set_cursor(0, { valid_marks[i].line, 0 })
+                    return
+                end
+            end
+            vim.api.nvim_win_set_cursor(0, { valid_marks[#valid_marks].line, 0 })
+        end
+    end
+
+    vim.keymap.set("n", "m]", function()
+        jump_mark("next")
+    end, { desc = "Next mark" })
+    vim.keymap.set("n", "m[", function()
+        jump_mark("prev")
+    end, { desc = "Previous mark" })
 
     local function set_mark(lhs)
         vim.keymap.set("n", lhs, function()
