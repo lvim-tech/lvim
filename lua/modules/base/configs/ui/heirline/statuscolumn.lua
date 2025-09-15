@@ -189,7 +189,18 @@ M.get_statuscolumn = function()
             return self.sign and self.sign.text or ""
         end,
         hl = function(self)
-            return self.sign and self.sign.sign_hl_group
+            if self.sign and self.sign.sign_hl_group then
+                local original_hl = vim.api.nvim_get_hl(0, { name = self.sign.sign_hl_group, link = false })
+                if original_hl.fg then
+                    return {
+                        fg = original_hl.fg,
+                        bg = "NONE",
+                    }
+                else
+                    return self.sign.sign_hl_group
+                end
+            end
+            return nil
         end,
         on_click = {
             name = "sc_sign_click",
