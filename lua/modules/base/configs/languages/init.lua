@@ -553,7 +553,7 @@ config.nvim_treesitter = function()
     end
     nvim_treesitter_configs.setup({
         ensure_installed = "all",
-        ignore_install = { "hoon", "systemverilog", "ipkg" },
+        ignore_install = { "ipkg" },
         highlight = {
             enable = true,
             additional_vim_regex_highlighting = { "org" },
