@@ -208,32 +208,36 @@ config.vessel_nvim = function()
     vim.keymap.set("n", "mg", "<Plug>(VesselViewGlobalMarks)", { desc = "Marks view global" })
     vim.keymap.set("n", "mb", "<Plug>(VesselViewBufferMarks)", { desc = "Marks view buffer" })
     vim.keymap.set("n", "me", "<Plug>(VesselViewExternalMarks)", { desc = "Marks view external" })
+    vim.keymap.set("n", "mjj", function()
+        vessel.view_jumps()
+    end, { desc = "Jumps all" })
+    vim.keymap.set("n", "mjl", function()
+        vessel.view_local_jumps()
+    end, { desc = "Jumps local" })
+    vim.keymap.set("n", "mje", function()
+        vessel.view_external_jumps()
+    end, { desc = "Jumps External" })
+
+    -- Navigation
     local function jump_mark(mark_type, direction)
         mark_type = (mark_type or "local"):lower()
         direction = (direction or "next"):lower()
-
         local cur_buf = vim.api.nvim_get_current_buf()
-        local cur_pos = vim.api.nvim_win_get_cursor(0) -- {line, col}
+        local cur_pos = vim.api.nvim_win_get_cursor(0)
         local cur_line = cur_pos[1]
-
-        -- get marks: for local ask getmarklist(cur_buf), for global ask all marks
         local marks_list
         if mark_type == "local" then
             marks_list = vim.fn.getmarklist(cur_buf)
         else
             marks_list = vim.fn.getmarklist()
         end
-
         local valid_marks = {}
-
         for _, m in ipairs(marks_list) do
             if m.mark and m.pos and type(m.pos) == "table" and m.pos[2] then
                 local mark_name = m.mark
                 local buf = m.pos[1] or cur_buf
                 local line = m.pos[2]
                 local col = m.pos[3] or 0
-
-                -- validate buffer and line safely
                 if not vim.api.nvim_buf_is_valid(buf) then
                     goto continue
                 end
@@ -244,14 +248,11 @@ config.vessel_nvim = function()
                 if line < 1 or line > last then
                     goto continue
                 end
-
                 if mark_type == "local" then
-                    -- local marks: a-z (allow optional leading "'"), only current buffer
                     if buf == cur_buf and mark_name:match("^'?%l$") then
                         table.insert(valid_marks, { buf = buf, line = line, col = col })
                     end
                 else
-                    -- global marks: A-Z (allow optional leading "'"), any buffer
                     if mark_name:match("^'?%u$") then
                         table.insert(valid_marks, { buf = buf, line = line, col = col })
                     end
@@ -259,17 +260,13 @@ config.vessel_nvim = function()
             end
             ::continue::
         end
-
         if #valid_marks == 0 then
             return
         end
-
-        -- sorting and next/prev differ slightly for local vs global
         if mark_type == "local" then
             table.sort(valid_marks, function(a, b)
                 return a.line < b.line
             end)
-
             if direction == "next" then
                 for _, m in ipairs(valid_marks) do
                     if m.line > cur_line then
@@ -277,29 +274,25 @@ config.vessel_nvim = function()
                         return
                     end
                 end
-                -- wrap
                 vim.api.nvim_win_set_cursor(0, { valid_marks[1].line, valid_marks[1].col })
                 return
-            else -- prev
+            else
                 for i = #valid_marks, 1, -1 do
                     if valid_marks[i].line < cur_line then
                         vim.api.nvim_win_set_cursor(0, { valid_marks[i].line, valid_marks[i].col })
                         return
                     end
                 end
-                -- wrap
                 vim.api.nvim_win_set_cursor(0, { valid_marks[#valid_marks].line, valid_marks[#valid_marks].col })
                 return
             end
         else
-            -- global: sort by buffer then line for deterministic order
             table.sort(valid_marks, function(a, b)
                 if a.buf == b.buf then
                     return a.line < b.line
                 end
                 return a.buf < b.buf
             end)
-
             local function after(a, b)
                 if a.buf == b.buf then
                     return a.line > b.line
@@ -312,9 +305,7 @@ config.vessel_nvim = function()
                 end
                 return a.buf < b.buf
             end
-
             local cur_key = { buf = cur_buf, line = cur_line }
-
             if direction == "next" then
                 for _, m in ipairs(valid_marks) do
                     if after(m, cur_key) then
@@ -325,7 +316,6 @@ config.vessel_nvim = function()
                         return
                     end
                 end
-                -- wrap to first
                 local m = valid_marks[1]
                 if m.buf ~= cur_buf then
                     pcall(vim.api.nvim_set_current_buf, m.buf)
@@ -343,7 +333,6 @@ config.vessel_nvim = function()
                         return
                     end
                 end
-                -- wrap to last
                 local m = valid_marks[#valid_marks]
                 if m.buf ~= cur_buf then
                     pcall(vim.api.nvim_set_current_buf, m.buf)
@@ -353,7 +342,6 @@ config.vessel_nvim = function()
             end
         end
     end
-
     vim.keymap.set("n", "m]", function()
         jump_mark("local", "next")
     end, { desc = "Local mark Next" })
@@ -367,6 +355,7 @@ config.vessel_nvim = function()
         jump_mark("global", "prev")
     end, { desc = "Global mark Prev" })
 
+    -- Set
     local function set_mark(lhs)
         vim.keymap.set("n", lhs, function()
             vim.api.nvim_feedkeys(
@@ -387,15 +376,80 @@ config.vessel_nvim = function()
     set_mark("mm")
     set_mark("mM")
 
-    vim.keymap.set("n", "mjj", function()
-        vessel.view_jumps()
-    end, { desc = "Jumps all" })
-    vim.keymap.set("n", "mjl", function()
-        vessel.view_local_jumps()
-    end, { desc = "Jumps local" })
-    vim.keymap.set("n", "mje", function()
-        vessel.view_external_jumps()
-    end, { desc = "Jumps External" })
+    -- Delete
+    local function uniq(list)
+        local seen = {}
+        local out = {}
+        for _, v in ipairs(list) do
+            if not seen[v] then
+                seen[v] = true
+                table.insert(out, v)
+            end
+        end
+        return out
+    end
+    local function delete_marks(kind)
+        kind = (kind or "local"):lower()
+        local cur_buf = vim.api.nvim_get_current_buf()
+        local marks_global = vim.fn.getmarklist()
+        local marks_local = vim.fn.getmarklist(cur_buf)
+        local letters = {}
+        local function process_mark_entry(m, allow_local, allow_global)
+            if not (m and m.mark and m.pos and type(m.pos) == "table" and m.pos[2]) then
+                return
+            end
+            local name = tostring(m.mark):gsub("^'", "")
+            local buf = m.pos[1] or cur_buf
+            if allow_local and name:match("^%l$") and buf == cur_buf then
+                table.insert(letters, name)
+            end
+            if allow_global and name:match("^%u$") then
+                table.insert(letters, name)
+            end
+        end
+        if kind == "local" then
+            for _, m in ipairs(marks_local) do
+                process_mark_entry(m, true, false)
+            end
+        elseif kind == "global" then
+            for _, m in ipairs(marks_global) do
+                process_mark_entry(m, false, true)
+            end
+        else
+            for _, m in ipairs(marks_local) do
+                process_mark_entry(m, true, false)
+            end
+            for _, m in ipairs(marks_global) do
+                process_mark_entry(m, false, true)
+            end
+        end
+        letters = uniq(letters)
+        if #letters == 0 then
+            if kind == "local" then
+                vim.notify("No local marks (a-z) to delete in this buffer", vim.log.levels.INFO)
+            elseif kind == "global" then
+                vim.notify("No global marks (A-Z) to delete", vim.log.levels.INFO)
+            else
+                vim.notify("No marks to delete", vim.log.levels.INFO)
+            end
+            return
+        end
+        local cmd = "delmarks " .. table.concat(letters, " ")
+        pcall(vim.cmd, cmd)
+        local human_kind = (kind == "local" and "local marks (a-z)")
+            or (kind == "global" and "global marks (A-Z)")
+            or "marks (local + global)"
+        vim.notify("Deleted " .. human_kind .. ": " .. table.concat(letters, ", "), vim.log.levels.INFO)
+    end
+    vim.keymap.set("n", "mdl", function()
+        delete_marks("local")
+    end, { desc = "Delete all local marks (a-z) in current buffer" })
+    vim.keymap.set("n", "mdg", function()
+        delete_marks("global")
+    end, { desc = "Delete all global marks (A-Z)" })
+    vim.keymap.set("n", "mda", function()
+        delete_marks("all")
+    end, { desc = "Delete all local and global marks" })
 end
 
 config.macrobank_nvim = function()
