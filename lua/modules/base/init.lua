@@ -891,9 +891,8 @@ modules["kosayoda/nvim-lightbulb"] = {
 
 modules["nvim-treesitter/nvim-treesitter"] = {
     commit = funcs.get_commit("nvim-treesitter", plugins_snapshot),
-    dependencies = {
-        "nvim-treesitter/playground",
-    },
+    branch = "main",
+    build = ":TSUpdate",
     config = languages_config.nvim_treesitter,
 }
 
