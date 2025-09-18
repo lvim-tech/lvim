@@ -58,11 +58,6 @@ modules["junegunn/fzf"] = {
     lazy = true,
 }
 
-modules["nvim-treesitter/playground"] = {
-    commit = funcs.get_commit("playground", plugins_snapshot),
-    lazy = true,
-}
-
 modules["mxsdev/nvim-dap-vscode-js"] = {
     commit = funcs.get_commit("nvim-dap-vscode-js", plugins_snapshot),
     lazy = true,
@@ -892,7 +887,7 @@ modules["kosayoda/nvim-lightbulb"] = {
 modules["nvim-treesitter/nvim-treesitter"] = {
     commit = funcs.get_commit("nvim-treesitter", plugins_snapshot),
     branch = "main",
-    build = ":TSUpdate",
+    -- build = ":TSUpdate",
     config = languages_config.nvim_treesitter,
 }
 
