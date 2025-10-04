@@ -22,7 +22,7 @@ return {
                 else
                     for _, win in ipairs(vim.api.nvim_list_wins()) do
                         local buf = vim.api.nvim_win_get_buf(win)
-                        if not utils.is_excluded(buf, {}, { "neo-tree" }) then
+                        if not utils.is_excluded(buf, {}, { "neo-tree", "Fyler" }) then
                             vim.wo[win].relativenumber = val
                         end
                     end
@@ -66,7 +66,7 @@ return {
                 else
                     for _, win in ipairs(vim.api.nvim_list_wins()) do
                         local buf = vim.api.nvim_win_get_buf(win)
-                        if not utils.is_excluded(buf, {}, { "neo-tree", "markdown" }) then
+                        if not utils.is_excluded(buf, {}, { "neo-tree", "markdown", "Fyler" }) then
                             vim.wo[win].cursorcolumn = val
                         end
                     end
@@ -110,7 +110,7 @@ return {
                 else
                     for _, win in ipairs(vim.api.nvim_list_wins()) do
                         local buf = vim.api.nvim_win_get_buf(win)
-                        if not utils.is_excluded(buf) then
+                        if not utils.is_excluded(buf, {}, { "neo-tree", "Fyler" }) then
                             vim.wo[win].colorcolumn = val
                         end
                     end

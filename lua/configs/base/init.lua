@@ -148,7 +148,6 @@ configs["base_events"] = function()
             "ruby",
             "markdown",
             "org",
-            "fyler",
         },
         callback = function()
             vim.opt_local.tabstop = 2
@@ -156,7 +155,6 @@ configs["base_events"] = function()
         end,
         group = group,
     })
-    local group2 = vim.api.nvim_create_augroup("MyCustomGroup", { clear = true })
     vim.api.nvim_create_autocmd("FileType", {
         pattern = {
             "NeogitStatus",
@@ -170,15 +168,17 @@ configs["base_events"] = function()
             "netrw",
             "org",
             "toggleterm",
+            "fyler",
+            "Fyler",
+            "neo-tree",
         },
         callback = function()
-            vim.notify("ft")
             vim.opt_local.number = false
             vim.opt_local.relativenumber = false
             vim.opt_local.cursorcolumn = false
             vim.opt_local.colorcolumn = "0"
         end,
-        group = group2,
+        group = group,
     })
     vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
         pattern = "*",
