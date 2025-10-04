@@ -533,6 +533,12 @@ config.snacks_nvim = function()
 ╚══════╝ ╚═══╝  ╚═╝╚═╝     ╚═╝
 ]],
                 },
+                {
+                    icon = "󰋱 ",
+                    key = "<Leader><Leader>",
+                    desc = "Lvim Control Center",
+                    action = ":LvimControlCenter",
+                },
                 { icon = " ", key = "<C-Space>", desc = "Lvim Space", action = ":LvimSpace" },
                 { icon = " ", key = "<Leader>=", desc = "File Explorer", action = ":Yazi" },
                 { icon = " ", key = "<Leader>f", desc = "Find File", action = ":FzfLua files" },
