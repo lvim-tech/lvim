@@ -35,7 +35,6 @@ local config_diagnostic = {
 }
 
 M.init_diagnostics = function()
-    vim.notify(vim.inspect(_G.LVIM_SETTINGS.lspprogress))
     vim.diagnostic.config(config_diagnostic)
     vim.fn.sign_define("DiagnosticSignError", {
         text = icons.diagnostics.error,
@@ -54,17 +53,14 @@ M.init_diagnostics = function()
         texthl = "DiagnosticInfo",
     })
     if _G.LVIM_SETTINGS.lspprogress == "fidget" then
-        vim.notify("a")
         fidget.progress.suppress(false)
         fidget.notification.suppress(false)
         M.disable_lsp_progress()
     elseif _G.LVIM_SETTINGS.lspprogress == "notify" then
-        vim.notify("b")
         fidget.progress.suppress(true)
         fidget.notification.suppress(true)
         M.enable_lsp_progress()
     else
-        vim.notify("c")
         fidget.progress.suppress(true)
         fidget.notification.suppress(true)
         M.disable_lsp_progress()
