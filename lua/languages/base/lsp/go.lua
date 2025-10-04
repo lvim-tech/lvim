@@ -109,6 +109,7 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                     generate_gopls_sum = true,
                     check_upgrades = true,
                 },
+                semanticTokens = true,
             },
             opts = {
                 inlay_hints = { enabled = true },

@@ -2,6 +2,25 @@ local icons = require("configs.base.ui.icons")
 
 local config = {}
 
+config.lvim_control_center = function()
+    local lvim_control_center_status_ok, lvim_control_center = pcall(require, "lvim-control-center")
+    if not lvim_control_center_status_ok then
+        return
+    end
+    local general = require("modules.base.configs.editor.control_center.general")
+    local appearance = require("modules.base.configs.editor.control_center.appearance")
+    local lsp = require("modules.base.configs.editor.control_center.lsp")
+    local commands = require("modules.base.configs.editor.control_center.commands")
+    lvim_control_center.setup({
+        groups = {
+            general,
+            appearance,
+            lsp,
+            commands,
+        },
+    })
+end
+
 config.lvim_space = function()
     local lvim_space_status_ok, lvim_space = pcall(require, "lvim-space")
     if not lvim_space_status_ok then

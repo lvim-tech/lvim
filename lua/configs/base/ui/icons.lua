@@ -11,6 +11,7 @@ return {
         terminal = "",
         terminal2 = "",
         plugins = "",
+        palette = "󱥚",
         time = "󱑍",
         project = " ",
         explorer = "",

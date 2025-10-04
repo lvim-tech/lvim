@@ -137,7 +137,7 @@ modules["A7Lavinraj/fyler.nvim"] = {
 modules["folke/which-key.nvim"] = {
     commit = funcs.get_commit("which-key.nvim", plugins_snapshot),
     cond = function()
-        return _G.LVIM_SETTINGS.keyshelper
+        return _G.LVIM_KEYSHELPER
     end,
     config = ui_config.which_key_nvim,
 }
@@ -249,6 +249,14 @@ modules["lvim-tech/lvim-space"] = {
         "kkharji/sqlite.lua",
     },
     config = editor_config.lvim_space,
+}
+
+modules["lvim-tech/lvim-control-center"] = {
+    commit = funcs.get_commit("lvim-control-center", plugins_snapshot),
+    dependencies = {
+        "kkharji/sqlite.lua",
+    },
+    config = editor_config.lvim_control_center,
 }
 
 modules["numToStr/Navigator.nvim"] = {
@@ -749,7 +757,6 @@ modules["tanvirtin/vgit.nvim"] = {
         "nvim-lua/plenary.nvim",
         "nvim-tree/nvim-web-devicons",
     },
-    event = "VimEnter",
     config = version_control_config.vgit,
 }
 
@@ -775,6 +782,7 @@ modules["mbbill/undotree"] = {
 local languages_config = require("modules.base.configs.languages")
 
 modules["mason-org/mason.nvim"] = {
+    -- dependencies = { "lvim-tech/lvim-control-center" },
     build = ":MasonUpdate",
     commit = funcs.get_commit("mason.nvim", plugins_snapshot),
     config = languages_config.mason_nvim,

@@ -949,16 +949,18 @@ config.markview_nvim = function()
     if not markview_status_ok then
         return
     end
+    local markdown = require("modules.base.configs.languages.markview.markdown")
+    local markdown_inline = require("modules.base.configs.languages.markview.markdown_inline")
+    local html = require("modules.base.configs.languages.markview.html")
+    local yaml = require("modules.base.configs.languages.markview.yaml")
+    local typst = require("modules.base.configs.languages.markview.typst")
     markview.setup({
-        block_quotes = require("modules.base.configs.languages.markview.block_quotes"),
-        code_blocks = require("modules.base.configs.languages.markview.code_blocks"),
-        checkboxes = require("modules.base.configs.languages.markview.checkboxes"),
-        markdown = {
-            headings = require("modules.base.configs.languages.markview.headings"),
-            tables = require("modules.base.configs.languages.markview.tables"),
-            list_items = require("modules.base.configs.languages.markview.list_items"),
-        },
-        yaml = require("modules.base.configs.languages.markview.yaml"),
+        preview = { enable = true },
+        markdown = markdown,
+        markdown_inline = markdown_inline,
+        html = html,
+        yaml = yaml,
+        typst = typst,
     })
     require("markview.extras.editor").setup({
         width = { 10, 0.75 },

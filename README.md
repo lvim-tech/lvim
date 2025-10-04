@@ -12,11 +12,11 @@
 - Formatters with efm ("stylua", "yamlfmt", "shfmt", "cbfmt", "prettierd")
 - Automatically install dependencies (lsp servers, linters, formatters, debbugers) by filetype
 
-> Current version - 6.1.10 (2025-05-08)
+> Current version - 7.0.00 (2025-10-04)
 
 ## INTRODUCTION
 
-- Neovim 0.12.0+ (for NEOVIM < 0.12 use branch NEOVIM-0.11)
+- Neovim 0.11.4+ (for NEOVIM < 0.11.4 use branch NEOVIM-0.11)
 - Add or remove settings, rewrite all settings
 - Add or remove plugins, rewrite all plugins
 - Dynamic LSP activation
@@ -26,7 +26,7 @@
 
 ## REQUIREMENTS
 
-- [neovim >= 0.12.0](https://github.com/neovim/neovim)
+- [neovim >= 0.11.4](https://github.com/neovim/neovim)
 - [pynvim](https://github.com/neovim/pynvim)
 - [neovim-remote](https://github.com/mhinz/neovim-remote)
 - [node](https://github.com/nodejs/node)
@@ -46,95 +46,10 @@
 git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 ```
 
-## BASE COMMANDS
-
-- Theme
-    - Lvim Dark (default)
-    - Lvim Darker
-    - Lvim Light
-    - Lvim Kanagawa
-    - Lvim Gruvbox
-    - Lvim Everforest
+## LVIM CONTROL CENTER
 
 ```lua
-:LvimTheme
-```
-
-- Keys helper
-    - Enable (default)
-    - Disable
-
-```lua
-:LvimKeysHelper
-```
-
-- Keys helper delay (ms)
-    - 0 (default)
-    - 50
-    - 100
-    - 200
-    - 300
-    - 400
-    - 500
-    - 600
-    - 700
-    - 800
-    - 900
-    - 1000
-
-```lua
-:LvimKeysHelperDelay
-```
-
-- Float height
-    - 0.1
-    - 0.2
-    - 0.3
-    - 0.4 (default)
-    - 0.5
-    - 0.6
-    - 0.7
-    - 0.8
-    - 0.9
-    - 1.0
-
-```lua
-:LvimFloatHeight
-```
-
-- AutoFormat (on save)
-    - Enable (default)
-    - Disable
-
-```lua
-:LvimAutoFormat
-```
-
-- VirtualDiagnostic
-    - Text And Lines
-    - Only Text
-    - Only Lines
-    - Disable (default)
-
-```lua
-:LvimVirtualDiagnostic
-```
-
-- InlayHint
-    - Enable (default)
-    - Disable
-
-```lua
-:LvimInlayHint
-```
-
-- LspProgress
-    - Enable with fidget (default)
-    - Enable with notify
-    - Disable
-
-```lua
-:LvimLspProgress
+:LvimControlCenter
 ```
 
 ## SNAPSHOTS

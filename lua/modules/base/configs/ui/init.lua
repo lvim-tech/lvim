@@ -928,34 +928,59 @@ config.fyler_nvim = function()
         return
     end
     fyler_nvim.setup({
+        close_on_select = true,
+        confirm_simple = true,
+        default_explorer = false,
+        git_status = {
+            enabled = true,
+            symbols = {
+                Untracked = "?",
+                Added = "+",
+                Modified = "*",
+                Deleted = "x",
+                Renamed = ">",
+                Copied = "~",
+                Conflict = "!",
+                Ignored = "#",
+            },
+        },
+        hooks = {
+            on_delete = nil,
+            on_rename = nil,
+            on_highlight = nil,
+        },
+        icon = {
+            directory_collapsed = nil,
+            directory_empty = nil,
+            directory_expanded = nil,
+        },
         icon_provider = "nvim_web_devicons",
-        views = {
-            confirm = {
-                win = {
-                    win_opts = {
-                        winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,FloatTitle:FloatTitle",
-                    },
-                },
+        indentscope = {
+            enabled = true,
+            group = "FylerIndentMarker",
+            marker = "│",
+        },
+        mappings = {
+            ["q"] = "CloseView",
+            ["<CR>"] = "Select",
+            ["<C-t>"] = "SelectTab",
+            ["|"] = "SelectVSplit",
+            ["-"] = "SelectSplit",
+            ["^"] = "GotoParent",
+            ["="] = "GotoCwd",
+            ["."] = "GotoNode",
+            ["#"] = "CollapseAll",
+            ["<BS>"] = "CollapseNode",
+        },
+        popups = {
+            permission = {
+                border = { " ", " ", " ", " ", " ", " ", " ", " " },
             },
-            explorer = {
-                indentscope = {
-                    enabled = true,
-                    group = "FylerIndentMarker",
-                    marker = "▏",
-                },
-                win = {
-                    kind = "split_right",
-                    win_opts = {
-                        concealcursor = "nvic",
-                        conceallevel = 3,
-                        cursorline = false,
-                        number = false,
-                        relativenumber = false,
-                        winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,FloatTitle:FloatTitle",
-                        wrap = false,
-                    },
-                },
-            },
+        },
+        track_current_buffer = true,
+        win = {
+            border = { " ", " ", " ", " ", " ", " ", " ", " " },
+            kind = "split_left_most",
         },
     })
 end
@@ -967,11 +992,7 @@ config.which_key_nvim = function()
     end
     local wk_delay
     local function wk()
-        if _G.LVIM_SETTINGS.keyshelper == true then
-            wk_delay = tonumber(_G.LVIM_SETTINGS.keyshelperdelay)
-        else
-            wk_delay = tonumber(_G.LVIM_SETTINGS.keyshelperdelay)
-        end
+        wk_delay = tonumber(_G.LVIM_SETTINGS.keyshelperdelay)
         local options = {
             preset = "helix",
             delay = wk_delay,
@@ -1128,6 +1149,24 @@ config.neo_tree_nvim = function()
             group_dirs_and_files = true,
             group_empty_dirs = true,
             show_unloaded = true,
+        },
+        event_handlers = {
+            {
+                event = "neo_tree_window_after_open",
+                handler = function(_)
+                    vim.opt_local.number = false
+                    vim.opt_local.relativenumber = false
+                    vim.opt_local.cursorcolumn = false
+                    vim.opt_local.colorcolumn = "0"
+                    vim.cmd("wincmd =")
+                end,
+            },
+            {
+                event = "neo_tree_window_after_close",
+                handler = function(_)
+                    vim.cmd("wincmd =")
+                end,
+            },
         },
     })
 end

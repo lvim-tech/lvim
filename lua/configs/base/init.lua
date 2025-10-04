@@ -6,86 +6,18 @@ local group = vim.api.nvim_create_augroup("LvimIDE", {
 })
 local lvim_ui_config = require("modules.base.configs.ui")
 local editor_config = require("modules.base.configs.editor")
-local ui_config = require("modules.base.configs.ui")
 local funcs = require("core.funcs")
 local base_file_types = require("languages.base.file_types")
 local user_file_types = require("languages.user.file_types")
 
 local configs = {}
 
+configs["base_options"] = function()
+    options.global()
+end
+
 configs["base_lvim"] = function()
     vim.deprecate = function() end
-    local function lvim_theme()
-        local status
-        if _G.LVIM_SETTINGS.theme == "lvim-dark" then
-            status = "Lvim Dark"
-        elseif _G.LVIM_SETTINGS.theme == "lvim-darker" then
-            status = "Lvim Darker"
-        elseif _G.LVIM_SETTINGS.theme == "lvim-light" then
-            status = "Lvim Light"
-        elseif _G.LVIM_SETTINGS.theme == "lvim-kanagawa" then
-            status = "Lvim Kanagawa"
-        elseif _G.LVIM_SETTINGS.theme == "lvim-gruvbox" then
-            status = "Lvim Gruvbox"
-        elseif _G.LVIM_SETTINGS.theme == "lvim-everforest" then
-            status = "Lvim Everforest"
-        end
-        ui_config = require("lvim-ui-config.config")
-        local select = require("lvim-ui-config.select")
-        local opts = ui_config.select({
-            "Lvim Dark",
-            "Lvim Darker",
-            "Lvim Light",
-            "Lvim Kanagawa",
-            "Lvim Gruvbox",
-            "Lvim Everforest",
-            "Cancel",
-        }, { prompt = "Theme (" .. status .. ")" }, {})
-        select(opts, function(choice)
-            if choice == "Cancel" then
-            else
-                local user_choice = string.lower(choice)
-                user_choice = string.gsub(user_choice, " ", "-")
-                _G.LVIM_SETTINGS["theme"] = user_choice
-                vim.cmd("colorscheme " .. user_choice)
-                funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
-            end
-        end)
-    end
-    vim.api.nvim_create_user_command("LvimTheme", lvim_theme, {})
-    local function lvim_float_height()
-        local status = tostring(_G.LVIM_SETTINGS.floatheight)
-        if status == "1" then
-            status = "1.0"
-        end
-        local select = require("lvim-ui-config.select")
-        local opts = ui_config.select({
-            "0.1",
-            "0.2",
-            "0.3",
-            "0.4",
-            "0.5",
-            "0.6",
-            "0.7",
-            "0.8",
-            "0.9",
-            "1.0",
-            "Cancel",
-        }, { prompt = "Float height (current: " .. status .. ")" }, {})
-        select(opts, function(choice)
-            if choice == "Cancel" then
-            else
-                local user_choice = choice
-                vim.notify("Float height: " .. choice, vim.log.levels.INFO, {
-                    title = "LVIM IDE",
-                })
-                _G.LVIM_SETTINGS["floatheight"] = tonumber(user_choice) + 0.0
-                funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
-                editor_config.fzf_lua()
-            end
-        end)
-    end
-    vim.api.nvim_create_user_command("LvimFloatHeight", lvim_float_height, {})
     vim.api.nvim_create_user_command(
         "EditorConfigCreate",
         "lua require'core.funcs'.copy_file(_G.global.lvim_path .. '/.configs/templates/.editorconfig', vim.fn.getcwd() .. '/.editorconfig')",
@@ -177,12 +109,8 @@ configs["base_lvim"] = function()
     )
 end
 
-configs["base_options"] = function()
-    options.global()
-end
-
 configs["base_events"] = function()
-    vim.api.nvim_create_autocmd("FileType", {
+    vim.api.nvim_create_autocmd({ "FileType", "BufEnter" }, {
         pattern = {
             "markdown",
         },
@@ -191,6 +119,10 @@ configs["base_events"] = function()
             vim.opt_local.foldmethod = "expr"
             vim.opt_local.conceallevel = 2
             vim.opt_local.wrap = false
+            vim.opt_local.number = false
+            vim.opt_local.relativenumber = false
+            vim.opt_local.colorcolumn = "0"
+            vim.opt_local.cursorcolumn = false
         end,
         group = group,
     })
@@ -224,6 +156,7 @@ configs["base_events"] = function()
         end,
         group = group,
     })
+    local group2 = vim.api.nvim_create_augroup("MyCustomGroup", { clear = true })
     vim.api.nvim_create_autocmd("FileType", {
         pattern = {
             "NeogitStatus",
@@ -239,12 +172,13 @@ configs["base_events"] = function()
             "toggleterm",
         },
         callback = function()
+            vim.notify("ft")
             vim.opt_local.number = false
             vim.opt_local.relativenumber = false
             vim.opt_local.cursorcolumn = false
             vim.opt_local.colorcolumn = "0"
         end,
-        group = group,
+        group = group2,
     })
     vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
         pattern = "*",
@@ -276,6 +210,7 @@ end
 
 configs["base_commands"] = function()
     vim.api.nvim_create_user_command("CloseFloatWindows", 'lua require("core.funcs").close_float_windows()', {})
+    vim.api.nvim_create_user_command("FocusFloatWindow", 'lua require("core.funcs").focus_float_window()', {})
     vim.api.nvim_create_user_command("SetGlobalPath", 'lua require("core.funcs").set_global_path()', {})
     vim.api.nvim_create_user_command("SetWindowPath", 'lua require("core.funcs").set_window_path()', {})
     vim.api.nvim_create_user_command("SudoWrite", 'lua require("core.funcs").sudo_write()', {})
@@ -297,72 +232,6 @@ configs["base_keymaps"] = function()
     funcs.keymaps("x", { noremap = true, silent = true }, keymaps.visual)
     funcs.keymaps("i", { noremap = true, silent = true }, keymaps.insert)
     keymaps_ft.set_keymaps_ft()
-end
-
-configs["base_which_key"] = function()
-    local function lvim_keys_helper()
-        ui_config = require("lvim-ui-config.config")
-        local select = require("lvim-ui-config.select")
-        local status
-        if _G.LVIM_SETTINGS.keyshelper == true then
-            status = "Enabled"
-        else
-            status = "Disabled"
-        end
-        local opts = ui_config.select({
-            "Enable",
-            "Disable",
-            "Cancel",
-        }, { prompt = "Keys helper (" .. status .. ")" }, {})
-        select(opts, function(choice)
-            if choice == "Enable" then
-                _G.LVIM_SETTINGS["keyshelper"] = true
-                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
-                vim.notify("Keys helper enabled. LVIM IDE needs to be restarted", vim.log.levels.INFO, {
-                    title = "LVIM IDE",
-                })
-            elseif choice == "Disable" then
-                _G.LVIM_SETTINGS["keyshelper"] = false
-                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
-                vim.notify("Keys helper disabled. LVIM IDE needs to be restarted", vim.log.levels.INFO, {
-                    title = "LVIM IDE",
-                })
-            end
-        end)
-    end
-    vim.api.nvim_create_user_command("LvimKeysHelper", lvim_keys_helper, {})
-    local function lvim_keys_helper_delay()
-        ui_config = require("lvim-ui-config.config")
-        local select = require("lvim-ui-config.select")
-        local status = _G.LVIM_SETTINGS.keyshelperdelay
-        local opts = ui_config.select({
-            0,
-            50,
-            100,
-            200,
-            300,
-            400,
-            500,
-            600,
-            700,
-            800,
-            900,
-            1000,
-            "Cancel",
-        }, { prompt = "KeysHelperDelay (" .. status .. " ms)" }, {})
-        select(opts, function(choice)
-            if choice == "Cancel" then
-            else
-                _G.LVIM_SETTINGS["keyshelperdelay"] = tonumber(choice)
-                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
-                vim.cmd("Lazy reload which-key.nvim")
-                vim.notify("Keys helper delay: " .. choice .. "ms", vim.log.levels.INFO, {
-                    title = "LVIM IDE",
-                })
-            end
-        end)
-    end
-    vim.api.nvim_create_user_command("LvimKeysHelperDelay", lvim_keys_helper_delay, {})
 end
 
 return configs

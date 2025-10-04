@@ -1,161 +1,6 @@
 local ui_config = require("lvim-ui-config.config")
 local select = require("lvim-ui-config.select")
-local funcs = require("core.funcs")
-local icons = require("configs.base.ui.icons")
 local lsp_manager = require("languages.lsp_manager")
-local setup_diagnostics = require("languages.utils.setup_diagnostics")
-local fidget = require("fidget")
-
-local function lvim_auto_format()
-    local status
-    if _G.LVIM_SETTINGS.autoformat == true then
-        status = "Enabled"
-    else
-        status = "Disabled"
-    end
-    local opts = ui_config.select({
-        "Enable",
-        "Disable",
-        "Cancel",
-    }, { prompt = "AutoFormat (" .. status .. ")" }, {})
-    select(opts, function(choice)
-        if choice == "Enable" then
-            _G.LVIM_SETTINGS["autoformat"] = true
-            funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
-        elseif choice == "Disable" then
-            _G.LVIM_SETTINGS["autoformat"] = false
-            funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
-        end
-    end)
-end
-
-local function lvim_inlay_hint()
-    local status
-    if _G.LVIM_SETTINGS.inlayhint == true then
-        status = "Enabled"
-    else
-        status = "Disabled"
-    end
-    local opts = ui_config.select({
-        "Enable",
-        "Disable",
-        "Cancel",
-    }, { prompt = "InlayHint (" .. status .. ")" }, {})
-    select(opts, function(choice)
-        if choice == "Enable" then
-            local buffers = vim.api.nvim_list_bufs()
-            for _, bufnr in ipairs(buffers) do
-                if vim.lsp.inlay_hint ~= nil then
-                    vim.lsp.inlay_hint.enable(true, { bufnr })
-                end
-            end
-            _G.LVIM_SETTINGS["inlayhint"] = true
-            funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
-        elseif choice == "Disable" then
-            local buffers = vim.api.nvim_list_bufs()
-            for _, bufnr in ipairs(buffers) do
-                if vim.lsp.inlay_hint ~= nil then
-                    vim.lsp.inlay_hint.enable(false, { bufnr })
-                end
-            end
-            _G.LVIM_SETTINGS["inlayhint"] = false
-            funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
-        end
-    end)
-end
-
-local function lvim_virtual_diagnostic()
-    local virtualdiagnostic = _G.LVIM_SETTINGS.virtualdiagnostic
-    local is_empty = not virtualdiagnostic or next(virtualdiagnostic) == nil
-    local status
-    if not virtualdiagnostic or next(virtualdiagnostic) == nil then
-        status = "Disable"
-    elseif virtualdiagnostic.lines == true and virtualdiagnostic.text == true then
-        status = "Text and Lines"
-    elseif virtualdiagnostic.text then
-        status = "Only Text"
-    elseif virtualdiagnostic.lines then
-        status = "Only Lines"
-    else
-        status = "Disable"
-    end
-    local opts = ui_config.select({
-        "Text And Lines",
-        "Only Text",
-        "Only Lines",
-        "Disable",
-        "Cancel",
-    }, { prompt = "VirtualDiagnostic (" .. status .. ")" }, {})
-    select(opts, function(choice)
-        if choice == "Text And Lines" then
-            _G.LVIM_SETTINGS["virtualdiagnostic"] = {
-                text = true,
-                lines = true,
-            }
-        elseif choice == "Only Text" then
-            _G.LVIM_SETTINGS["virtualdiagnostic"] = {
-                text = true,
-                lines = false,
-            }
-        elseif choice == "Only Lines" then
-            _G.LVIM_SETTINGS["virtualdiagnostic"] = {
-                text = false,
-                lines = true,
-            }
-        elseif choice == "Disable" then
-            _G.LVIM_SETTINGS["virtualdiagnostic"] = {
-                text = false,
-                lines = false,
-            }
-        end
-        funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
-        virtualdiagnostic = _G.LVIM_SETTINGS.virtualdiagnostic
-        local config = vim.diagnostic.config
-        config({
-            virtual_text = (not is_empty and virtualdiagnostic.text) and { prefix = icons.common.dot } or false,
-            virtual_lines = not is_empty and virtualdiagnostic.lines or false,
-        })
-    end)
-end
-
-local function lvim_lsp_progress()
-    local status = _G.LVIM_SETTINGS.lspprogress
-    local status_str
-    if status == "fidget" then
-        status_str = "Enabled (with fidget)"
-    elseif status == "notify" then
-        status_str = "Enabled (with notify)"
-    else
-        status_str = "Disabled"
-    end
-    local opts = ui_config.select({
-        "Enable (with notify)",
-        "Enable (with fidget)",
-        "Disable",
-        "Cancel",
-    }, { prompt = "LspProgress " .. status_str .. "" }, {})
-    select(opts, function(choice)
-        if choice == "Enable (with notify)" then
-            _G.LVIM_SETTINGS.lspprogress = "notify"
-            funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
-            fidget.progress.suppress(true)
-            fidget.notification.suppress(true)
-            setup_diagnostics.enable_lsp_progress()
-        elseif choice == "Enable (with fidget)" then
-            _G.LVIM_SETTINGS.lspprogress = "fidget"
-            funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
-            fidget.progress.suppress(false)
-            fidget.notification.suppress(false)
-            setup_diagnostics.disable_lsp_progress()
-        elseif choice == "Disable" then
-            _G.LVIM_SETTINGS.lspprogress = false
-            funcs.write_file(_G.global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
-            fidget.progress.suppress(true)
-            fidget.notification.suppress(true)
-            setup_diagnostics.disable_lsp_progress()
-        end
-    end)
-end
 
 local function lvim_toggle_lsp_server()
     local servers_info = {}
@@ -316,8 +161,8 @@ local function lvim_toggle_lsp_server()
     end)
 end
 
-local function lvim_toggle_lsp_for_buffer()
-    local current_bufnr = vim.api.nvim_get_current_buf()
+local function lvim_toggle_lsp_for_buffer(bufnr)
+    local current_bufnr = bufnr or vim.api.nvim_get_current_buf()
     local ft = vim.bo[current_bufnr].filetype
     if not ft or ft == "" then
         vim.notify("Current buffer has no filetype", vim.log.levels.WARN)
@@ -1257,7 +1102,6 @@ local _border = {
     { " ", "FloatBorder" },
 }
 
--- LspHover with a custom border
 vim.api.nvim_create_user_command("LspHover", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1270,7 +1114,6 @@ vim.api.nvim_create_user_command("LspHover", function()
     end
 end, {})
 
--- LspRename with a custom border
 vim.api.nvim_create_user_command("LspRename", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1283,7 +1126,6 @@ vim.api.nvim_create_user_command("LspRename", function()
     end
 end, {})
 
--- LspFormat with validation
 vim.api.nvim_create_user_command("LspFormat", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1296,7 +1138,6 @@ vim.api.nvim_create_user_command("LspFormat", function()
     end
 end, {})
 
--- LspRangeFormat with validation
 vim.api.nvim_create_user_command("LspRangeFormat", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1317,7 +1158,6 @@ vim.api.nvim_create_user_command("LspRangeFormat", function()
     end
 end, { range = true })
 
--- LspCodeAction with a custom border
 vim.api.nvim_create_user_command("LspCodeAction", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1330,7 +1170,6 @@ vim.api.nvim_create_user_command("LspCodeAction", function()
     end
 end, {})
 
--- LspDefinition
 vim.api.nvim_create_user_command("LspDefinition", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1343,7 +1182,6 @@ vim.api.nvim_create_user_command("LspDefinition", function()
     end
 end, {})
 
--- LspTypeDefinition
 vim.api.nvim_create_user_command("LspTypeDefinition", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1356,7 +1194,6 @@ vim.api.nvim_create_user_command("LspTypeDefinition", function()
     end
 end, {})
 
--- LspDeclaration
 vim.api.nvim_create_user_command("LspDeclaration", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1369,7 +1206,6 @@ vim.api.nvim_create_user_command("LspDeclaration", function()
     end
 end, {})
 
--- LspReferences with a custom border
 vim.api.nvim_create_user_command("LspReferences", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1382,7 +1218,6 @@ vim.api.nvim_create_user_command("LspReferences", function()
     end
 end, {})
 
--- LspImplementation
 vim.api.nvim_create_user_command("LspImplementation", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1395,7 +1230,6 @@ vim.api.nvim_create_user_command("LspImplementation", function()
     end
 end, {})
 
--- LspSignatureHelp with a custom border
 vim.api.nvim_create_user_command("LspSignatureHelp", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1408,7 +1242,6 @@ vim.api.nvim_create_user_command("LspSignatureHelp", function()
     end
 end, {})
 
--- LspDocumentSymbol
 vim.api.nvim_create_user_command("LspDocumentSymbol", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1421,7 +1254,6 @@ vim.api.nvim_create_user_command("LspDocumentSymbol", function()
     end
 end, {})
 
--- LspWorkspaceSymbol
 vim.api.nvim_create_user_command("LspWorkspaceSymbol", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1434,7 +1266,6 @@ vim.api.nvim_create_user_command("LspWorkspaceSymbol", function()
     end
 end, {})
 
--- LspAddToWorkspaceFolder
 vim.api.nvim_create_user_command("LspAddToWorkspaceFolder", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1447,7 +1278,6 @@ vim.api.nvim_create_user_command("LspAddToWorkspaceFolder", function()
     end
 end, {})
 
--- LspRemoveWorkspaceFolder
 vim.api.nvim_create_user_command("LspRemoveWorkspaceFolder", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1460,7 +1290,6 @@ vim.api.nvim_create_user_command("LspRemoveWorkspaceFolder", function()
     end
 end, {})
 
--- LspListWorkspaceFolders
 vim.api.nvim_create_user_command("LspListWorkspaceFolders", function()
     local clients = vim.lsp.get_clients({ bufnr = 0 })
     if #clients > 0 then
@@ -1470,7 +1299,6 @@ vim.api.nvim_create_user_command("LspListWorkspaceFolders", function()
     end
 end, {})
 
--- LspIncomingCalls
 vim.api.nvim_create_user_command("LspIncomingCalls", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1483,7 +1311,6 @@ vim.api.nvim_create_user_command("LspIncomingCalls", function()
     end
 end, {})
 
--- LspOutgoingCalls
 vim.api.nvim_create_user_command("LspOutgoingCalls", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1496,7 +1323,6 @@ vim.api.nvim_create_user_command("LspOutgoingCalls", function()
     end
 end, {})
 
--- LspClearReferences
 vim.api.nvim_create_user_command("LspClearReferences", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1509,7 +1335,6 @@ vim.api.nvim_create_user_command("LspClearReferences", function()
     end
 end, {})
 
--- LspDocumentHighlight
 vim.api.nvim_create_user_command("LspDocumentHighlight", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1522,7 +1347,6 @@ vim.api.nvim_create_user_command("LspDocumentHighlight", function()
     end
 end, {})
 
--- LspShowDiagnosticCurrent (специфичната функция от вашия модул)
 vim.api.nvim_create_user_command("LspShowDiagnosticCurrent", function()
     local clients = vim.lsp.get_clients({ bufnr = 0 })
     if #clients > 0 then
@@ -1532,7 +1356,6 @@ vim.api.nvim_create_user_command("LspShowDiagnosticCurrent", function()
     end
 end, {})
 
--- LspShowDiagnosticNext (специфичната функция от вашия модул)
 vim.api.nvim_create_user_command("LspShowDiagnosticNext", function()
     local clients = vim.lsp.get_clients({ bufnr = 0 })
     if #clients > 0 then
@@ -1542,7 +1365,6 @@ vim.api.nvim_create_user_command("LspShowDiagnosticNext", function()
     end
 end, {})
 
--- LspShowDiagnosticPrev (специфичната функция от вашия модул)
 vim.api.nvim_create_user_command("LspShowDiagnosticPrev", function()
     local clients = vim.lsp.get_clients({ bufnr = 0 })
     if #clients > 0 then
@@ -1557,20 +1379,18 @@ vim.api.nvim_create_user_command("DAPLocal", function()
 end, {})
 
 -- EXTRA
-vim.api.nvim_create_user_command("LvimVirtualDiagnostic", lvim_virtual_diagnostic, {})
-vim.api.nvim_create_user_command("LvimAutoFormat", lvim_auto_format, {})
-vim.api.nvim_create_user_command("LvimInlayHint", lvim_inlay_hint, {})
-vim.api.nvim_create_user_command("LvimLspProgress", lvim_lsp_progress, {})
 vim.api.nvim_create_user_command("LvimLspToggleServers", lvim_toggle_lsp_server, {})
-vim.api.nvim_create_user_command("LvimLspToggleServersForBuffer", lvim_toggle_lsp_for_buffer, {})
+vim.api.nvim_create_user_command("LvimLspToggleServersForBuffer", function(opts)
+    local bufnr = tonumber(opts.args)
+    lvim_toggle_lsp_for_buffer(bufnr)
+end, {
+    nargs = "?", -- позволява 0 или 1 аргумент
+    desc = "Toggle LSP servers for buffer (optionally specify buffer number)",
+})
 vim.api.nvim_create_user_command("LvimLspRestart", lvim_lsp_restart, {})
 vim.api.nvim_create_user_command("LvimLspInfo", lvim_lsp_info, {})
 
 -- KeyMaps
-vim.keymap.set("n", "<Leader>ld", lvim_virtual_diagnostic, { desc = "Lvim Toggle virtual diagnostics" })
-vim.keymap.set("n", "<Leader>lf", lvim_auto_format, { desc = "Lvim Toggle auto format" })
-vim.keymap.set("n", "<Leader>lh", lvim_inlay_hint, { desc = "Lvim Toggle inlay hints" })
-vim.keymap.set("n", "<Leader>lp", lvim_lsp_progress, { desc = "Lvim Toggle lsp progress" })
 vim.keymap.set("n", "<Leader>ls", lvim_toggle_lsp_server, { desc = "Lvim Toggle LSP servers globally" })
 vim.keymap.set("n", "<Leader>lb", lvim_toggle_lsp_for_buffer, { desc = "Lvim Toggle LSP servers for buffer" })
 vim.keymap.set("n", "<Leader>lr", lvim_lsp_restart, { desc = "Lvim LSP restart" })

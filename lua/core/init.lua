@@ -47,6 +47,7 @@ if global.os == "unsuported" then
     print("Your OS is not supported!")
 else
     local funcs = require("core.funcs")
+    local lazy = require("core.lazy")
     vim.g.mapleader = " "
     vim.g.maplocalleader = " "
     vim.keymap.set("n", " ", "", { noremap = true })
@@ -57,10 +58,19 @@ else
     else
         _G.LVIM_SNAPSHOT = global.lvim_path .. "/.snapshots/default"
     end
-    _G.LVIM_SETTINGS = funcs.read_file(global.lvim_path .. "/.configs/lvim/config.json")
-    local lazy = require("core.lazy")
-    lazy.is_lazy()
+    _G.LVIM_SETTINGS = {}
+    local function read_file_default(path, default)
+        local val = funcs.read_file(path)
+        if val == nil then
+            return default
+        else
+            return val
+        end
+    end
+    _G.LVIM_THEME = read_file_default(_G.global.lvim_path .. "/.configs/lvim/.theme", "lvim-darker")
+    _G.LVIM_KEYSHELPER = read_file_default(_G.global.lvim_path .. "/.configs/lvim/.keyshelper", true)
     funcs.configs()
+    lazy.is_lazy()
     lazy.load()
 end
 

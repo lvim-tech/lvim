@@ -22,7 +22,7 @@ config.lvim_colorscheme = function()
             }
         end,
     })
-    vim.cmd("colorscheme " .. _G.LVIM_SETTINGS.theme)
+    vim.cmd("colorscheme " .. _G.LVIM_THEME)
 end
 
 config.nvim_web_devicons = function()

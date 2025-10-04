@@ -4,7 +4,18 @@ local icons = require("configs.base.ui.icons")
 local M = {}
 
 local group = vim.api.nvim_create_augroup("LspProgressNotify", { clear = false })
-local virtualdiagnostic = _G.LVIM_SETTINGS.virtualdiagnostic
+local virtualdiagnostic
+
+if _G.LVIM_SETTINGS.virtualdiagnostic == "text-and-lines" then
+    virtualdiagnostic = { text = true, lines = true }
+elseif _G.LVIM_SETTINGS.virtualdiagnostic == "text" then
+    virtualdiagnostic = { text = true, lines = false }
+elseif _G.LVIM_SETTINGS.virtualdiagnostic == "lines" then
+    virtualdiagnostic = { text = false, lines = true }
+else
+    virtualdiagnostic = { text = false, lines = false }
+end
+
 local is_empty = not virtualdiagnostic or next(virtualdiagnostic) == nil
 
 local config_diagnostic = {

@@ -2,6 +2,8 @@ local icons = require("configs.base.ui.icons")
 
 local M = {}
 
+_G._FLOAT_INDEX = _G._FLOAT_INDEX or 1
+
 M.merge = function(tbl1, tbl2)
     if type(tbl1) == "table" and type(tbl2) == "table" then
         for k, v in pairs(tbl2) do
@@ -183,21 +185,21 @@ M.dir_exists = function(path)
 end
 
 M.read_file = function(file)
-    local content
-    local file_content_ok = pcall(function()
-        content = vim.fn.readfile(file)
-    end)
-    if not file_content_ok then
+    local ok, content = pcall(vim.fn.readfile, file)
+    if not ok or type(content) ~= "table" or #content == 0 then
         return nil
     end
-    if type(content) == "table" then
-        if next(content) == nil then
-            return nil
-        end
-        return vim.fn.json_decode(content)
-    else
-        return nil
+    local text = table.concat(content, "\n")
+    local ok_json, decoded = pcall(vim.fn.json_decode, text)
+    if ok_json and decoded ~= nil then
+        return decoded
     end
+    if text == "true" then
+        return true
+    elseif text == "false" then
+        return false
+    end
+    return content[1]
 end
 
 M.write_file = function(file, content)
@@ -205,6 +207,8 @@ M.write_file = function(file, content)
     if f ~= nil then
         if type(content) == "table" then
             content = vim.fn.json_encode(content)
+        elseif type(content) == "boolean" then
+            content = tostring(content)
         end
         f:write(content)
         f:close()
@@ -369,6 +373,37 @@ M.close_float_windows = function()
             end
         end
     end)
+end
+
+M.focus_float_window = function()
+    local wins = vim.api.nvim_list_wins()
+    local floats = {}
+    local cur_win = vim.api.nvim_get_current_win()
+    for _, win in ipairs(wins) do
+        if vim.api.nvim_win_is_valid(win) then
+            local cfg = vim.api.nvim_win_get_config(win)
+            if cfg.relative ~= "" then
+                table.insert(floats, win)
+            end
+        end
+    end
+    if #floats == 0 then
+        vim.notify("No floating windows found", vim.log.levels.INFO)
+        return
+    end
+    local cur_idx = nil
+    for i, win in ipairs(floats) do
+        if win == cur_win then
+            cur_idx = i
+            break
+        end
+    end
+    if not cur_idx or cur_idx > #floats then
+        _G._FLOAT_INDEX = 1
+    else
+        _G._FLOAT_INDEX = (cur_idx % #floats) + 1
+    end
+    vim.api.nvim_set_current_win(floats[_G._FLOAT_INDEX])
 end
 
 M.quit = function()
@@ -553,77 +588,6 @@ M.blend = function(foreground, alpha, background)
     end
 
     return string.format("#%02x%02x%02x", blendChannel(1), blendChannel(2), blendChannel(3))
-end
-
-M.tm_autocmd = function(action)
-    if action == "start" then
-        local buftypes = {
-            "prompt",
-            "help",
-            "quickfix",
-            "nofile",
-        }
-        local filetypes = {
-            "neo-tree",
-            "spectre_panel",
-            "Outline",
-            "Trouble",
-            "NeogitStatus",
-            "NeogitPopup",
-            "calendar",
-            "dapui_breakpoints",
-            "dapui_scopes",
-            "dapui_stacks",
-            "dapui_watches",
-            "git",
-            "netrw",
-            "octo",
-            "undotree",
-            "diff",
-            "DiffviewFiles",
-            "flutterToolsOutline",
-            "log",
-            "toggleterm",
-            "netrw",
-            "noice",
-            "lazy",
-            "mason",
-            "LvimHelper",
-        }
-        local buftype = vim.tbl_contains(buftypes, vim.bo.buftype)
-        local filetype = vim.tbl_contains(filetypes, vim.bo.filetype)
-        if buftype or filetype then
-            vim.opt.timeoutlen = 1000
-        else
-            vim.opt.timeoutlen = 0
-        end
-        vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
-            callback = function()
-                vim.schedule(function()
-                    buftype = vim.tbl_contains(buftypes, vim.bo.buftype)
-                    filetype = vim.tbl_contains(filetypes, vim.bo.filetype)
-                    if buftype or filetype then
-                        vim.opt.timeoutlen = 1000
-                    else
-                        vim.opt.timeoutlen = 0
-                    end
-                end)
-            end,
-            group = _G.global.tm_augroup,
-        })
-    elseif action == "stop" then
-        local autocommands = vim.api.nvim_get_autocmds({
-            group = _G.global.tm_augroup,
-        })
-
-        if next(autocommands) == nil then
-        else
-            vim.schedule(function()
-                vim.api.nvim_del_autocmd(autocommands[1]["id"])
-                vim.opt.timeoutlen = 1000
-            end)
-        end
-    end
 end
 
 M.remove_comments = function()

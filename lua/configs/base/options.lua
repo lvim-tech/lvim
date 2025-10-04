@@ -19,6 +19,7 @@ M.global = function()
         vim.opt.splitkeep = "screen"
     end)
     -- vim.opt
+    vim.opt.exrc = true
     vim.opt.guicursor = "n-v-c:block-Cursor/lCursor,i-ci-ve:ver25-Cursor/lCursor,r-cr:hor20,o:hor50"
     vim.opt.shortmess = "ltToOCFI"
     vim.opt.termguicolors = true
@@ -108,7 +109,10 @@ M.global = function()
     vim.opt.number = true
     vim.opt.relativenumber = true
     vim.opt.foldenable = true
+    vim.opt.cursorline = true
+    vim.opt.cursorcolumn = true
     vim.opt.signcolumn = "no"
+    vim.opt.colorcolumn = "80"
     vim.opt.conceallevel = 2
     vim.opt.foldmethod = "indent"
     vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"

@@ -169,6 +169,12 @@ M.get_statuscolumn = function()
                 end, 100)
             end,
             GitSigns = function(_, _)
+                local buf = vim.api.nvim_get_current_buf()
+                local name = vim.api.nvim_buf_get_name(buf)
+                if not name or name == "" then
+                    vim.notify("Cannot show git hunk: buffer has no file!", vim.log.levels.WARN)
+                    return
+                end
                 vim.defer_fn(function()
                     vgit.buffer_hunk_preview()
                 end, 100)
@@ -215,27 +221,6 @@ M.get_statuscolumn = function()
         },
     }
 
-    -- local marks = {
-    --     provider = function()
-    --         if vim.bo.filetype == "qf" or vim.bo.filetype == "org" or vim.v.virtnum ~= 0 then
-    --             return ""
-    --         end
-    --         local mark = mark_sign()
-    --         return (mark ~= " ") and (mark .. " ") or ""
-    --     end,
-    --     hl = { fg = _G.LVIM_COLORS.blue, bold = true },
-    --     on_click = {
-    --         name = "sc_mark_click",
-    --         callback = function(_, minwid, _, button, _)
-    --             if button == "m" then
-    --                 local letter = string.char(minwid)
-    --                 vim.cmd("delmarks " .. letter)
-    --                 vim.notify("Mark '" .. letter .. "' removed")
-    --             end
-    --         end,
-    --     },
-    -- }
-
     local line_numbers = {
         init = function(self)
             self.mark = mark_sign()
@@ -250,9 +235,10 @@ M.get_statuscolumn = function()
                 return ""
             end
 
-            local max_len = tostring(vim.api.nvim_buf_line_count(0)):len()
             local mark = self.mark
+            local max_len = tostring(vim.api.nvim_buf_line_count(0)):len()
 
+            -- Ако има марка, тя замества номера
             if mark ~= "" then
                 if vim.v.relnum == 0 then
                     return string.rep(" ", math.max(0, max_len - 1)) .. mark
@@ -261,13 +247,23 @@ M.get_statuscolumn = function()
                 end
             end
 
-            if vim.v.relnum == 0 then
+            -- ВИНАГИ показвай номерата, само според relativenumber
+            if vim.wo.relativenumber then
+                if vim.v.relnum == 0 then
+                    local lnum = vim.v.lnum
+                    local number_str = tostring(lnum)
+                    local spaces_needed = max_len - #number_str
+                    return string.rep(" ", spaces_needed) .. number_str
+                else
+                    return tostring(vim.v.relnum)
+                end
+            else
+                -- Ако relativenumber е false, винаги абсолютен номер
                 local lnum = vim.v.lnum
                 local number_str = tostring(lnum)
                 local spaces_needed = max_len - #number_str
                 return string.rep(" ", spaces_needed) .. number_str
             end
-            return tostring(vim.v.relnum)
         end,
         hl = function(self)
             if self.mark ~= "" then
@@ -371,12 +367,9 @@ M.get_statuscolumn = function()
                     filetype = file_types_statuscolumn,
                 })
             then
-                vim.opt.number = false
-                vim.opt.relativenumber = false
                 return false
-            else
-                return true
             end
+            return true
         end,
         static = static,
         init = init,

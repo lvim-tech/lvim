@@ -26,7 +26,8 @@ keymaps["normal"] = {
     { "<C-Down>", ":resize +2<CR>", "Resize height +" }, -- Resize height +
     { "<C-c>n", ":tabn<CR>", "Tab next" }, -- Tab next
     { "<C-c>p", ":tabp<CR>", "Tab prev" }, -- Tab prev
-    { "<C-c>ff", ":CloseFloatWindows<CR>", "Close float windows" }, -- Close float windows
+    { "<C-c>fc", ":CloseFloatWindows<CR>", "Close float windows" }, -- Close float windows
+    { "<C-c>ff", ":FocusFloatWindow<CR>", "Focus float window" }, -- Focus float window
     { "<C-c>c", ":Inspect<CR>", "Inspect" }, -- Inspect
     { "<C-c>O", ":lua vim.ui.open(vim.fn.expand('%'))<CR>", "Open in browser" }, -- Open in browser
     { "<Leader>m", ":messages<CR>", "Messages" }, -- Messages
