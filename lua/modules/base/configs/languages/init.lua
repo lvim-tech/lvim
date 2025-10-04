@@ -12,10 +12,12 @@ config.mason_nvim = function()
             icons = icons.mason,
         },
     })
-    require("languages").init()
-    require("languages.utils.setup_diagnostics").init_diagnostics()
-    require("languages.lsp_commands")
-    require("languages.utils.code_lens").setup()
+    vim.schedule(function()
+        require("languages").init()
+        require("languages.utils.setup_diagnostics").init_diagnostics()
+        require("languages.lsp_commands")
+        require("languages.utils.code_lens").setup()
+    end)
 end
 
 config.neotest = function()

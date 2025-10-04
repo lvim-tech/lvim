@@ -32,7 +32,7 @@ function lazy_pack.snapshot_file_show()
         height = height,
         row = row,
         col = col,
-        border = "rounded",
+        border = { " ", " ", " ", " ", " ", " ", " ", " " },
         title = " Snapshot Content ",
         title_pos = "center",
     }

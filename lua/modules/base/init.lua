@@ -782,7 +782,6 @@ modules["mbbill/undotree"] = {
 local languages_config = require("modules.base.configs.languages")
 
 modules["mason-org/mason.nvim"] = {
-    -- dependencies = { "lvim-tech/lvim-control-center" },
     build = ":MasonUpdate",
     commit = funcs.get_commit("mason.nvim", plugins_snapshot),
     config = languages_config.mason_nvim,

@@ -19,6 +19,7 @@ config.lvim_control_center = function()
             commands,
         },
     })
+    vim.keymap.set("n", "<Leader><Leader>", "<CMD>LvimControlCenter<CR>")
 end
 
 config.lvim_space = function()

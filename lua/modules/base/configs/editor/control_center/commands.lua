@@ -6,19 +6,44 @@ return {
     icon = icons.common.eval .. " ",
     settings = {
         {
-            name = "restart_lsp",
-            label = "Restart LSP",
+            name = "snapshotfileshow",
+            label = "Show current snapshot file",
             type = "action",
             run = function()
-                vim.cmd("LvimLspRestart")
-                vim.notify("LSP restarted!", vim.log.levels.INFO)
+                vim.cmd("SnapshotFileShow")
             end,
         },
         {
-            name = "open_config",
-            label = "Open Neovim Config",
+            name = "snapshotfilechoice",
+            label = "Choice snapshot file",
             type = "action",
-            cmd = "edit $MYVIMRC",
+            run = function()
+                vim.cmd("SnapshotFileChoice")
+            end,
+        },
+        {
+            name = "lazy",
+            label = "Lazy",
+            type = "action",
+            run = function()
+                vim.cmd("Lazy")
+            end,
+        },
+        {
+            name = "mason",
+            label = "Mason",
+            type = "action",
+            run = function()
+                vim.cmd("Mason")
+            end,
+        },
+        {
+            name = "colors",
+            label = "Colors",
+            type = "action",
+            run = function()
+                vim.cmd("hi")
+            end,
         },
     },
 }

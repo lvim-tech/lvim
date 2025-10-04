@@ -35,6 +35,7 @@ local config_diagnostic = {
 }
 
 M.init_diagnostics = function()
+    vim.notify(vim.inspect(_G.LVIM_SETTINGS.lspprogress))
     vim.diagnostic.config(config_diagnostic)
     vim.fn.sign_define("DiagnosticSignError", {
         text = icons.diagnostics.error,
@@ -53,14 +54,17 @@ M.init_diagnostics = function()
         texthl = "DiagnosticInfo",
     })
     if _G.LVIM_SETTINGS.lspprogress == "fidget" then
+        vim.notify("a")
         fidget.progress.suppress(false)
         fidget.notification.suppress(false)
         M.disable_lsp_progress()
     elseif _G.LVIM_SETTINGS.lspprogress == "notify" then
+        vim.notify("b")
         fidget.progress.suppress(true)
         fidget.notification.suppress(true)
         M.enable_lsp_progress()
     else
+        vim.notify("c")
         fidget.progress.suppress(true)
         fidget.notification.suppress(true)
         M.disable_lsp_progress()
@@ -71,13 +75,28 @@ M.document_highlight = function(client, bufnr)
     if client.server_capabilities.documentHighlightProvider then
         vim.api.nvim_create_autocmd("CursorHold", {
             buffer = bufnr,
-            command = "lua vim.lsp.buf.document_highlight()",
-            group = "LvimIDE",
+            group = group,
+            callback = function()
+                for _, c in pairs(vim.lsp.get_clients({ bufnr = bufnr })) do
+                    if c.server_capabilities.documentHighlightProvider then
+                        vim.lsp.buf.document_highlight()
+                        break
+                    end
+                end
+            end,
         })
+
         vim.api.nvim_create_autocmd("CursorMoved", {
             buffer = bufnr,
-            command = "lua vim.lsp.buf.clear_references()",
-            group = "LvimIDE",
+            group = group,
+            callback = function()
+                for _, c in pairs(vim.lsp.get_clients({ bufnr = bufnr })) do
+                    if c.server_capabilities.documentHighlightProvider then
+                        vim.lsp.buf.clear_references()
+                        break
+                    end
+                end
+            end,
         })
     end
 end

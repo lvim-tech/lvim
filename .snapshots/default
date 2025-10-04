@@ -31,7 +31,7 @@
   "kulala.nvim": { "branch": "main", "commit": "0d50e9ce5c992fe507743d8641b36125e668aad4" },
   "lazy.nvim": { "branch": "main", "commit": "59334064f8604ca073791c25dcc5c9698865406e" },
   "lvim-colorscheme": { "branch": "main", "commit": "7daad715755407580003c0a8c06602f83deb371d" },
-  "lvim-control-center": { "branch": "main", "commit": "3998dad864a4af9dfd9c058dd623d9976b433954" },
+  "lvim-control-center": { "branch": "main", "commit": "aa311efee7d5062be1a22fe893838dc94d0fdfc6" },
   "lvim-linguistics": { "branch": "main", "commit": "f9b702d054b9ee608bbbcbd2d59bca2f37ebfa98" },
   "lvim-move": { "branch": "main", "commit": "75c74afcd6dfe36ab7a8b88086eec00a2902e1a5" },
   "lvim-org-utils": { "branch": "main", "commit": "93f9285df11376196605fa62949c2a768023bbb3" },
