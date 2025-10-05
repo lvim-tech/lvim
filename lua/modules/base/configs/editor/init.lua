@@ -19,7 +19,11 @@ config.lvim_control_center = function()
             commands,
         },
     })
-    vim.keymap.set("n", "<Leader><Leader>", "<CMD>LvimControlCenter<CR>")
+    vim.keymap.set("n", "<Leader><Leader><Leader>", "<CMD>LvimControlCenter<CR>")
+    vim.keymap.set("n", "<Leader><Leader>g", "<CMD>LvimControlCenter global<CR>")
+    vim.keymap.set("n", "<Leader><Leader>a", "<CMD>LvimControlCenter appearance<CR>")
+    vim.keymap.set("n", "<Leader><Leader>l", "<CMD>LvimControlCenter lsp<CR>")
+    vim.keymap.set("n", "<Leader><Leader>c", "<CMD>LvimControlCenter commands<CR>")
 end
 
 config.lvim_space = function()
