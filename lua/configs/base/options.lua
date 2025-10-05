@@ -118,7 +118,6 @@ M.global = function()
     vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
     vim.opt.foldtext = "v:lua.fold_text()"
     vim.opt.foldmethod = "indent"
-    vim.opt.cursorline = true
     vim.opt.fillchars = {
         diff = "╱",
         eob = " ",
