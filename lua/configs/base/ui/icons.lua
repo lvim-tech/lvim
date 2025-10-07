@@ -41,7 +41,8 @@ return {
         up = "",
         down2 = "󰄼",
         up2 = "󰄿",
-        save = "",
+        save = " ",
+        unsave = "󱙃 ",
         lock = "",
         light_bulb = "",
         hourglass = "",
@@ -52,6 +53,8 @@ return {
         eval = "",
         substitute1 = "",
         substitute2 = "",
+        is_true = "",
+        is_false = "",
     },
     git_status = {
         added = "",
