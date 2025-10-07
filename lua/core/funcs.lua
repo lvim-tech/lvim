@@ -1,5 +1,3 @@
-local icons = require("configs.base.ui.icons")
-
 local M = {}
 
 _G._FLOAT_INDEX = _G._FLOAT_INDEX or 1
@@ -404,34 +402,6 @@ M.focus_float_window = function()
         _G._FLOAT_INDEX = (cur_idx % #floats) + 1
     end
     vim.api.nvim_set_current_win(floats[_G._FLOAT_INDEX])
-end
-
-M.quit = function()
-    local status = true
-    for _, v in ipairs(vim.api.nvim_list_bufs()) do
-        if vim.bo[v].modified then
-            status = false
-        end
-    end
-    if not status then
-        local ui_config = require("lvim-ui-config.config")
-        local select = require("lvim-ui-config.select")
-        local opts = ui_config.select({
-            "Save all and Quit",
-            "Don't save and Quit",
-            "Cancel",
-        }, { prompt = icons.common.warning .. " Unsaved files" }, {})
-        select(opts, function(choice)
-            if choice == "Save all and Quit" then
-                vim.cmd("wa")
-                vim.cmd("qa")
-            elseif choice == "Don't save and Quit" then
-                vim.cmd("qa!")
-            end
-        end)
-    else
-        vim.cmd("qa")
-    end
 end
 
 M.is_helm = function()

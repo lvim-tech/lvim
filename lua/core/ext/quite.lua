@@ -20,9 +20,27 @@ M.quit = function()
     end
 
     local actions = {
-        { id = "save", text = "💾 Save Selected & Quit", hl = "QuitActionSave" },
-        { id = "discard", text = "💣 Quit without Saving", hl = "QuitActionDiscard" },
-        { id = "cancel", text = "🚫 Cancel", hl = "QuitActionCancel" },
+        {
+            id = "save",
+            text = "Save Selected & Quit",
+            hl = "QuitActionSave",
+            icon = icons.common.save,
+            icon_hl = "QuitActionSaveIcon",
+        },
+        {
+            id = "discard",
+            text = "Quit without Saving",
+            hl = "QuitActionDiscard",
+            icon = icons.common.unsave,
+            icon_hl = "QuitActionDiscardIcon",
+        },
+        {
+            id = "cancel",
+            text = "Cancel",
+            hl = "QuitActionCancel",
+            icon = icons.common.unsave,
+            icon_hl = "QuitActionCancelIcon",
+        },
     }
 
     local KEY_HINT = " j/k: Move  <CR>/<Space>: Toggle File  Tab/S-Tab: Cycle  Enter(on action): Execute  q/Esc: Close"
@@ -41,12 +59,16 @@ M.quit = function()
             set(0, "QuitActionSave", { fg = _G.LVIM_COLORS.blue })
             set(0, "QuitActionDiscard", { fg = _G.LVIM_COLORS.blue })
             set(0, "QuitActionCancel", { fg = _G.LVIM_COLORS.blue })
+            set(0, "QuitActionSaveIcon", { fg = _G.LVIM_COLORS.green })
+            set(0, "QuitActionDiscardIcon", { fg = _G.LVIM_COLORS.red })
+            set(0, "QuitActionCancelIcon", { fg = _G.LVIM_COLORS.blue })
             set(0, "QuitCursorLine", { bg = _G.LVIM_COLORS.blue_bh, bold = true })
             set(0, "QuitFooter", { fg = _G.LVIM_COLORS.blue, bold = true })
-            set(0, "QuitHLine", { fg = "#5c6370" })
-            set(0, "QuitMoreIndicator", { fg = "#5c6370" })
+            set(0, "QuitHLine", { fg = _G.LVIM_COLORS.blue_bh })
+            set(0, "QuitMoreIndicator", { fg = _G.LVIM_COLORS.red })
             set(0, "QuitBorder", { fg = _G.LVIM_COLORS.bg_float })
             set(0, "QuitTitleText", { bg = _G.LVIM_COLORS.blue_bh, fg = _G.LVIM_COLORS.blue, bold = true })
+            set(0, "QuitActionSegmentSel", { bg = _G.LVIM_COLORS.blue_bh, bold = true })
         end)
     end
     define_hl()
@@ -58,11 +80,10 @@ M.quit = function()
     local Popup = require("nui.popup")
     local Text = require("nui.text")
     local event = require("nui.utils.autocmd").event
-
     local TITLE_TEXT = Text(" Unsaved Files ", "QuitTitleText")
 
     local function fixed_block_height()
-        return 1 + #actions + 1 + 1
+        return 1 + 1 + 1 + 1 + 1
     end
 
     local function calc_width()
@@ -70,15 +91,18 @@ M.quit = function()
         for _, b in ipairs(unsaved_buffers) do
             local icon = selections[b] and icons.common.is_true or icons.common.is_false
             local fp = vim.api.nvim_buf_get_name(b)
-            local len = #icon + 1 + #fp
+            local len = 1 + #icon + 1 + #fp
             if len > max_len then
                 max_len = len
             end
         end
-        for _, a in ipairs(actions) do
-            if #a.text > max_len then
-                max_len = #a.text
-            end
+        local act_line_len = 0
+        for i, a in ipairs(actions) do
+            local seg = " " .. a.icon .. " " .. a.text .. " "
+            act_line_len = act_line_len + #seg + (i < #actions and 4 or 0)
+        end
+        if act_line_len > max_len then
+            max_len = act_line_len
         end
         if max_len < 52 then
             max_len = 52
@@ -109,7 +133,11 @@ M.quit = function()
             highlight = "QuitBorder",
             text = { top = TITLE_TEXT, top_align = "center" },
         },
-        position = "50%",
+        relative = "editor",
+        position = {
+            row = "50%",
+            col = "50%",
+        },
         size = {
             width = calc_width(),
             height = compute_effective_height(),
@@ -125,6 +153,7 @@ M.quit = function()
     local lines_meta = {}
     local scroll_offset = 0
     local visible_file_count = 0
+    local actions_segments = {}
 
     local function total_selectable()
         return #unsaved_buffers + #actions
@@ -144,7 +173,6 @@ M.quit = function()
             slots_for_files = 1
         end
         visible_file_count = math.min(#unsaved_buffers, slots_for_files)
-
         local file_count = #unsaved_buffers
         if current_index <= file_count then
             local file_idx = current_index
@@ -191,12 +219,10 @@ M.quit = function()
             if idx < scroll_offset + 1 or idx > scroll_offset + showing then
                 return nil
             end
-            return idx - scroll_offset
+            return (idx - scroll_offset) + 1
         else
-            local hline1 = showing + 1
-            local actions_start = hline1 + 1
-            local action_idx = idx - file_count
-            return actions_start + (action_idx - 1)
+            local actions_line = showing + 2
+            return actions_line
         end
     end
 
@@ -209,6 +235,7 @@ M.quit = function()
         vim.api.nvim_set_option_value("modifiable", true, { buf = popup.bufnr })
         vim.api.nvim_buf_set_lines(popup.bufnr, 0, -1, false, {})
         lines_meta = {}
+        actions_segments = {}
 
         local lines = {}
         local file_count = #unsaved_buffers
@@ -218,31 +245,31 @@ M.quit = function()
         local has_above = (from_i > 1)
         local has_below = (to_i < file_count)
 
+        table.insert(lines, "")
+        lines_meta[#lines] = { kind = "spacer" }
+
         for file_i = from_i, to_i do
             local buf = unsaved_buffers[file_i]
             local icon = selections[buf] and icons.common.is_true or icons.common.is_false
             local fp = vim.api.nvim_buf_get_name(buf)
-            local line = icon .. " " .. (fp ~= "" and fp or ("[No Name #" .. buf .. "]"))
+            local line = " " .. icon .. " " .. (fp ~= "" and fp or ("[No Name #" .. buf .. "]"))
             table.insert(lines, line)
-            lines_meta[#lines] = {
-                kind = "file",
-                bufnr = buf,
-                icon_len = #icon,
-                file_index = file_i,
-            }
+            lines_meta[#lines] = { kind = "file", bufnr = buf, icon_len = 1 + #icon, file_index = file_i }
         end
 
-        if has_above and #lines > 0 then
-            lines[1] = "… " .. lines[1]
-            local m = lines_meta[1]
+        if has_above and showing > 0 then
+            local first_file_line = 2
+            lines[first_file_line] = "… " .. lines[first_file_line]
+            local m = lines_meta[first_file_line]
             if m then
                 m.more_above = true
                 m.icon_len = m.icon_len + 2
             end
         end
-        if has_below and #lines > 0 then
-            lines[#lines] = lines[#lines] .. " …"
-            local m = lines_meta[#lines]
+        if has_below and showing > 0 then
+            local last_file_line = 1 + showing
+            lines[last_file_line] = lines[last_file_line] .. " …"
+            local m = lines_meta[last_file_line]
             if m then
                 m.more_below = true
             end
@@ -251,10 +278,34 @@ M.quit = function()
         table.insert(lines, make_hline())
         lines_meta[#lines] = { kind = "hline" }
 
-        for _, a in ipairs(actions) do
-            table.insert(lines, a.text)
-            lines_meta[#lines] = { kind = "action", action = a.id, hl = a.hl }
+        local action_line = ""
+        local spacer = "    "
+        local col = 0
+        for i, a in ipairs(actions) do
+            local seg_full = " " .. a.icon .. " " .. a.text .. " "
+            local start_col = col
+            local icon_start = start_col + 1
+            local icon_end = icon_start + #a.icon
+            local end_col = start_col + #seg_full
+            table.insert(actions_segments, {
+                start_col = start_col,
+                icon_start = icon_start,
+                icon_end = icon_end,
+                end_col = end_col,
+                action_idx = i,
+                hl = a.hl,
+                icon_hl = a.icon_hl,
+                id = a.id,
+            })
+            action_line = action_line .. seg_full
+            col = end_col
+            if i < #actions then
+                action_line = action_line .. spacer
+                col = col + #spacer
+            end
         end
+        table.insert(lines, action_line)
+        lines_meta[#lines] = { kind = "actions_line" }
 
         table.insert(lines, make_hline())
         lines_meta[#lines] = { kind = "hline" }
@@ -267,47 +318,81 @@ M.quit = function()
         local ns = vim.api.nvim_create_namespace("quit_dialog_ns")
         vim.api.nvim_buf_clear_namespace(popup.bufnr, ns, 0, -1)
 
-        local function extmark(lnum, col_start, col_end, group, prio)
-            if col_end < 0 then
-                local txt = vim.api.nvim_buf_get_text(popup.bufnr, lnum, 0, lnum, -1, {})[1] or ""
-                col_end = #txt
+        local function extmark(lnum, s, e, group, prio, mode)
+            local txt = vim.api.nvim_buf_get_text(popup.bufnr, lnum, 0, lnum, -1, {})[1] or ""
+            local line_len = #txt
+            if e < 0 or e > line_len then
+                e = line_len
             end
-            vim.api.nvim_buf_set_extmark(popup.bufnr, ns, lnum, col_start, {
-                end_col = col_end,
+            if s < 0 then
+                s = 0
+            end
+            if e <= s then
+                e = s + 1
+            end
+            vim.api.nvim_buf_set_extmark(popup.bufnr, ns, lnum, s, {
+                end_col = e,
                 hl_group = group,
                 priority = prio or 100,
+                hl_mode = mode,
             })
         end
 
         for i, meta in ipairs(lines_meta) do
             local lnum = i - 1
             if meta.kind == "file" then
-                local line_txt = vim.api.nvim_buf_get_text(popup.bufnr, lnum, 0, lnum, -1, {})[1] or ""
                 local start_col = 0
                 if meta.more_above then
-                    extmark(lnum, 0, 1, "QuitMoreIndicator", 190)
+                    extmark(lnum, 0, 1, "QuitMoreIndicator", 300, "combine")
                     start_col = 2
                 end
                 local icon_end = start_col + meta.icon_len
                 local icon_hl = selections[meta.bufnr] and "QuitIconTrue" or "QuitIconFalse"
-                extmark(lnum, start_col, icon_end, icon_hl, 180)
-                extmark(lnum, icon_end + 1, -1, "QuitFilePath", 170)
-                if meta.more_below and #line_txt > 0 then
-                    extmark(lnum, #line_txt - 1, #line_txt, "QuitMoreIndicator", 190)
+                extmark(lnum, start_col, icon_end, icon_hl, 280, "combine")
+                extmark(lnum, icon_end + 1, -1, "QuitFilePath", 270, "combine")
+                if meta.more_below then
+                    local txt = vim.api.nvim_buf_get_text(popup.bufnr, lnum, 0, lnum, -1, {})[1] or ""
+                    local len = #txt
+                    if len > 0 then
+                        extmark(lnum, len - 1, len, "QuitMoreIndicator", 300, "combine")
+                    end
                 end
-            elseif meta.kind == "action" then
-                extmark(lnum, 0, -1, meta.hl or "QuitActionSave", 160)
-            elseif meta.kind == "footer" then
-                extmark(lnum, 0, -1, "QuitFooter", 150)
             elseif meta.kind == "hline" then
-                extmark(lnum, 0, -1, "QuitHLine", 140)
+                extmark(lnum, 0, -1, "QuitHLine", 200, "replace")
+            elseif meta.kind == "footer" then
+                extmark(lnum, 0, -1, "QuitFooter", 210, "replace")
+            elseif meta.kind == "actions_line" then
+                local file_count_local = #unsaved_buffers
+                local sel_action_idx = (current_index > file_count_local) and (current_index - file_count_local) or nil
+                for _, seg in ipairs(actions_segments) do
+                    extmark(lnum, seg.icon_start, seg.icon_end, seg.icon_hl or seg.hl, 260, "combine")
+                    extmark(lnum, seg.icon_end, seg.end_col, seg.hl, 250, "combine")
+                    if sel_action_idx == seg.action_idx then
+                        extmark(lnum, seg.start_col, seg.end_col, "QuitCursorLine", 900, "combine")
+                    end
+                end
             end
         end
 
         local target_lnum = index_to_linenr(current_index)
         if target_lnum then
-            pcall(vim.api.nvim_win_set_cursor, popup.winid, { target_lnum, 0 })
-            extmark(target_lnum - 1, 0, -1, "QuitCursorLine", 300)
+            local file_count_local = #unsaved_buffers
+            if current_index <= file_count_local then
+                pcall(vim.api.nvim_win_set_cursor, popup.winid, { target_lnum, 0 })
+                local line_idx = target_lnum - 1
+                vim.api.nvim_buf_set_extmark(popup.bufnr, ns, line_idx, 0, {
+                    line_hl_group = "QuitCursorLine",
+                    priority = 1000,
+                })
+            else
+                local sel_idx = current_index - file_count_local
+                local seg = actions_segments[sel_idx]
+                if seg then
+                    pcall(vim.api.nvim_win_set_cursor, popup.winid, { target_lnum, seg.start_col })
+                else
+                    pcall(vim.api.nvim_win_set_cursor, popup.winid, { target_lnum, 0 })
+                end
+            end
         end
 
         vim.api.nvim_set_option_value("modifiable", false, { buf = popup.bufnr })

@@ -214,7 +214,7 @@ configs["base_commands"] = function()
     vim.api.nvim_create_user_command("SetGlobalPath", 'lua require("core.funcs").set_global_path()', {})
     vim.api.nvim_create_user_command("SetWindowPath", 'lua require("core.funcs").set_window_path()', {})
     vim.api.nvim_create_user_command("SudoWrite", 'lua require("core.funcs").sudo_write()', {})
-    vim.api.nvim_create_user_command("Quit", 'lua require("core.funcs").quit()', {})
+    vim.api.nvim_create_user_command("Quit", 'lua require("core.ext.quite").quit()', {})
     vim.api.nvim_create_user_command("Save", function()
         vim.schedule(function()
             pcall(function()
@@ -223,7 +223,7 @@ configs["base_commands"] = function()
         end)
     end, {})
 
-    require("core.gxplus").setup()
+    require("core.ext.gxplus").setup()
     vim.keymap.set("n", "gx", "<cmd>GxPlus<CR>", { silent = true, desc = "GxPlus" })
 end
 
