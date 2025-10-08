@@ -430,7 +430,18 @@ M.quit = function()
                 end
             end
             popup:unmount()
-            vim.cmd("qa")
+            local has_unsaved = false
+            for _, b in ipairs(unsaved_buffers) do
+                if not selections[b] and vim.api.nvim_buf_is_valid(b) and vim.bo[b].modified then
+                    has_unsaved = true
+                    break
+                end
+            end
+            if has_unsaved then
+                vim.cmd("qa!")
+            else
+                vim.cmd("qa")
+            end
         elseif id == "discard" then
             popup:unmount()
             vim.cmd("qa!")
