@@ -199,6 +199,7 @@ modules["rebelot/heirline.nvim"] = {
     commit = funcs.get_commit("heirline.nvim", plugins_snapshot),
     priority = 100,
     dependencies = {
+        "lvim-tech/lvim-colorscheme",
         "tanvirtin/vgit.nvim",
         "NeogitOrg/neogit",
     },
