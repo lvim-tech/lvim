@@ -294,10 +294,12 @@ config.diffview_nvim = function()
     end, { noremap = true, silent = true, desc = "Git diffview close" })
 end
 
-config.undotree = function()
-    vim.keymap.set("n", "<F5>", function()
-        vim.cmd("UndotreeToggle")
-    end, { noremap = true, silent = true, desc = "UndotreeToggle" })
+config.time_machine = function()
+    local time_machine_status_ok, time_machine = pcall(require, "time-machine")
+    if not time_machine_status_ok then
+        return
+    end
+    time_machine.setup({})
 end
 
 return config

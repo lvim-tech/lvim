@@ -197,6 +197,7 @@ modules["stevearc/oil.nvim"] = {
 
 modules["rebelot/heirline.nvim"] = {
     commit = funcs.get_commit("heirline.nvim", plugins_snapshot),
+    priority = 100,
     dependencies = {
         "tanvirtin/vgit.nvim",
         "NeogitOrg/neogit",
@@ -766,13 +767,43 @@ modules["sindrets/diffview.nvim"] = {
     config = version_control_config.diffview_nvim,
 }
 
-modules["mbbill/undotree"] = {
-    commit = funcs.get_commit("undotree", plugins_snapshot),
-    keys = {
-        { "<F5>", "<Cmd>UndotreeToggle<CR>", desc = "Undotree" },
+modules["y3owk1n/time-machine.nvim"] = {
+    commit = funcs.get_commit("time-machine", plugins_snapshot),
+    cmd = {
+        "TimeMachineToggle",
+        "TimeMachinePurgeBuffer",
+        "TimeMachinePurgeAll",
+        "TimeMachineLogShow",
+        "TimeMachineLogClear",
     },
-    cmd = "UndotreeToggle",
-    config = version_control_config.undotree,
+    keys = {
+        {
+            "<leader>u",
+            "",
+            desc = "Time Machine",
+        },
+        {
+            "<leader>ut",
+            "<cmd>TimeMachineToggle<cr>",
+            desc = "[Time Machine] Toggle Tree",
+        },
+        {
+            "<leader>up",
+            "<cmd>TimeMachinePurgeCurrent<cr>",
+            desc = "[Time Machine] Purge current",
+        },
+        {
+            "<leader>uP",
+            "<cmd>TimeMachinePurgeAll<cr>",
+            desc = "[Time Machine] Purge all",
+        },
+        {
+            "<leader>ul",
+            "<cmd>TimeMachineLogShow<cr>",
+            desc = "[Time Machine] Show log",
+        },
+    },
+    config = version_control_config.time_machine,
 }
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
