@@ -299,7 +299,18 @@ config.time_machine = function()
     if not time_machine_status_ok then
         return
     end
-    time_machine.setup({})
+    time_machine.setup({
+        diff_tool = "delta",
+        external_diff_args = {
+            delta = {
+                "--side-by-side",
+                "--line-numbers",
+                "--navigate",
+                "--file-style=omit",
+                "--hunk-header-style=omit",
+            },
+        },
+    })
 end
 
 return config
