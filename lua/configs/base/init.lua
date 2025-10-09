@@ -171,12 +171,15 @@ configs["base_events"] = function()
             "fyler",
             "Fyler",
             "neo-tree",
+            "time-machine-list",
         },
         callback = function()
-            vim.opt_local.number = false
-            vim.opt_local.relativenumber = false
-            vim.opt_local.cursorcolumn = false
-            vim.opt_local.colorcolumn = "0"
+            vim.schedule(function()
+                vim.opt_local.number = false
+                vim.opt_local.relativenumber = false
+                vim.opt_local.cursorcolumn = false
+                vim.opt_local.colorcolumn = "0"
+            end)
         end,
         group = group,
     })
