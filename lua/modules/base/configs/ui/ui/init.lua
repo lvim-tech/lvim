@@ -1,12 +1,10 @@
 local M = {}
-local funcs = require("core.funcs")
 local icons = require("configs.base.ui.icons")
 local utils = require("ui.utils")
 local ui = require("ui")
 
 local function set_hl_groups()
     local c = _G.LVIM_COLORS
-    local blend = funcs.blend
     local hl = vim.api.nvim_set_hl
 
     hl(0, "UICmdlineDefault", { bg = c.blue_bh, fg = c.blue })
@@ -21,7 +19,7 @@ local function set_hl_groups()
     hl(0, "UICmdlineSearchDownIcon", { bg = c.blue_bl, fg = c.blue })
     hl(0, "UICmdlineSubstitute", { bg = c.cyan_bh, fg = c.cyan })
     hl(0, "UICmdlineSubstituteIcon", { bg = c.cyan_bl, fg = c.cyan })
-    hl(0, "UIMessageDefault", { bg = blend(c.bg_dark, 0.8, "#000000"), fg = c.fg })
+    hl(0, "UIMessageDefault", { bg = c.blue_bh, fg = c.blue })
     hl(0, "UIMessageOk", { bg = c.green_bh, fg = c.green })
     hl(0, "UIMessageOkIcon", { bg = c.green_bl, fg = c.green })
     hl(0, "UIMessageInfo", { bg = c.blue_bh, fg = c.blue })
@@ -155,6 +153,8 @@ M.set_ui = function()
                     },
                 },
                 message = {
+                    wrap_notify = false,
+                    respect_replace_last = true,
                     msg_styles = {
                         default = {
                             decorations = function(msg)
