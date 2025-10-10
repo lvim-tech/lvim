@@ -52,30 +52,6 @@ git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 :LvimControlCenter
 ```
 
-## SNAPSHOTS
-
-- Snap folder: `~/.config/nvim/.snapshots/`
-
-- Default snapshot file: `default`
-
-- Show current snapshot:
-
-```lua
-:SnapshotFileShow
-```
-
-- Choice file to rollback:
-
-```lua
-:SnapshotFileChoice
-```
-
-- Then run:
-
-```lua
-:Lazy sync
-```
-
 ## USER CONFIGS
 
 ### EDITOR
