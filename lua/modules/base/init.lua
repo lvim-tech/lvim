@@ -3,7 +3,7 @@ local funcs = require("core.funcs")
 local modules = {}
 local plugins_snapshot = {}
 
-local file_content = funcs.read_file(_G.LVIM_SNAPSHOT)
+local file_content = funcs.read_file(_G.global.lvim_path .. "/.snapshots/" .. _G.LVIM_SNAPSHOT)
 if file_content ~= nil then
     plugins_snapshot = file_content
 end
@@ -86,6 +86,7 @@ modules["folke/snacks.nvim"] = {
 
 modules["OXY2DEV/ui.nvim"] = {
     commit = funcs.get_commit("ui.nvim", plugins_snapshot),
+    lazy = false,
     config = ui_config.ui_nvim,
 }
 

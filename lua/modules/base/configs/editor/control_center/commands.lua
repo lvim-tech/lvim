@@ -6,27 +6,19 @@ return {
     icon = icons.common.eval .. " ",
     settings = {
         {
-            name = "snapshotfileshow",
-            label = "Show current snapshot file",
-            type = "action",
-            run = function()
-                vim.cmd("SnapshotFileShow")
-            end,
-        },
-        {
-            name = "snapshotfilechoice",
-            label = "Choice snapshot file",
-            type = "action",
-            run = function()
-                vim.cmd("SnapshotFileChoice")
-            end,
-        },
-        {
             name = "lazy",
             label = "Lazy",
             type = "action",
             run = function()
                 vim.cmd("Lazy")
+            end,
+        },
+        {
+            name = "lazysync",
+            label = "Lazy sync",
+            type = "action",
+            run = function()
+                vim.cmd("Lazy sync")
             end,
         },
         {

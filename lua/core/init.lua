@@ -56,7 +56,7 @@ else
     if type(snapshot) == "table" then
         _G.LVIM_SNAPSHOT = snapshot.snapshot
     else
-        _G.LVIM_SNAPSHOT = global.lvim_path .. "/.snapshots/default"
+        _G.LVIM_SNAPSHOT = "default"
     end
     _G.LVIM_SETTINGS = {}
     local function read_file_default(path, default)

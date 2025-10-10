@@ -7,12 +7,14 @@ config.lvim_control_center = function()
     if not lvim_control_center_status_ok then
         return
     end
+    local lvim = require("modules.base.configs.editor.control_center.lvim")
     local general = require("modules.base.configs.editor.control_center.general")
     local appearance = require("modules.base.configs.editor.control_center.appearance")
     local lsp = require("modules.base.configs.editor.control_center.lsp")
     local commands = require("modules.base.configs.editor.control_center.commands")
     lvim_control_center.setup({
         groups = {
+            lvim,
             general,
             appearance,
             lsp,
