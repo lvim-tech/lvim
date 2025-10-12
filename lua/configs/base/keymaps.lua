@@ -14,7 +14,7 @@ keymaps["normal"] = {
     { "<C-c>e", ":Quit<CR>", "Close LvimIDE" }, -- Close all, exit nvim
     { "<C-c>x", "<C-w>c", "Close current window" }, -- Close current window
     { "<C-c>o", "<C-w>o", "Close other windows" }, -- Close other windows
-    { "<C-c>d", ":bdelete<CR>", "Delete buffer" }, -- BDelete
+    { "<C-c>d", ":enew | bdelete #<CR>", "Delete buffer" }, -- BDelete
     { "<C-c>=", ":wincmd=<CR>", "Win resize =" }, -- Win resize =
     { "<C-h>", "<C-w>h", "Move to window left" }, -- Move to window left
     { "<C-l>", "<C-w>l", "Move to window right" }, -- Move to window right
@@ -32,12 +32,31 @@ keymaps["normal"] = {
     { "<C-c>O", ":lua vim.ui.open(vim.fn.expand('%'))<CR>", "Open in browser" }, -- Open in browser
     { "<Leader>m", ":messages<CR>", "Messages" }, -- Messages
     { "<Leader>N", ":ene | startinsert<CR>", "New file" }, -- New file
-    { "<Leader>to", ":$tabnew<CR>", "Tab new" }, -- Tne new
-    { "<Leader>tc", ":$tabclose<CR>", "Tab close" }, -- Tne close
-    { "<Leader>tn", ":tabn<CR>", "Tab next" }, -- Tab next
-    { "<Leader>tp", ":tabp<CR>", "Tab prev" }, -- Tab prev
-    { "<Leader>tmn", ":+tabmove<CR>", "Tab move next" }, -- Tab move next
-    { "<Leader>tmp", ":-tabmove<CR>", "Tab move prev" }, -- Tab move prev
+    { "<Leader>tc", ":LvimSpaceTabClose<CR>", "Tab close" }, -- Tab close
+    {
+        "<Leader>te",
+        function()
+            local input = vim.fn.input("New tab name: ")
+            if input ~= "" then
+                vim.cmd("LvimSpaceTabRename " .. input)
+            end
+        end,
+        "Rename tab",
+    }, -- Tab rename
+    { "<Leader>tn", ":LvimSpaceTabNext<CR>", "Tab next" }, -- Tab next
+    { "<Leader>tp", ":LvimSpaceTabPrev<CR>", "Tab prev" }, -- Tab prev
+    {
+        "<Leader>tt",
+        function()
+            local input = vim.fn.input("Tab index: ")
+            if input ~= "" then
+                vim.cmd("LvimSpaceTab " .. input)
+            end
+        end,
+        "Tab index",
+    }, -- Tab index
+    { "<Leader>tmn", ":LvimSpaceTabMoveNext<CR>", "Tab move next" }, -- Tab move next
+    { "<Leader>tmp", ":LvimSpaceTabMovePrev<CR>", "Tab move prev" }, -- Tab move prev
     { "<C-c><C-p>", "p`[v`]" },
     { "<C-c><C-k>", "P`[v`]" },
 }
