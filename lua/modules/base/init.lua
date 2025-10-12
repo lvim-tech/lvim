@@ -36,14 +36,6 @@ modules["MunifTanjim/nui.nvim"] = {
     config = dependencies_config.nui_nvim,
 }
 
-modules["lvim-tech/lvim-ui-config"] = {
-    commit = funcs.get_commit("lvim-ui-config", plugins_snapshot),
-    dependencies = {
-        "MunifTanjim/nui.nvim",
-    },
-    lazy = true,
-}
-
 modules["nvim-tree/nvim-web-devicons"] = {
     commit = funcs.get_commit("nvim-web-devicons", plugins_snapshot),
     config = dependencies_config.nvim_web_devicons,
@@ -382,10 +374,6 @@ modules["ibhagwan/fzf-lua"] = {
 
 modules["lvim-tech/lvim-linguistics"] = {
     commit = funcs.get_commit("lvim-linguistics", plugins_snapshot),
-    dependencies = {
-        "MunifTanjim/nui.nvim",
-        "lvim-tech/lvim-ui-config",
-    },
     config = editor_config.lvim_linguistics,
 }
 
@@ -486,10 +474,6 @@ modules["stevearc/quicker.nvim"] = {
 
 modules["lvim-tech/lvim-qf-loc"] = {
     commit = funcs.get_commit("lvim-qf-loc", plugins_snapshot),
-    dependencies = {
-        "MunifTanjim/nui.nvim",
-        "lvim-tech/lvim-ui-config",
-    },
     config = editor_config.lvim_qf_loc,
 }
 
