@@ -37,7 +37,7 @@
   "lvim-org-utils": { "branch": "main", "commit": "93f9285df11376196605fa62949c2a768023bbb3" },
   "lvim-qf-loc": { "branch": "main", "commit": "e2a15aff2be6d6b53f5f589c3537fb1a83e8fa3e" },
   "lvim-shell": { "branch": "main", "commit": "41817fc30cef1172cd15ef5e27e1d54d941a3689" },
-  "lvim-space": { "branch": "main", "commit": "77ed97ba529ac6281fcf1ca44b51e9f01d6e5851" },
+  "lvim-space": { "branch": "main", "commit": "669c1a21784ae20c738eb81e83ac009fdc76c8e2" },
   "lvim-ui-config": { "branch": "main", "commit": "56ec5a05408045b62f5fd59d94ca34223450cf57" },
   "macrobank.nvim": { "branch": "master", "commit": "b71c248660cdb67849bc6a9da1770c4bcfefb5be" },
   "markdown-preview.nvim": { "branch": "master", "commit": "a923f5fc5ba36a3b17e289dc35dc17f66d0548ee" },
