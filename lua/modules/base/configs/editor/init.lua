@@ -591,7 +591,6 @@ config.lvim_qf_loc = function()
     vim.keymap.set("n", "<C-c><C-h>", function()
         vim.cmd("LvimDiagnostics")
     end, { noremap = true, silent = true, desc = "LspDiagnostic QF" })
-
     vim.keymap.set("n", "]]", function()
         vim.cmd("LvimListQuickFixNext")
     end, { noremap = true, silent = true, desc = "QfNext" })
