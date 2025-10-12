@@ -32,6 +32,14 @@ keymaps["normal"] = {
     { "<C-c>O", ":lua vim.ui.open(vim.fn.expand('%'))<CR>", "Open in browser" }, -- Open in browser
     { "<Leader>m", ":messages<CR>", "Messages" }, -- Messages
     { "<Leader>N", ":ene | startinsert<CR>", "New file" }, -- New file
+    {
+        "<Leader>ta",
+        function()
+            local input = vim.fn.input("New tab name (optional): ")
+            vim.cmd("LvimSpaceTabNew " .. input)
+        end,
+        "New tab",
+    }, -- Tab new
     { "<Leader>tc", ":LvimSpaceTabClose<CR>", "Tab close" }, -- Tab close
     {
         "<Leader>te",
