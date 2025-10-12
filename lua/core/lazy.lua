@@ -34,7 +34,7 @@ lazy_pack.load = function()
     require("lazy").setup(repos, {
         install = {
             missing = true,
-            colorscheme = { "lvim", "habamax" },
+            colorscheme = { _G.LVIM_THEME, "habamax" },
         },
         ui = {
             size = {
