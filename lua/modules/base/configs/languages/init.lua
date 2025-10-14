@@ -632,47 +632,6 @@ config.nvim_navic = function()
     vim.g.navic_silence = true
 end
 
-config.nvim_navbuddy = function()
-    local nvim_navbuddy_status_ok, nvim_navbuddy = pcall(require, "nvim-navbuddy")
-    if not nvim_navbuddy_status_ok then
-        return
-    end
-    nvim_navbuddy.setup({
-        window = {
-            border = "single",
-            size = "80%",
-            position = "50%",
-            sections = {
-                left = {
-                    size = "33%",
-                    border = nil,
-                },
-                mid = {
-                    size = "34%",
-                    border = nil,
-                },
-                right = {
-                    size = "33%",
-                    border = nil,
-                },
-            },
-        },
-        icons = icons.navbuddy,
-        lsp = { auto_attach = true },
-    })
-    vim.keymap.set("n", "<C-c>v", function()
-        nvim_navbuddy.open()
-    end, { noremap = true, silent = true, desc = "Navbuddy" })
-end
-
-config.namu_nvim = function()
-    local namu_status_ok, namu = pcall(require, "namu")
-    if not namu_status_ok then
-        return
-    end
-    namu.setup()
-end
-
 config.outline_nvim = function()
     local outline_status_ok, outline = pcall(require, "outline")
     if not outline_status_ok then

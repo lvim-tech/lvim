@@ -925,35 +925,12 @@ modules["SmiteshP/nvim-navic"] = {
     config = languages_config.nvim_navic,
 }
 
-modules["SmiteshP/nvim-navbuddy"] = {
-    commit = funcs.get_commit("nvim-navbuddy", plugins_snapshot),
-    dependencies = {
-        "SmiteshP/nvim-navic",
-        "MunifTanjim/nui.nvim",
-    },
-    config = languages_config.nvim_navbuddy,
-}
-
-modules["bassamsdata/namu.nvim"] = {
-    commit = funcs.get_commit("namu.nvim", plugins_snapshot),
-    keys = {
-        {
-            "<Leader>on",
-            function()
-                local namu = require("namu.namu_symbols")
-                namu.show()
-            end,
-            desc = "Namu symbols",
-        },
-    },
-    config = languages_config.namu_nvim,
-}
-
 modules["hedyhli/outline.nvim"] = {
     commit = funcs.get_commit("outline.nvim", plugins_snapshot),
+    cmd = "Outline",
     keys = {
         {
-            "<Leader>oo",
+            "<Leader>lo",
             function()
                 vim.cmd("Outline")
             end,
