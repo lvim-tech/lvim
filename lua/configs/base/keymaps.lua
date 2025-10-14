@@ -54,7 +54,7 @@ keymaps["normal"] = {
     { "<Leader>tn", ":LvimSpaceTabNext<CR>", "Tab next" }, -- Tab next
     { "<Leader>tp", ":LvimSpaceTabPrev<CR>", "Tab prev" }, -- Tab prev
     {
-        "<Leader>tt",
+        "<Leader>to",
         function()
             local input = vim.fn.input("Tab index: ")
             if input ~= "" then
