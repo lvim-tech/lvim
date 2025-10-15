@@ -10,9 +10,6 @@ local lsp_config = nil
 local root_markers = {
     ".git",
 }
-local caps = setup_diagnostics.get_capabilities()
-caps.textDocument = caps.textDocument or {}
-caps.textDocument.colorProvider = {}
 
 lsp_installer.ensure_mason_tools(lsp_dependencies, function()
     lsp_config = {
@@ -32,7 +29,7 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                 navic.attach(client, bufnr)
             end
         end,
-        capabilities = caps,
+        capabilities = setup_diagnostics.get_capabilities(),
     }
 end)
 
