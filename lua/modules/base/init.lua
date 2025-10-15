@@ -78,7 +78,7 @@ modules["folke/snacks.nvim"] = {
 
 modules["OXY2DEV/ui.nvim"] = {
     commit = funcs.get_commit("ui.nvim", plugins_snapshot),
-    lazy = false,
+    event = "VimEnter",
     config = ui_config.ui_nvim,
 }
 
