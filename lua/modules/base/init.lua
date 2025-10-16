@@ -15,7 +15,7 @@ end
 local dependencies_config = require("modules.base.configs.dependencies")
 
 modules["lvim-tech/lvim-colorscheme"] = {
-    commit = funcs.get_commit("lvim-tech/lvim-colorscheme", plugins_snapshot),
+    commit = funcs.get_commit("lvim-colorscheme", plugins_snapshot),
     priority = 100,
     config = dependencies_config.lvim_colorscheme,
 }
@@ -240,6 +240,7 @@ modules["lukas-reineke/indent-blankline.nvim"] = {
 local editor_config = require("modules.base.configs.editor")
 
 modules["lvim-tech/lvim-space"] = {
+    commit = funcs.get_commit("lvim-space", plugins_snapshot),
     dependencies = {
         "kkharji/sqlite.lua",
     },
@@ -468,6 +469,7 @@ modules["kevinhwang91/nvim-bqf"] = {
 }
 
 modules["stevearc/quicker.nvim"] = {
+    commit = funcs.get_commit("quicker.nvim", plugins_snapshot),
     event = "FileType qf",
     config = editor_config.quicker_nvim,
 }
@@ -722,6 +724,7 @@ modules["renerocksai/calendar-vim"] = {
 local version_control_config = require("modules.base.configs.version_control")
 
 modules["wintermute-cell/gitignore.nvim"] = {
+    commit = funcs.get_commit("gitignore.nvim", plugins_snapshot),
     event = { "BufRead" },
 }
 
@@ -799,8 +802,8 @@ modules["y3owk1n/time-machine.nvim"] = {
 local languages_config = require("modules.base.configs.languages")
 
 modules["mason-org/mason.nvim"] = {
-    build = ":MasonUpdate",
     commit = funcs.get_commit("mason.nvim", plugins_snapshot),
+    build = ":MasonUpdate",
     config = languages_config.mason_nvim,
 }
 
@@ -823,6 +826,7 @@ modules["nvim-neotest/neotest"] = {
 }
 
 modules["chrisgrieser/nvim-rip-substitute"] = {
+    commit = funcs.get_commit("nvim-rip-substitute", plugins_snapshot),
     cmd = "RipSubstitute",
     keys = {
         {
@@ -954,6 +958,7 @@ modules["mfussenegger/nvim-dap"] = {
 }
 
 modules["lvim-tech/vim-dadbod-ui"] = {
+    commit = funcs.get_commit("vim-dadbod-ui", plugins_snapshot),
     dependencies = {
         "tpope/vim-dadbod",
         "kristijanhusak/vim-dadbod-completion",
@@ -977,6 +982,7 @@ modules["lvim-tech/vim-dadbod-ui"] = {
 }
 
 modules["lvim-tech/nvim-dbee"] = {
+    commit = funcs.get_commit("nvim-dbee", plugins_snapshot),
     dependencies = { "MunifTanjim/nui.nvim" },
     cmd = "Dbee",
     keys = {
