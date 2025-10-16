@@ -515,7 +515,16 @@ config.snacks_nvim = function()
     if not snacks_status_ok then
         return
     end
-
+    local ver = "v" .. (_G.LVIM_VERSION or "v7.4.0")
+    local header_logo = [[
+██╗    ██╗   ██╗██╗███╗   ███╗
+██║    ██║   ██║██║████╗ ████║
+██║    ██║   ██║██║██╔████╔██║
+██║    ╚██╗ ██╔╝██║██║╚██╔╝██║
+███████╗╚████╔╝ ██║██║ ╚═╝ ██║
+╚══════╝ ╚═══╝  ╚═╝╚═╝     ╚═╝
+]]
+    local header = header_logo .. ver
     snacks.setup({
         scroll = { enabled = false },
         animate = { enabled = true },
@@ -524,14 +533,7 @@ config.snacks_nvim = function()
             enabled = true,
             sections = {
                 {
-                    header = [[
-██╗    ██╗   ██╗██╗███╗   ███╗
-██║    ██║   ██║██║████╗ ████║
-██║    ██║   ██║██║██╔████╔██║
-██║    ╚██╗ ██╔╝██║██║╚██╔╝██║
-███████╗╚████╔╝ ██║██║ ╚═╝ ██║
-╚══════╝ ╚═══╝  ╚═╝╚═╝     ╚═╝
-]],
+                    header = header,
                 },
                 {
                     icon = "󰋱 ",

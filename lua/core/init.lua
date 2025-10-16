@@ -69,6 +69,7 @@ else
     end
     _G.LVIM_THEME = read_file_default(_G.global.lvim_path .. "/.configs/lvim/.theme", "lvim-darker")
     _G.LVIM_KEYSHELPER = read_file_default(_G.global.lvim_path .. "/.configs/lvim/.keyshelper", true)
+    _G.LVIM_VERSION = read_file_default(_G.global.lvim_path .. "/.version", true)
     funcs.configs()
     lazy.is_lazy()
     lazy.load()
