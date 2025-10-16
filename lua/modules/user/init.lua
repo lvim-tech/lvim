@@ -1,4 +1,13 @@
+---@diagnostic disable: unused-local
+local funcs = require("core.funcs")
+
 local modules = {}
+local plugins_snapshot = {}
+
+local file_content = funcs.read_file(_G.global.lvim_path .. "/.snapshots/" .. _G.LVIM_SNAPSHOT)
+if file_content ~= nil then
+    plugins_snapshot = file_content
+end
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- HELP ---------------------------------------------------------
@@ -24,57 +33,39 @@ local modules = {}
 -- }
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- HELP ---------------------------------------------------------
+-- DEPENDENCIES -------------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+local dependencies_config = require("modules.user.configs.dependencies")
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- UI -----------------------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
--- local ui_config = require("modules.user.configs.ui")
-
--- modules["name_of_your/plugin"] = {
---     config = ui_config.name_of_your_function
--- }
+local ui_config = require("modules.user.configs.ui")
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- Editor -------------------------------------------------------
+-- EDITOR -------------------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
--- local editor_config = require("modules.user.configs.editor")
-
--- modules["name_of_your/plugin"] = {
---     config = editor_config.name_of_your_function
--- }
+local editor_config = require("modules.user.configs.editor")
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- Version control ----------------------------------------------
+-- VERSION CONTROL ----------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
--- local version_control_config = require("modules.user.configs.version_control")
-
--- modules["name_of_your/plugin"] = {
---     config = version_control_config.name_of_your_function
--- }
+local version_control_config = require("modules.user.configs.version_control")
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- Languages ----------------------------------------------------
+-- LANGUAGES ----------------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
--- local languages_config = require("modules.user.configs.editor")
-
--- modules["name_of_your/plugin"] = {
---     config = languages_config.name_of_your_function
--- }
+local languages_config = require("modules.user.configs.languages")
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- Completion ---------------------------------------------------
+-- COMPLETION ---------------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
--- local completion_config = require("modules.user.configs.editor")
-
--- modules["name_of_your/module"] = {
---     config = completion_config.name_of_your_function
--- }
+local completion_config = require("modules.user.configs.completion")
 
 return modules
