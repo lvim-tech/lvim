@@ -59,6 +59,45 @@ configs["base_lvim"] = function()
             local cyan_bl = funcs.blend(cyan, 0.3, bg)
             local purple_bh = funcs.blend(purple, 0.1, bg)
             local purple_bl = funcs.blend(purple, 0.3, bg)
+            local function get_hl_fg(name)
+                if not name then
+                    return nil
+                end
+                if vim.api.nvim_get_hl then
+                    local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = name, link = false })
+                    if ok and hl then
+                        local col = hl.fg or hl["foreground"]
+                        if col then
+                            if type(col) == "number" then
+                                return string.format("#%06x", col)
+                            elseif type(col) == "string" then
+                                return col
+                            end
+                        end
+                    end
+                end
+                local id = vim.fn.hlID(name)
+                if id ~= 0 then
+                    local synfg = vim.fn.synIDattr(vim.fn.synIDtrans(id), "fg#")
+                    if synfg ~= "" then
+                        return synfg
+                    end
+                end
+                return nil
+            end
+            local git_add = get_hl_fg("MiniDiffOverAdd")
+                or get_hl_fg("MiniDiffSignAdd")
+                or get_hl_fg("GitSignsAdd")
+                or get_hl_fg("DiffAdd")
+            local git_change = get_hl_fg("MiniDiffOverChange")
+                or get_hl_fg("MiniDiffSignChange")
+                or get_hl_fg("GitSignsChange")
+                or get_hl_fg("DiffText")
+            local git_delete = get_hl_fg("MiniDiffOverDelete")
+                or get_hl_fg("MiniDiffSignDelete")
+                or get_hl_fg("GitSignsDelete")
+                or get_hl_fg("DiffDelete")
+
             _G.LVIM_COLORS = {
                 bg = vim.o.background == "dark" and bg or fg,
                 bg_dark = vim.o.background == "dark" and bg_dark or fg_light,
@@ -88,6 +127,9 @@ configs["base_lvim"] = function()
                 diag_warn = diag_warn,
                 diag_hint = diag_hint,
                 diag_info = diag_info,
+                git_add = git_add or blue,
+                git_change = git_change or orange,
+                git_delete = git_delete or red,
             }
             vim.api.nvim_set_hl(0, "WinBar", { bg = _G.LVIM_COLORS.bg_dark, fg = _G.LVIM_COLORS.fg })
             vim.api.nvim_set_hl(0, "WinBarNC", { bg = _G.LVIM_COLORS.bg_dark, fg = _G.LVIM_COLORS.fg })
