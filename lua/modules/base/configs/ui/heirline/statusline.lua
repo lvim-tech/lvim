@@ -324,7 +324,8 @@ M.get_statusline = function()
         on_click = {
             callback = function()
                 vim.defer_fn(function()
-                    vim.cmd("lua MiniDiff.toggle_overlay()")
+                    -- vim.cmd("lua MiniDiff.toggle_overlay()")
+                    vim.cmd("VGit buffer_diff_preview")
                 end, 100)
             end,
             name = "heirline_git_hunks",
