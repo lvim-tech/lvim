@@ -1,3 +1,5 @@
+local icons = require("configs.base.ui.icons")
+
 local config = {}
 
 config.neogit = function()
@@ -13,6 +15,43 @@ config.neogit = function()
             diffview = true,
         },
     })
+end
+
+config.mini_diff = function()
+    local mini_diff_status_ok, mini_diff = pcall(require, "mini.diff")
+    if not mini_diff_status_ok then
+        return
+    end
+    mini_diff.setup({
+        view = {
+            -- style = vim.go.number and "number" or "sign",
+            style = "sign",
+            signs = {
+                add = " " .. icons.common.vline,
+                change = " " .. icons.common.vline,
+                delete = " " .. icons.common.vline,
+            },
+            priority = 199,
+        },
+        mappings = {
+            -- apply = "<Leader>ggh",
+            -- reset = "<Leader>ggH",
+            -- textobject = "<Leader>ggh",
+            apply = nil,
+            reset = nil,
+            textobject = nil,
+            goto_first = "<Leader>g{",
+            goto_prev = "<Leader>g[",
+            goto_next = "<Leader>g]",
+            goto_last = "<Leader>g}",
+        },
+    })
+    vim.keymap.set(
+        "n",
+        "gh",
+        function() end,
+        vim.tbl_extend("force", { noremap = true, silent = true }, { desc = "HL" })
+    )
 end
 
 config.vgit = function()
@@ -163,14 +202,6 @@ config.vgit = function()
     })
     local map = vim.keymap.set
     local opts = { noremap = true, silent = true }
-    -- HUNK
-    map("n", "<Leader>g]", function()
-        vgit.hunk_down()
-    end, vim.tbl_extend("force", opts, { desc = "Git hunk next" }))
-    map("n", "<Leader>g[", function()
-        vgit.hunk_up()
-    end, vim.tbl_extend("force", opts, { desc = "Git hunk prev" }))
-
     -- BUFFER
     map("n", "<Leader>gb", function() end, vim.tbl_extend("force", opts, { desc = "VGit Buffer" }))
     -- Hunk
