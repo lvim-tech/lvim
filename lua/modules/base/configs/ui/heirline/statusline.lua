@@ -254,31 +254,29 @@ M.get_statusline = function()
             if type(_G.LVIM_GIT) ~= "table" or _G.LVIM_GIT.head == nil then
                 return false
             end
-            local ok1, _ = pcall(require, "vgit.git.git_buffer_store")
-            local ok2, _ = pcall(require, "vgit.core.Window")
-            if not (ok1 and ok2) then
+            local ok, minidiff = pcall(require, "mini.diff")
+            if not ok then
                 return false
             end
-            local buffer = require("vgit.git.git_buffer_store").current()
-            local hunks = buffer and buffer:get_hunks() or {}
-            return #hunks > 0
+            local buf_data = minidiff.get_buf_data(0)
+            local hunks = buf_data and buf_data.hunks or {}
+            return type(hunks) == "table" and #hunks > 0
         end,
         init = function(self)
-            local git_buffer_store = require("vgit.git.git_buffer_store")
-            local buffer = git_buffer_store.current()
-            local hunks = buffer and buffer:get_hunks() or {}
+            local minidiff = require("mini.diff")
+            local buf_data = minidiff.get_buf_data(0)
+            local hunks = buf_data and buf_data.hunks or {}
             self.hunks_count = #hunks
-            local Window = require("vgit.core.Window")
-            local lnum = Window(0):get_lnum()
+            local lnum = vim.fn.line(".")
             self.current_hunk_index = nil
             self.current_hunk_type = nil
+            -- Намери текущия hunk според lnum
             for i, hunk in ipairs(hunks) do
-                if lnum == 1 and hunk.top == 0 and hunk.bot == 0 then
-                    self.current_hunk_index = i
-                    self.current_hunk_type = hunk.type
-                    break
-                end
-                if lnum >= hunk.top and lnum <= hunk.bot then
+                local first = hunk.buf_start
+                local last = hunk.buf_start + math.max(hunk.buf_count - 1, 0)
+                if hunk.type == "delete" then
+                -- delete hunks не съществуват в буфера
+                elseif lnum >= first and lnum <= last then
                     self.current_hunk_index = i
                     self.current_hunk_type = hunk.type
                     break
@@ -323,7 +321,8 @@ M.get_statusline = function()
         on_click = {
             callback = function()
                 vim.defer_fn(function()
-                    vim.cmd("VGit buffer_diff_preview")
+                    -- MiniDiff няма директен preview, можеш да покажеш overlay или друго действие
+                    vim.cmd("lua MiniDiff.toggle_overlay()")
                 end, 100)
             end,
             name = "heirline_git_hunks",
