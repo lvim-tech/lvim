@@ -270,12 +270,10 @@ M.get_statusline = function()
             local lnum = vim.fn.line(".")
             self.current_hunk_index = nil
             self.current_hunk_type = nil
-            -- Намери текущия hunk според lnum
             for i, hunk in ipairs(hunks) do
                 local first = hunk.buf_start
                 local last = hunk.buf_start + math.max(hunk.buf_count - 1, 0)
                 if hunk.type == "delete" then
-                -- delete hunks не съществуват в буфера
                 elseif lnum >= first and lnum <= last then
                     self.current_hunk_index = i
                     self.current_hunk_type = hunk.type
@@ -321,7 +319,6 @@ M.get_statusline = function()
         on_click = {
             callback = function()
                 vim.defer_fn(function()
-                    -- MiniDiff няма директен preview, можеш да покажеш overlay или друго действие
                     vim.cmd("lua MiniDiff.toggle_overlay()")
                 end, 100)
             end,
@@ -382,13 +379,13 @@ M.get_statusline = function()
             provider = function(self)
                 return self.info > 0 and (self.info_icon .. self.info .. " ")
             end,
-            hl = { fg = _G.LVIM_COLORS.diag_info }, -- Поправено: трябва да е diag_info
+            hl = { fg = _G.LVIM_COLORS.diag_info },
         },
         {
             provider = function(self)
                 return self.hints > 0 and (self.hint_icon .. self.hints .. " ")
             end,
-            hl = { fg = _G.LVIM_COLORS.diag_hint }, -- Поправено: трябва да е diag_hint
+            hl = { fg = _G.LVIM_COLORS.diag_hint },
         },
         on_click = {
             callback = function()
