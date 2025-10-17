@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-field
 local M = {}
 
 local function mark_sign()
@@ -11,7 +12,6 @@ local function mark_sign()
 
     for _, m in ipairs(all_marks) do
         local letter = m.mark:match("^[`']?([a-zA-Z])$")
-
         if letter then
             local buf = m.pos[1]
             local line = m.pos[2]
@@ -31,155 +31,408 @@ M.get_statuscolumn = function()
     local file_types = require("modules.base.configs.ui.heirline.file_types")
     local space = { provider = " " }
     local align = { provider = "%=" }
+
     local file_types_statuscolumn = {}
     for i, v in ipairs(file_types) do
         file_types_statuscolumn[i] = v
     end
     table.insert(file_types_statuscolumn, "org")
     table.insert(file_types_statuscolumn, "fzf")
-    local static = {
-        get_extmarks_signs = function(_, bufnr, lnum)
-            local signs = {}
-            local extmarks = vim.api.nvim_buf_get_extmarks(
-                0,
-                bufnr,
-                { lnum - 1, 0 },
-                { lnum - 1, -1 },
-                { details = true, type = "sign" }
-            )
-            for _, extmark in pairs(extmarks) do
-                if
-                    extmark[4].sign_hl_group ~= "GitSignsAdd"
-                    and extmark[4].sign_hl_group ~= "GitSignsChange"
-                    and extmark[4].sign_hl_group ~= "GitSignsDelete"
-                    and extmark[4].sign_hl_group ~= "DiagnosticSignError"
-                    and extmark[4].sign_hl_group ~= "DiagnosticSignWarn"
-                    and extmark[4].sign_hl_group ~= "DiagnosticSignInfo"
-                    and extmark[4].sign_hl_group ~= "DiagnosticSignHint"
-                then
-                    signs[#signs + 1] = {
-                        name = extmark[4].sign_hl_group or "",
-                        text = extmark[4].sign_text,
-                        sign_hl_group = extmark[4].sign_hl_group,
-                        priority = extmark[4].priority,
-                    }
-                end
-            end
-            table.sort(signs, function(a, b)
-                return (a.priority or 0) > (b.priority or 0)
-            end)
-            return signs
-        end,
-        get_extmarks_diagnostics = function(_, bufnr, lnum)
-            local diagnostics = {}
-            local extmarks = vim.api.nvim_buf_get_extmarks(
-                0,
-                bufnr,
-                { lnum - 1, 0 },
-                { lnum - 1, -1 },
-                { details = true, type = "sign" }
-            )
-            for _, extmark in pairs(extmarks) do
-                if
-                    extmark[4].sign_hl_group == "DiagnosticSignError"
-                    or extmark[4].sign_hl_group == "DiagnosticSignWarn"
-                    or extmark[4].sign_hl_group == "DiagnosticSignInfo"
-                    or extmark[4].sign_hl_group == "DiagnosticSignHint"
-                then
-                    diagnostics[#diagnostics + 1] = {
-                        name = extmark[4].sign_hl_group or "",
-                        text = extmark[4].sign_text,
-                        sign_hl_group = extmark[4].sign_hl_group,
-                        priority = extmark[4].priority,
-                    }
-                end
-            end
-            return diagnostics
-        end,
-        get_extmarks_gits = function(_, bufnr, lnum)
-            local gits = {}
-            local extmarks = vim.api.nvim_buf_get_extmarks(
-                0,
-                bufnr,
-                { lnum - 1, 0 },
-                { lnum - 1, -1 },
-                { details = true, type = "sign" }
-            )
-            for _, extmark in pairs(extmarks) do
-                if
-                    extmark[4].sign_hl_group == "GitSignsAdd"
-                    or extmark[4].sign_hl_group == "GitSignsChange"
-                    or extmark[4].sign_hl_group == "GitSignsDelete"
-                then
-                    gits[#gits + 1] = {
-                        name = extmark[4].sign_hl_group or "",
-                        text = extmark[4].sign_text,
-                        sign_hl_group = extmark[4].sign_hl_group,
-                        priority = extmark[4].priority,
-                    }
-                end
-            end
-            return gits
-        end,
-        click_args = function(self, minwid, clicks, button, mods)
-            local args = {
-                minwid = minwid,
-                clicks = clicks,
-                button = button,
-                mods = mods,
-                mousepos = vim.fn.getmousepos(),
-            }
-            local sign = vim.fn.screenstring(args.mousepos.screenrow, args.mousepos.screencol)
-            if sign == " " then
-                sign = vim.fn.screenstring(args.mousepos.screenrow, args.mousepos.screencol - 1)
-            end
-            args.sign = self.signs[sign]
-            vim.api.nvim_set_current_win(args.mousepos.winid)
-            vim.api.nvim_win_set_cursor(0, { args.mousepos.line, 0 })
 
-            return args
+    local mini_ok, mini = pcall(require, "mini.diff")
+    if not mini_ok or not mini then
+        if _G.MiniDiff then
+            mini = _G.MiniDiff
+            mini_ok = true
+        end
+    end
+
+    local function get_minidiff_hl_names()
+        local defaults = {
+            sign_add = "MiniDiffSignAdd",
+            sign_change = "MiniDiffSignChange",
+            sign_delete = "MiniDiffSignDelete",
+            over_add = "MiniDiffOverAdd",
+            over_change = "MiniDiffOverChange",
+            over_change_buf = "MiniDiffOverChangeBuf",
+            over_context = "MiniDiffOverContext",
+            over_context_buf = "MiniDiffOverContextBuf",
+            over_delete = "MiniDiffOverDelete",
+        }
+        return defaults
+    end
+
+    local md_hl = get_minidiff_hl_names()
+
+    local function is_minidiff_hunk_hl(hl)
+        if not hl or hl == "" then
+            return false
+        end
+        if hl:match("^MiniDiffSign") then
+            return true
+        end
+        if mini_ok and (hl:match("Add$") or hl:match("Change$") or hl:match("Delete$")) then
+            return true
+        end
+        return false
+    end
+
+    local static = {}
+
+    static.get_extmarks_signs = function(_, bufnr, lnum)
+        local signs = {}
+        local ok, extmarks = pcall(
+            vim.api.nvim_buf_get_extmarks,
+            0,
+            bufnr,
+            { lnum - 1, 0 },
+            { lnum - 1, -1 },
+            { details = true, type = "sign" }
+        )
+        if not ok or not extmarks then
+            return signs
+        end
+
+        for _, extmark in pairs(extmarks) do
+            local details = extmark[4] or {}
+            local hl = details.sign_hl_group or details.number_hl_group or ""
+            if not hl:match("^DiagnosticSign") and not is_minidiff_hunk_hl(hl) then
+                signs[#signs + 1] = {
+                    name = hl,
+                    text = details.sign_text,
+                    sign_hl_group = hl,
+                    priority = details.priority,
+                }
+            end
+        end
+
+        table.sort(signs, function(a, b)
+            return (a.priority or 0) > (b.priority or 0)
+        end)
+        return signs
+    end
+
+    static.get_extmarks_diagnostics = function(_, bufnr, lnum)
+        local diagnostics = {}
+        local ok, extmarks = pcall(
+            vim.api.nvim_buf_get_extmarks,
+            0,
+            bufnr,
+            { lnum - 1, 0 },
+            { lnum - 1, -1 },
+            { details = true, type = "sign" }
+        )
+        if not ok or not extmarks then
+            return diagnostics
+        end
+
+        for _, extmark in pairs(extmarks) do
+            local details = extmark[4] or {}
+            local hl = details.sign_hl_group or details.number_hl_group or ""
+            if hl:match("^DiagnosticSign") then
+                diagnostics[#diagnostics + 1] = {
+                    name = hl,
+                    text = details.sign_text,
+                    sign_hl_group = hl,
+                    priority = details.priority,
+                }
+            end
+        end
+        return diagnostics
+    end
+
+    static.get_extmarks_gits = function(_, bufnr, lnum)
+        local gits = {}
+        local ok, extmarks = pcall(
+            vim.api.nvim_buf_get_extmarks,
+            0,
+            bufnr,
+            { lnum - 1, 0 },
+            { lnum - 1, -1 },
+            { details = true, type = "sign" }
+        )
+        if not ok or not extmarks then
+            return gits
+        end
+
+        for _, extmark in pairs(extmarks) do
+            local details = extmark[4] or {}
+            local hl = details.sign_hl_group or details.number_hl_group or ""
+            if is_minidiff_hunk_hl(hl) then
+                gits[#gits + 1] = {
+                    name = hl,
+                    text = details.sign_text,
+                    sign_hl_group = hl,
+                    priority = details.priority,
+                }
+            end
+        end
+
+        table.sort(gits, function(a, b)
+            return (a.priority or 0) > (b.priority or 0)
+        end)
+        return gits
+    end
+
+    static.click_args = function(self, minwid, clicks, button, mods)
+        local args = {
+            minwid = minwid,
+            clicks = clicks,
+            button = button,
+            mods = mods,
+            mousepos = vim.fn.getmousepos(),
+        }
+        local sign = vim.fn.screenstring(args.mousepos.screenrow, args.mousepos.screencol)
+        if sign == " " then
+            sign = vim.fn.screenstring(args.mousepos.screenrow, args.mousepos.screencol - 1)
+        end
+        args.sign = self.signs[sign]
+        vim.api.nvim_set_current_win(args.mousepos.winid)
+        vim.api.nvim_win_set_cursor(0, { args.mousepos.line, 0 })
+        return args
+    end
+
+    static.resolve = function(self, name)
+        for pattern, callback in pairs(self.handlers.Signs) do
+            if name:match(pattern) then
+                return vim.defer_fn(callback, 100)
+            end
+        end
+    end
+
+    static.handlers = {}
+
+    static.handlers.Signs = {
+        ["Neotest.*"] = function()
+            require("neotest").run.run()
         end,
-        resolve = function(self, name)
-            for pattern, callback in pairs(self.handlers.Signs) do
-                if name:match(pattern) then
-                    return vim.defer_fn(callback, 100)
+        ["Debug.*"] = function()
+            local dap = require("dap")
+            dap.continue()
+        end,
+        ["Diagnostic.*"] = function()
+            vim.cmd("LspShowDiagnosticCurrent")
+        end,
+    }
+
+    static.handlers.Dap = function()
+        require("dap").toggle_breakpoint()
+    end
+
+    static.handlers.DiagnosticSigns = function()
+        vim.defer_fn(function()
+            vim.cmd("Trouble diagnostics")
+        end, 100)
+    end
+
+    static.handlers.MiniDiffPreview = function(_, args)
+        if not mini_ok or not mini then
+            vim.notify("mini.diff is not available; install/configure it to preview hunks.", vim.log.levels.WARN)
+            return
+        end
+
+        local mouse_line = (args and args.mousepos and args.mousepos.line) or vim.fn.line(".")
+        local winid = (args and args.mousepos and args.mousepos.winid) or nil
+        local buf = nil
+        if winid and pcall(vim.api.nvim_win_is_valid, winid) and vim.api.nvim_win_is_valid(winid) then
+            buf = vim.api.nvim_win_get_buf(winid)
+        else
+            buf = vim.api.nvim_get_current_buf()
+        end
+
+        local name = vim.api.nvim_buf_get_name(buf)
+        if not name or name == "" then
+            vim.notify("Cannot show hunk preview: buffer has no file!", vim.log.levels.WARN)
+            return
+        end
+
+        local get_buf_data = mini.get_buf_data or (_G.MiniDiff and _G.MiniDiff.get_buf_data)
+        if type(get_buf_data) ~= "function" then
+            vim.notify("mini.diff API get_buf_data not available.", vim.log.levels.WARN)
+            return
+        end
+
+        local data = get_buf_data(buf)
+        if not data or type(data.hunks) ~= "table" or #data.hunks == 0 then
+            vim.notify("No hunks in current buffer", vim.log.levels.INFO)
+            return
+        end
+
+        local found = nil
+        for _, h in ipairs(data.hunks) do
+            local from, to
+            if h.buf_count and h.buf_count > 0 then
+                from = h.buf_start
+                to = h.buf_start + h.buf_count - 1
+            else
+                from = math.max(h.buf_start, 1)
+                to = from
+            end
+            if mouse_line >= from and mouse_line <= to then
+                found = h
+                break
+            end
+        end
+
+        if not found then
+            vim.notify("No hunk under cursor", vim.log.levels.INFO)
+            return
+        end
+
+        local ref_lines = {}
+        if data.ref_text and type(data.ref_text) == "string" then
+            ref_lines = vim.split(data.ref_text, "\n")
+        end
+        local buf_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+
+        local preview_lines = {}
+        table.insert(
+            preview_lines,
+            string.format(
+                "%s hunk — buf:%d..%d | ref:%d..%d",
+                found.type,
+                found.buf_start,
+                (found.buf_start or 0) + (found.buf_count or 0) - 1,
+                found.ref_start,
+                (found.ref_start or 0) + (found.ref_count or 0) - 1
+            )
+        )
+        table.insert(preview_lines, string.rep("-", 60))
+
+        local line_meta = {}
+
+        if found.type == "add" then
+            for i = found.buf_start, found.buf_start + found.buf_count - 1 do
+                table.insert(preview_lines, "+ " .. (buf_lines[i] or ""))
+                table.insert(line_meta, { kind = "add" })
+            end
+        elseif found.type == "delete" then
+            for i = found.ref_start, found.ref_start + found.ref_count - 1 do
+                table.insert(preview_lines, "- " .. (ref_lines[i] or ""))
+                table.insert(line_meta, { kind = "delete" })
+            end
+        else
+            local maxc = math.max(found.ref_count, found.buf_count)
+            for k = 1, maxc do
+                local ri = found.ref_start + k - 1
+                local bi = found.buf_start + k - 1
+                if ri <= found.ref_start + found.ref_count - 1 then
+                    table.insert(preview_lines, "- " .. (ref_lines[ri] or ""))
+                    table.insert(line_meta, { kind = "change_ref" })
+                end
+                if bi <= found.buf_start + found.buf_count - 1 then
+                    table.insert(preview_lines, "+ " .. (buf_lines[bi] or ""))
+                    table.insert(line_meta, { kind = "change_buf" })
                 end
             end
-        end,
-        handlers = {
-            Signs = {
-                ["Neotest.*"] = function(_, _)
-                    require("neotest").run.run()
-                end,
-                ["Debug.*"] = function(_, _)
-                    local dap = require("dap")
-                    dap.continue()
-                end,
-                ["Diagnostic.*"] = function(_, _)
-                    vim.cmd("LspShowDiagnosticCurrent")
-                end,
-            },
-            Dap = function(_, _)
-                require("dap").toggle_breakpoint()
-            end,
-            DiagnosticSigns = function(_, _)
-                vim.defer_fn(function()
-                    vim.cmd("Trouble diagnostics")
-                end, 100)
-            end,
-            GitSigns = function(_, _)
-                local buf = vim.api.nvim_get_current_buf()
-                local name = vim.api.nvim_buf_get_name(buf)
-                if not name or name == "" then
-                    vim.notify("Cannot show git hunk: buffer has no file!", vim.log.levels.WARN)
-                    return
+        end
+
+        local buf_preview = vim.api.nvim_create_buf(false, true)
+        vim.bo[buf_preview].bufhidden = "wipe"
+        vim.api.nvim_buf_set_lines(buf_preview, 0, -1, false, preview_lines)
+        pcall(function()
+            vim.bo[buf_preview].filetype = "diff"
+        end)
+        pcall(function()
+            vim.bo[buf_preview].modifiable = false
+        end)
+
+        local ns = vim.api.nvim_create_namespace("sc_minidiff_preview")
+        pcall(vim.api.nvim_buf_clear_namespace, buf_preview, ns, 0, -1)
+
+        for i, meta in ipairs(line_meta) do
+            local ln = i + 2
+            if meta.kind == "add" then
+                pcall(
+                    vim.api.nvim_buf_set_extmark,
+                    buf_preview,
+                    ns,
+                    ln - 1,
+                    0,
+                    { hl_group = md_hl.over_add, hl_eol = true }
+                )
+            elseif meta.kind == "delete" then
+                pcall(
+                    vim.api.nvim_buf_set_extmark,
+                    buf_preview,
+                    ns,
+                    ln - 1,
+                    0,
+                    { hl_group = md_hl.over_delete, hl_eol = true }
+                )
+            elseif meta.kind == "change_ref" then
+                pcall(
+                    vim.api.nvim_buf_set_extmark,
+                    buf_preview,
+                    ns,
+                    ln - 1,
+                    0,
+                    { hl_group = md_hl.over_change, hl_eol = true }
+                )
+            elseif meta.kind == "change_buf" then
+                pcall(
+                    vim.api.nvim_buf_set_extmark,
+                    buf_preview,
+                    ns,
+                    ln - 1,
+                    0,
+                    { hl_group = md_hl.over_change_buf, hl_eol = true }
+                )
+            end
+        end
+
+        local try_fallback = function()
+            if vim.fn.hlID(md_hl.over_add) == 0 then
+                for i, meta in ipairs(line_meta) do
+                    local ln = i + 2
+                    if meta.kind == "add" then
+                        pcall(
+                            vim.api.nvim_buf_set_extmark,
+                            buf_preview,
+                            ns,
+                            ln - 1,
+                            0,
+                            { hl_group = "DiffAdd", hl_eol = true }
+                        )
+                    elseif meta.kind == "delete" then
+                        pcall(
+                            vim.api.nvim_buf_set_extmark,
+                            buf_preview,
+                            ns,
+                            ln - 1,
+                            0,
+                            { hl_group = "DiffDelete", hl_eol = true }
+                        )
+                    else
+                        pcall(
+                            vim.api.nvim_buf_set_extmark,
+                            buf_preview,
+                            ns,
+                            ln - 1,
+                            0,
+                            { hl_group = "DiffText", hl_eol = true }
+                        )
+                    end
                 end
-                vim.defer_fn(function()
-                    vgit.buffer_hunk_preview()
-                end, 100)
-            end,
-        },
-    }
+            end
+        end
+        pcall(try_fallback)
+
+        local width = math.min(80, math.max(40, math.floor(vim.o.columns * 0.6)))
+        local height = math.min(20, math.max(5, #preview_lines))
+        local row = math.floor((vim.o.lines - height) / 2)
+        local col = math.floor((vim.o.columns - width) / 2)
+        local opts = {
+            relative = "editor",
+            width = width,
+            height = height,
+            row = row,
+            col = col,
+            style = "minimal",
+            border = "rounded",
+        }
+        pcall(vim.api.nvim_open_win, buf_preview, false, opts)
+    end
 
     local init = function(self)
         self.signs = {}
@@ -187,21 +440,23 @@ M.get_statuscolumn = function()
 
     local signs = {
         init = function(self)
-            local signs = self.get_extmarks_signs(self, -1, vim.v.lnum)
+            local signs = static.get_extmarks_signs(self, -1, vim.v.lnum)
             self.sign = signs[1]
         end,
         provider = function(self)
             return self.sign and self.sign.text or ""
         end,
         hl = function(self)
-            if self.sign and self.sign.sign_hl_group then
-                local original_hl = vim.api.nvim_get_hl(0, { name = self.sign.sign_hl_group, link = false })
-                if original_hl.fg then
-                    return {
-                        fg = original_hl.fg,
-                        bg = "NONE",
-                    }
-                else
+            if self.sign and self.sign.sign_hl_group and vim.api.nvim_get_hl then
+                local ok, original_hl = pcall(vim.api.nvim_get_hl, 0, { name = self.sign.sign_hl_group, link = false })
+                if ok and original_hl then
+                    local fg = original_hl.fg or original_hl.foreground
+                    if fg then
+                        return {
+                            fg = fg,
+                            bg = "NONE",
+                        }
+                    end
                     return self.sign.sign_hl_group
                 end
             end
@@ -212,7 +467,7 @@ M.get_statuscolumn = function()
             update = true,
             callback = function(self, ...)
                 local line = self.click_args(self, ...).mousepos.line
-                local sign = self.get_extmarks_signs(self, -1, line)[1]
+                local sign = static.get_extmarks_signs(self, -1, line)[1]
                 if sign then
                     self:resolve(sign.name)
                 end
@@ -237,7 +492,6 @@ M.get_statuscolumn = function()
             local mark = self.mark
             local max_len = tostring(vim.api.nvim_buf_line_count(0)):len()
 
-            -- Ако има марка, тя замества номера
             if mark ~= "" then
                 if vim.v.relnum == 0 then
                     return string.rep(" ", math.max(0, max_len - 1)) .. mark
@@ -246,7 +500,6 @@ M.get_statuscolumn = function()
                 end
             end
 
-            -- ВИНАГИ показвай номерата, само според relativenumber
             if vim.wo.relativenumber then
                 if vim.v.relnum == 0 then
                     local lnum = vim.v.lnum
@@ -257,7 +510,6 @@ M.get_statuscolumn = function()
                     return tostring(vim.v.relnum)
                 end
             else
-                -- Ако relativenumber е false, винаги абсолютен номер
                 local lnum = vim.v.lnum
                 local number_str = tostring(lnum)
                 local spaces_needed = max_len - #number_str
@@ -281,7 +533,7 @@ M.get_statuscolumn = function()
     local diagnostics = {
         {
             init = function(self)
-                local diag_sign = self.get_extmarks_diagnostics(self, -1, vim.v.lnum)
+                local diag_sign = static.get_extmarks_diagnostics(self, -1, vim.v.lnum)
                 self.sign = diag_sign[1]
             end,
             provider = function(self)
@@ -340,7 +592,7 @@ M.get_statuscolumn = function()
                 return (_G.LVIM_GIT ~= nil) and vim.v.virtnum == 0
             end,
             init = function(self)
-                local gits = self.get_extmarks_gits(self, -1, vim.v.lnum)
+                local gits = static.get_extmarks_gits(self, -1, vim.v.lnum)
                 self.sign = gits[1]
             end,
             provider = function(self)
@@ -349,12 +601,12 @@ M.get_statuscolumn = function()
             hl = function(self)
                 return self.sign and self.sign.sign_hl_group
             end,
-            on_click = {
-                name = "sc_gitsigns_click",
-                callback = function(self, ...)
-                    self.handlers.GitSigns(self.click_args(self, ...))
-                end,
-            },
+            -- on_click = {
+            --     name = "sc_gitsigns_click",
+            --     callback = function(self, ...)
+            --         self.handlers.MiniDiffPreview(self, self.click_args(self, ...))
+            --     end,
+            -- },
         },
     }
 
@@ -373,7 +625,6 @@ M.get_statuscolumn = function()
         static = static,
         init = init,
         space,
-        -- marks,
         signs,
         diagnostics,
         align,

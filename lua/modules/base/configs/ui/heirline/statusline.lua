@@ -224,21 +224,21 @@ M.get_statusline = function()
                 local count = self.status_dict.added or 0
                 return count > 0 and (" " .. icons.git_status.added .. " " .. count)
             end,
-            hl = { fg = _G.LVIM_COLORS.green },
+            hl = { fg = _G.LVIM_COLORS.git_add },
         },
         {
             provider = function(self)
                 local count = self.status_dict.removed or 0
                 return count > 0 and (" " .. icons.git_status.deleted .. " " .. count)
             end,
-            hl = { fg = _G.LVIM_COLORS.red },
+            hl = { fg = _G.LVIM_COLORS.git_delete },
         },
         {
             provider = function(self)
                 local count = self.status_dict.changed or 0
                 return count > 0 and (" " .. icons.git_status.modified .. " " .. count)
             end,
-            hl = { fg = _G.LVIM_COLORS.orange },
+            hl = { fg = _G.LVIM_COLORS.git_change },
         },
         on_click = {
             callback = function()
@@ -249,7 +249,84 @@ M.get_statusline = function()
             name = "heirline_git",
         },
     }
-
+    local git_hunks = {
+        condition = function()
+            local ok1, git_buffer_store = pcall(require, "vgit.git.git_buffer_store")
+            local ok2, _ = pcall(require, "vgit.core.Window")
+            return ok1 and ok2 and git_buffer_store.current() ~= nil
+        end,
+        init = function(self)
+            local git_buffer_store = require("vgit.git.git_buffer_store")
+            local buffer = git_buffer_store.current()
+            local hunks = buffer and buffer:get_hunks() or {}
+            self.hunks_count = #hunks
+            local Window = require("vgit.core.Window")
+            local lnum = Window(0):get_lnum()
+            self.current_hunk_index = nil
+            self.current_hunk_type = nil
+            for i, hunk in ipairs(hunks) do
+                if lnum == 1 and hunk.top == 0 and hunk.bot == 0 then
+                    self.current_hunk_index = i
+                    self.current_hunk_type = hunk.type
+                    break
+                end
+                if lnum >= hunk.top and lnum <= hunk.bot then
+                    self.current_hunk_index = i
+                    self.current_hunk_type = hunk.type
+                    break
+                end
+            end
+        end,
+        {
+            provider = function()
+                return "  " .. icons.git_status.commit .. " "
+            end,
+            hl = function()
+                return { fg = _G.LVIM_COLORS.blue, bold = true }
+            end,
+        },
+        {
+            provider = function(self)
+                if self.hunks_count == 0 then
+                    return "-"
+                end
+                local cur = self.current_hunk_index and self.current_hunk_index or "-"
+                return tostring(cur)
+            end,
+            hl = function(self)
+                if not self.current_hunk_index then
+                    return { fg = _G.LVIM_COLORS.blue, bold = true }
+                end
+                if self.current_hunk_type == "add" then
+                    return { fg = _G.LVIM_COLORS.git_add, bold = true }
+                elseif self.current_hunk_type == "change" then
+                    return { fg = _G.LVIM_COLORS.git_change, bold = true }
+                elseif self.current_hunk_type == "delete" or self.current_hunk_type == "remove" then
+                    return { fg = _G.LVIM_COLORS.git_delete, bold = true }
+                end
+                return { fg = _G.LVIM_COLORS.blue, bold = true }
+            end,
+        },
+        {
+            provider = function(self)
+                if self.hunks_count == 0 then
+                    return ""
+                end
+                return ("/%d "):format(self.hunks_count)
+            end,
+            hl = function()
+                return { fg = _G.LVIM_COLORS.blue, bold = true }
+            end,
+        },
+        on_click = {
+            callback = function()
+                vim.defer_fn(function()
+                    vim.cmd("VGit buffer_diff_preview")
+                end, 100)
+            end,
+            name = "heirline_git_hunks",
+        },
+    }
     local macro_rec = {
         condition = function()
             return vim.fn.reg_recording() ~= "" and vim.o.cmdheight == 0
@@ -490,6 +567,7 @@ M.get_statusline = function()
             work_dir,
             file_name_block,
             git,
+            git_hunks,
             space,
             macro_rec,
             align,
@@ -504,7 +582,6 @@ M.get_statusline = function()
             scroll_bar,
         },
     }
-
     return statusline
 end
 
