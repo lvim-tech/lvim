@@ -12,6 +12,7 @@ return {
         terminal2 = "",
         plugins = "",
         palette = "󱥚",
+        record = " ",
         time = "󱑍",
         project = " ",
         explorer = "",
@@ -66,6 +67,7 @@ return {
         unstaged = "󰄗",
         staged = "󰄵",
         conflict = "",
+        commit = "",
     },
     ctrlspace = {
         CS = "",

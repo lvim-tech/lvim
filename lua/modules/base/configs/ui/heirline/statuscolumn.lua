@@ -27,7 +27,6 @@ end
 M.get_statuscolumn = function()
     local icons = require("configs.base.ui.icons")
     local conditions = require("heirline.conditions")
-    local vgit = require("vgit")
     local buf_types = require("modules.base.configs.ui.heirline.buf_types")
     local file_types = require("modules.base.configs.ui.heirline.file_types")
     local space = { provider = " " }
