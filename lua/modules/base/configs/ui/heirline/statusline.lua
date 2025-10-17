@@ -251,9 +251,14 @@ M.get_statusline = function()
     }
     local git_hunks = {
         condition = function()
-            local ok1, git_buffer_store = pcall(require, "vgit.git.git_buffer_store")
+            local ok1, _ = pcall(require, "vgit.git.git_buffer_store")
             local ok2, _ = pcall(require, "vgit.core.Window")
-            return ok1 and ok2 and git_buffer_store.current() ~= nil
+            if not (ok1 and ok2) then
+                return false
+            end
+            local buffer = require("vgit.git.git_buffer_store").current()
+            local hunks = buffer and buffer:get_hunks() or {}
+            return #hunks > 0
         end,
         init = function(self)
             local git_buffer_store = require("vgit.git.git_buffer_store")
@@ -287,9 +292,6 @@ M.get_statusline = function()
         },
         {
             provider = function(self)
-                if self.hunks_count == 0 then
-                    return "-"
-                end
                 local cur = self.current_hunk_index and self.current_hunk_index or "-"
                 return tostring(cur)
             end,
@@ -309,9 +311,6 @@ M.get_statusline = function()
         },
         {
             provider = function(self)
-                if self.hunks_count == 0 then
-                    return ""
-                end
                 return ("/%d "):format(self.hunks_count)
             end,
             hl = function()
