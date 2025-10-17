@@ -274,6 +274,11 @@ M.get_statusline = function()
                 local first = hunk.buf_start
                 local last = hunk.buf_start + math.max(hunk.buf_count - 1, 0)
                 if hunk.type == "delete" then
+                    if lnum == first or (first == 0 and lnum == 1) then
+                        self.current_hunk_index = i
+                        self.current_hunk_type = hunk.type
+                        break
+                    end
                 elseif lnum >= first and lnum <= last then
                     self.current_hunk_index = i
                     self.current_hunk_type = hunk.type
