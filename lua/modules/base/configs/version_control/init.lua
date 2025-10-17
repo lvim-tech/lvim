@@ -52,6 +52,9 @@ config.mini_diff = function()
         function() end,
         vim.tbl_extend("force", { noremap = true, silent = true }, { desc = "HL" })
     )
+    vim.keymap.set("n", "<Leader>gh", function()
+        mini_diff.toggle_overlay()
+    end, vim.tbl_extend("force", { noremap = true, silent = true }, { desc = "Mini diff toggle overlay" }))
 end
 
 config.vgit = function()
