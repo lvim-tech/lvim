@@ -4,12 +4,9 @@ local M = {}
 local function mark_sign()
     local cur_buf = vim.api.nvim_get_current_buf()
     local cur_line = vim.v.lnum
-
     local marks = vim.fn.getmarklist()
     local marks_local = vim.fn.getmarklist(cur_buf)
-
     local all_marks = vim.list_extend(marks, marks_local)
-
     for _, m in ipairs(all_marks) do
         local letter = m.mark:match("^[`']?([a-zA-Z])$")
         if letter then
@@ -20,7 +17,6 @@ local function mark_sign()
             end
         end
     end
-
     return ""
 end
 
@@ -31,14 +27,12 @@ M.get_statuscolumn = function()
     local file_types = require("modules.base.configs.ui.heirline.file_types")
     local space = { provider = " " }
     local align = { provider = "%=" }
-
     local file_types_statuscolumn = {}
     for i, v in ipairs(file_types) do
         file_types_statuscolumn[i] = v
     end
     table.insert(file_types_statuscolumn, "org")
     table.insert(file_types_statuscolumn, "fzf")
-
     local mini_ok, mini = pcall(require, "mini.diff")
     if not mini_ok or not mini then
         if _G.MiniDiff then
@@ -46,7 +40,6 @@ M.get_statuscolumn = function()
             mini_ok = true
         end
     end
-
     local function get_minidiff_hl_names()
         local defaults = {
             sign_add = "MiniDiffSignAdd",
@@ -61,9 +54,7 @@ M.get_statuscolumn = function()
         }
         return defaults
     end
-
     local md_hl = get_minidiff_hl_names()
-
     local function is_minidiff_hunk_hl(hl)
         if not hl or hl == "" then
             return false
@@ -76,9 +67,7 @@ M.get_statuscolumn = function()
         end
         return false
     end
-
     local static = {}
-
     static.get_extmarks_signs = function(_, bufnr, lnum)
         local signs = {}
         local ok, extmarks = pcall(
@@ -92,7 +81,6 @@ M.get_statuscolumn = function()
         if not ok or not extmarks then
             return signs
         end
-
         for _, extmark in pairs(extmarks) do
             local details = extmark[4] or {}
             local hl = details.sign_hl_group or details.number_hl_group or ""
@@ -105,13 +93,11 @@ M.get_statuscolumn = function()
                 }
             end
         end
-
         table.sort(signs, function(a, b)
             return (a.priority or 0) > (b.priority or 0)
         end)
         return signs
     end
-
     static.get_extmarks_diagnostics = function(_, bufnr, lnum)
         local diagnostics = {}
         local ok, extmarks = pcall(
@@ -125,7 +111,6 @@ M.get_statuscolumn = function()
         if not ok or not extmarks then
             return diagnostics
         end
-
         for _, extmark in pairs(extmarks) do
             local details = extmark[4] or {}
             local hl = details.sign_hl_group or details.number_hl_group or ""
@@ -140,7 +125,6 @@ M.get_statuscolumn = function()
         end
         return diagnostics
     end
-
     static.get_extmarks_gits = function(_, bufnr, lnum)
         local gits = {}
         local ok, extmarks = pcall(
@@ -154,7 +138,6 @@ M.get_statuscolumn = function()
         if not ok or not extmarks then
             return gits
         end
-
         for _, extmark in pairs(extmarks) do
             local details = extmark[4] or {}
             local hl = details.sign_hl_group or details.number_hl_group or ""
@@ -167,13 +150,11 @@ M.get_statuscolumn = function()
                 }
             end
         end
-
         table.sort(gits, function(a, b)
             return (a.priority or 0) > (b.priority or 0)
         end)
         return gits
     end
-
     static.click_args = function(self, minwid, clicks, button, mods)
         local args = {
             minwid = minwid,
@@ -191,7 +172,6 @@ M.get_statuscolumn = function()
         vim.api.nvim_win_set_cursor(0, { args.mousepos.line, 0 })
         return args
     end
-
     static.resolve = function(self, name)
         for pattern, callback in pairs(self.handlers.Signs) do
             if name:match(pattern) then
@@ -199,9 +179,7 @@ M.get_statuscolumn = function()
             end
         end
     end
-
     static.handlers = {}
-
     static.handlers.Signs = {
         ["Neotest.*"] = function()
             require("neotest").run.run()
@@ -214,23 +192,19 @@ M.get_statuscolumn = function()
             vim.cmd("LspShowDiagnosticCurrent")
         end,
     }
-
     static.handlers.Dap = function()
         require("dap").toggle_breakpoint()
     end
-
     static.handlers.DiagnosticSigns = function()
         vim.defer_fn(function()
             vim.cmd("Trouble diagnostics")
         end, 100)
     end
-
     static.handlers.MiniDiffPreview = function(_, args)
         if not mini_ok or not mini then
             vim.notify("mini.diff is not available; install/configure it to preview hunks.", vim.log.levels.WARN)
             return
         end
-
         local mouse_line = (args and args.mousepos and args.mousepos.line) or vim.fn.line(".")
         local winid = (args and args.mousepos and args.mousepos.winid) or nil
         local buf = nil
@@ -239,25 +213,21 @@ M.get_statuscolumn = function()
         else
             buf = vim.api.nvim_get_current_buf()
         end
-
         local name = vim.api.nvim_buf_get_name(buf)
         if not name or name == "" then
             vim.notify("Cannot show hunk preview: buffer has no file!", vim.log.levels.WARN)
             return
         end
-
         local get_buf_data = mini.get_buf_data or (_G.MiniDiff and _G.MiniDiff.get_buf_data)
         if type(get_buf_data) ~= "function" then
             vim.notify("mini.diff API get_buf_data not available.", vim.log.levels.WARN)
             return
         end
-
         local data = get_buf_data(buf)
         if not data or type(data.hunks) ~= "table" or #data.hunks == 0 then
             vim.notify("No hunks in current buffer", vim.log.levels.INFO)
             return
         end
-
         local found = nil
         for _, h in ipairs(data.hunks) do
             local from, to
@@ -273,18 +243,15 @@ M.get_statuscolumn = function()
                 break
             end
         end
-
         if not found then
             vim.notify("No hunk under cursor", vim.log.levels.INFO)
             return
         end
-
         local ref_lines = {}
         if data.ref_text and type(data.ref_text) == "string" then
             ref_lines = vim.split(data.ref_text, "\n")
         end
         local buf_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-
         local preview_lines = {}
         table.insert(
             preview_lines,
@@ -298,9 +265,7 @@ M.get_statuscolumn = function()
             )
         )
         table.insert(preview_lines, string.rep("-", 60))
-
         local line_meta = {}
-
         if found.type == "add" then
             for i = found.buf_start, found.buf_start + found.buf_count - 1 do
                 table.insert(preview_lines, "+ " .. (buf_lines[i] or ""))
@@ -326,7 +291,6 @@ M.get_statuscolumn = function()
                 end
             end
         end
-
         local buf_preview = vim.api.nvim_create_buf(false, true)
         vim.bo[buf_preview].bufhidden = "wipe"
         vim.api.nvim_buf_set_lines(buf_preview, 0, -1, false, preview_lines)
@@ -336,10 +300,8 @@ M.get_statuscolumn = function()
         pcall(function()
             vim.bo[buf_preview].modifiable = false
         end)
-
         local ns = vim.api.nvim_create_namespace("sc_minidiff_preview")
         pcall(vim.api.nvim_buf_clear_namespace, buf_preview, ns, 0, -1)
-
         for i, meta in ipairs(line_meta) do
             local ln = i + 2
             if meta.kind == "add" then
@@ -380,7 +342,6 @@ M.get_statuscolumn = function()
                 )
             end
         end
-
         local try_fallback = function()
             if vim.fn.hlID(md_hl.over_add) == 0 then
                 for i, meta in ipairs(line_meta) do
@@ -417,7 +378,6 @@ M.get_statuscolumn = function()
             end
         end
         pcall(try_fallback)
-
         local width = math.min(80, math.max(40, math.floor(vim.o.columns * 0.6)))
         local height = math.min(20, math.max(5, #preview_lines))
         local row = math.floor((vim.o.lines - height) / 2)
@@ -433,11 +393,9 @@ M.get_statuscolumn = function()
         }
         pcall(vim.api.nvim_open_win, buf_preview, false, opts)
     end
-
     local init = function(self)
         self.signs = {}
     end
-
     local signs = {
         init = function(self)
             local signs = static.get_extmarks_signs(self, -1, vim.v.lnum)
@@ -474,7 +432,6 @@ M.get_statuscolumn = function()
             end,
         },
     }
-
     local line_numbers = {
         init = function(self)
             self.mark = mark_sign()
@@ -488,10 +445,8 @@ M.get_statuscolumn = function()
             then
                 return ""
             end
-
             local mark = self.mark
             local max_len = tostring(vim.api.nvim_buf_line_count(0)):len()
-
             if mark ~= "" then
                 if vim.v.relnum == 0 then
                     return string.rep(" ", math.max(0, max_len - 1)) .. mark
@@ -499,7 +454,6 @@ M.get_statuscolumn = function()
                     return mark
                 end
             end
-
             if vim.wo.relativenumber then
                 if vim.v.relnum == 0 then
                     local lnum = vim.v.lnum
@@ -529,7 +483,6 @@ M.get_statuscolumn = function()
             end,
         },
     }
-
     local diagnostics = {
         {
             init = function(self)
@@ -540,7 +493,6 @@ M.get_statuscolumn = function()
                 if not self.sign then
                     return " "
                 end
-
                 if self.sign.sign_hl_group == "DiagnosticSignError" then
                     return icons.diagnostics.error .. " "
                 elseif self.sign.sign_hl_group == "DiagnosticSignWarn" then
@@ -578,7 +530,6 @@ M.get_statuscolumn = function()
             },
         },
     }
-
     local vline = " " .. icons.common.vline
     local gits = {
         {
@@ -609,7 +560,6 @@ M.get_statuscolumn = function()
             -- },
         },
     }
-
     local statuscolumn = {
         condition = function()
             if
