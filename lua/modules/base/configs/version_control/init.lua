@@ -40,10 +40,14 @@ config.mini_diff = function()
             apply = nil,
             reset = nil,
             textobject = nil,
-            goto_first = "<Leader>g{",
-            goto_prev = "<Leader>g[",
-            goto_next = "<Leader>g]",
-            goto_last = "<Leader>g}",
+            -- goto_first = "<Leader>g{",
+            -- goto_prev = "<Leader>g[",
+            -- goto_next = "<Leader>g]",
+            -- goto_last = "<Leader>g}",
+            goto_first = nil,
+            goto_prev = nil,
+            goto_next = nil,
+            goto_last = nil,
         },
     })
     vim.keymap.set(
@@ -176,6 +180,7 @@ config.vgit = function()
                 end,
             },
             signs = {
+                enabled = false,
                 priority = 10,
                 definitions = {
                     GitSignsAdd = {
@@ -205,6 +210,13 @@ config.vgit = function()
     })
     local map = vim.keymap.set
     local opts = { noremap = true, silent = true }
+    -- HUNK
+    map("n", "<Leader>]", function()
+        vgit.hunk_down()
+    end, vim.tbl_extend("force", opts, { desc = "Git hunk next" }))
+    map("n", "<Leader>[", function()
+        vgit.hunk_up()
+    end, vim.tbl_extend("force", opts, { desc = "Git hunk prev" }))
     -- BUFFER
     map("n", "<Leader>gb", function() end, vim.tbl_extend("force", opts, { desc = "VGit Buffer" }))
     -- Hunk

@@ -251,6 +251,9 @@ M.get_statusline = function()
     }
     local git_hunks = {
         condition = function()
+            if type(_G.LVIM_GIT) ~= "table" or _G.LVIM_GIT.head == nil then
+                return false
+            end
             local ok1, _ = pcall(require, "vgit.git.git_buffer_store")
             local ok2, _ = pcall(require, "vgit.core.Window")
             if not (ok1 and ok2) then
