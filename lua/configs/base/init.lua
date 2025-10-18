@@ -85,18 +85,9 @@ configs["base_lvim"] = function()
                 end
                 return nil
             end
-            local git_add = get_hl_fg("MiniDiffOverAdd")
-                or get_hl_fg("MiniDiffSignAdd")
-                or get_hl_fg("GitSignsAdd")
-                or get_hl_fg("DiffAdd")
-            local git_change = get_hl_fg("MiniDiffOverChange")
-                or get_hl_fg("MiniDiffSignChange")
-                or get_hl_fg("GitSignsChange")
-                or get_hl_fg("DiffText")
-            local git_delete = get_hl_fg("MiniDiffOverDelete")
-                or get_hl_fg("MiniDiffSignDelete")
-                or get_hl_fg("GitSignsDelete")
-                or get_hl_fg("DiffDelete")
+            local git_add = get_hl_fg("MiniDiffSignAdd") or get_hl_fg("GitSignsAdd") or get_hl_fg("DiffAdd")
+            local git_change = get_hl_fg("MiniDiffSignChange") or get_hl_fg("GitSignsChange") or get_hl_fg("DiffText")
+            local git_delete = get_hl_fg("MiniDiffSignDelete") or get_hl_fg("GitSignsDelete") or get_hl_fg("DiffDelete")
 
             _G.LVIM_COLORS = {
                 bg = vim.o.background == "dark" and bg or fg,
@@ -127,7 +118,7 @@ configs["base_lvim"] = function()
                 diag_warn = diag_warn,
                 diag_hint = diag_hint,
                 diag_info = diag_info,
-                git_add = git_add or blue,
+                git_add = git_add or green,
                 git_change = git_change or orange,
                 git_delete = git_delete or red,
             }
