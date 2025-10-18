@@ -56,9 +56,39 @@ config.mini_diff = function()
         function() end,
         vim.tbl_extend("force", { noremap = true, silent = true }, { desc = "HL" })
     )
-    vim.keymap.set("n", "<Leader>gh", function()
-        mini_diff.toggle_overlay()
-    end, vim.tbl_extend("force", { noremap = true, silent = true }, { desc = "Mini diff toggle overlay" }))
+    local keys = {
+        goto_first = "<Leader>{",
+        goto_prev = "<Leader>[",
+        goto_next = "<Leader>]",
+        goto_last = "<Leader>}",
+        toggle_overlay = "<Leader>gh",
+    }
+    local base_opts = { noremap = true, silent = true }
+    local function safe_minidiff_call(fn, ...)
+        local ok, mini = pcall(require, "mini.diff")
+        if ok and mini and type(mini[fn]) == "function" then
+            return pcall(mini[fn], ...)
+        end
+        if type(_G.MiniDiff) == "table" and type(_G.MiniDiff[fn]) == "function" then
+            return pcall(_G.MiniDiff[fn], ...)
+        end
+        return nil, ("mini.diff.%s not available"):format(fn)
+    end
+    vim.keymap.set({ "n", "x" }, keys.goto_first, function()
+        safe_minidiff_call("goto_hunk", "first")
+    end, vim.tbl_extend("force", base_opts, { desc = "MiniDiff: goto first hunk" }))
+    vim.keymap.set({ "n", "x" }, keys.goto_prev, function()
+        safe_minidiff_call("goto_hunk", "prev")
+    end, vim.tbl_extend("force", base_opts, { desc = "MiniDiff: goto previous hunk" }))
+    vim.keymap.set({ "n", "x" }, keys.goto_next, function()
+        safe_minidiff_call("goto_hunk", "next")
+    end, vim.tbl_extend("force", base_opts, { desc = "MiniDiff: goto next hunk" }))
+    vim.keymap.set({ "n", "x" }, keys.goto_last, function()
+        safe_minidiff_call("goto_hunk", "last")
+    end, vim.tbl_extend("force", base_opts, { desc = "MiniDiff: goto last hunk" }))
+    vim.keymap.set("n", keys.toggle_overlay, function()
+        safe_minidiff_call("toggle_overlay")
+    end, vim.tbl_extend("force", base_opts, { desc = "MiniDiff: toggle overlay" }))
 end
 
 config.vgit = function()
@@ -211,10 +241,10 @@ config.vgit = function()
     local map = vim.keymap.set
     local opts = { noremap = true, silent = true }
     -- HUNK
-    map("n", "<Leader>]", function()
+    map("n", "<Leader>g]", function()
         vgit.hunk_down()
     end, vim.tbl_extend("force", opts, { desc = "Git hunk next" }))
-    map("n", "<Leader>[", function()
+    map("n", "<Leader>g[", function()
         vgit.hunk_up()
     end, vim.tbl_extend("force", opts, { desc = "Git hunk prev" }))
     -- BUFFER
