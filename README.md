@@ -12,7 +12,7 @@
 - Formatters with efm ("stylua", "yamlfmt", "shfmt", "cbfmt", "prettierd")
 - Automatically install dependencies (lsp servers, linters, formatters, debbugers) by filetype
 
-> Current version - 7.4.6 (2025-10-17)
+> Current version - 7.5.0 (2025-10-18)
 
 ## INTRODUCTION
 
