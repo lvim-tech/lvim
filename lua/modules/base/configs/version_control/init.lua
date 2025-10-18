@@ -69,6 +69,7 @@ config.mini_diff = function()
         if ok and mini and type(mini[fn]) == "function" then
             return pcall(mini[fn], ...)
         end
+        ---@diagnostic disable-next-line: undefined-field
         if type(_G.MiniDiff) == "table" and type(_G.MiniDiff[fn]) == "function" then
             return pcall(_G.MiniDiff[fn], ...)
         end
