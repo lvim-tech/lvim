@@ -30,15 +30,21 @@ M.get_statuscolumn = function()
     local align = { provider = "%=" }
 
     local file_types_statuscolumn = {}
-    for i, v in ipairs(file_types) do file_types_statuscolumn[i] = v end
+    for i, v in ipairs(file_types) do
+        file_types_statuscolumn[i] = v
+    end
     table.insert(file_types_statuscolumn, "org")
     table.insert(file_types_statuscolumn, "fzf")
 
     local mini_ok = pcall(require, "mini.diff") or _G.MiniDiff ~= nil
 
     local function is_minidiff_hunk_hl(hl)
-        if not hl or hl == "" then return false end
-        if hl:match("^MiniDiffSign") then return true end
+        if not hl or hl == "" then
+            return false
+        end
+        if hl:match("^MiniDiffSign") then
+            return true
+        end
         if mini_ok and (hl:match("Add$") or hl:match("Change$") or hl:match("Delete$")) then
             return true
         end
@@ -48,10 +54,20 @@ M.get_statuscolumn = function()
     local static = {}
 
     local function get_extmarks(bufnr, lnum, filter_func)
-        if not vim.api.nvim_buf_is_valid(bufnr) then return {} end
-        local ok, extmarks = pcall(vim.api.nvim_buf_get_extmarks, bufnr, -1,
-            { lnum - 1, 0 }, { lnum - 1, -1 }, { details = true })
-        if not ok or not extmarks then return {} end
+        if not vim.api.nvim_buf_is_valid(bufnr) then
+            return {}
+        end
+        local ok, extmarks = pcall(
+            vim.api.nvim_buf_get_extmarks,
+            bufnr,
+            -1,
+            { lnum - 1, 0 },
+            { lnum - 1, -1 },
+            { details = true }
+        )
+        if not ok or not extmarks then
+            return {}
+        end
 
         local result = {}
         for _, extmark in ipairs(extmarks) do
@@ -66,7 +82,9 @@ M.get_statuscolumn = function()
                 })
             end
         end
-        table.sort(result, function(a, b) return (a.priority or 0) > (b.priority or 0) end)
+        table.sort(result, function(a, b)
+            return (a.priority or 0) > (b.priority or 0)
+        end)
         return result
     end
 
@@ -77,7 +95,9 @@ M.get_statuscolumn = function()
     end
 
     static.get_extmarks_diagnostics = function(_, bufnr, lnum)
-        return get_extmarks(bufnr, lnum, function(hl) return hl:match("^DiagnosticSign") end)
+        return get_extmarks(bufnr, lnum, function(hl)
+            return hl:match("^DiagnosticSign")
+        end)
     end
 
     static.get_extmarks_gits = function(_, bufnr, lnum)
@@ -112,16 +132,28 @@ M.get_statuscolumn = function()
 
     static.handlers = {}
     static.handlers.Signs = {
-        ["Neotest.*"] = function() require("neotest").run.run() end,
-        ["Debug.*"] = function() require("dap").continue() end,
-        ["Diagnostic.*"] = function() vim.cmd("LspShowDiagnosticCurrent") end,
+        ["Neotest.*"] = function()
+            require("neotest").run.run()
+        end,
+        ["Debug.*"] = function()
+            require("dap").continue()
+        end,
+        ["Diagnostic.*"] = function()
+            vim.cmd("LspShowDiagnosticCurrent")
+        end,
     }
-    static.handlers.Dap = function() require("dap").toggle_breakpoint() end
+    static.handlers.Dap = function()
+        require("dap").toggle_breakpoint()
+    end
     static.handlers.DiagnosticSigns = function()
-        vim.defer_fn(function() vim.cmd("Trouble diagnostics") end, 100)
+        vim.defer_fn(function()
+            vim.cmd("Trouble diagnostics")
+        end, 100)
     end
 
-    local init = function(self) self.signs = {} end
+    local init = function(self)
+        self.signs = {}
+    end
 
     local signs = {
         init = function(self)
@@ -129,13 +161,20 @@ M.get_statuscolumn = function()
             local signs = static.get_extmarks_signs(self, bufnr, vim.v.lnum)
             self.sign = signs[1]
         end,
-        provider = function(self) return self.sign and self.sign.text or "" end,
+        provider = function(self)
+            return self.sign and self.sign.text or ""
+        end,
         hl = function(self)
-            if self.sign and self.sign.sign_hl_group and vim.api.nvim_get_hl then
+            if not self.sign or not self.sign.sign_hl_group then
+                return "StatusColumn"
+            end
+            if vim.api.nvim_get_hl then
                 local ok, hl_def = pcall(vim.api.nvim_get_hl, 0, { name = self.sign.sign_hl_group, link = false })
                 if ok and hl_def then
                     local fg = hl_def.fg or hl_def.foreground
-                    if fg then return { fg = fg, bg = "NONE" } end
+                    if fg then
+                        return { fg = fg, bg = "NONE" }
+                    end
                     return self.sign.sign_hl_group
                 end
             end
@@ -149,15 +188,24 @@ M.get_statuscolumn = function()
                 local line = args.mousepos.line
                 local bufnr = self.bufnr or vim.api.nvim_get_current_buf()
                 local sign = static.get_extmarks_signs(self, bufnr, line)[1]
-                if sign then self:resolve(sign.name) end
+                if sign then
+                    self:resolve(sign.name)
+                end
             end,
         },
     }
 
     local line_numbers = {
-        init = function(self) self.mark = mark_sign() end,
+        init = function(self)
+            self.mark = mark_sign()
+        end,
         provider = function(self)
-            if vim.bo.filetype == "qf" or vim.bo.filetype == "replacer" or vim.bo.filetype == "org" or vim.v.virtnum ~= 0 then
+            if
+                vim.bo.filetype == "qf"
+                or vim.bo.filetype == "replacer"
+                or vim.bo.filetype == "org"
+                or vim.v.virtnum ~= 0
+            then
                 return ""
             end
             local mark = self.mark
@@ -174,12 +222,16 @@ M.get_statuscolumn = function()
             return string.rep(" ", max_len - #str) .. str
         end,
         hl = function(self)
-            if self.mark ~= "" then return { fg = _G.LVIM_COLORS.blue } end
+            if self.mark ~= "" then
+                return { fg = _G.LVIM_COLORS.blue }
+            end
             return nil
         end,
         on_click = {
             name = "sc_linenumber_click",
-            callback = function(self, ...) self.handlers.Dap(self.click_args(self, ...)) end,
+            callback = function(self, ...)
+                self.handlers.Dap(self.click_args(self, ...))
+            end,
         },
     }
 
@@ -191,7 +243,9 @@ M.get_statuscolumn = function()
                 self.sign = diag_sign[1]
             end,
             provider = function(self)
-                if not self.sign then return " " end
+                if not self.sign then
+                    return " "
+                end
                 local t = self.sign.sign_hl_group
                 return (t == "DiagnosticSignError" and icons.diagnostics.error .. " ")
                     or (t == "DiagnosticSignWarn" and icons.diagnostics.warn .. " ")
@@ -201,7 +255,9 @@ M.get_statuscolumn = function()
             end,
             hl = function(self)
                 local t = self.sign and self.sign.sign_hl_group
-                if not t then return nil end
+                if not t then
+                    return nil
+                end
                 local c = _G.LVIM_COLORS
                 return (t == "DiagnosticSignError" and { fg = c.diag_error })
                     or (t == "DiagnosticSignWarn" and { fg = c.diag_warn })
@@ -211,13 +267,17 @@ M.get_statuscolumn = function()
             end,
             on_click = {
                 name = "sc_diagnostics_click",
-                callback = function(self, ...) self.handlers.DiagnosticSigns(self.click_args(self, ...)) end,
+                callback = function(self, ...)
+                    self.handlers.DiagnosticSigns(self.click_args(self, ...))
+                end,
             },
         },
     }
 
     local gits = {
-        condition = function() return vim.v.virtnum == 0 end,
+        condition = function()
+            return vim.v.virtnum == 0
+        end,
         init = function(self)
             if _G.LVIM_GIT then
                 local bufnr = self.bufnr or vim.api.nvim_get_current_buf()
@@ -225,8 +285,12 @@ M.get_statuscolumn = function()
                 self.sign = git_signs[1]
             end
         end,
-        provider = function(self) return self.sign and self.sign.text or icons.common.vline end,
-        hl = function(self) return self.sign and self.sign.sign_hl_group end,
+        provider = function(self)
+            return self.sign and self.sign.text or icons.common.vline
+        end,
+        hl = function(self)
+            return self.sign and self.sign.sign_hl_group
+        end,
     }
 
     local statuscolumn = {
