@@ -57,7 +57,10 @@ static.get_extmarks_other = function(_, bufnr, lnum)
             hl:match("^DiagnosticSign")
             or hl:match("^MiniDiffSign")
             or hl:match("^GitSigns")
+            or hl:match("^GitSign")
+            or hl:match("^Gitsigns")
             or hl:match("^VGitSign")
+            or hl:match("^Gitsigns")
         )
     end)
 end
@@ -74,21 +77,33 @@ static.click_args = function(_, minwid, clicks, button, mods)
         mousepos = mp,
     }
     local ok_ss, sign_char = pcall(vim.fn.screenstring, mp.screenrow or 0, mp.screencol or 0)
-    if not ok_ss or not sign_char then sign_char = "" end
+    if not ok_ss or not sign_char then
+        sign_char = ""
+    end
     if sign_char == " " then
         local ok2, s2 = pcall(vim.fn.screenstring, mp.screenrow or 0, (mp.screencol or 1) - 1)
-        if ok2 and s2 then sign_char = s2 end
+        if ok2 and s2 then
+            sign_char = s2
+        end
     end
     local ok, bufnr = pcall(vim.api.nvim_win_get_buf, mp.winid)
-    if not ok or not bufnr then bufnr = vim.api.nvim_get_current_buf() end
+    if not ok or not bufnr then
+        bufnr = vim.api.nvim_get_current_buf()
+    end
     local lnum = mp.line or vim.v.lnum
     local diags = static.get_extmarks_diagnostics(nil, bufnr, lnum) or {}
     local gits = static.get_extmarks_git(nil, bufnr, lnum) or {}
     local others = static.get_extmarks_other(nil, bufnr, lnum) or {}
     local all = {}
-    for _, e in ipairs(diags) do table.insert(all, e) end
-    for _, e in ipairs(gits) do table.insert(all, e) end
-    for _, e in ipairs(others) do table.insert(all, e) end
+    for _, e in ipairs(diags) do
+        table.insert(all, e)
+    end
+    for _, e in ipairs(gits) do
+        table.insert(all, e)
+    end
+    for _, e in ipairs(others) do
+        table.insert(all, e)
+    end
     local chosen = nil
     if sign_char and sign_char ~= "" then
         for _, e in ipairs(all) do
@@ -130,7 +145,7 @@ static.handlers.Signs = {
         require("neotest").run.run()
     end,
     ["DiagnosticSign.*"] = function()
-        vim.notify("Diagnostic sign handler triggered")
+        vim.cmd("Trouble diagnostics")
     end,
     ["MiniDiffSign.*"] = function()
         MiniDiff.toggle_overlay()
@@ -216,10 +231,6 @@ local diagnostic_signs = {
             local name = (args and args.sign and args.sign.name) or self.diagnostic_sign_name
             if name then
                 static.resolve(static, name)
-            else
-                vim.defer_fn(function()
-                    vim.cmd("lua vim.lsp.buf.show_line_diagnostics and vim.lsp.buf.show_line_diagnostics()")
-                end, 50)
             end
         end,
     },
@@ -312,9 +323,6 @@ local git_signs = {
             local name = (args and args.sign and args.sign.name) or self.git_sign_name
             if name then
                 static.resolve(static, name)
-            else
-                -- fallback: ако искаш действие при клик върху дефолтната икона, добави тук
-                vim.notify("Git sign (no extmark) clicked")
             end
         end,
     },
@@ -354,8 +362,6 @@ local other_signs = {
             local name = (args and args.sign and args.sign.name) or self.other_sign_name
             if name then
                 static.resolve(static, name)
-            else
-                vim.notify("Other sign clicked (no extmark)")
             end
         end,
     },
