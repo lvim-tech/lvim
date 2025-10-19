@@ -193,7 +193,7 @@ modules["rebelot/heirline.nvim"] = {
     priority = 100,
     dependencies = {
         "lvim-tech/lvim-colorscheme",
-        "nvim-mini/mini.diff",
+        "lvim-tech/mini.diff",
         "tanvirtin/vgit.nvim",
         "NeogitOrg/neogit",
     },
@@ -742,7 +742,7 @@ modules["NeogitOrg/neogit"] = {
     config = version_control_config.neogit,
 }
 
-modules["nvim-mini/mini.diff"] = {
+modules["lvim-tech/mini.diff"] = {
     commit = funcs.get_commit("mini.diff", plugins_snapshot),
     config = version_control_config.mini_diff,
 }
