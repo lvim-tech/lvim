@@ -7,8 +7,8 @@ return {
         vim2 = "",
         lua = "",
         set = "",
-        -- vline = "▌",
-        vline = "│",
+        vline = "▌",
+        -- vline = "│",
         -- vline = "❘"
         terminal = "",
         terminal2 = "",
