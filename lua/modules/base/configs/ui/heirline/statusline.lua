@@ -249,6 +249,26 @@ M.get_statusline = function()
             name = "heirline_git",
         },
     }
+    local function get_hunk_fields(h)
+        return {
+            buf_start = h.buf_start or (h.new and h.new.start) or h.new_start or nil,
+            buf_count = h.buf_count or (h.new and h.new.count) or h.new_count or nil,
+            old_start = h.old_start
+                or (h.old and h.old.start)
+                or h.orig_start
+                or h.ref_start
+                or (h.ref and h.ref.start)
+                or nil,
+            old_count = h.old_count
+                or (h.old and h.old.count)
+                or h.orig_count
+                or h.ref_count
+                or (h.ref and h.ref.count)
+                or nil,
+            type = h.type or h.kind or nil,
+            raw = h,
+        }
+    end
     local git_hunks = {
         condition = function()
             if type(_G.LVIM_GIT) ~= "table" or _G.LVIM_GIT.head == nil then
@@ -270,19 +290,50 @@ M.get_statusline = function()
             local lnum = vim.fn.line(".")
             self.current_hunk_index = nil
             self.current_hunk_type = nil
-            for i, hunk in ipairs(hunks) do
-                local first = hunk.buf_start
-                local last = hunk.buf_start + math.max(hunk.buf_count - 1, 0)
-                if hunk.type == "delete" then
-                    if lnum == first or (first == 0 and lnum == 1) then
+            self.current_hunk = nil
+            self.current_hunk_is_changedel = false
+            self.current_hunk_second_index = nil
+            for i, h in ipairs(hunks) do
+                local f = get_hunk_fields(h)
+                if f.buf_start and f.buf_count then
+                    local first = f.buf_start
+                    local last = f.buf_start + math.max(f.buf_count - 1, 0)
+                    if f.type == "delete" then
+                        if lnum == first or (first == 0 and lnum == 1) then
+                            self.current_hunk_index = i
+                            self.current_hunk_type = f.type
+                            self.current_hunk = f
+                            break
+                        end
+                    elseif lnum >= first and lnum <= last then
                         self.current_hunk_index = i
-                        self.current_hunk_type = hunk.type
+                        self.current_hunk_type = f.type
+                        self.current_hunk = f
                         break
                     end
-                elseif lnum >= first and lnum <= last then
-                    self.current_hunk_index = i
-                    self.current_hunk_type = hunk.type
-                    break
+                end
+            end
+            if
+                self.current_hunk
+                and type(self.current_hunk_type) == "string"
+                and string.match(self.current_hunk_type, "change")
+            then
+                local h = self.current_hunk
+                if (h.old_count and h.old_count > 0) and (h.buf_count and h.buf_count > 0) then
+                    self.current_hunk_is_changedel = true
+                end
+            end
+            if self.current_hunk_is_changedel and self.current_hunk_index then
+                local next_h = hunks[self.current_hunk_index + 1]
+                if next_h then
+                    local nf = get_hunk_fields(next_h)
+                    if nf.type == "delete" then
+                        self.current_hunk_second_index = self.current_hunk_index + 1
+                    else
+                        self.current_hunk_second_index = nil
+                    end
+                else
+                    self.current_hunk_second_index = nil
                 end
             end
         end,
@@ -296,8 +347,10 @@ M.get_statusline = function()
         },
         {
             provider = function(self)
-                local cur = self.current_hunk_index and self.current_hunk_index or "-"
-                return tostring(cur)
+                if not self.current_hunk then
+                    return "-"
+                end
+                return tostring(self.current_hunk_index or "-")
             end,
             hl = function(self)
                 if not self.current_hunk_index then
@@ -315,7 +368,32 @@ M.get_statusline = function()
         },
         {
             provider = function(self)
-                return ("/%d "):format(self.hunks_count)
+                if self.current_hunk_is_changedel and self.current_hunk_second_index then
+                    return ","
+                end
+                return ""
+            end,
+            hl = function()
+                return { fg = _G.LVIM_COLORS.blue, bold = true }
+            end,
+        },
+        {
+            provider = function(self)
+                if not self.current_hunk_is_changedel then
+                    return ""
+                end
+                if not self.current_hunk_second_index then
+                    return ""
+                end
+                return tostring(self.current_hunk_second_index)
+            end,
+            hl = function()
+                return { fg = _G.LVIM_COLORS.git_delete, bold = true }
+            end,
+        },
+        {
+            provider = function(self)
+                return ("/%d "):format(self.hunks_count or 0)
             end,
             hl = function()
                 return { fg = _G.LVIM_COLORS.blue, bold = true }
@@ -324,7 +402,6 @@ M.get_statusline = function()
         on_click = {
             callback = function()
                 vim.defer_fn(function()
-                    -- vim.cmd("lua MiniDiff.toggle_overlay()")
                     vim.cmd("VGit buffer_diff_preview")
                 end, 100)
             end,
