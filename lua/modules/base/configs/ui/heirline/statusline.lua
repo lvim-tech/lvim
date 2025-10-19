@@ -327,7 +327,19 @@ M.get_statusline = function()
                 local next_h = hunks[self.current_hunk_index + 1]
                 if next_h then
                     local nf = get_hunk_fields(next_h)
-                    if nf.type == "delete" then
+                    local cur_buf_start = self.current_hunk.buf_start or 0
+                    local cur_buf_count = self.current_hunk.buf_count or 0
+                    local expected_next_start = cur_buf_start + cur_buf_count
+                    local is_adjacent = false
+                    if nf.buf_start ~= nil and expected_next_start ~= nil then
+                        if nf.buf_start == expected_next_start then
+                            is_adjacent = true
+                        end
+                        if nf.buf_start == 0 and expected_next_start == 1 then
+                            is_adjacent = true
+                        end
+                    end
+                    if nf.type == "delete" and is_adjacent then
                         self.current_hunk_second_index = self.current_hunk_index + 1
                     else
                         self.current_hunk_second_index = nil
@@ -621,7 +633,6 @@ M.get_statusline = function()
         end,
         hl = { fg = _G.LVIM_COLORS.red },
     }
-
     local statusline = {
         fallthrough = false,
         hl = function()
