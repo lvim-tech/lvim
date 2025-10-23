@@ -6,7 +6,7 @@ local dap = require("dap")
 
 local lsp_dependencies = {
     "efm",
-    "python-lsp-server",
+    "pyright",
     "debugpy",
     "black",
 }
@@ -96,22 +96,15 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
 
     lsp_config = {
         name = "python",
-        cmd = { "pylsp" },
+        cmd = { "pyright-langserver", "--stdio" },
         filetypes = _G.file_types.python,
         settings = {
-            pylsp = {
-                plugins = {
-                    black = { enabled = true, line_length = 79 },
-                    autopep8 = { enabled = false },
-                    yapf = { enabled = false },
-                    jedi_references = { enabled = true },
-                    preload = { enabled = true },
-                    pycodestyle = { enabled = true },
-                },
-                configurationSources = { "flake8" },
-                rope = {
-                    extensionModules = "",
-                    ropeFolder = "",
+            python = {
+                analysis = {
+                    typeCheckingMode = "strict", -- Строг режим за откриване на грешки!
+                    autoSearchPaths = true,
+                    useLibraryCodeForTypes = true,
+                    diagnosticMode = "workspace",
                 },
             },
         },
@@ -126,19 +119,15 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
         end,
         capabilities = (function()
             local capabilities = setup_diagnostics.get_capabilities()
-            -- Добавяне на CodeLens поддръжка
             capabilities.textDocument = capabilities.textDocument or {}
             capabilities.textDocument.codeLens = {
                 dynamicRegistration = true,
                 resolveProvider = true,
             }
-
-            -- Добавяне на workspace CodeLens refresh поддръжка
             capabilities.workspace = capabilities.workspace or {}
             capabilities.workspace.codeLens = {
                 refreshSupport = true,
             }
-
             return capabilities
         end)(),
     }
