@@ -935,41 +935,6 @@ config.nvim_treesitter_context = function()
     })
 end
 
-config.nvim_various_textobjs = function()
-    local nvim_various_textobjs_status_ok, nvim_various_textobjs = pcall(require, "various-textobjs")
-    if not nvim_various_textobjs_status_ok then
-        return
-    end
-    nvim_various_textobjs.setup({
-        keymaps = {
-            useDefaults = true,
-            disabledKeymaps = {
-                "i/",
-                "a/",
-                "in",
-                "an",
-                "ii",
-                "ai",
-                "iI",
-                "aI",
-                "gc",
-            },
-        },
-    })
-    vim.keymap.set(
-        { "o", "x" },
-        "ii",
-        "<cmd>lua require('various-textobjs').indentation(true, true)<CR>",
-        { noremap = true, silent = true, desc = "inner indentation" }
-    )
-    vim.keymap.set(
-        { "o", "x" },
-        "ai",
-        "<cmd>lua require('various-textobjs').indentation(false, false)<CR>",
-        { noremap = true, silent = true, desc = "outer indentation" }
-    )
-end
-
 config.kulala_nvim = function()
     local kulala_nvim_status_ok, kulala_nvim = pcall(require, "kulala")
     if not kulala_nvim_status_ok then
@@ -1022,18 +987,40 @@ config.transfer_nvim = function()
     transfer.setup()
 end
 
-config.code_runner_nvim = function()
-    local code_runner_status_ok, code_runner = pcall(require, "code_runner")
-    if not code_runner_status_ok then
+config.overseer_nvim = function()
+    local overseer_status_ok, overseer = pcall(require, "overseer")
+    if not overseer_status_ok then
         return
     end
-    code_runner.setup({
-        filetype_path = _G.global.lvim_path .. "/.configs/code_runner/files.json",
-        project_path = _G.global.lvim_path .. "/.configs/code_runner/projects.json",
-        mode = "float",
-        focus = true,
-        startinsert = true,
+    overseer.setup({
+        dap = true,
+        output = {
+            use_terminal = true,
+            preserve_output = false,
+        },
     })
+    local path = vim.fn.stdpath("config") .. "/.configs/overseer"
+    local registered_names = {}
+    for _, file in ipairs(vim.fn.globpath(path, "*.lua", false, true)) do
+        local ok, tmpl = pcall(dofile, file)
+        if ok and type(tmpl) == "table" and tmpl.name then
+            if not registered_names[tmpl.name] then
+                overseer.register_template(tmpl)
+                registered_names[tmpl.name] = true
+            end
+        end
+    end
+    vim.api.nvim_create_user_command("OverseerRun", function()
+        overseer.run_template({}, function(task)
+            if task then
+                vim.defer_fn(function()
+                    overseer.open({ enter = false })
+                end, 100)
+            else
+                vim.notify("No task created", vim.log.levels.WARN)
+            end
+        end)
+    end, {})
 end
 
 config.grug_far = function()

@@ -603,29 +603,32 @@ modules["coffebar/transfer.nvim"] = {
     config = editor_config.transfer_nvim,
 }
 
-modules["CRAG666/code_runner.nvim"] = {
-    commit = funcs.get_commit("code_runner.nvim", plugins_snapshot),
-    dependencies = {
-        "nvim-lua/plenary.nvim",
-    },
+modules["stevearc/overseer.nvim"] = {
+    commit = funcs.get_commit("overseer.nvim", plugins_snapshot),
+    branch = "stevearc-rewrite",
     keys = {
         {
-            "<Leader>lcp",
-            ":RunProject<CR>",
-            desc = "Run project",
+            "<Leader>or",
+            ":OverseerRun<CR>",
+            desc = "Overseer Run",
         },
         {
-            "<Leader>lcf",
-            ":RunFile<CR>",
-            desc = "Run file",
+            "<Leader>ot",
+            ":OverseerToggle<CR>",
+            desc = "Overseer Toggle",
         },
         {
-            "<Leader>lcc",
-            ":RunCode<CR>",
-            desc = "Run code",
+            "<Leader>os",
+            ":OverseerShell<CR>",
+            desc = "Overseer Shell",
+        },
+        {
+            "<Leader>oa",
+            ":OverseerTaskAction<CR>",
+            desc = "Overseer Task Action",
         },
     },
-    config = editor_config.code_runner_nvim,
+    config = editor_config.overseer_nvim,
 }
 
 modules["MagicDuck/grug-far.nvim"] = {
