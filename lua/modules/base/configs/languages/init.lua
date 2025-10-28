@@ -62,10 +62,7 @@ config.neotest = function()
             require("neotest-go"),
             require("neotest-python"),
             require("neotest-elixir"),
-            require("neotest-dart")({
-                command = "flutter",
-                use_lsp = true,
-            }),
+            require("neotest-dart"),
         },
     })
 
