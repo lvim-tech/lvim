@@ -280,73 +280,73 @@ return {
     },
     projects = {
         -- General project types
-        frontend = "", -- HTML5 (nf-dev-html5)  fallback: ""
-        backend = "", -- Database / backend (nf-fa-database) fallback: ""
-        fullstack = "", -- Full stack / layers (fa-layer-group) fallback: ""
-        mobile = "", -- Mobile phone (fa-mobile-alt) fallback: "📱"
-        api = "", -- API / link (fa-link) fallback: "󰗚"
-        cli = "", -- CLI tool (nf-dev-term) fallback: ""
-        plugin = "󰒓", -- Plugin (nf-mdi-plugin) fallback: "🔌"
-        library = "󰏗", -- Library (package) fallback: "📦"
-        template = "󰗀", -- Template / starter fallback: ""
-        portfolio = "󰀄", -- Portfolio / personal site fallback: ""
+        frontend = "",
+        backend = "",
+        fullstack = "󰒠",
+        mobile = "",
+        api = "",
+        cli = "",
+        plugin = "󰒓",
+        library = "󰏗",
+        template = "󰗀",
+        portfolio = "󰟠",
 
         -- Frontend frameworks / meta
-        html = "", -- HTML5 (nf-dev-html5)
-        tailwind = "󱏿", -- Tailwind CSS (custom nerdfont) fallback: ""
-        bootstrap = "", -- Bootstrap (nf-dev-bootstrap) fallback: ""
-        vite = "󰁔", -- Vite (nf-custom-vite)
-        nextjs = "󰨞", -- Next.js (octicon) fallback: ""
-        react = "", -- React (nf-dev-react)
-        vue = "", -- Vue (nf-dev-vuejs)
-        nuxt = "󰔶", -- Nuxt.js (nf-dev-nuxtjs)
-        svelte = "", -- Svelte (nf-dev-svelte)
-        angular = "", -- Angular (nf-dev-angular)
-        astro = "󱌢", -- Astro (custom nerdfont) fallback: ""
-        solid = "󰡱", -- SolidJS (custom) fallback: ""
-        remix = "󰑷", -- Remix.run (custom) fallback: ""
+        html = "",
+        tailwind = "󱏿",
+        bootstrap = "",
+        vite = "󰁔",
+        nextjs = "󰨞",
+        react = "",
+        vue = "",
+        nuxt = "󰔶",
+        svelte = "",
+        angular = "",
+        astro = "󱌢",
+        solid = "󰡱",
+        remix = "󰑷",
 
         -- Backend frameworks & servers
-        nodejs = "", -- Node.js (nf-dev-nodejs)
-        deno = "", -- Deno (commonly used glyph; may overlap with Rust) fallback: "里"
-        bun = "󰳲", -- Bun (custom)
-        express = "", -- Express (node/express glyph) fallback: ""
-        nestjs = "󰟞", -- NestJS (custom) fallback: ""
-        fastapi = "󰚀", -- FastAPI (custom) fallback: ""
-        django = "", -- Django (nf-dev-django)
-        flask = "", -- Flask
-        laravel = "", -- Laravel
-        symfony = "", -- Symfony
-        spring = "", -- Spring / Java
-        rails = "", -- Ruby on Rails
+        nodejs = "",
+        deno = "󰏦",
+        bun = "󰳲",
+        express = "",
+        nestjs = "󰟞",
+        fastapi = "󰚀",
+        django = "",
+        flask = "󰂺",
+        laravel = "",
+        symfony = "",
+        spring = "",
+        rails = "",
 
         -- Mobile / hybrid
-        ionic = "", -- Ionic fallback: ""
-        capacitor = "", -- Capacitor (fallback: "🔌")
-        react_native = "", -- React Native (reuse React icon)
-        flutter = "", -- Flutter
+        ionic = "",
+        capacitor = "",
+        react_native = "",
+        flutter = "",
 
         -- Desktop / game engines
-        electron = "", -- Electron
-        unity = "", -- Unity
-        unreal = "", -- Unreal Engine
+        electron = "",
+        unity = "",
+        unreal = "",
 
         -- Languages
-        go = "", -- Go (nf-dev-go)
-        rust = "", -- Rust
-        python = "", -- Python
-        php = "", -- PHP
-        java = "", -- Java
-        kotlin = "", -- Kotlin
-        csharp = "󰌛", -- C#
-        cpp = "", -- C++
-        c = "", -- C
+        go = "",
+        rust = "",
+        python = "",
+        php = "",
+        java = "",
+        kotlin = "",
+        csharp = "󰌛",
+        cpp = "",
+        c = "",
 
         -- CMS / Specific platforms
-        wordpress = "󰇧", -- WordPress
-        astro_blog = "󱌢", -- Astro blog starter
-        vitepress = "󰁔", -- VitePress (reuse vite)
-        docusaurus = "󰗚", -- Docusaurus
-        docsify = "󰗚", -- Docsify (use same docs icon)
+        wordpress = "󰇧",
+        astro_blog = "󱌢",
+        vitepress = "󰁔",
+        docusaurus = "󰗚",
+        docsify = "󰗚",
     },
 }
