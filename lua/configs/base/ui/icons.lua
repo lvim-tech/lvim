@@ -1,5 +1,6 @@
 return {
     common = {
+        default = "󰏗",
         unix = "",
         dos = "",
         mac = "",
@@ -276,5 +277,76 @@ return {
             stopped = "󰏤",
             log_point = "",
         },
+    },
+    projects = {
+        -- General project types
+        frontend = "", -- HTML5 (nf-dev-html5)  fallback: ""
+        backend = "", -- Database / backend (nf-fa-database) fallback: ""
+        fullstack = "", -- Full stack / layers (fa-layer-group) fallback: ""
+        mobile = "", -- Mobile phone (fa-mobile-alt) fallback: "📱"
+        api = "", -- API / link (fa-link) fallback: "󰗚"
+        cli = "", -- CLI tool (nf-dev-term) fallback: ""
+        plugin = "󰒓", -- Plugin (nf-mdi-plugin) fallback: "🔌"
+        library = "󰏗", -- Library (package) fallback: "📦"
+        template = "󰗀", -- Template / starter fallback: ""
+        portfolio = "󰀄", -- Portfolio / personal site fallback: ""
+
+        -- Frontend frameworks / meta
+        html = "", -- HTML5 (nf-dev-html5)
+        tailwind = "󱏿", -- Tailwind CSS (custom nerdfont) fallback: ""
+        bootstrap = "", -- Bootstrap (nf-dev-bootstrap) fallback: ""
+        vite = "󰁔", -- Vite (nf-custom-vite)
+        nextjs = "󰨞", -- Next.js (octicon) fallback: ""
+        react = "", -- React (nf-dev-react)
+        vue = "", -- Vue (nf-dev-vuejs)
+        nuxt = "󰔶", -- Nuxt.js (nf-dev-nuxtjs)
+        svelte = "", -- Svelte (nf-dev-svelte)
+        angular = "", -- Angular (nf-dev-angular)
+        astro = "󱌢", -- Astro (custom nerdfont) fallback: ""
+        solid = "󰡱", -- SolidJS (custom) fallback: ""
+        remix = "󰑷", -- Remix.run (custom) fallback: ""
+
+        -- Backend frameworks & servers
+        nodejs = "", -- Node.js (nf-dev-nodejs)
+        deno = "", -- Deno (commonly used glyph; may overlap with Rust) fallback: "里"
+        bun = "󰳲", -- Bun (custom)
+        express = "", -- Express (node/express glyph) fallback: ""
+        nestjs = "󰟞", -- NestJS (custom) fallback: ""
+        fastapi = "󰚀", -- FastAPI (custom) fallback: ""
+        django = "", -- Django (nf-dev-django)
+        flask = "", -- Flask
+        laravel = "", -- Laravel
+        symfony = "", -- Symfony
+        spring = "", -- Spring / Java
+        rails = "", -- Ruby on Rails
+
+        -- Mobile / hybrid
+        ionic = "", -- Ionic fallback: ""
+        capacitor = "", -- Capacitor (fallback: "🔌")
+        react_native = "", -- React Native (reuse React icon)
+        flutter = "", -- Flutter
+
+        -- Desktop / game engines
+        electron = "", -- Electron
+        unity = "", -- Unity
+        unreal = "", -- Unreal Engine
+
+        -- Languages
+        go = "", -- Go (nf-dev-go)
+        rust = "", -- Rust
+        python = "", -- Python
+        php = "", -- PHP
+        java = "", -- Java
+        kotlin = "", -- Kotlin
+        csharp = "󰌛", -- C#
+        cpp = "", -- C++
+        c = "", -- C
+
+        -- CMS / Specific platforms
+        wordpress = "󰇧", -- WordPress
+        astro_blog = "󱌢", -- Astro blog starter
+        vitepress = "󰁔", -- VitePress (reuse vite)
+        docusaurus = "󰗚", -- Docusaurus
+        docsify = "󰗚", -- Docsify (use same docs icon)
     },
 }
