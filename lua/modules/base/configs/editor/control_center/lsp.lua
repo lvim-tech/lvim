@@ -7,7 +7,7 @@ local code_lens = require("languages.utils.code_lens")
 return {
     name = "lsp",
     label = "LSP",
-    icon = icons.common.project,
+    icon = icons.common.light_bulb,
     settings = {
         {
             name = "autoformat",

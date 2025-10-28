@@ -12,6 +12,7 @@ config.lvim_control_center = function()
     local appearance = require("modules.base.configs.editor.control_center.appearance")
     local lsp = require("modules.base.configs.editor.control_center.lsp")
     local commands = require("modules.base.configs.editor.control_center.commands")
+    local projects = require("modules.base.configs.editor.control_center.projects")
     lvim_control_center.setup({
         groups = {
             lvim,
@@ -19,6 +20,7 @@ config.lvim_control_center = function()
             appearance,
             lsp,
             commands,
+            projects,
         },
     })
     vim.keymap.set("n", "<Leader><Leader>v", "<CMD>LvimControlCenter lvim<CR>")

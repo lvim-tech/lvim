@@ -3,7 +3,7 @@ local icons = require("configs.base.ui.icons")
 return {
     name = "commands",
     label = "Commands",
-    icon = icons.common.eval .. " ",
+    icon = icons.common.eval,
     settings = {
         {
             name = "lazy",
