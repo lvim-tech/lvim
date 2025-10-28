@@ -28,6 +28,7 @@ config.lvim_control_center = function()
     vim.keymap.set("n", "<Leader><Leader>a", "<CMD>LvimControlCenter appearance<CR>")
     vim.keymap.set("n", "<Leader><Leader>l", "<CMD>LvimControlCenter lsp<CR>")
     vim.keymap.set("n", "<Leader><Leader>c", "<CMD>LvimControlCenter commands<CR>")
+    vim.keymap.set("n", "<Leader><Leader>p", "<CMD>LvimControlCenter projects<CR>")
 end
 
 config.lvim_space = function()
