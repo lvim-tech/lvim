@@ -631,6 +631,35 @@ modules["stevearc/overseer.nvim"] = {
     config = editor_config.overseer_nvim,
 }
 
+modules["ALameLlama/compiler.nvim"] = {
+    commit = funcs.get_commit("compiler.nvim", plugins_snapshot),
+    branch = "feat/add-support-for-native-nvim-selector",
+    cmd = {
+        "CompilerOpen",
+        "CompilerToggleResults",
+        "CompilerRedo",
+    },
+    keys = {
+        {
+            "<Leader>oo",
+            "<cmd>CompilerOpen<cr>",
+            desc = "Compiler Open",
+        },
+        {
+            "<Leader>og",
+            "<cmd>CompilerToggleResults<cr>",
+            desc = "Compiler Toggle Results",
+        },
+        {
+            "<Leader>od",
+            "<cmd>CompilerRedo<cr>",
+            desc = "Compiler Redo",
+        },
+    },
+    dependencies = { "stevearc/overseer.nvim" },
+    config = editor_config.compiler_nvim,
+}
+
 modules["MagicDuck/grug-far.nvim"] = {
     commit = funcs.get_commit("grug-far.nvim", plugins_snapshot),
     keys = {

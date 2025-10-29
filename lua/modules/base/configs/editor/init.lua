@@ -990,6 +990,14 @@ config.transfer_nvim = function()
     transfer.setup()
 end
 
+config.compiler_nvim = function()
+    local compiler_status_ok, compiler = pcall(require, "compiler")
+    if not compiler_status_ok then
+        return
+    end
+    compiler.setup()
+end
+
 config.overseer_nvim = function()
     local overseer_status_ok, overseer = pcall(require, "overseer")
     if not overseer_status_ok then
