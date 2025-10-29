@@ -3,52 +3,54 @@ local picons = icons.projects
 
 local function run(command_template, opts)
     opts = opts or {}
-    local pass_name = opts.pass_name
-    if pass_name == nil then
-        pass_name = true
-    end
-    local cwd_project_dir = opts.cwd_project_dir
-    if cwd_project_dir == nil then
-        cwd_project_dir = true
-    end
-    local create_dir = opts.create_dir
-    if create_dir == nil then
-        create_dir = true
-    end
+    local pass_name = opts.pass_name or false
+    local cwd_project_dir = opts.cwd_project_dir or false
+    local create_dir = opts.create_dir or false
     local module_init = opts.module_init or false
 
-    local project_name = vim.fn.input("Enter project name (use '.' for current directory): ")
-    if project_name == "" then
-        print("Operation cancelled.")
-        return
+    local project_name, path, project_dir
+
+    if pass_name or module_init then
+        project_name = vim.fn.input("Enter project name (use '.' for current directory): ")
+        if project_name == "" then
+            print("Operation cancelled.")
+            return
+        end
     end
 
     local default_path = vim.fn.getcwd()
-    local path = vim.fn.input("Enter path (default: " .. default_path .. "): ", default_path)
-    if path == "" then
+    if cwd_project_dir or create_dir or (project_name ~= nil) then
+        path = vim.fn.input("Enter path (default: " .. default_path .. "): ", default_path)
+        if path == "" then
+            path = default_path
+        end
+    else
         path = default_path
     end
 
-    local project_dir
-    if project_name == "." then
+    local use_flat_dir = pass_name and not module_init
+    if use_flat_dir then
         project_dir = path
     else
-        project_dir = path .. "/" .. project_name
+        if project_name ~= nil then
+            if project_name == "." then
+                project_dir = path
+            else
+                project_dir = path .. "/" .. project_name
+            end
+        else
+            project_dir = path
+        end
     end
 
-    local should_create_dir = create_dir
-    if pass_name and not cwd_project_dir then
-        should_create_dir = false
-    end
-
-    if should_create_dir and vim.fn.isdirectory(project_dir) == 0 then
+    if create_dir and project_dir ~= "" and vim.fn.isdirectory(project_dir) == 0 then
         vim.fn.mkdir(project_dir, "p")
     end
 
     local final_command = command_template
 
     if module_init then
-        local default_module = (project_name ~= "." and project_name) or vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+        local default_module = (project_name and project_name ~= "." and project_name) or vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
         local suggested = "github.com/<youruser>/" .. default_module
         local module_path = vim.fn.input("Module path for `go mod init` (e.g. " .. suggested .. "): ", suggested)
         if module_path == "" then
@@ -57,13 +59,9 @@ local function run(command_template, opts)
         end
         final_command = "go mod init " .. vim.fn.shellescape(module_path)
         cwd_project_dir = true
-    else
-        if pass_name then
-            local arg = (project_name == ".") and "." or vim.fn.shellescape(project_name)
-            final_command = command_template .. " " .. arg
-        else
-            final_command = command_template
-        end
+    elseif pass_name and project_name then
+        local arg = (project_name == ".") and "." or vim.fn.shellescape(project_name)
+        final_command = command_template .. " " .. arg
     end
 
     local original_win = vim.api.nvim_get_current_win()
@@ -80,6 +78,9 @@ local function run(command_template, opts)
     local win = vim.api.nvim_open_win(buf, true, win_config)
 
     local cwd = cwd_project_dir and project_dir or path
+    if cwd ~= "" and vim.fn.isdirectory(cwd) == 0 then
+        vim.fn.mkdir(cwd, "p")
+    end
 
     vim.fn.jobstart(final_command, {
         term = true,
@@ -111,7 +112,6 @@ return {
     label = "New project",
     icon = icons.common.project,
     settings = {
-        -- ### Frontend ###
         {
             icon = picons.frontend,
             top = false,
@@ -125,7 +125,7 @@ return {
             label = "Next.js",
             type = "action",
             run = function()
-                run("npx create-next-app@latest", { pass_name = true, cwd_project_dir = false })
+                run("npx create-next-app@latest", { pass_name = true, cwd_project_dir = true })
             end,
         },
         {
@@ -134,7 +134,7 @@ return {
             label = "Vite",
             type = "action",
             run = function()
-                run("npm create vite@latest", { pass_name = true, cwd_project_dir = false })
+                run("npm create vite@latest", { pass_name = true, cwd_project_dir = true })
             end,
         },
         {
@@ -143,7 +143,7 @@ return {
             label = "Svelte",
             type = "action",
             run = function()
-                run("npm create svelte@latest", { pass_name = true, cwd_project_dir = false })
+                run("npm create svelte@latest", { pass_name = true, cwd_project_dir = true })
             end,
         },
         {
@@ -152,16 +152,16 @@ return {
             label = "Astro",
             type = "action",
             run = function()
-                run("npm create astro@latest", { pass_name = true, cwd_project_dir = false })
+                run("npm create astro@latest", { pass_name = true, cwd_project_dir = true })
             end,
         },
-{
+        {
             name = "react",
             icon = picons.react,
             label = "React",
             type = "action",
             run = function()
-                run("npx create-react-app", { pass_name = true, cwd_project_dir = false })
+                run("npx create-react-app", { pass_name = true, cwd_project_dir = true })
             end,
         },
         {
@@ -170,11 +170,9 @@ return {
             label = "Angular",
             type = "action",
             run = function()
-                run("npx @angular/cli new", { pass_name = true, cwd_project_dir = false })
+                run("npx @angular/cli new", { pass_name = true, cwd_project_dir = true })
             end,
         },
-
-        -- ### Backend ###
         {
             icon = picons.backend,
             top = true,
@@ -188,7 +186,7 @@ return {
             label = "NestJS",
             type = "action",
             run = function()
-                run("npx @nestjs/cli new", { pass_name = true, cwd_project_dir = false })
+                run("npx @nestjs/cli new", { pass_name = true, cwd_project_dir = true })
             end,
         },
         {
@@ -197,7 +195,7 @@ return {
             label = "Express.js",
             type = "action",
             run = function()
-                run("npx express-generator", { pass_name = true, cwd_project_dir = false })
+                run("npx express-generator", { pass_name = true, cwd_project_dir = true })
             end,
         },
         {
@@ -206,7 +204,7 @@ return {
             label = "Django",
             type = "action",
             run = function()
-                run("python3 -m django startproject", { pass_name = true, cwd_project_dir = false })
+                run("python3 -m django startproject", { pass_name = true, cwd_project_dir = true })
             end,
         },
         {
@@ -215,11 +213,9 @@ return {
             label = "Laravel",
             type = "action",
             run = function()
-                run("composer create-project laravel/laravel", { pass_name = true, cwd_project_dir = false })
+                run("composer create-project laravel/laravel", { pass_name = true, cwd_project_dir = true })
             end,
         },
-
-        -- ### Mobile ###
         {
             icon = picons.mobile,
             top = true,
@@ -233,7 +229,7 @@ return {
             label = "React Native",
             type = "action",
             run = function()
-                run("npx react-native init", { pass_name = true, cwd_project_dir = false })
+                run("npx react-native init", { pass_name = true, cwd_project_dir = true })
             end,
         },
         {
@@ -242,11 +238,9 @@ return {
             label = "Flutter",
             type = "action",
             run = function()
-                run("flutter create", { pass_name = true, cwd_project_dir = false })
+                run("flutter create", { pass_name = true, cwd_project_dir = true })
             end,
         },
-
-        -- ### Go ###
         {
             icon = picons.go,
             top = true,
@@ -260,7 +254,7 @@ return {
             label = "Go Mod Init",
             type = "action",
             run = function()
-                run("go mod init", { pass_name = false, cwd_project_dir = true, create_dir = true, module_init = true })
+                run("go mod init", { cwd_project_dir = true, create_dir = true, module_init = true })
             end,
         },
         {
@@ -272,8 +266,6 @@ return {
                 run("go mod tidy", { cwd_project_dir = true })
             end,
         },
-
-        -- ### Python ###
         {
             icon = picons.python,
             top = true,
@@ -296,7 +288,7 @@ return {
             label = "venv (standard)",
             type = "action",
             run = function()
-                run("python3 -m venv venv", { pass_name = false, cwd_project_dir = true })
+                run("python3 -m venv venv", { pass_name = true, cwd_project_dir = true })
             end,
         },
     },
