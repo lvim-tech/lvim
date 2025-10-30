@@ -65,16 +65,11 @@ keymaps["normal"] = {
     }, -- Tab index
     { "<Leader>tmn", ":LvimSpaceTabMoveNext<CR>", "Tab move next" }, -- Tab move next
     { "<Leader>tmp", ":LvimSpaceTabMovePrev<CR>", "Tab move prev" }, -- Tab move prev
-    { "<C-c><C-p>", "p`[v`]" },
-    { "<C-c><C-k>", "P`[v`]" },
 }
 
 keymaps["visual"] = {
-    { "j", "gj" }, -- Re-map j
-    { "k", "gk" }, -- Re-map k
     { "*", "<Esc>/\\%V" }, -- Visual search /
     { "#", "<Esc>?\\%V" }, -- Visual search ?
-    { "<C-p>", "p`[v`]" },
 }
 
 keymaps["insert"] = {}
