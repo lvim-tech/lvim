@@ -1,6 +1,5 @@
 return {
     enable = true,
-
     container_elements = {
         enable = true,
         ["^a$"] = {
@@ -89,7 +88,6 @@ return {
             on_closing_tag = { conceal = "" },
         },
     },
-
     headings = {
         enable = true,
         heading_1 = {
