@@ -15,11 +15,10 @@ M.global = function()
     vim.g.netrw_keepdir = 1
     vim.g.netrw_list_hide = "(^|ss)\zs.S+"
     vim.g.netrw_localcopydircmd = "cp -r"
-    pcall(function()
-        vim.opt.splitkeep = "screen"
-    end)
     -- vim.opt
     vim.opt.exrc = true
+    vim.opt.secure = true
+    vim.opt.splitkeep = "screen"
     vim.opt.guicursor = "n-v-c:block-Cursor/lCursor,i-ci-ve:ver25-Cursor/lCursor,r-cr:hor20,o:hor50"
     vim.opt.shortmess = "ltToOCFI"
     vim.opt.termguicolors = true
