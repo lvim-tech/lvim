@@ -72,6 +72,9 @@ keymaps["visual"] = {
     { "#", "<Esc>?\\%V" }, -- Visual search ?
 }
 
-keymaps["insert"] = {}
+keymaps["insert"] = {
+    { "<C-j>", "<C-o>gj", "Move down by visual line in insert mode" },
+    { "<C-k>", "<C-o>gk", "Move up by visual line in insert mode" },
+}
 
 return keymaps
