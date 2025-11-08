@@ -795,11 +795,115 @@ config.snacks_nvim = function()
 end
 
 config.ui_nvim = function()
-    local ui_status_ok, ui = pcall(require, "modules.base.configs.ui.ui")
+    local ui_status_ok, ui = pcall(require, "ui")
     if not ui_status_ok then
         return
     end
-    ui.set_ui()
+    local utils = require("ui.utils")
+    ui.setup({
+        cmdline = {
+            styles = {
+                default = { icon = { { "▌ " .. icons.common.vim2 .. "  ", "UICmdlineDefaultIcon" } } },
+                search_down = { icon = { { "▌ " .. icons.common.up .. "  ", "UICmdlineSearchDownIcon" } } },
+                search_up = { icon = { { "▌ " .. icons.common.down .. "  ", "UICmdlineSearchUpIcon" } } },
+                set = { icon = { { "▌ " .. icons.common.set .. "  ", "UICmdlineDefaultIcon" } } },
+                shell = { icon = { { "▌ " .. icons.common.symbol2 .. "  ", "UICmdlineEvalIcon" } } },
+                lua = { icon = { { "▌ " .. icons.common.lua .. "  ", "UICmdlineLuaIcon" } } },
+                lua_eval = { icon = { { "▌ " .. icons.common.eval .. "  ", "UICmdlineEvalIcon" } } },
+                substitute = {
+                    icon = function(_, lines)
+                        if string.match(lines[#lines], "^s/") then
+                            return { { "▌ " .. icons.common.substitute1 .. "  ", "UICmdlineSubstituteIcon" } }
+                        else
+                            return { { "▌ " .. icons.common.substitute2 .. "  ", "UICmdlineSubstituteIcon" } }
+                        end
+                    end,
+                },
+                prompt = {
+                    title = function(state)
+                        local output, hl = {}, "UICmdlineLuaIcon"
+                        local lines = utils.text_wrap({ state.prompt or "" }, math.floor(vim.o.columns * 0.8))
+                        for _, line in ipairs(lines) do
+                            table.insert(output, {
+                                { "▌ " .. icons.common.question .. "  ", hl },
+                                { line, "Comment" },
+                            })
+                        end
+                        return output
+                    end,
+                    icon = { { "▌ " .. icons.common.prompt .. "  ", "UICmdlineLuaIcon" } },
+                },
+            },
+        },
+        message = {
+            confirm = true,
+            confirm_winconfig = nil,
+            wrap_notify = true,
+            respect_replace_last = true,
+            msg_styles = {
+                default = {
+                    decorations = function(msg)
+                        local conf = { icon = { { "▌", "UIMessageDefault" } } }
+                        if msg.content and #msg.content == 1 then
+                            local content = msg.content[1]
+                            local hl = utils.attr_to_hl(content[3])
+                            if hl == "WarningMsg" then
+                                conf.icon = { { "▌" .. icons.diagnostics.warn .. " ", "UIMessageWarnSign" } }
+                                conf.padding = { { "▌  ", "UIMessageWarnSign" } }
+                                conf.line_hl_group = "UIMessageWarn"
+                            elseif hl == "ErrorMsg" then
+                                conf.icon = { { "▌" .. icons.diagnostics.error .. " ", "UIMessageErrorSign" } }
+                                conf.padding = { { "▌  ", "UIMessageErrorSign" } }
+                                conf.line_hl_group = "UIMessageError"
+                            else
+                                conf.icon = { { "▌" .. icons.diagnostics.info .. " ", "UIMessageInfoSign" } }
+                                conf.padding = { { "▌  ", "UIMessageInfoSign" } }
+                                conf.line_hl_group = "UIMessageInfo"
+                            end
+                        end
+                        return conf
+                    end,
+                },
+                search = {
+                    decorations = function(_, lines)
+                        if string.match(lines[#lines], "^/") then
+                            return {
+                                icon = { { "▌" .. icons.common.down .. " ", "UICmdlineSearchUpIcon" } },
+                                padding = { { "▌  ", "UICmdlineSearchUpIcon" } },
+                                line_hl_group = "UICmdlineDefault",
+                            }
+                        else
+                            return {
+                                icon = { { "▌" .. icons.common.up .. " ", "UICmdlineSearchDownIcon" } },
+                                padding = { { "▌  ", "UICmdlineSearchDownIcon" } },
+                                line_hl_group = "UICmdlineSearchDown",
+                            }
+                        end
+                    end,
+                },
+                write = {
+                    decorations = {
+                        icon = { { "▌" .. icons.common.save .. " ", "UIMessageOkIcon" } },
+                        padding = { { "▌  ", "UIMessageOkIcon" } },
+                        line_hl_group = "UIMessageOk",
+                    },
+                },
+                lua_error = {
+                    decorations = {
+                        icon = { { "▌" .. icons.common.lua .. " ", "UIMessageErrorIcon" } },
+                        padding = { { "▌  ", "UIMessageErrorIcon" } },
+                        line_hl_group = "UIMessageError",
+                    },
+                },
+            },
+            confirm_styles = {
+                default = { border = "single", winhl = "Normal:NormalFloat,FloatBorder:FloatBorder" },
+            },
+            list_styles = {
+                default = { border = "single", winhl = "Normal:NormalFloat,FloatBorder:FloatBorder" },
+            },
+        },
+    })
 end
 
 config.nvim_window_picker = function()
