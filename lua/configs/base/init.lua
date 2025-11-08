@@ -140,6 +140,9 @@ configs["base_lvim"] = function()
         funcs.command_output,
         { noremap = true, silent = true, desc = "Execute command with output window" }
     )
+    vim.api.nvim_create_autocmd("VimResized", {
+        command = "wincmd =",
+    })
 end
 
 configs["base_events"] = function()
