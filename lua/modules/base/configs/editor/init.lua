@@ -84,6 +84,114 @@ return {
         opts = {},
     },
     fzf_lua = {
+        cmd = { "FzfLua" },
+        keys = {
+            {
+                "<Leader>f",
+                function()
+                    vim.cmd("FzfLua files")
+                end,
+                desc = "FzfLua files",
+            },
+            {
+                "<Leader>O",
+                function()
+                    vim.cmd("FzfLua oldfiles")
+                end,
+                desc = "FzfLua oldfiles",
+            },
+            {
+                "<Leader>w",
+                function()
+                    vim.cmd("FzfLua live_grep")
+                end,
+                desc = "FzfLua search",
+            },
+            {
+                "<Leader>M",
+                function()
+                    vim.cmd("FzfLua marks")
+                end,
+                desc = "FzfLua marks",
+            },
+            {
+                "<Leader>b",
+                function()
+                    vim.cmd("FzfLua buffers")
+                end,
+                desc = "FzfLua buffers",
+            },
+            {
+                "gzd",
+                function()
+                    vim.cmd("FzfLua lsp_definitions")
+                end,
+                desc = "FzfLua lsp definitions",
+            },
+            {
+                "gzD",
+                function()
+                    vim.cmd("FzfLua lsp_declarations")
+                end,
+                desc = "FzfLua lsp declarations",
+            },
+            {
+                "gzt",
+                function()
+                    vim.cmd("FzfLua lsp_typedefs")
+                end,
+                desc = "FzfLua lsp type definition",
+            },
+            {
+                "gzr",
+                function()
+                    vim.cmd("FzfLua lsp_references")
+                end,
+                desc = "FzfLua lsp references",
+            },
+            {
+                "gzi",
+                function()
+                    vim.cmd("FzfLua lsp_implementations")
+                end,
+                desc = "FzfLua lsp implementations",
+            },
+            {
+                "gzf",
+                function()
+                    vim.cmd("FzfLua lsp_finder")
+                end,
+                desc = "FzfLua lsp finder",
+            },
+            {
+                "gzw",
+                function()
+                    vim.cmd("FzfLua lsp_document_diagnostics")
+                end,
+                desc = "FzfLua lsp document diagnostics",
+            },
+            {
+                "gzW",
+                function()
+                    vim.cmd("FzfLua lsp_workspace_diagnostics")
+                end,
+                desc = "FzfLua lsp workspace diagnostics",
+            },
+            {
+                "gzs",
+                function()
+                    vim.cmd("FzfLua lsp_document_symbols")
+                end,
+                desc = "FzfLua lsp document symbols",
+            },
+            {
+                "gzS",
+                function()
+                    vim.cmd("FzfLua lsp_workspace_symbols")
+                end,
+                desc = "FzfLua lsp workspace symbols",
+            },
+        },
         opts = function()
             local img_previewer
             for _, v in ipairs({
