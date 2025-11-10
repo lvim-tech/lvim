@@ -234,6 +234,7 @@ modules["stevearc/oil.nvim"] = {
 modules["rebelot/heirline.nvim"] = {
     commit = funcs.get_commit("heirline.nvim", plugins_snapshot),
     opts = ui_config.heirline_nvim.opts,
+    config = ui_config.heirline_nvim.config
 }
 
 modules["lvim-tech/lvim-shell"] = {

@@ -865,6 +865,16 @@ return {
                 },
             }
         end,
+        config = function(_, opts)
+            require("heirline").setup(opts)
+            vim.api.nvim_create_autocmd("ColorScheme", {
+                callback = function()
+                    print("test")
+                    require("heirline").setup(opts)
+                    require("heirline").reset_highlights()
+                end,
+            })
+        end,
     },
     lvim_shell = {
         config = function()

@@ -4,8 +4,6 @@ local keymaps_ft = require("configs.base.keymaps_ft")
 local group = vim.api.nvim_create_augroup("LvimIDE", {
     clear = true,
 })
-local lvim_ui_config = require("modules.base.configs.ui")
-local editor_config = require("modules.base.configs.editor")
 local funcs = require("core.funcs")
 local base_file_types = require("languages.base.file_types")
 local user_file_types = require("languages.user.file_types")
@@ -88,7 +86,6 @@ configs["base_lvim"] = function()
             local git_add = get_hl_fg("MiniDiffSignAdd") or get_hl_fg("GitSignsAdd") or get_hl_fg("DiffAdd")
             local git_change = get_hl_fg("MiniDiffSignChange") or get_hl_fg("GitSignsChange") or get_hl_fg("DiffText")
             local git_delete = get_hl_fg("MiniDiffSignDelete") or get_hl_fg("GitSignsDelete") or get_hl_fg("DiffDelete")
-
             _G.LVIM_COLORS = {
                 bg = vim.o.background == "dark" and bg or fg,
                 bg_dark = vim.o.background == "dark" and bg_dark or fg_light,
@@ -124,9 +121,6 @@ configs["base_lvim"] = function()
             }
             vim.api.nvim_set_hl(0, "WinBar", { bg = _G.LVIM_COLORS.bg_dark, fg = _G.LVIM_COLORS.fg })
             vim.api.nvim_set_hl(0, "WinBarNC", { bg = _G.LVIM_COLORS.bg_dark, fg = _G.LVIM_COLORS.fg })
-            lvim_ui_config.heirline_nvim()
-            lvim_ui_config.nvim_window_picker()
-            editor_config.tabby_nvim()
         end,
         group = group,
     })
