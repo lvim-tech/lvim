@@ -1012,11 +1012,10 @@ return {
         },
     },
     markdown_preview_nvim = {
-        config = function()
-            vim.keymap.set("n", "<S-m>", function()
-                vim.cmd("MarkdownPreview")
-            end, { noremap = true, silent = true, desc = "MarkdownPreview" })
-        end,
+        cmd = { "MarkdownPreview" },
+        keys = {
+            { "<S-m>", "<cmd>MarkdownPreview<CR>", desc = "Markdown preview" },
+        },
     },
     markview_nvim = {
         opts = function()

@@ -187,7 +187,7 @@ modules["sindrets/winshift.nvim"] = {
     commit = funcs.get_commit("winshift.nvim", plugins_snapshot),
     cmd = ui_config.winshift_nvim.cmd,
     keys = ui_config.winshift_nvim.keys,
-    config = ui_config.winshift_nvim.opts,
+    opts = ui_config.winshift_nvim.opts,
 }
 
 modules["nvim-mini/mini.files"] = {
@@ -214,7 +214,7 @@ modules["folke/which-key.nvim"] = {
 
 modules["prichrd/netrw.nvim"] = {
     commit = funcs.get_commit("netrw.nvim", plugins_snapshot),
-    config = ui_config.netrw_nvim.opts,
+    opts = ui_config.netrw_nvim.opts,
 }
 
 modules["nvim-neo-tree/neo-tree.nvim"] = {
@@ -384,7 +384,7 @@ modules["ALameLlama/compiler.nvim"] = {
     branch = "feat/add-support-for-native-nvim-selector",
     cmd = editor_config.compiler_nvim.cmd,
     keys = editor_config.compiler_nvim.keys,
-    config = editor_config.compiler_nvim,
+    opts = editor_config.compiler_nvim.opts,
 }
 
 modules["stevearc/overseer.nvim"] = {
@@ -424,7 +424,7 @@ modules["ton/vim-bufsurf"] = {
 modules["danymat/neogen"] = {
     commit = funcs.get_commit("neogen", plugins_snapshot),
     cmd = editor_config.neogen.cmd,
-    opts = editor_config.neogen,
+    opts = editor_config.neogen.opts,
 }
 
 modules["uga-rosa/ccc.nvim"] = {
@@ -581,7 +581,7 @@ modules["nvim-treesitter/nvim-treesitter"] = {
 
 modules["j-hui/fidget.nvim"] = {
     commit = funcs.get_commit("fidget.nvim", plugins_snapshot),
-    opts = languages_config.fidget_nvim,
+    opts = languages_config.fidget_nvim.opts,
 }
 
 modules["SmiteshP/nvim-navic"] = {
@@ -650,7 +650,8 @@ modules["iamcco/markdown-preview.nvim"] = {
     commit = funcs.get_commit("markdown-preview.nvim", plugins_snapshot),
     build = "cd app && npm install",
     ft = { "md", "markdown" },
-    config = languages_config.markdown_preview_nvim.config,
+    cmd = languages_config.markdown_preview_nvim.cmd,
+    keys = languages_config.markdown_preview_nvim.keys,
 }
 
 modules["OXY2DEV/markview.nvim"] = {
@@ -690,22 +691,22 @@ modules["Saghen/blink.cmp"] = {
     commit = funcs.get_commit("blink.cmp", plugins_snapshot),
     lazy = true,
     build = "cargo build --release",
-    opts = completion_config.blink_cmp.config,
+    opts = completion_config.blink_cmp.opts,
 }
 
 modules["windwp/nvim-autopairs"] = {
     commit = funcs.get_commit("nvim-autopairs", plugins_snapshot),
-    opts = completion_config.nvim_autopairs.config,
+    opts = completion_config.nvim_autopairs.opts,
 }
 
 modules["windwp/nvim-ts-autotag"] = {
     commit = funcs.get_commit("nvim-ts-autotag", plugins_snapshot),
-    opts = completion_config.nvim_ts_autotag.config,
+    opts = completion_config.nvim_ts_autotag.opts,
 }
 
 modules["kylechui/nvim-surround"] = {
     commit = funcs.get_commit("nvim-surround", plugins_snapshot),
-    opts = completion_config.nvim_surround,
+    opts = completion_config.nvim_surround.opts,
 }
 
 return modules

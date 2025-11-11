@@ -216,13 +216,13 @@ return {
         end,
     },
     nvim_autopairs = {
-        config = {},
+        opts = {},
     },
     nvim_ts_autotag = {
-        config = {},
+        opts = {},
     },
     nvim_surround = {
-        config = {},
+        opts = {},
     },
 }
 
