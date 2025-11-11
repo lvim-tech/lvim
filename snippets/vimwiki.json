@@ -1,7 +1,0 @@
-{
-  "home": {
-    "prefix": "home",
-    "body": "[[/index|${1:Home Page}]]",
-    "description": "Link to index wiki"
-  }
-}
