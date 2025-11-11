@@ -78,6 +78,10 @@ return {
     },
     vgit = {
         opts = function()
+            local vgit_status_ok, vgit = pcall(require, "vgit")
+            if not vgit_status_ok then
+                return
+            end
             local map = vim.keymap.set
             local opts = { noremap = true, silent = true }
             -- HUNK
