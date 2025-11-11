@@ -622,21 +622,18 @@ modules["lvim-tech/nvim-dbee"] = {
 
 modules["vuki656/package-info.nvim"] = {
     commit = funcs.get_commit("package-info.nvim", plugins_snapshot),
-    lazy = true,
     event = "BufReadPost package.json",
     opts = languages_config.package_info_nvim.opts,
 }
 
 modules["Saecki/crates.nvim"] = {
     commit = funcs.get_commit("crates.nvim", plugins_snapshot),
-    lazy = true,
     event = "BufReadPost Cargo.toml",
     opts = languages_config.crates_nvim.opts,
 }
 
 modules["akinsho/pubspec-assist.nvim"] = {
     commit = funcs.get_commit("pubspec-assist.nvim", plugins_snapshot),
-    lazy = true,
     event = "BufReadPost pubspec.yaml",
     opts = languages_config.pubspec_assist_nvim.opts,
 }
