@@ -2,7 +2,7 @@ local icons = require("configs.base.ui.icons")
 
 return {
     blink_cmp = {
-        config = function()
+        opts = function()
             local ls = require("luasnip")
             ls.config.set_config({
                 enable_autosnippets = true,
@@ -14,13 +14,6 @@ return {
             require("luasnip.loaders.from_lua").load({
                 paths = { vim.fn.stdpath("config") .. "/snippets/lua" },
             })
-            local function in_semicolon_region(line, col0)
-                if not line or col0 == nil then
-                    return false
-                end
-                local before = line:sub(1, col0 + 1) -- Lua strings are 1-based
-                return before:match(";[%w_]*$") ~= nil
-            end
             return {
                 enabled = function()
                     local disabled = false
@@ -42,51 +35,18 @@ return {
                     disabled = disabled or vim.g.__ui_list_msg ~= nil
                     return not disabled
                 end,
-                snippets = {
-                    preset = "luasnip",
-                    expand = function(snippet)
-                        if type(snippet) == "string" then
-                            -- LSP/vsnip-стил тела
-                            ls.lsp_expand(snippet)
-                        else
-                            -- LuaSnip Snippet/Node
-                            ls.snip_expand(snippet)
-                        end
-                    end,
-                    active = function(filter)
-                        if filter and filter.direction then
-                            return ls.jumpable(filter.direction)
-                        end
-                        return ls.in_snippet()
-                    end,
-                    jump = function(direction)
-                        require("luasnip").jump(direction)
-                    end,
-                },
                 sources = {
                     default = { "lsp", "path", "snippets", "buffer", "dadbod", "ripgrep", "emoji" },
                     providers = {
                         lsp = {
                             name = "lsp",
                             module = "blink.cmp.sources.lsp",
-                            enabled = function(context)
-                                local line = (context and context.line) or vim.api.nvim_get_current_line()
-                                local col0 = (context and context.cursor and context.cursor[2])
-                                    or vim.api.nvim_win_get_cursor(0)[2]
-                                return not in_semicolon_region(line, col0)
-                            end,
                             fallbacks = { "buffer" },
                             score_offset = 90,
                         },
                         path = {
                             name = "Path",
                             module = "blink.cmp.sources.path",
-                            enabled = function(context)
-                                local line = (context and context.line) or vim.api.nvim_get_current_line()
-                                local col0 = (context and context.cursor and context.cursor[2])
-                                    or vim.api.nvim_win_get_cursor(0)[2]
-                                return not in_semicolon_region(line, col0)
-                            end,
                             score_offset = 25,
                             fallbacks = { "buffer" },
                             opts = {
@@ -101,12 +61,6 @@ return {
                         buffer = {
                             name = "Buffer",
                             module = "blink.cmp.sources.buffer",
-                            enabled = function(context)
-                                local line = (context and context.line) or vim.api.nvim_get_current_line()
-                                local col0 = (context and context.cursor and context.cursor[2])
-                                    or vim.api.nvim_win_get_cursor(0)[2]
-                                return not in_semicolon_region(line, col0)
-                            end,
                             max_items = 3,
                             min_keyword_length = 3,
                             score_offset = 15,
@@ -114,45 +68,14 @@ return {
                         snippets = {
                             name = "snippets",
                             enabled = true,
-                            max_items = 50,
-                            min_keyword_length = 0,
+                            max_items = 8,
+                            min_keyword_length = 2,
                             module = "blink.cmp.sources.snippets",
-                            score_offset = 100,
-                            should_show_items = function(context)
-                                local line = (context and context.line) or vim.api.nvim_get_current_line()
-                                local col0 = (context and context.cursor and context.cursor[2])
-                                    or vim.api.nvim_win_get_cursor(0)[2]
-                                return in_semicolon_region(line, col0)
-                            end,
-                            transform_items = function(context, items)
-                                local col0 = context.cursor[2]
-                                local row0 = context.cursor[1] - 1
-                                local line = context.line or ""
-                                local before = line:sub(1, col0 + 1)
-                                local trigger_start = before:find(";%s*[%w_]*$")
-                                if trigger_start then
-                                    for _, item in ipairs(items) do
-                                        item.textEdit = {
-                                            newText = item.insertText or item.label,
-                                            range = {
-                                                start = { line = row0, character = trigger_start - 1 },
-                                                ["end"] = { line = row0, character = col0 },
-                                            },
-                                        }
-                                    end
-                                end
-                                return items
-                            end,
+                            score_offset = 85,
                         },
                         ripgrep = {
                             module = "blink-cmp-rg",
                             name = "Ripgrep",
-                            enabled = function(context)
-                                local line = (context and context.line) or vim.api.nvim_get_current_line()
-                                local col0 = (context and context.cursor and context.cursor[2])
-                                    or vim.api.nvim_win_get_cursor(0)[2]
-                                return not in_semicolon_region(line, col0)
-                            end,
                             opts = {
                                 prefix_min_len = 3,
                                 get_command = function(_, prefix)
@@ -175,24 +98,12 @@ return {
                         emoji = {
                             module = "blink-emoji",
                             name = "Emoji",
-                            enabled = function(context)
-                                local line = (context and context.line) or vim.api.nvim_get_current_line()
-                                local col0 = (context and context.cursor and context.cursor[2])
-                                    or vim.api.nvim_win_get_cursor(0)[2]
-                                return not in_semicolon_region(line, col0)
-                            end,
                             score_offset = 15,
                             opts = { insert = true },
                         },
                         dadbod = {
                             name = "Dadbod",
                             module = "vim_dadbod_completion.blink",
-                            enabled = function(context)
-                                local line = (context and context.line) or vim.api.nvim_get_current_line()
-                                local col0 = (context and context.cursor and context.cursor[2])
-                                    or vim.api.nvim_win_get_cursor(0)[2]
-                                return not in_semicolon_region(line, col0)
-                            end,
                         },
                     },
                 },
