@@ -574,59 +574,8 @@ return {
             },
         },
         opts = {
-            close_on_select = true,
-            confirm_simple = true,
-            default_explorer = false,
-            git_status = {
-                enabled = true,
-                symbols = {
-                    Untracked = "?",
-                    Added = "+",
-                    Modified = "*",
-                    Deleted = "x",
-                    Renamed = ">",
-                    Copied = "~",
-                    Conflict = "!",
-                    Ignored = "#",
-                },
-            },
-            hooks = {
-                on_delete = nil,
-                on_rename = nil,
-                on_highlight = nil,
-            },
-            icon = {
-                directory_collapsed = nil,
-                directory_empty = nil,
-                directory_expanded = nil,
-            },
-            icon_provider = "nvim_web_devicons",
-            indentscope = {
-                enabled = true,
-                group = "FylerIndentMarker",
-                marker = "│",
-            },
-            mappings = {
-                ["q"] = "CloseView",
-                ["<CR>"] = "Select",
-                ["<C-t>"] = "SelectTab",
-                ["|"] = "SelectVSplit",
-                ["-"] = "SelectSplit",
-                ["^"] = "GotoParent",
-                ["="] = "GotoCwd",
-                ["."] = "GotoNode",
-                ["#"] = "CollapseAll",
-                ["<BS>"] = "CollapseNode",
-            },
-            popups = {
-                permission = {
-                    border = { " ", " ", " ", " ", " ", " ", " ", " " },
-                },
-            },
-            track_current_buffer = true,
-            win = {
-                border = { " ", " ", " ", " ", " ", " ", " ", " " },
-                kind = "split_left_most",
+            integrations = {
+                icon = "nvim_web_devicons",
             },
         },
     },
