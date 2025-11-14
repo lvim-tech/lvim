@@ -559,38 +559,48 @@ return {
         },
     },
     nvim_treesitter = {
-        opts = {
-            ensure_installed = "all",
-            ignore_install = {},
-            highlight = {
-                enable = true,
-                additional_vim_regex_highlighting = { "org" },
-            },
-            indent = {
-                enable = true,
-                disable = {
-                    "dart",
+        opts = function()
+            vim.api.nvim_create_autocmd("FileType", {
+                desc = "Start treesitter",
+                group = vim.api.nvim_create_augroup("start_treesitter", { clear = true }),
+                pattern = "http",
+                callback = function(ev)
+                    vim.treesitter.start(ev.buf)
+                end,
+            })
+            return {
+                ensure_installed = "all",
+                ignore_install = {},
+                highlight = {
+                    enable = true,
+                    additional_vim_regex_highlighting = { "org", "http" },
                 },
-            },
-            autopairs = {
-                enable = true,
-            },
-            rainbow = {
-                enable = true,
-            },
-            context_commentstring = {
-                enable = true,
-                config = {
-                    javascriptreact = {
-                        style_element = "{/*%s*/}",
+                indent = {
+                    enable = true,
+                    disable = {
+                        "dart",
                     },
                 },
-            },
-            matchup = {
-                enable = true,
-                disable_virtual_text = true,
-            },
-        },
+                autopairs = {
+                    enable = true,
+                },
+                rainbow = {
+                    enable = true,
+                },
+                context_commentstring = {
+                    enable = true,
+                    config = {
+                        javascriptreact = {
+                            style_element = "{/*%s*/}",
+                        },
+                    },
+                },
+                matchup = {
+                    enable = true,
+                    disable_virtual_text = true,
+                },
+            }
+        end,
     },
     fidget_nvim = {
         opts = {
@@ -1003,13 +1013,27 @@ return {
         end,
     },
     pubspec_assist_nvim = {
-        opts = {
-            highlights = {
-                up_to_date = "PubspecDependencyUpToDate",
-                outdated = "PubspecDependencyOutdated",
-                unknown = "PubspecDependencyUnknown",
-            },
-        },
+        opts = function()
+            vim.api.nvim_create_autocmd("BufEnter", {
+                group = vim.api.nvim_create_augroup("pubspec_keymaps", { clear = true }),
+                pattern = "pubspec.yaml",
+                callback = function()
+                    local opts_buffer = { buffer = 0, silent = true, desc = "Pubspec: Add Package" }
+                    vim.keymap.set("n", "<leader>pa", "<cmd>PubspecAssistAddPackage<cr>", opts_buffer)
+                    local opts_buffer_dev = { buffer = 0, silent = true, desc = "Pubspec: Add Dev Package" }
+                    vim.keymap.set("n", "<leader>pd", "<cmd>PubspecAssistAddDevPackage<cr>", opts_buffer_dev)
+                    local opts_buffer_pick = { buffer = 0, silent = true, desc = "Pubspec: Pick Version" }
+                    vim.keymap.set("n", "<leader>pv", "<cmd>PubspecAssistPickVersion<cr>", opts_buffer_pick)
+                end,
+            })
+            return {
+                highlights = {
+                    up_to_date = "PubspecDependencyUpToDate",
+                    outdated = "PubspecDependencyOutdated",
+                    unknown = "PubspecDependencyUnknown",
+                },
+            }
+        end,
     },
     markdown_preview_nvim = {
         cmd = { "MarkdownPreview" },

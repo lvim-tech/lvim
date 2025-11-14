@@ -58,7 +58,6 @@ return {
                 Snacks.debug.backtrace()
             end
             vim.print = _G.dd
-            vim.cmd("command! Lazygit :lua Snacks.lazygit()")
             local function fzf_scratch()
                 local entries = {}
                 local items = Snacks.scratch.list()

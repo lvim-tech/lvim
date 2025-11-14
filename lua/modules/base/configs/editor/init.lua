@@ -1188,18 +1188,20 @@ return {
         },
     },
     kulala_nvim = {
-        opts = {
-            global_keymaps = true,
-            icons = {
-                inlay = {
-                    loading = icons.common.hourglass,
-                    done = icons.common.todo,
-                    error = icons.common.warning,
+        config = function()
+            require("kulala").setup({
+                global_keymaps = true,
+                icons = {
+                    inlay = {
+                        loading = icons.common.hourglass,
+                        done = icons.common.todo,
+                        error = icons.common.warning,
+                    },
+                    lualine = icons.common.separator,
+                    textHighlight = "WarningMsg",
                 },
-                lualine = icons.common.separator,
-                textHighlight = "WarningMsg",
-            },
-        },
+            })
+        end,
     },
     flow_nvim = {
         cmd = { "FlowRunSelected", "FlowRunFile", "FlowLauncher" },
@@ -1426,22 +1428,14 @@ return {
         opts = {},
     },
     vim_bufsurf = {
-        cmd = { "BufSurfForward", "BufSurfBack" }, -- <-- Командите, които се извикват
-        keys = {
-            {
-                "<C-n>",
-                "<cmd>BufSurfForward<cr>",
-                mode = "n",
-                desc = "BufSurfForward",
-            },
-            {
-                "<C-p>",
-                "<cmd>BufSurfBack<cr>",
-                mode = "n",
-                desc = "BufSurfBack",
-            },
-        },
-        opts = {},
+        config = function()
+            vim.keymap.set("n", "<C-n>", function()
+                vim.cmd("BufSurfForward")
+            end, { noremap = true, silent = true, desc = "BufSurfForward" })
+            vim.keymap.set("n", "<C-p>", function()
+                vim.cmd("BufSurfBack")
+            end, { noremap = true, silent = true, desc = "BufSurfBack" })
+        end,
     },
     neogen = {
         cmd = { "NeogenFile", "NeogenClass", "NeogenFunction", "NeogenType" },
@@ -1576,7 +1570,6 @@ return {
         },
     },
     todo_comments_nvim = {
-        cmd = { "TodoTrouble" },
         opts = function()
             return {
                 keywords = {

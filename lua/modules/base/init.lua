@@ -362,7 +362,7 @@ modules["nvim-treesitter/nvim-treesitter-context"] = {
 modules["mistweaverco/kulala.nvim"] = {
     commit = funcs.get_commit("kulala.nvim", plugins_snapshot),
     ft = { "http", "rest" },
-    opts = editor_config.kulala_nvim.opts,
+    config = editor_config.kulala_nvim.config,
 }
 
 modules["arjunmahishi/flow.nvim"] = {
@@ -416,9 +416,7 @@ modules["numToStr/Comment.nvim"] = {
 
 modules["ton/vim-bufsurf"] = {
     commit = funcs.get_commit("vim-bufsurf", plugins_snapshot),
-    cmd = editor_config.vim_bufsurf.cmd,
-    keys = editor_config.vim_bufsurf.keys,
-    opts = editor_config.vim_bufsurf.opts,
+    config = editor_config.vim_bufsurf.config,
 }
 
 modules["danymat/neogen"] = {
@@ -548,7 +546,7 @@ modules["scalameta/nvim-metals"] = {
     ft = { "scala", "sbt" },
 }
 
-modules["akinsho/flutter-tools.nvim"] = {
+modules["nvim-flutter/flutter-tools.nvim"] = {
     commit = funcs.get_commit("flutter-tools.nvim", plugins_snapshot),
     ft = "dart",
     opts = languages_config.flutter_tools_nvim.opts,
@@ -574,8 +572,10 @@ modules["kosayoda/nvim-lightbulb"] = {
 
 modules["nvim-treesitter/nvim-treesitter"] = {
     commit = funcs.get_commit("nvim-treesitter", plugins_snapshot),
+    lazy = false,
     branch = "main",
     build = ":TSUpdate",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
     opts = languages_config.nvim_treesitter.opts,
 }
 
@@ -632,7 +632,7 @@ modules["Saecki/crates.nvim"] = {
     opts = languages_config.crates_nvim.opts,
 }
 
-modules["akinsho/pubspec-assist.nvim"] = {
+modules["lvim-tech/pubspec-assist.nvim"] = {
     commit = funcs.get_commit("pubspec-assist.nvim", plugins_snapshot),
     event = "BufReadPost pubspec.yaml",
     opts = languages_config.pubspec_assist_nvim.opts,
@@ -686,7 +686,7 @@ local completion_config = require("modules.base.configs.completion")
 
 modules["Saghen/blink.cmp"] = {
     commit = funcs.get_commit("blink.cmp", plugins_snapshot),
-    lazy = true,
+    event = "VeryLazy",
     build = "cargo build --release",
     opts = completion_config.blink_cmp.opts,
 }
