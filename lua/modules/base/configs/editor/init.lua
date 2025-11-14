@@ -1326,7 +1326,7 @@ return {
         },
     },
     replacer_nvim = {
-        cmd = { "ReplacerRun", "ReplacerSave" }, -- <-- Списък с командите, които създаваме
+        cmd = { "ReplacerRun", "ReplacerSave" },
         keys = {
             {
                 "dr",
