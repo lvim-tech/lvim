@@ -46,20 +46,25 @@ local function is_real_file_buffer(bufnr)
 end
 
 local function is_client_attached_to_buffer(client_id, bufnr)
-    if not client_id or not bufnr then
+    if not client_id then
         return false
     end
-    local client = vim.lsp.get_client_by_id(client_id)
-    if not client then
+    if not bufnr or bufnr == 0 then
+        bufnr = vim.api.nvim_get_current_buf()
+    end
+    if not vim.api.nvim_buf_is_valid(bufnr) then
         return false
     end
-    local attached_buffers = {}
-    pcall(function()
-        for _, buf_id in ipairs(vim.lsp.get_buffers_by_client_id(client_id) or {}) do
-            attached_buffers[buf_id] = true
+    local ok, clients = pcall(vim.lsp.get_clients, { bufnr = bufnr })
+    if not ok or type(clients) ~= "table" then
+        return false
+    end
+    for _, c in ipairs(clients) do
+        if c and c.id == client_id then
+            return true
         end
-    end)
-    return attached_buffers[bufnr] or false
+    end
+    return false
 end
 
 M.is_server_disabled_globally = function(server_name)
@@ -212,12 +217,35 @@ M.disable_lsp_server_globally = function(server_name)
     _G.lsp_disabled_servers[server_name] = true
     for _, client in ipairs(vim.lsp.get_clients()) do
         if client.name == server_name then
-            for _, bufnr in ipairs(vim.lsp.get_buffers_by_client_id(client.id) or {}) do
+            local attached_buffers = {}
+            for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+                if vim.api.nvim_buf_is_valid(bufnr) then
+                    local ok, clients_for_buf = pcall(vim.lsp.get_clients, { bufnr = bufnr })
+                    if ok and type(clients_for_buf) == "table" then
+                        for _, c in ipairs(clients_for_buf) do
+                            if c and c.id == client.id then
+                                attached_buffers[bufnr] = true
+                                break
+                            end
+                        end
+                    end
+                end
+            end
+            for bufnr, _ in pairs(attached_buffers) do
                 if vim.api.nvim_buf_is_valid(bufnr) then
                     M.safe_detach_client(bufnr, client.id)
                 end
             end
-            vim.lsp.stop_client(client.id, true)
+            pcall(function()
+                if type(client.stop) == "function" then
+                    client:stop()
+                else
+                    local fallback = vim.lsp.get_client_by_id(client.id)
+                    if fallback and type(fallback.stop) == "function" then
+                        fallback:stop()
+                    end
+                end
+            end)
         end
     end
     return true
@@ -283,7 +311,6 @@ M.start_language_server = function(server_name, force)
     if not force and M.is_server_disabled_globally(server_name) then
         return nil
     end
-
     local function find_compatible_buf()
         for _, buf in ipairs(vim.api.nvim_list_bufs()) do
             if is_real_file_buffer(buf) then
@@ -295,10 +322,8 @@ M.start_language_server = function(server_name, force)
         end
         return nil, nil
     end
-
     local bufnr = vim.api.nvim_get_current_buf()
     local ft = vim.bo[bufnr].filetype
-
     if not is_real_file_buffer(bufnr) or not M.is_lsp_compatible_with_ft(server_name, ft) then
         bufnr, ft = find_compatible_buf()
         if not bufnr or not is_real_file_buffer(bufnr) or not M.is_lsp_compatible_with_ft(server_name, ft) then
@@ -308,13 +333,10 @@ M.start_language_server = function(server_name, force)
             bufnr = nil
         end
     end
-
     if not bufnr or not is_real_file_buffer(bufnr) then
         return nil
     end
-
     local client_id = M.ensure_lsp_for_buffer(server_name, bufnr)
-
     if force and client_id then
         for _, buf in ipairs(vim.api.nvim_list_bufs()) do
             if buf ~= bufnr and is_real_file_buffer(buf) then
@@ -348,8 +370,14 @@ M.stop_servers_for_old_project = function()
                 client_root = tostring(client.config.root_dir)
             end
             if client_root ~= current_dir and not vim.startswith(client_root, current_dir) then
+                local cid = client.id
                 vim.schedule(function()
-                    vim.lsp.stop_client(client.id, true)
+                    local c = vim.lsp.get_client_by_id(cid)
+                    if c and type(c.stop) == "function" then
+                        pcall(function()
+                            c:stop()
+                        end)
+                    end
                 end)
                 stopped_count = stopped_count + 1
             end
@@ -407,7 +435,16 @@ M.setup_efm = function(filetypes, tools_config)
             for _, client in ipairs(vim.lsp.get_clients()) do
                 if client.name == "efm" then
                     efm_running = true
-                    vim.lsp.stop_client(client.id, true)
+                    pcall(function()
+                        if type(client.stop) == "function" then
+                            client:stop()
+                        else
+                            local fallback = vim.lsp.get_client_by_id(client.id)
+                            if fallback and type(fallback.stop) == "function" then
+                                fallback:stop()
+                            end
+                        end
+                    end)
                     break
                 end
             end

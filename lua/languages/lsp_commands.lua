@@ -416,7 +416,7 @@ local function lvim_lsp_restart()
                         end
                     end
                 end
-                vim.lsp.stop_client(client.id, true)
+                client:stop()
             end
         end
         vim.defer_fn(function()
