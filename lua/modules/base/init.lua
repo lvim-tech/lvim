@@ -354,11 +354,6 @@ modules["lvim-tech/lvim-move"] = {
     opts = editor_config.lvim_move.opts,
 }
 
-modules["nvim-treesitter/nvim-treesitter-context"] = {
-    commit = funcs.get_commit("nvim-treesitter-context", plugins_snapshot),
-    opts = editor_config.nvim_treesitter_context.opts,
-}
-
 modules["mistweaverco/kulala.nvim"] = {
     commit = funcs.get_commit("kulala.nvim", plugins_snapshot),
     ft = { "http", "rest" },
@@ -575,8 +570,12 @@ modules["nvim-treesitter/nvim-treesitter"] = {
     lazy = false,
     branch = "main",
     build = ":TSUpdate",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    opts = languages_config.nvim_treesitter.opts,
+    config = languages_config.nvim_treesitter.config,
+}
+
+modules["nvim-treesitter/nvim-treesitter-context"] = {
+    commit = funcs.get_commit("nvim-treesitter-context", plugins_snapshot),
+    opts = languages_config.nvim_treesitter_context.opts,
 }
 
 modules["j-hui/fidget.nvim"] = {

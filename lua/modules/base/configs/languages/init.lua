@@ -559,48 +559,91 @@ return {
         },
     },
     nvim_treesitter = {
-        opts = function()
-            vim.api.nvim_create_autocmd("FileType", {
-                desc = "Start treesitter",
-                group = vim.api.nvim_create_augroup("start_treesitter", { clear = true }),
-                pattern = "http",
-                callback = function(ev)
-                    vim.treesitter.start(ev.buf)
-                end,
-            })
-            return {
-                ensure_installed = "all",
-                ignore_install = {},
-                highlight = {
-                    enable = true,
-                    additional_vim_regex_highlighting = { "org", "http" },
-                },
-                indent = {
-                    enable = true,
-                    disable = {
-                        "dart",
-                    },
-                },
-                autopairs = {
-                    enable = true,
-                },
-                rainbow = {
-                    enable = true,
-                },
-                context_commentstring = {
-                    enable = true,
-                    config = {
-                        javascriptreact = {
-                            style_element = "{/*%s*/}",
-                        },
-                    },
-                },
-                matchup = {
-                    enable = true,
-                    disable_virtual_text = true,
-                },
-            }
+        config = function()
+            local lsp_installer = require("languages.lsp_installer")
+            lsp_installer.ensure_mason_tools({ "tree-sitter-cli" }, function()
+                local ensure_installed = require("modules.base.configs.languages.ts_parsers")
+                require("nvim-treesitter").install(ensure_installed)
+                vim.api.nvim_create_autocmd("FileType", {
+                    desc = "Start treesitter",
+                    group = vim.api.nvim_create_augroup("start_treesitter", { clear = true }),
+                    pattern = ensure_installed,
+                    callback = function()
+                        vim.treesitter.start()
+                        vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+                        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                    end,
+                })
+            end)
         end,
+    },
+    nvim_treesitter_context = {
+        opts = {
+            enable = true,
+            max_lines = 3,
+            trim_scope = "outer",
+            min_window_height = 0,
+            patterns = {
+                default = {
+                    "class",
+                    "function",
+                    "method",
+                    "for",
+                    "while",
+                    "if",
+                    "switch",
+                    "case",
+                },
+                tex = {
+                    "chapter",
+                    "section",
+                    "subsection",
+                    "subsubsection",
+                },
+                rust = {
+                    "impl_item",
+                    "struct",
+                    "enum",
+                },
+                scala = {
+                    "object_definition",
+                },
+                vhdl = {
+                    "process_statement",
+                    "architecture_body",
+                    "entity_declaration",
+                },
+                markdown = {
+                    "section",
+                },
+                elixir = {
+                    "anonymous_function",
+                    "arguments",
+                    "block",
+                    "do_block",
+                    "list",
+                    "map",
+                    "tuple",
+                    "quoted_content",
+                },
+                json = {
+                    "pair",
+                },
+                yaml = {
+                    "block_mapping_pair",
+                },
+            },
+            on_attach = function(bufnr)
+                if vim.bo[bufnr].filetype == "markdown" or vim.bo[bufnr].filetype == "org" then
+                    return false
+                end
+                return true
+            end,
+            exact_patterns = {},
+            zindex = 20,
+            mode = "cursor",
+            separator = nil,
+        },
     },
     fidget_nvim = {
         opts = {
