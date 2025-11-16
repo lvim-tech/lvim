@@ -49,34 +49,61 @@ return {
             }
         end,
     },
-    navigator_nvim = {
-        cmd = { "NavigatorLeft", "NavigatorRight", "NavigatorUp", "NavigatorDown" },
+    smart_splits = {
         keys = {
             {
                 "<C-h>",
                 function()
-                    vim.cmd("NavigatorLeft")
+                    require("smart-splits").move_cursor_left()
                 end,
                 desc = "Navigator left",
             },
             {
                 "<C-l>",
                 function()
-                    vim.cmd("NavigatorRight")
+                    require("smart-splits").move_cursor_right()
                 end,
                 desc = "Navigator right",
             },
             {
                 "<C-k>",
                 function()
-                    vim.cmd("NavigatorUp")
+                    require("smart-splits").move_cursor_up()
                 end,
                 desc = "Navigator up",
             },
             {
                 "<C-j>",
                 function()
-                    vim.cmd("NavigatorDown")
+                    require("smart-splits").move_cursor_down()
+                end,
+                desc = "Navigator down",
+            },
+            {
+                "<C-Left>",
+                function()
+                    require("smart-splits").resize_left()
+                end,
+                desc = "Navigator down",
+            },
+            {
+                "<C-Right>",
+                function()
+                    require("smart-splits").resize_right()
+                end,
+                desc = "Navigator down",
+            },
+            {
+                "<C-Up>",
+                function()
+                    require("smart-splits").resize_up()
+                end,
+                desc = "Navigator up",
+            },
+            {
+                "<C-Down>",
+                function()
+                    require("smart-splits").resize_down()
                 end,
                 desc = "Navigator down",
             },

@@ -44,10 +44,8 @@ modules["MunifTanjim/nui.nvim"] = {
 
 modules["junegunn/fzf"] = {
     commit = funcs.get_commit("fzf", plugins_snapshot),
-    build = function()
-        vim.fn["fzf#install"]()
-    end,
-    lazy = true,
+    build = "./install --bin",
+    lazy = false,
 }
 
 modules["mxsdev/nvim-dap-vscode-js"] = {
@@ -278,11 +276,10 @@ modules["lvim-tech/lvim-control-center"] = {
     opts = editor_config.lvim_control_center.opts,
 }
 
-modules["numToStr/Navigator.nvim"] = {
-    commit = funcs.get_commit("Navigator.nvim", plugins_snapshot),
-    cmd = editor_config.navigator_nvim.cmd,
-    keys = editor_config.navigator_nvim.keys,
-    opts = editor_config.navigator_nvim.opts,
+modules["mrjones2014/smart-splits.nvim"] = {
+    commit = funcs.get_commit("smart-splits.nvim", plugins_snapshot),
+    keys = editor_config.smart_splits.keys,
+    opts = editor_config.smart_splits.opts,
 }
 
 modules["ibhagwan/fzf-lua"] = {
@@ -644,7 +641,8 @@ modules["dhruvasagar/vim-table-mode"] = {
 
 modules["iamcco/markdown-preview.nvim"] = {
     commit = funcs.get_commit("markdown-preview.nvim", plugins_snapshot),
-    build = "cd app && npm install",
+    -- build = "cd app && npm install",
+    build = "cd app && yarn install; git restore app/yarn.lock",
     ft = { "md", "markdown" },
     cmd = languages_config.markdown_preview_nvim.cmd,
     keys = languages_config.markdown_preview_nvim.keys,
