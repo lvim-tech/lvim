@@ -330,7 +330,6 @@ return {
             "DiffviewToggleFiles",
             "DiffviewLog",
             "DiffviewRefresh",
-            "CloseFloatWindows",
         },
         keys = {
             {
@@ -405,3 +404,5 @@ return {
         },
     },
 }
+
+-- vim: foldmethod=indent foldlevel=1
