@@ -170,8 +170,7 @@ modules["folke/snacks.nvim"] = {
 
 modules["OXY2DEV/ui.nvim"] = {
     commit = funcs.get_commit("ui.nvim", plugins_snapshot),
-    event = "VimEnter",
-    opts = ui_config.ui_nvim.opts,
+    config = ui_config.ui_nvim.config,
 }
 
 modules["s1n7ax/nvim-window-picker"] = {
@@ -230,8 +229,8 @@ modules["stevearc/oil.nvim"] = {
 }
 
 modules["rebelot/heirline.nvim"] = {
+    priority = 50,
     commit = funcs.get_commit("heirline.nvim", plugins_snapshot),
-    opts = ui_config.heirline_nvim.opts,
     config = ui_config.heirline_nvim.config,
 }
 

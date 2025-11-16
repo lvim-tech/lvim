@@ -320,13 +320,53 @@ return {
         end,
     },
     ui_nvim = {
-        opts = function()
+        config = function()
+            local function set_hl_groups()
+                local c = _G.LVIM_COLORS
+                local hl = vim.api.nvim_set_hl
+
+                hl(0, "UICmdlineDefault", { bg = c.blue_bh, fg = c.blue })
+                hl(0, "UICmdlineDefaultIcon", { bg = c.blue_bl, fg = c.blue })
+                hl(0, "UICmdlineLua", { bg = c.purple_bh, fg = c.purple })
+                hl(0, "UICmdlineLuaIcon", { bg = c.purple_bl, fg = c.purple })
+                hl(0, "UICmdlineEval", { bg = c.red_bh, fg = c.red })
+                hl(0, "UICmdlineEvalIcon", { bg = c.red_bl, fg = c.red })
+                hl(0, "UICmdlineSearchUp", { bg = c.blue_bh, fg = c.blue })
+                hl(0, "UICmdlineSearchUpIcon", { bg = c.blue_bl, fg = c.blue })
+                hl(0, "UICmdlineSearchDown", { bg = c.blue_bh, fg = c.blue })
+                hl(0, "UICmdlineSearchDownIcon", { bg = c.blue_bl, fg = c.blue })
+                hl(0, "UICmdlineSubstitute", { bg = c.cyan_bh, fg = c.cyan })
+                hl(0, "UICmdlineSubstituteIcon", { bg = c.cyan_bl, fg = c.cyan })
+                hl(0, "UIMessageDefault", { bg = c.blue_bh, fg = c.blue })
+                hl(0, "UIMessageOk", { bg = c.green_bh, fg = c.green })
+                hl(0, "UIMessageOkIcon", { bg = c.green_bl, fg = c.green })
+                hl(0, "UIMessageInfo", { bg = c.blue_bh, fg = c.blue })
+                hl(0, "UIMessageInfoSign", { bg = c.blue_bl, fg = c.blue })
+                hl(0, "UIMessageHint", { bg = c.cyan_bh, fg = c.cyan })
+                hl(0, "UIMessageHintSign", { bg = c.cyan_bh, fg = c.cyan })
+                hl(0, "UIMessageWarn", { bg = c.orange_bh, fg = c.orange })
+                hl(0, "UIMessageWarnSign", { bg = c.orange_bh, fg = c.orange })
+                hl(0, "UIMessageError", { bg = c.red_bh, fg = c.red })
+                hl(0, "UIMessageErrorIcon", { bg = c.red_bl, fg = c.red })
+                hl(0, "UIMessageErrorSign", { bg = c.red_bh, fg = c.red })
+                hl(0, "UIMessagePalette", { bg = c.purple_bh, fg = c.purple })
+                hl(0, "UIMessagePaletteSign", { bg = c.purple_bh, fg = c.purple })
+                hl(0, "UIHistoryKeymap", { bg = c.blue_bl, fg = c.blue, bold = true })
+                hl(0, "UIHistoryDesc", { bg = c.blue_bh, fg = c.blue })
+                hl(0, "DiagnosticInfo", { fg = c.blue })
+                hl(0, "DiagnosticOk", { fg = c.green })
+                hl(0, "DiagnosticWarn", { fg = c.orange })
+                hl(0, "DiagnosticError", { fg = c.red })
+                hl(0, "DiagnosticHint", { fg = c.cyan })
+            end
             local utils = require("ui.utils")
-            return {
+            require("ui").setup({
                 cmdline = {
                     styles = {
                         default = { icon = { { "▌ " .. icons.common.vim2 .. "  ", "UICmdlineDefaultIcon" } } },
-                        search_down = { icon = { { "▌ " .. icons.common.up .. "  ", "UICmdlineSearchDownIcon" } } },
+                        search_down = {
+                            icon = { { "▌ " .. icons.common.up .. "  ", "UICmdlineSearchDownIcon" } },
+                        },
                         search_up = { icon = { { "▌ " .. icons.common.down .. "  ", "UICmdlineSearchUpIcon" } } },
                         set = { icon = { { "▌ " .. icons.common.set .. "  ", "UICmdlineDefaultIcon" } } },
                         shell = { icon = { { "▌ " .. icons.common.symbol2 .. "  ", "UICmdlineEvalIcon" } } },
@@ -335,9 +375,13 @@ return {
                         substitute = {
                             icon = function(_, lines)
                                 if string.match(lines[#lines], "^s/") then
-                                    return { { "▌ " .. icons.common.substitute1 .. "  ", "UICmdlineSubstituteIcon" } }
+                                    return {
+                                        { "▌ " .. icons.common.substitute1 .. "  ", "UICmdlineSubstituteIcon" },
+                                    }
                                 else
-                                    return { { "▌ " .. icons.common.substitute2 .. "  ", "UICmdlineSubstituteIcon" } }
+                                    return {
+                                        { "▌ " .. icons.common.substitute2 .. "  ", "UICmdlineSubstituteIcon" },
+                                    }
                                 end
                             end,
                         },
@@ -426,7 +470,10 @@ return {
                         default = { border = "single", winhl = "Normal:NormalFloat,FloatBorder:FloatBorder" },
                     },
                 },
-            }
+            })
+            vim.schedule(function()
+                set_hl_groups()
+            end)
         end,
     },
     nvim_window_picker = {
@@ -785,7 +832,7 @@ return {
         },
     },
     heirline_nvim = {
-        opts = function()
+        config = function()
             local statusline = require("modules.base.configs.ui.heirline.statusline").get_statusline()
             local statuscolumn = require("modules.base.configs.ui.heirline.statuscolumn").get_statuscolumn()
             local winbar = require("modules.base.configs.ui.heirline.winbar").get_winbar()
@@ -799,7 +846,7 @@ return {
             end
             table.insert(file_types_winbar, "qf")
             table.insert(file_types_winbar, "replacer")
-            return {
+            require("heirline").setup({
                 statusline = statusline,
                 statuscolumn = statuscolumn,
                 winbar = winbar,
@@ -811,16 +858,6 @@ return {
                         return buftype or filetype
                     end,
                 },
-            }
-        end,
-        config = function(_, opts)
-            require("heirline").setup(opts)
-            vim.api.nvim_create_autocmd("ColorScheme", {
-                callback = function()
-                    print("test")
-                    require("heirline").setup(opts)
-                    require("heirline").reset_highlights()
-                end,
             })
         end,
     },

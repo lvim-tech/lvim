@@ -121,6 +121,8 @@ configs["base_lvim"] = function()
             }
             vim.api.nvim_set_hl(0, "WinBar", { bg = _G.LVIM_COLORS.bg_dark, fg = _G.LVIM_COLORS.fg })
             vim.api.nvim_set_hl(0, "WinBarNC", { bg = _G.LVIM_COLORS.bg_dark, fg = _G.LVIM_COLORS.fg })
+            require("modules.base.configs.ui").heirline_nvim.config()
+            require("modules.base.configs.ui").ui_nvim.config()
         end,
         group = group,
     })
