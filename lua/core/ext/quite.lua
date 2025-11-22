@@ -4,11 +4,13 @@ local M = {}
 
 M.quit = function()
     local unsaved_buffers = {}
-    for _, b in ipairs(vim.api.nvim_list_bufs()) do
-        if vim.bo[b].modified and vim.api.nvim_buf_is_loaded(b) and vim.api.nvim_buf_get_name(b) ~= "" then
+    for _, info in ipairs(vim.fn.getbufinfo({ bufloaded = 1 })) do
+        local b = info.bufnr
+        if info.changed == 1 and vim.api.nvim_buf_is_valid(b) and vim.bo[b].buftype == "" then
             table.insert(unsaved_buffers, b)
         end
     end
+
     if #unsaved_buffers == 0 then
         vim.cmd("qa")
         return
@@ -82,6 +84,14 @@ M.quit = function()
     local event = require("nui.utils.autocmd").event
     local TITLE_TEXT = Text(" Unsaved Files ", "QuitTitleText")
 
+    local popup
+    local current_index = 1
+    local lines_meta = {}
+    local scroll_offset = 0
+    local visible_file_count = 0
+    local actions_segments = {}
+    local cursor_blend_augroup
+
     local function fixed_block_height()
         return 1 + 1 + 1 + 1 + 1
     end
@@ -91,6 +101,9 @@ M.quit = function()
         for _, b in ipairs(unsaved_buffers) do
             local icon = selections[b] and icons.common.is_true or icons.common.is_false
             local fp = vim.api.nvim_buf_get_name(b)
+            if fp == "" then
+                fp = "[No Name #" .. b .. "]"
+            end
             local len = 1 + #icon + 1 + #fp
             if len > max_len then
                 max_len = len
@@ -124,43 +137,12 @@ M.quit = function()
         return capped
     end
 
-    local popup = Popup({
-        enter = true,
-        focusable = true,
-        zindex = 60,
-        border = {
-            style = "rounded",
-            highlight = "QuitBorder",
-            text = { top = TITLE_TEXT, top_align = "center" },
-        },
-        relative = "editor",
-        position = {
-            row = "50%",
-            col = "50%",
-        },
-        size = {
-            width = calc_width(),
-            height = compute_effective_height(),
-        },
-        win_options = {
-            winblend = 0,
-            cursorline = false,
-            winhighlight = "FloatBorder:QuitBorder",
-        },
-    })
-
-    local current_index = 1
-    local lines_meta = {}
-    local scroll_offset = 0
-    local visible_file_count = 0
-    local actions_segments = {}
-
     local function total_selectable()
         return #unsaved_buffers + #actions
     end
 
     local function effective_height()
-        if popup.winid and vim.api.nvim_win_is_valid(popup.winid) then
+        if popup and popup.winid and vim.api.nvim_win_is_valid(popup.winid) then
             return vim.api.nvim_win_get_height(popup.winid)
         end
         return compute_effective_height()
@@ -197,6 +179,9 @@ M.quit = function()
     end
 
     local function rebuild_size()
+        if not popup then
+            return
+        end
         popup:update_layout({
             size = {
                 width = calc_width(),
@@ -207,7 +192,10 @@ M.quit = function()
     end
 
     local function make_hline()
-        local w = popup.winid and vim.api.nvim_win_is_valid(popup.winid) and vim.api.nvim_win_get_width(popup.winid)
+        local w = popup
+                and popup.winid
+                and vim.api.nvim_win_is_valid(popup.winid)
+                and vim.api.nvim_win_get_width(popup.winid)
             or calc_width()
         return string.rep("─", w)
     end
@@ -227,7 +215,7 @@ M.quit = function()
     end
 
     local function render()
-        if not popup.bufnr then
+        if not popup or not popup.bufnr then
             return
         end
         recompute_visible_file_window()
@@ -252,7 +240,10 @@ M.quit = function()
             local buf = unsaved_buffers[file_i]
             local icon = selections[buf] and icons.common.is_true or icons.common.is_false
             local fp = vim.api.nvim_buf_get_name(buf)
-            local line = " " .. icon .. " " .. (fp ~= "" and fp or ("[No Name #" .. buf .. "]"))
+            if fp == "" then
+                fp = "[No Name #" .. buf .. "]"
+            end
+            local line = " " .. icon .. " " .. fp
             table.insert(lines, line)
             lines_meta[#lines] = { kind = "file", bufnr = buf, icon_len = 1 + #icon, file_index = file_i }
         end
@@ -420,33 +411,163 @@ M.quit = function()
         render()
     end
 
-    local function execute_action(id)
-        if id == "save" then
-            for b, want in pairs(selections) do
-                if want and vim.api.nvim_buf_is_valid(b) and vim.bo[b].modified then
-                    vim.api.nvim_buf_call(b, function()
-                        vim.cmd("silent write")
-                    end)
+    local function finalize_and_quit(saved_results)
+        local has_unsaved = false
+
+        if saved_results then
+            for _, b in ipairs(unsaved_buffers) do
+                if vim.api.nvim_buf_is_valid(b) and vim.bo[b].modified then
+                    if saved_results[b] == false then
+                        has_unsaved = true
+                        break
+                    end
+                    if saved_results[b] == nil and vim.bo[b].modified then
+                        has_unsaved = true
+                        break
+                    end
                 end
             end
-            popup:unmount()
-            local has_unsaved = false
-            for _, b in ipairs(unsaved_buffers) do
-                if not selections[b] and vim.api.nvim_buf_is_valid(b) and vim.bo[b].modified then
+        else
+            for _, info in ipairs(vim.fn.getbufinfo({ bufloaded = 1 })) do
+                local b = info.bufnr
+                if info.changed == 1 and vim.api.nvim_buf_is_valid(b) and vim.bo[b].buftype == "" then
                     has_unsaved = true
                     break
                 end
             end
-            if has_unsaved then
-                vim.cmd("qa!")
-            else
-                vim.cmd("qa")
+        end
+
+        if has_unsaved then
+            vim.cmd("qa!")
+        else
+            vim.cmd("qa")
+        end
+    end
+
+    local function try_write_buffer(bufnr, fname)
+        if not vim.api.nvim_buf_is_valid(bufnr) then
+            return false
+        end
+
+        fname = fname or vim.api.nvim_buf_get_name(bufnr)
+
+        if fname == "" then
+            return false
+        end
+
+        local dir = vim.fn.fnamemodify(fname, ":h")
+        if dir ~= "" and vim.fn.isdirectory(dir) == 0 then
+            vim.fn.mkdir(dir, "p")
+        end
+
+        local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+        local ok = pcall(vim.fn.writefile, lines, fname)
+
+        if not ok then
+            return false
+        end
+
+        pcall(vim.api.nvim_set_option_value, "modified", false, { buf = bufnr })
+
+        local stat = vim.loop.fs_stat(fname)
+        return stat ~= nil
+    end
+
+    local function restore_cursor()
+        pcall(vim.cmd, "hi Cursor blend=0")
+    end
+
+    local function focus_popup()
+        if popup and popup.winid and vim.api.nvim_win_is_valid(popup.winid) then
+            vim.api.nvim_set_current_win(popup.winid)
+            pcall(vim.cmd, "hi Cursor blend=100")
+        end
+    end
+
+    local function execute_action(id)
+        if id == "save" then
+            local saved_results = {}
+
+            local unnamed_to_prompt = {}
+            for b, want in pairs(selections) do
+                if want and vim.api.nvim_buf_is_valid(b) and vim.bo[b].modified then
+                    local fname = vim.api.nvim_buf_get_name(b)
+                    if fname == "" then
+                        table.insert(unnamed_to_prompt, b)
+                    else
+                        saved_results[b] = try_write_buffer(b)
+                    end
+                end
             end
+
+            if #unnamed_to_prompt == 0 then
+                popup:unmount()
+                restore_cursor()
+                vim.defer_fn(function()
+                    finalize_and_quit(saved_results)
+                end, 100)
+                return
+            end
+
+            local function prompt_save_unnamed(idx)
+                if idx > #unnamed_to_prompt then
+                    popup:unmount()
+                    restore_cursor()
+                    vim.defer_fn(function()
+                        finalize_and_quit(saved_results)
+                    end, 100)
+                    return
+                end
+
+                local bufnr = unnamed_to_prompt[idx]
+                if not vim.api.nvim_buf_is_valid(bufnr) or not vim.bo[bufnr].modified then
+                    saved_results[bufnr] = true
+                    prompt_save_unnamed(idx + 1)
+                    return
+                end
+
+                restore_cursor()
+                vim.fn.inputsave()
+                local input = vim.fn.input("Save buffer #" .. bufnr .. " as: ")
+                vim.fn.inputrestore()
+                vim.cmd("redraw")
+
+                if input == "" then
+                    saved_results[bufnr] = false
+                    focus_popup()
+                    return
+                end
+
+                local expanded = vim.fn.expand(input)
+
+                if not vim.startswith(expanded, "/") and not vim.startswith(expanded, vim.fn.expand("~")) then
+                    expanded = vim.fn.getcwd() .. "/" .. expanded
+                end
+
+                local ok_set = pcall(vim.api.nvim_buf_set_name, bufnr, expanded)
+
+                if ok_set then
+                    saved_results[bufnr] = try_write_buffer(bufnr, expanded)
+
+                    if not saved_results[bufnr] then
+                        vim.notify("Failed to write file: " .. expanded, vim.log.levels.ERROR)
+                    end
+                else
+                    saved_results[bufnr] = false
+                    vim.notify("Failed to set buffer name", vim.log.levels.ERROR)
+                end
+
+                prompt_save_unnamed(idx + 1)
+            end
+
+            prompt_save_unnamed(1)
         elseif id == "discard" then
             popup:unmount()
+            restore_cursor()
             vim.cmd("qa!")
         elseif id == "cancel" then
             popup:unmount()
+            restore_cursor()
         end
     end
 
@@ -463,19 +584,44 @@ M.quit = function()
         end
     end
 
+    popup = Popup({
+        enter = true,
+        focusable = true,
+        zindex = 60,
+        border = {
+            style = "rounded",
+            highlight = "QuitBorder",
+            text = { top = TITLE_TEXT, top_align = "center" },
+        },
+        relative = "editor",
+        position = {
+            row = "50%",
+            col = "50%",
+        },
+        size = {
+            width = calc_width(),
+            height = compute_effective_height(),
+        },
+        win_options = {
+            winblend = 0,
+            cursorline = false,
+            winhighlight = "FloatBorder:QuitBorder",
+        },
+    })
+
     popup:mount()
 
     local function apply_cursor_blending(win)
         if not win or not vim.api.nvim_win_is_valid(win) then
             return
         end
-        local augroup = vim.api.nvim_create_augroup("QuitPopupCursorBlend", { clear = true })
+        cursor_blend_augroup = vim.api.nvim_create_augroup("QuitPopupCursorBlend", { clear = true })
         vim.cmd("hi Cursor blend=100")
         vim.api.nvim_create_autocmd({ "WinEnter", "WinLeave" }, {
-            group = augroup,
+            group = cursor_blend_augroup,
             callback = function()
                 local current = vim.api.nvim_get_current_win()
-                if current == win then
+                if current == win and vim.api.nvim_win_is_valid(win) then
                     vim.cmd("hi Cursor blend=100")
                 else
                     vim.cmd("hi Cursor blend=0")
@@ -483,7 +629,7 @@ M.quit = function()
             end,
         })
         vim.api.nvim_create_autocmd("WinClosed", {
-            group = augroup,
+            group = cursor_blend_augroup,
             pattern = tostring(win),
             callback = function()
                 vim.schedule(function()
@@ -521,9 +667,11 @@ M.quit = function()
     map("<CR>", handle_enter)
     map("q", function()
         popup:unmount()
+        restore_cursor()
     end)
     map("<Esc>", function()
         popup:unmount()
+        restore_cursor()
     end)
 
     rebuild_size()
