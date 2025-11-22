@@ -33,6 +33,12 @@ return {
                     disabled = disabled or vim.g.__ui_cmdline_active == true
                     disabled = disabled or vim.g.__ui_confirm_msg ~= nil
                     disabled = disabled or vim.g.__ui_list_msg ~= nil
+                    local ok_ft, ft = pcall(function()
+                        return vim.bo.filetype
+                    end)
+                    if ok_ft and (ft == nil or ft == "") then
+                        disabled = true
+                    end
                     return not disabled
                 end,
                 sources = {
