@@ -562,12 +562,13 @@ return {
         config = function()
             local lsp_installer = require("languages.lsp_installer")
             lsp_installer.ensure_mason_tools({ "tree-sitter-cli" }, function()
-                local ensure_installed = require("modules.base.configs.languages.ts_parsers")
-                require("nvim-treesitter").install(ensure_installed)
+                local ts = require("nvim-treesitter")
+                local all_parsers = ts.get_available()
+                ts.install(all_parsers)
                 vim.api.nvim_create_autocmd("FileType", {
                     desc = "Start treesitter",
                     group = vim.api.nvim_create_augroup("start_treesitter", { clear = true }),
-                    pattern = ensure_installed,
+                    pattern = all_parsers,
                     callback = function()
                         vim.treesitter.start()
                         vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
@@ -577,6 +578,25 @@ return {
             end)
         end,
     },
+    -- nvim_treesitter = {
+    --     config = function()
+    --         local lsp_installer = require("languages.lsp_installer")
+    --         lsp_installer.ensure_mason_tools({ "tree-sitter-cli" }, function()
+    --             local ensure_installed = require("modules.base.configs.languages.ts_parsers")
+    --             require("nvim-treesitter").install(ensure_installed)
+    --             vim.api.nvim_create_autocmd("FileType", {
+    --                 desc = "Start treesitter",
+    --                 group = vim.api.nvim_create_augroup("start_treesitter", { clear = true }),
+    --                 pattern = ensure_installed,
+    --                 callback = function()
+    --                     vim.treesitter.start()
+    --                     vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+    --                     vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    --                 end,
+    --             })
+    --         end)
+    --     end,
+    -- },
     nvim_treesitter_context = {
         opts = {
             enable = true,
@@ -1079,10 +1099,7 @@ return {
         end,
     },
     live_preview_nvim = {
-        cmd = { "MarkdownPreview" },
-        keys = {
-            { "<S-m>", "<cmd>MarkdownPreview<CR>", desc = "Markdown preview" },
-        },
+        opts = {},
     },
     markview_nvim = {
         opts = function()
