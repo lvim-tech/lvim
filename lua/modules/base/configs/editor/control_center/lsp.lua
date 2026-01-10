@@ -68,24 +68,26 @@ return {
             end,
             set = function(val, on_init)
                 _G.LVIM_SETTINGS["virtualdiagnostic"] = val
-                if not on_init then
-                    local config = vim.diagnostic.config
-                    local virtualdiagnostic
-                    if val == "text-and-lines" then
-                        virtualdiagnostic = { text = true, lines = true }
-                    elseif val == "text" then
-                        virtualdiagnostic = { text = true, lines = false }
-                    elseif val == "lines" then
-                        virtualdiagnostic = { text = false, lines = true }
-                    else
-                        virtualdiagnostic = { text = false, lines = false }
-                    end
-                    local is_empty = not virtualdiagnostic or next(virtualdiagnostic) == nil
+                local config = vim.diagnostic.config
+                local virtualdiagnostic
+                if val == "text-and-lines" then
+                    virtualdiagnostic = { text = true, lines = true }
+                elseif val == "text" then
+                    virtualdiagnostic = { text = true, lines = false }
+                elseif val == "lines" then
+                    virtualdiagnostic = { text = false, lines = true }
+                else
+                    virtualdiagnostic = { text = false, lines = false }
+                end
+                local is_empty = not virtualdiagnostic or next(virtualdiagnostic) == nil
+                vim.schedule(function()
                     config({
                         virtual_text = (not is_empty and virtualdiagnostic.text) and { prefix = icons.common.dot }
                             or false,
                         virtual_lines = not is_empty and virtualdiagnostic.lines or false,
                     })
+                end)
+                if not on_init then
                     data.save("virtualdiagnostic", val)
                 end
             end,
