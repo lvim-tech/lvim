@@ -8,13 +8,33 @@ return {
                 enable_autosnippets = true,
                 store_selection_keys = "<Tab>",
             })
-            require("luasnip.loaders.from_vscode").lazy_load()
-            require("luasnip.loaders.from_vscode").load({
-                paths = { vim.fn.stdpath("config") .. "/snippets/vscode" },
-            })
-            require("luasnip.loaders.from_lua").load({
-                paths = { vim.fn.stdpath("config") .. "/snippets/lua" },
-            })
+
+            vim.schedule(function()
+                local ok_ls, _ = pcall(require, "luasnip")
+                if not ok_ls then
+                    vim.notify("luasnip not available; snippets not loaded", vim.log.levels.WARN)
+                    return
+                end
+
+                local config_path = vim.fn.stdpath("config")
+                local vscode_path = config_path .. "/snippets/vscode"
+                local lua_path = config_path .. "/snippets/lua"
+
+                local ok_vscode, vscode_loader = pcall(require, "luasnip.loaders.from_vscode")
+                if ok_vscode then
+                    if vim.fn.isdirectory(vscode_path) == 1 then
+                        vscode_loader.lazy_load({ paths = { vscode_path } })
+                    else
+                        vscode_loader.lazy_load()
+                    end
+                end
+
+                local ok_lua, lua_loader = pcall(require, "luasnip.loaders.from_lua")
+                if ok_lua and vim.fn.isdirectory(lua_path) == 1 then
+                    lua_loader.load({ paths = { lua_path } })
+                end
+            end)
+
             return {
                 enabled = function()
                     local disabled = false
@@ -42,6 +62,7 @@ return {
                     end
                     return not disabled
                 end,
+                snippets = { preset = "luasnip" },
                 sources = {
                     default = { "lsp", "path", "snippets", "buffer", "dadbod", "ripgrep", "emoji" },
                     providers = {
