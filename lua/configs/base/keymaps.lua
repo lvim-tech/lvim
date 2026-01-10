@@ -2,8 +2,26 @@ local keymaps = {}
 
 keymaps["normal"] = {
     { "<Esc>", "<Esc>:noh<CR>", "Esc" }, -- Remove highlight after search
-    { "j", "gj", "j" }, -- Re-map j
-    { "k", "gk", "k" }, -- Re-map k
+    {
+        "j",
+        function()
+            vim.schedule(function()
+                pcall(vim.cmd, "normal! gj")
+            end)
+        end,
+        "j",
+    }, -- Re-map j
+    {
+        "k",
+        function()
+            vim.schedule(function()
+                pcall(vim.cmd, "normal! gk")
+            end)
+        end,
+        "k",
+    }, -- Re-map k
+    -- { "j", "gj", "j" }, -- Re-map j
+    -- { "k", "gk", "k" }, -- Re-map k
     -- { "<C-d>", "<C-d>zz", "C-d" }, -- Re-map C-d
     -- { "<C-u>", "<C-u>zz", "C-u" }, -- Re-map C-u
     -- { "<C-f>", "<C-f>zz", "C-f" }, -- Re-map C-f

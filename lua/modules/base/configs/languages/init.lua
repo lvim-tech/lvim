@@ -1078,7 +1078,7 @@ return {
             }
         end,
     },
-    markdown_preview_nvim = {
+    live_preview_nvim = {
         cmd = { "MarkdownPreview" },
         keys = {
             { "<S-m>", "<cmd>MarkdownPreview<CR>", desc = "Markdown preview" },

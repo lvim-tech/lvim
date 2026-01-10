@@ -638,13 +638,16 @@ modules["dhruvasagar/vim-table-mode"] = {
     ft = { "markdown", "text" },
 }
 
-modules["iamcco/markdown-preview.nvim"] = {
-    commit = funcs.get_commit("markdown-preview.nvim", plugins_snapshot),
+modules["brianhuster/live-preview.nvim"] = {
+    commit = funcs.get_commit("live-preview.nvim", plugins_snapshot),
     -- build = "cd app && npm install",
-    build = "cd app && yarn install; git restore app/yarn.lock",
-    ft = { "md", "markdown" },
-    cmd = languages_config.markdown_preview_nvim.cmd,
-    keys = languages_config.markdown_preview_nvim.keys,
+    -- build = "cd app && yarn install; git restore app/yarn.lock",
+    -- ft = { "md", "markdown" },
+    -- cmd = languages_config.markdown_preview_nvim.cmd,
+    -- keys = languages_config.markdown_preview_nvim.keys,
+    config = function()
+        require("livepreview.config").set()
+    end,
 }
 
 modules["OXY2DEV/markview.nvim"] = {
