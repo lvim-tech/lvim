@@ -1,4 +1,4 @@
-# LVIM IDE
+# LVIM IDEdsdf
 
 ![LVIM IDE](/assets/lvim-ide-logo.png)
 
@@ -12,7 +12,7 @@
 - Formatters with efm ("stylua", "yamlfmt", "shfmt", "cbfmt", "prettierd")
 - Automatically install dependencies (lsp servers, linters, formatters, debbugers) by filetype
 
-> Current version - 7.6.5 (2025-10-23)
+> Current version - 8.0.0 (2026-01-10)
 
 ## INTRODUCTION
 
