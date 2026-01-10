@@ -481,6 +481,13 @@ modules["sindrets/diffview.nvim"] = {
     opts = version_control_config.diffview_nvim.opts,
 }
 
+modules["esmuellert/codediff.nvim"] = {
+    commit = funcs.get_commit("codediff.nvim", plugins_snapshot),
+    cmd = version_control_config.codediff_nvim.cmd,
+    keys = version_control_config.codediff_nvim.keys,
+    opts = version_control_config.codediff_nvim.opts,
+}
+
 modules["y3owk1n/time-machine.nvim"] = {
     commit = funcs.get_commit("time-machine", plugins_snapshot),
     cmd = version_control_config.time_machine_nvim.cmd,
@@ -640,19 +647,13 @@ modules["dhruvasagar/vim-table-mode"] = {
 
 modules["brianhuster/live-preview.nvim"] = {
     commit = funcs.get_commit("live-preview.nvim", plugins_snapshot),
-    -- build = "cd app && npm install",
-    -- build = "cd app && yarn install; git restore app/yarn.lock",
-    -- ft = { "md", "markdown" },
-    -- cmd = languages_config.markdown_preview_nvim.cmd,
-    -- keys = languages_config.markdown_preview_nvim.keys,
-    config = function()
-        require("livepreview.config").set()
-    end,
+    opts = languages_config.live_preview_nvim.opts,
 }
 
 modules["OXY2DEV/markview.nvim"] = {
     commit = funcs.get_commit("markview-nvim", plugins_snapshot),
-    ft = { "md", "markdown", "Avante" },
+    priority = 101,
+    -- ft = { "md", "markdown", "Avante" },
     opts = languages_config.markview_nvim.opts,
 }
 

@@ -354,6 +354,21 @@ return {
                 desc = "Git diffview close",
             },
         },
+        opts = {},
+    },
+    codediff_nvim = {
+        cmd = {
+            "CodeDiff",
+        },
+        keys = {
+            {
+                "<Leader>gd",
+                "<cmd>CodeDiff<cr>",
+                mode = "n",
+                desc = "Git code diff",
+            },
+        },
+        opts = {},
     },
     time_machine_nvim = {
         cmd = {
