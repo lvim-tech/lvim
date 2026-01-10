@@ -1,4 +1,21 @@
 {
+    "html5": {
+        "prefix": "html:5",
+        "body": [
+            "<!DOCTYPE html>",
+            "<html lang=\"${1:en}\">",
+            "<head>",
+            "\t<meta charset=\"${2:UTF-8}\">",
+            "\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",
+            "\t<title>${3:Document}</title>",
+            "</head>",
+            "<body>",
+            "\t$0",
+            "</body>",
+            "</html>"
+        ],
+        "description": "HTML5 boilerplate"
+    },
     "doctype": {
         "prefix": "doctype",
         "body": "<!DOCTYPE html>\n",
