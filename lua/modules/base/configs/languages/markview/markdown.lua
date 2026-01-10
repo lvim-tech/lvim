@@ -175,16 +175,11 @@ return {
         enable = true,
         style = "block",
         label_direction = "right",
-        border_hl = "MarkviewCode",
         info_hl = "MarkviewCodeInfo",
         min_width = 60,
         pad_amount = 2,
         pad_char = " ",
         sign = true,
-        default = {
-            block_hl = "MarkviewCode",
-            pad_hl = "MarkviewCode",
-        },
         ["diff"] = {
             block_hl = function(_, line)
                 if line:match("^%+") then
