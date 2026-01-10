@@ -1,4 +1,4 @@
-# LVIM IDEdsdf
+# LVIM IDE
 
 ![LVIM IDE](/assets/lvim-ide-logo.png)
 
