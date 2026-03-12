@@ -13,6 +13,7 @@ local lsp_dependencies = {
 
 local lsp_config = nil
 local root_markers = {
+    "pyrightconfig.json",
     "pyproject.toml",
     "setup.py",
     "setup.cfg",

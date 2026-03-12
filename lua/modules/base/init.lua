@@ -38,7 +38,6 @@ modules["nvim-tree/nvim-web-devicons"] = {
 
 modules["MunifTanjim/nui.nvim"] = {
     commit = funcs.get_commit("nui.nvim", plugins_snapshot),
-    lazy = true,
     config = dependencies_config.nui_nvim.config,
 }
 
@@ -622,31 +621,32 @@ modules["lvim-tech/nvim-dbee"] = {
     opts = languages_config.nvim_dbee.opts,
 }
 
-modules["vuki656/package-info.nvim"] = {
-    commit = funcs.get_commit("package-info.nvim", plugins_snapshot),
-    event = "BufReadPost package.json",
-    opts = languages_config.package_info_nvim.opts,
-}
-
-modules["Saecki/crates.nvim"] = {
-    commit = funcs.get_commit("crates.nvim", plugins_snapshot),
-    event = "BufReadPost Cargo.toml",
-    opts = languages_config.crates_nvim.opts,
-}
-
-modules["lvim-tech/pubspec-assist.nvim"] = {
-    commit = funcs.get_commit("pubspec-assist.nvim", plugins_snapshot),
-    event = "BufReadPost pubspec.yaml",
-    opts = languages_config.pubspec_assist_nvim.opts,
-}
+-- modules["vuki656/package-info.nvim"] = {
+--     commit = funcs.get_commit("package-info.nvim", plugins_snapshot),
+--     event = "BufReadPost package.json",
+--     opts = languages_config.package_info_nvim.opts,
+-- }
+--
+-- modules["Saecki/crates.nvim"] = {
+--     commit = funcs.get_commit("crates.nvim", plugins_snapshot),
+--     event = "BufReadPost Cargo.toml",
+--     opts = languages_config.crates_nvim.opts,
+-- }
+-- --
+-- modules["lvim-tech/pubspec-assist.nvim"] = {
+--     commit = funcs.get_commit("pubspec-assist.nvim", plugins_snapshot),
+--     event = "BufReadPost pubspec.yaml",
+--     opts = languages_config.pubspec_assist_nvim.opts,
+-- }
 
 modules["dhruvasagar/vim-table-mode"] = {
     commit = funcs.get_commit("dhruvasagar/vim-table-mode", plugins_snapshot),
     ft = { "markdown", "text" },
 }
 
-modules["brianhuster/live-preview.nvim"] = {
+modules["lvim-tech/live-preview.nvim"] = {
     commit = funcs.get_commit("live-preview.nvim", plugins_snapshot),
+    keys = languages_config.live_preview_nvim.keys,
     opts = languages_config.live_preview_nvim.opts,
 }
 

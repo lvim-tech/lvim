@@ -6,7 +6,8 @@
         "inject-field",
         "duplicate-set-field",
         "need-check-nil",
-        "missing-fields"
+        "missing-fields",
+        "undefined-global"
     ],
     "diagnostics.globals": [
         "vim",

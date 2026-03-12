@@ -244,7 +244,9 @@ return {
                 },
                 lsp = {
                     auto_attach = true,
+                    auto_pub_get = false,
                     on_attach = function(client, bufnr)
+                        print("🚀 Flutter tools attached with auto_pub_get=false")
                         setup_diagnostics.keymaps(client, bufnr)
                         setup_diagnostics.document_highlight(client, bufnr)
                         setup_diagnostics.document_auto_format(client, bufnr)
@@ -507,6 +509,7 @@ return {
                             renameFilesWithClasses = "prompt",
                             enableSnippets = true,
                             lineLength = 80,
+                            autoRunPubGet = false,
                         },
                     },
                 },
@@ -578,25 +581,6 @@ return {
             end)
         end,
     },
-    -- nvim_treesitter = {
-    --     config = function()
-    --         local lsp_installer = require("languages.lsp_installer")
-    --         lsp_installer.ensure_mason_tools({ "tree-sitter-cli" }, function()
-    --             local ensure_installed = require("modules.base.configs.languages.ts_parsers")
-    --             require("nvim-treesitter").install(ensure_installed)
-    --             vim.api.nvim_create_autocmd("FileType", {
-    --                 desc = "Start treesitter",
-    --                 group = vim.api.nvim_create_augroup("start_treesitter", { clear = true }),
-    --                 pattern = ensure_installed,
-    --                 callback = function()
-    --                     vim.treesitter.start()
-    --                     vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-    --                     vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-    --                 end,
-    --             })
-    --         end)
-    --     end,
-    -- },
     nvim_treesitter_context = {
         opts = {
             enable = true,
@@ -1072,7 +1056,25 @@ return {
                 { desc = "Focus the active popup" }
             )
             vim.api.nvim_create_user_command("CratesHidePopup", crates.hide_popup, { desc = "Hide the active popup" })
-            return {}
+            return {
+                lsp = {
+                    enabled = true,
+                    on_attach = function(client, bufnr)
+                        -- the same on_attach function as for your other language servers
+                        -- can be ommited if you're using the `LspAttach` autocmd
+                    end,
+                    actions = true,
+                    completion = true,
+                    hover = true,
+                },
+                completion = {
+                    crates = {
+                        enabled = true, -- Disabled by default
+                        max_results = 8, -- The maximum number of search results to display
+                        min_chars = 3, -- The minimum number of charaters to type before completions begin appearing
+                    },
+                },
+            }
         end,
     },
     pubspec_assist_nvim = {
@@ -1099,7 +1101,17 @@ return {
         end,
     },
     live_preview_nvim = {
-        opts = {},
+        keys = {
+            { "<leader>pp", "<cmd>LivePreview pick<CR>", desc = "LivePreview Pick" },
+        },
+        opts = {
+            picker = "fzf-lua",
+            address = "127.0.0.1",
+            port = 5500,
+            browser = "qutebrowser",
+            dynamic_root = false,
+            sync_scroll = true,
+        },
     },
     markview_nvim = {
         opts = function()

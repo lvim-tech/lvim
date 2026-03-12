@@ -10,12 +10,4 @@ config.nvim_fundo = function()
     })
 end
 
-config.fugit2_nvim = function()
-    local fugit2_status_ok, fugit2 = pcall(require, "fugit2")
-    if not fugit2_status_ok then
-        return
-    end
-    fugit2.setup({})
-end
-
 return config

@@ -272,7 +272,7 @@ return {
                     enabled = true,
                 },
                 quickfile = { enabled = true },
-                bigfile = { enabled = true },
+                bigfile = { enabled = false },
                 zen = { enabled = true },
                 scope = { enabled = true },
                 scratch = { enabled = true },
@@ -1010,6 +1010,7 @@ return {
                         "org",
                         "flutterToolsOutline",
                         "qf",
+                        "LvimDeps",
                     },
                     buftypes = {
                         "terminal",
