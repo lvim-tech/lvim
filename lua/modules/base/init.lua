@@ -38,13 +38,14 @@ modules["nvim-tree/nvim-web-devicons"] = {
 
 modules["MunifTanjim/nui.nvim"] = {
     commit = funcs.get_commit("nui.nvim", plugins_snapshot),
+    lazy = true,
     config = dependencies_config.nui_nvim.config,
 }
 
 modules["junegunn/fzf"] = {
     commit = funcs.get_commit("fzf", plugins_snapshot),
     build = "./install --bin",
-    lazy = false,
+    lazy = true,
 }
 
 modules["mxsdev/nvim-dap-vscode-js"] = {

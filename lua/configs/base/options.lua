@@ -113,26 +113,24 @@ M.global = function()
     vim.opt.signcolumn = "no"
     vim.opt.colorcolumn = "80"
     vim.opt.conceallevel = 2
-    vim.opt.foldmethod = "indent"
+    vim.opt.foldmethod = "expr"
     vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
     vim.opt.foldtext = "v:lua.fold_text()"
-    vim.opt.foldmethod = "indent"
     vim.opt.fillchars = {
         diff = "╱",
         eob = " ",
         fold = "─",
     }
-    vim.opt.diffopt = "internal,filler,closeoff,indent-heuristic,linematch:60,algorithm:histogram"
     vim.opt.diffopt = {
         "internal",
         "filler",
         "closeoff",
-        "context:6",
+        "vertical",
+        "context:100",
         "algorithm:histogram",
-        "linematch:60",
+        "linematch:100",
         "indent-heuristic",
     }
-    vim.opt.diffopt:append({ "vertical,context:100,linematch:100" })
 end
 
 return M

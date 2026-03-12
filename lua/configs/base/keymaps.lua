@@ -2,30 +2,8 @@ local keymaps = {}
 
 keymaps["normal"] = {
     { "<Esc>", "<Esc>:noh<CR>", "Esc" }, -- Remove highlight after search
-    -- {
-    --     "j",
-    --     function()
-    --         vim.schedule(function()
-    --             pcall(vim.cmd, "normal! gj")
-    --         end)
-    --     end,
-    --     "j",
-    -- }, -- Re-map j
-    -- {
-    --     "k",
-    --     function()
-    --         vim.schedule(function()
-    --             pcall(vim.cmd, "normal! gk")
-    --         end)
-    --     end,
-    --     "k",
-    -- }, -- Re-map k
-    { "j", "gj", "j" }, -- Re-map j
-    { "k", "gk", "k" }, -- Re-map k
-    -- { "<C-d>", "<C-d>zz", "C-d" }, -- Re-map C-d
-    -- { "<C-u>", "<C-u>zz", "C-u" }, -- Re-map C-u
-    -- { "<C-f>", "<C-f>zz", "C-f" }, -- Re-map C-f
-    -- { "<C-b>", "<C-b>zz", "C-b" }, -- Re-map C-b
+    { "j", "v:count == 0 ? 'gj' : 'j'", "j", { expr = true } }, -- Re-map j
+    { "k", "v:count == 0 ? 'gk' : 'k'", "k", { expr = true } }, -- Re-map k
     { "<C-c>N", ":enew<CR>", "Create empty buffer" }, -- Create empty buffer
     { "<C-c>s", ":Save<CR>", "Save" }, -- Save
     { "<C-c>a", ":wa<CR>", "Save all" }, -- Save all

@@ -52,15 +52,18 @@ M.has_value = function(table, value)
 end
 
 M.merge_unique = function(table1, table2)
+    local seen = {}
     local merged = {}
     for _, v in ipairs(table1) do
-        if not M.has_value(merged, v) then
-            table.insert(merged, v)
+        if not seen[v] then
+            seen[v] = true
+            merged[#merged + 1] = v
         end
     end
     for _, v in ipairs(table2) do
-        if not M.has_value(merged, v) then
-            table.insert(merged, v)
+        if not seen[v] then
+            seen[v] = true
+            merged[#merged + 1] = v
         end
     end
     return merged
@@ -96,12 +99,9 @@ end
 
 M.keymaps = function(mode, opts, keymaps)
     for _, keymap in ipairs(keymaps) do
-        if keymap[3] ~= nil then
-            opts.desc = keymap[3]
-        else
-            opts.desc = nil
-        end
-        vim.keymap.set(mode, keymap[1], keymap[2], opts)
+        local keymap_opts = vim.tbl_extend("force", opts, keymap[4] or {})
+        keymap_opts.desc = keymap[3] or nil
+        vim.keymap.set(mode, keymap[1], keymap[2], keymap_opts)
     end
 end
 
