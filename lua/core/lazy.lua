@@ -1,8 +1,12 @@
+-- lazy.nvim bootstrap and plugin registration.
+-- Handles first-run installation and merges base + user plugin specs.
 local funcs = require("core.funcs")
 local icons = require("configs.base.ui.icons")
 
 local lazy_pack = {}
 
+-- Clones lazy.nvim into the standard data path if it is not already present.
+-- Aborts with an error message if the git clone fails.
 lazy_pack.is_lazy = function()
     local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
     if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -11,7 +15,7 @@ lazy_pack.is_lazy = function()
         if vim.v.shell_error ~= 0 then
             vim.api.nvim_echo({
                 { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-                { out, "WarningMsg" },
+                { out,                            "WarningMsg" },
                 { "\nPress any key to exit..." },
             }, true, {})
             vim.fn.getchar()
@@ -21,10 +25,15 @@ lazy_pack.is_lazy = function()
     vim.opt.rtp:prepend(lazypath)
 end
 
+-- Merges base and user plugin specs, converts them to the list format expected
+-- by lazy.setup(), and initialises the plugin manager.
+-- Entries explicitly set to `false` in the user spec are excluded (disable pattern).
 lazy_pack.load = function()
+    ---@type table[]
     local repos = {}
     local base_modules = require("modules.base")
     local user_modules = require("modules.user")
+    -- User spec wins on key conflicts — allows overriding or disabling base plugins
     local modules = funcs.merge(base_modules, user_modules)
     for repo, conf in pairs(modules) do
         if conf ~= false then
@@ -34,15 +43,13 @@ lazy_pack.load = function()
     require("lazy").setup(repos, {
         install = {
             missing = true,
-            colorscheme = { _G.LVIM_THEME, "habamax" },
+            -- Try the active theme first so startup doesn't flash the fallback color
+            colorscheme = { _G.LVIM.theme, "habamax" },
         },
         ui = {
-            size = {
-                width = 0.95,
-                height = 0.95,
-            },
+            size   = { width = 0.95, height = 0.95 },
             border = "none",
-            icons = icons.lazy,
+            icons  = icons.lazy,
         },
     })
 end

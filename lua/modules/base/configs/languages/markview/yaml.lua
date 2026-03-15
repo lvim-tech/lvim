@@ -1,6 +1,7 @@
 return {
     enable = true,
     properties = {
+
         enable = true,
         data_types = {
             ["text"] = {

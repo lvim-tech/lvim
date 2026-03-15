@@ -1,24 +1,52 @@
+-- LSP command layer for LVIM IDE.
+-- Registers Neovim user-commands and keymaps that wrap vim.lsp.buf.* calls,
+-- and provides interactive menus (via vim.ui.select) for toggling, restarting,
+-- and inspecting LSP servers both globally and per-buffer.
+-- Also patches vim.notify to suppress noisy "method not supported" LSP messages.
+---@module "languages.lsp_commands"
+
 local lsp_manager = require("languages.lsp_manager")
 
+-- ---------------------------------------------------------------------------
+-- lvim_toggle_lsp_server
+-- ---------------------------------------------------------------------------
+
+-- Interactive menu to start, disable, enable, or toggle individual LSP servers
+-- across the whole editor session (not scoped to a specific buffer).
 local function lvim_toggle_lsp_server()
+    ---@type table<string, { name: string, status: "Running"|"Disabled"|"Not Running" }>
     local servers_info = {}
+
+    -- Map of server name → client id for every currently running LSP client.
+    ---@type table<string, integer>
     local running_servers = {}
+
+    -- Globally disabled servers are persisted in the _G.lsp_disabled_servers table.
+    ---@type table<string, boolean>
     local disabled_servers = _G.lsp_disabled_servers or {}
+
     for _, client in ipairs(vim.lsp.get_clients()) do
         running_servers[client.name] = client.id
     end
-    if _G.file_types then
-        for server_name, _ in pairs(_G.file_types) do
+
+    -- Build a status entry for every server that LVIM knows about via file_types.
+    if _G.LVIM.file_types then
+        for server_name, _ in pairs(_G.LVIM.file_types) do
             servers_info[server_name] = {
                 name = server_name,
+                -- Precedence: explicitly disabled > currently running > not running.
                 status = disabled_servers[server_name] and "Disabled"
                     or running_servers[server_name] and "Running"
                     or "Not Running",
             }
         end
     end
+
+    -- EFM is a special aggregator server; include it if it has filetypes configured
+    -- or if it is already running/disabled, even if not listed in file_types.
+    ---@type boolean
     local has_efm = false
-    if _G.global and _G.global.efm and _G.global.efm.filetypes and #_G.global.efm.filetypes > 0 then
+    if _G.LVIM.global and _G.LVIM.global.efm and _G.LVIM.global.efm.filetypes and #_G.LVIM.global.efm.filetypes > 0 then
         has_efm = true
     end
     if has_efm or running_servers["efm"] or disabled_servers["efm"] then
@@ -27,7 +55,11 @@ local function lvim_toggle_lsp_server()
             status = disabled_servers["efm"] and "Disabled" or running_servers["efm"] and "Running" or "Not Running",
         }
     end
+
+    -- Determine which bulk-action entries are relevant before building the menu.
+    ---@type boolean
     local has_not_running = false
+    ---@type boolean
     local has_disabled = false
     for _, info in pairs(servers_info) do
         if info.status == "Not Running" then
@@ -36,8 +68,15 @@ local function lvim_toggle_lsp_server()
             has_disabled = true
         end
     end
+
+    -- Each menu item has a display text, an optional bulk `action`, and optional
+    -- per-server `server` / `status` fields for individual toggle entries.
+    ---@type { text: string, action?: string, server?: string, status?: string }[]
     local menu_items = {}
+    ---@type table<string, { text: string, action?: string, server?: string, status?: string }>
     local menu_map = {}
+
+    -- Add bulk-action entries only when they are applicable.
     if has_not_running then
         table.insert(menu_items, { text = "Start All Not Running Servers", action = "start_not_running" })
         menu_map["Start All Not Running Servers"] = menu_items[#menu_items]
@@ -50,6 +89,8 @@ local function lvim_toggle_lsp_server()
         table.insert(menu_items, { text = "Enable All Disabled Servers", action = "enable_all" })
         menu_map["Enable All Disabled Servers"] = menu_items[#menu_items]
     end
+
+    -- Add one entry per individual server.
     for _, info in pairs(servers_info) do
         local item = {
             text = string.format("%s (%s)", info.name, info.status),
@@ -59,6 +100,9 @@ local function lvim_toggle_lsp_server()
         table.insert(menu_items, item)
         menu_map[item.text] = item
     end
+
+    -- Sort: bulk actions first (in a fixed order), then individual servers
+    -- grouped by status (Running → Not Running → Disabled) and alphabetically.
     table.sort(menu_items, function(a, b)
         if a.action and not b.action then
             return true
@@ -76,12 +120,17 @@ local function lvim_toggle_lsp_server()
         end
         return (a.server or "") < (b.server or "")
     end)
+
     table.insert(menu_items, { text = "Cancel", action = "cancel" })
     menu_map["Cancel"] = menu_items[#menu_items]
+
+    -- Flatten to plain strings for vim.ui.select.
+    ---@type string[]
     local display_items = {}
     for _, item in ipairs(menu_items) do
         table.insert(display_items, item.text)
     end
+
     vim.ui.select(display_items, { prompt = "LSP Servers Management" }, function(choice)
         if not choice or choice == "Cancel" then
             return
@@ -90,6 +139,8 @@ local function lvim_toggle_lsp_server()
         if not selected_item then
             return
         end
+
+        -- Handle bulk actions first.
         if selected_item.action == "start_not_running" then
             local started_count = 0
             for server_name, info in pairs(servers_info) do
@@ -122,6 +173,7 @@ local function lvim_toggle_lsp_server()
             return
         end
 
+        -- Individual server toggle: cycle Running → Disabled → Running, or start "Not Running".
         local server_name = selected_item.server
         local status = selected_item.status
         if status == "Running" then
@@ -146,20 +198,38 @@ local function lvim_toggle_lsp_server()
     end)
 end
 
+-- ---------------------------------------------------------------------------
+-- lvim_toggle_lsp_for_buffer
+-- ---------------------------------------------------------------------------
+
+-- Interactive menu to attach, detach, start, enable, or disable individual LSP
+-- servers relative to a single buffer (defaults to the current buffer).
+---@param bufnr? integer Buffer number to operate on; defaults to current buffer.
 local function lvim_toggle_lsp_for_buffer(bufnr)
+    ---@type integer
     local current_bufnr = bufnr or vim.api.nvim_get_current_buf()
+    ---@type string
     local ft = vim.bo[current_bufnr].filetype
     if not ft or ft == "" then
         vim.notify("Current buffer has no filetype", vim.log.levels.WARN)
         return
     end
 
+    -- Ask lsp_manager which servers can handle this filetype.
+    ---@type string[]
     local compatible_servers = lsp_manager.get_compatible_lsp_for_ft(ft)
     if #compatible_servers == 0 then
         vim.notify("No compatible LSP servers for filetype: " .. ft, vim.log.levels.WARN)
         return
     end
 
+    -- Classify each compatible server into one of five states:
+    --   "globally_disabled" – in _G.lsp_disabled_servers
+    --   "buffer_disabled"   – in _G.lsp_disabled_for_buffer for this buffer
+    --   "attached"          – already providing LSP features for this buffer
+    --   "running"           – running but not attached to this buffer
+    --   "not_started"       – not running at all
+    ---@type table<string, { name: string, status: string, client_id: integer|nil }>
     local servers_status = {}
     for _, server_name in ipairs(compatible_servers) do
         local status = "unknown"
@@ -175,6 +245,7 @@ local function lvim_toggle_lsp_for_buffer(bufnr)
             status = "buffer_disabled"
         else
             local attached = false
+            -- Check if a client with this name is attached to the target buffer.
             for _, client in ipairs(vim.lsp.get_clients({ bufnr = current_bufnr })) do
                 if client.name == server_name then
                     attached = true
@@ -185,6 +256,7 @@ local function lvim_toggle_lsp_for_buffer(bufnr)
             if attached then
                 status = "attached"
             else
+                -- Not attached to this buffer — check if it is running globally.
                 for _, client in ipairs(vim.lsp.get_clients()) do
                     if client.name == server_name then
                         status = "running"
@@ -205,10 +277,14 @@ local function lvim_toggle_lsp_for_buffer(bufnr)
         }
     end
 
+    ---@type { text: string, action_type: string, server?: string, status?: string, client_id?: integer }[]
     local menu_items = {}
+    ---@type boolean
     local has_detachable = false
+    ---@type boolean
     local has_attachable = false
 
+    -- Decide which bulk-action entries to show.
     for _, info in pairs(servers_status) do
         if info.status == "attached" then
             has_detachable = true
@@ -224,6 +300,7 @@ local function lvim_toggle_lsp_for_buffer(bufnr)
         table.insert(menu_items, { text = "Detach All Servers", action_type = "detach_all" })
     end
 
+    -- Build one entry per server; label and action depend on its current state.
     for _, info in pairs(servers_status) do
         local text, action_type
         if info.status == "attached" then
@@ -251,6 +328,7 @@ local function lvim_toggle_lsp_for_buffer(bufnr)
         })
     end
 
+    -- Sort individual entries by a priority that reflects the most useful action first.
     table.sort(menu_items, function(a, b)
         local order = {
             detach = 1,
@@ -269,6 +347,7 @@ local function lvim_toggle_lsp_for_buffer(bufnr)
 
     table.insert(menu_items, { text = "Cancel", action_type = "cancel" })
 
+    ---@type string[]
     local display_items = {}
     for _, item in ipairs(menu_items) do
         table.insert(display_items, item.text)
@@ -279,6 +358,8 @@ local function lvim_toggle_lsp_for_buffer(bufnr)
             return
         end
 
+        -- Resolve the display string back to the full item (menu_items is ordered,
+        -- so a linear scan is deterministic even with duplicate server names).
         local selected_item
         for _, item in ipairs(menu_items) do
             if item.text == choice then
@@ -293,6 +374,7 @@ local function lvim_toggle_lsp_for_buffer(bufnr)
         local action_type = selected_item.action_type
         local server_name = selected_item.server
 
+        -- Bulk: attach every non-attached compatible server to this buffer.
         if action_type == "attach_all" then
             for _, info in pairs(servers_status) do
                 if info.status == "buffer_disabled" then
@@ -301,6 +383,7 @@ local function lvim_toggle_lsp_for_buffer(bufnr)
                 if info.status == "running" then
                     for _, client in ipairs(vim.lsp.get_clients()) do
                         if client.name == info.name then
+                            -- pcall guards against attach errors (e.g. filetype mismatch).
                             local _ = pcall(vim.lsp.buf_attach_client, current_bufnr, client.id)
                             break
                         end
@@ -315,6 +398,7 @@ local function lvim_toggle_lsp_for_buffer(bufnr)
             local _ = vim.notify("Attached all compatible LSP servers to buffer", vim.log.levels.INFO)
             return
         elseif action_type == "detach_all" then
+            -- Bulk: mark every attached server as buffer-disabled (detach).
             for _, info in pairs(servers_status) do
                 if info.status == "attached" then
                     lsp_manager.disable_lsp_server_for_buffer(info.name, current_bufnr)
@@ -326,6 +410,7 @@ local function lvim_toggle_lsp_for_buffer(bufnr)
             return
         end
 
+        -- Individual server actions.
         if action_type == "detach" then
             lsp_manager.disable_lsp_server_for_buffer(server_name, current_bufnr)
             local _ = vim.notify("Detached " .. server_name .. " from buffer", vim.log.levels.INFO)
@@ -333,6 +418,7 @@ local function lvim_toggle_lsp_for_buffer(bufnr)
             lsp_manager.enable_lsp_server_for_buffer(server_name, current_bufnr)
             local _ = vim.notify("Enabled " .. server_name .. " for buffer", vim.log.levels.INFO)
         elseif action_type == "attach" then
+            -- The server is already running; just wire it to this buffer.
             for _, client in ipairs(vim.lsp.get_clients()) do
                 if client.name == server_name then
                     local success = pcall(vim.lsp.buf_attach_client, current_bufnr, client.id)
@@ -345,6 +431,7 @@ local function lvim_toggle_lsp_for_buffer(bufnr)
                 end
             end
         elseif action_type == "start_attach" then
+            -- Start the server from scratch, then immediately attach it.
             local client_id = lsp_manager.start_language_server(server_name, true)
             if client_id then
                 local success = pcall(vim.lsp.buf_attach_client, current_bufnr, client_id)
@@ -357,6 +444,7 @@ local function lvim_toggle_lsp_for_buffer(bufnr)
                 local _ = vim.notify("Failed to start " .. server_name, vim.log.levels.ERROR)
             end
         elseif action_type == "enable_global" then
+            -- Lift the global disable flag, then start and attach.
             lsp_manager.enable_lsp_server_globally(server_name)
             local client_id = lsp_manager.start_language_server(server_name, true)
             if client_id then
@@ -369,17 +457,30 @@ local function lvim_toggle_lsp_for_buffer(bufnr)
     end)
 end
 
+-- ---------------------------------------------------------------------------
+-- lvim_lsp_restart
+-- ---------------------------------------------------------------------------
+
+-- Presents a picker of running LSP servers and restarts the chosen one,
+-- re-attaching it to all buffers it was previously attached to.
 local function lvim_lsp_restart()
+    ---@type any[]
     local running_clients = vim.lsp.get_clients()
     if #running_clients == 0 then
         vim.notify("No LSP servers are running.", vim.log.levels.INFO)
         return
     end
+
+    -- Deduplicate: only one restart entry per server name.
+    ---@type table<string, boolean>
     local running_servers = {}
     for _, client in ipairs(running_clients) do
         running_servers[client.name] = true
     end
+
+    ---@type { text: string, server: string, action: string }[]
     local menu_items = {}
+    ---@type table<string, { text: string, server: string, action: string }>
     local menu_map = {}
     for server_name in pairs(running_servers) do
         local text = string.format("Restart: %s", server_name)
@@ -387,16 +488,22 @@ local function lvim_lsp_restart()
         table.insert(menu_items, item)
         menu_map[text] = item
     end
+
+    -- Alphabetical ordering for a predictable list.
     table.sort(menu_items, function(a, b)
         return a.server < b.server
     end)
+
     local cancel_item = { text = "Cancel", action = "cancel" }
     table.insert(menu_items, cancel_item)
     menu_map["Cancel"] = cancel_item
+
+    ---@type string[]
     local display_items = {}
     for _, item in ipairs(menu_items) do
         table.insert(display_items, item.text)
     end
+
     vim.ui.select(display_items, { prompt = "Restart LSP Server..." }, function(choice)
         if not choice or choice == "Cancel" then
             return
@@ -405,7 +512,12 @@ local function lvim_lsp_restart()
         if not selected_item or not selected_item.server then
             return
         end
+
         local server_name = selected_item.server
+
+        -- Collect all buffer numbers the server was attached to before stopping it,
+        -- so we can re-attach after the new instance starts.
+        ---@type integer[]
         local attached_bufs = {}
         for _, client in ipairs(running_clients) do
             if client.name == server_name then
@@ -419,6 +531,9 @@ local function lvim_lsp_restart()
                 client:stop()
             end
         end
+
+        -- Defer the restart to allow the old process to exit cleanly before
+        -- spawning a new one (500 ms is a safe margin for most servers).
         vim.defer_fn(function()
             local ok, new_client_id = pcall(function()
                 return lsp_manager.start_language_server(server_name, true)
@@ -438,9 +553,19 @@ local function lvim_lsp_restart()
     end)
 end
 
+-- ---------------------------------------------------------------------------
+-- setup_lsp_error_filter
+-- ---------------------------------------------------------------------------
+
+-- Patches the global vim.notify to silently drop the common "method X is not
+-- supported by any of the servers registered for the current buffer" message.
+-- This keeps the UI quiet when a key is pressed in a buffer that has no matching
+-- LSP capability (e.g. running LspHover in a plain-text buffer).
 local function setup_lsp_error_filter()
+    ---@type function  Capture the original notify so we can delegate to it.
     local original_notify = vim.notify
     vim.notify = function(msg, level, opts)
+        -- Swallow LSP "method not supported" noise.
         if
             type(msg) == "string"
             and msg:match("method [%w%p]+ is not supported by any of the servers registered for the current buffer")
@@ -451,10 +576,23 @@ local function setup_lsp_error_filter()
     end
 end
 
+-- Install the notify filter immediately when this module is loaded.
 setup_lsp_error_filter()
 
+-- ---------------------------------------------------------------------------
+-- lvim_lsp_info
+-- ---------------------------------------------------------------------------
+
+-- Opens a rich, read-only floating window that displays detailed information
+-- about every active LSP client: capabilities, attached buffers, server
+-- configuration, and — for EFM — the full linter/formatter tool list.
+-- Sections with large tables are collapsed into folds (<CR> / za to toggle).
+---@return { bufnr: integer, win: integer, close: fun() }|nil
 local function lvim_lsp_info()
     local api = vim.api
+
+    -- Unicode glyphs used as section / item decorators throughout the popup.
+    ---@type table<string, string>
     local lsp_icons = {
         shape_square = "■",
         shape_diamond = "◆",
@@ -464,37 +602,55 @@ local function lvim_lsp_info()
         cross = "✗",
         check = "✓",
     }
+
+    -- Indentation strings for each nesting level (0–4).
     local INDENT_L0 = ""
     local INDENT_L1 = "  "
     local INDENT_L2 = "    "
     local INDENT_L3 = "      "
     local INDENT_L4 = "        "
-    api.nvim_set_hl(0, "LspIcon", { fg = _G.LVIM_COLORS.blue, bg = "NONE", bold = true })
-    api.nvim_set_hl(0, "LspInfoBG", { bg = _G.LVIM_COLORS.bg_float })
-    api.nvim_set_hl(0, "LspInfoTitle", { fg = _G.LVIM_COLORS.red, bg = "NONE", bold = true })
-    api.nvim_set_hl(0, "LspInfoServerName", { fg = _G.LVIM_COLORS.orange, bg = "NONE", bold = true })
-    api.nvim_set_hl(0, "LspInfoSection", { fg = _G.LVIM_COLORS.blue, bg = "NONE", bold = true })
-    api.nvim_set_hl(0, "LspInfoKey", { fg = _G.LVIM_COLORS.green, bg = "NONE", bold = true })
-    api.nvim_set_hl(0, "LspInfoValue", { fg = _G.LVIM_COLORS.fg, bg = "NONE" })
-    api.nvim_set_hl(0, "LspInfoSeparator", { fg = _G.LVIM_COLORS.blue, bg = "NONE" })
-    api.nvim_set_hl(0, "LspInfoLinter", { fg = _G.LVIM_COLORS.purple, bg = "NONE", bold = true })
-    api.nvim_set_hl(0, "LspInfoFormatter", { fg = _G.LVIM_COLORS.purple, bg = "NONE", bold = true })
-    api.nvim_set_hl(0, "LspInfoToolName", { fg = _G.LVIM_COLORS.green, bg = "NONE", bold = true })
-    api.nvim_set_hl(0, "LspInfoBuffer", { fg = _G.LVIM_COLORS.cyan, bg = "NONE", italic = true })
-    api.nvim_set_hl(0, "LspInfoDate", { fg = _G.LVIM_COLORS.fg, bg = "NONE", italic = true })
-    api.nvim_set_hl(0, "LspInfoConfig", { fg = _G.LVIM_COLORS.fg, bg = "NONE" })
-    api.nvim_set_hl(0, "LspInfoConfigKey", { fg = _G.LVIM_COLORS.cyan, bg = "NONE", italic = true })
-    api.nvim_set_hl(0, "LspInfoFold", { fg = _G.LVIM_COLORS.yellow, bg = "NONE", bold = true })
+
+    -- Define highlight groups for the popup using the active LVIM color palette.
+    api.nvim_set_hl(0, "LspIcon", { fg = _G.LVIM.colors.blue, bg = "NONE", bold = true })
+    api.nvim_set_hl(0, "LspInfoBG", { bg = _G.LVIM.colors.bg_float })
+    api.nvim_set_hl(0, "LspInfoTitle", { fg = _G.LVIM.colors.red, bg = "NONE", bold = true })
+    api.nvim_set_hl(0, "LspInfoServerName", { fg = _G.LVIM.colors.orange, bg = "NONE", bold = true })
+    api.nvim_set_hl(0, "LspInfoSection", { fg = _G.LVIM.colors.blue, bg = "NONE", bold = true })
+    api.nvim_set_hl(0, "LspInfoKey", { fg = _G.LVIM.colors.green, bg = "NONE", bold = true })
+    api.nvim_set_hl(0, "LspInfoValue", { fg = _G.LVIM.colors.fg, bg = "NONE" })
+    api.nvim_set_hl(0, "LspInfoSeparator", { fg = _G.LVIM.colors.blue, bg = "NONE" })
+    api.nvim_set_hl(0, "LspInfoLinter", { fg = _G.LVIM.colors.purple, bg = "NONE", bold = true })
+    api.nvim_set_hl(0, "LspInfoFormatter", { fg = _G.LVIM.colors.purple, bg = "NONE", bold = true })
+    api.nvim_set_hl(0, "LspInfoToolName", { fg = _G.LVIM.colors.green, bg = "NONE", bold = true })
+    api.nvim_set_hl(0, "LspInfoBuffer", { fg = _G.LVIM.colors.cyan, bg = "NONE", italic = true })
+    api.nvim_set_hl(0, "LspInfoDate", { fg = _G.LVIM.colors.fg, bg = "NONE", italic = true })
+    api.nvim_set_hl(0, "LspInfoConfig", { fg = _G.LVIM.colors.fg, bg = "NONE" })
+    api.nvim_set_hl(0, "LspInfoConfigKey", { fg = _G.LVIM.colors.cyan, bg = "NONE", italic = true })
+    api.nvim_set_hl(0, "LspInfoFold", { fg = _G.LVIM.colors.yellow, bg = "NONE", bold = true })
+
+    ---@type any[]
     local clients = vim.lsp.get_clients()
     if #clients == 0 then
         vim.notify("No active LSP clients found", vim.log.levels.INFO)
         return
     end
+
+    -- The popup takes 80 % of the editor width so it stays readable on narrow terminals.
+    ---@type integer
     local popup_width = math.floor(vim.o.columns * 0.8)
+
+    -- Center `text` within `width` columns by padding with spaces on the left.
+    ---@param text  string  Text to center.
+    ---@param width integer Target column width.
+    ---@return string
     local function center_text(text, width)
         local pad = math.max(0, math.floor((width - vim.fn.strdisplaywidth(text)) / 2))
         return string.rep(" ", pad) .. text
     end
+
+    -- Convert a scalar Lua value to a display-friendly string for the info popup.
+    ---@param val any  Value to format (string, function, nil, or anything else).
+    ---@return string
     local function format_value(val)
         if type(val) == "string" then
             return '"' .. val .. '"'
@@ -506,6 +662,11 @@ local function lvim_lsp_info()
             return tostring(val)
         end
     end
+
+    -- Recursively copy a table, skipping function values so display_table does not
+    -- need to worry about them polluting the rendered output.
+    ---@param t any  Value to copy (non-tables are returned as-is).
+    ---@return any
     local function deep_copy_table(t)
         if type(t) ~= "table" then
             return t
@@ -520,12 +681,17 @@ local function lvim_lsp_info()
         end
         return result
     end
+
+    -- Return true when `t` is a sequence (consecutive integer keys starting at 1).
+    ---@param t any  Value to test.
+    ---@return boolean
     local function is_array(t)
         if type(t) ~= "table" then
             return false
         end
         local max, n = 0, 0
         for k, _ in pairs(t) do
+            -- Only count positive integer keys.
             if type(k) == "number" and k > 0 and math.floor(k) == k then
                 if k > max then
                     max = k
@@ -535,12 +701,27 @@ local function lvim_lsp_info()
                 return false
             end
         end
+        -- A valid sequence has no gaps: element count equals the highest key.
         return n == max and n > 0
     end
+
+    -- Accumulates all display lines for the popup buffer.
+    ---@type string[]
     local lines = {}
+    -- Namespace for all extmark-based highlights applied after buffer population.
     local ns = api.nvim_create_namespace("lsp_info_popup")
+    -- List of pending highlight regions to apply once all lines are collected.
+    ---@type { line: integer, col_start: integer, col_end: integer, hl_group: string }[]
     local highlights = {}
+    -- List of fold regions (start/end line pairs) to create after buffer population.
+    ---@type { id: string, start_line?: integer, end_line?: integer }[]
     local folds = {}
+
+    -- Append a highlight entry that targets the tool name within a tool-list line.
+    -- The prefix is reconstructed to calculate the exact byte offset.
+    ---@param line_idx  integer  0-based line index in the popup buffer.
+    ---@param tool_name string   Name of the tool to highlight.
+    ---@param indent    string?  Indentation prefix used on this line.
     local function add_tool_highlight(line_idx, tool_name, indent)
         local prefix = (indent or INDENT_L2) .. lsp_icons.shape_circle .. " "
         local col_start = #prefix
@@ -552,6 +733,11 @@ local function lvim_lsp_info()
             hl_group = "LspInfoToolName",
         })
     end
+
+    -- Append a highlight entry for a decorative icon on a given line by searching
+    -- for the icon string with a plain (non-regex) find to get its byte span.
+    ---@param line_idx integer  0-based line index.
+    ---@param icon     string   Icon character to highlight.
     local function add_icon_highlight(line_idx, icon)
         local line_text = lines[line_idx + 1]
         local s, e = string.find(line_text, vim.pesc(icon), 1, true)
@@ -564,6 +750,11 @@ local function lvim_lsp_info()
             })
         end
     end
+
+    -- Append a highlight entry for the first occurrence of `substr` on `line_idx`.
+    ---@param line_idx integer  0-based line index.
+    ---@param substr   string   Plain substring to locate and highlight.
+    ---@param hl_group string   Highlight group name to apply.
     local function add_highlight(line_idx, substr, hl_group)
         local line_text = lines[line_idx + 1]
         local s, e = string.find(line_text, substr, 1, true)
@@ -576,10 +767,14 @@ local function lvim_lsp_info()
             })
         end
     end
+
+    -- Append a full-width horizontal rule using the box-drawing dash character.
+    ---@param hl_group? string  Highlight group for the separator line (default: LspInfoSeparator).
     local function add_separator(hl_group)
         local separator = string.rep("─", popup_width)
         table.insert(lines, separator)
         hl_group = hl_group or "LspInfoSeparator"
+        -- col_end = -1 signals that the highlight should cover the whole line.
         table.insert(highlights, {
             line = #lines - 1,
             col_start = 0,
@@ -587,6 +782,16 @@ local function lvim_lsp_info()
             hl_group = hl_group,
         })
     end
+
+    -- Recursively render a Lua table into `line_list` as indented key: value pairs.
+    -- Function-valued keys are skipped. Nested tables are rendered inline with
+    -- deeper indentation. When `fold_info` is provided its start/end fields are
+    -- populated so the caller can later create a fold over this block.
+    ---@param tbl            table?                                                       Table to render.
+    ---@param line_list      string[]                                                     Accumulator for output lines.
+    ---@param highlight_list { line: integer, col_start: integer, col_end: integer, hl_group: string }[]  Highlight accumulator.
+    ---@param indent         string?                                                      Current indentation prefix.
+    ---@param fold_info      { id: string, start_line?: integer, end_line?: integer }?   Fold boundary output; mutated in place.
     local function display_table(tbl, line_list, highlight_list, indent, fold_info)
         if not tbl or type(tbl) ~= "table" then
             return
@@ -597,6 +802,7 @@ local function lvim_lsp_info()
         if fold_info then
             fold_info.start_line = #line_list - 1
         end
+        -- Sort keys: strings before numbers, then lexicographically within each type.
         local keys = vim.tbl_keys(tbl)
         table.sort(keys, function(a, b)
             if type(a) == type(b) then
@@ -614,6 +820,7 @@ local function lvim_lsp_info()
                         table.insert(line_list, indent_str .. INDENT_L1 .. key_str .. ": {}")
                         add_highlight(#line_list - 1, key_str, "LspInfoConfigKey")
                     elseif is_array(v) then
+                        -- Render sequences by iterating items in order.
                         table.insert(line_list, indent_str .. INDENT_L1 .. key_str .. ": {")
                         add_highlight(#line_list - 1, key_str, "LspInfoConfigKey")
                         for _, item in ipairs(v) do
@@ -625,6 +832,7 @@ local function lvim_lsp_info()
                         end
                         table.insert(line_list, indent_str .. INDENT_L1 .. "}")
                     else
+                        -- Nested map: recurse with one extra indent level.
                         table.insert(line_list, indent_str .. INDENT_L1 .. key_str .. ": {")
                         add_highlight(#line_list - 1, key_str, "LspInfoConfigKey")
                         display_table(v, line_list, highlight_list, indent .. INDENT_L2)
@@ -641,11 +849,20 @@ local function lvim_lsp_info()
             fold_info.end_line = #line_list - 1
         end
     end
+
+    -- -----------------------------------------------------------------------
+    -- Build popup content
+    -- -----------------------------------------------------------------------
+
     local title = "LSP SERVERS INFORMATION"
     local centered_title = center_text(title, popup_width)
     table.insert(lines, centered_title)
     add_highlight(#lines - 1, title, "LspInfoTitle")
     add_separator("LspInfoTitle")
+
+    -- EFM is rendered first (if present) because it needs a special layout that
+    -- expands its linter/formatter tool list rather than raw server capabilities.
+    ---@type any|nil
     local efm_client, other_clients = nil, {}
     for _, client in ipairs(clients) do
         if client.name == "efm" then
@@ -654,6 +871,9 @@ local function lvim_lsp_info()
             table.insert(other_clients, client)
         end
     end
+
+    -- Reconstruct a sorted list: EFM first, then all other clients.
+    ---@type any[]
     local sorted_clients = {}
     if efm_client then
         table.insert(sorted_clients, efm_client)
@@ -661,13 +881,20 @@ local function lvim_lsp_info()
     for _, c in ipairs(other_clients) do
         table.insert(sorted_clients, c)
     end
+
     for _, client in ipairs(sorted_clients) do
         table.insert(lines, "")
         local server_line = INDENT_L0 .. lsp_icons.shape_square .. " " .. client.name .. " (ID: " .. client.id .. ")"
         table.insert(lines, server_line)
         add_highlight(#lines - 1, client.name, "LspInfoServerName")
         add_icon_highlight(#lines - 1, lsp_icons.shape_square)
+
         if client.name == "efm" then
+            -- EFM section: group attached buffers by filetype, then list linters
+            -- and formatters sourced from the global _G.efm_configs registry.
+
+            -- Map filetype → list of { bufnr, name } for EFM-attached buffers.
+            ---@type table<string, { bufnr: integer, name: string }[]>
             local buffers_by_filetype = {}
             if client.attached_buffers then
                 for bufnr, _ in pairs(client.attached_buffers) do
@@ -683,7 +910,12 @@ local function lvim_lsp_info()
                     end
                 end
             end
+
+            -- Deduplicate linters and formatters by their canonical name, merging
+            -- filetypes from all configs that share the same name.
+            ---@type table<string, { config: table, filetypes: string[], filetype_to_buffers: table<string, { bufnr: integer, name: string }[]> }>
             local linter_by_name = {}
+            ---@type table<string, { config: table, filetypes: string[], filetype_to_buffers: table<string, { bufnr: integer, name: string }[]> }>
             local formatter_by_name = {}
             for filetype, configs in pairs(_G.efm_configs or {}) do
                 for _, config in ipairs(configs) do
@@ -705,6 +937,8 @@ local function lvim_lsp_info()
                     end
                 end
             end
+
+            -- Render linter entries (sorted alphabetically).
             if next(linter_by_name) then
                 local linter_line = INDENT_L1 .. lsp_icons.shape_diamond .. " Linters: " .. lsp_icons.bracket
                 table.insert(lines, linter_line)
@@ -729,6 +963,7 @@ local function lvim_lsp_info()
                     table.insert(lines, tool_line)
                     add_tool_highlight(#lines - 1, linter_name, INDENT_L2)
                     add_icon_highlight(#lines - 1, lsp_icons.shape_circle)
+                    -- Each linter's config table becomes a foldable block.
                     local fold_info = { id = "linter_" .. linter_name }
                     table.insert(folds, fold_info)
                     display_table(linter_info.config, lines, highlights, INDENT_L3, fold_info)
@@ -756,6 +991,8 @@ local function lvim_lsp_info()
                     end
                 end
             end
+
+            -- Render formatter entries (sorted alphabetically).
             if next(formatter_by_name) then
                 local formatter_line = INDENT_L1 .. lsp_icons.shape_diamond .. " Formatters: " .. lsp_icons.bracket
                 table.insert(lines, formatter_line)
@@ -780,6 +1017,7 @@ local function lvim_lsp_info()
                     table.insert(lines, tool_line)
                     add_tool_highlight(#lines - 1, formatter_name, INDENT_L2)
                     add_icon_highlight(#lines - 1, lsp_icons.shape_circle)
+                    -- Each formatter's config table becomes a foldable block.
                     local fold_info = { id = "formatter_" .. formatter_name }
                     table.insert(folds, fold_info)
                     display_table(formatter_info.config, lines, highlights, INDENT_L3, fold_info)
@@ -807,6 +1045,8 @@ local function lvim_lsp_info()
                     end
                 end
             end
+
+            -- EFM's supported filetypes (from its server config, not from efm_configs).
             local filetypes = client.config and client.config.filetypes or {}
             if #filetypes > 0 then
                 table.insert(lines, "")
@@ -817,6 +1057,7 @@ local function lvim_lsp_info()
                 table.insert(lines, INDENT_L2 .. filetypes_str)
             end
         else
+            -- Non-EFM server: show filetypes and command in a compact format.
             if client.config and client.config.filetypes and #client.config.filetypes > 0 then
                 local filetypes = table.concat(client.config.filetypes, ", ")
                 local filetype_line = INDENT_L1 .. "Filetypes: " .. filetypes
@@ -825,6 +1066,7 @@ local function lvim_lsp_info()
             end
             if client.cmd and #client.cmd > 0 then
                 local cmd_str = table.concat(client.cmd, " ")
+                -- Truncate very long command strings to keep the popup within its width.
                 if #cmd_str > popup_width - 10 then
                     cmd_str = cmd_str:sub(1, popup_width - 13) .. "..."
                 end
@@ -833,15 +1075,22 @@ local function lvim_lsp_info()
                 add_highlight(#lines - 1, "Command:", "LspInfoKey")
             end
         end
+
+        -- Server configuration section: settings, init_options, root_dir, capabilities,
+        -- and any remaining config keys not handled above.
         if client.config then
             table.insert(lines, "")
             table.insert(lines, INDENT_L1 .. lsp_icons.shape_diamond .. " Server Configuration")
             add_highlight(#lines - 1, "Server Configuration", "LspInfoSection")
             add_icon_highlight(#lines - 1, lsp_icons.shape_diamond)
+            ---@type boolean  Tracks whether at least one config sub-section was shown.
             local has_config = false
+
+            -- Deep-copy the config sub-tables to avoid mutating the live client config.
             local expanded_settings = deep_copy_table(client.config.settings or {})
             local expanded_init_options = deep_copy_table(client.config.init_options or {})
             local expanded_capabilities = deep_copy_table(client.config.capabilities or {})
+
             if client.config.settings and not vim.tbl_isempty(client.config.settings) then
                 has_config = true
                 local settings_line = INDENT_L2 .. lsp_icons.shape_circle .. " Settings: " .. lsp_icons.bracket
@@ -890,6 +1139,10 @@ local function lvim_lsp_info()
                 table.insert(folds, fold_info)
                 display_table(expanded_capabilities, lines, highlights, INDENT_L3, fold_info)
             end
+
+            -- Collect any config keys that were not already rendered above (excluding
+            -- function values, which are not human-readable in a display buffer).
+            ---@type table<string, any>
             local other_config = {}
             for k, v in pairs(client.config) do
                 if
@@ -925,12 +1178,16 @@ local function lvim_lsp_info()
                 add_highlight(#lines - 1, lsp_icons.cross, "LspInfoKey")
             end
         end
+
+        -- Capabilities section: tick-list of server_capabilities flags.
         table.insert(lines, "")
         table.insert(lines, INDENT_L1 .. lsp_icons.shape_diamond .. " Capabilities")
         add_highlight(#lines - 1, "Capabilities", "LspInfoSection")
         add_icon_highlight(#lines - 1, lsp_icons.shape_diamond)
+        ---@type boolean
         local has_capabilities = false
         if client.server_capabilities then
+            -- Only the capabilities most relevant to everyday editing are checked.
             local capabilities = {
                 { name = "Completion", check = client.server_capabilities.completionProvider },
                 { name = "Hover", check = client.server_capabilities.hoverProvider },
@@ -959,15 +1216,19 @@ local function lvim_lsp_info()
             add_icon_highlight(#lines - 1, lsp_icons.cross)
             add_highlight(#lines - 1, lsp_icons.cross, "LspInfoKey")
         end
+
+        -- Attached buffers section.
         table.insert(lines, "")
         table.insert(lines, INDENT_L1 .. lsp_icons.shape_diamond .. " Attached Buffers")
         add_highlight(#lines - 1, "Attached Buffers", "LspInfoSection")
         add_icon_highlight(#lines - 1, lsp_icons.shape_diamond)
+        ---@type boolean
         local has_buffers = false
         if client.attached_buffers then
             for bufnr, _ in pairs(client.attached_buffers) do
                 has_buffers = true
                 local buf_name = vim.api.nvim_buf_get_name(bufnr)
+                -- Use ":~:." to display the path relative to home / cwd for brevity.
                 local display_name = buf_name ~= "" and vim.fn.fnamemodify(buf_name, ":~:.") or "[No Name]"
                 local filetype = vim.bo[bufnr].filetype
                 local buffer_info = INDENT_L2 .. lsp_icons.shape_circle .. " Buffer " .. bufnr .. ": " .. display_name
@@ -984,16 +1245,32 @@ local function lvim_lsp_info()
             add_icon_highlight(#lines - 1, lsp_icons.cross)
             add_highlight(#lines - 1, lsp_icons.cross, "LspInfoKey")
         end
+
         table.insert(lines, "")
         add_separator()
     end
+
+    -- -----------------------------------------------------------------------
+    -- Create the floating window
+    -- -----------------------------------------------------------------------
+
+    -- Use a scratch buffer (unlisted, wiped on close) to hold the popup content.
+    ---@type integer
     local bufnr = api.nvim_create_buf(false, true)
     vim.bo[bufnr].bufhidden = "wipe"
     api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+
+    ---@type integer
     local width = popup_width
+    -- Cap height at 80 % of the terminal height so the popup never overflows.
+    ---@type integer
     local height = math.min(#lines, math.floor(vim.o.lines * 0.8))
+    ---@type integer
     local col = math.floor((vim.o.columns - width) / 2)
+    ---@type integer
     local row = math.floor((vim.o.lines - height) / 2)
+
+    ---@type integer
     local win = api.nvim_open_win(bufnr, true, {
         style = "minimal",
         relative = "editor",
@@ -1004,27 +1281,39 @@ local function lvim_lsp_info()
         border = "rounded",
         zindex = 250,
     })
+
+    -- Override window-local highlights so the float uses the configured bg_float color.
     vim.wo[win].winhighlight = "Normal:LspInfoBG,NormalNC:LspInfoBG"
+
+    -- Apply all accumulated highlights using vim.highlight.range; pcall guards
+    -- against stale line indices if lines was shorter than expected.
     for _, hl in ipairs(highlights) do
         pcall(function()
             if hl.col_end == -1 then
+                -- col_end == -1 means highlight the entire line.
                 vim.highlight.range(bufnr, ns, hl.hl_group, { hl.line, 0 }, { hl.line, -1 }, {})
             else
                 vim.highlight.range(bufnr, ns, hl.hl_group, { hl.line, hl.col_start }, { hl.line, hl.col_end }, {})
             end
         end)
     end
+
+    -- Enable manual folds and create one fold per config/tool table block.
     vim.wo[win].foldenable = true
     vim.wo[win].foldmethod = "manual"
     for _, fold in ipairs(folds) do
         if fold.start_line and fold.end_line then
+            -- nvim_buf_call is required because :fold operates on the current window.
             pcall(function()
                 vim.api.nvim_buf_call(bufnr, function()
+                    -- :fold uses 1-based line numbers; our indices are 0-based.
                     vim.cmd(string.format([[%d,%dfold]], fold.start_line + 1, fold.end_line + 1))
                 end)
             end)
         end
     end
+
+    -- Buffer-local keymaps for fold navigation and closing the popup.
     vim.api.nvim_buf_set_keymap(bufnr, "n", "<CR>", "<cmd>normal! za<CR>", {
         noremap = true,
         silent = true,
@@ -1059,9 +1348,11 @@ local function lvim_lsp_info()
         silent = true,
         nowait = true,
     })
+
     return {
         bufnr = bufnr,
         win = win,
+        -- Convenience close helper for callers that hold the return value.
         close = function()
             if api.nvim_win_is_valid(win) then
                 api.nvim_win_close(win, true)
@@ -1070,7 +1361,13 @@ local function lvim_lsp_info()
     }
 end
 
--- BASE
+-- ---------------------------------------------------------------------------
+-- BASE: invisible float border definition
+-- ---------------------------------------------------------------------------
+
+-- An all-space border effectively removes the visible border while still
+-- keeping the float padding so content is not flush with the editor edge.
+---@type { [1]: string, [2]: string }[]
 local _border = {
     { " ", "FloatBorder" },
     { " ", "FloatBorder" },
@@ -1082,6 +1379,14 @@ local _border = {
     { " ", "FloatBorder" },
 }
 
+-- ---------------------------------------------------------------------------
+-- User commands: standard LSP actions (capability-guarded)
+-- Each command first checks that at least one attached client supports the
+-- required LSP method before dispatching to vim.lsp.buf.*. This prevents
+-- noisy "method not supported" notifications for buffers without LSP.
+-- ---------------------------------------------------------------------------
+
+-- Show hover documentation for the symbol under the cursor.
 vim.api.nvim_create_user_command("LspHover", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1094,6 +1399,7 @@ vim.api.nvim_create_user_command("LspHover", function()
     end
 end, {})
 
+-- Rename the symbol under the cursor across the project.
 vim.api.nvim_create_user_command("LspRename", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1106,6 +1412,7 @@ vim.api.nvim_create_user_command("LspRename", function()
     end
 end, {})
 
+-- Format the entire current buffer synchronously.
 vim.api.nvim_create_user_command("LspFormat", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1118,12 +1425,14 @@ vim.api.nvim_create_user_command("LspFormat", function()
     end
 end, {})
 
+-- Format only the visually selected range synchronously.
 vim.api.nvim_create_user_command("LspRangeFormat", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
         method = "textDocument/rangeFormatting",
     })
     if #clients > 0 then
+        -- Read the visual selection marks to derive the line range for formatting.
         local start_row, _ = unpack(vim.api.nvim_buf_get_mark(0, "<"))
         local end_row, _ = unpack(vim.api.nvim_buf_get_mark(0, ">"))
         vim.lsp.buf.format({
@@ -1138,6 +1447,7 @@ vim.api.nvim_create_user_command("LspRangeFormat", function()
     end
 end, { range = true })
 
+-- Show available code actions for the current cursor position or selection.
 vim.api.nvim_create_user_command("LspCodeAction", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1150,6 +1460,7 @@ vim.api.nvim_create_user_command("LspCodeAction", function()
     end
 end, {})
 
+-- Jump to the definition of the symbol under the cursor.
 vim.api.nvim_create_user_command("LspDefinition", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1162,6 +1473,7 @@ vim.api.nvim_create_user_command("LspDefinition", function()
     end
 end, {})
 
+-- Jump to the type definition of the symbol under the cursor.
 vim.api.nvim_create_user_command("LspTypeDefinition", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1174,6 +1486,7 @@ vim.api.nvim_create_user_command("LspTypeDefinition", function()
     end
 end, {})
 
+-- Jump to the declaration of the symbol under the cursor.
 vim.api.nvim_create_user_command("LspDeclaration", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1186,6 +1499,7 @@ vim.api.nvim_create_user_command("LspDeclaration", function()
     end
 end, {})
 
+-- List all references to the symbol under the cursor.
 vim.api.nvim_create_user_command("LspReferences", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1198,6 +1512,7 @@ vim.api.nvim_create_user_command("LspReferences", function()
     end
 end, {})
 
+-- List all implementations of the symbol under the cursor.
 vim.api.nvim_create_user_command("LspImplementation", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1210,6 +1525,7 @@ vim.api.nvim_create_user_command("LspImplementation", function()
     end
 end, {})
 
+-- Show signature help (parameter hints) for the call under the cursor.
 vim.api.nvim_create_user_command("LspSignatureHelp", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1222,6 +1538,7 @@ vim.api.nvim_create_user_command("LspSignatureHelp", function()
     end
 end, {})
 
+-- List all symbols in the current document.
 vim.api.nvim_create_user_command("LspDocumentSymbol", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1234,6 +1551,7 @@ vim.api.nvim_create_user_command("LspDocumentSymbol", function()
     end
 end, {})
 
+-- Search symbols across the entire workspace.
 vim.api.nvim_create_user_command("LspWorkspaceSymbol", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1246,6 +1564,7 @@ vim.api.nvim_create_user_command("LspWorkspaceSymbol", function()
     end
 end, {})
 
+-- Interactively add a directory to the LSP workspace.
 vim.api.nvim_create_user_command("LspAddToWorkspaceFolder", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1258,6 +1577,7 @@ vim.api.nvim_create_user_command("LspAddToWorkspaceFolder", function()
     end
 end, {})
 
+-- Remove a directory from the LSP workspace.
 vim.api.nvim_create_user_command("LspRemoveWorkspaceFolder", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1270,6 +1590,7 @@ vim.api.nvim_create_user_command("LspRemoveWorkspaceFolder", function()
     end
 end, {})
 
+-- Print the list of current LSP workspace folders to the command line.
 vim.api.nvim_create_user_command("LspListWorkspaceFolders", function()
     local clients = vim.lsp.get_clients({ bufnr = 0 })
     if #clients > 0 then
@@ -1279,6 +1600,7 @@ vim.api.nvim_create_user_command("LspListWorkspaceFolders", function()
     end
 end, {})
 
+-- Show incoming call hierarchy for the symbol under the cursor.
 vim.api.nvim_create_user_command("LspIncomingCalls", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1291,6 +1613,7 @@ vim.api.nvim_create_user_command("LspIncomingCalls", function()
     end
 end, {})
 
+-- Show outgoing call hierarchy for the symbol under the cursor.
 vim.api.nvim_create_user_command("LspOutgoingCalls", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1303,6 +1626,7 @@ vim.api.nvim_create_user_command("LspOutgoingCalls", function()
     end
 end, {})
 
+-- Clear document highlight marks left by LspDocumentHighlight.
 vim.api.nvim_create_user_command("LspClearReferences", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1315,6 +1639,7 @@ vim.api.nvim_create_user_command("LspClearReferences", function()
     end
 end, {})
 
+-- Highlight all occurrences of the symbol under the cursor in the buffer.
 vim.api.nvim_create_user_command("LspDocumentHighlight", function()
     local clients = vim.lsp.get_clients({
         bufnr = 0,
@@ -1327,6 +1652,7 @@ vim.api.nvim_create_user_command("LspDocumentHighlight", function()
     end
 end, {})
 
+-- Show the diagnostic message for the current line in a float.
 vim.api.nvim_create_user_command("LspShowDiagnosticCurrent", function()
     local clients = vim.lsp.get_clients({ bufnr = 0 })
     if #clients > 0 then
@@ -1336,6 +1662,7 @@ vim.api.nvim_create_user_command("LspShowDiagnosticCurrent", function()
     end
 end, {})
 
+-- Jump to the next diagnostic in the current buffer.
 vim.api.nvim_create_user_command("LspShowDiagnosticNext", function()
     local clients = vim.lsp.get_clients({ bufnr = 0 })
     if #clients > 0 then
@@ -1345,6 +1672,7 @@ vim.api.nvim_create_user_command("LspShowDiagnosticNext", function()
     end
 end, {})
 
+-- Jump to the previous diagnostic in the current buffer.
 vim.api.nvim_create_user_command("LspShowDiagnosticPrev", function()
     local clients = vim.lsp.get_clients({ bufnr = 0 })
     if #clients > 0 then
@@ -1353,13 +1681,22 @@ vim.api.nvim_create_user_command("LspShowDiagnosticPrev", function()
         vim.notify("No active LSP client found", vim.log.levels.WARN)
     end
 end, {})
+
+-- Launch the DAP local debug session using the project-local configuration.
 vim.api.nvim_create_user_command("DAPLocal", function()
     local dap_utils = require("languages.utils.dap_fn")
     dap_utils.dap_local()
 end, {})
 
--- EXTRA
+-- ---------------------------------------------------------------------------
+-- EXTRA: LVIM-specific management commands
+-- ---------------------------------------------------------------------------
+
+-- Open the global LSP server toggle menu (start / disable / enable servers).
 vim.api.nvim_create_user_command("LvimLspToggleServers", lvim_toggle_lsp_server, {})
+
+-- Open the per-buffer LSP server toggle menu.
+-- Optional argument: buffer number (defaults to current buffer when omitted).
 vim.api.nvim_create_user_command("LvimLspToggleServersForBuffer", function(opts)
     local bufnr = tonumber(opts.args)
     lvim_toggle_lsp_for_buffer(bufnr)
@@ -1367,10 +1704,17 @@ end, {
     nargs = "?",
     desc = "Toggle LSP servers for buffer (optionally specify buffer number)",
 })
+
+-- Restart a running LSP server and re-attach it to all previously attached buffers.
 vim.api.nvim_create_user_command("LvimLspRestart", lvim_lsp_restart, {})
+
+-- Open the rich LSP information floating window.
 vim.api.nvim_create_user_command("LvimLspInfo", lvim_lsp_info, {})
 
+-- ---------------------------------------------------------------------------
 -- KeyMaps
+-- ---------------------------------------------------------------------------
+
 vim.keymap.set("n", "<Leader>ls", lvim_toggle_lsp_server, { desc = "Lvim Toggle LSP servers globally" })
 vim.keymap.set("n", "<Leader>lb", lvim_toggle_lsp_for_buffer, { desc = "Lvim Toggle LSP servers for buffer" })
 vim.keymap.set("n", "<Leader>lr", lvim_lsp_restart, { desc = "Lvim LSP restart" })

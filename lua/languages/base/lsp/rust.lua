@@ -1,18 +1,30 @@
+-- LSP configuration for Rust
+-- Uses rust-analyzer for the language server with all code lenses enabled,
+-- and the cpptools DAP adapter (OpenDebugAD7) for debugging via GDB/LLDB.
+---@module "languages.base.lsp.rust"
+
 local navic = require("nvim-navic")
 local setup_diagnostics = require("languages.utils.setup_diagnostics")
 local lsp_installer = require("languages.lsp_installer")
 local dap = require("dap")
 
+---@type string[]  Mason packages required before the server can start
 local lsp_dependencies = {
     "rust-analyzer",
-    "cpptools",
+    "cpptools",  -- provides the OpenDebugAD7 native debug adapter used for Rust
 }
 
+---@type table|nil  Populated asynchronously once Mason tools are ready
 local lsp_config = nil
+
+---@type string[]  Root-directory markers; Cargo.toml is mandatory for any Rust workspace
 local root_markers = {
     "Cargo.toml",
 }
 
+---Sends the rust-analyzer/reloadWorkspace request to force-reload Cargo metadata.
+---Useful after adding a new dependency or changing Cargo.toml.
+---@param bufnr integer  Buffer whose workspace should be reloaded
 local function reload_workspace(bufnr)
     local clients = vim.lsp.get_clients({ bufnr = bufnr, name = "rust_analyzer" })
     for _, client in ipairs(clients) do
@@ -27,6 +39,8 @@ local function reload_workspace(bufnr)
 end
 
 lsp_installer.ensure_mason_tools(lsp_dependencies, function()
+    -- DAP: reuse the cpptools adapter (same binary as C/C++ debugging).
+    -- global.mason_path corresponds to _G.LVIM.global.mason_path (LvimGlobal).
     dap.adapters.cppdbg = {
         id = "cppdbg",
         type = "executable",
@@ -44,32 +58,34 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                 return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
             end,
             cwd = "${workspaceFolder}",
-            stopOnEntry = true,
+            stopOnEntry = true,  -- break at entry so variables can be inspected before main logic
         },
     }
 
     lsp_config = {
         name = "rust",
         cmd = { "rust-analyzer" },
-        filetypes = _G.file_types.rust,
+        filetypes = _G.LVIM.file_types.rust,
         settings = {
             ["rust-analyzer"] = {
                 assist = {
+                    -- importEnforceGranularity: merge use paths to the finest possible level
                     importEnforceGranularity = true,
-                    importPrefix = "crate",
+                    importPrefix = "crate",  -- use crate-relative paths in auto-imports
                 },
                 cargo = {
-                    allFeatures = true,
+                    allFeatures = true,  -- analyse all feature-gated code paths
                 },
-                checkOnSave = true,
-                inlayHints = { locationLinks = false },
+                checkOnSave = true,  -- run cargo check on every save
+                inlayHints = { locationLinks = false },  -- disable clickable location links in hints
                 diagnostics = {
                     enable = true,
                     experimental = {
-                        enable = true,
+                        enable = true,  -- opt into unstable diagnostic improvements
                     },
                 },
                 lens = {
+                    -- Enable all code lens types for a full IDE experience
                     enable = true,
                     implementations = { enable = true },
                     references = { enable = true },
@@ -80,11 +96,18 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                 },
             },
         },
+        ---Copies rust-analyzer settings into initializationOptions so that
+        ---the server receives them before the initialized notification.
+        ---@param init_params table  LSP InitializeParams being built
+        ---@param config     table  Full lspconfig server config
         before_init = function(init_params, config)
             if config.settings and config.settings["rust-analyzer"] then
                 init_params.initializationOptions = config.settings["rust-analyzer"]
             end
         end,
+        ---Called by nvim-lspconfig after the client attaches to a buffer.
+        ---@param client any
+        ---@param bufnr  integer
         on_attach = function(client, bufnr)
             setup_diagnostics.keymaps(client, bufnr)
             setup_diagnostics.document_highlight(client, bufnr)
@@ -93,10 +116,12 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
             if client.server_capabilities.documentSymbolProvider then
                 navic.attach(client, bufnr)
             end
+            -- Register a buffer-local command so users can reload Cargo without leaving nvim
             vim.api.nvim_buf_create_user_command(0, "LspCargoReload", function()
                 reload_workspace(0)
             end, { desc = "Reload current cargo workspace" })
         end,
+        -- Advertise codeLens capability at both textDocument and workspace levels
         capabilities = (function()
             local capabilities = setup_diagnostics.get_capabilities()
             capabilities.textDocument = capabilities.textDocument or {}
@@ -114,6 +139,9 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
 end)
 
 return setmetatable({}, {
+    ---@param _ table
+    ---@param key string
+    ---@return table|nil
     __index = function(_, key)
         if key == "config" then
             return lsp_config

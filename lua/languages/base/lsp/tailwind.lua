@@ -1,18 +1,29 @@
+-- LSP configuration for Tailwind CSS
+-- Uses tailwindcss-language-server with a comprehensive filetype list covering
+-- all template engines and front-end frameworks that can contain Tailwind classes.
+-- Language mappings translate non-standard vim filetypes to their HTML/CSS
+-- equivalents so the server applies the correct class completions.
+---@module "languages.base.lsp.tailwind"
+
 local navic = require("nvim-navic")
 local setup_diagnostics = require("languages.utils.setup_diagnostics")
 local lsp_installer = require("languages.lsp_installer")
 
+---@type string[]  Mason packages required before the server can start
 local lsp_dependencies = {
     "tailwindcss-language-server",
 }
 
+---@type table|nil  Populated asynchronously once Mason tools are ready
 local lsp_config = nil
+
+---@type string[]  Tailwind config file root markers (any variant activates the server)
 local root_markers = {
     "tailwind.config.js",
     "tailwind.config.cjs",
     "tailwind.config.mjs",
     "tailwind.config.ts",
-    "postcss.config.js",
+    "postcss.config.js",   -- PostCSS-only projects also use Tailwind
     "postcss.config.cjs",
     "postcss.config.mjs",
     "postcss.config.ts",
@@ -22,34 +33,41 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
     lsp_config = {
         name = "tailwind",
         cmd = { "tailwindcss-language-server", "--stdio" },
-        filetypes = _G.file_types.tailwind,
+        -- Full list of filetypes defined in file_types.lua (html, css, js, frameworks…)
+        filetypes = _G.LVIM.file_types.tailwind,
         settings = {
             tailwindCSS = {
                 validate = true,
                 lint = {
-                    cssConflict = "warning",
-                    invalidApply = "error",
+                    cssConflict = "warning",           -- conflicting utility classes → warning
+                    invalidApply = "error",            -- @apply with non-existent class → error
                     invalidScreen = "error",
                     invalidVariant = "error",
                     invalidConfigPath = "error",
                     invalidTailwindDirective = "error",
                     recommendedVariantOrder = "warning",
                 },
+                -- HTML attributes that receive Tailwind class completions
                 classAttributes = {
                     "class",
-                    "className",
-                    "class:list",
+                    "className",   -- React JSX
+                    "class:list",  -- Astro conditional classes
                     "classList",
-                    "ngClass",
+                    "ngClass",     -- Angular directive
                 },
+                -- Map vim-internal filetypes to HTML variants so the server
+                -- parses template syntax correctly.
                 includeLanguages = {
-                    eelixir = "html-eex",
-                    eruby = "erb",
-                    templ = "html",
-                    htmlangular = "html",
+                    eelixir = "html-eex",     -- Elixir/Phoenix EEx templates (vim ft)
+                    eruby = "erb",             -- Ruby ERB templates (vim ft)
+                    templ = "html",            -- Go templ component files
+                    htmlangular = "html",      -- Angular-specific HTML filetype
                 },
             },
         },
+        ---Called by nvim-lspconfig after the client attaches to a buffer.
+        ---@param client any
+        ---@param bufnr  integer
         on_attach = function(client, bufnr)
             setup_diagnostics.keymaps(client, bufnr)
             setup_diagnostics.document_highlight(client, bufnr)
@@ -63,6 +81,9 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
 end)
 
 return setmetatable({}, {
+    ---@param _ table
+    ---@param key string
+    ---@return table|nil
     __index = function(_, key)
         if key == "config" then
             return lsp_config

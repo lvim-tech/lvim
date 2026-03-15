@@ -1,34 +1,40 @@
+-- Global keymaps applied at startup across all buffers.
+-- Format: LvimKeymap tuples { lhs, rhs, desc?, extra_opts? }
+-- Registered via funcs.keymaps() in configs/base/init.lua.
+---@type table<string, LvimKeymap[]>
 local keymaps = {}
 
 keymaps["normal"] = {
-    { "<Esc>", "<Esc>:noh<CR>", "Esc" }, -- Remove highlight after search
-    { "j", "v:count == 0 ? 'gj' : 'j'", "j", { expr = true } }, -- Re-map j
-    { "k", "v:count == 0 ? 'gk' : 'k'", "k", { expr = true } }, -- Re-map k
-    { "<C-c>N", ":enew<CR>", "Create empty buffer" }, -- Create empty buffer
-    { "<C-c>s", ":Save<CR>", "Save" }, -- Save
-    { "<C-c>a", ":wa<CR>", "Save all" }, -- Save all
-    { "<C-c>e", ":Quit<CR>", "Close LvimIDE" }, -- Close all, exit nvim
-    { "<C-c>x", "<C-w>c", "Close current window" }, -- Close current window
-    { "<C-c>o", "<C-w>o", "Close other windows" }, -- Close other windows
-    { "<C-c>d", ":enew | bdelete #<CR>", "Delete buffer" }, -- BDelete
-    { "<C-c>=", ":wincmd=<CR>", "Win resize =" }, -- Win resize =
-    { "<C-h>", "<C-w>h", "Move to window left" }, -- Move to window left
-    { "<C-l>", "<C-w>l", "Move to window right" }, -- Move to window right
-    { "<C-j>", "<C-w>j", "Move to window down" }, -- Move to window down
-    { "<C-k>", "<C-w>k", "Move to window up" }, -- Move to window up
-    { "<C-Left>", ":vertical resize -2<CR>", "Resize width -" }, -- Resize width -
-    { "<C-Right>", ":vertical resize +2<CR>", "Resize width +" }, -- Resize width +
-    { "<C-Up>", ":resize -2<CR>", "Resize height -" }, -- Resize height -
-    { "<C-Down>", ":resize +2<CR>", "Resize height +" }, -- Resize height +
-    { "<C-c>n", ":tabn<CR>", "Tab next" }, -- Tab next
-    { "<C-c>p", ":tabp<CR>", "Tab prev" }, -- Tab prev
-    { "Q", ":CloseFloatWindows<CR>", "Close float windows" }, -- Close float windows
-    { "<C-c>fc", ":CloseFloatWindows<CR>", "Close float windows" }, -- Close float windows
-    { "<C-c>ff", ":FocusFloatWindow<CR>", "Focus float window" }, -- Focus float window
-    { "<C-c>c", ":Inspect<CR>", "Inspect" }, -- Inspect
-    { "<C-c>O", ":lua vim.ui.open(vim.fn.expand('%'))<CR>", "Open in browser" }, -- Open in browser
-    { "<Leader>m", ":messages<CR>", "Messages" }, -- Messages
-    { "<Leader>N", ":ene | startinsert<CR>", "New file" }, -- New file
+    { "<Esc>",    "<Esc>:noh<CR>",                             "Clear search highlight" },
+    -- expr = true allows count-aware movement: 5j jumps 5 real lines,
+    -- plain j moves by visual/wrapped lines
+    { "j",        "v:count == 0 ? 'gj' : 'j'",                "Move down (visual-line aware)", { expr = true } },
+    { "k",        "v:count == 0 ? 'gk' : 'k'",                "Move up (visual-line aware)",   { expr = true } },
+    { "<C-c>N",   ":enew<CR>",                                 "Create empty buffer" },
+    { "<C-c>s",   ":Save<CR>",                                 "Save" },
+    { "<C-c>a",   ":wa<CR>",                                   "Save all" },
+    { "<C-c>e",   ":Quit<CR>",                                 "Close LvimIDE" },
+    { "<C-c>x",   "<C-w>c",                                    "Close current window" },
+    { "<C-c>o",   "<C-w>o",                                    "Close other windows" },
+    { "<C-c>d",   ":enew | bdelete #<CR>",                     "Delete buffer" },
+    { "<C-c>=",   ":wincmd=<CR>",                              "Equalise window sizes" },
+    { "<C-h>",    "<C-w>h",                                    "Focus window left" },
+    { "<C-l>",    "<C-w>l",                                    "Focus window right" },
+    { "<C-j>",    "<C-w>j",                                    "Focus window down" },
+    { "<C-k>",    "<C-w>k",                                    "Focus window up" },
+    { "<C-Left>",  ":vertical resize -2<CR>",                  "Shrink window width" },
+    { "<C-Right>", ":vertical resize +2<CR>",                  "Grow window width" },
+    { "<C-Up>",    ":resize -2<CR>",                           "Shrink window height" },
+    { "<C-Down>",  ":resize +2<CR>",                           "Grow window height" },
+    { "<C-c>n",   ":tabn<CR>",                                 "Next tab" },
+    { "<C-c>p",   ":tabp<CR>",                                 "Previous tab" },
+    { "Q",        ":CloseFloatWindows<CR>",                    "Close all floats" },
+    { "<C-c>fc",  ":CloseFloatWindows<CR>",                    "Close all floats" },
+    { "<C-c>ff",  ":FocusFloatWindow<CR>",                     "Cycle focus to next float" },
+    { "<C-c>c",   ":Inspect<CR>",                              "Inspect highlight under cursor" },
+    { "<C-c>O",   ":lua vim.ui.open(vim.fn.expand('%'))<CR>",  "Open current file in OS handler" },
+    { "<Leader>m", ":messages<CR>",                            "Show message history" },
+    { "<Leader>N", ":ene | startinsert<CR>",                   "New file in insert mode" },
     {
         "<Leader>ta",
         function()
@@ -36,8 +42,8 @@ keymaps["normal"] = {
             vim.cmd("LvimSpaceTabNew " .. input)
         end,
         "New tab",
-    }, -- Tab new
-    { "<Leader>tc", ":LvimSpaceTabClose<CR>", "Tab close" }, -- Tab close
+    },
+    { "<Leader>tc",  ":LvimSpaceTabClose<CR>",  "Close tab" },
     {
         "<Leader>te",
         function()
@@ -47,9 +53,9 @@ keymaps["normal"] = {
             end
         end,
         "Rename tab",
-    }, -- Tab rename
-    { "<Leader>tn", ":LvimSpaceTabNext<CR>", "Tab next" }, -- Tab next
-    { "<Leader>tp", ":LvimSpaceTabPrev<CR>", "Tab prev" }, -- Tab prev
+    },
+    { "<Leader>tn",  ":LvimSpaceTabNext<CR>",      "Next tab" },
+    { "<Leader>tp",  ":LvimSpaceTabPrev<CR>",      "Previous tab" },
     {
         "<Leader>to",
         function()
@@ -58,20 +64,21 @@ keymaps["normal"] = {
                 vim.cmd("LvimSpaceTab " .. input)
             end
         end,
-        "Tab index",
-    }, -- Tab index
-    { "<Leader>tmn", ":LvimSpaceTabMoveNext<CR>", "Tab move next" }, -- Tab move next
-    { "<Leader>tmp", ":LvimSpaceTabMovePrev<CR>", "Tab move prev" }, -- Tab move prev
+        "Jump to tab by index",
+    },
+    { "<Leader>tmn", ":LvimSpaceTabMoveNext<CR>", "Move tab right" },
+    { "<Leader>tmp", ":LvimSpaceTabMovePrev<CR>", "Move tab left" },
 }
 
 keymaps["visual"] = {
-    { "*", "<Esc>/\\%V" }, -- Visual search /
-    { "#", "<Esc>?\\%V" }, -- Visual search ?
+    -- Search only within the visual selection using \%V atom
+    { "*", "<Esc>/\\%V",  "Search forward in selection" },
+    { "#", "<Esc>?\\%V",  "Search backward in selection" },
 }
 
 keymaps["insert"] = {
-    { "<C-j>", "<C-o>gj", "Move down by visual line in insert mode" },
-    { "<C-k>", "<C-o>gk", "Move up by visual line in insert mode" },
+    { "<C-j>", "<C-o>gj", "Move down by visual line" },
+    { "<C-k>", "<C-o>gk", "Move up by visual line" },
 }
 
 return keymaps

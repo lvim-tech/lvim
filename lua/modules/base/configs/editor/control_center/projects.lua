@@ -109,7 +109,7 @@ end
 
 return {
     name = "projects",
-    label = "New project",
+    label = "Newproject",
     icon = icons.common.project,
     settings = {
         {

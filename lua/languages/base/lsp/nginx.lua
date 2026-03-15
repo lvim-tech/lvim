@@ -1,12 +1,21 @@
+-- LSP configuration for Nginx
+-- Uses nginx-language-server which provides completions, hover docs,
+-- and diagnostics for nginx.conf and vhost files.
+---@module "languages.base.lsp.nginx"
+
 local navic = require("nvim-navic")
 local setup_diagnostics = require("languages.utils.setup_diagnostics")
 local lsp_installer = require("languages.lsp_installer")
 
+---@type string[]  Mason packages required before the server can start
 local lsp_dependencies = {
     "nginx-language-server",
 }
 
+---@type table|nil  Populated asynchronously once Mason tools are ready
 local lsp_config = nil
+
+---@type string[]  Root-directory markers for nginx configuration trees
 local root_markers = {
     "nginx.conf",
     ".git",
@@ -16,7 +25,10 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
     lsp_config = {
         name = "nginx",
         cmd = { "nginx-language-server" },
-        filetypes = _G.file_types.nginx,
+        filetypes = _G.LVIM.file_types.nginx,
+        ---Called by nvim-lspconfig after the client attaches to a buffer.
+        ---@param client any
+        ---@param bufnr  integer
         on_attach = function(client, bufnr)
             setup_diagnostics.keymaps(client, bufnr)
             setup_diagnostics.document_highlight(client, bufnr)
@@ -31,6 +43,9 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
 end)
 
 return setmetatable({}, {
+    ---@param _ table
+    ---@param key string
+    ---@return table|nil
     __index = function(_, key)
         if key == "config" then
             return lsp_config

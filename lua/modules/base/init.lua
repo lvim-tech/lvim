@@ -3,7 +3,7 @@ local funcs = require("core.funcs")
 local modules = {}
 local plugins_snapshot = {}
 
-local file_content = funcs.read_file(_G.global.lvim_path .. "/.snapshots/" .. _G.LVIM_SNAPSHOT)
+local file_content = funcs.read_file(_G.LVIM.global.lvim_path .. "/.snapshots/" .. _G.LVIM.snapshot)
 if file_content ~= nil then
     plugins_snapshot = file_content
 end
@@ -204,7 +204,7 @@ modules["A7Lavinraj/fyler.nvim"] = {
 modules["folke/which-key.nvim"] = {
     commit = funcs.get_commit("which-key.nvim", plugins_snapshot),
     cond = function()
-        return _G.LVIM_KEYSHELPER
+        return _G.LVIM.keyshelper
     end,
     config = ui_config.which_key_nvim.config,
 }

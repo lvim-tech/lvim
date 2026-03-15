@@ -1,10 +1,20 @@
+-- Filetype-to-language mapping for LVIM IDE.
+-- Each key is the language module name (matching a file in lua/languages/base/lsp/).
+-- Each value is a list of Neovim filetype strings that the corresponding LSP
+-- server should handle. These lists are merged into _G.LVIM.file_types at
+-- startup so that LSP config files can reference them as _G.LVIM.file_types.<lang>.
+--
+-- See LvimNamespace.file_types in core/types.lua for the runtime type.
+---@module "languages.base.file_types"
+
+---@type table<string, string[]>
 return {
     ["angular"] = {
         "typescript",
         "html",
         "typescriptreact",
         "typescript.tsx",
-        "htmlangular",
+        "htmlangular",      -- Angular-specific HTML filetype registered by the Angular plugin
     },
     ["astro"] = {
         "astro",
@@ -16,18 +26,19 @@ return {
     ["cpp"] = {
         "c",
         "cpp",
-        "objc",
-        "objcpp",
+        "objc",    -- Objective-C
+        "objcpp",  -- Objective-C++
     },
     ["css"] = {
         "css",
-        "scss",
+        "scss",  -- SCSS (Sass with curly braces)
         "less",
     },
     ["d"] = {
         "d",
     },
     ["emmet"] = {
+        -- HTML dialects
         "html",
         "css",
         "less",
@@ -35,13 +46,15 @@ return {
         "sass",
         "scss",
         "sugarss",
+        -- JSX / TSX
         "typescriptreact",
         "javascriptreact",
+        -- Astro components can also use Emmet
         "astro",
     },
     ["go"] = {
         "go",
-        "gomod",
+        "gomod",  -- go.mod dependency file
     },
     ["helm"] = {
         "helm",
@@ -51,19 +64,19 @@ return {
     },
     ["json"] = {
         "json",
-        "jsonc",
+        "jsonc",  -- JSON with comments (used in tsconfig, VSCode settings, etc.)
     },
     ["jsts"] = {
         "javascript",
         "typescript",
-        "javascriptreact",
-        "typescriptreact",
+        "javascriptreact",  -- .jsx files
+        "typescriptreact",  -- .tsx files
     },
     ["kotlin"] = {
         "kotlin",
     },
     ["latex"] = {
-        "bib",
+        "bib",  -- BibTeX bibliography files
         "tex",
     },
     ["lua"] = {
@@ -71,18 +84,18 @@ return {
     },
     ["markdown"] = {
         "markdown",
-        "markdown.mdx",
+        "markdown.mdx",  -- MDX (Markdown with JSX)
     },
     ["nginx"] = {
         "nginx",
     },
     ["ocaml"] = {
         "ocaml",
-        "menhir",
-        "ocamlinterface",
-        "ocamllex",
-        "reason",
-        "dune",
+        "menhir",          -- parser generator file
+        "ocamlinterface",  -- .mli interface files
+        "ocamllex",        -- ocamllex lexer definition
+        "reason",          -- ReasonML (OCaml syntax variant)
+        "dune",            -- dune build file
     },
     ["perl"] = {
         "perl",
@@ -95,15 +108,15 @@ return {
     },
     ["r"] = {
         "r",
-        "rmd",
-        "quarto",
+        "rmd",     -- R Markdown
+        "quarto",  -- Quarto document (R/Python/Julia mixed)
     },
     ["rust"] = {
         "rust",
     },
     ["scala"] = {
         "scala",
-        "sbt",
+        "sbt",  -- SBT build definition files
     },
     ["shell"] = {
         "sh",
@@ -114,7 +127,7 @@ return {
     },
     ["sql"] = {
         "sql",
-        "mysql",
+        "mysql",  -- MySQL-flavoured SQL dialect
     },
     ["stylelint"] = {
         "css",
@@ -191,17 +204,17 @@ return {
     },
     ["xml"] = {
         "xml",
-        "xsd",
-        "xsl",
-        "xslt",
-        "svg",
+        "xsd",   -- XML Schema Definition
+        "xsl",   -- XSL Stylesheet
+        "xslt",  -- XSLT Transformation
+        "svg",   -- SVG is valid XML
     },
     ["yaml"] = {
         "yaml",
     },
     ["zig"] = {
         "zig",
-        "zir",
+        "zir",  -- Zig Intermediate Representation (for compiler development)
     },
 }
 

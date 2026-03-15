@@ -1,12 +1,23 @@
+-- LSP configuration for Stylelint
+-- Uses stylelint-lsp which wraps the Stylelint CSS/SCSS linter as a language
+-- server, providing diagnostics for style rule violations across CSS dialects.
+-- Note: document_auto_format is intentionally omitted because Stylelint is a
+-- linter, not a formatter; use prettierd or the CSS LSP for formatting.
+---@module "languages.base.lsp.stylelint"
+
 local navic = require("nvim-navic")
 local setup_diagnostics = require("languages.utils.setup_diagnostics")
 local lsp_installer = require("languages.lsp_installer")
 
+---@type string[]  Mason packages required before the server can start
 local lsp_dependencies = {
     "stylelint-lsp",
 }
 
+---@type table|nil  Populated asynchronously once Mason tools are ready
 local lsp_config = nil
+
+---@type string[]  Stylelint config file names used as root markers
 local root_markers = {
     ".stylelintrc",
     ".stylelintrc.mjs",
@@ -24,8 +35,11 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
     lsp_config = {
         name = "stylelint",
         cmd = { "stylelint-lsp", "--stdio" },
-        filetypes = _G.file_types.stylelint,
-        settings = {},
+        filetypes = _G.LVIM.file_types.stylelint,
+        settings = {},  -- all Stylelint configuration lives in the config files above
+        ---Called by nvim-lspconfig after the client attaches to a buffer.
+        ---@param client any
+        ---@param bufnr  integer
         on_attach = function(client, bufnr)
             setup_diagnostics.keymaps(client, bufnr)
             setup_diagnostics.document_highlight(client, bufnr)
@@ -38,6 +52,9 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
 end)
 
 return setmetatable({}, {
+    ---@param _ table
+    ---@param key string
+    ---@return table|nil
     __index = function(_, key)
         if key == "config" then
             return lsp_config

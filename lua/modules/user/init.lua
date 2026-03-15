@@ -21,12 +21,17 @@ local dependencies_config = require("modules.user.configs.dependencies")
 
 local ui_config = require("modules.user.configs.ui")
 
+modules["lvim-tech/lvim-lsp"] = {
+    config = function()
+        require("lvim-lsp").setup()
+    end,
+}
 modules["lvim-tech/lvim-dependencies"] = {
-    branch = "lsp",
     config = function()
         require("lvim-dependencies").setup()
     end,
 }
+modules["lvim-tech/lvim-utils"] = {}
 
 modules["nvzone/showkeys"] = {
     commit = funcs.get_commit("showkeys", plugins_snapshot),

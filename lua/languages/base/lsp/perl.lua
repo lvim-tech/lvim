@@ -1,12 +1,21 @@
+-- LSP configuration for Perl
+-- Uses PerlNavigator which provides linting, navigation, and completions
+-- by running Perl::Critic and parsing perlcritic output in the background.
+---@module "languages.base.lsp.perl"
+
 local navic = require("nvim-navic")
 local setup_diagnostics = require("languages.utils.setup_diagnostics")
 local lsp_installer = require("languages.lsp_installer")
 
+---@type string[]  Mason packages required before the server can start
 local lsp_dependencies = {
     "perlnavigator",
 }
 
+---@type table|nil  Populated asynchronously once Mason tools are ready
 local lsp_config = nil
+
+---@type string[]  Root-directory markers (Perl projects vary widely; .git is the safest anchor)
 local root_markers = {
     ".git",
 }
@@ -15,7 +24,10 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
     lsp_config = {
         name = "perl",
         cmd = { "perlnavigator" },
-        filetypes = _G.file_types.perl,
+        filetypes = _G.LVIM.file_types.perl,
+        ---Called by nvim-lspconfig after the client attaches to a buffer.
+        ---@param client any
+        ---@param bufnr  integer
         on_attach = function(client, bufnr)
             setup_diagnostics.keymaps(client, bufnr)
             setup_diagnostics.document_highlight(client, bufnr)
@@ -25,9 +37,10 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
                 navic.attach(client, bufnr)
             end
         end,
+        -- Advertise codeLens capability for reference/implementation counts
         capabilities = (function()
             local capabilities = setup_diagnostics.get_capabilities()
-            capabilities.textDocument.codeLens = {
+            capabilities.textDocument.codeLens = { ---@diagnostic disable-line: undefined-field
                 dynamicRegistration = true,
                 resolveProvider = true,
             }
@@ -37,6 +50,9 @@ lsp_installer.ensure_mason_tools(lsp_dependencies, function()
 end)
 
 return setmetatable({}, {
+    ---@param _ table
+    ---@param key string
+    ---@return table|nil
     __index = function(_, key)
         if key == "config" then
             return lsp_config

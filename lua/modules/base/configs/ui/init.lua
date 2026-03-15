@@ -1,11 +1,29 @@
+-- Plugin configuration table for UI-related plugins in LVIM IDE.
+-- Covers the start dashboard, cmdline/message UI, window management helpers,
+-- file explorers, the statusline/statuscolumn/winbar (heirline), shell
+-- integrations, terminal multiplexer, indent guides, and colorscheme helpers.
+
+---@module "modules.base.configs.ui"
+
 local icons = require("configs.base.ui.icons")
 
+---@type table<string, table>  Map of plugin identifiers to their lazy.nvim specs
 return {
+    -- snacks.nvim: collection of small UI utilities — dashboard, zen, scratch,
+    -- git blame/browse, undo picker, notifier, image preview, and more
     snacks_nvim = {
         opts = function()
+            ---Monkey-patch snacks.dashboard to prevent a double-delete crash.
+            ---Wraps nvim_del_augroup_by_id with a guard that only deletes each
+            ---autogroup once, and replaces the dashboard's BufWipeout/BufDelete
+            ---autocmd with a safer version that calls instance:fire("Closed").
             local function patch_snacks_dashboard()
+                -- Track which augroup IDs have already been deleted to prevent double-free.
+                ---@type table<integer, boolean>
                 local group_states = {}
                 local orig_del_augroup = vim.api.nvim_del_augroup_by_id
+                ---Safe wrapper around nvim_del_augroup_by_id that is idempotent.
+                ---@param id integer  Autogroup handle to delete
                 _G.__safe_del_augroup = function(id)
                     if not group_states[id] then
                         group_states[id] = true
@@ -48,24 +66,39 @@ return {
                 end
             end
             patch_snacks_dashboard()
-            local ver = "v" .. (_G.LVIM_VERSION or "v7.4.0")
+            ---@type string  Version string prefixed with "v", e.g. "v8.1.0"
+            local ver = "v" .. (_G.LVIM.version or "v7.4.0")
             local header_logo = require("modules.base.configs.ui.logo")
+            -- Combine the ASCII art logo with the version string for the dashboard header.
             local header = header_logo.logo_1 .. ver
+            -- Install global debug helpers: dd() for inspect, bt() for backtrace.
             _G.dd = function(...)
                 Snacks.debug.inspect(...)
             end
             _G.bt = function()
                 Snacks.debug.backtrace()
             end
+            -- Override vim.print so it uses the richer Snacks inspector.
             vim.print = _G.dd
+            ---Open an fzf-lua picker over all existing Snacks scratch buffers.
+            ---Pressing <enter> opens the selected scratch; <ctrl-d> deletes it.
             local function fzf_scratch()
+                ---@type string[]  Display strings shown in the fzf list
                 local entries = {}
                 local items = Snacks.scratch.list()
+                ---@type table<string, table>  Map from display string back to scratch item
                 local item_map = {}
                 local utils = require("fzf-lua.utils")
+                -- Return hl group name only when it has not been cleared (avoids empty ANSI codes).
+                ---@param hl string  Highlight group name
+                ---@return string|nil
                 local function hl_validate(hl)
                     return not utils.is_hl_cleared(hl) and hl or nil
                 end
+                ---Wrap a string with ANSI colour codes derived from a highlight group.
+                ---@param hl string  Highlight group name
+                ---@param s  string  Text to colour
+                ---@return string
                 local function ansi_from_hl(hl, s)
                     return utils.ansi_from_hl(hl_validate(hl), s)
                 end
@@ -176,14 +209,16 @@ return {
                         function()
                             local v = vim.version()
                             local datetime = os.date(" %d-%m-%Y")
+                            ---@type string  OS label with icon, e.g. " Linux" or " macOS"
                             local platform
-                            if _G.global.os == "linux" then
+                            if _G.LVIM.global.os == "linux" then
                                 platform = " Linux"
-                            elseif _G.global.os == "mac" then
+                            elseif _G.LVIM.global.os == "mac" then
                                 platform = " macOS"
                             else
                                 platform = ""
                             end
+                            -- v.build is vim.NIL (not Lua nil) when absent; guard before using it.
                             local build = ""
                             if v.build ~= vim.NIL then
                                 build = " build " .. v.build
@@ -319,10 +354,16 @@ return {
             }
         end,
     },
+    -- ui.nvim: override for Neovim's built-in UI (cmdline, messages) with styled
+    -- floating windows, per-context icons, and diagnostic-aware message decorations.
     ui_nvim = {
         config = function()
+            ---Apply all custom highlight groups used by ui.nvim's cmdline and message styles.
+            ---Called inside vim.schedule() so it runs after the colorscheme is fully loaded.
             local function set_hl_groups()
-                local c = _G.LVIM_COLORS
+                ---@type LvimColors
+                local c = _G.LVIM.colors
+                -- Short alias so the block below stays readable.
                 local hl = vim.api.nvim_set_hl
 
                 hl(0, "UICmdlineDefault", { bg = c.blue_bh, fg = c.blue })
@@ -407,7 +448,11 @@ return {
                     wrap_notify = true,
                     respect_replace_last = true,
                     msg_styles = {
+                        -- Default message style: choose icon and line highlight based on
+                        -- the highlight attribute of the first message chunk.
                         default = {
+                            ---@param msg table  Message object from ui.nvim
+                            ---@return table     Decoration config with icon, padding, and line hl
                             decorations = function(msg)
                                 local conf = { icon = { { "▌", "UIMessageDefault" } } }
                                 if msg.content and #msg.content == 1 then
@@ -431,7 +476,12 @@ return {
                                 return conf
                             end,
                         },
+                        -- Search messages: forward (/) gets a down-arrow icon,
+                        -- backward (?) gets an up-arrow icon.
                         search = {
+                            ---@param _     any       Unused message object
+                            ---@param lines string[]  Raw message lines
+                            ---@return table          Decoration config
                             decorations = function(_, lines)
                                 if string.match(lines[#lines], "^/") then
                                     return {
@@ -471,17 +521,22 @@ return {
                     },
                 },
             })
+            -- Defer hl group setup until after the first frame so the active
+            -- colorscheme is already applied (avoids overwrite by colorscheme load).
             vim.schedule(function()
                 set_hl_groups()
             end)
         end,
     },
+    -- nvim-window-picker: label each window so the user can jump to it by key
     nvim_window_picker = {
         cmd = { "WindowPicker" },
         keys = {
             { "gpp", "<Cmd>WindowPicker<CR>", desc = "Window picker" },
         },
         opts = function()
+            ---Prompt the user to pick a window by label and focus it.
+            ---Falls back to the current window when the picker is dismissed.
             local function focus_window()
                 local picked_window_id = require("window-picker").pick_window() or vim.api.nvim_get_current_win()
                 vim.api.nvim_set_current_win(picked_window_id)
@@ -509,25 +564,25 @@ return {
                 highlights = {
                     statusline = {
                         focused = {
-                            fg = _G.LVIM_COLORS.red,
-                            bg = _G.LVIM_COLORS.bg_dark,
+                            fg = _G.LVIM.colors.red,
+                            bg = _G.LVIM.colors.bg_dark,
                             bold = true,
                         },
                         unfocused = {
-                            fg = _G.LVIM_COLORS.bg,
-                            bg = _G.LVIM_COLORS.red,
+                            fg = _G.LVIM.colors.bg,
+                            bg = _G.LVIM.colors.red,
                             bold = true,
                         },
                     },
                     winbar = {
                         focused = {
-                            fg = _G.LVIM_COLORS.red,
-                            bg = _G.LVIM_COLORS.bg_dark,
+                            fg = _G.LVIM.colors.red,
+                            bg = _G.LVIM.colors.bg_dark,
                             bold = true,
                         },
                         unfocused = {
-                            fg = _G.LVIM_COLORS.bg,
-                            bg = _G.LVIM_COLORS.red,
+                            fg = _G.LVIM.colors.bg,
+                            bg = _G.LVIM.colors.red,
                             bold = true,
                         },
                     },
@@ -535,6 +590,7 @@ return {
             }
         end,
     },
+    -- winshift.nvim: interactively move and swap windows within a tab
     winshift_nvim = {
         cmd = { "WinShift" },
         keys = {
@@ -545,6 +601,7 @@ return {
             focused_hl_group = "CursorLine",
         },
     },
+    -- mini.files: lightweight file manager with column-based navigation and split keymaps
     mini_files = {
         cmd = { "MiniFiles" },
         keys = {
@@ -557,6 +614,11 @@ return {
             },
         },
         opts = function()
+            ---Register a buffer-local keymap that opens a horizontal or vertical split
+            ---targeting the window that mini.files would navigate into.
+            ---@param buf_id    integer  Buffer handle of the mini.files window
+            ---@param lhs       string   Key sequence to bind
+            ---@param direction string   Split direction, e.g. "belowright horizontal"
             local map_split = function(buf_id, lhs, direction)
                 local rhs = function()
                     local new_target_window
@@ -577,6 +639,8 @@ return {
                     map_split(buf_id, "gv", "belowright vertical")
                 end,
             })
+            -- Expose a :MiniFiles command so other plugins (e.g. neo-tree mappings)
+            -- can open the explorer without hard-coding the require() call.
             local function mini_files_open()
                 require("mini.files").open()
             end
@@ -608,6 +672,7 @@ return {
             }
         end,
     },
+    -- fyler.nvim: minimal file browser with devicons integration
     fyler_nvim = {
         cmd = { "Fyler" },
         keys = {
@@ -625,15 +690,19 @@ return {
             },
         },
     },
+    -- which-key.nvim: popup showing available key bindings after a delay
     which_key_nvim = {
         config = function()
             local which_key_status_ok, which_key = pcall(require, "which-key")
             if not which_key_status_ok then
                 return
             end
+            ---@type integer  Popup delay read from the LVIM settings store
             local wk_delay
+            ---Read the current keyshelperdelay setting and call which_key.setup().
+            ---Extracted into a function so it can be called again after a hot-reload.
             local function wk()
-                wk_delay = tonumber(_G.LVIM_SETTINGS.keyshelperdelay)
+                wk_delay = tonumber(_G.LVIM.settings.keyshelperdelay)
                 local options = {
                     preset = "helix",
                     delay = wk_delay,
@@ -654,9 +723,11 @@ return {
             wk()
         end,
     },
+    -- mini.cursorword: highlight all occurrences of the word under the cursor
     mini_cursorword = {
         opts = {},
     },
+    -- netrw.nvim: enhance netrw with devicons and a consistent signcolumn
     netrw_nvim = {
         opts = function()
             vim.api.nvim_create_autocmd("FileType", {
@@ -673,6 +744,7 @@ return {
             }
         end,
     },
+    -- neo-tree.nvim: sidebar file explorer with filesystem, buffers, git, and LSP symbol sources
     neo_tree_nvim = {
         cmd = { "Neotree" },
         keys = {
@@ -745,7 +817,9 @@ return {
                 mappings = {
                     ["Z"] = "expand_all_nodes",
                     ["<Leader>"] = false,
-                    uu = {
+                    -- Transfer integration: uu/ud/uf allow uploading, downloading, and
+                -- diffing files with a configured remote directly from the sidebar.
+                uu = {
                         function(state)
                             vim.cmd("TransferUpload " .. state.tree:get_node().path)
                         end,
@@ -763,6 +837,7 @@ return {
                         function(state)
                             local node = state.tree:get_node()
                             local context_dir = node.path
+                            -- If the selected node is a file, walk up one level to get its directory.
                             if node.type ~= "directory" then
                                 context_dir = context_dir:gsub("/[^/]*$", "")
                             end
@@ -816,6 +891,7 @@ return {
             },
         },
     },
+    -- oil.nvim: edit the filesystem like a buffer; used as the default file explorer
     oil_nvim = {
         cmd = { "Oil" },
         keys = {
@@ -831,15 +907,19 @@ return {
             default_file_explorer = true,
         },
     },
+    -- heirline.nvim: declarative statusline, statuscolumn, and winbar framework
     heirline_nvim = {
         config = function()
+            -- Each component is built in its own submodule to keep this file concise.
             local statusline = require("modules.base.configs.ui.heirline.statusline").get_statusline()
             local statuscolumn = require("modules.base.configs.ui.heirline.statuscolumn").get_statuscolumn()
             local winbar = require("modules.base.configs.ui.heirline.winbar").get_winbar()
             local buf_types = require("modules.base.configs.ui.heirline.buf_types")
             local file_types = require("modules.base.configs.ui.heirline.file_types")
             local git_utils = require("modules.base.configs.ui.heirline.git")
+            -- Start the background git-status polling used by the statusline git component.
             git_utils.start()
+            -- Build a winbar-specific filetype exclusion list that also hides qf and replacer.
             local file_types_winbar = {}
             for i, v in ipairs(file_types) do
                 file_types_winbar[i] = v
@@ -861,8 +941,11 @@ return {
             })
         end,
     },
+    -- lvim-shell: integrations for TUI apps launched inside a full-screen terminal
+    -- buffer — Yazi, Vifm, Neomutt, LazyGit, and LazyDocker.
     lvim_shell = {
         config = function()
+            -- Register :Yazi and :Vifm user commands only when the binaries are found on PATH.
             local file_managers = { "Yazi", "Vifm" }
             local executable = vim.fn.executable
             for _, fm in ipairs(file_managers) do
@@ -902,12 +985,14 @@ return {
             end, { noremap = true, silent = true, desc = "Neomutt" })
         end,
     },
+    -- better-term.nvim: numbered persistent terminal tabs with a tabline
     better_term_nvim = {
         opts = function()
             local betterTerm_status_ok, betterTerm = pcall(require, "betterTerm")
             if not betterTerm_status_ok then
                 return
             end
+            -- Bind <C-c>1 through <C-c>9 to open each numbered terminal instance.
             local terminal_count = 9
             for i = 1, terminal_count do
                 vim.keymap.set({ "n", "t" }, "<C-c>" .. i, function()
@@ -925,9 +1010,11 @@ return {
             }
         end,
     },
+    -- stay-in-place.nvim: keep the cursor position stable during indent operations
     stay_in_place_nvim = {
         opts = {},
     },
+    -- rainbow-delimiters.nvim: colour-code nested brackets and blocks by depth
     rainbow_delimiters_nvim = {
         config = function()
             local rainbow_delimiters_status_ok, rainbow_delimiters = pcall(require, "rainbow-delimiters")
@@ -955,6 +1042,7 @@ return {
             }
         end,
     },
+    -- indent-blankline.nvim (ibl): render indent guide characters and scope highlights
     indent_blankline_nvim = {
         config = function()
             local indent_blankline_status_ok, indent_blankline = pcall(require, "ibl")

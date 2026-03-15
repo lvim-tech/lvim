@@ -1,6 +1,16 @@
+-- Plugin configuration table for editor-related plugins in LVIM IDE.
+-- Each key is a plugin identifier (snake_case of the plugin name) whose value
+-- is a LvimModule-compatible spec consumed by the lazy.nvim loader.  This file
+-- covers workspace management, fuzzy finding, search, marks, quickfix, tab bar,
+-- text manipulation, and miscellaneous editing utilities.
+
+---@module "modules.base.configs.editor"
+
 local icons = require("configs.base.ui.icons")
 
+---@type table<string, table>  Map of plugin identifiers to their lazy.nvim specs
 return {
+    -- lvim-space: project / workspace / tab management sidebar
     lvim_space = {
         opts = {
             log = true,
@@ -23,14 +33,17 @@ return {
             },
         },
     },
+    -- lvim-control-center: floating settings panel grouping all control_center/* modules
     lvim_control_center = {
         opts = function()
+            -- Register leader shortcuts to jump directly to each settings group.
             vim.keymap.set("n", "<Leader><Leader>v", "<CMD>LvimControlCenter lvim<CR>")
             vim.keymap.set("n", "<Leader><Leader>g", "<CMD>LvimControlCenter general<CR>")
             vim.keymap.set("n", "<Leader><Leader>a", "<CMD>LvimControlCenter appearance<CR>")
             vim.keymap.set("n", "<Leader><Leader>l", "<CMD>LvimControlCenter lsp<CR>")
             vim.keymap.set("n", "<Leader><Leader>c", "<CMD>LvimControlCenter commands<CR>")
             vim.keymap.set("n", "<Leader><Leader>p", "<CMD>LvimControlCenter projects<CR>")
+            -- Load each settings group module and register them in order.
             local lvim = require("modules.base.configs.editor.control_center.lvim")
             local general = require("modules.base.configs.editor.control_center.general")
             local appearance = require("modules.base.configs.editor.control_center.appearance")
@@ -49,6 +62,7 @@ return {
             }
         end,
     },
+    -- smart-splits: seamless Neovim/tmux pane navigation and resizing
     smart_splits = {
         keys = {
             {
@@ -110,6 +124,7 @@ return {
         },
         opts = {},
     },
+    -- fzf-lua: fuzzy finder for files, buffers, live grep, LSP symbols, and more
     fzf_lua = {
         cmd = { "FzfLua" },
         keys = {
@@ -220,6 +235,9 @@ return {
             },
         },
         opts = function()
+            -- Auto-detect a supported image previewer from the system PATH.
+            -- The first executable found in the priority list is used; nil if none.
+            ---@type string[]|nil  Command + args array for the image previewer, or nil
             local img_previewer
             for _, v in ipairs({
                 { cmd = "ueberzug", args = {} },
@@ -256,9 +274,11 @@ return {
                     ["--info"] = "inline-right",
                     ["--ansi"] = true,
                 },
+                -- Compute window dimensions dynamically so the fzf float respects
+                -- the user-configured floatheight ratio from the control center.
                 winopts = function()
                     local win_height =
-                        math.ceil(vim.api.nvim_get_option_value("lines", {}) * _G.LVIM_SETTINGS.floatheight)
+                        math.ceil(vim.api.nvim_get_option_value("lines", {}) * _G.LVIM.settings.floatheight)
                     local win_width = math.ceil(vim.api.nvim_get_option_value("columns", {}) * 1)
                     local col = math.ceil((vim.api.nvim_get_option_value("columns", {}) - win_width) * 1)
                     local row = math.ceil((vim.api.nvim_get_option_value("lines", {}) - win_height) * 1)
@@ -301,6 +321,7 @@ return {
             }
         end,
     },
+    -- lvim-linguistics: per-mode keyboard layout switching and spell checking
     lvim_linguistics = {
         opts = function()
             vim.keymap.set("n", "<C-c>l", function()
@@ -343,6 +364,7 @@ return {
             }
         end,
     },
+    -- rgflow.nvim: interactive ripgrep workflow with quickfix integration
     rgflow_nvim = {
         keys = {
             {
@@ -411,6 +433,7 @@ return {
             ui_top_line_char = "",
         },
     },
+    -- vessel.nvim: enhanced mark and jump-list navigation UI
     vessel_nvim = {
         opts = function()
             local vessel_status_ok, vessel = pcall(require, "vessel")
@@ -437,19 +460,28 @@ return {
             vim.keymap.set("n", "mje", function()
                 vessel.view_external_jumps()
             end, { desc = "Jumps External" })
-            -- Navigation
+            -- Navigation: jump to the next/previous local or global mark
+            ---Jump to the nearest mark in the given direction.
+            ---For "local" marks the search is restricted to the current buffer (a-z).
+            ---For "global" marks all buffers are considered (A-Z).
+            ---Navigation wraps around when the end/beginning of the mark list is reached.
+            ---@param mark_type  "local"|"global"  Which mark namespace to search
+            ---@param direction  "next"|"prev"      Direction to travel through the sorted list
             local function jump_mark(mark_type, direction)
                 mark_type = (mark_type or "local"):lower()
                 direction = (direction or "next"):lower()
                 local cur_buf = vim.api.nvim_get_current_buf()
                 local cur_pos = vim.api.nvim_win_get_cursor(0)
                 local cur_line = cur_pos[1]
+                ---@type table[]  Raw mark entries from vim.fn.getmarklist
                 local marks_list
                 if mark_type == "local" then
                     marks_list = vim.fn.getmarklist(cur_buf)
                 else
                     marks_list = vim.fn.getmarklist()
                 end
+                -- Filter the raw mark list to only those with valid positions.
+                ---@type { buf: integer, line: integer, col: integer }[]
                 local valid_marks = {}
                 for _, m in ipairs(marks_list) do
                     if m.mark and m.pos and type(m.pos) == "table" and m.pos[2] then
@@ -457,9 +489,11 @@ return {
                         local buf = m.pos[1] or cur_buf
                         local line = m.pos[2]
                         local col = m.pos[3] or 0
+                        -- Skip marks whose buffer has been wiped.
                         if not vim.api.nvim_buf_is_valid(buf) then
                             goto continue
                         end
+                        -- Skip marks with out-of-bounds line numbers (can happen after edits).
                         local ok, last = pcall(vim.api.nvim_buf_line_count, buf)
                         if not ok or type(last) ~= "number" then
                             goto continue
@@ -515,12 +549,20 @@ return {
                         end
                         return a.buf < b.buf
                     end)
+                    -- Comparators for cross-buffer ordering: primary key is buf handle,
+                    -- secondary key is line number within the same buffer.
+                    ---@param a { buf: integer, line: integer }
+                    ---@param b { buf: integer, line: integer }
+                    ---@return boolean
                     local function after(a, b)
                         if a.buf == b.buf then
                             return a.line > b.line
                         end
                         return a.buf > b.buf
                     end
+                    ---@param a { buf: integer, line: integer }
+                    ---@param b { buf: integer, line: integer }
+                    ---@return boolean
                     local function before(a, b)
                         if a.buf == b.buf then
                             return a.line < b.line
@@ -576,7 +618,10 @@ return {
             vim.keymap.set("n", "M[", function()
                 jump_mark("global", "prev")
             end, { desc = "Global mark Prev" })
-            -- Set
+            -- Set: delegate to vessel's mark-setting plug-mappings and refresh the statusline
+            ---Register a keymap that feeds the appropriate vessel plug-mapping for
+            ---setting a local (mm) or global (mM) mark, then redraws the statusline.
+            ---@param lhs string  Key sequence to bind ("mm" for local, "mM" for global)
             local function set_mark(lhs)
                 vim.keymap.set("n", lhs, function()
                     vim.api.nvim_feedkeys(
@@ -596,7 +641,10 @@ return {
             end
             set_mark("mm")
             set_mark("mM")
-            -- Delete
+            -- Delete: bulk-delete all marks of a given kind in the current buffer / globally
+            ---Return a new list with duplicate string entries removed, preserving order.
+            ---@param list string[]  Input list that may contain duplicates
+            ---@return string[]      Deduplicated list
             local function uniq(list)
                 local seen = {}
                 local out = {}
@@ -608,12 +656,19 @@ return {
                 end
                 return out
             end
+            ---Delete all marks of the requested kind and notify the user.
+            ---@param kind "local"|"global"|"all"  Which marks to remove
             local function delete_marks(kind)
                 kind = (kind or "local"):lower()
                 local cur_buf = vim.api.nvim_get_current_buf()
                 local marks_global = vim.fn.getmarklist()
                 local marks_local = vim.fn.getmarklist(cur_buf)
+                ---@type string[]  Letter names of marks that will be deleted
                 local letters = {}
+                ---Collect mark letters from a raw getmarklist entry.
+                ---@param m            table    Raw mark entry
+                ---@param allow_local  boolean  Include lowercase (a-z) local marks
+                ---@param allow_global boolean  Include uppercase (A-Z) global marks
                 local function process_mark_entry(m, allow_local, allow_global)
                     if not (m and m.mark and m.pos and type(m.pos) == "table" and m.pos[2]) then
                         return
@@ -679,6 +734,7 @@ return {
             }
         end,
     },
+    -- macrobank.nvim: save, edit, and replay named Vim macros
     macrobank_nvim = {
         cmd = { "MacroBank", "MacroBankLive", "MacroBankSelect", "MacroBankPlay" },
         keys = {
@@ -716,12 +772,15 @@ return {
             project_store_paths = ".nvim/macrobank.json",
         },
     },
+    -- nvim-hlslens: augmented search lens showing match count and position
     nvim_hlslens = {
         opts = function()
             local hlslens_status_ok, hlslens = pcall(require, "hlslens")
             if not hlslens_status_ok then
                 return
             end
+            ---Feed keys in normal mode with terminal-code replacement.
+            ---@param keys string  Key sequence (may include <special> notation)
             local function normal_feedkeys(keys)
                 vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), "n", true)
             end
@@ -755,9 +814,22 @@ return {
             end, { silent = true })
             return {
                 nearest_float_when = true,
+                ---Custom virtual-text renderer for the hlslens lens overlay.
+                ---Displays a directional indicator and the current match index out of total.
+                ---@param render  table    hlslens render API
+                ---@param posList table    List of all match positions in the buffer
+                ---@param nearest boolean  True for the match under the cursor
+                ---@param idx     integer  Index of this match in posList
+                ---@param relIdx  integer  Relative offset from the cursor match (negative = before)
                 override_lens = function(render, posList, nearest, idx, relIdx)
+                    -- sfw: true when the last search was in the forward direction.
                     local sfw = vim.v.searchforward == 1
-                    local indicator, text, chunks
+                    ---@type string  Arrow/dot indicator shown before the count
+                    local indicator
+                    ---@type string  Formatted match count string, e.g. "[2↓ 4/12]"
+                    local text
+                    ---@type table[]  Chunk list passed to render.setVirt
+                    local chunks
                     local absRelIdx = math.abs(relIdx)
                     if absRelIdx > 1 then
                         indicator = ("%d%s"):format(
@@ -787,6 +859,7 @@ return {
             }
         end,
     },
+    -- nvim-bqf: better quickfix window with preview and fzf integration
     nvim_bqf = {
         opts = {
             delay_syntax = 1,
@@ -796,9 +869,11 @@ return {
             },
         },
     },
+    -- quicker.nvim: editable quickfix list
     quicker_nvim = {
         opts = {},
     },
+    -- lvim-qf-loc: LVIM wrappers for quickfix and location list management
     lvim_qf_loc = {
         cmd = {
             "LvimDiagnostics",
@@ -945,6 +1020,7 @@ return {
         },
         opts = {},
     },
+    -- tabby.nvim: custom tabline renderer integrating lvim-space workspace info
     tabby_nvim = {
         opts = function()
             local tabby_module_api_status_ok, tabby_module_api = pcall(require, "tabby.module.api")
@@ -955,6 +1031,9 @@ return {
             if not tabby_future_win_name_status_ok then
                 return
             end
+            ---Safely fetch the lvim-space tab/workspace/project metadata.
+            ---Returns a safe empty structure when lvim-space is not loaded.
+            ---@return { project_name: string|nil, workspace_name: string|nil, tabs: table[] }
             local get_lvim_space_tabs = function()
                 local pub_status_ok, pub = pcall(require, "lvim-space.pub")
                 if pub_status_ok then
@@ -963,7 +1042,12 @@ return {
                     return { project_name = nil, workspace_name = nil, tabs = {} }
                 end
             end
+            ---Build the list of tabline component descriptors for tabby.
+            ---Renders: vim logo → open windows (skipping excluded filetypes) →
+            ---spacer → lvim-space tabs → workspace name → project name.
+            ---@return table[]  Tabby component list
             local components = function()
+                -- Filetypes whose windows should be omitted from the tabline display.
                 local exclude = {
                     "ctrlspace",
                     "ctrlspace_help",
@@ -999,8 +1083,8 @@ return {
                         text = {
                             " " .. icons.common.vim .. " ",
                             hl = {
-                                bg = _G.LVIM_COLORS.green,
-                                fg = _G.LVIM_COLORS.bg_dark,
+                                bg = _G.LVIM.colors.green,
+                                fg = _G.LVIM.colors.bg_dark,
                                 style = "bold",
                             },
                         },
@@ -1016,9 +1100,9 @@ return {
                     win_name = tabby_future_win_name.get(win_id, { mode = "unique" })
                     if not vim.tbl_contains(exclude, ft) then
                         if win_id == top_win then
-                            hl = { bg = _G.LVIM_COLORS.green, fg = _G.LVIM_COLORS.bg_dark, style = "bold" }
+                            hl = { bg = _G.LVIM.colors.green, fg = _G.LVIM.colors.bg_dark, style = "bold" }
                         else
-                            hl = { bg = _G.LVIM_COLORS.bg_dark, fg = _G.LVIM_COLORS.green, style = "bold" }
+                            hl = { bg = _G.LVIM.colors.bg_dark, fg = _G.LVIM.colors.green, style = "bold" }
                         end
                         table.insert(comps, {
                             type = "win",
@@ -1027,22 +1111,22 @@ return {
                                 "  " .. win_name .. "  ",
                                 hl = hl,
                             },
-                            right_sep = { "", hl = { bg = _G.LVIM_COLORS.bg_dark, fg = _G.LVIM_COLORS.bg_dark } },
+                            right_sep = { "", hl = { bg = _G.LVIM.colors.bg_dark, fg = _G.LVIM.colors.bg_dark } },
                         })
                     end
                 end
                 table.insert(comps, {
                     type = "text",
                     text = { "%=" },
-                    hl = { bg = _G.LVIM_COLORS.bg_dark, fg = _G.LVIM_COLORS.bg_dark },
+                    hl = { bg = _G.LVIM.colors.bg_dark, fg = _G.LVIM.colors.bg_dark },
                 })
                 local lvim_data = get_lvim_space_tabs()
                 if lvim_data.tabs and #lvim_data.tabs > 0 then
                     for _, tab in ipairs(lvim_data.tabs) do
                         if tab.active then
-                            hl = { bg = _G.LVIM_COLORS.green, fg = _G.LVIM_COLORS.bg_dark, style = "bold" }
+                            hl = { bg = _G.LVIM.colors.green, fg = _G.LVIM.colors.bg_dark, style = "bold" }
                         else
-                            hl = { bg = _G.LVIM_COLORS.bg_dark, fg = _G.LVIM_COLORS.green, style = "bold" }
+                            hl = { bg = _G.LVIM.colors.bg_dark, fg = _G.LVIM.colors.green, style = "bold" }
                         end
                         table.insert(comps, {
                             type = "text",
@@ -1063,8 +1147,8 @@ return {
                         text = {
                             "  " .. lvim_data.workspace_name .. "  ",
                             hl = {
-                                bg = _G.LVIM_COLORS.orange,
-                                fg = _G.LVIM_COLORS.bg_dark,
+                                bg = _G.LVIM.colors.orange,
+                                fg = _G.LVIM.colors.bg_dark,
                                 style = "bold",
                             },
                         },
@@ -1076,8 +1160,8 @@ return {
                         text = {
                             "  " .. lvim_data.project_name .. "  ",
                             hl = {
-                                bg = _G.LVIM_COLORS.red,
-                                fg = _G.LVIM_COLORS.bg_dark,
+                                bg = _G.LVIM.colors.red,
+                                fg = _G.LVIM.colors.bg_dark,
                                 style = "bold",
                             },
                         },
@@ -1090,6 +1174,7 @@ return {
             }
         end,
     },
+    -- dial.nvim: smart increment/decrement for numbers, dates, booleans, and operators
     dial_nvim = {
         keys = {
             {
@@ -1143,9 +1228,11 @@ return {
             })
         end,
     },
+    -- lvim-move: move lines and selections up/down/left/right
     lvim_move = {
         opts = {},
     },
+    -- kulala.nvim: HTTP client for .http / .rest files
     kulala_nvim = {
         config = function()
             require("kulala").setup({
@@ -1162,6 +1249,7 @@ return {
             })
         end,
     },
+    -- flow.nvim: run selected code or entire files in a split terminal
     flow_nvim = {
         cmd = { "FlowRunSelected", "FlowRunFile", "FlowLauncher" },
         keys = {
@@ -1200,6 +1288,7 @@ return {
             },
         },
     },
+    -- transfer.nvim: upload/download files to/from remote servers via rsync/scp
     transfer_nvim = {
         cmd = {
             "TransferInit",
@@ -1243,6 +1332,7 @@ return {
         },
         opts = {},
     },
+    -- compiler.nvim: one-key compilation for many languages using overseer tasks
     compiler_nvim = {
         cmd = {
             "CompilerOpen",
@@ -1268,6 +1358,7 @@ return {
         },
         opts = {},
     },
+    -- overseer.nvim: task runner with DAP integration and template system
     overseer_nvim = {
         cmd = { "OverseerRun", "OverseerToggle", "OverseerShell", "OverseerTaskAction" },
         keys = {
@@ -1297,7 +1388,10 @@ return {
             if not overseer_status_ok then
                 return
             end
+            -- Scan the project-local overseer templates directory and register each
+            -- template exactly once, guarding against duplicate registrations.
             local path = vim.fn.stdpath("config") .. "/.configs/overseer"
+            ---@type table<string, boolean>  Names already registered this session
             local registered_names = {}
             for _, file in ipairs(vim.fn.globpath(path, "*.lua", false, true)) do
                 local ok, tmpl = pcall(dofile, file)
@@ -1328,6 +1422,7 @@ return {
             }
         end,
     },
+    -- grug-far.nvim: interactive find-and-replace backed by ripgrep
     grug_far_nvim = {
         cmd = { "GrugFar" },
         keys = {
@@ -1352,6 +1447,7 @@ return {
             },
         },
     },
+    -- replacer.nvim: edit quickfix entries in-place to do project-wide renames
     replacer_nvim = {
         cmd = { "ReplacerRun", "ReplacerSave" },
         keys = {
@@ -1373,6 +1469,7 @@ return {
             if not replacer_status_ok then
                 return
             end
+            ---@type table  Options forwarded to replacer.run() and replacer.save()
             local opts = { rename_files = true, save_on_write = true }
             vim.api.nvim_create_user_command("ReplacerRun", function()
                 replacer.run(opts)
@@ -1383,9 +1480,11 @@ return {
             return {}
         end,
     },
+    -- Comment.nvim: smart line and block commenting (gcc / gbc)
     comment_nvim = {
         opts = {},
     },
+    -- vim-bufsurf: navigate the per-window buffer history (like browser back/forward)
     vim_bufsurf = {
         config = function()
             vim.keymap.set("n", "<C-n>", function()
@@ -1396,6 +1495,7 @@ return {
             end, { noremap = true, silent = true, desc = "BufSurfBack" })
         end,
     },
+    -- neogen: generate documentation annotations (JSDoc, EmmyLua, etc.) via LuaSnip
     neogen = {
         cmd = { "NeogenFile", "NeogenClass", "NeogenFunction", "NeogenType" },
         opts = function()
@@ -1408,6 +1508,7 @@ return {
             }
         end,
     },
+    -- ccc.nvim: interactive color picker with alpha support and virtual symbol preview
     ccc_nvim = {
         cmd = { "CccPick" },
         keys = {
@@ -1424,6 +1525,7 @@ return {
             virtual_symbol = " ● ",
         },
     },
+    -- nvim-highlight-colors: render hex/rgb/tailwind color swatches as virtual text
     nvim_highlight_colors = {
         opts = {
             render = "virtual",
@@ -1432,9 +1534,13 @@ return {
             exclude_buftypes = { "nofile" },
         },
     },
+    -- flash.nvim: enhanced motions with jump labels; overrides f/t/F/T and adds
+    -- dedicated jump, treesitter, search, and remote-operator modes.
     flash_nvim = {
         keys = function()
+            ---@type table[]  Key specs generated for each f/t/F/T motion
             local motion_keys = {}
+            -- Override the built-in character motions so they show flash jump labels.
             for _, motion in ipairs({ "f", "t", "F", "T" }) do
                 table.insert(motion_keys, {
                     motion,
@@ -1451,6 +1557,7 @@ return {
                     desc = "Flash " .. motion,
                 })
             end
+            -- Additional non-motion flash bindings (jump, treesitter, search, remote).
             local other_keys = {
                 {
                     "<C-c>.",
@@ -1469,11 +1576,14 @@ return {
                     desc = "Flash Treesitter",
                 },
                 {
+                    -- Jump to any word boundary in the buffer using a two-pass label scheme:
+                    -- first jump selects a label group, second jump picks within that group.
                     "<C-c>;",
                     function()
                         require("flash").jump({
                             search = { mode = "search" },
                             label = { after = false, before = { 0, 0 }, uppercase = false },
+                            -- Match start (\<) and end (\>) of any word.
                             pattern = [[\<\|\>]],
                             action = function(match, state)
                                 state:hide()
@@ -1528,27 +1638,28 @@ return {
             },
         },
     },
+    -- todo-comments.nvim: highlight and search TODO/FIXME/HACK/NOTE comments
     todo_comments_nvim = {
         opts = function()
             return {
                 keywords = {
                     FIX = {
                         icon = icons.common.fix,
-                        color = _G.LVIM_COLORS.diag_error,
+                        color = _G.LVIM.colors.diag_error,
                         alt = { "FIX", "FIXME", "BUG" },
                     },
-                    TODO = { icon = icons.common.todo, color = _G.LVIM_COLORS.diag_info, alt = { "TODO" } },
-                    HACK = { icon = icons.common.hack, color = _G.LVIM_COLORS.diag_error, alt = { "HACK" } },
-                    WARN = { icon = icons.common.warning, color = _G.LVIM_COLORS.diag_warn, alt = { "WARNING" } },
+                    TODO = { icon = icons.common.todo, color = _G.LVIM.colors.diag_info, alt = { "TODO" } },
+                    HACK = { icon = icons.common.hack, color = _G.LVIM.colors.diag_error, alt = { "HACK" } },
+                    WARN = { icon = icons.common.warning, color = _G.LVIM.colors.diag_warn, alt = { "WARNING" } },
                     PERF = {
                         icon = icons.common.performance,
-                        color = _G.LVIM_COLORS.diag_warn,
+                        color = _G.LVIM.colors.diag_warn,
                         alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" },
                     },
-                    NOTE = { icon = icons.common.note, color = _G.LVIM_COLORS.diag_info, alt = { "INFO" } },
+                    NOTE = { icon = icons.common.note, color = _G.LVIM.colors.diag_info, alt = { "INFO" } },
                     TEST = {
                         icon = icons.common.test,
-                        color = _G.LVIM_COLORS.diag_hint,
+                        color = _G.LVIM.colors.diag_hint,
                         alt = { "TEST", "TESTING", "PASSED", "FAILED" },
                     },
                 },
@@ -1560,6 +1671,7 @@ return {
             }
         end,
     },
+    -- calendar-vim: calendar view integrated with an Org-mode diary
     calendar_vim = {
         cmd = { "Calendar", "CalendarH", "CalendarVR", "CalendarT", "CalendarSearch" },
         keys = {
@@ -1577,11 +1689,16 @@ return {
             },
         },
         config = function()
+            -- Configure the calendar to write diary entries as .org files under ~/Org/diary/.
             vim.g.calendar_diary_extension = ".org"
             vim.g.calendar_diary = "~/Org/diary/"
             vim.g.calendar_diary_path_pattern = "{YYYY}-{MM}-{DD}{EXT}"
+            -- Start the week on Monday (1 = Monday, 0 = Sunday).
             vim.g.calendar_monday = 1
+            -- Show ISO week numbers in the calendar view.
             vim.g.calendar_weeknm = 1
+            -- Remove calendar-vim's default <Leader>cal / <Leader>caL bindings to
+            -- avoid collisions with LVIM mappings.
             vim.keymap.del("n", "<Leader>cal")
             vim.keymap.del("n", "<Leader>caL")
         end,

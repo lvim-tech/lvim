@@ -1,5 +1,9 @@
+-- File-type-specific keymaps registered via FileType autocmds.
+-- All bindings use buffer = true so they only apply to the relevant filetype.
+-- Uses the <C-c><C-c> chord prefix to group filetype-specific commands together.
 local M = {}
 
+-- Registers Flutter (dart) and LaTeX (tex) keymaps when the matching filetype opens.
 M.set_keymaps_ft = function()
     vim.api.nvim_create_autocmd("FileType", {
         pattern = { "netrw" },
