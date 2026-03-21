@@ -62,7 +62,7 @@ end
 ---@return string|table|number|nil    Formatted result (format depends on options.output)
 M.file_size = function(size, options)
     local si = {
-        bits  = { "b", "Kb", "Mb", "Gb", "Tb", "Pb", "Eb", "Zb", "Yb" },
+        bits = { "b", "Kb", "Mb", "Gb", "Tb", "Pb", "Eb", "Zb", "Yb" },
         bytes = { "B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" },
     }
     local function isNan(num)
@@ -145,7 +145,7 @@ M.file_size = function(size, options)
         return { value = result[1], suffix = result[2] }
     elseif o.output == "string" then
         local value = tostring(result[1])
-        value = value:gsub("%.0$", "")  -- strip trailing ".0" for whole numbers
+        value = value:gsub("%.0$", "") -- strip trailing ".0" for whole numbers
         return value .. o.spacer .. result[2]
     end
 end

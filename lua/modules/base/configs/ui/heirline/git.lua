@@ -10,8 +10,8 @@
 
 local M = {}
 
----@type table  libuv handle exposed by Neovim (vim.loop)
-local uv = vim.loop
+---@type table  libuv handle exposed by Neovim (vim.uv)
+local uv = vim.uv
 
 -- ---------------------------------------------------------------------------
 -- Helpers
@@ -80,9 +80,9 @@ function M.update_git_status(root)
         tag_name, tag_distance, tag_oid = tag_info:match("^(.-)%-(%d+)%-g(%x+)$")
         if not tag_name then
             -- No tag found; git returned only the short OID
-            tag_name     = tag_info
+            tag_name = tag_info
             tag_distance = 0
-            tag_oid      = abbrev
+            tag_oid = abbrev
         end
     end
 
@@ -91,16 +91,16 @@ function M.update_git_status(root)
     _G.LVIM.git = {
         root = root,
         head = {
-            abbrev         = abbrev,
-            branch         = branch,
+            abbrev = abbrev,
+            branch = branch,
             commit_message = commit_message,
-            detached       = detached,
-            oid            = oid,
+            detached = detached,
+            oid = oid,
             tag = {
                 -- tonumber converts the string match to an integer (or nil)
                 distance = tonumber(tag_distance),
-                name     = tag_name,
-                oid      = tag_oid,
+                name = tag_name,
+                oid = tag_oid,
             },
         },
     }

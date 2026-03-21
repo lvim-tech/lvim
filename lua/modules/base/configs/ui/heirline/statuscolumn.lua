@@ -42,9 +42,9 @@ local function get_extmarks(bufnr, lnum, filter_func)
     local ok, extmarks = pcall(
         vim.api.nvim_buf_get_extmarks,
         bufnr,
-        -1,                   -- all namespaces
-        { lnum - 1, 0 },      -- start of line (0-based)
-        { lnum - 1, -1 },     -- end of line
+        -1, -- all namespaces
+        { lnum - 1, 0 }, -- start of line (0-based)
+        { lnum - 1, -1 }, -- end of line
         { details = true }
     )
     if not ok or not extmarks then
@@ -57,10 +57,10 @@ local function get_extmarks(bufnr, lnum, filter_func)
         local hl = details.sign_hl_group or details.number_hl_group or ""
         if hl ~= "" and filter_func(hl) then
             table.insert(result, {
-                name           = details.sign_name or hl,
-                text           = details.sign_text or "",
-                sign_hl_group  = hl,
-                priority       = details.priority or 0,
+                name = details.sign_name or hl,
+                text = details.sign_text or "",
+                sign_hl_group = hl,
+                priority = details.priority or 0,
             })
         end
     end
@@ -131,10 +131,10 @@ static.click_args = function(_, minwid, clicks, button, mods)
     ---@type table  vim.fn.getmousepos() result
     local mp = vim.fn.getmousepos() or {}
     local args = {
-        minwid   = minwid,
-        clicks   = clicks,
-        button   = button,
-        mods     = mods,
+        minwid = minwid,
+        clicks = clicks,
+        button = button,
+        mods = mods,
         mousepos = mp,
     }
 
@@ -161,15 +161,21 @@ static.click_args = function(_, minwid, clicks, button, mods)
     local lnum = mp.line or vim.v.lnum
 
     -- Gather all extmarks at the clicked line across all three categories
-    local diags  = static.get_extmarks_diagnostics(nil, bufnr, lnum) or {}
-    local gits   = static.get_extmarks_git(nil, bufnr, lnum) or {}
+    local diags = static.get_extmarks_diagnostics(nil, bufnr, lnum) or {}
+    local gits = static.get_extmarks_git(nil, bufnr, lnum) or {}
     local others = static.get_extmarks_other(nil, bufnr, lnum) or {}
 
     -- Merge into a single ordered list: diagnostics first, then git, then other
     local all = {}
-    for _, e in ipairs(diags)  do table.insert(all, e) end
-    for _, e in ipairs(gits)   do table.insert(all, e) end
-    for _, e in ipairs(others) do table.insert(all, e) end
+    for _, e in ipairs(diags) do
+        table.insert(all, e)
+    end
+    for _, e in ipairs(gits) do
+        table.insert(all, e)
+    end
+    for _, e in ipairs(others) do
+        table.insert(all, e)
+    end
 
     -- Try to pick the sign whose text or name matches the clicked glyph
     local chosen = nil
@@ -254,9 +260,9 @@ static.handlers.Signs = {
 -- Checks both global marks (uppercase) and buffer-local marks (lowercase).
 ---@return string  Single letter mark character, or "" if none
 local function mark_sign()
-    local cur_buf  = vim.api.nvim_get_current_buf()
+    local cur_buf = vim.api.nvim_get_current_buf()
     local cur_line = vim.v.lnum
-    local marks    = vim.fn.getmarklist()
+    local marks = vim.fn.getmarklist()
     local marks_local = vim.fn.getmarklist(cur_buf)
     -- Combine global and local marks into one list for a single pass
     local all_marks = vim.list_extend(marks, marks_local)
@@ -264,7 +270,7 @@ local function mark_sign()
         -- Extract the letter from mark strings like "'a", "`B", etc.
         local letter = m.mark:match("^[`']?([a-zA-Z])$")
         if letter then
-            local buf  = m.pos[1]
+            local buf = m.pos[1]
             local line = m.pos[2]
             if buf == cur_buf and line == cur_line then
                 return letter
@@ -317,7 +323,7 @@ local diagnostic_signs = {
     ---@param self table  Sets self.sign and self.diagnostic_sign_name for current line
     init = function(self)
         self.click_args = static.click_args
-        local bufnr    = self.bufnr or vim.api.nvim_get_current_buf()
+        local bufnr = self.bufnr or vim.api.nvim_get_current_buf()
         local diag_sign = static.get_extmarks_diagnostics(self, bufnr, vim.v.lnum)
         -- Take only the highest-priority diagnostic (index 1, already sorted)
         self.sign = diag_sign[1]
@@ -332,9 +338,9 @@ local diagnostic_signs = {
         local t = self.sign.sign_hl_group
         -- Map the highlight group to the corresponding icon
         local icon = (t == "DiagnosticSignError" and icons.diagnostics.error)
-            or (t == "DiagnosticSignWarn"  and icons.diagnostics.warn)
-            or (t == "DiagnosticSignInfo"  and icons.diagnostics.info)
-            or (t == "DiagnosticSignHint"  and icons.diagnostics.hint)
+            or (t == "DiagnosticSignWarn" and icons.diagnostics.warn)
+            or (t == "DiagnosticSignInfo" and icons.diagnostics.info)
+            or (t == "DiagnosticSignHint" and icons.diagnostics.hint)
             or icons.diagnostics.global
         return icon .. " "
     end,
@@ -348,9 +354,9 @@ local diagnostic_signs = {
         ---@type LvimColors
         local c = _G.LVIM.colors
         return (t == "DiagnosticSignError" and { fg = c.diag_error })
-            or (t == "DiagnosticSignWarn"  and { fg = c.diag_warn })
-            or (t == "DiagnosticSignInfo"  and { fg = c.diag_info })
-            or (t == "DiagnosticSignHint"  and { fg = c.diag_hint })
+            or (t == "DiagnosticSignWarn" and { fg = c.diag_warn })
+            or (t == "DiagnosticSignInfo" and { fg = c.diag_info })
+            or (t == "DiagnosticSignHint" and { fg = c.diag_hint })
             or t
     end,
     on_click = {
@@ -396,7 +402,7 @@ local line_numbers = {
         then
             return ""
         end
-        local mark   = self.mark
+        local mark = self.mark
         -- Pad the number area to align with the longest line number in the buffer
         local max_len = tostring(vim.api.nvim_buf_line_count(self.bufnr or 0)):len()
         if mark ~= "" then
@@ -409,7 +415,7 @@ local line_numbers = {
         end
         -- Respect relativenumber: show relnum for off-cursor lines, lnum for cursor
         local lnum = vim.wo.relativenumber and (vim.v.relnum ~= 0 and vim.v.relnum or vim.v.lnum) or vim.v.lnum
-        local str  = tostring(lnum)
+        local str = tostring(lnum)
         -- Right-align the number within the max_len field
         return string.rep(" ", max_len - #str) .. str
     end,
@@ -447,22 +453,22 @@ local git_signs = {
     end,
     ---@param self table  Sets self.git_sign, self.git_hl, self.git_sign_name
     init = function(self)
-        self.click_args    = static.click_args
-        self.git_sign      = icons.common.vline or "│"  -- default neutral bar
-        self.git_hl        = "LineNr"
+        self.click_args = static.click_args
+        self.git_sign = icons.common.vline or "│" -- default neutral bar
+        self.git_hl = "LineNr"
         self.git_sign_name = nil
 
         if not mini_ok then
             return
         end
 
-        local bufnr       = vim.api.nvim_get_current_buf()
-        local lnum        = vim.v.lnum
+        local bufnr = vim.api.nvim_get_current_buf()
+        local lnum = vim.v.lnum
         local vcs_extmarks = static.get_extmarks_git(self, bufnr, lnum) or {}
 
         -- Pick the first matching MiniDiff hunk sign; the list is already sorted by priority
         for _, em in ipairs(vcs_extmarks) do
-            local hl   = em.sign_hl_group or em.name or ""
+            local hl = em.sign_hl_group or em.name or ""
             local name = em.name or ""
             if
                 hl == "MiniDiffSignChangeDelete"
@@ -470,8 +476,8 @@ local git_signs = {
                 or hl == "MiniDiffSignChange"
                 or hl == "MiniDiffSignDelete"
             then
-                self.git_sign      = icons.common.vline or "│"
-                self.git_hl        = hl
+                self.git_sign = icons.common.vline or "│"
+                self.git_hl = hl
                 self.git_sign_name = name
                 break
             end
@@ -515,21 +521,21 @@ local git_signs = {
 local other_signs = {
     ---@param self table  Sets self.other_sign, self.other_hl, self.other_sign_name
     init = function(self)
-        self.click_args      = static.click_args
-        self.other_sign      = ""
-        self.other_hl        = "StatusColumnOtherSign"
+        self.click_args = static.click_args
+        self.other_sign = ""
+        self.other_hl = "StatusColumnOtherSign"
         self.other_sign_name = nil
-        local bufnr   = vim.api.nvim_get_current_buf()
-        local lnum    = vim.v.lnum
+        local bufnr = vim.api.nvim_get_current_buf()
+        local lnum = vim.v.lnum
         local extmarks = static.get_extmarks_other(nil, bufnr, lnum)
         for _, extmark in ipairs(extmarks) do
-            local hl   = extmark.sign_hl_group or ""
+            local hl = extmark.sign_hl_group or ""
             local text = extmark.text or ""
             local name = extmark.name or ""
             if text ~= "" then
                 -- Use the first extmark with a non-empty text glyph
-                self.other_sign      = vim.trim(text)
-                self.other_hl        = hl
+                self.other_sign = vim.trim(text)
+                self.other_hl = hl
                 self.other_sign_name = name
                 return
             end
@@ -581,7 +587,7 @@ M.get_statuscolumn = function()
             return true
         end,
         static = static,
-        init   = init,
+        init = init,
         -- Column order (left to right): other signs | diagnostics | align | line nr | space | git | space
         -- space,          -- (commented out intentionally)
         other_signs,

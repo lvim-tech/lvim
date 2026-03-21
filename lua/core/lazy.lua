@@ -15,7 +15,7 @@ lazy_pack.is_lazy = function()
         if vim.v.shell_error ~= 0 then
             vim.api.nvim_echo({
                 { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-                { out,                            "WarningMsg" },
+                { out, "WarningMsg" },
                 { "\nPress any key to exit..." },
             }, true, {})
             vim.fn.getchar()
@@ -47,9 +47,9 @@ lazy_pack.load = function()
             colorscheme = { _G.LVIM.theme, "habamax" },
         },
         ui = {
-            size   = { width = 0.95, height = 0.95 },
+            size = { width = 0.95, height = 0.95 },
             border = "none",
-            icons  = icons.lazy,
+            icons = icons.lazy,
         },
     })
 end

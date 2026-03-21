@@ -204,7 +204,7 @@ return {
                             enabled = package.loaded.lazy ~= nil,
                         },
                         { icon = "󰅢 ", key = "<leader>vm", desc = "Mason", action = ":Mason" },
-                        { icon = " ", key = "<C-c>e", desc = "Quit", action = ":Quit" },
+                        { icon = " ", key = "<C-c>e", desc = "Quit", action = ":Quit" },
                         { pane = 2 },
                         function()
                             local v = vim.version()
@@ -359,41 +359,45 @@ return {
     ui_nvim = {
         config = function()
             ---Apply all custom highlight groups used by ui.nvim's cmdline and message styles.
-            ---Called inside vim.schedule() so it runs after the colorscheme is fully loaded.
+            ---Re-runs on every LvimColorscheme event so highlights track theme changes.
             local function set_hl_groups()
-                ---@type LvimColors
-                local c = _G.LVIM.colors
+                local c = require("lvim-colorscheme").colors
+                if not c then
+                    return
+                end
+                local blend = require("core.funcs").blend
+                local bg = c.bg
                 -- Short alias so the block below stays readable.
                 local hl = vim.api.nvim_set_hl
 
-                hl(0, "UICmdlineDefault", { bg = c.blue_bh, fg = c.blue })
-                hl(0, "UICmdlineDefaultIcon", { bg = c.blue_bl, fg = c.blue })
-                hl(0, "UICmdlineLua", { bg = c.purple_bh, fg = c.purple })
-                hl(0, "UICmdlineLuaIcon", { bg = c.purple_bl, fg = c.purple })
-                hl(0, "UICmdlineEval", { bg = c.red_bh, fg = c.red })
-                hl(0, "UICmdlineEvalIcon", { bg = c.red_bl, fg = c.red })
-                hl(0, "UICmdlineSearchUp", { bg = c.blue_bh, fg = c.blue })
-                hl(0, "UICmdlineSearchUpIcon", { bg = c.blue_bl, fg = c.blue })
-                hl(0, "UICmdlineSearchDown", { bg = c.blue_bh, fg = c.blue })
-                hl(0, "UICmdlineSearchDownIcon", { bg = c.blue_bl, fg = c.blue })
-                hl(0, "UICmdlineSubstitute", { bg = c.cyan_bh, fg = c.cyan })
-                hl(0, "UICmdlineSubstituteIcon", { bg = c.cyan_bl, fg = c.cyan })
-                hl(0, "UIMessageDefault", { bg = c.blue_bh, fg = c.blue })
-                hl(0, "UIMessageOk", { bg = c.green_bh, fg = c.green })
-                hl(0, "UIMessageOkIcon", { bg = c.green_bl, fg = c.green })
-                hl(0, "UIMessageInfo", { bg = c.blue_bh, fg = c.blue })
-                hl(0, "UIMessageInfoSign", { bg = c.blue_bl, fg = c.blue })
-                hl(0, "UIMessageHint", { bg = c.cyan_bh, fg = c.cyan })
-                hl(0, "UIMessageHintSign", { bg = c.cyan_bh, fg = c.cyan })
-                hl(0, "UIMessageWarn", { bg = c.orange_bh, fg = c.orange })
-                hl(0, "UIMessageWarnSign", { bg = c.orange_bh, fg = c.orange })
-                hl(0, "UIMessageError", { bg = c.red_bh, fg = c.red })
-                hl(0, "UIMessageErrorIcon", { bg = c.red_bl, fg = c.red })
-                hl(0, "UIMessageErrorSign", { bg = c.red_bh, fg = c.red })
-                hl(0, "UIMessagePalette", { bg = c.purple_bh, fg = c.purple })
-                hl(0, "UIMessagePaletteSign", { bg = c.purple_bh, fg = c.purple })
-                hl(0, "UIHistoryKeymap", { bg = c.blue_bl, fg = c.blue, bold = true })
-                hl(0, "UIHistoryDesc", { bg = c.blue_bh, fg = c.blue })
+                hl(0, "UICmdlineDefault", { bg = blend(c.blue, 0.1, bg), fg = c.blue })
+                hl(0, "UICmdlineDefaultIcon", { bg = blend(c.blue, 0.3, bg), fg = c.blue })
+                hl(0, "UICmdlineLua", { bg = blend(c.purple, 0.1, bg), fg = c.purple })
+                hl(0, "UICmdlineLuaIcon", { bg = blend(c.purple, 0.3, bg), fg = c.purple })
+                hl(0, "UICmdlineEval", { bg = blend(c.red, 0.1, bg), fg = c.red })
+                hl(0, "UICmdlineEvalIcon", { bg = blend(c.red, 0.3, bg), fg = c.red })
+                hl(0, "UICmdlineSearchUp", { bg = blend(c.blue, 0.1, bg), fg = c.blue })
+                hl(0, "UICmdlineSearchUpIcon", { bg = blend(c.blue, 0.3, bg), fg = c.blue })
+                hl(0, "UICmdlineSearchDown", { bg = blend(c.blue, 0.1, bg), fg = c.blue })
+                hl(0, "UICmdlineSearchDownIcon", { bg = blend(c.blue, 0.3, bg), fg = c.blue })
+                hl(0, "UICmdlineSubstitute", { bg = blend(c.cyan, 0.1, bg), fg = c.cyan })
+                hl(0, "UICmdlineSubstituteIcon", { bg = blend(c.cyan, 0.3, bg), fg = c.cyan })
+                hl(0, "UIMessageDefault", { bg = blend(c.blue, 0.1, bg), fg = c.blue })
+                hl(0, "UIMessageOk", { bg = blend(c.green, 0.1, bg), fg = c.green })
+                hl(0, "UIMessageOkIcon", { bg = blend(c.green, 0.3, bg), fg = c.green })
+                hl(0, "UIMessageInfo", { bg = blend(c.blue, 0.1, bg), fg = c.blue })
+                hl(0, "UIMessageInfoSign", { bg = blend(c.blue, 0.3, bg), fg = c.blue })
+                hl(0, "UIMessageHint", { bg = blend(c.cyan, 0.1, bg), fg = c.cyan })
+                hl(0, "UIMessageHintSign", { bg = blend(c.cyan, 0.1, bg), fg = c.cyan })
+                hl(0, "UIMessageWarn", { bg = blend(c.orange, 0.1, bg), fg = c.orange })
+                hl(0, "UIMessageWarnSign", { bg = blend(c.orange, 0.1, bg), fg = c.orange })
+                hl(0, "UIMessageError", { bg = blend(c.red, 0.1, bg), fg = c.red })
+                hl(0, "UIMessageErrorIcon", { bg = blend(c.red, 0.3, bg), fg = c.red })
+                hl(0, "UIMessageErrorSign", { bg = blend(c.red, 0.1, bg), fg = c.red })
+                hl(0, "UIMessagePalette", { bg = blend(c.purple, 0.1, bg), fg = c.purple })
+                hl(0, "UIMessagePaletteSign", { bg = blend(c.purple, 0.1, bg), fg = c.purple })
+                hl(0, "UIHistoryKeymap", { bg = blend(c.blue, 0.3, bg), fg = c.blue, bold = true })
+                hl(0, "UIHistoryDesc", { bg = blend(c.blue, 0.1, bg), fg = c.blue })
                 hl(0, "DiagnosticInfo", { fg = c.blue })
                 hl(0, "DiagnosticOk", { fg = c.green })
                 hl(0, "DiagnosticWarn", { fg = c.orange })
@@ -443,9 +447,10 @@ return {
                     },
                 },
                 message = {
+                    enable = false,
                     confirm = true,
                     confirm_winconfig = nil,
-                    wrap_notify = true,
+                    wrap_notify = false,
                     respect_replace_last = true,
                     msg_styles = {
                         -- Default message style: choose icon and line highlight based on
@@ -521,11 +526,15 @@ return {
                     },
                 },
             })
-            -- Defer hl group setup until after the first frame so the active
-            -- colorscheme is already applied (avoids overwrite by colorscheme load).
-            vim.schedule(function()
+            -- Re-apply highlights on every theme change via the lvim-colorscheme event.
+            vim.api.nvim_create_autocmd("User", {
+                pattern = "LvimColorscheme",
+                callback = set_hl_groups,
+            })
+            -- Apply immediately if the colorscheme is already loaded.
+            if require("lvim-colorscheme").colors then
                 set_hl_groups()
-            end)
+            end
         end,
     },
     -- nvim-window-picker: label each window so the user can jump to it by key
@@ -818,8 +827,8 @@ return {
                     ["Z"] = "expand_all_nodes",
                     ["<Leader>"] = false,
                     -- Transfer integration: uu/ud/uf allow uploading, downloading, and
-                -- diffing files with a configured remote directly from the sidebar.
-                uu = {
+                    -- diffing files with a configured remote directly from the sidebar.
+                    uu = {
                         function(state)
                             vim.cmd("TransferUpload " .. state.tree:get_node().path)
                         end,

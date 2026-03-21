@@ -62,33 +62,57 @@ M.get_statusline = function()
             -- Short display labels for every Vim mode code
             ---@type table<string, string>
             mode_names = {
-                n = "N", no = "N?", nov = "N?", noV = "N?",
+                n = "N",
+                no = "N?",
+                nov = "N?",
+                noV = "N?",
                 ["no\22"] = "N?",
-                niI = "Ni", niR = "Nr", niV = "Nv", nt = "Nt",
-                v = "V", vs = "Vs", V = "V_", Vs = "Vs",
-                ["\22"] = "^V", ["\22s"] = "^V",
-                s = "S", S = "S_", ["\19"] = "^S",
-                i = "I", ic = "Ic", ix = "Ix",
-                R = "R", Rc = "Rc", Rx = "Rx", Rv = "Rv", Rvc = "Rv", Rvx = "Rv",
-                c = "C", cv = "Ex",
-                r = "...", rm = "M", ["r?"] = "?", ["!"] = "!", t = "T",
+                niI = "Ni",
+                niR = "Nr",
+                niV = "Nv",
+                nt = "Nt",
+                v = "V",
+                vs = "Vs",
+                V = "V_",
+                Vs = "Vs",
+                ["\22"] = "^V",
+                ["\22s"] = "^V",
+                s = "S",
+                S = "S_",
+                ["\19"] = "^S",
+                i = "I",
+                ic = "Ic",
+                ix = "Ix",
+                R = "R",
+                Rc = "Rc",
+                Rx = "Rx",
+                Rv = "Rv",
+                Rvc = "Rv",
+                Rvx = "Rv",
+                c = "C",
+                cv = "Ex",
+                r = "...",
+                rm = "M",
+                ["r?"] = "?",
+                ["!"] = "!",
+                t = "T",
             },
             -- Background colour for the mode pill, keyed by the first mode character
             ---@type table<string, string>
             mode_colors = {
-                n  = _G.LVIM.colors.green,
-                i  = _G.LVIM.colors.red,
-                v  = _G.LVIM.colors.orange,
-                V  = _G.LVIM.colors.orange,
+                n = _G.LVIM.colors.green,
+                i = _G.LVIM.colors.red,
+                v = _G.LVIM.colors.orange,
+                V = _G.LVIM.colors.orange,
                 ["\22"] = _G.LVIM.colors.orange,
-                c  = _G.LVIM.colors.purple,
-                s  = _G.LVIM.colors.purple,
-                S  = _G.LVIM.colors.purple,
+                c = _G.LVIM.colors.purple,
+                s = _G.LVIM.colors.purple,
+                S = _G.LVIM.colors.purple,
                 ["\19"] = _G.LVIM.colors.purple,
-                R  = _G.LVIM.colors.cyan,
-                r  = _G.LVIM.colors.cyan,
+                R = _G.LVIM.colors.cyan,
+                r = _G.LVIM.colors.cyan,
                 ["!"] = _G.LVIM.colors.cyan,
-                t  = _G.LVIM.colors.blue,
+                t = _G.LVIM.colors.blue,
             },
         },
         ---@param self table  Component self (has self.mode, self.mode_names)
@@ -102,9 +126,9 @@ M.get_statusline = function()
             -- Sync the global mode so other components can read it without re-querying
             _G.LVIM.mode = self.mode:sub(1, 1)
             return {
-                bg   = self.mode_colors[self.mode:sub(1, 1)],
+                bg = self.mode_colors[self.mode:sub(1, 1)],
                 -- On dark backgrounds use bg colour for text; on light use fg
-                fg   = vim.o.background == "dark" and _G.LVIM.colors.bg or _G.LVIM.colors.fg,
+                fg = vim.o.background == "dark" and _G.LVIM.colors.bg or _G.LVIM.colors.fg,
                 bold = true,
             }
         end,
@@ -132,7 +156,7 @@ M.get_statusline = function()
         ---@return string  Folder icon + shortened CWD path ending in "/"
         provider = function()
             local icon = " " .. icons.common.folder_empty .. " "
-            local cwd  = vim.fn.getcwd(0)
+            local cwd = vim.fn.getcwd(0)
             -- Collapse $HOME to ~
             cwd = vim.fn.fnamemodify(cwd, ":~")
             -- Shorten path components when CWD takes more than 25% of the line
@@ -175,7 +199,7 @@ M.get_statusline = function()
         ---@return table  Highlight spec using the current vi-mode colour
         hl = function()
             return {
-                fg   = vi_mode.static.mode_colors[_G.LVIM.mode],
+                fg = vi_mode.static.mode_colors[_G.LVIM.mode],
                 bold = true,
             }
         end,
@@ -189,7 +213,7 @@ M.get_statusline = function()
     local file_icon = {
         ---@param self table  Sets self.icon and self.icon_color from nvim-web-devicons
         init = function(self)
-            local filename  = self.filename
+            local filename = self.filename
             local extension = vim.fn.fnamemodify(filename, ":e")
             self.icon, self.icon_color =
                 require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
@@ -265,7 +289,7 @@ M.get_statusline = function()
         file_size,
         file_readonly,
         file_modified,
-        { provider = "%<" }  -- truncation point marker
+        { provider = "%<" } -- truncation point marker
     )
 
     -- -------------------------------------------------------------------------
@@ -366,7 +390,7 @@ M.get_statusline = function()
                 or (h.ref and h.ref.count)
                 or nil,
             type = h.type or h.kind or nil,
-            raw  = h,
+            raw = h,
         }
     end
 
@@ -387,7 +411,7 @@ M.get_statusline = function()
                 return false
             end
             local buf_data = minidiff.get_buf_data(0)
-            local hunks    = buf_data and buf_data.hunks or {}
+            local hunks = buf_data and buf_data.hunks or {}
             -- Only show when there is at least one hunk in the current buffer
             return type(hunks) == "table" and #hunks > 0
         end,
@@ -396,36 +420,36 @@ M.get_statusline = function()
             local minidiff = require("mini.diff")
             local buf_data = minidiff.get_buf_data(0)
             ---@type table[]
-            local hunks    = buf_data and buf_data.hunks or {}
+            local hunks = buf_data and buf_data.hunks or {}
             self.hunks_count = #hunks
 
             local lnum = vim.fn.line(".")
-            self.current_hunk_index         = nil
-            self.current_hunk_type          = nil
-            self.current_hunk               = nil
+            self.current_hunk_index = nil
+            self.current_hunk_type = nil
+            self.current_hunk = nil
             -- True when the current hunk is a compound change+delete pair
-            self.current_hunk_is_changedel  = false
+            self.current_hunk_is_changedel = false
             -- Index of the paired delete hunk in a compound change+delete
-            self.current_hunk_second_index  = nil
+            self.current_hunk_second_index = nil
 
             -- Find which hunk the cursor is currently inside
             for i, h in ipairs(hunks) do
                 local f = get_hunk_fields(h)
                 if f.buf_start and f.buf_count then
                     local first = f.buf_start
-                    local last  = f.buf_start + math.max(f.buf_count - 1, 0)
+                    local last = f.buf_start + math.max(f.buf_count - 1, 0)
                     if f.type == "delete" then
                         -- Delete hunks occupy a single line boundary (no new lines)
                         if lnum == first or (first == 0 and lnum == 1) then
                             self.current_hunk_index = i
-                            self.current_hunk_type  = f.type
-                            self.current_hunk       = f
+                            self.current_hunk_type = f.type
+                            self.current_hunk = f
                             break
                         end
                     elseif lnum >= first and lnum <= last then
                         self.current_hunk_index = i
-                        self.current_hunk_type  = f.type
-                        self.current_hunk       = f
+                        self.current_hunk_type = f.type
+                        self.current_hunk = f
                         break
                     end
                 end
@@ -450,8 +474,8 @@ M.get_statusline = function()
                 local next_h = hunks[self.current_hunk_index + 1]
                 if next_h then
                     local nf = get_hunk_fields(next_h)
-                    local cur_buf_start     = self.current_hunk.buf_start or 0
-                    local cur_buf_count     = self.current_hunk.buf_count or 0
+                    local cur_buf_start = self.current_hunk.buf_start or 0
+                    local cur_buf_count = self.current_hunk.buf_count or 0
                     local expected_next_start = cur_buf_start + cur_buf_count
                     local is_adjacent = false
                     if nf.buf_start ~= nil and expected_next_start ~= nil then
@@ -499,7 +523,7 @@ M.get_statusline = function()
                     return { fg = _G.LVIM.colors.blue, bold = true }
                 end
                 if self.current_hunk_type == "add" then
-                    return { fg = _G.LVIM.colors.git_add,    bold = true }
+                    return { fg = _G.LVIM.colors.git_add, bold = true }
                 elseif self.current_hunk_type == "change" then
                     return { fg = _G.LVIM.colors.git_change, bold = true }
                 elseif self.current_hunk_type == "delete" or self.current_hunk_type == "remove" then
@@ -603,18 +627,18 @@ M.get_statusline = function()
         condition = heirline_conditions.has_diagnostics,
         static = {
             error_icon = icons.diagnostics.error .. " ",
-            warn_icon  = icons.diagnostics.warn  .. " ",
-            hint_icon  = icons.diagnostics.hint  .. " ",
-            info_icon  = icons.diagnostics.info  .. " ",
+            warn_icon = icons.diagnostics.warn .. " ",
+            hint_icon = icons.diagnostics.hint .. " ",
+            info_icon = icons.diagnostics.info .. " ",
         },
         -- Refresh on diagnostic changes and when switching buffers
         update = { "DiagnosticChanged", "BufEnter" },
         ---@param self table  Sets self.errors/warnings/hints/info severity counts
         init = function(self)
-            self.errors   = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
+            self.errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
             self.warnings = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
-            self.hints    = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
-            self.info     = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
+            self.hints = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
+            self.info = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
         end,
         {
             ---@param self table   Component self
@@ -665,21 +689,21 @@ M.get_statusline = function()
     ---@type table  Heirline component that shows active LSP/lint/format tool names
     local lsp_active = {
         condition = heirline_conditions.lsp_attached,
-        update    = { "LspAttach", "LspDetach", "BufWinEnter" },
+        update = { "LspAttach", "LspDetach", "BufWinEnter" },
         ---@return string  Formatted "LSP [servers] | Li [linters] | Fo [formatters]"
         provider = function()
-            local lsp_manager = require("languages.lsp_manager")
+            local lsp_manager = require("lvim-lsp.core.manager")
             ---@type string[]  Non-EFM LSP server names
-            local lsp        = {}
+            local lsp = {}
             ---@type string[]  Linter prefixes from EFM sources
-            local linters    = {}
+            local linters = {}
             ---@type string[]  Formatter prefixes from EFM sources
             local formatters = {}
-            local p_lsp        = ""
-            local p_linters    = ""
+            local p_lsp = ""
+            local p_linters = ""
             local p_formatters = ""
 
-            local current_buf  = vim.api.nvim_get_current_buf()
+            local current_buf = vim.api.nvim_get_current_buf()
             -- Determine whether EFM is disabled globally or for this buffer
             local efm_disabled = lsp_manager.is_server_disabled_globally("efm")
                 or lsp_manager.is_server_disabled_for_buffer("efm", current_buf)
@@ -693,60 +717,32 @@ M.get_statusline = function()
 
             if not efm_disabled then
                 local filetype = vim.bo.filetype
-                ---@type table[]|nil  EFM tool list for the current filetype
-                local sources = nil
+                local ft_map = require("lvim-lsp.state").file_types
 
-                -- Fastest path: use pre-merged global EFM settings cache
-                if
-                    _G.LVIM.global
-                    and _G.LVIM.global.efm
-                    and _G.LVIM.global.efm.settings
-                    and _G.LVIM.global.efm.settings.languages
-                    and _G.LVIM.global.efm.settings.languages[filetype]
-                then
-                    sources = _G.LVIM.global.efm.settings.languages[filetype]
-                end
-
-                -- Fall back to the live EFM client config when the global cache misses
-                if not sources then
-                    local efm_client = nil
-                    for _, client in ipairs(vim.lsp.get_clients({ bufnr = current_buf })) do
-                        if client.name == "efm" then
-                            efm_client = client
-                            break
-                        end
-                    end
-                    if
-                        efm_client
-                        and efm_client.config
-                        and efm_client.config.settings
-                        and efm_client.config.settings.languages
-                        and efm_client.config.settings.languages[filetype]
-                    then
-                        sources = efm_client.config.settings.languages[filetype]
-                    end
-                end
-
-                if sources then
-                    for i = 1, #sources do
-                        -- lPrefix marks a linter entry; fPrefix marks a formatter entry.
-                        -- Only include the tool when its Mason package is installed.
-                        if sources[i].lPrefix and mason_registry.is_installed(sources[i].server_name) then
-                            table.insert(linters, sources[i].lPrefix)
-                        end
-                        if sources[i].fPrefix and mason_registry.is_installed(sources[i].server_name) then
-                            table.insert(formatters, sources[i].fPrefix)
+                -- Read formatters and linters for the current filetype directly from
+                -- file_types — no EFM runtime query needed.
+                local function collect(field, out)
+                    for _, entry in pairs(ft_map) do
+                        if vim.tbl_contains(entry.filetypes or {}, filetype) then
+                            for _, tool in ipairs(entry[field] or {}) do
+                                local pkg = type(tool) == "table" and tool[1] or tool
+                                if mason_registry.is_installed(pkg) then
+                                    table.insert(out, pkg)
+                                end
+                            end
                         end
                     end
                 end
+                collect("formatters", formatters)
+                collect("linters", linters)
 
                 -- Deduplicate before rendering (multiple filetypes may share a tool)
                 if next(linters) ~= nil then
-                    linters    = funcs.remove_duplicate(linters)
-                    p_linters  = " | Li [" .. table.concat(linters, ", ") .. "]"
+                    linters = funcs.remove_duplicate(linters)
+                    p_linters = " | Li [" .. table.concat(linters, ", ") .. "]"
                 end
                 if next(formatters) ~= nil then
-                    formatters   = funcs.remove_duplicate(formatters)
+                    formatters = funcs.remove_duplicate(formatters)
                     p_formatters = " | Fo [" .. table.concat(formatters, ", ") .. "]"
                 end
             end
@@ -801,8 +797,8 @@ M.get_statusline = function()
             if format ~= "" then
                 local symbols = {
                     unix = icons.common.unix .. " ",
-                    dos  = icons.common.dos  .. " ",
-                    mac  = icons.common.mac  .. " ",
+                    dos = icons.common.dos .. " ",
+                    mac = icons.common.mac .. " ",
                 }
                 return " " .. symbols[format]
             end
@@ -865,11 +861,11 @@ M.get_statusline = function()
         ---@return string  Two spaces + a block character indicating vertical scroll position
         provider = function()
             local current_line = vim.fn.line(".")
-            local total_lines  = vim.fn.line("$")
+            local total_lines = vim.fn.line("$")
             -- Eight block chars from tallest (top of file) to shortest (bottom)
-            local chars      = { "█", "▇", "▆", "▅", "▄", "▃", "▂", "▁" }
+            local chars = { "█", "▇", "▆", "▅", "▄", "▃", "▂", "▁" }
             local line_ratio = current_line / total_lines
-            local index      = math.ceil(line_ratio * #chars)
+            local index = math.ceil(line_ratio * #chars)
             return "  " .. chars[index]
         end,
         hl = { fg = _G.LVIM.colors.red },
@@ -914,7 +910,7 @@ M.get_statusline = function()
             git_hunks,
             space,
             macro_rec,
-            align,         -- everything after align is right-justified
+            align, -- everything after align is right-justified
             diagnostics,
             lsp_active,
             file_types,

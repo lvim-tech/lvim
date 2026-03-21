@@ -79,8 +79,8 @@ config.obsidian_nvim = function()
             min_chars = 0,
         },
     })
-    vim.api.nvim_set_hl(0, "ObsidianRefText", { fg = _G.LVIM_COLORS.red })
-    vim.api.nvim_set_hl(0, "ObsidianExtLinkIcon", { fg = _G.LVIM_COLORS.red })
+    vim.api.nvim_set_hl(0, "ObsidianRefText", { fg = require("lvim-colorscheme").colors.red })
+    vim.api.nvim_set_hl(0, "ObsidianExtLinkIcon", { fg = require("lvim-colorscheme").colors.red })
     local map = vim.keymap.set
     local opts = { noremap = true, silent = true }
     map(

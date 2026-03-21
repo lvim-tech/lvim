@@ -14,7 +14,7 @@
 ---@field settings  { languages: table<string, any> }  Per-language tool config
 
 ---@class LvimGlobal
----@field os           "mac"|"linux"|"unsuported"|"other"
+---@field os           "mac"|"linux"|"unsupported"|"other"
 ---@field lvim_path    string   Absolute path to the nvim config directory
 ---@field cache_path   string   Absolute path to the nvim cache directory
 ---@field snapshot_path string  Absolute path to the plugin snapshots directory
@@ -67,15 +67,22 @@
 -- Git status (populated by heirline git component)
 -- ---------------------------------------------------------------------------
 
+---@class LvimGitTag
+---@field distance integer|nil  Number of commits since the tag (nil if on tag)
+---@field name     string|nil   Tag name (nil when no tag is reachable)
+---@field oid      string|nil   Abbreviated SHA of the tagged commit
+
 ---@class LvimGitHead
----@field branch string|nil   Full branch name (nil when in detached HEAD)
----@field abbrev string|nil   Abbreviated commit SHA shown alongside branch
+---@field branch         string|nil   Full branch name (nil when in detached HEAD)
+---@field abbrev         string|nil   Abbreviated commit SHA shown alongside branch
+---@field commit_message string|nil   Subject line of the latest commit
+---@field detached       boolean      True when HEAD is in detached state
+---@field oid            string|nil   Full commit OID (SHA)
+---@field tag            LvimGitTag   Nearest reachable tag info
 
 ---@class LvimGit
----@field head    LvimGitHead  Branch and commit info from the git backend
----@field added   integer      Number of added lines
----@field changed integer      Number of changed lines
----@field removed integer      Number of removed lines
+---@field root string|nil   Absolute path to the git repository root
+---@field head LvimGitHead  Branch and commit info from the git backend
 
 -- ---------------------------------------------------------------------------
 -- Main _G.LVIM namespace

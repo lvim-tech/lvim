@@ -875,149 +875,149 @@ return {
     },
     -- lvim-qf-loc: LVIM wrappers for quickfix and location list management
     lvim_qf_loc = {
-        cmd = {
-            "LvimDiagnostics",
-            "LvimListQuickFixOpen",
-            "LvimListQuickFixClose",
-            "LvimListQuickFixNext",
-            "LvimListQuickFixPrev",
-            "LvimListQuickFixMenuChoice",
-            "LvimListQuickFixMenuDelete",
-            "LvimListQuickFixMenuLoad",
-            "LvimListQuickFixMenuSave",
-            "LvimLocListOpen",
-            "LvimLocListClose",
-            "LvimLocListNext",
-            "LvimLocListPrev",
-            "LvimLocListMenuChoice",
-            "LvimLocListMenuDelete",
-            "LvimLocListMenuLoad",
-            "LvimLocListMenuSave",
-        },
-        keys = {
-            -- QF Diagnostic
-            {
-                "<C-c><C-h>",
-                function()
-                    vim.cmd("LvimDiagnostics")
-                end,
-                desc = "LspDiagnostic QF",
-            },
-            -- Quick fix
-            {
-                "]o",
-                function()
-                    vim.cmd("LvimListQuickFixOpen")
-                end,
-                desc = "QfOpen",
-            },
-            {
-                "]q",
-                function()
-                    vim.cmd("LvimListQuickFixClose")
-                end,
-                desc = "QfClose",
-            },
-            {
-                "]]",
-                function()
-                    vim.cmd("LvimListQuickFixNext")
-                end,
-                desc = "QfNext",
-            },
-            {
-                "][",
-                function()
-                    vim.cmd("LvimListQuickFixPrev")
-                end,
-                desc = "QfPrev",
-            },
-            {
-                "]c",
-                function()
-                    vim.cmd("LvimListQuickFixMenuChoice")
-                end,
-                desc = "QfMenuChoice",
-            },
-            {
-                "]d",
-                function()
-                    vim.cmd("LvimListQuickFixMenuDelete")
-                end,
-                desc = "QfMenuDelete",
-            },
-            {
-                "]l",
-                function()
-                    vim.cmd("LvimListQuickFixMenuLoad")
-                end,
-                desc = "QfMenuLoad",
-            },
-            {
-                "]s",
-                function()
-                    vim.cmd("LvimListQuickFixMenuSave")
-                end,
-                desc = "QfMenuSave",
-            },
-            -- Loc list
-            {
-                "[o",
-                function()
-                    vim.cmd("LvimLocListOpen")
-                end,
-                desc = "LocOpen",
-            },
-            {
-                "[q",
-                function()
-                    vim.cmd("LvimLocListClose")
-                end,
-                desc = "LocClose",
-            },
-            {
-                "[]",
-                function()
-                    vim.cmd("LvimLocListNext")
-                end,
-                desc = "LocNext",
-            },
-            {
-                "[[",
-                function()
-                    vim.cmd("LvimLocListPrev")
-                end,
-                desc = "LocPrev",
-            },
-            {
-                "[c",
-                function()
-                    vim.cmd("LvimLocListMenuChoice")
-                end,
-                desc = "LocMenuChoice",
-            },
-            {
-                "[d",
-                function()
-                    vim.cmd("LvimLocListMenuDelete")
-                end,
-                desc = "LocMenuDelete",
-            },
-            {
-                "[l",
-                function()
-                    vim.cmd("LvimLocListMenuLoad")
-                end,
-                desc = "LocMenuLoad",
-            },
-            {
-                "[s",
-                function()
-                    vim.cmd("LvimLocListMenuSave")
-                end,
-                desc = "LocMenuSave",
-            },
-        },
+        -- cmd = {
+        --     "LvimDiagnostics",
+        --     "LvimListQuickFixOpen",
+        --     "LvimListQuickFixClose",
+        --     "LvimListQuickFixNext",
+        --     "LvimListQuickFixPrev",
+        --     "LvimListQuickFixMenuChoice",
+        --     "LvimListQuickFixMenuDelete",
+        --     "LvimListQuickFixMenuLoad",
+        --     "LvimListQuickFixMenuSave",
+        --     "LvimLocListOpen",
+        --     "LvimLocListClose",
+        --     "LvimLocListNext",
+        --     "LvimLocListPrev",
+        --     "LvimLocListMenuChoice",
+        --     "LvimLocListMenuDelete",
+        --     "LvimLocListMenuLoad",
+        --     "LvimLocListMenuSave",
+        -- },
+        -- keys = {
+        --     -- QF Diagnostic
+        --     {
+        --         "<C-c><C-h>",
+        --         function()
+        --             vim.cmd("LvimDiagnostics")
+        --         end,
+        --         desc = "LspDiagnostic QF",
+        --     },
+        --     -- Quick fix
+        --     {
+        --         "]o",
+        --         function()
+        --             vim.cmd("LvimListQuickFixOpen")
+        --         end,
+        --         desc = "QfOpen",
+        --     },
+        --     {
+        --         "]q",
+        --         function()
+        --             vim.cmd("LvimListQuickFixClose")
+        --         end,
+        --         desc = "QfClose",
+        --     },
+        --     {
+        --         "]]",
+        --         function()
+        --             vim.cmd("LvimListQuickFixNext")
+        --         end,
+        --         desc = "QfNext",
+        --     },
+        --     {
+        --         "][",
+        --         function()
+        --             vim.cmd("LvimListQuickFixPrev")
+        --         end,
+        --         desc = "QfPrev",
+        --     },
+        --     {
+        --         "]c",
+        --         function()
+        --             vim.cmd("LvimListQuickFixMenuChoice")
+        --         end,
+        --         desc = "QfMenuChoice",
+        --     },
+        --     {
+        --         "]d",
+        --         function()
+        --             vim.cmd("LvimListQuickFixMenuDelete")
+        --         end,
+        --         desc = "QfMenuDelete",
+        --     },
+        --     {
+        --         "]l",
+        --         function()
+        --             vim.cmd("LvimListQuickFixMenuLoad")
+        --         end,
+        --         desc = "QfMenuLoad",
+        --     },
+        --     {
+        --         "]s",
+        --         function()
+        --             vim.cmd("LvimListQuickFixMenuSave")
+        --         end,
+        --         desc = "QfMenuSave",
+        --     },
+        --     -- Loc list
+        --     {
+        --         "[o",
+        --         function()
+        --             vim.cmd("LvimLocListOpen")
+        --         end,
+        --         desc = "LocOpen",
+        --     },
+        --     {
+        --         "[q",
+        --         function()
+        --             vim.cmd("LvimLocListClose")
+        --         end,
+        --         desc = "LocClose",
+        --     },
+        --     {
+        --         "[]",
+        --         function()
+        --             vim.cmd("LvimLocListNext")
+        --         end,
+        --         desc = "LocNext",
+        --     },
+        --     {
+        --         "[[",
+        --         function()
+        --             vim.cmd("LvimLocListPrev")
+        --         end,
+        --         desc = "LocPrev",
+        --     },
+        --     {
+        --         "[c",
+        --         function()
+        --             vim.cmd("LvimLocListMenuChoice")
+        --         end,
+        --         desc = "LocMenuChoice",
+        --     },
+        --     {
+        --         "[d",
+        --         function()
+        --             vim.cmd("LvimLocListMenuDelete")
+        --         end,
+        --         desc = "LocMenuDelete",
+        --     },
+        --     {
+        --         "[l",
+        --         function()
+        --             vim.cmd("LvimLocListMenuLoad")
+        --         end,
+        --         desc = "LocMenuLoad",
+        --     },
+        --     {
+        --         "[s",
+        --         function()
+        --             vim.cmd("LvimLocListMenuSave")
+        --         end,
+        --         desc = "LocMenuSave",
+        --     },
+        -- },
         opts = {},
     },
     -- tabby.nvim: custom tabline renderer integrating lvim-space workspace info
@@ -1047,6 +1047,10 @@ return {
             ---spacer → lvim-space tabs → workspace name → project name.
             ---@return table[]  Tabby component list
             local components = function()
+                local c = require("lvim-colorscheme").colors
+                if not c then
+                    return {}
+                end
                 -- Filetypes whose windows should be omitted from the tabline display.
                 local exclude = {
                     "ctrlspace",
@@ -1083,8 +1087,8 @@ return {
                         text = {
                             " " .. icons.common.vim .. " ",
                             hl = {
-                                bg = _G.LVIM.colors.green,
-                                fg = _G.LVIM.colors.bg_dark,
+                                bg = c.green,
+                                fg = c.bg_dark,
                                 style = "bold",
                             },
                         },
@@ -1100,9 +1104,9 @@ return {
                     win_name = tabby_future_win_name.get(win_id, { mode = "unique" })
                     if not vim.tbl_contains(exclude, ft) then
                         if win_id == top_win then
-                            hl = { bg = _G.LVIM.colors.green, fg = _G.LVIM.colors.bg_dark, style = "bold" }
+                            hl = { bg = c.green, fg = c.bg_dark, style = "bold" }
                         else
-                            hl = { bg = _G.LVIM.colors.bg_dark, fg = _G.LVIM.colors.green, style = "bold" }
+                            hl = { bg = c.bg_dark, fg = c.green, style = "bold" }
                         end
                         table.insert(comps, {
                             type = "win",
@@ -1111,22 +1115,22 @@ return {
                                 "  " .. win_name .. "  ",
                                 hl = hl,
                             },
-                            right_sep = { "", hl = { bg = _G.LVIM.colors.bg_dark, fg = _G.LVIM.colors.bg_dark } },
+                            right_sep = { "", hl = { bg = c.bg_dark, fg = c.bg_dark } },
                         })
                     end
                 end
                 table.insert(comps, {
                     type = "text",
                     text = { "%=" },
-                    hl = { bg = _G.LVIM.colors.bg_dark, fg = _G.LVIM.colors.bg_dark },
+                    hl = { bg = c.bg_dark, fg = c.bg_dark },
                 })
                 local lvim_data = get_lvim_space_tabs()
                 if lvim_data.tabs and #lvim_data.tabs > 0 then
                     for _, tab in ipairs(lvim_data.tabs) do
                         if tab.active then
-                            hl = { bg = _G.LVIM.colors.green, fg = _G.LVIM.colors.bg_dark, style = "bold" }
+                            hl = { bg = c.green, fg = c.bg_dark, style = "bold" }
                         else
-                            hl = { bg = _G.LVIM.colors.bg_dark, fg = _G.LVIM.colors.green, style = "bold" }
+                            hl = { bg = c.bg_dark, fg = c.green, style = "bold" }
                         end
                         table.insert(comps, {
                             type = "text",
@@ -1147,8 +1151,8 @@ return {
                         text = {
                             "  " .. lvim_data.workspace_name .. "  ",
                             hl = {
-                                bg = _G.LVIM.colors.orange,
-                                fg = _G.LVIM.colors.bg_dark,
+                                bg = c.orange,
+                                fg = c.bg_dark,
                                 style = "bold",
                             },
                         },
@@ -1160,8 +1164,8 @@ return {
                         text = {
                             "  " .. lvim_data.project_name .. "  ",
                             hl = {
-                                bg = _G.LVIM.colors.red,
-                                fg = _G.LVIM.colors.bg_dark,
+                                bg = c.red,
+                                fg = c.bg_dark,
                                 style = "bold",
                             },
                         },
@@ -1641,25 +1645,26 @@ return {
     -- todo-comments.nvim: highlight and search TODO/FIXME/HACK/NOTE comments
     todo_comments_nvim = {
         opts = function()
+            local lcs = require("lvim-colorscheme").colors or {}
             return {
                 keywords = {
                     FIX = {
                         icon = icons.common.fix,
-                        color = _G.LVIM.colors.diag_error,
+                        color = lcs.red,
                         alt = { "FIX", "FIXME", "BUG" },
                     },
-                    TODO = { icon = icons.common.todo, color = _G.LVIM.colors.diag_info, alt = { "TODO" } },
-                    HACK = { icon = icons.common.hack, color = _G.LVIM.colors.diag_error, alt = { "HACK" } },
-                    WARN = { icon = icons.common.warning, color = _G.LVIM.colors.diag_warn, alt = { "WARNING" } },
+                    TODO = { icon = icons.common.todo, color = lcs.blue, alt = { "TODO" } },
+                    HACK = { icon = icons.common.hack, color = lcs.red, alt = { "HACK" } },
+                    WARN = { icon = icons.common.warning, color = lcs.orange, alt = { "WARNING" } },
                     PERF = {
                         icon = icons.common.performance,
-                        color = _G.LVIM.colors.diag_warn,
+                        color = lcs.orange,
                         alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" },
                     },
-                    NOTE = { icon = icons.common.note, color = _G.LVIM.colors.diag_info, alt = { "INFO" } },
+                    NOTE = { icon = icons.common.note, color = lcs.blue, alt = { "INFO" } },
                     TEST = {
                         icon = icons.common.test,
-                        color = _G.LVIM.colors.diag_hint,
+                        color = lcs.cyan,
                         alt = { "TEST", "TESTING", "PASSED", "FAILED" },
                     },
                 },

@@ -20,6 +20,11 @@ modules["lvim-tech/lvim-colorscheme"] = {
     opts = dependencies_config.lvim_colorscheme.opts,
 }
 
+modules["lvim-tech/lvim-utils"] = {
+    commit = funcs.get_commit("lvim-utils", plugins_snapshot),
+    config = dependencies_config.lvim_utils.config,
+}
+
 modules["nvim-lua/plenary.nvim"] = {
     commit = funcs.get_commit("plenary.nvim", plugins_snapshot),
     lazy = true,
@@ -507,6 +512,11 @@ modules["mason-org/mason.nvim"] = {
     opts = languages_config.mason.opts,
 }
 
+modules["lvim-tech/lvim-lsp"] = {
+    commit = funcs.get_commit("lvim-lsp", plugins_snapshot),
+    opts = languages_config.lvim_lsp.opts,
+}
+
 modules["nvim-neotest/neotest"] = {
     commit = funcs.get_commit("neotest", plugins_snapshot),
     cmd = languages_config.neotest.cmd,
@@ -581,11 +591,6 @@ modules["nvim-treesitter/nvim-treesitter-context"] = {
     opts = languages_config.nvim_treesitter_context.opts,
 }
 
-modules["j-hui/fidget.nvim"] = {
-    commit = funcs.get_commit("fidget.nvim", plugins_snapshot),
-    opts = languages_config.fidget_nvim.opts,
-}
-
 modules["SmiteshP/nvim-navic"] = {
     commit = funcs.get_commit("nvim-navic", plugins_snapshot),
     opts = languages_config.nvim_navic.opts,
@@ -622,23 +627,10 @@ modules["lvim-tech/nvim-dbee"] = {
     opts = languages_config.nvim_dbee.opts,
 }
 
--- modules["vuki656/package-info.nvim"] = {
---     commit = funcs.get_commit("package-info.nvim", plugins_snapshot),
---     event = "BufReadPost package.json",
---     opts = languages_config.package_info_nvim.opts,
--- }
---
--- modules["Saecki/crates.nvim"] = {
---     commit = funcs.get_commit("crates.nvim", plugins_snapshot),
---     event = "BufReadPost Cargo.toml",
---     opts = languages_config.crates_nvim.opts,
--- }
--- --
--- modules["lvim-tech/pubspec-assist.nvim"] = {
---     commit = funcs.get_commit("pubspec-assist.nvim", plugins_snapshot),
---     event = "BufReadPost pubspec.yaml",
---     opts = languages_config.pubspec_assist_nvim.opts,
--- }
+modules["lvim-tech/lvim-dependencies"] = {
+    commit = funcs.get_commit("nvim-dbee", plugins_snapshot),
+    opts = languages_config.lvim_dependencies.opts,
+}
 
 modules["dhruvasagar/vim-table-mode"] = {
     commit = funcs.get_commit("dhruvasagar/vim-table-mode", plugins_snapshot),

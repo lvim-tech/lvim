@@ -170,9 +170,9 @@ M.global = function()
     -- Custom fold text renderer defined in configs.base.ui.fold.
     vim.opt.foldtext = "v:lua.fold_text()"
     vim.opt.fillchars = {
-        diff = "╱",   -- diagonal slash for removed diff regions
-        eob  = " ",   -- hide the ~ end-of-buffer markers
-        fold = "─",   -- horizontal bar for fold fill
+        diff = "╱", -- diagonal slash for removed diff regions
+        eob = " ", -- hide the ~ end-of-buffer markers
+        fold = "─", -- horizontal bar for fold fill
     }
     -- Diff options: histogram algorithm with aggressive line-matching.
     vim.opt.diffopt = {

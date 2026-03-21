@@ -148,7 +148,8 @@ return {
             default = "80",
             ---@return string  Comma-separated list of column positions (from vim.opt.colorcolumn)
             get = function()
-                return vim.opt.colorcolumn:get()
+                local val = vim.opt.colorcolumn:get()
+                return type(val) == "table" and table.concat(val, ",") or tostring(val)
             end,
             ---@param val     string   New column position(s) as a comma-separated string
             ---@param on_init boolean  True during startup

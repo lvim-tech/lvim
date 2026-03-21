@@ -50,7 +50,8 @@ local function run(command_template, opts)
     local final_command = command_template
 
     if module_init then
-        local default_module = (project_name and project_name ~= "." and project_name) or vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+        local default_module = (project_name and project_name ~= "." and project_name)
+            or vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
         local suggested = "github.com/<youruser>/" .. default_module
         local module_path = vim.fn.input("Module path for `go mod init` (e.g. " .. suggested .. "): ", suggested)
         if module_path == "" then

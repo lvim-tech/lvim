@@ -8,6 +8,8 @@
 ---@module "modules.base.configs.languages"
 
 local icons = require("configs.base.ui.icons")
+local lsp_config = require("modules.base.configs.languages.lsp")
+local file_types = require("modules.base.configs.languages.lsp.file_types")
 
 return {
     -- -------------------------------------------------------------------------
@@ -18,20 +20,43 @@ return {
     mason = {
         ---@return table  Mason opts table with icon configuration
         opts = function()
-            -- Defer language initialisation to after the first event loop tick
-            -- so Mason's registry is fully populated before we query it.
-            vim.schedule(function()
-                require("languages").init()
-                require("languages.utils.setup_diagnostics").init_diagnostics()
-                require("languages.lsp_commands")
-                require("languages.utils.code_lens").setup()
-            end)
             return {
                 ui = {
                     icons = icons.mason,
                 },
             }
         end,
+    },
+
+    lvim_lsp = {
+        opts = {
+            file_types = file_types,
+            server_config_dirs = { "modules.base.configs.languages.lsp.servers" },
+            diagnostics = {
+                update_in_insert = false,
+                underline = true,
+                severity_sort = true,
+                signs = {
+                    error = icons.diagnostics.error,
+                    warn = icons.diagnostics.warn,
+                    hint = icons.diagnostics.hint,
+                    info = icons.diagnostics.info,
+                },
+                show_line = lsp_config.diagnostics.show_line_diagnostics,
+                goto_next = lsp_config.diagnostics.goto_next,
+                goto_prev = lsp_config.diagnostics.goto_prev,
+            },
+            features = {
+                document_highlight = true,
+                auto_format = true,
+                inlay_hints = true,
+            },
+            dap_local_fn = require("modules.base.configs.languages.lsp.dap_utils").dap_local,
+
+            on_attach = function(client, bufnr)
+                lsp_config.keymaps(client, bufnr)
+            end,
+        },
     },
 
     -- -------------------------------------------------------------------------
@@ -52,14 +77,14 @@ return {
             "NeotestSummary",
         },
         keys = {
-            { "<leader>nr", "<cmd>NeotestRun<CR>",         desc = "Neotest Run" },
-            { "<leader>nc", "<cmd>NeotestRunCurrent<CR>",  desc = "Neotest Run Current File" },
-            { "<leader>nd", "<cmd>NeotestRunDap<CR>",      desc = "Neotest Run with DAP" },
-            { "<leader>ns", "<cmd>NeotestStop<CR>",        desc = "Neotest Stop" },
-            { "<leader>na", "<cmd>NeotestAttach<CR>",      desc = "Neotest Attach" },
-            { "<leader>no", "<cmd>NeotestOutput<CR>",      desc = "Neotest Output" },
+            { "<leader>nr", "<cmd>NeotestRun<CR>", desc = "Neotest Run" },
+            { "<leader>nc", "<cmd>NeotestRunCurrent<CR>", desc = "Neotest Run Current File" },
+            { "<leader>nd", "<cmd>NeotestRunDap<CR>", desc = "Neotest Run with DAP" },
+            { "<leader>ns", "<cmd>NeotestStop<CR>", desc = "Neotest Stop" },
+            { "<leader>na", "<cmd>NeotestAttach<CR>", desc = "Neotest Attach" },
+            { "<leader>no", "<cmd>NeotestOutput<CR>", desc = "Neotest Output" },
             { "<leader>np", "<cmd>NeotestOutputPanel<CR>", desc = "Neotest Output Panel" },
-            { "<leader>nt", "<cmd>NeotestSummary<CR>",     desc = "Neotest Summary Toggle" },
+            { "<leader>nt", "<cmd>NeotestSummary<CR>", desc = "Neotest Summary Toggle" },
         },
         ---@return table  Neotest options (icons, adapters)
         opts = function()
@@ -195,25 +220,33 @@ return {
         keys = {
             {
                 "gpd",
-                function() vim.cmd("Glance definitions") end,
+                function()
+                    vim.cmd("Glance definitions")
+                end,
                 mode = { "n" },
                 desc = "Glance definitions",
             },
             {
                 "gpr",
-                function() vim.cmd("Glance references") end,
+                function()
+                    vim.cmd("Glance references")
+                end,
                 mode = { "n" },
                 desc = "Glance references",
             },
             {
                 "gpt",
-                function() vim.cmd("Glance type_definitions") end,
+                function()
+                    vim.cmd("Glance type_definitions")
+                end,
                 mode = { "n" },
                 desc = "Glance type definitions",
             },
             {
                 "gpi",
-                function() vim.cmd("Glance implementations") end,
+                function()
+                    vim.cmd("Glance implementations")
+                end,
                 mode = { "n" },
                 desc = "Glance implementations",
             },
@@ -289,7 +322,7 @@ return {
     flutter_tools_nvim = {
         ---@return table  flutter-tools.nvim options
         opts = function()
-            local setup_diagnostics = require("languages.utils.setup_diagnostics")
+            local lsp = require("modules.base.configs.languages.lsp")
             local navic = require("nvim-navic")
             return {
                 ui = {
@@ -306,11 +339,9 @@ return {
                     ---@param client table  LSP client object
                     ---@param bufnr  integer  Buffer number the client attached to
                     on_attach = function(client, bufnr)
-                        print("🚀 Flutter tools attached with auto_pub_get=false")
-                        setup_diagnostics.keymaps(client, bufnr)
-                        setup_diagnostics.document_highlight(client, bufnr)
-                        setup_diagnostics.document_auto_format(client, bufnr)
-                        setup_diagnostics.inlay_hint(client, bufnr)
+                        -- document_highlight / auto_format / inlay_hints are handled
+                        -- by lvim-lsp features.apply_buffer_features()
+                        lsp.keymaps(client, bufnr)
                         navic.attach(client, bufnr)
                     end,
                     autostart = true,
@@ -348,8 +379,8 @@ return {
                                 },
                                 contextSupport = true,
                             },
-                            declaration   = { dynamicRegistration = false, linkSupport = true },
-                            definition    = { dynamicRegistration = false, linkSupport = true },
+                            declaration = { dynamicRegistration = false, linkSupport = true },
+                            definition = { dynamicRegistration = false, linkSupport = true },
                             typeDefinition = { dynamicRegistration = false, linkSupport = true },
                             implementation = { dynamicRegistration = false, linkSupport = true },
                             references = { dynamicRegistration = false },
@@ -376,7 +407,7 @@ return {
                                     activeParameterSupport = true,
                                 },
                             },
-                            documentFormatting      = { dynamicRegistration = false },
+                            documentFormatting = { dynamicRegistration = false },
                             documentRangeFormatting = { dynamicRegistration = false },
                             documentOnTypeFormatting = { dynamicRegistration = false },
                             publishDiagnostics = {
@@ -401,16 +432,41 @@ return {
                                 },
                                 -- Full list of semantic token type strings the client understands
                                 tokenTypes = {
-                                    "namespace", "type", "class", "enum", "interface",
-                                    "struct", "typeParameter", "parameter", "variable",
-                                    "property", "enumMember", "event", "function", "method",
-                                    "macro", "keyword", "modifier", "comment", "string",
-                                    "number", "regexp", "operator", "decorator",
+                                    "namespace",
+                                    "type",
+                                    "class",
+                                    "enum",
+                                    "interface",
+                                    "struct",
+                                    "typeParameter",
+                                    "parameter",
+                                    "variable",
+                                    "property",
+                                    "enumMember",
+                                    "event",
+                                    "function",
+                                    "method",
+                                    "macro",
+                                    "keyword",
+                                    "modifier",
+                                    "comment",
+                                    "string",
+                                    "number",
+                                    "regexp",
+                                    "operator",
+                                    "decorator",
                                 },
                                 tokenModifiers = {
-                                    "declaration", "definition", "readonly", "static",
-                                    "deprecated", "abstract", "async", "modification",
-                                    "documentation", "defaultLibrary",
+                                    "declaration",
+                                    "definition",
+                                    "readonly",
+                                    "static",
+                                    "deprecated",
+                                    "abstract",
+                                    "async",
+                                    "modification",
+                                    "documentation",
+                                    "defaultLibrary",
                                 },
                                 formats = { "relative" },
                                 overlappingTokenSupport = false,
@@ -510,7 +566,7 @@ return {
         cmd = { "PxToRemCursor", "PxToRemLine" },
         keys = {
             { "<Leader>pxx", "<cmd>PxToRemCursor<cr>", desc = "Px to Rem cursor" },
-            { "<Leader>pxl", "<cmd>PxToRemLine<cr>",   desc = "Px to Rem line" },
+            { "<Leader>pxl", "<cmd>PxToRemLine<cr>", desc = "Px to Rem line" },
         },
         opts = {
             root_font_size = 16,
@@ -557,27 +613,26 @@ return {
     nvim_treesitter = {
         ---@return nil
         config = function()
-            local lsp_installer = require("languages.lsp_installer")
             -- Ensure the tree-sitter CLI is available before installing parsers
-            lsp_installer.ensure_mason_tools({ "tree-sitter-cli" }, function()
-                local ts = require("nvim-treesitter")
-                ---@type string[]  All parsers available for the current nvim-treesitter version
-                local all_parsers = ts.get_available()
-                ts.install(all_parsers)
-                -- Enable treesitter features per-buffer when the filetype is known
-                vim.api.nvim_create_autocmd("FileType", {
-                    desc = "Start treesitter",
-                    group = vim.api.nvim_create_augroup("start_treesitter", { clear = true }),
-                    pattern = all_parsers,
-                    callback = function()
-                        vim.treesitter.start()
-                        -- Use treesitter-based fold expressions
-                        vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-                        -- Use nvim-treesitter indent for = operator
-                        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-                    end,
-                })
-            end)
+            -- require("lvim-lsp").ensure_mason_tools({ "tree-sitter-cli" }, function()
+            --     local ts = require("nvim-treesitter")
+            --     ---@type string[]  All parsers available for the current nvim-treesitter version
+            --     local all_parsers = ts.get_available()
+            --     ts.install(all_parsers)
+            --     -- Enable treesitter features per-buffer when the filetype is known
+            --     vim.api.nvim_create_autocmd("FileType", {
+            --         desc = "Start treesitter",
+            --         group = vim.api.nvim_create_augroup("start_treesitter", { clear = true }),
+            --         pattern = all_parsers,
+            --         callback = function()
+            --             vim.treesitter.start()
+            --             -- Use treesitter-based fold expressions
+            --             vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+            --             -- Use nvim-treesitter indent for = operator
+            --             vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+            --         end,
+            --     })
+            -- end)
         end,
     },
 
@@ -595,8 +650,14 @@ return {
             -- Per-language node patterns that qualify as "context" scope boundaries
             patterns = {
                 default = {
-                    "class", "function", "method", "for", "while",
-                    "if", "switch", "case",
+                    "class",
+                    "function",
+                    "method",
+                    "for",
+                    "while",
+                    "if",
+                    "switch",
+                    "case",
                 },
                 tex = { "chapter", "section", "subsection", "subsubsection" },
                 rust = { "impl_item", "struct", "enum" },
@@ -604,8 +665,14 @@ return {
                 vhdl = { "process_statement", "architecture_body", "entity_declaration" },
                 markdown = { "section" },
                 elixir = {
-                    "anonymous_function", "arguments", "block", "do_block",
-                    "list", "map", "tuple", "quoted_content",
+                    "anonymous_function",
+                    "arguments",
+                    "block",
+                    "do_block",
+                    "list",
+                    "map",
+                    "tuple",
+                    "quoted_content",
                 },
                 json = { "pair" },
                 yaml = { "block_mapping_pair" },
@@ -629,34 +696,6 @@ return {
     -- -------------------------------------------------------------------------
     -- Fidget: LSP progress notifications shown in the bottom-right corner.
     -- -------------------------------------------------------------------------
-    fidget_nvim = {
-        opts = {
-            progress = {
-                display = {
-                    done_style     = "FidgetDone",
-                    progress_style = "FidgetProgress",
-                    group_style    = "FidgetGroup",
-                    icon_style     = "FidgetIcon",
-                },
-            },
-            notification = {
-                view = {
-                    icon_separator    = " ",
-                    group_separator   = "─────",
-                    group_separator_hl = "Error",
-                },
-                -- Do not replace vim.notify; Fidget is supplemental only
-                override_vim_notify = false,
-                window = {
-                    normal_hl  = "FidgetWindow",
-                    x_padding  = 0,
-                    y_padding  = 1,
-                    winblend   = 0,
-                    align      = "top",
-                },
-            },
-        },
-    },
 
     -- -------------------------------------------------------------------------
     -- nvim-navic: breadcrumb trail showing the symbol under the cursor.
@@ -683,7 +722,9 @@ return {
         keys = {
             {
                 "<Leader>lo",
-                function() vim.cmd("Outline") end,
+                function()
+                    vim.cmd("Outline")
+                end,
                 desc = "Outline",
             },
         },
@@ -711,16 +752,31 @@ return {
     nvim_dap = {
         -- Lazy-load commands so DAP is only initialised when first used
         cmd = {
-            "LuaDapLaunch", "DapToggleBreakpoint", "DapClearBreakpoints",
-            "DapRunToCursor", "DapContinue", "DapStepInto", "DapStepOver",
-            "DapStepOut", "DapUp", "DapDown", "DapPause", "DapClose",
-            "DapDisconnect", "DapRestart", "DapToggleRepl", "DapGetSession",
+            "LuaDapLaunch",
+            "DapToggleBreakpoint",
+            "DapClearBreakpoints",
+            "DapRunToCursor",
+            "DapContinue",
+            "DapStepInto",
+            "DapStepOver",
+            "DapStepOut",
+            "DapUp",
+            "DapDown",
+            "DapPause",
+            "DapClose",
+            "DapDisconnect",
+            "DapRestart",
+            "DapToggleRepl",
+            "DapGetSession",
             "DapUIClose",
         },
         keys = {
             {
                 "<A-1>",
-                function() require("dap").toggle_breakpoint() end,
+                function()
+                    local dap = require("dap")
+                    dap.toggle_breakpoint()
+                end,
                 desc = "Dap Toggle Breakpoint",
             },
             {
@@ -747,11 +803,46 @@ return {
                 end,
                 desc = "Debug Start/Continue",
             },
-            { "<A-3>", function() require("dap").step_into() end,  desc = "Dap Step Into" },
-            { "<A-4>", function() require("dap").step_over() end,  desc = "Dap Step Over" },
-            { "<A-5>", function() require("dap").step_out() end,   desc = "Dap Step Out" },
-            { "<A-6>", function() require("dap").up() end,         desc = "Dap Up" },
-            { "<A-7>", function() require("dap").down() end,       desc = "Dap Down" },
+            {
+                "<A-3>",
+                function()
+                    local dap = require("dap")
+                    dap.step_into()
+                end,
+                desc = "Dap Step Into",
+            },
+            {
+                "<A-4>",
+                function()
+                    local dap = require("dap")
+                    dap.step_over()
+                end,
+                desc = "Dap Step Over",
+            },
+            {
+                "<A-5>",
+                function()
+                    local dap = require("dap")
+                    dap.step_out()
+                end,
+                desc = "Dap Step Out",
+            },
+            {
+                "<A-6>",
+                function()
+                    local dap = require("dap")
+                    dap.up()
+                end,
+                desc = "Dap Up",
+            },
+            {
+                "<A-7>",
+                function()
+                    local dap = require("dap")
+                    dap.down()
+                end,
+                desc = "Dap Down",
+            },
             {
                 "<A-8>",
                 function()
@@ -763,44 +854,67 @@ return {
                 end,
                 desc = "Dap UI Close",
             },
-            { "<A-9>", function() require("dap").restart() end,      desc = "Dap Restart" },
-            { "<A-0>", function() require("dap").repl.toggle() end,  desc = "Dap Toggle Repl" },
+            {
+                "<A-9>",
+                function()
+                    local dap = require("dap")
+                    dap.restart()
+                end,
+                desc = "Dap Restart",
+            },
+            {
+                "<A-0>",
+                function()
+                    local dap = require("dap")
+                    dap.repl.toggle()
+                end,
+                desc = "Dap Toggle Repl",
+            },
         },
         ---@return nil
         config = function()
-            local dap_status_ok, dap = pcall(require, "dap")
-            if not dap_status_ok then
-                return
-            end
-            local dap_view_status_ok, dap_view = pcall(require, "dap-view")
-            if not dap_view_status_ok then
-                return
-            end
+            local dap = require("dap")
+            local dap_view = require("dap-view")
 
             -- Define sign column icons for DAP breakpoint states
-            vim.fn.sign_define("DapBreakpoint",          { text = icons.dap_ui.sign.breakpoint,  texthl = "DapBreakpoint",          linehl = "", numhl = "" })
-            vim.fn.sign_define("DapBreakpointRejected",  { text = icons.dap_ui.sign.reject,      texthl = "DapBreakpointRejected",  linehl = "", numhl = "" })
-            vim.fn.sign_define("DapBreakpointCondition", { text = icons.dap_ui.sign.condition,   texthl = "DapBreakpointCondition", linehl = "", numhl = "" })
-            vim.fn.sign_define("DapStopped",             { text = icons.dap_ui.sign.stopped,     texthl = "DapStopped",             linehl = "", numhl = "" })
-            vim.fn.sign_define("DapLogPoint",            { text = icons.dap_ui.sign.log_point,   texthl = "DapLogPoint",            linehl = "", numhl = "" })
+            vim.fn.sign_define(
+                "DapBreakpoint",
+                { text = icons.dap_ui.sign.breakpoint, texthl = "DapBreakpoint", linehl = "", numhl = "" }
+            )
+            vim.fn.sign_define(
+                "DapBreakpointRejected",
+                { text = icons.dap_ui.sign.reject, texthl = "DapBreakpointRejected", linehl = "", numhl = "" }
+            )
+            vim.fn.sign_define(
+                "DapBreakpointCondition",
+                { text = icons.dap_ui.sign.condition, texthl = "DapBreakpointCondition", linehl = "", numhl = "" }
+            )
+            vim.fn.sign_define(
+                "DapStopped",
+                { text = icons.dap_ui.sign.stopped, texthl = "DapStopped", linehl = "", numhl = "" }
+            )
+            vim.fn.sign_define(
+                "DapLogPoint",
+                { text = icons.dap_ui.sign.log_point, texthl = "DapLogPoint", linehl = "", numhl = "" }
+            )
 
             -- Register user commands so they are available in the command line
-            vim.api.nvim_create_user_command("LuaDapLaunch",        'lua require"osv".run_this()', {})
+            vim.api.nvim_create_user_command("LuaDapLaunch", 'lua require"osv".run_this()', {})
             vim.api.nvim_create_user_command("DapToggleBreakpoint", 'lua require("dap").toggle_breakpoint()', {})
             vim.api.nvim_create_user_command("DapClearBreakpoints", 'lua require("dap").clear_breakpoints()', {})
-            vim.api.nvim_create_user_command("DapRunToCursor",      'lua require("dap").run_to_cursor()', {})
-            vim.api.nvim_create_user_command("DapContinue",         'lua require"dap".continue()', {})
-            vim.api.nvim_create_user_command("DapStepInto",         'lua require"dap".step_into()', {})
-            vim.api.nvim_create_user_command("DapStepOver",         'lua require"dap".step_over()', {})
-            vim.api.nvim_create_user_command("DapStepOut",          'lua require"dap".step_out()', {})
-            vim.api.nvim_create_user_command("DapUp",               'lua require"dap".up()', {})
-            vim.api.nvim_create_user_command("DapDown",             'lua require"dap".down()', {})
-            vim.api.nvim_create_user_command("DapPause",            'lua require"dap".pause()', {})
-            vim.api.nvim_create_user_command("DapClose",            'lua require"dap".close()', {})
-            vim.api.nvim_create_user_command("DapDisconnect",       'lua require"dap".disconnect()', {})
-            vim.api.nvim_create_user_command("DapRestart",          'lua require"dap".restart()', {})
-            vim.api.nvim_create_user_command("DapToggleRepl",       'lua require"dap".repl.toggle()', {})
-            vim.api.nvim_create_user_command("DapGetSession",       'lua require"dap".session()', {})
+            vim.api.nvim_create_user_command("DapRunToCursor", 'lua require("dap").run_to_cursor()', {})
+            vim.api.nvim_create_user_command("DapContinue", 'lua require"dap".continue()', {})
+            vim.api.nvim_create_user_command("DapStepInto", 'lua require"dap".step_into()', {})
+            vim.api.nvim_create_user_command("DapStepOver", 'lua require"dap".step_over()', {})
+            vim.api.nvim_create_user_command("DapStepOut", 'lua require"dap".step_out()', {})
+            vim.api.nvim_create_user_command("DapUp", 'lua require"dap".up()', {})
+            vim.api.nvim_create_user_command("DapDown", 'lua require"dap".down()', {})
+            vim.api.nvim_create_user_command("DapPause", 'lua require"dap".pause()', {})
+            vim.api.nvim_create_user_command("DapClose", 'lua require"dap".close()', {})
+            vim.api.nvim_create_user_command("DapDisconnect", 'lua require"dap".disconnect()', {})
+            vim.api.nvim_create_user_command("DapRestart", 'lua require"dap".restart()', {})
+            vim.api.nvim_create_user_command("DapToggleRepl", 'lua require"dap".repl.toggle()', {})
+            vim.api.nvim_create_user_command("DapGetSession", 'lua require"dap".session()', {})
             vim.api.nvim_create_user_command(
                 "DapUIClose",
                 'lua require"dap".close(); require"dap".disconnect(); require"dapui".close()',
@@ -831,8 +945,11 @@ return {
     -- -------------------------------------------------------------------------
     vim_dadbod_ui = {
         cmd = {
-            "DBUIToggle", "DBUIAddConnection", "DBUI",
-            "DBUIFindBuffer", "DBUIRenameBuffer",
+            "DBUIToggle",
+            "DBUIAddConnection",
+            "DBUI",
+            "DBUIFindBuffer",
+            "DBUIRenameBuffer",
         },
         keys = {
             { "<Leader>dd", "<cmd>DBUIToggle<cr>", desc = "Dadbod toggle" },
@@ -843,19 +960,29 @@ return {
             -- Nerd-font icon set for the DBUI tree nodes
             vim.g.db_ui_icons = {
                 expanded = {
-                    db = " 󰆼", buffers = " 󰧮", saved_queries = " 󰛮",
-                    schemas = " 󰯂", schema = " 󰙅", tables = " 󰓱", table = " 󰓫",
+                    db = " 󰆼",
+                    buffers = " 󰧮",
+                    saved_queries = " 󰛮",
+                    schemas = " 󰯂",
+                    schema = " 󰙅",
+                    tables = " 󰓱",
+                    table = " 󰓫",
                 },
                 collapsed = {
-                    db = " 󰆼", buffers = " 󰧮", saved_queries = " 󰛮",
-                    schemas = " 󰯂", schema = " 󰙅", tables = " 󰓱", table = " 󰓫",
+                    db = " 󰆼",
+                    buffers = " 󰧮",
+                    saved_queries = " 󰛮",
+                    schemas = " 󰯂",
+                    schema = " 󰙅",
+                    tables = " 󰓱",
+                    table = " 󰓫",
                 },
-                saved_queries  = " 󰛮",
-                new_query      = " 󰓰",
-                tables         = " 󰓫",
-                buffers        = " 󰧮",
+                saved_queries = " 󰛮",
+                new_query = " 󰓰",
+                tables = " 󰓫",
+                buffers = " 󰧮",
                 add_connection = "  󰆺",
-                connection_ok  = "",
+                connection_ok = "",
                 connection_error = "",
             }
             -- Do not auto-execute queries on buffer save
@@ -865,8 +992,8 @@ return {
             vim.g.db_ui_win_position = "left"
             vim.g.db_ui_winwidth = 35
             -- Additional buffer-level key maps for DBUI operations
-            vim.api.nvim_set_keymap("n", "<leader>db", ":DBUIFindBuffer<CR>",    { noremap = true, silent = true })
-            vim.api.nvim_set_keymap("n", "<leader>dr", ":DBUIRenameBuffer<CR>",  { noremap = true })
+            vim.api.nvim_set_keymap("n", "<leader>db", ":DBUIFindBuffer<CR>", { noremap = true, silent = true })
+            vim.api.nvim_set_keymap("n", "<leader>dr", ":DBUIRenameBuffer<CR>", { noremap = true })
             vim.api.nvim_set_keymap("n", "<leader>dl", ":DBUILastQueryInfo<CR>", { noremap = true, silent = true })
             vim.g.db_ui_auto_execute_table_helpers = 1
             -- Apply LVIM palette colours to DBUI connection status highlights
@@ -874,9 +1001,9 @@ return {
                 pattern = "dbui",
                 callback = function()
                     vim.schedule(function()
-                        vim.api.nvim_set_hl(0, "dbui_connection_ok",    { fg = _G.LVIM.colors.green })
+                        vim.api.nvim_set_hl(0, "dbui_connection_ok", { fg = _G.LVIM.colors.green })
                         vim.api.nvim_set_hl(0, "dbui_connection_error", { fg = _G.LVIM.colors.red })
-                        vim.api.nvim_set_hl(0, "dbui_saved_query",      { fg = _G.LVIM.colors.orange })
+                        vim.api.nvim_set_hl(0, "dbui_saved_query", { fg = _G.LVIM.colors.orange })
                     end)
                 end,
                 group = "LvimIDE",
@@ -890,9 +1017,13 @@ return {
     nvim_dbee = {
         cmd = { "Dbee" },
         keys = {
-            { "<Leader>do", "<cmd>Dbee open<cr>",  desc = "Dbee open" },
+            { "<Leader>do", "<cmd>Dbee open<cr>", desc = "Dbee open" },
             { "<Leader>dc", "<cmd>Dbee close<cr>", desc = "Dbee close" },
         },
+        opts = {},
+    },
+
+    lvim_dependencies = {
         opts = {},
     },
 
@@ -903,10 +1034,14 @@ return {
     package_info_nvim = {
         ---@return table  Empty opts (commands registered as side-effect)
         opts = function()
-            vim.api.nvim_create_user_command("PackageInfoToggle",        "lua require('package-info').toggle()", {})
-            vim.api.nvim_create_user_command("PackageInfoDelete",        "lua require('package-info').delete()", {})
-            vim.api.nvim_create_user_command("PackageInfoChangeVersion", "lua require('package-info').change_version()", {})
-            vim.api.nvim_create_user_command("PackageInfoInstall",       "lua require('package-info').install()", {})
+            vim.api.nvim_create_user_command("PackageInfoToggle", "lua require('package-info').toggle()", {})
+            vim.api.nvim_create_user_command("PackageInfoDelete", "lua require('package-info').delete()", {})
+            vim.api.nvim_create_user_command(
+                "PackageInfoChangeVersion",
+                "lua require('package-info').change_version()",
+                {}
+            )
+            vim.api.nvim_create_user_command("PackageInfoInstall", "lua require('package-info').install()", {})
             return {}
         end,
     },
@@ -924,16 +1059,40 @@ return {
             end
 
             -- Register user commands for common crate management actions
-            vim.api.nvim_create_user_command("CratesUpdate",       crates.update,       { desc = "Update crate dependencies" })
-            vim.api.nvim_create_user_command("CratesReload",       crates.reload,       { desc = "Reload crates cache" })
-            vim.api.nvim_create_user_command("CratesHide",         crates.hide,         { desc = "Hide crates UI" })
-            vim.api.nvim_create_user_command("CratesToggle",       crates.toggle,       { desc = "Toggle crates UI" })
-            vim.api.nvim_create_user_command("CratesUpdateCrate",  crates.update_crate, { desc = "Update a single crate" })
-            vim.api.nvim_create_user_command("CratesUpdateCrates", crates.update_crates, { desc = "Update selected crates" })
-            vim.api.nvim_create_user_command("CratesUpdateAllCrates", crates.update_all_crates, { desc = "Update all crates" })
-            vim.api.nvim_create_user_command("CratesUpgradeCrate",    crates.upgrade_crate,     { desc = "Upgrade a single crate" })
-            vim.api.nvim_create_user_command("CratesUpgradeCrates",   crates.upgrade_crates,    { desc = "Upgrade selected crates" })
-            vim.api.nvim_create_user_command("CratesUpgradeAllCrates", crates.upgrade_all_crates, { desc = "Upgrade all crates" })
+            vim.api.nvim_create_user_command("CratesUpdate", crates.update, { desc = "Update crate dependencies" })
+            vim.api.nvim_create_user_command("CratesReload", crates.reload, { desc = "Reload crates cache" })
+            vim.api.nvim_create_user_command("CratesHide", crates.hide, { desc = "Hide crates UI" })
+            vim.api.nvim_create_user_command("CratesToggle", crates.toggle, { desc = "Toggle crates UI" })
+            vim.api.nvim_create_user_command(
+                "CratesUpdateCrate",
+                crates.update_crate,
+                { desc = "Update a single crate" }
+            )
+            vim.api.nvim_create_user_command(
+                "CratesUpdateCrates",
+                crates.update_crates,
+                { desc = "Update selected crates" }
+            )
+            vim.api.nvim_create_user_command(
+                "CratesUpdateAllCrates",
+                crates.update_all_crates,
+                { desc = "Update all crates" }
+            )
+            vim.api.nvim_create_user_command(
+                "CratesUpgradeCrate",
+                crates.upgrade_crate,
+                { desc = "Upgrade a single crate" }
+            )
+            vim.api.nvim_create_user_command(
+                "CratesUpgradeCrates",
+                crates.upgrade_crates,
+                { desc = "Upgrade selected crates" }
+            )
+            vim.api.nvim_create_user_command(
+                "CratesUpgradeAllCrates",
+                crates.upgrade_all_crates,
+                { desc = "Upgrade all crates" }
+            )
             -- Popup commands show the popup and immediately move focus to it
             vim.api.nvim_create_user_command("CratesShowPopup", function()
                 crates.show_popup()
@@ -947,15 +1106,19 @@ return {
                 crates.show_features_popup()
                 crates.focus_popup()
             end, { desc = "Show and focus features popup" })
-            vim.api.nvim_create_user_command("CratesFocusPopup", crates.focus_popup, { desc = "Focus the active popup" })
-            vim.api.nvim_create_user_command("CratesHidePopup",  crates.hide_popup,  { desc = "Hide the active popup" })
+            vim.api.nvim_create_user_command(
+                "CratesFocusPopup",
+                crates.focus_popup,
+                { desc = "Focus the active popup" }
+            )
+            vim.api.nvim_create_user_command("CratesHidePopup", crates.hide_popup, { desc = "Hide the active popup" })
 
             return {
                 lsp = {
                     enabled = true,
-                    ---@param client table   LSP client object
-                    ---@param bufnr  integer Buffer number
-                    on_attach = function(client, bufnr)
+                    ---@param _client table   LSP client object
+                    ---@param _bufnr  integer Buffer number
+                    on_attach = function(_client, _bufnr)
                         -- the same on_attach function as for your other language servers
                         -- can be ommited if you're using the `LspAttach` autocmd
                     end,
@@ -965,9 +1128,9 @@ return {
                 },
                 completion = {
                     crates = {
-                        enabled = true,     -- Disabled by default
-                        max_results = 8,    -- The maximum number of search results to display
-                        min_chars = 3,      -- The minimum number of charaters to type before completions begin appearing
+                        enabled = true, -- Disabled by default
+                        max_results = 8, -- The maximum number of search results to display
+                        min_chars = 3, -- The minimum number of charaters to type before completions begin appearing
                     },
                 },
             }
@@ -986,20 +1149,20 @@ return {
                 group = vim.api.nvim_create_augroup("pubspec_keymaps", { clear = true }),
                 pattern = "pubspec.yaml",
                 callback = function()
-                    local opts_buffer     = { buffer = 0, silent = true, desc = "Pubspec: Add Package" }
+                    local opts_buffer = { buffer = 0, silent = true, desc = "Pubspec: Add Package" }
                     local opts_buffer_dev = { buffer = 0, silent = true, desc = "Pubspec: Add Dev Package" }
                     local opts_buffer_pick = { buffer = 0, silent = true, desc = "Pubspec: Pick Version" }
-                    vim.keymap.set("n", "<leader>pa", "<cmd>PubspecAssistAddPackage<cr>",    opts_buffer)
+                    vim.keymap.set("n", "<leader>pa", "<cmd>PubspecAssistAddPackage<cr>", opts_buffer)
                     vim.keymap.set("n", "<leader>pd", "<cmd>PubspecAssistAddDevPackage<cr>", opts_buffer_dev)
-                    vim.keymap.set("n", "<leader>pv", "<cmd>PubspecAssistPickVersion<cr>",   opts_buffer_pick)
+                    vim.keymap.set("n", "<leader>pv", "<cmd>PubspecAssistPickVersion<cr>", opts_buffer_pick)
                 end,
             })
             return {
                 -- Map dependency freshness states to LVIM highlight groups
                 highlights = {
                     up_to_date = "PubspecDependencyUpToDate",
-                    outdated    = "PubspecDependencyOutdated",
-                    unknown     = "PubspecDependencyUnknown",
+                    outdated = "PubspecDependencyOutdated",
+                    unknown = "PubspecDependencyUnknown",
                 },
             }
         end,
@@ -1032,16 +1195,16 @@ return {
         ---@return table  markview options (preview + per-format configs)
         opts = function()
             -- Load per-format rendering tables from sibling config modules
-            local markdown        = require("modules.base.configs.languages.markview.markdown")
+            local markdown = require("modules.base.configs.languages.markview.markdown")
             local markdown_inline = require("modules.base.configs.languages.markview.markdown_inline")
-            local html            = require("modules.base.configs.languages.markview.html")
-            local yaml            = require("modules.base.configs.languages.markview.yaml")
-            local typst           = require("modules.base.configs.languages.markview.typst")
+            local html = require("modules.base.configs.languages.markview.html")
+            local yaml = require("modules.base.configs.languages.markview.yaml")
+            local typst = require("modules.base.configs.languages.markview.typst")
 
             -- Set up the split-window Markdown editor extra
             require("markview.extras.editor").setup({
-                width    = { 10, 0.75 },
-                height   = { 3, 0.75 },
+                width = { 10, 0.75 },
+                height = { 3, 0.75 },
                 debounce = 50,
             })
             -- Enable the interactive checkbox extra
@@ -1052,12 +1215,12 @@ return {
             end, { noremap = true, silent = true, desc = "Checkbox choice" })
 
             return {
-                preview         = { enable = true },
-                markdown        = markdown,
+                preview = { enable = true },
+                markdown = markdown,
                 markdown_inline = markdown_inline,
-                html            = html,
-                yaml            = yaml,
-                typst           = typst,
+                html = html,
+                yaml = yaml,
+                typst = typst,
             }
         end,
     },

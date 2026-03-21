@@ -6,11 +6,7 @@
 
 ---@module "modules.base.configs.editor.control_center.lsp"
 
-local data = require("lvim-control-center.persistence.data")
 local icons = require("configs.base.ui.icons")
-local setup_diagnostics = require("languages.utils.setup_diagnostics")
-local fidget = require("fidget")
-local code_lens = require("languages.utils.code_lens")
 
 ---@type table  Control Center settings group descriptor for LSP options
 return {
@@ -26,20 +22,18 @@ return {
             label = "Auto format",
             type = "bool",
             default = true,
-            ---@return boolean  Whether auto-format on save is active (falls back to true when unset)
+            ---@return boolean
             get = function()
-                if _G.LVIM.settings and _G.LVIM.settings["autoformat"] ~= nil then
-                    return _G.LVIM.settings["autoformat"]
-                else
-                    return true
-                end
+                local v = require("lvim-lsp.state").config.features.auto_format
+                if type(v) == "function" then return v() end
+                return v == true
             end,
-            ---@param val     boolean  New auto-format state
-            ---@param on_init boolean  True during startup; skip persistence
+            ---@param val     boolean
+            ---@param on_init boolean  True during startup; globals already loaded, skip
             set = function(val, on_init)
-                _G.LVIM.settings["autoformat"] = val
                 if not on_init then
-                    data.save("autoformat", val)
+                    require("lvim-lsp.state").config.features.auto_format = val
+                    require("lvim-lsp.core.globals").save({ auto_format = val })
                 end
             end,
         },
@@ -51,27 +45,24 @@ return {
             label = "Inlay hint",
             type = "bool",
             default = true,
-            ---@return boolean  Whether inlay hints are enabled (falls back to true when unset)
+            ---@return boolean
             get = function()
-                if _G.LVIM.settings and _G.LVIM.settings["inlayhint"] ~= nil then
-                    return _G.LVIM.settings["inlayhint"]
-                else
-                    return true
-                end
+                local v = require("lvim-lsp.state").config.features.inlay_hints
+                if type(v) == "function" then return v() end
+                return v == true
             end,
-            ---@param val     boolean  New inlay-hint state
-            ---@param on_init boolean  True during startup; skip per-buffer toggle
+            ---@param val     boolean
+            ---@param on_init boolean  True during startup; globals already loaded, skip
             set = function(val, on_init)
-                _G.LVIM.settings["inlayhint"] = val
                 if not on_init then
-                    -- Apply the new state to every currently loaded buffer that supports inlay hints.
-                    local buffers = vim.api.nvim_list_bufs()
-                    for _, bufnr in ipairs(buffers) do
-                        if vim.lsp.inlay_hint ~= nil then
-                            vim.lsp.inlay_hint.enable(val, { bufnr })
+                    require("lvim-lsp.state").config.features.inlay_hints = val
+                    -- Apply immediately to already-attached buffers (LspAttach won't re-fire).
+                    if vim.lsp.inlay_hint then
+                        for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+                            pcall(vim.lsp.inlay_hint.enable, val, { bufnr = bufnr })
                         end
                     end
-                    data.save("inlayhint", val)
+                    require("lvim-lsp.core.globals").save({ inlay_hints = val })
                 end
             end,
         },
@@ -89,45 +80,35 @@ return {
             --   "none"           – all virtual diagnostics disabled
             options = { "text-and-lines", "text", "lines", "none" },
             default = "none",
-            ---@return string  Current virtual diagnostic mode (falls back to "none" when unset)
+            ---@return string
             get = function()
-                if _G.LVIM.settings and _G.LVIM.settings["virtualdiagnostic"] ~= nil then
-                    return _G.LVIM.settings["virtualdiagnostic"]
-                else
-                    return "none"
-                end
+                local diag = require("lvim-lsp.state").config.diagnostics
+                local vt = diag.virtual_text
+                local vl = diag.virtual_lines
+                local has_text = vt and vt ~= false
+                local has_lines = vl and vl ~= false
+                if has_text and has_lines then return "text-and-lines" end
+                if has_text then return "text" end
+                if has_lines then return "lines" end
+                return "none"
             end,
             ---@param val     string   One of "text-and-lines"|"text"|"lines"|"none"
-            ---@param on_init boolean  True during startup
+            ---@param on_init boolean  True during startup; globals already loaded, skip
             set = function(val, on_init)
-                _G.LVIM.settings["virtualdiagnostic"] = val
-                local config = vim.diagnostic.config
-                ---@type { text: boolean, lines: boolean }
-                local virtualdiagnostic
-                -- Translate the human-readable option into the boolean flags
-                -- expected by vim.diagnostic.config().
-                if val == "text-and-lines" then
-                    virtualdiagnostic = { text = true, lines = true }
-                elseif val == "text" then
-                    virtualdiagnostic = { text = true, lines = false }
-                elseif val == "lines" then
-                    virtualdiagnostic = { text = false, lines = true }
-                else
-                    virtualdiagnostic = { text = false, lines = false }
-                end
-                -- Guard against an unexpectedly empty table (defensive check).
-                local is_empty = not virtualdiagnostic or next(virtualdiagnostic) == nil
-                -- Use vim.schedule to avoid calling diagnostic.config() from inside a
-                -- fast-event callback, which is not allowed by the Neovim API.
-                vim.schedule(function()
-                    config({
-                        virtual_text = (not is_empty and virtualdiagnostic.text) and { prefix = icons.common.dot }
-                            or false,
-                        virtual_lines = not is_empty and virtualdiagnostic.lines or false,
-                    })
-                end)
                 if not on_init then
-                    data.save("virtualdiagnostic", val)
+                    local vt_cfg = (val == "text-and-lines" or val == "text")
+                        and { prefix = icons.common.dot } or false
+                    local vl_cfg = (val == "text-and-lines" or val == "lines") and true or false
+                    local lsp_state = require("lvim-lsp.state")
+                    lsp_state.config.diagnostics.virtual_text = vt_cfg
+                    lsp_state.config.diagnostics.virtual_lines = vl_cfg
+                    vim.schedule(function()
+                        vim.diagnostic.config({ virtual_text = vt_cfg, virtual_lines = vl_cfg })
+                    end)
+                    require("lvim-lsp.core.globals").save({
+                        virtual_text = vt_cfg and true or false,
+                        virtual_lines = vl_cfg and true or false,
+                    })
                 end
             end,
         },
@@ -137,43 +118,19 @@ return {
         {
             name = "lspprogress",
             label = "LSP progress",
-            type = "select",
-            -- Backends:
-            --   "fidget"  – use the fidget.nvim floating spinner
-            --   "notify"  – use vim.notify-based notifications
-            --   "none"    – suppress all LSP progress output
-            options = { "fidget", "notify", "none" },
-            default = "fidget",
-            ---@return string  Currently active LSP progress backend (falls back to "fidget" when unset)
+            type = "bool",
+            default = true,
+            ---@return boolean
             get = function()
-                if _G.LVIM.settings and _G.LVIM.settings["lspprogress"] ~= nil then
-                    return _G.LVIM.settings["lspprogress"]
-                else
-                    return "fidget"
-                end
+                return require("lvim-lsp.state").config.progress.enabled ~= false
             end,
-            ---@param val     string   One of "fidget"|"notify"|"none"
-            ---@param on_init boolean  True during startup; skip live backend switch
+            ---@param val     boolean
+            ---@param on_init boolean  True during startup; globals already loaded, skip
             set = function(val, on_init)
-                _G.LVIM.settings["lspprogress"] = val
                 if not on_init then
-                    if val == "notify" then
-                        -- Suppress fidget and hand off progress events to vim.notify.
-                        fidget.progress.suppress(true)
-                        fidget.notification.suppress(true)
-                        setup_diagnostics.enable_lsp_progress()
-                    elseif val == "fidget" then
-                        -- Re-enable fidget and disable the notify-based handler.
-                        fidget.progress.suppress(false)
-                        fidget.notification.suppress(false)
-                        setup_diagnostics.disable_lsp_progress()
-                    else
-                        -- "none": suppress fidget and disable the notify handler.
-                        fidget.progress.suppress(true)
-                        fidget.notification.suppress(true)
-                        setup_diagnostics.disable_lsp_progress()
-                    end
-                    data.save("lspprogress", val)
+                    require("lvim-lsp.state").config.progress.enabled = val
+                    require("lvim-lsp").suppress_progress(not val)
+                    require("lvim-lsp.core.globals").save({ progress = val })
                 end
             end,
         },
@@ -185,21 +142,17 @@ return {
             label = "Code lens",
             type = "bool",
             default = true,
-            ---@return boolean  Whether code-lens rendering is enabled (falls back to true when unset)
+            ---@return boolean
             get = function()
-                if _G.LVIM.settings and _G.LVIM.settings["codelens"] ~= nil then
-                    return _G.LVIM.settings["codelens"]
-                else
-                    return true
-                end
+                return require("lvim-lsp.state").config.code_lens.enabled == true
             end,
-            ---@param val     boolean  New code-lens state
-            ---@param on_init boolean  True during startup; skip live update
+            ---@param val     boolean
+            ---@param on_init boolean  True during startup; globals already loaded, skip
             set = function(val, on_init)
-                _G.LVIM.settings["codelens"] = val
                 if not on_init then
-                    code_lens.set_codelens_enabled(val)
-                    data.save("codelens", val)
+                    require("lvim-lsp.state").config.code_lens.enabled = val
+                    require("lvim-lsp.core.features").setup_code_lens()
+                    require("lvim-lsp.core.globals").save({ code_lens = val })
                 end
             end,
         },
@@ -212,7 +165,7 @@ return {
             type = "action",
             ---Opens the LVIM LSP info panel for the current buffer.
             run = function()
-                vim.cmd("LvimLspInfo")
+                vim.cmd("LvimLsp info")
             end,
         },
         -- -----------------------------------------------------------------
@@ -224,7 +177,7 @@ return {
             type = "action",
             ---Restarts all LSP clients attached to the current buffer.
             run = function()
-                vim.cmd("LvimLspRestart")
+                vim.cmd("LvimLsp restart")
             end,
         },
         -- -----------------------------------------------------------------
@@ -236,7 +189,7 @@ return {
             type = "action",
             ---Opens a picker to enable/disable LSP servers for the current workspace.
             run = function()
-                vim.cmd("LvimLspToggleServers")
+                vim.cmd("LvimLsp toggle_servers")
             end,
         },
         -- -----------------------------------------------------------------
@@ -249,7 +202,7 @@ return {
             ---Opens a picker to enable/disable LSP servers for a specific buffer.
             ---@param origin_bufnr integer  Buffer handle passed by the control center
             run = function(origin_bufnr)
-                vim.cmd("LvimLspToggleServersForBuffer " .. origin_bufnr)
+                vim.cmd("LvimLsp toggle_servers_buffer " .. origin_bufnr)
             end,
         },
     },

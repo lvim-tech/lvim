@@ -10,7 +10,7 @@
 ---@module "modules.base.configs.ui.heirline.winbar"
 
 local icons = require("configs.base.ui.icons")
-local hl    = require("configs.base.ui.highlight")
+local hl = require("configs.base.ui.highlight")
 
 local M = {}
 
@@ -19,7 +19,7 @@ local M = {}
 ---@return table  Heirline winbar component ready for heirline.setup()
 M.get_winbar = function()
     local heirline_conditions = require("heirline.conditions")
-    local tabby_filename      = require("tabby.filename")
+    local tabby_filename = require("tabby.filename")
 
     local space = { provider = " " }
 
@@ -61,15 +61,15 @@ M.get_winbar = function()
             -- Highlight group for the filename text (red on bg_dark background)
             local hl_group_1 = "FileTextColor"
             vim.api.nvim_set_hl(0, hl_group_1, {
-                fg   = _G.LVIM.colors.red,
-                bg   = _G.LVIM.colors.bg_dark,
+                fg = _G.LVIM.colors.red,
+                bg = _G.LVIM.colors.bg_dark,
                 bold = true,
             })
 
-            local win_id   = vim.api.nvim_get_current_win()
+            local win_id = vim.api.nvim_get_current_win()
             -- tabby provides a unique short name for this window (e.g. "foo.lua" or
             -- "src/foo.lua" when the basename alone would be ambiguous)
-            local filename  = tabby_filename.unique(win_id)
+            local filename = tabby_filename.unique(win_id)
             local extension = vim.fn.expand("%:e")
 
             if not isempty(filename) then
@@ -139,31 +139,31 @@ M.get_winbar = function()
             ---@return integer   col    0-based column number
             ---@return integer   winnr  Window number
             dec = function(c)
-                local line  = bit.rshift(c, 16)
-                local col   = bit.band(bit.rshift(c, 6), 1023)  -- 10-bit mask
-                local winnr = bit.band(c, 63)                   -- 6-bit mask
+                local line = bit.rshift(c, 16)
+                local col = bit.band(bit.rshift(c, 6), 1023) -- 10-bit mask
+                local winnr = bit.band(c, 63) -- 6-bit mask
                 return line, col, winnr
             end,
         },
         ---@param self table  Rebuilds self.child from the current navic symbol data
         init = function(self)
-            local data     = require("nvim-navic").get_data() or {}
+            local data = require("nvim-navic").get_data() or {}
             local children = {}
             for i, d in ipairs(data) do
                 -- Pack the scope start position so the click callback can jump there
-                local pos   = self.enc(d.scope.start.line, d.scope.start.character, self.winnr)
+                local pos = self.enc(d.scope.start.line, d.scope.start.character, self.winnr)
                 local child = {
                     -- Symbol type icon, coloured by the type_hl mapping
                     {
                         provider = d.icon,
-                        hl       = self.type_hl[d.type],
+                        hl = self.type_hl[d.type],
                     },
                     -- Symbol name: escape "%" to avoid statusline format codes,
                     -- and strip leading " -> " arrow prefixes from some LSP servers.
                     {
                         provider = d.name:gsub("%%", "%%%%"):gsub("%s*->%s*", ""),
                         on_click = {
-                            minwid   = pos,
+                            minwid = pos,
                             ---@param _      any     Unused self reference
                             ---@param minwid integer Packed (line, col, winnr) from enc()
                             callback = function(_, minwid)
@@ -191,7 +191,7 @@ M.get_winbar = function()
         provider = function(self)
             return self.child:eval()
         end,
-        hl     = { bg = _G.LVIM.colors.bg_dark, fg = _G.LVIM.colors.blue, bold = true },
+        hl = { bg = _G.LVIM.colors.bg_dark, fg = _G.LVIM.colors.blue, bold = true },
         -- Update the breadcrumb trail on every cursor movement
         update = "CursorMoved",
     }

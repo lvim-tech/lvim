@@ -5,8 +5,6 @@
 ---@module "modules.base.configs.dependencies"
 ---@diagnostic disable: undefined-field
 
-local icons = require("configs.base.ui.icons")
-
 return {
     -- -------------------------------------------------------------------------
     -- Colorscheme: lvim-colorscheme
@@ -16,7 +14,9 @@ return {
     lvim_colorscheme = {
         ---@return table  Options table forwarded to lvim-colorscheme.setup()
         opts = function()
-            vim.cmd("colorscheme " .. _G.LVIM.theme)
+            if not pcall(vim.cmd, "colorscheme " .. _G.LVIM.theme) then
+                vim.cmd("colorscheme lvim-everforest-soft")
+            end
             return {
                 cache = false,
                 transparent = false,
@@ -60,7 +60,88 @@ return {
                     }
                 end,
             })
-            vim.cmd("colorscheme " .. _G.LVIM.theme)
+            if not pcall(vim.cmd, "colorscheme " .. _G.LVIM.theme) then
+                vim.cmd("colorscheme lvim-everforest-soft")
+            end
+        end,
+    },
+
+    lvim_utils = {
+        config = function()
+            require("lvim-utils.gx").map_default()
+            vim.api.nvim_create_user_command("Quit", function()
+                require("lvim-utils.quit").open()
+            end, {})
+            require("lvim-utils").setup({
+                gx = {},
+                cursor = { ft = { "lvim-utils-ui" } },
+                notify = {
+                    -- Intercept all Vim messages (:echo, errors, warnings) and
+                    -- route them through lvim-utils.notify instead of ui.nvim.
+                    ext_messages = true,
+                    ext_kinds = {
+                        [""] = "toast",
+                    },
+                },
+            })
+
+            local ui = require("lvim-utils.ui")
+            local ui_auto = ui.new({ width = false })
+
+            local function clean_title(prompt, default_prompt)
+                local t = (prompt and prompt:gsub("\n", "")) or default_prompt
+                if t:sub(-1) == ":" then
+                    t = " " .. t:sub(1, -2) .. " "
+                end
+                return t
+            end
+
+            ---@diagnostic disable-next-line: duplicate-set-field
+            vim.ui.input = function(opts, on_confirm)
+                assert(type(on_confirm) == "function", "missing on_confirm function")
+                local title = clean_title(opts.prompt, " Input ")
+                local default = opts.default and tostring(opts.default):gsub("\n", "") or ""
+                local width = math.max(40, #title + 40, #default + 40)
+                ui.input({
+                    title = title,
+                    placeholder = default,
+                    position = "cursor",
+                    width = width,
+                    callback = function(confirmed, value)
+                        on_confirm(confirmed and value or nil)
+                    end,
+                })
+            end
+
+            vim.ui.select = function(items, opts, on_choice)
+                assert(type(on_choice) == "function", "missing on_choice function")
+                local format_item = opts.format_item or tostring
+                local display = {}
+                for _, item in ipairs(items) do
+                    table.insert(display, format_item(item))
+                end
+                local is_code_action = opts.prompt and opts.prompt:find("[Cc]ode [Aa]ction")
+                local sel = is_code_action and ui_auto or ui
+                local icon = is_code_action and require("lvim-utils.ui.rows").icons().action or nil
+                local display_items = {}
+                for _, label in ipairs(display) do
+                    table.insert(display_items, icon and { label = label, icon = icon } or label)
+                end
+                sel.select({
+                    title = clean_title(opts.prompt, " Select "),
+                    items = display_items,
+                    position = "cursor",
+                    max_width = vim.api.nvim_win_get_width(0) - 4,
+                    max_items = vim.api.nvim_win_get_height(0),
+                    callback = function(confirmed, index)
+                        if confirmed and index then
+                            on_choice(items[index], index)
+                        else
+                            on_choice(nil, nil)
+                        end
+                    end,
+                })
+            end
         end,
     },
 
@@ -72,249 +153,10 @@ return {
     },
 
     -- -------------------------------------------------------------------------
-    -- nui.nvim: replaces the built-in vim.ui.input and vim.ui.select with
-    -- styled floating popups consistent with the LVIM color scheme.
+    -- nui.nvim: kept as a dependency for other plugins that may require it.
     -- -------------------------------------------------------------------------
     nui_nvim = {
-        ---@return nil
-        config = function()
-            -- Strips a trailing colon from prompt text and wraps it with spaces,
-            -- so raw ":  Prompt:" becomes " Prompt ".
-            ---@param prompt         string|nil  Raw prompt string from the caller
-            ---@param default_prompt string      Fallback prompt when prompt is nil
-            ---@return string                    Cleaned prompt ready for the border title
-            local function get_prompt_text(prompt, default_prompt)
-                local prompt_text = prompt or default_prompt
-                if prompt_text:sub(-1) == ":" then
-                    prompt_text = " " .. prompt_text:sub(1, -2) .. " "
-                end
-                return prompt_text
-            end
-
-            local Input = require("nui.input")
-            local Menu = require("nui.menu")
-            local Text = require("nui.text")
-            local event = require("nui.utils.autocmd").event
-
-            -- -----------------------------------------------------------------
-            -- vim.ui.input override
-            -- -----------------------------------------------------------------
-            local function override_ui_input()
-                -- Calculates a popup width that fits both the prompt label and
-                -- the default value, with a minimum of 40 characters of padding.
-                ---@param default string|nil  Pre-filled input value
-                ---@param prompt  string|nil  Border title text
-                ---@return integer            Computed popup width in columns
-                local calculate_popup_width = function(default, prompt)
-                    local result = 40
-                    if prompt ~= nil then
-                        result = #prompt + 40
-                    end
-                    if default ~= nil then
-                        if #default + 40 > result then
-                            result = #default + 40
-                        end
-                    end
-                    return result
-                end
-
-                -- UIInput extends nui.Input so we can customise the border title
-                -- and emit nil to on_done when the user cancels (Esc / BufLeave).
-                ---@class UIInput
-                local UIInput = Input:extend("UIInput")
-
-                ---@param opts    table     vim.ui.input options ({prompt, default})
-                ---@param on_done fun(value: string|nil)  Callback invoked on confirm or cancel
-                function UIInput:init(opts, on_done)
-                    local border_top_text = get_prompt_text(string.gsub(opts.prompt, "\n", ""), "Input")
-                    local default_value
-                    if opts.default ~= nil then
-                        -- Strip newlines from the default value so it fits in a single line
-                        default_value = tostring(string.gsub(opts.default, "\n", ""))
-                    else
-                        default_value = ""
-                    end
-                    UIInput.super.init(self, {
-                        relative = "cursor",
-                        position = {
-                            row = 2,
-                            col = 1,
-                        },
-                        size = {
-                            width = calculate_popup_width(default_value, border_top_text),
-                        },
-                        border = {
-                            highlight = "FloatBorder:LvimInputBorder",
-                            -- All-space border style makes the popup edges invisible
-                            style = { " ", " ", " ", " ", " ", " ", " ", " " },
-                            text = {
-                                top = Text(border_top_text, "LvimInputBorder"),
-                                top_align = "center",
-                            },
-                        },
-                        win_options = {
-                            winhighlight = "Normal:LvimInputNormal",
-                        },
-                    }, {
-                        prompt = icons.common.separator .. " ",
-                        default_value = default_value,
-                        on_close = function()
-                            on_done(nil)
-                        end,
-                        on_submit = function(value)
-                            on_done(value)
-                        end,
-                    })
-                    -- Cancel on buffer leave (e.g. clicking outside the popup)
-                    self:on(event.BufLeave, function()
-                        on_done(nil)
-                    end, { once = true })
-                    -- Cancel on Esc in normal mode
-                    self:map("n", "<Esc>", function()
-                        on_done(nil)
-                    end, { noremap = true, nowait = true })
-                end
-
-                ---@type UIInput|nil  Tracks the currently open input popup; nil when idle
-                local input_ui
-
-                -- Replace vim.ui.input with the styled nui popup.
-                -- Guards against re-entrance: shows an error if another input is pending.
-                ---@diagnostic disable-next-line: duplicate-set-field
-                vim.ui.input = function(opts, on_confirm)
-                    assert(type(on_confirm) == "function", "missing on_confirm function")
-                    if input_ui then
-                        vim.notify("busy: another select is pending!", vim.log.levels.ERROR)
-                        return
-                    end
-                    input_ui = UIInput(opts, function(value)
-                        if input_ui then
-                            input_ui:unmount()
-                        end
-                        on_confirm(value)
-                        input_ui = nil
-                    end)
-                    input_ui:mount()
-                end
-            end
-
-            -- -----------------------------------------------------------------
-            -- vim.ui.select override
-            -- -----------------------------------------------------------------
-            local function override_ui_select()
-                local api = vim.api
-                local cmd = vim.cmd
-
-                -- Temporarily hides the cursor by setting its blend to 100 so
-                -- it doesn't visually interfere with the floating menu.
-                ---@param blend integer  Cursor blend value (0 = visible, 100 = hidden)
-                local function set_cursor_blend(blend)
-                    blend = tonumber(blend) or 0
-                    cmd("hi Cursor blend=" .. blend)
-                end
-
-                -- UISelect extends nui.Menu to style the selection popup and
-                -- handle code-action positioning (near cursor, not centred).
-                ---@class UISelect
-                local UISelect = Menu:extend("UISelect")
-
-                ---@param items    any[]     List of items to choose from
-                ---@param opts     table     vim.ui.select options ({prompt, kind, format_item})
-                ---@param on_done  fun(item: any|nil, index: integer|nil)  Callback
-                function UISelect:init(items, opts, on_done)
-                    local border_top_text = get_prompt_text(opts.prompt, "Select Item")
-                    local kind = opts.kind or "unknown"
-                    local format_item = opts.format_item
-                        or function(item)
-                            return tostring(item.__raw_item or item)
-                        end
-                    local popup_options = {
-                        relative = "editor",
-                        position = "50%",
-                        border = {
-                            highlight = "FloatBorder:LvimSelectBorder",
-                            style = { " ", " ", " ", " ", " ", " ", " ", " " },
-                            text = {
-                                top = Text(border_top_text, "LvimSelectTitle"),
-                                top_align = "center",
-                            },
-                        },
-                        win_options = {
-                            winhighlight = "Normal:LvimSelectNormal,Title:LvimSelectTitle",
-                        },
-                        zindex = 999,
-                    }
-                    -- Code-action selections open near the cursor instead of centred
-                    if kind == "codeaction" then
-                        popup_options.relative = "cursor"
-                        popup_options.position = { row = 2, col = 1 }
-                    end
-                    -- Clamp the menu dimensions to the visible editor area
-                    local max_width = popup_options.relative == "editor" and vim.o.columns - 4
-                        or api.nvim_win_get_width(0) - 4
-                    local max_height = popup_options.relative == "editor" and math.floor(vim.o.lines * 80 / 100)
-                        or api.nvim_win_get_height(0)
-                    -- A leading separator item creates visual padding at the top of the list
-                    local menu_items = {
-                        UISelect.separator("", { char = " " }),
-                    }
-                    for index, item in ipairs(items) do
-                        -- Wrap non-table items so we can store the original value
-                        if type(item) ~= "table" then
-                            item = { __raw_item = item }
-                        end
-                        item.index = index
-                        -- Truncate labels that would overflow the popup width
-                        local item_text = string.sub(format_item(item), 0, max_width)
-                        table.insert(menu_items, Menu.item(item_text, item, { hl_group = "LvimSelectNormal" }))
-                    end
-                    local menu_options = {
-                        min_width = api.nvim_strwidth(border_top_text),
-                        max_width = max_width,
-                        max_height = max_height,
-                        lines = menu_items,
-                        on_close = function()
-                            on_done(nil, nil)
-                        end,
-                        on_submit = function(item)
-                            -- Return the original unwrapped item when possible
-                            on_done(item.__raw_item or item, item.index)
-                        end,
-                    }
-                    UISelect.super.init(self, popup_options, menu_options)
-                    -- Cancel selection when focus leaves the popup buffer
-                    self:on(event.BufLeave, function()
-                        on_done(nil, nil)
-                        set_cursor_blend(0)
-                    end, { once = true })
-                end
-
-                ---@type UISelect|nil  Tracks the currently open select popup; nil when idle
-                local select_ui = nil
-
-                -- Replace vim.ui.select with the styled nui menu.
-                vim.ui.select = function(items, opts, on_choice)
-                    assert(type(on_choice) == "function", "missing on_choice function")
-                    if select_ui then
-                        vim.notify("busy: another select is pending!", vim.log.levels.ERROR)
-                        return
-                    end
-                    select_ui = UISelect(items, opts, function(item, index)
-                        if select_ui then
-                            select_ui:unmount()
-                        end
-                        on_choice(item, index)
-                        select_ui = nil
-                    end)
-                    select_ui:mount()
-                    -- Hide the cursor while the menu is open so it doesn't overlap items
-                    set_cursor_blend(100)
-                end
-            end
-
-            override_ui_input()
-            override_ui_select()
-        end,
+        opts = {},
     },
 }
 

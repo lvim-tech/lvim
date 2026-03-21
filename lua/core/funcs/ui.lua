@@ -117,11 +117,9 @@ M.command_output = function()
                     for i, v in ipairs(results) do
                         return_values[i] = vim.inspect(v)
                     end
-                    local return_output = #return_values > 0
-                            and "Return values:\n" .. table.concat(return_values, "\n")
+                    local return_output = #return_values > 0 and "Return values:\n" .. table.concat(return_values, "\n")
                         or ""
-                    local print_content = #print_output > 0
-                            and "Printed output:\n" .. table.concat(print_output, "\n")
+                    local print_content = #print_output > 0 and "Printed output:\n" .. table.concat(print_output, "\n")
                         or ""
                     if #return_output > 0 and #print_content > 0 then
                         output = print_content .. "\n\n" .. return_output
@@ -164,7 +162,10 @@ M.command_output = function()
         vim.wo[win].cursorline = true
         for _, key in ipairs({ "q", "<Esc>" }) do
             vim.api.nvim_buf_set_keymap(
-                buf, "n", key, "<cmd>close<CR>",
+                buf,
+                "n",
+                key,
+                "<cmd>close<CR>",
                 { noremap = true, silent = true, desc = "Close window" }
             )
         end

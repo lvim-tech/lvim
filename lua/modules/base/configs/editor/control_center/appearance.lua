@@ -34,7 +34,24 @@ return {
             label = "Colorscheme",
             type = "select",
             -- All bundled LVIM colorscheme variants
-            options = { "lvim-dark", "lvim-darker", "lvim-everforest", "lvim-gruvbox", "lvim-kanagawa", "lvim-light" },
+            options = {
+                "lvim-soft",
+                "lvim-dark",
+                "lvim-darker",
+                "lvim-light",
+                "lvim-kanagawa-soft",
+                "lvim-kanagawa-dark",
+                "lvim-kanagawa-darker",
+                "lvim-kanagawa-light",
+                "lvim-gruvbox-soft",
+                "lvim-gruvbox-dark",
+                "lvim-gruvbox-darker",
+                "lvim-gruvbox-light",
+                "lvim-everforest-soft",
+                "lvim-everforest-dark",
+                "lvim-everforest-darker",
+                "lvim-everforest-light",
+            },
             default = "lvim-darker",
             -- When true the control center closes before applying the change,
             -- because loading a new colorscheme can redraw the whole UI.
@@ -44,7 +61,7 @@ return {
                 if _G.LVIM.theme ~= nil then
                     return _G.LVIM.theme
                 else
-                    return "lvim-darker"
+                    return "lvim-everforest-soft"
                 end
             end,
             ---@param val string   New colorscheme name chosen by the user

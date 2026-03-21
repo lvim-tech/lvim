@@ -122,19 +122,19 @@ local vi_mode = {
         -- Background colour for the mode pill keyed by the first mode character
         ---@type table<string, string>
         mode_colors = {
-            n  = theme_colors.green_02,
-            i  = theme_colors.red_02,
-            v  = theme_colors.orange_02,
-            V  = theme_colors.orange_02,
+            n = theme_colors.green_02,
+            i = theme_colors.red_02,
+            v = theme_colors.orange_02,
+            V = theme_colors.orange_02,
             ["\22"] = theme_colors.orange_02,
-            c  = theme_colors.teal_01,
-            s  = theme_colors.teal_01,
-            S  = theme_colors.teal_01,
+            c = theme_colors.teal_01,
+            s = theme_colors.teal_01,
+            S = theme_colors.teal_01,
             ["\19"] = theme_colors.teal_01,
-            R  = theme_colors.cyan_01,
-            r  = theme_colors.cyan_01,
+            R = theme_colors.cyan_01,
+            r = theme_colors.cyan_01,
             ["!"] = theme_colors.cyan_01,
-            t  = theme_colors.blue_01,
+            t = theme_colors.blue_01,
         },
     },
     ---@param self table  Heirline component self reference
@@ -213,21 +213,21 @@ local file_icon = {
 -- ---------------------------------------------------------------------------
 
 return {
-    heirline            = heirline,
+    heirline = heirline,
     heirline_conditions = heirline_conditions,
-    heirline_utils      = heirline_utils,
+    heirline_utils = heirline_utils,
     ---@type table  Active theme palette (see LvimColors in core/types.lua)
-    theme_colors        = theme_colors,
+    theme_colors = theme_colors,
     ---@type string[]  Buffer types excluded from decorations
-    buftype             = buftype,
+    buftype = buftype,
     ---@type string[]  File types excluded from decorations
-    filetype            = filetype,
-    vi_mode             = vi_mode,
-    file_type           = file_type,
-    file_icon           = file_icon,
-    icons               = icons,
+    filetype = filetype,
+    vi_mode = vi_mode,
+    file_type = file_type,
+    file_icon = file_icon,
+    icons = icons,
     -- Flexible spacer that pushes content to the right of the statusline
-    align               = { provider = "%=" },
+    align = { provider = "%=" },
     -- Single-character horizontal padding
-    space               = { provider = " " },
+    space = { provider = " " },
 }
