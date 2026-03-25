@@ -81,6 +81,10 @@ return {
                     ext_messages = true,
                     ext_kinds = {
                         [""] = "toast",
+                        ["echomsg"] = "toast",
+                        ["echoerr"] = "toast",
+                        ["lua_print"] = "toast",
+                        ["return_prompt"] = "toast",
                     },
                 },
             })

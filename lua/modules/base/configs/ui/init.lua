@@ -404,6 +404,9 @@ return {
                 hl(0, "DiagnosticError", { fg = c.red })
                 hl(0, "DiagnosticHint", { fg = c.cyan })
             end
+            -- Reset ui.nvim so plugin/ui.lua's early default setup (wrap_notify=true) doesn't
+            -- keep vim.notify overridden after we re-attach with wrap_notify=false.
+            require("ui").detach()
             local utils = require("ui.utils")
             require("ui").setup({
                 cmdline = {
@@ -529,11 +532,17 @@ return {
             -- Re-apply highlights on every theme change via the lvim-colorscheme event.
             vim.api.nvim_create_autocmd("User", {
                 pattern = "LvimColorscheme",
-                callback = set_hl_groups,
+                callback = function()
+                    vim.schedule(function()
+                        set_hl_groups()
+                    end)
+                end,
             })
             -- Apply immediately if the colorscheme is already loaded.
             if require("lvim-colorscheme").colors then
-                set_hl_groups()
+                vim.schedule(function()
+                    set_hl_groups()
+                end)
             end
         end,
     },

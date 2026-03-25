@@ -272,6 +272,7 @@ local editor_config = require("modules.base.configs.editor")
 
 modules["lvim-tech/lvim-space"] = {
     commit = funcs.get_commit("lvim-space", plugins_snapshot),
+    dependencies = { "lvim-tech/lvim-utils" },
     opts = editor_config.lvim_space.opts,
 }
 
@@ -385,7 +386,6 @@ modules["ALameLlama/compiler.nvim"] = {
 
 modules["stevearc/overseer.nvim"] = {
     commit = funcs.get_commit("overseer.nvim", plugins_snapshot),
-    branch = "stevearc-rewrite",
     cmd = editor_config.overseer_nvim.cmd,
     keys = editor_config.overseer_nvim.keys,
     opts = editor_config.overseer_nvim.opts,
