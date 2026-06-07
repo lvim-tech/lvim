@@ -1,3 +1,6 @@
+-- Markview rendering preset for embedded HTML.
+-- Returns the markview config for HTML container/void elements (e.g. concealing
+-- <a>/<b>/<i> tags into styled virtual text). Consumed by the markview setup.
 return {
     enable = true,
     container_elements = {

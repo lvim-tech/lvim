@@ -1,3 +1,7 @@
+-- Markview rendering preset for the `markdown` filetype.
+-- Returns the markview config table that controls in-buffer rendering of
+-- block-quote callouts, headings, code blocks, lists, tables, etc. Consumed by
+-- the markview plugin spec (modules.base.configs.languages → markview setup).
 return {
     enable = true,
     block_quotes = {

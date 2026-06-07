@@ -1,3 +1,6 @@
+-- Markview rendering preset for the `typst` filetype.
+-- Returns the markview config controlling rendering of Typst code blocks,
+-- headings, lists, etc. Consumed by the markview plugin setup.
 return {
     enable = true,
     code_blocks = {

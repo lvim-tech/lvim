@@ -1,3 +1,10 @@
+-- Base plugin registry — the master plugin manifest.
+-- Builds and returns the `modules` table: every base plugin keyed by "owner/repo"
+-- with its lazy.nvim spec, and its pinned commit resolved from the active snapshot
+-- via funcs.get_commit(). Organised into sections (dependencies, completion,
+-- editor, languages/LSP, UI, version control). Merged with modules/user/init.lua
+-- in core.lazy before being passed to lazy.setup().
+
 local funcs = require("core.funcs")
 
 local modules = {}
@@ -76,11 +83,6 @@ modules["L3MON4D3/LuaSnip"] = {
 
 modules["niuiic/blink-cmp-rg.nvim"] = {
     commit = funcs.get_commit("blink-cmp-rg", plugins_snapshot),
-    lazy = true,
-}
-
-modules["moyiz/blink-emoji.nvim"] = {
-    commit = funcs.get_commit("blink-emoji", plugins_snapshot),
     lazy = true,
 }
 
@@ -217,6 +219,17 @@ modules["folke/which-key.nvim"] = {
 modules["prichrd/netrw.nvim"] = {
     commit = funcs.get_commit("netrw.nvim", plugins_snapshot),
     opts = ui_config.netrw_nvim.opts,
+    config = function(_, opts)
+        local orig = vim.api.nvim_create_autocmd
+        vim.api.nvim_create_autocmd = function(event, ...)
+            if event == "BufModifiedSet" then
+                event = "FileType"
+            end
+            return orig(event, ...)
+        end
+        require("netrw").setup(opts)
+        vim.api.nvim_create_autocmd = orig
+    end,
 }
 
 modules["nvim-neo-tree/neo-tree.nvim"] = {
@@ -460,6 +473,7 @@ local version_control_config = require("modules.base.configs.version_control")
 
 modules["wintermute-cell/gitignore.nvim"] = {
     commit = funcs.get_commit("gitignore.nvim", plugins_snapshot),
+    cmd = "Gitignore",
 }
 
 modules["NeogitOrg/neogit"] = {
@@ -677,10 +691,18 @@ modules["nvim-orgmode/orgmode"] = {
 
 local completion_config = require("modules.base.configs.completion")
 
+modules["Saghen/blink.lib"] = {
+    commit = funcs.get_commit("blink.lib", plugins_snapshot),
+    build = "cargo build --release",
+}
+
 modules["Saghen/blink.cmp"] = {
     commit = funcs.get_commit("blink.cmp", plugins_snapshot),
     event = "VeryLazy",
-    build = "cargo build --release",
+    build = function()
+        require("blink.cmp").build():wait(60000)
+    end,
+    dependencies = { "Saghen/blink.lib" },
     opts = completion_config.blink_cmp.opts,
 }
 

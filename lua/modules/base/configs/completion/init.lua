@@ -98,7 +98,7 @@ return {
 
                 sources = {
                     -- Default source priority order for normal buffers
-                    default = { "lsp", "path", "snippets", "buffer", "dadbod", "ripgrep", "emoji" },
+                    default = { "lsp", "path", "snippets", "buffer", "dadbod", "ripgrep" },
                     providers = {
                         -- LSP completions — highest score; falls back to buffer words
                         lsp = {
@@ -171,13 +171,6 @@ return {
                                     return context.line:sub(1, context.cursor[2]):match("[%w_-]+$") or ""
                                 end,
                             },
-                        },
-                        -- Emoji completions — inserts the actual emoji character
-                        emoji = {
-                            module = "blink-emoji",
-                            name = "Emoji",
-                            score_offset = 15,
-                            opts = { insert = true },
                         },
                         -- vim-dadbod-ui SQL completions for database buffers
                         dadbod = {
@@ -295,7 +288,6 @@ return {
 
                 -- Cmdline completion configuration (separate from insert-mode completion)
                 cmdline = {
-                    completion = { menu = { auto_show = true } },
                     keymap = {
                         ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
                         ["<C-e>"] = { "hide", "fallback" },
@@ -309,17 +301,6 @@ return {
                         ["<C-h>"] = { "scroll_documentation_down", "fallback" },
                         ["<C-l>"] = { "scroll_documentation_up", "fallback" },
                     },
-                    -- Use only buffer words for search (/?) commands;
-                    -- use cmdline + path sources for everything else (:commands).
-                    ---@return string[]  Active source names for the current cmdline type
-                    sources = function()
-                        local type = vim.fn.getcmdtype()
-                        if type == "/" or type == "?" then
-                            return { "buffer" }
-                        else
-                            return { "cmdline", "path" }
-                        end
-                    end,
                 },
             }
         end,

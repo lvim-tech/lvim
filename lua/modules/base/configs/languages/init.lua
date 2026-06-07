@@ -518,7 +518,7 @@ return {
                             configuration = true,
                             semanticTokens = { refreshSupport = true },
                             fileOperations = {
-                                dynamicRegistration = true,
+                                -- dynamicRegistration = true,
                                 didCreate = true,
                                 didRename = true,
                                 didDelete = true,

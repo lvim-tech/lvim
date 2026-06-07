@@ -1,3 +1,7 @@
+-- Filetype exclusion list for heirline.
+-- Filetypes of plugin/UI panels (trees, pickers, dap-ui, diffview, terminals, ...)
+-- that should use a minimal/empty statusline & winbar instead of the default one.
+-- Consumed by the heirline statusline/winbar conditions.
 return {
     "alpha",
     "ctrlspace",

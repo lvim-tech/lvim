@@ -1,3 +1,14 @@
+-- Custom fold-text renderers.
+-- Defines the global functions referenced by the `foldtext` option so collapsed
+-- folds keep their Tree-sitter syntax highlighting:
+--   parse_line(linenr)  local helper — re-highlights one line via the TS
+--                       "highlights" query, merging overlapping captures by range.
+--   _G.fold_text()      generic fold text: highlighted first + last line of the
+--                       fold with a "+N lines" counter rendered between them.
+--   _G.md_fold_text()   Markdown-aware variant: styles heading folds using
+--                       markview's heading spec; returns "" for non-heading folds.
+-- Wired up from configs.base.options (foldtext = "v:lua.fold_text()").
+
 local function parse_line(linenr)
     local bufnr = vim.api.nvim_get_current_buf()
     local line = vim.api.nvim_buf_get_lines(bufnr, linenr - 1, linenr, false)[1]

@@ -1,3 +1,7 @@
+-- Winbar symbol highlight map.
+-- Maps LSP/document symbol kinds (File, Class, Method, Variable, ...) to the
+-- Tree-sitter highlight group used to colour each entry in the breadcrumb winbar.
+-- Returned as a table and consumed by the heirline winbar component.
 return {
     winbar = {
         File = "Directory",

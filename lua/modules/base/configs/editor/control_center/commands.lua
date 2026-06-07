@@ -1,3 +1,10 @@
+-- Commands group for the LVIM Control Center.
+-- A list of one-shot actions exposed in the Control Center UI: open Lazy, run
+-- Lazy sync, open Mason, and dump highlight groups (:hi). Each entry is an
+-- "action" that runs a vim command. Returned as a Control Center group descriptor.
+
+---@module "modules.base.configs.editor.control_center.commands"
+
 local icons = require("configs.base.ui.icons")
 
 return {

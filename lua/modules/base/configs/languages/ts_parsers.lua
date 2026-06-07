@@ -1,3 +1,6 @@
+-- Tree-sitter parser install list.
+-- A flat array of parser names ensured/installed via nvim-treesitter. Consumed by
+-- the treesitter plugin spec to populate `ensure_installed`.
 return {
     "ada",
     "agda",

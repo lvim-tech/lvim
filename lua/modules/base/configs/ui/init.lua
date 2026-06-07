@@ -66,8 +66,8 @@ return {
                 end
             end
             patch_snacks_dashboard()
-            ---@type string  Version string prefixed with "v", e.g. "v8.1.0"
-            local ver = "v" .. (_G.LVIM.version or "v7.4.0")
+            ---@type string  Version string prefixed with "v", e.g. "v9.0.0"
+            local ver = "v" .. (_G.LVIM.version or "v9.0.0")
             local header_logo = require("modules.base.configs.ui.logo")
             -- Combine the ASCII art logo with the version string for the dashboard header.
             local header = header_logo.logo_1 .. ver
@@ -204,7 +204,7 @@ return {
                             enabled = package.loaded.lazy ~= nil,
                         },
                         { icon = "󰅢 ", key = "<leader>vm", desc = "Mason", action = ":Mason" },
-                        { icon = " ", key = "<C-c>e", desc = "Quit", action = ":Quit" },
+                        { icon = "󰐥 ", key = "<C-c>e", desc = "Quit", action = ":Quit" },
                         { pane = 2 },
                         function()
                             local v = vim.version()

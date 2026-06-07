@@ -1,3 +1,6 @@
+-- Markview rendering preset for YAML (front-matter / properties).
+-- Returns the markview config that styles YAML property keys by data type
+-- (text, number, date, list, ...). Consumed by the markview plugin setup.
 return {
     enable = true,
     properties = {

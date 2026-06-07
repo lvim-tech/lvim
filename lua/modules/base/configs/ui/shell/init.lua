@@ -1,3 +1,14 @@
+-- Floating-terminal launchers for external TUI tools.
+-- Wraps lvim-shell to open full-screen floating terminals for external programs.
+-- Exports (all take an optional `dir`):
+--   M.Neomutt     email client
+--   M.Yazi        file manager (returns the chosen file via /tmp/lvim-shell)
+--   M.LazyGit     git TUI
+--   M.LazyDocker  docker TUI
+-- Returns the M table; functions are bound to user commands/keymaps elsewhere.
+
+---@module "modules.base.configs.ui.shell"
+
 local lvim_shell = require("lvim-shell")
 local config = {
     ui = {

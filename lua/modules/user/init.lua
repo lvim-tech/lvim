@@ -1,311 +1,90 @@
--- ---@diagnostic disable: unused-local
--- local funcs = require("core.funcs")
---
--- local modules = {}
--- local plugins_snapshot = {}
---
--- local file_content = funcs.read_file(_G.global.lvim_path .. "/.snapshots/" .. _G.LVIM.snapshot)
--- if file_content ~= nil then
---     plugins_snapshot = file_content
--- end
---
--- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- -- DEPENDENCIES -------------------------------------------------
--- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
---
+local modules = {}
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- HELP ---------------------------------------------------------
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+-- Disable of default Module (Plug-in) (from lua/modules/base/init.lua)
+
+-- You can disable of any default Module (Plug-in)
+-- modules["folke/noice.nvim"] = false
+
+-- Rewrite of settings of default Module (Plug-in) (from lua/modules/base/init.lua)
+
+-- You can rewrite of settings of any of default Module (Plug-in)
+-- modules["folke/noice.nvim"] = {
+--     -- your code
+-- }
+
+-- Add new Module (Plug-in)
+
+-- You can add new Module (Plug-in)
+-- modules["name_of_your/plugin"] = {
+--     your code
+-- }
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- HELP ---------------------------------------------------------
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- Dependencies -------------------------------------------------
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 -- local dependencies_config = require("modules.user.configs.dependencies")
---
--- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- -- UI -----------------------------------------------------------
--- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
---
+
+-- modules["name_of_your/plugin"] = {
+--     config = dependencies_config.name_of_your_function
+-- }
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- UI -----------------------------------------------------------
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 -- local ui_config = require("modules.user.configs.ui")
---
--- -- modules["lvim-tech/lvim-lsp"] = {
--- --     dependencies = { "mason-org/mason.nvim" },
--- --     config = function()
--- --         vim.schedule(function()
--- --             local sd = require("modules.base.configs.languages.lsp")
--- --             local icons = require("configs.base.ui.icons")
--- --
--- --             -- Resolve virtual diagnostic mode from user settings
--- --             local vd = _G.LVIM.settings.virtualdiagnostic
--- --             local virtual_text = (vd == "text-and-lines" or vd == "text") and { prefix = icons.common.dot } or false
--- --             local virtual_lines = (vd == "text-and-lines" or vd == "lines") or false
--- --
--- --             require("lvim-lsp").setup({
--- --                 file_types = _G.LVIM.file_types,
--- --                 server_config_dirs = { "modules.base.configs.languages.lsp.servers" },
--- --
--- --                 diagnostics = {
--- --                     virtual_text = virtual_text,
--- --                     virtual_lines = virtual_lines,
--- --                     update_in_insert = false,
--- --                     underline = true,
--- --                     severity_sort = true,
--- --                     signs = {
--- --                         error = icons.diagnostics.error,
--- --                         warn = icons.diagnostics.warn,
--- --                         hint = icons.diagnostics.hint,
--- --                         info = icons.diagnostics.info,
--- --                     },
--- --                     show_line = sd.diagnostics.show_line_diagnostics,
--- --                     goto_next = sd.diagnostics.goto_next,
--- --                     goto_prev = sd.diagnostics.goto_prev,
--- --                 },
--- --
--- --                 code_lens = {
--- --                     enabled = _G.LVIM.settings.codelens == true,
--- --                 },
--- --
--- --                 features = {
--- --                     document_highlight = true,
--- --                     auto_format = function()
--- --                         return _G.LVIM.settings.autoformat == true
--- --                     end,
--- --                     inlay_hints = function()
--- --                         return _G.LVIM.settings.inlayhint == true
--- --                     end,
--- --                 },
--- --
--- --                 dap_local_fn = require("modules.base.configs.languages.lsp.dap").dap_local,
--- --
--- --                 on_attach = function(client, bufnr)
--- --                     sd.keymaps(client, bufnr)
--- --                 end,
--- --             })
--- --         end)
--- --     end,
--- -- }
--- -- modules["lvim-tech/lvim-dependencies"] = {
--- --     config = function()
--- --         require("lvim-dependencies").setup()
--- --     end,
--- -- }
--- -- modules["lvim-tech/lvim-utils"] = {
--- --     config = function()
--- --         require("lvim-utils").setup({
--- --             gx = {},
--- --             cursor = { ft = { "lvim-utils-ui" } },
--- --         })
--- --         require("lvim-utils.gx").map_default()
--- --     end,
--- -- }
---
--- modules["nvzone/showkeys"] = {
---     commit = funcs.get_commit("showkeys", plugins_snapshot),
---     cmd = "ShowkeysToggle",
---     config = ui_config.showkeys,
+
+-- modules["name_of_your/plugin"] = {
+--     config = ui_config.name_of_your_function
 -- }
---
--- modules["nvzone/typr"] = {
---     commit = funcs.get_commit("typr", plugins_snapshot),
---     cmd = { "Typr", "TyprStats" },
---     event = "VeryLazy",
---     dependencies = "nvzone/volt",
---     config = ui_config.typr,
--- }
---
--- -- modules["danilamihailov/beacon.nvim"] = {
--- --     opts = {
--- --         enabled = true, --- (boolean | fun():boolean) check if enabled
--- --         speed = 2, --- integer speed at wich animation goes
--- --         width = 40, --- integer width of the beacon window
--- --         winblend = 70, --- integer starting transparency of beacon window :h winblend
--- --         fps = 60, --- integer how smooth the animation going to be
--- --         min_jump = 3, --- integer what is considered a jump. Number of lines
--- --         cursor_events = { "CursorMoved" }, -- table<string> what events trigger check for cursor moves
--- --         window_events = { "WinEnter", "FocusGained" }, -- table<string> what events trigger cursor highlight
--- --         highlight = { bg = "white", ctermbg = 15 }, -- vim.api.keyset.highlight table passed to vim.api.nvim_set_hl
--- --     },
--- -- }
---
--- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- -- EDITOR -------------------------------------------------------
--- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
---
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- Editor -------------------------------------------------------
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 -- local editor_config = require("modules.user.configs.editor")
---
--- -- modules["jrop/tuis.nvim"] = {
--- --     config = function()
--- --         vim.keymap.set("n", "<leader>m", function()
--- --             require("tuis").choose()
--- --         end, { desc = "Choose Morph UI" })
--- --     end,
--- -- }
---
--- modules["wakatime/vim-wakatime"] = {
---     event = "BufRead",
+
+-- modules["name_of_your/plugin"] = {
+--     config = editor_config.name_of_your_function
 -- }
---
--- -- modules["yetone/avante.nvim"] = {
--- --     commit = funcs.get_commit("avante.nvim", plugins_snapshot),
--- --     build = "make",
--- --     event = "VeryLazy",
--- --     dependencies = {
--- --         "nvim-treesitter/nvim-treesitter",
--- --         "nvim-lua/plenary.nvim",
--- --         "MunifTanjim/nui.nvim",
--- --         "ibhagwan/fzf-lua",
--- --         "nvim-tree/nvim-web-devicons",
--- --         "zbirenbaum/copilot.lua",
--- --     },
--- --     config = editor_config.avante_nvim,
--- -- }
--- --
--- -- -- modules["nomad/nomad"] = {
--- -- --     commit = funcs.get_commit("nomad", plugins_snapshot),
--- -- --     -- priority = 10,
--- -- --     -- cmd = "Mad",
--- -- --     build = function()
--- -- --         local build = require("nomad.neovim.build")
--- -- --         build.builders.cargo():build(build.contexts.lazy())
--- -- --     end,
--- -- --     opts = {},
--- -- -- }
--- --
--- -- modules["obsidian-nvim/obsidian.nvim"] = {
--- --     commit = funcs.get_commit("obsidian.nvim", plugins_snapshot),
--- --     config = editor_config.obsidian_nvim,
--- -- }
--- --
--- -- -- modules["obsidian-nvim/calendar.nvim"] = {
--- -- --     commit = funcs.get_commit("cal.nvim", plugins_snapshot),
--- -- --     config = function()
--- -- --         -- require("calendar").setup()
--- -- --     end,
--- -- -- }
---
--- modules["mikesmithgh/kitty-scrollback.nvim"] = {
---     commit = funcs.get_commit("kitty-scrollback.nvim", plugins_snapshot),
---     lazy = true,
---     cmd = {
---         "KittyScrollbackGenerateKittens",
---         "KittyScrollbackCheckHealth",
---         "KittyScrollbackGenerateCommandLineEditing",
---     },
---     event = { "User KittyScrollbackLaunch" },
---     config = editor_config.kitty_scrollback_nvim,
--- }
---
--- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- -- VERSION CONTROL ----------------------------------------------
--- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
---
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- Version control ----------------------------------------------
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 -- local version_control_config = require("modules.user.configs.version_control")
---
--- -- modules["kevinhwang91/nvim-fundo"] = {
--- --     commit = funcs.get_commit("nvim-fundo", plugins_snapshot),
--- --     dependencies = {
--- --         "kevinhwang91/promise-async",
--- --     },
--- --     build = function()
--- --         require("fundo").install()
--- --     end,
--- --     config = function()
--- --         local fundo_status_ok, fundo = pcall(require, "fundo")
--- --         if not fundo_status_ok then
--- --             return
--- --         end
--- --         fundo.setup({
--- --             archives_dir = "/mnt/storage/biserstoilov/.fundo",
--- --         })
--- --     end,
--- -- }
---
--- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- -- LANGUAGES ----------------------------------------------------
--- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
---
+
+-- modules["name_of_your/plugin"] = {
+--     config = version_control_config.name_of_your_function
+-- }
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- Languages ----------------------------------------------------
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 -- local languages_config = require("modules.user.configs.languages")
---
--- modules["RaafatTurki/hex.nvim"] = {
---     config = function()
---         require("hex").setup()
---     end,
+
+-- modules["name_of_your/plugin"] = {
+--     config = languages_config.name_of_your_function
 -- }
---
--- modules["aaronik/treewalker.nvim"] = {
---     keys = {
---         {
---             "<C-j>j",
---             function()
---                 vim.cmd("Treewalker Down")
---             end,
---             desc = "Treewalker Down",
---         },
---         {
---             "<C-j>k",
---             function()
---                 vim.cmd("Treewalker Up")
---             end,
---             desc = "Treewalker Up",
---         },
---         {
---             "<C-j>h",
---             function()
---                 vim.cmd("Treewalker Left")
---             end,
---             desc = "Treewalker Left",
---         },
---         {
---             "<C-j>l",
---             function()
---                 vim.cmd("Treewalker Right")
---             end,
---             desc = "Treewalker Right",
---         },
---         {
---             "<C-j><C-j>",
---             function()
---                 vim.notify("Treewalker SwapDown")
---                 vim.cmd("Treewalker SwapDown")
---             end,
---             desc = "Treewalker SwapDown",
---         },
---         {
---             "<C-j><C-k>",
---             function()
---                 vim.cmd("Treewalker SwapUp")
---             end,
---             desc = "Treewalker SwapUp",
---         },
---         {
---             "<C-j><C-h>",
---             function()
---                 vim.cmd("Treewalker SwapLeft")
---             end,
---             desc = "Treewalker SwapLeft",
---         },
---         {
---             "<C-j><C-l>",
---             function()
---                 vim.cmd("Treewalker SwapRight")
---             end,
---             desc = "Treewalker SwapRight",
---         },
---     },
---     config = function()
---         require("treewalker").setup({})
---     end,
--- }
---
--- -- modules["nvimdev/lspsaga.nvim"] = {
--- --     config = function()
--- --         require("lspsaga").setup({})
--- --     end,
--- -- }
---
--- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- -- COMPLETION ---------------------------------------------------
--- -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
---
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- Completion ---------------------------------------------------
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 -- local completion_config = require("modules.user.configs.completion")
---
--- modules["XXiaoA/atone.nvim"] = {
---     config = function()
---         require("atone").setup()
---     end,
+
+-- modules["name_of_your/module"] = {
+--     config = completion_config.name_of_your_function
 -- }
---
--- return modules
+
+return modules

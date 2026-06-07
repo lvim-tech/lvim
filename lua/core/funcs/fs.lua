@@ -2,17 +2,16 @@
 ---@module "core.funcs.fs"
 local M = {}
 
--- Tests whether a file (or directory) exists by attempting to open it.
+-- Tests whether a path exists (file or directory) via libuv fs_stat.
 ---@param name string   Absolute path to test
----@return boolean|nil  True if the path is accessible, nil on I/O error
+---@return boolean       True if the path exists
 M.file_exists = function(name)
-    local f = io.open(name, "r")
-    return f ~= nil and io.close(f)
+    return (vim.uv or vim.loop).fs_stat(name) ~= nil
 end
 
--- Alias for file_exists — io.open works on directories too on Linux/macOS.
+-- Alias for file_exists — fs_stat resolves both files and directories.
 ---@param path string   Absolute path to test
----@return boolean|nil  True if the path exists, nil on I/O error
+---@return boolean       True if the path exists
 M.dir_exists = function(path)
     return M.file_exists(path)
 end
@@ -58,11 +57,12 @@ M.write_file = function(file, content)
     end
 end
 
--- Copies a file using the system `cp` command.
+-- Copies a file to a destination path via libuv (no shell, handles spaces safely).
 ---@param file string  Source path
 ---@param dest string  Destination path
 M.copy_file = function(file, dest)
-    os.execute("cp " .. file .. " " .. dest)
+    local uv = vim.uv or vim.loop
+    uv.fs_copyfile(file, dest)
 end
 
 -- Deletes a single file.
@@ -86,13 +86,13 @@ end
 -- Changes the global working directory (:cd) to a user-selected path.
 M.set_global_path = function()
     local path = M.change_path()
-    vim.api.nvim_command("silent :cd " .. path)
+    vim.api.nvim_command("silent :cd " .. vim.fn.fnameescape(path))
 end
 
 -- Changes the current window's local directory (:lcd) to a user-selected path.
 M.set_window_path = function()
     local path = M.change_path()
-    vim.api.nvim_command("silent :lcd " .. path)
+    vim.api.nvim_command("silent :lcd " .. vim.fn.fnameescape(path))
 end
 
 return M

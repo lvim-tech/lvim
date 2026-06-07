@@ -1,3 +1,7 @@
+-- LuaSnip snippets for all filetypes.
+-- Returns a list of snippets/autosnippets loaded by LuaSnip's Lua loader for the
+-- `all` (global) filetype. The local aliases below map to LuaSnip node builders.
+
 local ls = require("luasnip")
 
 -- s = snippet, f = function_node, t = text_node, i = insert_node, c = choice_node, sn = snippet_node

@@ -33,14 +33,23 @@ lazy_pack.load = function()
     local repos = {}
     local base_modules = require("modules.base")
     local user_modules = require("modules.user")
-    -- User spec wins on key conflicts — allows overriding or disabling base plugins
-    local modules = funcs.merge(base_modules, user_modules)
+    -- User spec wins on key conflicts — allows overriding or disabling base plugins.
+    -- base_modules is deep-copied so the cached require() table is not mutated.
+    local modules = funcs.merge(vim.deepcopy(base_modules), user_modules)
     for repo, conf in pairs(modules) do
         if conf ~= false then
             repos[#repos + 1] = vim.tbl_extend("force", { repo }, conf)
         end
     end
     require("lazy").setup(repos, {
+        -- Don't watch config files for changes (avoids periodic reload notifications).
+        change_detection = { enabled = false },
+        performance = {
+            rtp = {
+                -- Disable unused built-in plugins. netrw is intentionally kept — it is used.
+                disabled_plugins = { "gzip", "tarPlugin", "tohtml", "tutor", "zipPlugin" },
+            },
+        },
         install = {
             missing = true,
             -- Try the active theme first so startup doesn't flash the fallback color

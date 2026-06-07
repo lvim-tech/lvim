@@ -1,3 +1,20 @@
+-- New-project scaffolding group for the LVIM Control Center.
+-- Exposes actions that bootstrap new projects (frontend / backend / mobile / Go /
+-- Python) by running the matching CLI scaffolder (create-next-app, vite, django,
+-- go mod init, uv, ...) inside a floating terminal.
+--
+-- The local `run(command_template, opts)` helper drives all of them: it optionally
+-- prompts for a project name and target path, creates the directory, builds the
+-- final command, and launches it via jobstart in a floating terminal window that
+-- auto-closes on exit. `opts` flags:
+--   pass_name        append the prompted name as a CLI argument
+--   cwd_project_dir  run inside the created project directory
+--   create_dir       mkdir -p the project directory first
+--   module_init      special-case `go mod init` (prompts for a module path)
+-- Returns a Control Center group descriptor.
+
+---@module "modules.base.configs.editor.control_center.projects"
+
 local icons = require("configs.base.ui.icons")
 local picons = icons.projects
 

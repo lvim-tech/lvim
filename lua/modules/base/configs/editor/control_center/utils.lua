@@ -1,3 +1,14 @@
+-- Shared helpers for the LVIM Control Center groups.
+-- Exports:
+--   merge_lists(t1, t2)              concatenate two array tables into a new one.
+--   is_excluded(buf, extra_bt, extra_ft)
+--                                    true when a buffer should be skipped by UI
+--                                    features, matching its buftype/filetype
+--                                    against the base exclusion lists plus any
+--                                    extra buftypes/filetypes passed in.
+
+---@module "modules.base.configs.editor.control_center.utils"
+
 local M = {}
 
 local base_bt = {}

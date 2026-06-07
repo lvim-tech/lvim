@@ -1,3 +1,9 @@
+-- User editor-config overrides (entry point).
+-- Populate and return a `configs` table to disable (= false), rewrite, or add
+-- config functions relative to lua/configs/base/init.lua. Deep-merged over the
+-- base configs at startup, with user entries winning on key conflicts.
+-- Empty by default — see the HELP block below for the override patterns.
+
 local configs = {}
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

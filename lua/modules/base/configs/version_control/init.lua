@@ -1,3 +1,7 @@
+-- Version-control plugin configuration group.
+-- Returns a table of per-plugin specs (lazy.nvim opts/keys/cmd) for the git
+-- tooling stack: neogit, mini.diff, vgit, diffview.nvim, codediff.nvim and
+-- time-machine.nvim. Consumed by the version_control module loader.
 local icons = require("configs.base.ui.icons")
 
 return {

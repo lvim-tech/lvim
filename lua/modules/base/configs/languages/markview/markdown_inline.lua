@@ -1,3 +1,6 @@
+-- Markview rendering preset for inline Markdown (`markdown_inline`).
+-- Returns the markview config for inline elements: block references, links,
+-- inline code, emphasis, etc. Consumed by the markview plugin setup.
 return {
     enable = true,
     block_references = {
