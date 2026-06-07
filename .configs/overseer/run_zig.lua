@@ -1,3 +1,5 @@
+-- Overseer task template: run the current Zig file via `zig run`.
+-- Filetype-gated (zig); executes in the file's directory. Returns a task spec.
 return {
     name = "ZIG RUN",
     builder = function()

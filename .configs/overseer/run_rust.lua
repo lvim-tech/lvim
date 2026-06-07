@@ -1,3 +1,6 @@
+-- Overseer task template: run the current Rust file or Cargo project.
+-- Filetype-gated (rust); uses `cargo run` when a Cargo.toml is present, otherwise
+-- compiles the single file with `rustc` to ./out and executes it.
 return {
     name = "RUST RUN",
     builder = function()

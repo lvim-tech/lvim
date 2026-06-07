@@ -1,3 +1,6 @@
+-- Overseer task template: run targets from the current directory's Makefile.
+-- Filetype-gated (make/makefile). Exposes a `target` enum parameter populated by
+-- parsing the Makefile; an empty selection runs every target sequentially.
 local function get_make_targets()
     local makefile = vim.fn.expand("%:p:h") .. "/Makefile"
     if vim.fn.filereadable(makefile) == 0 then

@@ -1,3 +1,6 @@
+-- Overseer task template: compile and run the current C++ file.
+-- Filetype-gated (cpp); builds with `g++` to a sibling binary (basename without
+-- extension) and executes it. Returns a single Overseer task spec.
 return {
     name = "CPP RUN",
     builder = function()

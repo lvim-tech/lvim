@@ -1,3 +1,5 @@
+-- Overseer task template: run the current PHP file via the `php` CLI.
+-- Filetype-gated (php); executes in the file's directory. Returns a task spec.
 return {
     name = "PHP RUN",
     builder = function()

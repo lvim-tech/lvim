@@ -1,3 +1,5 @@
+-- Overseer task template: run the current JavaScript file with Node.js.
+-- Filetype-gated (javascript); executes `node <file>` in the file's directory.
 return {
     name = "JS RUN",
     builder = function()

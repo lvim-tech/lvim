@@ -1,3 +1,6 @@
+-- Overseer task template: convert the current Markdown file to PDF and preview it.
+-- Filetype-gated (markdown); shells out to `pandoc` to build a sibling .pdf,
+-- then opens it in the `zathura` viewer. Returns a single Overseer task spec.
 return {
     name = "Markdown to PDF",
     builder = function()
