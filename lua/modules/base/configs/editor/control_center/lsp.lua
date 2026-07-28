@@ -24,16 +24,18 @@ return {
             default = true,
             ---@return boolean
             get = function()
-                local v = require("lvim-lsp.state").config.features.auto_format
-                if type(v) == "function" then return v() end
+                local v = require("lvim-ls.state").config.features.auto_format
+                if type(v) == "function" then
+                    return v()
+                end
                 return v == true
             end,
             ---@param val     boolean
             ---@param on_init boolean  True during startup; globals already loaded, skip
             set = function(val, on_init)
                 if not on_init then
-                    require("lvim-lsp.state").config.features.auto_format = val
-                    require("lvim-lsp.core.globals").save({ auto_format = val })
+                    require("lvim-ls.state").config.features.auto_format = val
+                    require("lvim-ls.core.globals").save({ auto_format = val })
                 end
             end,
         },
@@ -47,22 +49,24 @@ return {
             default = true,
             ---@return boolean
             get = function()
-                local v = require("lvim-lsp.state").config.features.inlay_hints
-                if type(v) == "function" then return v() end
+                local v = require("lvim-ls.state").config.features.inlay_hints
+                if type(v) == "function" then
+                    return v()
+                end
                 return v == true
             end,
             ---@param val     boolean
             ---@param on_init boolean  True during startup; globals already loaded, skip
             set = function(val, on_init)
                 if not on_init then
-                    require("lvim-lsp.state").config.features.inlay_hints = val
+                    require("lvim-ls.state").config.features.inlay_hints = val
                     -- Apply immediately to already-attached buffers (LspAttach won't re-fire).
                     if vim.lsp.inlay_hint then
                         for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
                             pcall(vim.lsp.inlay_hint.enable, val, { bufnr = bufnr })
                         end
                     end
-                    require("lvim-lsp.core.globals").save({ inlay_hints = val })
+                    require("lvim-ls.core.globals").save({ inlay_hints = val })
                 end
             end,
         },
@@ -82,30 +86,35 @@ return {
             default = "none",
             ---@return string
             get = function()
-                local diag = require("lvim-lsp.state").config.diagnostics
+                local diag = require("lvim-ls.state").config.diagnostics
                 local vt = diag.virtual_text
                 local vl = diag.virtual_lines
                 local has_text = vt and vt ~= false
                 local has_lines = vl and vl ~= false
-                if has_text and has_lines then return "text-and-lines" end
-                if has_text then return "text" end
-                if has_lines then return "lines" end
+                if has_text and has_lines then
+                    return "text-and-lines"
+                end
+                if has_text then
+                    return "text"
+                end
+                if has_lines then
+                    return "lines"
+                end
                 return "none"
             end,
             ---@param val     string   One of "text-and-lines"|"text"|"lines"|"none"
             ---@param on_init boolean  True during startup; globals already loaded, skip
             set = function(val, on_init)
                 if not on_init then
-                    local vt_cfg = (val == "text-and-lines" or val == "text")
-                        and { prefix = icons.common.dot } or false
+                    local vt_cfg = (val == "text-and-lines" or val == "text") and { prefix = icons.common.dot } or false
                     local vl_cfg = (val == "text-and-lines" or val == "lines") and true or false
-                    local lsp_state = require("lvim-lsp.state")
+                    local lsp_state = require("lvim-ls.state")
                     lsp_state.config.diagnostics.virtual_text = vt_cfg
                     lsp_state.config.diagnostics.virtual_lines = vl_cfg
                     vim.schedule(function()
                         vim.diagnostic.config({ virtual_text = vt_cfg, virtual_lines = vl_cfg })
                     end)
-                    require("lvim-lsp.core.globals").save({
+                    require("lvim-ls.core.globals").save({
                         virtual_text = vt_cfg and true or false,
                         virtual_lines = vl_cfg and true or false,
                     })
@@ -122,15 +131,15 @@ return {
             default = true,
             ---@return boolean
             get = function()
-                return require("lvim-lsp.state").config.progress.enabled ~= false
+                return require("lvim-ls.state").config.progress.enabled ~= false
             end,
             ---@param val     boolean
             ---@param on_init boolean  True during startup; globals already loaded, skip
             set = function(val, on_init)
                 if not on_init then
-                    require("lvim-lsp.state").config.progress.enabled = val
+                    require("lvim-ls.state").config.progress.enabled = val
                     require("lvim-lsp").suppress_progress(not val)
-                    require("lvim-lsp.core.globals").save({ progress = val })
+                    require("lvim-ls.core.globals").save({ progress = val })
                 end
             end,
         },
@@ -144,15 +153,15 @@ return {
             default = true,
             ---@return boolean
             get = function()
-                return require("lvim-lsp.state").config.code_lens.enabled == true
+                return require("lvim-ls.state").config.code_lens.enabled == true
             end,
             ---@param val     boolean
             ---@param on_init boolean  True during startup; globals already loaded, skip
             set = function(val, on_init)
                 if not on_init then
-                    require("lvim-lsp.state").config.code_lens.enabled = val
-                    require("lvim-lsp.core.features").setup_code_lens()
-                    require("lvim-lsp.core.globals").save({ code_lens = val })
+                    require("lvim-ls.state").config.code_lens.enabled = val
+                    require("lvim-ls.core.features").setup_code_lens()
+                    require("lvim-ls.core.globals").save({ code_lens = val })
                 end
             end,
         },

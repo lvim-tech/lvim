@@ -3,13 +3,12 @@
 -- __index metatable, caching the result, so that require("core.funcs") does not
 -- eagerly load every submodule. On a name collision the earlier entry in
 -- `submodules` wins (deterministic resolution order).
--- To use a specific submodule directly: require("core.funcs.color"), etc.
+-- To use a specific submodule directly: require("core.funcs.fs"), etc.
 ---@module "core.funcs"
 
 local submodules = {
     "core.funcs.table",
     "core.funcs.fs",
-    "core.funcs.color",
     "core.funcs.system",
     "core.funcs.ui",
     "core.funcs.editor",

@@ -3,10 +3,9 @@
 -- Python) by running the matching CLI scaffolder (create-next-app, vite, django,
 -- go mod init, uv, ...) inside a floating terminal.
 --
--- The local `run(command_template, opts)` helper drives all of them: it optionally
--- prompts for a project name and target path, creates the directory, builds the
--- final command, and launches it via jobstart in a floating terminal window that
--- auto-closes on exit. `opts` flags:
+-- The local `run(command_template, opts)` helper drives all of them: it asks for what it needs
+-- through `vim.ui.input` (a chain, because the answers are asynchronous), creates the directory,
+-- builds the final command and launches it in lvim-shell's float. `opts` flags:
 --   pass_name        append the prompted name as a CLI argument
 --   cwd_project_dir  run inside the created project directory
 --   create_dir       mkdir -p the project directory first
@@ -18,6 +17,46 @@
 local icons = require("configs.base.ui.icons")
 local picons = icons.projects
 
+--- Ask a sequence of questions through `vim.ui.input`, then hand the answers to `done`.
+---
+--- `vim.ui.input`, not `vim.fn.input`: the raw one is a cmdline prompt that bypasses the editor's
+--- own input surface (lvim-hud serves `vim.ui.input` in the message zone) and blocks the loop while
+--- it waits. Being asynchronous, the questions have to be a CHAIN rather than three statements —
+--- each step may compute its prompt and default from the answers already given.
+---@param steps table[]  { key, prompt, default?, required? } — prompt/default may be fun(answers)
+---@param done fun(answers: table<string, string>)
+---@return nil
+local function ask(steps, done)
+    local answers = {}
+    local function step(i)
+        local spec = steps[i]
+        if spec == nil then
+            done(answers)
+            return
+        end
+        local default = spec.default
+        if type(default) == "function" then
+            default = default(answers)
+        end
+        local prompt = spec.prompt
+        if type(prompt) == "function" then
+            prompt = prompt(answers)
+        end
+        vim.ui.input({ prompt = prompt, default = default, completion = spec.completion }, function(value)
+            -- nil = the user cancelled; "" = an empty answer. A required step accepts neither.
+            if value == nil or (spec.required and value == "") then
+                if value ~= nil then
+                    vim.notify("New project: cancelled (" .. spec.key .. " is required).", vim.log.levels.INFO)
+                end
+                return
+            end
+            answers[spec.key] = value
+            step(i + 1)
+        end)
+    end
+    step(1)
+end
+
 local function run(command_template, opts)
     opts = opts or {}
     local pass_name = opts.pass_name or false
@@ -25,114 +64,91 @@ local function run(command_template, opts)
     local create_dir = opts.create_dir or false
     local module_init = opts.module_init or false
 
-    local project_name, path, project_dir
-
-    if pass_name or module_init then
-        project_name = vim.fn.input("Enter project name (use '.' for current directory): ")
-        if project_name == "" then
-            print("Operation cancelled.")
-            return
-        end
-    end
-
     local default_path = vim.fn.getcwd()
-    if cwd_project_dir or create_dir or (project_name ~= nil) then
-        path = vim.fn.input("Enter path (default: " .. default_path .. "): ", default_path)
-        if path == "" then
-            path = default_path
-        end
-    else
-        path = default_path
+    local steps = {}
+    if pass_name or module_init then
+        steps[#steps + 1] = {
+            key = "name",
+            prompt = "Project name (use '.' for the current directory): ",
+            required = true,
+        }
+    end
+    if cwd_project_dir or create_dir or pass_name or module_init then
+        steps[#steps + 1] = {
+            key = "path",
+            prompt = "Path: ",
+            default = default_path,
+            completion = "dir",
+        }
+    end
+    if module_init then
+        steps[#steps + 1] = {
+            key = "module",
+            required = true,
+            prompt = "Module path for `go mod init`: ",
+            default = function(a)
+                local base = (a.name and a.name ~= "." and a.name) or vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+                return "github.com/<youruser>/" .. base
+            end,
+        }
     end
 
-    local use_flat_dir = pass_name and not module_init
-    if use_flat_dir then
-        project_dir = path
-    else
-        if project_name ~= nil then
-            if project_name == "." then
-                project_dir = path
-            else
-                project_dir = path .. "/" .. project_name
-            end
+    ask(steps, function(a)
+        local project_name = a.name
+        local path = (a.path ~= nil and a.path ~= "") and a.path or default_path
+
+        local project_dir
+        if pass_name and not module_init then
+            project_dir = path
+        elseif project_name ~= nil and project_name ~= "." then
+            project_dir = path .. "/" .. project_name
         else
             project_dir = path
         end
-    end
 
-    if create_dir and project_dir ~= "" and vim.fn.isdirectory(project_dir) == 0 then
-        vim.fn.mkdir(project_dir, "p")
-    end
-
-    local final_command = command_template
-
-    if module_init then
-        local default_module = (project_name and project_name ~= "." and project_name)
-            or vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
-        local suggested = "github.com/<youruser>/" .. default_module
-        local module_path = vim.fn.input("Module path for `go mod init` (e.g. " .. suggested .. "): ", suggested)
-        if module_path == "" then
-            print("No module path provided. Operation cancelled.")
-            return
+        if create_dir and project_dir ~= "" and vim.fn.isdirectory(project_dir) == 0 then
+            vim.fn.mkdir(project_dir, "p")
         end
-        final_command = "go mod init " .. vim.fn.shellescape(module_path)
-        cwd_project_dir = true
-    elseif pass_name and project_name then
-        local arg = (project_name == ".") and "." or vim.fn.shellescape(project_name)
-        final_command = command_template .. " " .. arg
-    end
 
-    local original_win = vim.api.nvim_get_current_win()
-    local buf = vim.api.nvim_create_buf(false, true)
-    local win_config = {
-        relative = "editor",
-        width = math.floor(vim.o.columns * 0.8),
-        height = math.floor(vim.o.lines * 0.8),
-        col = math.floor(vim.o.columns * 0.1),
-        row = math.floor(vim.o.lines * 0.1),
-        border = "single",
-        style = "minimal",
-    }
-    local win = vim.api.nvim_open_win(buf, true, win_config)
+        local final_command = command_template
+        local in_project_dir = cwd_project_dir
+        if module_init then
+            final_command = "go mod init " .. vim.fn.shellescape(a.module)
+            in_project_dir = true
+        elseif pass_name and project_name then
+            local arg = (project_name == ".") and "." or vim.fn.shellescape(project_name)
+            final_command = command_template .. " " .. arg
+        end
 
-    local cwd = cwd_project_dir and project_dir or path
-    if cwd ~= "" and vim.fn.isdirectory(cwd) == 0 then
-        vim.fn.mkdir(cwd, "p")
-    end
+        local cwd = in_project_dir and project_dir or path
+        if cwd ~= "" and vim.fn.isdirectory(cwd) == 0 then
+            vim.fn.mkdir(cwd, "p")
+        end
 
-    vim.fn.jobstart(final_command, {
-        term = true,
-        cwd = cwd,
-        on_exit = function(_, exit_code, _)
-            vim.defer_fn(function()
-                if vim.api.nvim_win_is_valid(win) then
-                    pcall(vim.api.nvim_win_close, win, true)
-                end
-                if vim.api.nvim_buf_is_valid(buf) then
-                    pcall(vim.api.nvim_buf_delete, buf, { force = true })
-                end
-                if vim.api.nvim_win_is_valid(original_win) then
-                    pcall(vim.api.nvim_set_current_win, original_win)
-                end
-                if exit_code == 0 then
-                    print("Command executed successfully.")
-                else
-                    print("Command failed with exit code: " .. tostring(exit_code))
-                end
-            end, 100)
-        end,
-    })
-    vim.cmd("startinsert")
+        -- The scaffolder runs in lvim-shell's float — the same themed terminal surface every other
+        -- TUI in this config opens in, which also restores the previous window and cleans up its
+        -- buffer when the command exits. (This used to be a hand-rolled `nvim_open_win` + jobstart
+        -- with its own close/restore bookkeeping, i.e. a second, unthemed float implementation.)
+        -- lvim-shell is LAZY (`cmd = "LvimShell"`), so it is not on the runtimepath yet and a plain
+        -- `require` would fail here. The loader's own seam loads it exactly as a trigger would —
+        -- dependencies, config and load report included; `packadd` would do none of that.
+        require("lvim-pack").load_plugin("lvim-shell", "control-center: new project")
+        require("lvim-shell").float(final_command, "<CR>", {
+            cwd = cwd,
+            ui = { float = { title = "New project" } },
+        })
+    end)
 end
+
 
 return {
     name = "projects",
-    label = "Newproject",
+    label = "New project",
     icon = icons.common.project,
     settings = {
         {
             icon = picons.frontend,
-            top = false,
+            top = true,
             type = "spacer",
             label = "Frontend",
             bottom = false,

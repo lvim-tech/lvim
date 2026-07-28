@@ -1,322 +1,53 @@
 -- Plugin configuration table for editor-related plugins in LVIM IDE.
 -- Each key is a plugin identifier (snake_case of the plugin name) whose value
--- is a LvimModule-compatible spec consumed by the lazy.nvim loader.  This file
--- covers workspace management, fuzzy finding, search, marks, quickfix, tab bar,
--- text manipulation, and miscellaneous editing utilities.
-
+-- is a LvimModule-compatible spec consumed by the core.pack loader. Pure
+-- lvim-tech: workspace management (lvim-space), the settings panel
+-- (lvim-control-center), language/spell switching, marks/jumps/macros
+-- (lvim-vault), quickfix, text manipulation, tasks/build/remote, and
+-- miscellaneous editing utilities.
 ---@module "modules.base.configs.editor"
-
-local icons = require("configs.base.ui.icons")
-
----@type table<string, table>  Map of plugin identifiers to their lazy.nvim specs
+---@type table<string, table>  Map of plugin identifiers to their plugin specs
 return {
     -- lvim-space: project / workspace / tab management sidebar
     lvim_space = {
-        opts = {
-            log = true,
-            ui = {
-                icons = {
-                    error = " ",
-                    warn = " ",
-                    info = " ",
-                    project = " ",
-                    project_active = " ",
-                    workspace = " ",
-                    workspace_active = " ",
-                    tab = " ",
-                    tab_active = " ",
-                    file = " ",
-                    file_active = " ",
-                    empty = "󰇘 ",
-                    pre = "➤ ",
-                },
-            },
-        },
+        -- Nothing to override: the icon table here was byte-identical to lvim-space's own
+        -- defaults, and `log` is not one of its config keys at all.
+        opts = {},
     },
     -- lvim-control-center: floating settings panel grouping all control_center/* modules
     lvim_control_center = {
         opts = function()
-            -- Register leader shortcuts to jump directly to each settings group.
-            vim.keymap.set("n", "<Leader><Leader>v", "<CMD>LvimControlCenter lvim<CR>")
-            vim.keymap.set("n", "<Leader><Leader>g", "<CMD>LvimControlCenter general<CR>")
-            vim.keymap.set("n", "<Leader><Leader>a", "<CMD>LvimControlCenter appearance<CR>")
-            vim.keymap.set("n", "<Leader><Leader>l", "<CMD>LvimControlCenter lsp<CR>")
-            vim.keymap.set("n", "<Leader><Leader>c", "<CMD>LvimControlCenter commands<CR>")
-            vim.keymap.set("n", "<Leader><Leader>p", "<CMD>LvimControlCenter projects<CR>")
-            -- Load each settings group module and register them in order.
-            local lvim = require("modules.base.configs.editor.control_center.lvim")
+            -- Control-center + installer keys live in the central keymap manifest:
+            -- modules/base/keys.lua → <Leader>u* (UI / Toggles / Settings).
+            -- Load each settings group module and register them in order. (The snapshot
+            -- selector moved to lvim-installer — :LvimInstaller snapshot.)
             local general = require("modules.base.configs.editor.control_center.general")
             local appearance = require("modules.base.configs.editor.control_center.appearance")
+            -- The LSP group: auto-format on save, inlay hints, diagnostic display mode, progress
+            -- backend, code lens, plus the one-click LSP actions. It was disabled while its switches
+            -- still called the pre-split `lvim-lsp.*` API; they now read and write `lvim-ls.*`, which is
+            -- where that state actually lives, so the group is back.
             local lsp = require("modules.base.configs.editor.control_center.lsp")
             local commands = require("modules.base.configs.editor.control_center.commands")
             local projects = require("modules.base.configs.editor.control_center.projects")
+            -- Centralized dock surface geometry (float/area/bottom sizes) + per-layout backdrop, defined
+            -- locally here (control-center itself ships no predefined settings); reads/writes
+            -- lvim-utils.config.dock.geometry live (the single authority every dock consumer resolves through).
+            local geometry = require("modules.base.configs.editor.control_center.geometry")
             return {
+                -- Instance-based: `command` is REQUIRED and unique. The loader forwards this table to
+                -- setup(), which builds one instance (own command + own database) via new().
+                command = "LvimControlCenter",
+                -- Keep the ORIGINAL database directory (pre-instance default) so previously persisted
+                -- settings carry over — the derived per-command path would point elsewhere.
+                save = vim.fn.stdpath("data") .. "/lvim-control-center",
                 groups = {
-                    lvim,
                     general,
                     appearance,
                     lsp,
                     commands,
                     projects,
-                },
-            }
-        end,
-    },
-    -- smart-splits: seamless Neovim/tmux pane navigation and resizing
-    smart_splits = {
-        keys = {
-            {
-                "<C-h>",
-                function()
-                    require("smart-splits").move_cursor_left()
-                end,
-                desc = "Navigator left",
-            },
-            {
-                "<C-l>",
-                function()
-                    require("smart-splits").move_cursor_right()
-                end,
-                desc = "Navigator right",
-            },
-            {
-                "<C-k>",
-                function()
-                    require("smart-splits").move_cursor_up()
-                end,
-                desc = "Navigator up",
-            },
-            {
-                "<C-j>",
-                function()
-                    require("smart-splits").move_cursor_down()
-                end,
-                desc = "Navigator down",
-            },
-            {
-                "<C-Left>",
-                function()
-                    require("smart-splits").resize_left()
-                end,
-                desc = "Navigator down",
-            },
-            {
-                "<C-Right>",
-                function()
-                    require("smart-splits").resize_right()
-                end,
-                desc = "Navigator down",
-            },
-            {
-                "<C-Up>",
-                function()
-                    require("smart-splits").resize_up()
-                end,
-                desc = "Navigator up",
-            },
-            {
-                "<C-Down>",
-                function()
-                    require("smart-splits").resize_down()
-                end,
-                desc = "Navigator down",
-            },
-        },
-        opts = {},
-    },
-    -- fzf-lua: fuzzy finder for files, buffers, live grep, LSP symbols, and more
-    fzf_lua = {
-        cmd = { "FzfLua" },
-        keys = {
-            {
-                "<Leader>f",
-                function()
-                    vim.cmd("FzfLua files")
-                end,
-                desc = "FzfLua files",
-            },
-            {
-                "<Leader>O",
-                function()
-                    vim.cmd("FzfLua oldfiles")
-                end,
-                desc = "FzfLua oldfiles",
-            },
-            {
-                "<Leader>w",
-                function()
-                    vim.cmd("FzfLua live_grep")
-                end,
-                desc = "FzfLua search",
-            },
-            {
-                "<Leader>M",
-                function()
-                    vim.cmd("FzfLua marks")
-                end,
-                desc = "FzfLua marks",
-            },
-            {
-                "<Leader>b",
-                function()
-                    vim.cmd("FzfLua buffers")
-                end,
-                desc = "FzfLua buffers",
-            },
-            {
-                "gzd",
-                function()
-                    vim.cmd("FzfLua lsp_definitions")
-                end,
-                desc = "FzfLua lsp definitions",
-            },
-            {
-                "gzD",
-                function()
-                    vim.cmd("FzfLua lsp_declarations")
-                end,
-                desc = "FzfLua lsp declarations",
-            },
-            {
-                "gzt",
-                function()
-                    vim.cmd("FzfLua lsp_typedefs")
-                end,
-                desc = "FzfLua lsp type definition",
-            },
-            {
-                "gzr",
-                function()
-                    vim.cmd("FzfLua lsp_references")
-                end,
-                desc = "FzfLua lsp references",
-            },
-            {
-                "gzi",
-                function()
-                    vim.cmd("FzfLua lsp_implementations")
-                end,
-                desc = "FzfLua lsp implementations",
-            },
-            {
-                "gzf",
-                function()
-                    vim.cmd("FzfLua lsp_finder")
-                end,
-                desc = "FzfLua lsp finder",
-            },
-            {
-                "gzw",
-                function()
-                    vim.cmd("FzfLua lsp_document_diagnostics")
-                end,
-                desc = "FzfLua lsp document diagnostics",
-            },
-            {
-                "gzW",
-                function()
-                    vim.cmd("FzfLua lsp_workspace_diagnostics")
-                end,
-                desc = "FzfLua lsp workspace diagnostics",
-            },
-            {
-                "gzs",
-                function()
-                    vim.cmd("FzfLua lsp_document_symbols")
-                end,
-                desc = "FzfLua lsp document symbols",
-            },
-            {
-                "gzS",
-                function()
-                    vim.cmd("FzfLua lsp_workspace_symbols")
-                end,
-                desc = "FzfLua lsp workspace symbols",
-            },
-        },
-        opts = function()
-            -- Auto-detect a supported image previewer from the system PATH.
-            -- The first executable found in the priority list is used; nil if none.
-            ---@type string[]|nil  Command + args array for the image previewer, or nil
-            local img_previewer
-            for _, v in ipairs({
-                { cmd = "ueberzug", args = {} },
-                { cmd = "chafa", args = { "{file}", "--format=symbols" } },
-                { cmd = "viu", args = { "-b" } },
-            }) do
-                if vim.fn.executable(v.cmd) == 1 then
-                    img_previewer = vim.list_extend({ v.cmd }, v.args)
-                    break
-                end
-            end
-            return {
-                fzf_colors = true,
-                defaults = {
-                    multiline = 1,
-                },
-                previewers = {
-                    builtin = {
-                        extensions = {
-                            ["png"] = img_previewer,
-                            ["jpg"] = img_previewer,
-                            ["jpeg"] = img_previewer,
-                            ["gif"] = img_previewer,
-                            ["webp"] = img_previewer,
-                        },
-                        ueberzug_scaler = "fit_contain",
-                    },
-                },
-                fzf_opts = {
-                    ["--highlight-line"] = true,
-                    ["--border"] = "none",
-                    ["--layout"] = "reverse",
-                    ["--height"] = "100%",
-                    ["--info"] = "inline-right",
-                    ["--ansi"] = true,
-                },
-                -- Compute window dimensions dynamically so the fzf float respects
-                -- the user-configured floatheight ratio from the control center.
-                winopts = function()
-                    local win_height =
-                        math.ceil(vim.api.nvim_get_option_value("lines", {}) * _G.LVIM.settings.floatheight)
-                    local win_width = math.ceil(vim.api.nvim_get_option_value("columns", {}) * 1)
-                    local col = math.ceil((vim.api.nvim_get_option_value("columns", {}) - win_width) * 1)
-                    local row = math.ceil((vim.api.nvim_get_option_value("lines", {}) - win_height) * 1)
-                    return {
-                        previewer = "builtin",
-                        title = "FZF LUA",
-                        title_pos = "center",
-                        width = win_width,
-                        height = win_height,
-                        row = row,
-                        col = col,
-                        border = { " ", " ", " ", " ", " ", " ", " ", " " },
-                        preview = {
-                            layout = "horizontal",
-                            vertical = "down:45%",
-                            horizontal = "right:60%",
-                            border = { " ", " ", " ", " ", " ", " ", " ", " " },
-                        },
-                    }
-                end,
-                keymap = {
-                    builtin = {
-                        ["<M-Esc>"] = "hide",
-                        ["<F1>"] = "toggle-help",
-                        ["<F2>"] = "toggle-fullscreen",
-                        ["<F3>"] = "toggle-preview-wrap",
-                        ["<F4>"] = "toggle-preview",
-                        ["<F5>"] = "toggle-preview-ccw",
-                        ["<F6>"] = "toggle-preview-cw",
-                        ["<F7>"] = "toggle-preview-ts-ctx",
-                        ["<F8>"] = "preview-ts-ctx-dec",
-                        ["<F9>"] = "preview-ts-ctx-inc",
-                        ["<S-Left>"] = "preview-reset",
-                        ["<C-d>"] = "preview-page-down",
-                        ["<C-u>"] = "preview-page-up",
-                        ["<M-S-down>"] = "preview-down",
-                        ["<M-S-up>"] = "preview-up",
-                    },
+                    geometry,
                 },
             }
         end,
@@ -324,12 +55,7 @@ return {
     -- lvim-linguistics: per-mode keyboard layout switching and spell checking
     lvim_linguistics = {
         opts = function()
-            vim.keymap.set("n", "<C-c>l", function()
-                vim.cmd("LvimLinguisticsTOGGLEInsertModeLanguage")
-            end, { noremap = true, silent = true, desc = "LvimLinguisticsTOGGLEInsertModeLanguage" })
-            vim.keymap.set("n", "<C-c>k", function()
-                vim.cmd("LvimLinguisticsTOGGLESpelling")
-            end, { noremap = true, silent = true, desc = "LvimLinguisticsTOGGLESpelling" })
+            -- <C-c>l / <C-c>k linguistics toggles live in the central manifest (modules/base/keys.lua).
             return {
                 base_config = {
                     mode_language = {
@@ -364,870 +90,63 @@ return {
             }
         end,
     },
-    -- rgflow.nvim: interactive ripgrep workflow with quickfix integration
-    rgflow_nvim = {
-        keys = {
-            {
-                "<Leader>rG",
-                function()
-                    require("rgflow").open()
-                end,
-                desc = "Rgflow open blank",
-            },
-            {
-                "<Leader>rg",
-                function()
-                    require("rgflow").open_cword()
-                end,
-                desc = "Rgflow open cword",
-            },
-            {
-                "<Leader>rp",
-                function()
-                    require("rgflow").open_cword()
-                end,
-                desc = "Rgflow open and paste",
-            },
-            {
-                "<Leader>ra",
-                function()
-                    require("rgflow").open_again()
-                end,
-                desc = "Rgflow open again",
-            },
-            {
-                "<Leader>rx",
-                function()
-                    require("rgflow").abort()
-                end,
-                desc = "Rgflow abort",
-            },
-            {
-                "<Leader>rc",
-                function()
-                    require("rgflow").print_cmd()
-                end,
-                desc = "Rgflow print cmd",
-            },
-            {
-                "<Leader>r?",
-                function()
-                    require("rgflow").print_status()
-                end,
-                desc = "Rgflow print status",
-            },
-            {
-                "<Leader>rg",
-                function()
-                    require("rgflow").open_visual()
-                end,
-                mode = "x",
-                desc = "Rgflow open visual",
-            },
-        },
-        opts = {
-            cmd_flags = "--smart-case --fixed-strings --ignore --max-columns 200",
-            default_trigger_mappings = false,
-            default_ui_mappings = true,
-            default_quickfix_mappings = true,
-            ui_top_line_char = "",
-        },
-    },
-    -- vessel.nvim: enhanced mark and jump-list navigation UI
-    vessel_nvim = {
-        opts = function()
-            local vessel_status_ok, vessel = pcall(require, "vessel")
-            if not vessel_status_ok then
-                return
-            end
-            vessel.opt.marks.highlights.path = "Title"
-            vessel.opt.marks.highlights.not_loaded = "Folded"
-            vessel.opt.marks.highlights.decorations = "Folded"
-            vessel.opt.marks.highlights.mark = "Title"
-            vessel.opt.marks.highlights.lnum = "Error"
-            vessel.opt.marks.highlights.col = "CursorLineNr"
-            vessel.opt.marks.highlights.line = "Folded"
-            vim.keymap.set("n", "ml", "<Plug>(VesselViewLocalMarks)", { desc = "Marks view local" })
-            vim.keymap.set("n", "mg", "<Plug>(VesselViewGlobalMarks)", { desc = "Marks view global" })
-            vim.keymap.set("n", "mb", "<Plug>(VesselViewBufferMarks)", { desc = "Marks view buffer" })
-            vim.keymap.set("n", "me", "<Plug>(VesselViewExternalMarks)", { desc = "Marks view external" })
-            vim.keymap.set("n", "mjj", function()
-                vessel.view_jumps()
-            end, { desc = "Jumps all" })
-            vim.keymap.set("n", "mjl", function()
-                vessel.view_local_jumps()
-            end, { desc = "Jumps local" })
-            vim.keymap.set("n", "mje", function()
-                vessel.view_external_jumps()
-            end, { desc = "Jumps External" })
-            -- Navigation: jump to the next/previous local or global mark
-            ---Jump to the nearest mark in the given direction.
-            ---For "local" marks the search is restricted to the current buffer (a-z).
-            ---For "global" marks all buffers are considered (A-Z).
-            ---Navigation wraps around when the end/beginning of the mark list is reached.
-            ---@param mark_type  "local"|"global"  Which mark namespace to search
-            ---@param direction  "next"|"prev"      Direction to travel through the sorted list
-            local function jump_mark(mark_type, direction)
-                mark_type = (mark_type or "local"):lower()
-                direction = (direction or "next"):lower()
-                local cur_buf = vim.api.nvim_get_current_buf()
-                local cur_pos = vim.api.nvim_win_get_cursor(0)
-                local cur_line = cur_pos[1]
-                ---@type table[]  Raw mark entries from vim.fn.getmarklist
-                local marks_list
-                if mark_type == "local" then
-                    marks_list = vim.fn.getmarklist(cur_buf)
-                else
-                    marks_list = vim.fn.getmarklist()
-                end
-                -- Filter the raw mark list to only those with valid positions.
-                ---@type { buf: integer, line: integer, col: integer }[]
-                local valid_marks = {}
-                for _, m in ipairs(marks_list) do
-                    if m.mark and m.pos and type(m.pos) == "table" and m.pos[2] then
-                        local mark_name = m.mark
-                        local buf = m.pos[1] or cur_buf
-                        local line = m.pos[2]
-                        local col = m.pos[3] or 0
-                        -- Skip marks whose buffer has been wiped.
-                        if not vim.api.nvim_buf_is_valid(buf) then
-                            goto continue
-                        end
-                        -- Skip marks with out-of-bounds line numbers (can happen after edits).
-                        local ok, last = pcall(vim.api.nvim_buf_line_count, buf)
-                        if not ok or type(last) ~= "number" then
-                            goto continue
-                        end
-                        if line < 1 or line > last then
-                            goto continue
-                        end
-                        if mark_type == "local" then
-                            if buf == cur_buf and mark_name:match("^'?%l$") then
-                                table.insert(valid_marks, { buf = buf, line = line, col = col })
-                            end
-                        else
-                            if mark_name:match("^'?%u$") then
-                                table.insert(valid_marks, { buf = buf, line = line, col = col })
-                            end
-                        end
-                    end
-                    ::continue::
-                end
-                if #valid_marks == 0 then
-                    return
-                end
-                if mark_type == "local" then
-                    table.sort(valid_marks, function(a, b)
-                        return a.line < b.line
-                    end)
-                    if direction == "next" then
-                        for _, m in ipairs(valid_marks) do
-                            if m.line > cur_line then
-                                vim.api.nvim_win_set_cursor(0, { m.line, m.col })
-                                return
-                            end
-                        end
-                        vim.api.nvim_win_set_cursor(0, { valid_marks[1].line, valid_marks[1].col })
-                        return
-                    else
-                        for i = #valid_marks, 1, -1 do
-                            if valid_marks[i].line < cur_line then
-                                vim.api.nvim_win_set_cursor(0, { valid_marks[i].line, valid_marks[i].col })
-                                return
-                            end
-                        end
-                        vim.api.nvim_win_set_cursor(
-                            0,
-                            { valid_marks[#valid_marks].line, valid_marks[#valid_marks].col }
-                        )
-                        return
-                    end
-                else
-                    table.sort(valid_marks, function(a, b)
-                        if a.buf == b.buf then
-                            return a.line < b.line
-                        end
-                        return a.buf < b.buf
-                    end)
-                    -- Comparators for cross-buffer ordering: primary key is buf handle,
-                    -- secondary key is line number within the same buffer.
-                    ---@param a { buf: integer, line: integer }
-                    ---@param b { buf: integer, line: integer }
-                    ---@return boolean
-                    local function after(a, b)
-                        if a.buf == b.buf then
-                            return a.line > b.line
-                        end
-                        return a.buf > b.buf
-                    end
-                    ---@param a { buf: integer, line: integer }
-                    ---@param b { buf: integer, line: integer }
-                    ---@return boolean
-                    local function before(a, b)
-                        if a.buf == b.buf then
-                            return a.line < b.line
-                        end
-                        return a.buf < b.buf
-                    end
-                    local cur_key = { buf = cur_buf, line = cur_line }
-                    if direction == "next" then
-                        for _, m in ipairs(valid_marks) do
-                            if after(m, cur_key) then
-                                if m.buf ~= cur_buf then
-                                    pcall(vim.api.nvim_set_current_buf, m.buf)
-                                end
-                                vim.api.nvim_win_set_cursor(0, { m.line, m.col })
-                                return
-                            end
-                        end
-                        local m = valid_marks[1]
-                        if m.buf ~= cur_buf then
-                            pcall(vim.api.nvim_set_current_buf, m.buf)
-                        end
-                        vim.api.nvim_win_set_cursor(0, { m.line, m.col })
-                        return
-                    else
-                        for i = #valid_marks, 1, -1 do
-                            local m = valid_marks[i]
-                            if before(m, cur_key) then
-                                if m.buf ~= cur_buf then
-                                    pcall(vim.api.nvim_set_current_buf, m.buf)
-                                end
-                                vim.api.nvim_win_set_cursor(0, { m.line, m.col })
-                                return
-                            end
-                        end
-                        local m = valid_marks[#valid_marks]
-                        if m.buf ~= cur_buf then
-                            pcall(vim.api.nvim_set_current_buf, m.buf)
-                        end
-                        vim.api.nvim_win_set_cursor(0, { m.line, m.col })
-                        return
-                    end
-                end
-            end
-            vim.keymap.set("n", "m]", function()
-                jump_mark("local", "next")
-            end, { desc = "Local mark Next" })
-            vim.keymap.set("n", "m[", function()
-                jump_mark("local", "prev")
-            end, { desc = "Local mark Prev" })
-            vim.keymap.set("n", "M]", function()
-                jump_mark("global", "next")
-            end, { desc = "Global mark Next" })
-            vim.keymap.set("n", "M[", function()
-                jump_mark("global", "prev")
-            end, { desc = "Global mark Prev" })
-            -- Set: delegate to vessel's mark-setting plug-mappings and refresh the statusline
-            ---Register a keymap that feeds the appropriate vessel plug-mapping for
-            ---setting a local (mm) or global (mM) mark, then redraws the statusline.
-            ---@param lhs string  Key sequence to bind ("mm" for local, "mM" for global)
-            local function set_mark(lhs)
-                vim.keymap.set("n", lhs, function()
-                    vim.api.nvim_feedkeys(
-                        vim.api.nvim_replace_termcodes(
-                            lhs == "mm" and "<Plug>(VesselSetLocalMark)" or "<Plug>(VesselSetGlobalMark)",
-                            true,
-                            false,
-                            true
-                        ),
-                        "n",
-                        false
-                    )
-                    vim.schedule(function()
-                        vim.cmd("redrawstatus")
-                    end)
-                end, { desc = "Marks set " .. (lhs == "mm" and "local" or "global"), silent = true })
-            end
-            set_mark("mm")
-            set_mark("mM")
-            -- Delete: bulk-delete all marks of a given kind in the current buffer / globally
-            ---Return a new list with duplicate string entries removed, preserving order.
-            ---@param list string[]  Input list that may contain duplicates
-            ---@return string[]      Deduplicated list
-            local function uniq(list)
-                local seen = {}
-                local out = {}
-                for _, v in ipairs(list) do
-                    if not seen[v] then
-                        seen[v] = true
-                        table.insert(out, v)
-                    end
-                end
-                return out
-            end
-            ---Delete all marks of the requested kind and notify the user.
-            ---@param kind "local"|"global"|"all"  Which marks to remove
-            local function delete_marks(kind)
-                kind = (kind or "local"):lower()
-                local cur_buf = vim.api.nvim_get_current_buf()
-                local marks_global = vim.fn.getmarklist()
-                local marks_local = vim.fn.getmarklist(cur_buf)
-                ---@type string[]  Letter names of marks that will be deleted
-                local letters = {}
-                ---Collect mark letters from a raw getmarklist entry.
-                ---@param m            table    Raw mark entry
-                ---@param allow_local  boolean  Include lowercase (a-z) local marks
-                ---@param allow_global boolean  Include uppercase (A-Z) global marks
-                local function process_mark_entry(m, allow_local, allow_global)
-                    if not (m and m.mark and m.pos and type(m.pos) == "table" and m.pos[2]) then
-                        return
-                    end
-                    local name = tostring(m.mark):gsub("^'", "")
-                    local buf = m.pos[1] or cur_buf
-                    if allow_local and name:match("^%l$") and buf == cur_buf then
-                        table.insert(letters, name)
-                    end
-                    if allow_global and name:match("^%u$") then
-                        table.insert(letters, name)
-                    end
-                end
-                if kind == "local" then
-                    for _, m in ipairs(marks_local) do
-                        process_mark_entry(m, true, false)
-                    end
-                elseif kind == "global" then
-                    for _, m in ipairs(marks_global) do
-                        process_mark_entry(m, false, true)
-                    end
-                else
-                    for _, m in ipairs(marks_local) do
-                        process_mark_entry(m, true, false)
-                    end
-                    for _, m in ipairs(marks_global) do
-                        process_mark_entry(m, false, true)
-                    end
-                end
-                letters = uniq(letters)
-                if #letters == 0 then
-                    if kind == "local" then
-                        vim.notify("No local marks (a-z) to delete in this buffer", vim.log.levels.INFO)
-                    elseif kind == "global" then
-                        vim.notify("No global marks (A-Z) to delete", vim.log.levels.INFO)
-                    else
-                        vim.notify("No marks to delete", vim.log.levels.INFO)
-                    end
-                    return
-                end
-                local cmd = "delmarks " .. table.concat(letters, " ")
-                pcall(vim.cmd, cmd)
-                local human_kind = (kind == "local" and "local marks (a-z)")
-                    or (kind == "global" and "global marks (A-Z)")
-                    or "marks (local + global)"
-                vim.notify("Deleted " .. human_kind .. ": " .. table.concat(letters, ", "), vim.log.levels.INFO)
-            end
-            vim.keymap.set("n", "mdl", function()
-                delete_marks("local")
-            end, { desc = "Delete all local marks (a-z) in current buffer" })
-            vim.keymap.set("n", "mdg", function()
-                delete_marks("global")
-            end, { desc = "Delete all global marks (A-Z)" })
-            vim.keymap.set("n", "mda", function()
-                delete_marks("all")
-            end, { desc = "Delete all local and global marks" })
-            return {
-                create_commands = true,
-                commands = {
-                    view_marks = "Marks",
-                    view_jumps = "Jumps",
-                },
-            }
+    -- lvim-vault: marks + jumps + a persistent macro bank (sqlite via lvim-utils.store) in one lvim-ui.tabs
+    -- panel. Eager (like the other lvim-tech local-dev plugins): setup() registers :LvimVault at startup;
+    -- the keymaps open its three tabs (the filter L/G/A · P/G/A lives inside each tab).
+    lvim_vault = {
+        config = function()
+            -- Manifest overrides for the panel's own keys (defaults stay in the plugin).
+            require("lvim-vault").setup({ keys = require("modules.base.keys_apply").plugin("lvim-vault") })
+            -- The whole `m` prefix (mv* panels + m<verb><scope> mark verbs) lives in the central
+            -- manifest (modules/base/keys.lua) — `marks.disable_native = true` is what frees `m`.
         end,
     },
-    -- macrobank.nvim: save, edit, and replay named Vim macros
-    macrobank_nvim = {
-        cmd = { "MacroBank", "MacroBankLive", "MacroBankSelect", "MacroBankPlay" },
-        keys = {
-            {
-                "mco",
-                function()
-                    vim.cmd("MacroBank")
-                end,
-                desc = "Edit saved macros",
-            },
-            {
-                "mce",
-                function()
-                    vim.cmd("MacroBankLive")
-                end,
-                desc = "Edit macros",
-            },
-            {
-                "mcs",
-                function()
-                    vim.cmd("MacroBankSelect")
-                end,
-                desc = "Select macro",
-            },
-            {
-                "mcp",
-                function()
-                    vim.cmd("MacroBankPlay")
-                end,
-                desc = "Play macro",
-            },
-        },
-        opts = {
-            store_path_global = vim.fn.stdpath("config") .. "/macrobank_store.json",
-            project_store_paths = ".nvim/macrobank.json",
-        },
-    },
-    -- nvim-hlslens: augmented search lens showing match count and position
-    nvim_hlslens = {
-        opts = function()
-            local hlslens_status_ok, hlslens = pcall(require, "hlslens")
-            if not hlslens_status_ok then
-                return
-            end
-            ---Feed keys in normal mode with terminal-code replacement.
-            ---@param keys string  Key sequence (may include <special> notation)
-            local function normal_feedkeys(keys)
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), "n", true)
-            end
-            vim.keymap.set("n", "n", function()
-                normal_feedkeys(vim.v.count1 .. "n")
-                hlslens.start()
-            end, { silent = true })
-            vim.keymap.set("n", "N", function()
-                normal_feedkeys(vim.v.count1 .. "N")
-                hlslens.start()
-            end, { silent = true })
-            vim.keymap.set("n", "*", function()
-                normal_feedkeys("*")
-                hlslens.start()
-            end, { silent = true })
-            vim.keymap.set("n", "#", function()
-                normal_feedkeys("#")
-                hlslens.start()
-            end, { silent = true })
-            vim.keymap.set("n", "g*", function()
-                normal_feedkeys("g*")
-                hlslens.start()
-            end, { silent = true })
-            vim.keymap.set("n", "g#", function()
-                normal_feedkeys("g#")
-                hlslens.start()
-            end, { silent = true })
-            vim.keymap.set("n", "<Esc>", function()
-                vim.cmd("noh")
-                hlslens.stop()
-            end, { silent = true })
-            return {
-                nearest_float_when = true,
-                ---Custom virtual-text renderer for the hlslens lens overlay.
-                ---Displays a directional indicator and the current match index out of total.
-                ---@param render  table    hlslens render API
-                ---@param posList table    List of all match positions in the buffer
-                ---@param nearest boolean  True for the match under the cursor
-                ---@param idx     integer  Index of this match in posList
-                ---@param relIdx  integer  Relative offset from the cursor match (negative = before)
-                override_lens = function(render, posList, nearest, idx, relIdx)
-                    -- sfw: true when the last search was in the forward direction.
-                    local sfw = vim.v.searchforward == 1
-                    ---@type string  Arrow/dot indicator shown before the count
-                    local indicator
-                    ---@type string  Formatted match count string, e.g. "[2↓ 4/12]"
-                    local text
-                    ---@type table[]  Chunk list passed to render.setVirt
-                    local chunks
-                    local absRelIdx = math.abs(relIdx)
-                    if absRelIdx > 1 then
-                        indicator = ("%d%s"):format(
-                            absRelIdx,
-                            sfw ~= (relIdx > 1) and icons.common.up2 or icons.common.down2
-                        )
-                    elseif absRelIdx == 1 then
-                        indicator = sfw ~= (relIdx == 1) and icons.common.up2 or icons.common.down2
-                    else
-                        indicator = icons.common.dot
-                    end
-                    local lnum, col = unpack(posList[idx])
-                    if nearest then
-                        local cnt = #posList
-                        if indicator ~= "" then
-                            text = ("[%s %d/%d]"):format(indicator, idx, cnt)
-                        else
-                            text = ("[%d/%d]"):format(idx, cnt)
-                        end
-                        chunks = { { " " }, { text, "HlSearchLensNear" } }
-                    else
-                        text = ("[%s %d]"):format(indicator, idx)
-                        chunks = { { " " }, { text, "HlSearchLens" } }
-                    end
-                    render.setVirt(0, lnum - 1, col - 1, chunks, nearest)
-                end,
-            }
+    -- lvim-undo: the undo history as a navigable, branching TIMELINE — diff preview beside it,
+    -- named checkpoints/tags that survive restarts (sqlite via lvim-utils.store), and undofile
+    -- purging. It reads Neovim's own undo tree, so it needs `undofile` on (core options set it).
+    -- lvim-replace: project-wide search and replace in a panel. No options are set — the entry
+    -- exists so the setup lives with every other editor plugin's, and so options have an obvious
+    -- home the day one is needed.
+    lvim_replace = {
+        config = function()
+            require("lvim-replace").setup({})
         end,
     },
-    -- nvim-bqf: better quickfix window with preview and fzf integration
-    nvim_bqf = {
-        opts = {
-            delay_syntax = 1,
-            preview = {
-                border = "single",
-                winblend = 0,
-            },
-        },
-    },
-    -- quicker.nvim: editable quickfix list
-    quicker_nvim = {
-        opts = {},
+    lvim_undo = {
+        config = function()
+            require("lvim-undo").setup({
+                -- delta side-by-side is the diff the user reads everywhere else; the args are the
+                -- plugin's own defaults, so only the engine has to be named.
+                diff = { engine = "delta" },
+                -- Named checkpoints on the operations worth rewinding to ("the version before the rename"), through the plugin's public checkpoint() seam.
+                checkpoints = { auto = { format = true, lsp_rename = true, build = true } },
+            })
+            -- The <Leader>u* keys live in the central manifest (modules/base/keys.lua → the
+            -- "UI / Toggles / Settings" group). They were set here as well, and because a plugin
+            -- config runs AFTER the manifest, `<Leader>up` (control-center projects) was silently
+            -- replaced by "purge this buffer".
+        end,
     },
     -- lvim-qf-loc: LVIM wrappers for quickfix and location list management
     lvim_qf_loc = {
-        -- cmd = {
-        --     "LvimDiagnostics",
-        --     "LvimListQuickFixOpen",
-        --     "LvimListQuickFixClose",
-        --     "LvimListQuickFixNext",
-        --     "LvimListQuickFixPrev",
-        --     "LvimListQuickFixMenuChoice",
-        --     "LvimListQuickFixMenuDelete",
-        --     "LvimListQuickFixMenuLoad",
-        --     "LvimListQuickFixMenuSave",
-        --     "LvimLocListOpen",
-        --     "LvimLocListClose",
-        --     "LvimLocListNext",
-        --     "LvimLocListPrev",
-        --     "LvimLocListMenuChoice",
-        --     "LvimLocListMenuDelete",
-        --     "LvimLocListMenuLoad",
-        --     "LvimLocListMenuSave",
-        -- },
-        -- keys = {
-        --     -- QF Diagnostic
-        --     {
-        --         "<C-c><C-h>",
-        --         function()
-        --             vim.cmd("LvimDiagnostics")
-        --         end,
-        --         desc = "LspDiagnostic QF",
-        --     },
-        --     -- Quick fix
-        --     {
-        --         "]o",
-        --         function()
-        --             vim.cmd("LvimListQuickFixOpen")
-        --         end,
-        --         desc = "QfOpen",
-        --     },
-        --     {
-        --         "]q",
-        --         function()
-        --             vim.cmd("LvimListQuickFixClose")
-        --         end,
-        --         desc = "QfClose",
-        --     },
-        --     {
-        --         "]]",
-        --         function()
-        --             vim.cmd("LvimListQuickFixNext")
-        --         end,
-        --         desc = "QfNext",
-        --     },
-        --     {
-        --         "][",
-        --         function()
-        --             vim.cmd("LvimListQuickFixPrev")
-        --         end,
-        --         desc = "QfPrev",
-        --     },
-        --     {
-        --         "]c",
-        --         function()
-        --             vim.cmd("LvimListQuickFixMenuChoice")
-        --         end,
-        --         desc = "QfMenuChoice",
-        --     },
-        --     {
-        --         "]d",
-        --         function()
-        --             vim.cmd("LvimListQuickFixMenuDelete")
-        --         end,
-        --         desc = "QfMenuDelete",
-        --     },
-        --     {
-        --         "]l",
-        --         function()
-        --             vim.cmd("LvimListQuickFixMenuLoad")
-        --         end,
-        --         desc = "QfMenuLoad",
-        --     },
-        --     {
-        --         "]s",
-        --         function()
-        --             vim.cmd("LvimListQuickFixMenuSave")
-        --         end,
-        --         desc = "QfMenuSave",
-        --     },
-        --     -- Loc list
-        --     {
-        --         "[o",
-        --         function()
-        --             vim.cmd("LvimLocListOpen")
-        --         end,
-        --         desc = "LocOpen",
-        --     },
-        --     {
-        --         "[q",
-        --         function()
-        --             vim.cmd("LvimLocListClose")
-        --         end,
-        --         desc = "LocClose",
-        --     },
-        --     {
-        --         "[]",
-        --         function()
-        --             vim.cmd("LvimLocListNext")
-        --         end,
-        --         desc = "LocNext",
-        --     },
-        --     {
-        --         "[[",
-        --         function()
-        --             vim.cmd("LvimLocListPrev")
-        --         end,
-        --         desc = "LocPrev",
-        --     },
-        --     {
-        --         "[c",
-        --         function()
-        --             vim.cmd("LvimLocListMenuChoice")
-        --         end,
-        --         desc = "LocMenuChoice",
-        --     },
-        --     {
-        --         "[d",
-        --         function()
-        --             vim.cmd("LvimLocListMenuDelete")
-        --         end,
-        --         desc = "LocMenuDelete",
-        --     },
-        --     {
-        --         "[l",
-        --         function()
-        --             vim.cmd("LvimLocListMenuLoad")
-        --         end,
-        --         desc = "LocMenuLoad",
-        --     },
-        --     {
-        --         "[s",
-        --         function()
-        --             vim.cmd("LvimLocListMenuSave")
-        --         end,
-        --         desc = "LocMenuSave",
-        --     },
-        -- },
+        -- "native" is the plugin's default view.
         opts = {},
     },
-    -- tabby.nvim: custom tabline renderer integrating lvim-space workspace info
-    tabby_nvim = {
-        opts = function()
-            local tabby_module_api_status_ok, tabby_module_api = pcall(require, "tabby.module.api")
-            if not tabby_module_api_status_ok then
-                return
-            end
-            local tabby_future_win_name_status_ok, tabby_future_win_name = pcall(require, "tabby.feature.win_name")
-            if not tabby_future_win_name_status_ok then
-                return
-            end
-            ---Safely fetch the lvim-space tab/workspace/project metadata.
-            ---Returns a safe empty structure when lvim-space is not loaded.
-            ---@return { project_name: string|nil, workspace_name: string|nil, tabs: table[] }
-            local get_lvim_space_tabs = function()
-                local pub_status_ok, pub = pcall(require, "lvim-space.pub")
-                if pub_status_ok then
-                    return pub.get_tab_info()
-                else
-                    return { project_name = nil, workspace_name = nil, tabs = {} }
-                end
-            end
-            ---Build the list of tabline component descriptors for tabby.
-            ---Renders: vim logo → open windows (skipping excluded filetypes) →
-            ---spacer → lvim-space tabs → workspace name → project name.
-            ---@return table[]  Tabby component list
-            local components = function()
-                local c = require("lvim-colorscheme").colors
-                if not c then
-                    return {}
-                end
-                -- Filetypes whose windows should be omitted from the tabline display.
-                local exclude = {
-                    "ctrlspace",
-                    "ctrlspace_help",
-                    "packer",
-                    "undotree",
-                    "diff",
-                    "Outline",
-                    "LvimHelper",
-                    "floaterm",
-                    "toggleterm",
-                    "dashboard",
-                    "vista",
-                    "spectre_panel",
-                    "DiffviewFiles",
-                    "flutterToolsOutline",
-                    "log",
-                    "qf",
-                    "dapui_scopes",
-                    "dapui_breakpoints",
-                    "dapui_stacks",
-                    "dapui_watches",
-                    "dapui_console",
-                    "dap-repl",
-                    "calendar",
-                    "octo",
-                    "neo-tree",
-                    "neo-tree-popup",
-                    "netrw",
-                }
-                local comps = {
-                    {
-                        type = "text",
-                        text = {
-                            " " .. icons.common.vim .. " ",
-                            hl = {
-                                bg = c.green,
-                                fg = c.bg_dark,
-                                style = "bold",
-                            },
-                        },
-                    },
-                }
-                local current_tab = vim.api.nvim_get_current_tabpage()
-                local wins = tabby_module_api.get_tab_wins(current_tab)
-                local top_win = vim.api.nvim_tabpage_get_win(current_tab)
-                local hl
-                local win_name
-                for _, win_id in ipairs(wins) do
-                    local ft = vim.api.nvim_get_option_value("filetype", { buf = vim.api.nvim_win_get_buf(win_id) })
-                    win_name = tabby_future_win_name.get(win_id, { mode = "unique" })
-                    if not vim.tbl_contains(exclude, ft) then
-                        if win_id == top_win then
-                            hl = { bg = c.green, fg = c.bg_dark, style = "bold" }
-                        else
-                            hl = { bg = c.bg_dark, fg = c.green, style = "bold" }
-                        end
-                        table.insert(comps, {
-                            type = "win",
-                            winid = win_id,
-                            label = {
-                                "  " .. win_name .. "  ",
-                                hl = hl,
-                            },
-                            right_sep = { "", hl = { bg = c.bg_dark, fg = c.bg_dark } },
-                        })
-                    end
-                end
-                table.insert(comps, {
-                    type = "text",
-                    text = { "%=" },
-                    hl = { bg = c.bg_dark, fg = c.bg_dark },
-                })
-                local lvim_data = get_lvim_space_tabs()
-                if lvim_data.tabs and #lvim_data.tabs > 0 then
-                    for _, tab in ipairs(lvim_data.tabs) do
-                        if tab.active then
-                            hl = { bg = c.green, fg = c.bg_dark, style = "bold" }
-                        else
-                            hl = { bg = c.bg_dark, fg = c.green, style = "bold" }
-                        end
-                        table.insert(comps, {
-                            type = "text",
-                            text = {
-                                "  " .. tab.name .. "  ",
-                                hl = hl,
-                            },
-                        })
-                    end
-                end
-                if
-                    lvim_data.workspace_name
-                    and lvim_data.workspace_name ~= "Unknown"
-                    and lvim_data.workspace_name ~= ""
-                then
-                    table.insert(comps, {
-                        type = "text",
-                        text = {
-                            "  " .. lvim_data.workspace_name .. "  ",
-                            hl = {
-                                bg = c.orange,
-                                fg = c.bg_dark,
-                                style = "bold",
-                            },
-                        },
-                    })
-                end
-                if lvim_data.project_name and lvim_data.project_name ~= "Unknown" and lvim_data.project_name ~= "" then
-                    table.insert(comps, {
-                        type = "text",
-                        text = {
-                            "  " .. lvim_data.project_name .. "  ",
-                            hl = {
-                                bg = c.red,
-                                fg = c.bg_dark,
-                                style = "bold",
-                            },
-                        },
-                    })
-                end
-                return comps
-            end
-            return {
-                components = components,
-            }
-        end,
-    },
-    -- dial.nvim: smart increment/decrement for numbers, dates, booleans, and operators
-    dial_nvim = {
-        keys = {
-            {
-                "<C-a>",
-                "<Plug>(dial-increment)",
-                desc = "Dial Increment",
-                mode = { "n", "v" },
-            },
-            {
-                "<C-x>",
-                "<Plug>(dial-decrement)",
-                desc = "Dial Decrement",
-                mode = { "n", "v" },
-            },
-        },
+    -- lvim-cycle: smart increment/decrement for numbers, dates, booleans, and operators.
+    -- Default keys: <C-a>/<C-x> (normal + visual) plus g<C-a>/g<C-x> (visual sequential renumbering).
+    lvim_cycle = {
         config = function()
-            local dial_config_status_ok, dial_config = pcall(require, "dial.config")
-            if not dial_config_status_ok then
-                return
-            end
-            local dial_augend_status_ok, dial_augend = pcall(require, "dial.augend")
-            if not dial_augend_status_ok then
-                return
-            end
-            dial_config.augends:register_group({
-                default = {
-                    dial_augend.integer.alias.decimal,
-                    dial_augend.integer.alias.hex,
-                    dial_augend.date.alias["%Y/%m/%d"],
-                    dial_augend.constant.new({
-                        elements = { "true", "false" },
-                        word = true,
-                        cyclic = true,
-                    }),
-                    dial_augend.constant.new({
-                        elements = { "True", "False" },
-                        word = true,
-                        cyclic = true,
-                    }),
-                    dial_augend.constant.new({
-                        elements = { "and", "or" },
-                        word = true,
-                        cyclic = true,
-                    }),
-                    dial_augend.constant.new({
-                        elements = { "&&", "||" },
-                        word = false,
-                        cyclic = true,
-                    }),
+            require("lvim-cycle").setup({
+                groups = {
+                    -- "int" covers decimal AND hex; preserve_case (on by default) covers the
+                    -- True/False variant.
+                    default = {
+                        "int",
+                        { kind = "date", patterns = { "%Y/%m/%d" } },
+                        { elements = { "true", "false" } },
+                        { elements = { "and", "or" } },
+                        { elements = { "&&", "||" }, word = false },
+                    },
                 },
             })
         end,
@@ -1236,478 +155,259 @@ return {
     lvim_move = {
         opts = {},
     },
-    -- kulala.nvim: HTTP client for .http / .rest files
-    kulala_nvim = {
+    -- lvim-comment: smart line and block commenting — gc{motion}/gcc, gb{motion}/gbb,
+    -- visual gc/gb, plus gco/gcO/gcA, with the commentstring resolved per position via
+    -- treesitter (embedded languages, jsx).
+    lvim_comment = {
         config = function()
-            require("kulala").setup({
-                global_keymaps = true,
-                icons = {
-                    inlay = {
-                        loading = icons.common.hourglass,
-                        done = icons.common.todo,
-                        error = icons.common.warning,
-                    },
-                    lualine = icons.common.separator,
-                    textHighlight = "WarningMsg",
-                },
-            })
+            require("lvim-comment").setup({})
         end,
     },
-    -- flow.nvim: run selected code or entire files in a split terminal
-    flow_nvim = {
-        cmd = { "FlowRunSelected", "FlowRunFile", "FlowLauncher" },
-        keys = {
-            {
-                "<Leader>lls",
-                ":FlowRunSelected<CR>",
-                mode = "x",
-                desc = "Flow run selected",
-            },
-            {
-                "<Leader>llf",
-                ":FlowRunFile<CR>",
-                desc = "Flow run file",
-            },
-            {
-                "<Leader>lll",
-                ":FlowLauncher<CR>",
-                desc = "Flow launcher",
-            },
-        },
-        opts = {
-            output = {
-                buffer = true,
-                split_cmd = "80vsplit",
-            },
-            filetype_cmd_map = {
-                lua = "lua <<-EOF\n%s\nEOF",
-                python = "python <<-EOF\n%s\nEOF",
-                ruby = "ruby <<-EOF\n%s\nEOF",
-                bash = "bash <<-EOF\n%s\nEOF",
-                sh = "sh <<-EOF\n%s\nEOF",
-                scheme = "scheme <<-EOF\n%s\nEOF",
-                javascript = "node <<-EOF\n%s\nEOF",
-                typescript = "node <<-EOF\n%s\nEOF",
-                go = "go run .",
-            },
-        },
-    },
-    -- transfer.nvim: upload/download files to/from remote servers via rsync/scp
-    transfer_nvim = {
-        cmd = {
-            "TransferInit",
-            "DiffRemote",
-            "TransferUpload",
-            "TransferDownload",
-            "TransferDirDiff",
-            "TransferRepeat",
-        },
-        keys = {
-            {
-                "<Leader>ti",
-                "<cmd>TransferInit<cr>",
-                desc = "Transfer Init",
-            },
-            {
-                "<Leader>tf",
-                "<cmd>DiffRemote<cr>",
-                desc = "Diff Remote",
-            },
-            {
-                "<Leader>tF",
-                "<cmd>TransferDirDiff<cr>",
-                desc = "Transfer Dir Diff",
-            },
-            {
-                "<Leader>tu",
-                "<cmd>TransferUpload<cr>",
-                desc = "Transfer Upload",
-            },
-            {
-                "<Leader>td",
-                "<cmd>TransferDownload<cr>",
-                desc = "Transfer Download",
-            },
-            {
-                "<Leader>tr",
-                "<cmd>TransferDownload<cr>",
-                desc = "Transfer Download",
-            },
-        },
-        opts = {},
-    },
-    -- compiler.nvim: one-key compilation for many languages using overseer tasks
-    compiler_nvim = {
-        cmd = {
-            "CompilerOpen",
-            "CompilerToggleResults",
-            "CompilerRedo",
-        },
-        keys = {
-            {
-                "<Leader>oo",
-                "<cmd>CompilerOpen<cr>",
-                desc = "Compiler Open",
-            },
-            {
-                "<Leader>og",
-                "<cmd>CompilerToggleResults<cr>",
-                desc = "Compiler Toggle Results",
-            },
-            {
-                "<Leader>od",
-                "<cmd>CompilerRedo<cr>",
-                desc = "Compiler Redo",
-            },
-        },
-        opts = {},
-    },
-    -- overseer.nvim: task runner with DAP integration and template system
-    overseer_nvim = {
-        cmd = { "OverseerRun", "OverseerToggle", "OverseerShell", "OverseerTaskAction" },
-        keys = {
-            {
-                "<Leader>or",
-                ":OverseerRun<CR>",
-                desc = "Overseer Run",
-            },
-            {
-                "<Leader>ot",
-                ":OverseerToggle<CR>",
-                desc = "Overseer Toggle",
-            },
-            {
-                "<Leader>os",
-                ":OverseerShell<CR>",
-                desc = "Overseer Shell",
-            },
-            {
-                "<Leader>oa",
-                ":OverseerTaskAction<CR>",
-                desc = "Overseer Task Action",
-            },
-        },
-        opts = function()
-            local overseer_status_ok, overseer = pcall(require, "overseer")
-            if not overseer_status_ok then
-                return
-            end
-            -- Scan the project-local overseer templates directory and register each
-            -- template exactly once, guarding against duplicate registrations.
-            local path = vim.fn.stdpath("config") .. "/.configs/overseer"
-            ---@type table<string, boolean>  Names already registered this session
-            local registered_names = {}
-            for _, file in ipairs(vim.fn.globpath(path, "*.lua", false, true)) do
-                local ok, tmpl = pcall(dofile, file)
-                if ok and type(tmpl) == "table" and tmpl.name then
-                    if not registered_names[tmpl.name] then
-                        overseer.register_template(tmpl)
-                        registered_names[tmpl.name] = true
-                    end
-                end
-            end
-            vim.api.nvim_create_user_command("OverseerRun", function()
-                overseer.run_template({}, function(task)
-                    if task then
-                        vim.defer_fn(function()
-                            overseer.open({ enter = false })
-                        end, 100)
-                    else
-                        vim.notify("No task created", vim.log.levels.WARN)
-                    end
-                end)
-            end, {})
-            return {
-                dap = true,
-                output = {
-                    use_terminal = true,
-                    preserve_output = false,
-                },
-            }
-        end,
-    },
-    -- grug-far.nvim: interactive find-and-replace backed by ripgrep
-    grug_far_nvim = {
-        cmd = { "GrugFar" },
-        keys = {
-            {
-                "<A-s>",
-                ":GrugFar<CR>",
-                desc = "GrugFar",
-            },
-        },
-        opts = {
-            keymaps = {
-                replace = { n = "<localleader>er" },
-                qflist = { n = "<localleader>eq" },
-                syncLocations = { n = "<localleader>es" },
-                syncLine = { n = "<localleader>el" },
-                close = { n = "<localleader>ec" },
-                historyOpen = { n = "<localleader>et" },
-                historyAdd = { n = "<localleader>ea" },
-                refresh = { n = "<localleader>ef" },
-                gotoLocation = { n = "<enter>" },
-                pickHistoryEntry = { n = "<enter>" },
-            },
-        },
-    },
-    -- replacer.nvim: edit quickfix entries in-place to do project-wide renames
-    replacer_nvim = {
-        cmd = { "ReplacerRun", "ReplacerSave" },
-        keys = {
-            {
-                "dr",
-                "<cmd>ReplacerRun<cr>",
-                mode = "n",
-                desc = "Replacer run",
-            },
-            {
-                "dR",
-                "<cmd>ReplacerSave<cr>",
-                mode = "n",
-                desc = "Replacer save",
-            },
-        },
-        opts = function()
-            local replacer_status_ok, replacer = pcall(require, "replacer")
-            if not replacer_status_ok then
-                return
-            end
-            ---@type table  Options forwarded to replacer.run() and replacer.save()
-            local opts = { rename_files = true, save_on_write = true }
-            vim.api.nvim_create_user_command("ReplacerRun", function()
-                replacer.run(opts)
-            end, { desc = "Run the replacer" })
-            vim.api.nvim_create_user_command("ReplacerSave", function()
-                replacer.save(opts)
-            end, { desc = "Save the replacer state" })
-            return {}
-        end,
-    },
-    -- Comment.nvim: smart line and block commenting (gcc / gbc)
-    comment_nvim = {
-        opts = {},
-    },
-    -- vim-bufsurf: navigate the per-window buffer history (like browser back/forward)
-    vim_bufsurf = {
+    -- lvim-buf-history: navigate the per-window buffer history (like browser
+    -- back/forward) — <C-n>/<C-p>.
+    lvim_buf_history = {
         config = function()
-            vim.keymap.set("n", "<C-n>", function()
-                vim.cmd("BufSurfForward")
-            end, { noremap = true, silent = true, desc = "BufSurfForward" })
-            vim.keymap.set("n", "<C-p>", function()
-                vim.cmd("BufSurfBack")
-            end, { noremap = true, silent = true, desc = "BufSurfBack" })
+            require("lvim-buf-history").setup({})
+            -- <C-n> / <C-p> buffer-history keys live in the central manifest (modules/base/keys.lua).
         end,
     },
-    -- neogen: generate documentation annotations (JSDoc, EmmyLua, etc.) via LuaSnip
-    neogen = {
-        cmd = { "NeogenFile", "NeogenClass", "NeogenFunction", "NeogenType" },
-        opts = function()
-            vim.api.nvim_create_user_command("NeogenFile", "lua require('neogen').generate({ type = 'file' })", {})
-            vim.api.nvim_create_user_command("NeogenClass", "lua require('neogen').generate({ type = 'class' })", {})
-            vim.api.nvim_create_user_command("NeogenFunction", "lua require('neogen').generate({ type = 'func' })", {})
-            vim.api.nvim_create_user_command("NeogenType", "lua require('neogen').generate({ type = 'type' })", {})
-            return {
-                snippet_engine = "luasnip",
-            }
-        end,
-    },
-    -- ccc.nvim: interactive color picker with alpha support and virtual symbol preview
-    ccc_nvim = {
-        cmd = { "CccPick" },
+    -- lvim-color-picker: slider picker + converter + inline highlighter, on <C-c>r.
+    lvim_color_picker = {
+        cmd = { "LvimColorPicker" },
         keys = {
             {
                 "<C-c>r",
-                "<cmd>CccPick<cr>",
+                "<cmd>LvimColorPicker<cr>",
                 mode = "n",
                 desc = "ColorPicker",
             },
         },
-        opts = {
-            alpha_show = "show",
-            highlight_mode = "virtual",
-            virtual_symbol = " ● ",
-        },
-    },
-    -- nvim-highlight-colors: render hex/rgb/tailwind color swatches as virtual text
-    nvim_highlight_colors = {
-        opts = {
-            render = "virtual",
-            virtual_symbol = "●",
-            enable_tailwind = true,
-            exclude_buftypes = { "nofile" },
-        },
-    },
-    -- flash.nvim: enhanced motions with jump labels; overrides f/t/F/T and adds
-    -- dedicated jump, treesitter, search, and remote-operator modes.
-    flash_nvim = {
-        keys = function()
-            ---@type table[]  Key specs generated for each f/t/F/T motion
-            local motion_keys = {}
-            -- Override the built-in character motions so they show flash jump labels.
-            for _, motion in ipairs({ "f", "t", "F", "T" }) do
-                table.insert(motion_keys, {
-                    motion,
-                    function()
-                        require("flash").jump({
-                            mode = "char",
-                            search = {
-                                mode = require("flash.plugins.char").mode(motion),
-                                max_length = 1,
-                            },
-                        }, require("flash.plugins.char").motions[motion])
-                    end,
-                    mode = { "n", "x", "o" },
-                    desc = "Flash " .. motion,
-                })
-            end
-            -- Additional non-motion flash bindings (jump, treesitter, search, remote).
-            local other_keys = {
-                {
-                    "<C-c>.",
-                    function()
-                        require("flash").jump()
-                    end,
-                    mode = { "n", "x", "o" },
-                    desc = "Flash Jump",
-                },
-                {
-                    "<C-c>,",
-                    function()
-                        require("flash").treesitter()
-                    end,
-                    mode = { "n", "x", "o" },
-                    desc = "Flash Treesitter",
-                },
-                {
-                    -- Jump to any word boundary in the buffer using a two-pass label scheme:
-                    -- first jump selects a label group, second jump picks within that group.
-                    "<C-c>;",
-                    function()
-                        require("flash").jump({
-                            search = { mode = "search" },
-                            label = { after = false, before = { 0, 0 }, uppercase = false },
-                            -- Match start (\<) and end (\>) of any word.
-                            pattern = [[\<\|\>]],
-                            action = function(match, state)
-                                state:hide()
-                                require("flash").jump({
-                                    search = { max_length = 0 },
-                                    label = { distance = false },
-                                    highlight = { matches = false },
-                                    matcher = function(win)
-                                        return vim.tbl_filter(function(m)
-                                            return m.label == match.label and m.win == win
-                                        end, state.results)
-                                    end,
-                                })
-                            end,
-                            labeler = function(matches, state)
-                                local labels = state:labels()
-                                for m, match in ipairs(matches) do
-                                    match.label = labels[math.floor((m - 1) / #labels) + 1]
-                                end
-                            end,
-                        })
-                    end,
-                    mode = { "n", "x", "o" },
-                    desc = "Flash Search",
-                },
-                {
-                    "r",
-                    function()
-                        require("flash").remote()
-                    end,
-                    mode = "o",
-                    desc = "Flash Remote",
-                },
-            }
-            return vim.list_extend(motion_keys, other_keys)
-        end,
-        opts = {
-            search = {
-                exclude = {
-                    "notify",
-                    "noice",
-                    "cmp_menu",
-                    function(win)
-                        return not vim.api.nvim_win_get_config(win).focusable
-                    end,
-                },
-            },
-            modes = {
-                char = {
-                    enabled = true,
-                },
-            },
-        },
-    },
-    -- todo-comments.nvim: highlight and search TODO/FIXME/HACK/NOTE comments
-    todo_comments_nvim = {
-        opts = function()
-            local lcs = require("lvim-colorscheme").colors or {}
-            return {
-                keywords = {
-                    FIX = {
-                        icon = icons.common.fix,
-                        color = lcs.red,
-                        alt = { "FIX", "FIXME", "BUG" },
-                    },
-                    TODO = { icon = icons.common.todo, color = lcs.blue, alt = { "TODO" } },
-                    HACK = { icon = icons.common.hack, color = lcs.red, alt = { "HACK" } },
-                    WARN = { icon = icons.common.warning, color = lcs.orange, alt = { "WARNING" } },
-                    PERF = {
-                        icon = icons.common.performance,
-                        color = lcs.orange,
-                        alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" },
-                    },
-                    NOTE = { icon = icons.common.note, color = lcs.blue, alt = { "INFO" } },
-                    TEST = {
-                        icon = icons.common.test,
-                        color = lcs.cyan,
-                        alt = { "TEST", "TESTING", "PASSED", "FAILED" },
-                    },
-                },
-                highlight = {
-                    before = "fg",
-                    keyword = "fg",
-                    after = "fg",
-                },
-            }
-        end,
-    },
-    -- calendar-vim: calendar view integrated with an Org-mode diary
-    calendar_vim = {
-        cmd = { "Calendar", "CalendarH", "CalendarVR", "CalendarT", "CalendarSearch" },
-        keys = {
-            {
-                "<Leader>ch",
-                "<cmd>CalendarH<cr>",
-                mode = "n",
-                desc = "Calendar horizontal",
-            },
-            {
-                "<Leader>cv",
-                "<cmd>CalendarVR<cr>",
-                mode = "n",
-                desc = "Calendar vertical",
-            },
-        },
         config = function()
-            -- Configure the calendar to write diary entries as .org files under ~/Org/diary/.
-            vim.g.calendar_diary_extension = ".org"
-            vim.g.calendar_diary = "~/Org/diary/"
-            vim.g.calendar_diary_path_pattern = "{YYYY}-{MM}-{DD}{EXT}"
-            -- Start the week on Monday (1 = Monday, 0 = Sunday).
-            vim.g.calendar_monday = 1
-            -- Show ISO week numbers in the calendar view.
-            vim.g.calendar_weeknm = 1
-            -- Remove calendar-vim's default <Leader>cal / <Leader>caL bindings to
-            -- avoid collisions with LVIM mappings.
-            vim.keymap.del("n", "<Leader>cal")
-            vim.keymap.del("n", "<Leader>caL")
+            require("lvim-color-picker").setup({
+                -- Inline swatches on demand: toggle the highlighter with
+                -- :LvimColorPicker highlight (auto list empty = off by default).
+                highlighter = { auto = {} },
+            })
+        end,
+    },
+    -- lvim-jump: label-based motions — enhanced f/t/F/T char motions (multi-line,
+    -- labeled, with the ;/, repeat loop), the live-search jump mode, treesitter node
+    -- selection and the operator-pending remote jump.
+    lvim_jump = {
+        config = function()
+            require("lvim-jump").setup({
+                -- Keep the historical lhs (<C-c>. / <C-c>, instead of the default s / S);
+                -- "r" in operator-pending matches the old remote key.
+                mappings = {
+                    jump = false,
+                    ts = false,
+                    -- (`remote = "r"` is the plugin's default — not restated here.)
+                },
+            })
+            -- <C-c>. / <C-c>; / <C-c>, jump keys (n/x/o) live in the central manifest (modules/base/keys.lua).
+        end,
+    },
+    -- lvim-search: a counter beside every visible search match — [1/12] on the one the cursor is
+    -- heading for, [2]/[3] on the rest, and the nearest match painted above 'hlsearch'. It takes
+    -- NO mappings: it watches v:hlsearch from a decoration provider, so n/N/*/#// stay untouched.
+    lvim_search = {
+        config = function()
+            require("lvim-search").setup({})
+        end,
+    },
+    -- lvim-calendar: month/quarter/year/agenda calendar. The Org diary under ~/Org/diary/
+    -- plugs in as a SOURCE: existing entries decorate their days and show in the agenda;
+    -- `i` on a day opens (creates) that day's file.
+    lvim_calendar = {
+        config = function()
+            local calendar = require("lvim-calendar")
+            calendar.setup({
+                -- Monday-first is the plugin's default; only the ISO week column is ours.
+                week_numbers = true,
+            })
+            -- The diary is a YEAR/MONTH/DAY tree — `~/Org/diary/2026/01/16.org`, the orgmode layout — so the
+            -- date comes from the PATH, not from the file name. (A flat `YYYY-MM-DD.org` glob found nothing.)
+            local diary_dir = vim.fn.expand("~/Org/diary")
+            --- The file for a date, and the date for a file — the one place the layout is spelled out.
+            local function diary_file(date) -- "2026-01-16" → ~/Org/diary/2026/01/16.org
+                local y, m, d = date:match("^(%d%d%d%d)-(%d%d)-(%d%d)$")
+                return y and ("%s/%s/%s/%s.org"):format(diary_dir, y, m, d) or nil
+            end
+            local function diary_date(file) -- the reverse, from the path's last three components
+                local y, m, d = file:match("(%d%d%d%d)/(%d%d)/(%d%d)%.org$")
+                return y and ("%s-%s-%s"):format(y, m, d) or nil
+            end
+            calendar.register_source({
+                name = "org-diary",
+                icon = "\u{f00ba}", -- nf-md-book_open_variant (verified single width; it was an EMPTY string)
+                accent = "green",
+                get = function(range)
+                    local entries = {}
+                    for _, file in ipairs(vim.fn.glob(diary_dir .. "/**/*.org", false, true)) do
+                        local date = diary_date(file)
+                        if date and date >= range.from and date <= range.to then
+                            -- The entry's title is the file's first org heading, when it has one.
+                            local title = "Diary"
+                            local ok, lines = pcall(vim.fn.readfile, file, "", 20)
+                            if ok then
+                                for _, l in ipairs(lines) do
+                                    local head = l:match("^%*+%s+(.+)$")
+                                    if head then
+                                        title = head
+                                        break
+                                    end
+                                end
+                            end
+                            entries[#entries + 1] = { date = date, title = title, file = file, line = 1 }
+                        end
+                    end
+                    return entries
+                end,
+                on_create = function(date)
+                    local file = diary_file(date)
+                    if not file then
+                        return
+                    end
+                    vim.fn.mkdir(vim.fn.fnamemodify(file, ":h"), "p") -- the YEAR/MONTH dirs may not exist yet
+                    vim.cmd.edit(file)
+                end,
+            })
+            -- A saved diary file must invalidate the source cache so its day decorates.
+            vim.api.nvim_create_autocmd("BufWritePost", {
+                pattern = diary_dir .. "/*/*/*.org",
+                callback = function()
+                    calendar.refresh("org-diary")
+                end,
+            })
+            -- Calendar keys live in the central keymap manifest: modules/base/keys.lua → <Leader>oc / <Leader>oC.
+        end,
+    },
+    -- lvim-table: per-buffer table mode — realign as you edit, row/column operations,
+    -- cell text objects/motions, tableize and formulas.
+    lvim_table = {
+        config = function()
+            require("lvim-table").setup({
+                -- Buffer-local <leader>t* operation keys while table mode is on
+                -- (mode-scoped maps).
+                map_default_keys = true,
+            })
+            -- Table toggle lives in the central keymap manifest: modules/base/keys.lua → <Leader>ct.
+        end,
+    },
+    -- lvim-tasks: the task runner (panel + preview + filters + history). The old task
+    -- keys live on: <Leader>or run (template chooser), <Leader>ot toggle the panel,
+    -- <Leader>os open the panel, <Leader>oa history.
+    lvim_tasks = {
+        config = function()
+            require("lvim-tasks").setup({})
+            -- Tasks keys live in the central keymap manifest: modules/base/keys.lua → <Leader>r* (Run / Test / Tasks).
+        end,
+    },
+    -- lvim-build: detected project/file actions (Build/Run/Test/Bench/Lint), running
+    -- through lvim-tasks. The old compile keys live on: <Leader>oo chooser,
+    -- <Leader>og show the redo target, <Leader>od redo.
+    lvim_build = {
+        config = function()
+            require("lvim-build").setup({})
+            -- Build keys live in the central keymap manifest: modules/base/keys.lua → <Leader>r* (Run / Test / Tasks).
+        end,
+    },
+    -- lvim-test: granular test runner — discovers tests via treesitter and runs
+    -- the nearest/file/suite through lvim-tasks with streaming per-test results.
+    lvim_test = {
+        config = function()
+            require("lvim-test").setup({})
+            -- Test keys live in the central keymap manifest: modules/base/keys.lua → <Leader>r* (Run / Test / Tasks).
+        end,
+    },
+    -- lvim-remote: upload/download/diff/sync project files over ssh/rsync (targets in
+    -- .lvim/remote.lua). The old transfer keys live on under <Leader>t*.
+    lvim_remote = {
+        config = function()
+            require("lvim-remote").setup({})
+            -- Remote keys live in the central keymap manifest: modules/base/keys.lua → <Leader>f* (Files / Remote).
+        end,
+    },
+    -- lvim-rest: the in-editor REST/HTTP client — `.http` / `.rest` documents, environments, the
+    -- variable system (document / prompt / dynamic / `{{vault}}`) and request chaining, with the
+    -- response in a dock (body / headers / stats / verbose) plus history. Requests run through the
+    -- native `lvim-rest-core` daemon when it has been built (`sh core/build.sh` in the plugin), and
+    -- fall back to curl otherwise — `:checkhealth lvim-rest` reports which engine is live.
+    lvim_rest = {
+        config = function()
+            require("lvim-rest").setup({})
+            -- Launcher keys live in the central keymap manifest: modules/base/keys.lua → <Leader>o*.
+        end,
+    },
+    -- lvim-preview: live browser preview of Markdown / org with hot reload as you type, served by the
+    -- plugin's OWN pure-Lua libuv HTTP + WebSocket server. Both parsers are the plugin's own; KaTeX,
+    -- Mermaid and highlight.js are vendored, so the page never makes an external request.
+    lvim_preview = {
+        config = function()
+            -- How the preview should be reachable from OTHER devices:
+            --   "off"    — loopback only (safest): only this machine's browser can open it.
+            --   "lan"    — bind the whole LAN so a phone / tablet on the SAME Wi-Fi can open it.
+            --   "tunnel" — stay loopback; the plugin runs a tunnel command, captures the PUBLIC URL it
+            --              prints, and drops it straight into the QR — no copy-paste, works from anywhere.
+            local expose = "tunnel"
+            require("lvim-preview").setup({
+                -- Loopback unless we deliberately open the LAN.
+                address = expose == "lan" and "0.0.0.0" or "127.0.0.1",
+                -- Whenever the preview is reachable from outside, lock the server to ONLY the files you
+                -- actually preview plus the images they embed — NEVER the whole project tree (no source,
+                -- no .env / .git). On loopback the full tree is fine, so keep the default there.
+                serve = expose == "off" and "root" or "documents",
+                serve_hidden = expose == "off", -- hide dotfiles once exposed
+                -- The preview opens in qutebrowser rather than whatever `xdg-open` decides. Named
+                -- explicitly because the system default is a moving target — it changes with a
+                -- desktop-file update or a "make X your default browser" prompt — and a preview that
+                -- silently lands in a different browser than the one you read in is confusing rather
+                -- than wrong. An argv LIST, not a string: it reaches `vim.system` verbatim, so no
+                -- shell splits a path.
+                browser = { "qutebrowser" },
+                -- Let a viewer PAGE talk back to its producer. Needed for both inbound directions of
+                -- the PDF page: ctrl-click inverse search (jump the cursor to the source of what you
+                -- clicked) and the scroll link (scrolling the PDF moves the source with it — see
+                -- lvim-tex's `synctex.follow_back`). Without it the page is one-way and both do
+                -- nothing at all.
+                --
+                -- IT IS A REAL RELAXATION, and worth knowing while `expose` is "tunnel": the gate is
+                -- per-connection, not per-device, so ANY client holding the URL may send those
+                -- frames. What they can do is bounded — a producer only acts on shapes it registered
+                -- a handler for, and lvim-tex's handler only scrolls or moves the cursor inside TeX
+                -- buffers that are already open — but a stranger with the tunnel URL could move your
+                -- view. Set `expose = "off"` (loopback only) if that matters more than the link.
+                artifact = { allow_client_messages = true },
+                -- Auto-tunnel: on start the plugin spawns the command, scrapes the public URL it prints,
+                -- and advertises it (QR / status). Default provider is localhost.run (zero-install,
+                -- anonymous). To use ANOTHER provider, set cmd + url_pattern here — a few that print
+                -- their URL to stdout/stderr and so work out of the box:
+                --   serveo:      cmd = { "ssh", "-R", "80:localhost:{port}", "serveo.net" },
+                --                url_pattern = "https://[%w.%-]+%.serveo%.net"
+                --   cloudflared: cmd = { "cloudflared", "tunnel", "--url", "http://localhost:{port}" },
+                --                url_pattern = "https://[%w.%-]+%.trycloudflare%.com"
+                -- (`{port}` is replaced with the real bound port. ngrok prints its URL only to a TUI /
+                --  its local API, not stdout, so it needs a different scrape — ask if you want that.)
+                -- tunnel = { enabled = expose == "tunnel" },
+                -- An exposed start announces itself (warning + reachable URL) and pops a scannable QR,
+                -- so a phone opens the preview without typing an IP. :LvimPreview qr shows it any time.
+                lan = { warn = true, qr = true },
+            })
+            -- Launcher keys live in the central keymap manifest: modules/base/keys.lua → <Leader>o*.
+        end,
+    },
+    -- lvim-render: in-buffer decorated rendering of markdown (and org, once its grammar is
+    -- reachable) — heading bands, list glyphs, code-block bands with the block's own language
+    -- highlighted, tables, folding by heading. UNDER CONSTRUCTION: wired now so it takes effect as
+    -- each phase lands; a pcall keeps a half-built state from breaking startup.
+    lvim_render = {
+        config = function()
+            local ok, render = pcall(require, "lvim-render")
+            if ok then
+                pcall(render.setup, {})
+            end
         end,
     },
 }
 
--- vim: foldmethod=indent foldlevel=1
+-- vim: foldmethod=indent foldlevel=15

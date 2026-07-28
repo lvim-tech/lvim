@@ -1,31 +1,8 @@
--- Editor-aware utilities: Helm file detection and Treesitter-based comment removal.
+-- Editor-aware utilities: Treesitter-based comment removal.
+-- (Helm detection moved to `vim.filetype.add` in configs/base/init.lua — detection is Neovim's own
+-- mechanism, not something to fix up afterwards with an autocmd.)
 ---@module "core.funcs.editor"
 local M = {}
-
--- Returns true when the current buffer is a Helm template file.
--- Detection is based on path patterns (templates/ directory, .gotmpl extension,
--- helmfile prefix) rather than file extension alone, since Helm files use .yaml.
----@return boolean  True if the buffer looks like a Helm template
-M.is_helm = function()
-    local filepath = vim.fn.expand("%:p")
-    local filename = vim.fn.expand("%:t")
-    -- Files inside a chart's templates/ directory are always Helm
-    if
-        string.match(filepath, ".+/templates/.+%.yaml$")
-        or string.match(filepath, ".+/templates/.+%.yml$")
-        or string.match(filepath, ".+/templates/.+%.tpl$")
-        or string.match(filepath, ".+/templates/.+%.txt$")
-    then
-        return true
-    end
-    if string.match(filename, ".+%.gotmpl$") then
-        return true
-    end
-    if string.match(filename, "helmfile.+%.yaml$") or string.match(filename, "helmfile.+%.yml$") then
-        return true
-    end
-    return false
-end
 
 -- Removes all comments from the current buffer using Treesitter queries.
 -- Whole-line comments are deleted entirely; inline comments are excised in-place.

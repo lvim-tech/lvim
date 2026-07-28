@@ -1,22 +1,8 @@
--- UI utilities: keymap registration, float window management, and the
--- interactive command-output REPL window.
+-- UI utilities: float window management and the interactive command-output window.
+-- (Keymap registration lived here until the keymap MANIFEST took it over — the manifest's
+-- applier sets every mapping itself, so nothing called it any more.)
 ---@module "core.funcs.ui"
 local M = {}
-
--- Registers a list of keymaps for a given mode.
--- Each entry is a LvimKeymap tuple: { lhs, rhs, desc?, extra_opts? }.
--- Per-keymap opts (element [4]) are merged with the shared opts table,
--- allowing individual keymaps to set flags like { expr = true }.
----@param mode    string|string[]  Vim mode(s) (e.g. "n", {"n","v"})
----@param opts    table            Shared vim.keymap.set options (noremap, silent…)
----@param keymaps LvimKeymap[]    List of keymap tuples
-M.keymaps = function(mode, opts, keymaps)
-    for _, keymap in ipairs(keymaps) do
-        local keymap_opts = vim.tbl_extend("force", opts, keymap[4] or {})
-        keymap_opts.desc = keymap[3] or nil
-        vim.keymap.set(mode, keymap[1], keymap[2], keymap_opts)
-    end
-end
 
 -- Closes all floating windows. Scheduled so it runs after the current event
 -- loop tick — safe to call from keymaps that may themselves be inside a float.
@@ -25,7 +11,10 @@ M.close_float_windows = function()
         for _, win in ipairs(vim.api.nvim_list_wins()) do
             if vim.api.nvim_win_is_valid(win) then
                 local config = vim.api.nvim_win_get_config(win)
-                if config.relative ~= "" then
+                -- Skip managed-UI floats (e.g. the lvim-utils frame / diagnostics peek panels): they mark
+                -- their windows with `w:lvim_frame` and tear themselves down as a unit — closing one of
+                -- their floats out from under them corrupts the UI.
+                if config.relative ~= "" and not vim.w[win].lvim_frame then
                     vim.api.nvim_win_close(win, false)
                 end
             end
@@ -36,35 +25,41 @@ end
 -- Cycles focus through all open floating windows, wrapping around.
 -- _G.LVIM._float_index tracks the current position in the cycle.
 M.focus_float_window = function()
-    local wins = vim.api.nvim_list_wins()
-    local floats = {}
-    local cur_win = vim.api.nvim_get_current_win()
-    for _, win in ipairs(wins) do
-        if vim.api.nvim_win_is_valid(win) then
-            local cfg = vim.api.nvim_win_get_config(win)
-            if cfg.relative ~= "" then
-                table.insert(floats, win)
+    -- Scheduled (like close_float_windows): the trigger key arrives via lvim-keys-helper, which is still
+    -- unwinding its sequence (feedkeys / SafeState) when this fires — defer to the next tick so focus sticks.
+    vim.schedule(function()
+        local floats = {}
+        local cur_win = vim.api.nvim_get_current_win()
+        for _, win in ipairs(vim.api.nvim_list_wins()) do
+            if vim.api.nvim_win_is_valid(win) then
+                local cfg = vim.api.nvim_win_get_config(win)
+                -- Only FOCUSABLE floats: that excludes chrome / transient panels (the lvim-keys-helper
+                -- legend, frame containers) which are non-focusable, and the managed-UI floats marked with
+                -- `w:lvim_frame` (the docked peek). What's left is real content floats — the popup to focus.
+                if cfg.relative ~= "" and cfg.focusable and not vim.w[win].lvim_frame then
+                    table.insert(floats, win)
+                end
             end
         end
-    end
-    if #floats == 0 then
-        vim.notify("No floating windows found", vim.log.levels.INFO)
-        return
-    end
-    -- Find where we currently are in the float list, then advance by one
-    local cur_idx = nil
-    for i, win in ipairs(floats) do
-        if win == cur_win then
-            cur_idx = i
-            break
+        if #floats == 0 then
+            vim.notify("No floating windows found", vim.log.levels.INFO)
+            return
         end
-    end
-    if not cur_idx or cur_idx > #floats then
-        _G.LVIM._float_index = 1
-    else
-        _G.LVIM._float_index = (cur_idx % #floats) + 1
-    end
-    vim.api.nvim_set_current_win(floats[_G.LVIM._float_index])
+        -- Find where we currently are in the float list, then advance by one
+        local cur_idx = nil
+        for i, win in ipairs(floats) do
+            if win == cur_win then
+                cur_idx = i
+                break
+            end
+        end
+        if not cur_idx or cur_idx > #floats then
+            _G.LVIM._float_index = 1
+        else
+            _G.LVIM._float_index = (cur_idx % #floats) + 1
+        end
+        vim.api.nvim_set_current_win(floats[_G.LVIM._float_index])
+    end)
 end
 
 -- Opens a prompt that accepts either a Vim command (prefixed with `:`) or
@@ -133,44 +128,14 @@ M.command_output = function()
             vim.notify("No output from " .. (is_command and "command" or "Lua code"), vim.log.levels.INFO)
             return
         end
-        -- Split output into lines and open a centred, read-only float
-        local buf = vim.api.nvim_create_buf(false, true)
-        vim.bo[buf].bufhidden = "wipe"
-        local lines = {}
-        for line in output:gmatch("([^\n]*)\n?") do
-            table.insert(lines, line)
-        end
-        vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-        local width = math.min(80, vim.o.columns - 4)
-        local height = math.min(#lines + 2, math.max(5, vim.o.lines - 4))
-        local col = math.floor((vim.o.columns - width) / 2)
-        local row = math.floor((vim.o.lines - height) / 2)
-        local opts = {
-            relative = "editor",
-            width = width,
-            height = height,
-            col = col,
-            row = row,
-            style = "minimal",
-            border = "rounded",
-            title = success and " Output: " .. input .. " " or " Error: " .. input .. " ",
-            title_pos = "center",
-        }
-        local win = vim.api.nvim_open_win(buf, true, opts)
-        vim.bo[buf].modifiable = false
-        vim.wo[win].wrap = true
-        vim.wo[win].cursorline = true
-        for _, key in ipairs({ "q", "<Esc>" }) do
-            vim.api.nvim_buf_set_keymap(
-                buf,
-                "n",
-                key,
-                "<cmd>close<CR>",
-                { noremap = true, silent = true, desc = "Close window" }
-            )
-        end
-        vim.api.nvim_buf_set_name(buf, "[Output]")
-        vim.notify("Press 'q' or <Esc> to close the window", vim.log.levels.INFO)
+        -- THE CANONICAL VIEWER, not a hand-rolled float: `lvim-ui.info` is the shared read-only
+        -- panel (frame + border title + `q close` footer + scrolling), so this output looks and
+        -- behaves like every other panel in the editor instead of being a second, unthemed
+        -- implementation of the same window with its own keymaps and sizing math.
+        require("lvim-ui").info(output, {
+            title = (success and "Output: " or "Error: ") .. input,
+            wrap = true,
+        })
     end)
 end
 

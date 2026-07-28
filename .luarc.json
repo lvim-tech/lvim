@@ -7,16 +7,10 @@
         "duplicate-set-field",
         "need-check-nil",
         "missing-fields",
-        "undefined-global",
         "deprecated"
     ],
     "diagnostics.globals": [
         "vim",
-        "use",
-        "packer_plugins",
-        "NOREF_NOERR_TRUNC",
-        "Snacks",
-        "LVIM",
-        "global"
+        "LVIM"
     ]
 }

@@ -20,15 +20,37 @@ M.configs = function()
     end
 end
 
--- Reads the active snapshot name from the cache; returns "default" when unset.
+-- The snapshots directory (version sets + the `active` marker).
+---@return string
+M.snapshot_dir = function()
+    return _G.LVIM.global.lvim_path .. "/.snapshots"
+end
+
+-- Reads the active snapshot name from <snapshot_dir>/active; "default" when unset.
 ---@return string  Active snapshot name
 M.get_snapshot = function()
-    local fs = require("core.funcs.fs")
-    local file_content = fs.read_file(_G.LVIM.global.cache_path .. "/.lvim_snapshot")
-    if type(file_content) == "table" and file_content.snapshot ~= nil then
-        return file_content.snapshot
+    local f = io.open(M.snapshot_dir() .. "/active", "r")
+    if f then
+        local name = (f:read("*a") or ""):gsub("%s+", "")
+        f:close()
+        if name ~= "" then
+            return name
+        end
     end
     return "default"
+end
+
+-- Reads the active version snapshot, decoded ({ plugins = {…}, mason = {…} }), or {}.
+---@return table
+M.read_snapshot = function()
+    local f = io.open(M.snapshot_dir() .. "/" .. M.get_snapshot(), "r")
+    if not f then
+        return {}
+    end
+    local content = f:read("*a")
+    f:close()
+    local ok, data = pcall(vim.json.decode, content)
+    return (ok and type(data) == "table") and data or {}
 end
 
 -- Looks up the pinned commit hash for a plugin in a loaded snapshot table.
@@ -37,10 +59,17 @@ end
 ---@param plugins_snapshot LvimSnapshot|nil Decoded snapshot (from read_file)
 ---@return string|nil                       Commit hash, or nil if not pinned
 M.get_commit = function(plugin, plugins_snapshot)
-    if plugins_snapshot ~= nil and plugins_snapshot[plugin] ~= nil and plugins_snapshot[plugin].commit ~= nil then
-        return plugins_snapshot[plugin].commit
+    if type(plugins_snapshot) ~= "table" then
+        return nil
     end
-    return nil
+    -- A snapshot is `{ plugins = {…}, mason = {…} }`. (The flat lazy-lock shape it used to also
+    -- accept is gone with the lockfile that had it — no backward compatibility.)
+    local plugins = plugins_snapshot.plugins
+    local entry = plugins[plugin]
+    if type(entry) ~= "table" then
+        return nil
+    end
+    return entry.commit or entry.tag or entry.branch or nil
 end
 
 return M

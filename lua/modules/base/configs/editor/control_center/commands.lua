@@ -1,7 +1,9 @@
 -- Commands group for the LVIM Control Center.
--- A list of one-shot actions exposed in the Control Center UI: open Lazy, run
--- Lazy sync, open Mason, and dump highlight groups (:hi). Each entry is an
--- "action" that runs a vim command. Returned as a Control Center group descriptor.
+-- One-shot actions grouped into sections with `spacer` headers (like General / Utils):
+--   Packages    — plugin + tool (LSP/DAP/linters) install and plugin update
+--   System      — dashboard, captured messages / notifications
+--   Diagnostics — the lvim-tech dependency tree and :checkhealth
+-- Each entry is an "action" that runs a vim command when activated.
 
 ---@module "modules.base.configs.editor.control_center.commands"
 
@@ -12,36 +14,68 @@ return {
     label = "Commands",
     icon = icons.common.eval,
     settings = {
+        -- ── package management ────────────────────────────────────────────────
+        { name = "sep_packages", type = "spacer", label = "Packages" },
         {
-            name = "lazy",
-            label = "Lazy",
+            name = "plugins",
+            label = "Plugins",
             type = "action",
             run = function()
-                vim.cmd("Lazy")
+                vim.cmd("LvimInstaller plugins")
             end,
         },
         {
-            name = "lazysync",
-            label = "Lazy sync",
+            name = "packages",
+            label = "Packages (LSP / DAP / Tools)",
             type = "action",
             run = function()
-                vim.cmd("Lazy sync")
+                vim.cmd("LvimInstaller")
             end,
         },
         {
-            name = "mason",
-            label = "Mason",
+            name = "packupdate",
+            label = "Update plugins",
             type = "action",
             run = function()
-                vim.cmd("Mason")
+                vim.pack.update()
+            end,
+        },
+
+        -- ── system ────────────────────────────────────────────────────────────
+        { name = "sep_system", type = "spacer", label = "System" },
+        {
+            name = "dashboard",
+            label = "Dashboard",
+            type = "action",
+            run = function()
+                vim.cmd("LvimDashboard")
             end,
         },
         {
-            name = "colors",
-            label = "Colors",
+            name = "messages",
+            label = "Messages",
             type = "action",
             run = function()
-                vim.cmd("hi")
+                vim.cmd("Messages")
+            end,
+        },
+
+        -- ── diagnostics ───────────────────────────────────────────────────────
+        { name = "sep_diagnostics", type = "spacer", label = "Diagnostics" },
+        {
+            name = "deps",
+            label = "Dependencies",
+            type = "action",
+            run = function()
+                vim.cmd("LvimDeps")
+            end,
+        },
+        {
+            name = "health",
+            label = "Health check",
+            type = "action",
+            run = function()
+                vim.cmd("checkhealth")
             end,
         },
     },

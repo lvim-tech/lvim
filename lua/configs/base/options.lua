@@ -16,8 +16,11 @@ local M = {}
 M.global = function()
     -- vim.g ---------------------------------------------------------------
     -- Disable git-blame virtual text by default; use CursorLine highlight group.
-    vim.g.gitblame_enabled = 0
-    vim.g.gitblame_highlight_group = "CursorLine"
+    -- A `.tex` file with no \documentclass — a chapter, an included preamble fragment — is detected as
+    -- `plaintex`, which is a DIFFERENT language: texlab is wired for `tex`, so such a file would open
+    -- with no LSP at all. Every .tex here is LaTeX; say so once, before filetype detection runs.
+    vim.g.tex_flavor = "latex"
+
     -- netrw: hide the banner, single-level listing, 20-column side window.
     vim.g.netrw_banner = 0
     vim.g.netrw_hide = 1
@@ -56,6 +59,7 @@ M.global = function()
     -- Use the system clipboard for all yank/put operations.
     vim.opt.clipboard = "unnamedplus"
     vim.opt.wildignorecase = true
+    -- (Native wildmenu / search / LSP completion options live in configs/base/native.lua.)
     -- Exclude generated files, binaries and dependency trees from wildmenu.
     vim.opt.wildignore =
         ".git,.hg,.svn,*.pyc,*.o,*.out,*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store,**/node_modules/**,**/bower_modules/**"
@@ -78,13 +82,10 @@ M.global = function()
     -- Fast CursorHold events and plugin refresh (100 ms).
     vim.opt.updatetime = 100
     vim.opt.redrawtime = 1500
-    -- Case-insensitive search unless the pattern contains uppercase letters.
-    vim.opt.ignorecase = true
-    vim.opt.smartcase = true
+    -- Search behaviour (ignorecase/smartcase/incsearch/wrapscan) is set ONCE, in native.lua,
+    -- which owns the native search/completion/diff layer. `infercase` belongs to completion
+    -- and stays here.
     vim.opt.infercase = true
-    vim.opt.incsearch = true
-    -- Wrap around file end when searching.
-    vim.opt.wrapscan = true
     vim.opt.complete = ".,w,b,k"
     -- Show substitution results live without a split window.
     vim.opt.inccommand = "nosplit"
@@ -101,7 +102,8 @@ M.global = function()
     vim.opt.switchbuf = "useopen"
     vim.opt.backspace = "indent,eol,start"
     -- vim.opt.diffopt = "internal,filler,closeoff,indent-heuristic,linematch:60,algorithm:histogram"
-    vim.opt.completeopt = "menu,menuone,noselect"
+    -- (`completeopt` is NOT set here — it belongs to the completion layer and has exactly one owner:
+    --  configs/base/native.lua, where it stays off while lvim-cmp is the engine.)
     -- Use a stack-based jump list so <C-o>/<C-i> behave like a browser.
     vim.opt.jumpoptions = "stack"
     -- Hide the mode indicator (shown by the status line instead).
@@ -112,8 +114,9 @@ M.global = function()
     -- Start with all folds open.
     vim.opt.foldlevelstart = 99
     vim.opt.ruler = false
-    -- Show invisible characters (defined below in listchars).
-    vim.opt.list = true
+    -- Whitespace hidden by default — matches the Control Center "Show whitespace characters"
+    -- toggle (the 'list' option, which defaults to off). Enabling it reveals the glyphs below.
+    vim.opt.list = false
     -- Show the tabline only when there are multiple tabs.
     vim.opt.showtabline = 1
     vim.opt.winwidth = 30
@@ -132,8 +135,9 @@ M.global = function()
     vim.opt.display = "lastline"
     -- Soft-wrap indicator shown at the start of continuation lines.
     vim.opt.showbreak = "↳  "
-    -- Render tabs and special whitespace as spaces (visually clean).
-    vim.opt.listchars = "tab:  ,nbsp: ,trail: ,space: ,extends:→,precedes:←"
+    -- Visible glyphs for whitespace, so enabling 'list' ("Show whitespace characters")
+    -- actually reveals tabs / trailing / nbsp / spaces instead of rendering them as blanks.
+    vim.opt.listchars = "tab:» ,nbsp:␣,trail:·,space:·,extends:→,precedes:←"
     -- vim.opt.fillchars = "eob: ,fold:─"
     -- Disable popup-menu and window transparency.
     vim.opt.pumblend = 0
@@ -156,6 +160,12 @@ M.global = function()
     vim.opt.linebreak = true
     vim.opt.number = true
     vim.opt.relativenumber = true
+    -- Minimum number-column width = 1. With a custom 'statuscolumn' (heirline) that draws and
+    -- pads the numbers itself, the default numberwidth (4) would still reserve 4 cells whenever
+    -- 'relativenumber' is on — and the column's `%=` align fills that reservation, leaving an
+    -- empty gap before the git bar even when "Show line numbers" is off. numberwidth=1 removes
+    -- the reservation so the gutter is identical regardless of 'relativenumber'.
+    vim.opt.numberwidth = 1
     vim.opt.foldenable = true
     vim.opt.cursorline = true
     vim.opt.cursorcolumn = true
@@ -173,6 +183,15 @@ M.global = function()
         diff = "╱", -- diagonal slash for removed diff regions
         eob = " ", -- hide the ~ end-of-buffer markers
         fold = "─", -- horizontal bar for fold fill
+        -- Window separators: a space instead of the box-drawing glyph, so each separator cell is a SOLID
+        -- bar of the WinSeparator background with no thin line rendered inside it.
+        vert = " ",
+        horiz = " ",
+        horizup = " ",
+        horizdown = " ",
+        vertleft = " ",
+        vertright = " ",
+        verthoriz = " ",
     }
     -- Diff options: histogram algorithm with aggressive line-matching.
     vim.opt.diffopt = {

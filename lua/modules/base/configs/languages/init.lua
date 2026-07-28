@@ -1,40 +1,22 @@
 -- Plugin configuration for language tooling plugins.
--- Covers: Mason (LSP/tool installer), Neotest (test runner), rip-substitute,
--- Glance (LSP peek), Trouble, flutter-tools, px-to-rem, nvim-lightbulb,
--- Treesitter (+ context), Fidget, nvim-navic, Outline, nvim-dap (+dap-view),
--- vim-dadbod-ui, nvim-dbee, package-info, crates.nvim, pubspec-assist,
--- live-preview, markview, helpview, vimtex, orgmode, and lvim-org-utils.
+-- Pure lvim-tech: lvim-lsp (LSP engine over lvim-ls), lvim-pkg / lvim-ts /
+-- lvim-installer (packages + treesitter + install UI), lvim-dependencies,
+-- lvim-dap + lvim-dap-view (debugging), lvim-db (database client), and
+-- lvim-breadcrumbs (the symbol trail for the chrome winbar).
 
 ---@module "modules.base.configs.languages"
 
 local icons = require("configs.base.ui.icons")
 local lsp_config = require("modules.base.configs.languages.lsp")
-local file_types = require("modules.base.configs.languages.lsp.file_types")
+-- NO CATALOG HERE. lvim-lang's providers own their languages and fan their own servers (from
+-- `lvim-lang.servers`) out to lvim-lsp, so this setup ships an empty one. A language that has no
+-- provider yet gets one written for it — a declarative file is usually enough. (The hand-written
+-- catalog this config used to carry is gone; git history has it if a detail is ever needed.)
 
 return {
-    -- -------------------------------------------------------------------------
-    -- Mason: manages LSP servers, linters, and formatters.
-    -- After Mason is ready, initialises the LVIM languages subsystem
-    -- (LSP setup, diagnostics, code-lens) via a deferred vim.schedule call.
-    -- -------------------------------------------------------------------------
-    mason = {
-        ---@return table  Mason opts table with icon configuration
-        opts = function()
-            return {
-                ui = {
-                    icons = icons.mason,
-                },
-            }
-        end,
-    },
-
     lvim_lsp = {
         opts = {
-            file_types = file_types,
-            server_config_dirs = { "modules.base.configs.languages.lsp.servers" },
             diagnostics = {
-                update_in_insert = false,
-                underline = true,
                 severity_sort = true,
                 signs = {
                     error = icons.diagnostics.error,
@@ -42,985 +24,73 @@ return {
                     hint = icons.diagnostics.hint,
                     info = icons.diagnostics.info,
                 },
-                show_line = lsp_config.diagnostics.show_line_diagnostics,
-                goto_next = lsp_config.diagnostics.goto_next,
-                goto_prev = lsp_config.diagnostics.goto_prev,
             },
             features = {
+                -- Only the one that differs: auto_format and inlay_hints are on by default.
                 document_highlight = true,
-                auto_format = true,
-                inlay_hints = true,
+            },
+            -- No `peek` block: lvim-lsp reads only `peek.native` and `peek.layout`, and its default
+            -- layout is already "area" (the cmdheight/msgarea zone). A per-command table was
+            -- accepted silently and consumed by nothing — the behaviour matched by coincidence.
+            hover = {
+                enabled = true,
             },
             dap_local_fn = require("modules.base.configs.languages.lsp.dap_utils").dap_local,
 
-            on_attach = function(client, bufnr)
-                lsp_config.keymaps(client, bufnr)
-            end,
+            -- LSP buffer keymaps are applied by the central manifest (modules/base/keys.lua →
+            -- keys.lsp) via its own capability-guarded LspAttach autocmd — no on_attach needed here.
         },
     },
 
     -- -------------------------------------------------------------------------
-    -- Neotest: unified test runner with DAP integration.
-    -- Registers user commands for all Neotest actions and configures adapters
-    -- for Python, PHP, Rust, Go, Elixir, Dart, and Plenary.
+    -- lvim-pkg: the single data + operations hub for installable things (LSP
+    -- packages, treesitter parsers, vim.pack plugins). Domain plugins (lvim-lsp,
+    -- lvim-ts) and the installer UI depend on it, so it is loaded early. setup()
+    -- also bootstraps the tree-sitter CLI when missing.
     -- -------------------------------------------------------------------------
-    neotest = {
-        -- Commands exposed to the user (lazy-loading triggers)
-        cmd = {
-            "NeotestRun",
-            "NeotestRunCurrent",
-            "NeotestRunDap",
-            "NeotestStop",
-            "NeotestAttach",
-            "NeotestOutput",
-            "NeotestOutputPanel",
-            "NeotestSummary",
-        },
-        keys = {
-            { "<leader>nr", "<cmd>NeotestRun<CR>", desc = "Neotest Run" },
-            { "<leader>nc", "<cmd>NeotestRunCurrent<CR>", desc = "Neotest Run Current File" },
-            { "<leader>nd", "<cmd>NeotestRunDap<CR>", desc = "Neotest Run with DAP" },
-            { "<leader>ns", "<cmd>NeotestStop<CR>", desc = "Neotest Stop" },
-            { "<leader>na", "<cmd>NeotestAttach<CR>", desc = "Neotest Attach" },
-            { "<leader>no", "<cmd>NeotestOutput<CR>", desc = "Neotest Output" },
-            { "<leader>np", "<cmd>NeotestOutputPanel<CR>", desc = "Neotest Output Panel" },
-            { "<leader>nt", "<cmd>NeotestSummary<CR>", desc = "Neotest Summary Toggle" },
-        },
-        ---@return table  Neotest options (icons, adapters)
-        opts = function()
-            -- Create a dedicated diagnostic namespace so Neotest messages don't
-            -- pollute the global diagnostic list.
-            ---@type integer
-            local neotest_ns = vim.api.nvim_create_namespace("neotest")
-            vim.diagnostic.config({
-                virtual_text = {
-                    -- Collapse multi-line diagnostic messages to a single line
-                    ---@param diagnostic table  vim.Diagnostic object
-                    ---@return string           Single-line message
-                    format = function(diagnostic)
-                        local message =
-                            diagnostic.message:gsub("\n", " "):gsub("\t", " "):gsub("%s+", " "):gsub("^%s+", "")
-                        return message
-                    end,
-                },
-            }, neotest_ns)
-
-            -- Register individual user commands for each Neotest action
-            vim.api.nvim_create_user_command("NeotestRun", function()
-                require("neotest").run.run()
-            end, {})
-            vim.api.nvim_create_user_command("NeotestRunCurrent", function()
-                require("neotest").run.run(vim.fn.expand("%"))
-            end, {})
-            vim.api.nvim_create_user_command("NeotestRunDap", function()
-                require("neotest").run.run({ strategy = "dap" })
-            end, {})
-            vim.api.nvim_create_user_command("NeotestStop", function()
-                require("neotest").run.stop()
-            end, {})
-            vim.api.nvim_create_user_command("NeotestAttach", function()
-                require("neotest").run.attach()
-            end, {})
-            vim.api.nvim_create_user_command("NeotestOutput", function()
-                require("neotest").output.open()
-            end, {})
-            vim.api.nvim_create_user_command("NeotestOutputPanel", function()
-                require("neotest").output_panel.toggle()
-            end, {})
-            vim.api.nvim_create_user_command("NeotestSummary", function()
-                require("neotest").summary.toggle()
-            end, {})
-
-            return {
-                -- Braille spinner frames for the running test animation
-                icons = {
-                    running_animated = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
-                    passed = "󰗠",
-                    running = "󰔟",
-                    failed = "󰅙",
-                    skipped = "󰘳",
-                    unknown = "󰢖",
-                    non_collapsible = "─",
-                    collapsed = "─",
-                    expanded = "┐",
-                    child_prefix = "├",
-                    final_child_prefix = "└",
-                    child_indent = "│",
-                    final_child_indent = " ",
-                    watching = "󰓦",
-                    test = "󰙨",
-                    notify = "󰂚",
-                },
-                -- Language-specific test adapters; each adapter handles discovery
-                -- and execution for its runtime.
-                adapters = {
-                    require("neotest-plenary"),
-                    require("neotest-python")({
-                        python = ".venv/bin/python",
-                        runner = "pytest",
-                        args = { "-q" },
-                    }),
-                    require("neotest-phpunit"),
-                    require("neotest-rust"),
-                    require("neotest-go"),
-                    require("neotest-elixir"),
-                    require("neotest-dart"),
-                },
-            }
-        end,
-    },
-
-    -- -------------------------------------------------------------------------
-    -- rip-substitute: a ripgrep-powered search-and-replace UI.
-    -- -------------------------------------------------------------------------
-    nvim_rip_substitute = {
-        cmd = { "RipSubstitute" },
-        keys = {
-            {
-                "<leader>rr",
-                function()
-                    require("rip-substitute").sub()
-                end,
-                mode = { "n", "x" },
-                desc = "Rip substitute",
-            },
-        },
-        opts = {
-            popupWin = {
-                title = "Replace",
-                border = "single",
-                matchCountHlGroup = "Keyword",
-                noMatchHlGroup = "ErrorMsg",
-                hideSearchReplaceLabels = false,
-                position = "bottom",
-            },
-            keymaps = {
-                confirm = "<CR>",
-                abort = "q",
-                prevSubstitutionInHistory = "<Up>",
-                nextSubstitutionInHistory = "<Down>",
-                insertModeConfirm = "<C-CR>",
-            },
-            incrementalPreview = {
-                matchHlGroup = "IncSearch",
-                rangeBackdrop = {
-                    enabled = false,
-                    blend = 0,
-                },
-            },
-        },
-    },
-
-    -- -------------------------------------------------------------------------
-    -- Glance: floating LSP peek window for definitions, references, etc.
-    -- When there is exactly one result pointing at the current file, jumps
-    -- directly instead of opening the Glance panel.
-    -- -------------------------------------------------------------------------
-    glance_nvim = {
-        keys = {
-            {
-                "gpd",
-                function()
-                    vim.cmd("Glance definitions")
-                end,
-                mode = { "n" },
-                desc = "Glance definitions",
-            },
-            {
-                "gpr",
-                function()
-                    vim.cmd("Glance references")
-                end,
-                mode = { "n" },
-                desc = "Glance references",
-            },
-            {
-                "gpt",
-                function()
-                    vim.cmd("Glance type_definitions")
-                end,
-                mode = { "n" },
-                desc = "Glance type definitions",
-            },
-            {
-                "gpi",
-                function()
-                    vim.cmd("Glance implementations")
-                end,
-                mode = { "n" },
-                desc = "Glance implementations",
-            },
-        },
-        opts = {
-            zindex = 20,
-            border = {
-                enable = true,
-                top_char = " ",
-                bottom_char = " ",
-            },
-            list = {
-                -- Results list takes 40% of the total popup width
-                width = 0.4,
-            },
-            theme = {
-                -- Disable Glance's built-in theme; inherit LVIM highlights
-                enable = false,
-            },
-            indent_lines = {
-                enable = true,
-                icon = "▏",
-            },
-            hooks = {
-                -- before_open: if there is a single result pointing at the current
-                -- buffer, jump directly instead of opening the Glance float.
-                ---@param results  table[]          LSP result list
-                ---@param open     fun(results: table[])  Opens the Glance panel
-                ---@param jump     fun(result: table)     Jumps to a single result
-                ---@param _        any                    Unused (window handle)
-                before_open = function(results, open, jump, _)
-                    local uri = vim.uri_from_bufnr(0)
-                    if #results == 1 then
-                        local target_uri = results[1].uri or results[1].targetUri
-                        if target_uri == uri then
-                            jump(results[1])
-                        else
-                            open(results)
-                        end
-                    else
-                        open(results)
-                    end
-                end,
-            },
-        },
-    },
-
-    -- -------------------------------------------------------------------------
-    -- Trouble: a diagnostics / LSP list panel.
-    -- -------------------------------------------------------------------------
-    trouble_nvim = {
-        cmd = { "Trouble" },
-        keys = {
-            { "<C-c><C-v>", "<Cmd>Trouble diagnostics<CR>", desc = "Trouble" },
-        },
-        opts = {
-            -- Map Trouble's sign names to the shared LVIM icon set
-            signs = {
-                error = icons.diagnostics.error,
-                warning = icons.diagnostics.warn,
-                hint = icons.diagnostics.hint,
-                information = icons.diagnostics.info,
-                other = icons.diagnostics.other,
-            },
-        },
-    },
-
-    -- -------------------------------------------------------------------------
-    -- flutter-tools: Flutter & Dart LSP integration.
-    -- Sets up a full LSP capabilities table (no dynamic registration) so the
-    -- Dart analyzer receives the maximum feature set.
-    -- -------------------------------------------------------------------------
-    flutter_tools_nvim = {
-        ---@return table  flutter-tools.nvim options
-        opts = function()
-            local lsp = require("modules.base.configs.languages.lsp")
-            local navic = require("nvim-navic")
-            return {
-                ui = {
-                    notification_style = "plugin",
-                },
-                closing_tags = {
-                    prefix = icons.common.separator .. " ",
-                    highlight = "FlutterInlineHint",
-                },
-                lsp = {
-                    auto_attach = true,
-                    -- Disable automatic pub get on save to avoid unwanted network calls
-                    auto_pub_get = false,
-                    ---@param client table  LSP client object
-                    ---@param bufnr  integer  Buffer number the client attached to
-                    on_attach = function(client, bufnr)
-                        -- document_highlight / auto_format / inlay_hints are handled
-                        -- by lvim-lsp features.apply_buffer_features()
-                        lsp.keymaps(client, bufnr)
-                        navic.attach(client, bufnr)
-                    end,
-                    autostart = true,
-                    -- Full LSP capabilities declaration; dynamicRegistration is
-                    -- disabled for all features to keep the negotiation deterministic.
-                    capabilities = {
-                        textDocument = {
-                            formatting = { dynamicRegistration = false },
-                            codeAction = { dynamicRegistration = false },
-                            hover = { dynamicRegistration = false },
-                            rename = { dynamicRegistration = false },
-                            completion = {
-                                dynamicRegistration = false,
-                                completionItem = {
-                                    snippetSupport = true,
-                                    commitCharactersSupport = true,
-                                    documentationFormat = { "markdown", "plaintext" },
-                                    deprecatedSupport = true,
-                                    preselectSupport = true,
-                                    insertReplaceSupport = true,
-                                    labelDetailsSupport = true,
-                                    resolveSupport = {
-                                        properties = { "documentation", "detail", "additionalTextEdits" },
-                                    },
-                                },
-                                -- Advertise support for all 25 LSP completion item kinds
-                                completionItemKind = {
-                                    valueSet = (function()
-                                        local result = {}
-                                        for i = 1, 25 do
-                                            table.insert(result, i)
-                                        end
-                                        return result
-                                    end)(),
-                                },
-                                contextSupport = true,
-                            },
-                            declaration = { dynamicRegistration = false, linkSupport = true },
-                            definition = { dynamicRegistration = false, linkSupport = true },
-                            typeDefinition = { dynamicRegistration = false, linkSupport = true },
-                            implementation = { dynamicRegistration = false, linkSupport = true },
-                            references = { dynamicRegistration = false },
-                            documentHighlight = { dynamicRegistration = false },
-                            documentSymbol = {
-                                dynamicRegistration = false,
-                                -- Advertise support for all 26 LSP symbol kinds
-                                symbolKind = {
-                                    valueSet = (function()
-                                        local result = {}
-                                        for i = 1, 26 do
-                                            table.insert(result, i)
-                                        end
-                                        return result
-                                    end)(),
-                                },
-                                hierarchicalDocumentSymbolSupport = true,
-                            },
-                            signatureHelp = {
-                                dynamicRegistration = false,
-                                signatureInformation = {
-                                    documentationFormat = { "markdown", "plaintext" },
-                                    parameterInformation = { labelOffsetSupport = true },
-                                    activeParameterSupport = true,
-                                },
-                            },
-                            documentFormatting = { dynamicRegistration = false },
-                            documentRangeFormatting = { dynamicRegistration = false },
-                            documentOnTypeFormatting = { dynamicRegistration = false },
-                            publishDiagnostics = {
-                                dynamicRegistration = false,
-                                relatedInformation = true,
-                                tagSupport = { valueSet = { 1, 2 } },
-                                versionSupport = true,
-                                codeDescriptionSupport = true,
-                                dataSupport = true,
-                            },
-                            foldingRange = {
-                                dynamicRegistration = false,
-                                lineFoldingOnly = true,
-                            },
-                            selectionRange = { dynamicRegistration = false },
-                            callHierarchy = { dynamicRegistration = false },
-                            semanticTokens = {
-                                dynamicRegistration = false,
-                                requests = {
-                                    range = true,
-                                    full = { delta = true },
-                                },
-                                -- Full list of semantic token type strings the client understands
-                                tokenTypes = {
-                                    "namespace",
-                                    "type",
-                                    "class",
-                                    "enum",
-                                    "interface",
-                                    "struct",
-                                    "typeParameter",
-                                    "parameter",
-                                    "variable",
-                                    "property",
-                                    "enumMember",
-                                    "event",
-                                    "function",
-                                    "method",
-                                    "macro",
-                                    "keyword",
-                                    "modifier",
-                                    "comment",
-                                    "string",
-                                    "number",
-                                    "regexp",
-                                    "operator",
-                                    "decorator",
-                                },
-                                tokenModifiers = {
-                                    "declaration",
-                                    "definition",
-                                    "readonly",
-                                    "static",
-                                    "deprecated",
-                                    "abstract",
-                                    "async",
-                                    "modification",
-                                    "documentation",
-                                    "defaultLibrary",
-                                },
-                                formats = { "relative" },
-                                overlappingTokenSupport = false,
-                                multilineTokenSupport = false,
-                            },
-                            linkedEditingRange = { dynamicRegistration = false },
-                            inlayHint = {
-                                dynamicRegistration = false,
-                                resolveSupport = {
-                                    properties = { "tooltip", "textEdits", "label.tooltip", "label.location" },
-                                },
-                            },
-                        },
-                        window = {
-                            showMessage = {
-                                messageActionItem = { additionalPropertiesSupport = true },
-                            },
-                            showDocument = { support = true },
-                            workDoneProgress = true,
-                        },
-                        workspace = {
-                            applyEdit = true,
-                            workspaceEdit = {
-                                documentChanges = true,
-                                resourceOperations = { "create", "rename", "delete" },
-                                failureHandling = "textOnlyTransactional",
-                                normalizesLineEndings = true,
-                                changeAnnotationSupport = { groupsOnLabel = true },
-                            },
-                            didChangeConfiguration = { dynamicRegistration = false },
-                            didChangeWatchedFiles = {
-                                dynamicRegistration = false,
-                                relativePatternSupport = true,
-                            },
-                            symbol = {
-                                dynamicRegistration = false,
-                                symbolKind = {
-                                    valueSet = (function()
-                                        local result = {}
-                                        for i = 1, 26 do
-                                            table.insert(result, i)
-                                        end
-                                        return result
-                                    end)(),
-                                },
-                            },
-                            executeCommand = { dynamicRegistration = false },
-                            workspaceFolders = true,
-                            configuration = true,
-                            semanticTokens = { refreshSupport = true },
-                            fileOperations = {
-                                -- dynamicRegistration = true,
-                                didCreate = true,
-                                didRename = true,
-                                didDelete = true,
-                                willCreate = true,
-                                willRename = true,
-                                willDelete = true,
-                            },
-                            inlayHint = { refreshSupport = true },
-                        },
-                        general = {
-                            regularExpressions = {
-                                engine = "oniguruma",
-                                version = "2",
-                            },
-                            markdown = {
-                                parser = "marked",
-                                version = "1.1.0",
-                            },
-                            positionEncodings = { "utf-16" },
-                        },
-                    },
-                    -- Dart language server settings
-                    settings = {
-                        dart = {
-                            completeFunctionCalls = true,
-                            showTodos = true,
-                            analysisExcludedFolders = {},
-                            updateImportsOnRename = true,
-                            renameFilesWithClasses = "prompt",
-                            enableSnippets = true,
-                            lineLength = 80,
-                            -- Do not run pub get automatically; triggered manually instead
-                            autoRunPubGet = false,
-                        },
-                    },
-                },
-            }
-        end,
-    },
-
-    -- -------------------------------------------------------------------------
-    -- nvim-px-to-rem: converts CSS px values to rem units (base 16px).
-    -- -------------------------------------------------------------------------
-    nvim_px_to_rem = {
-        cmd = { "PxToRemCursor", "PxToRemLine" },
-        keys = {
-            { "<Leader>pxx", "<cmd>PxToRemCursor<cr>", desc = "Px to Rem cursor" },
-            { "<Leader>pxl", "<cmd>PxToRemLine<cr>", desc = "Px to Rem line" },
-        },
-        opts = {
-            root_font_size = 16,
-            decimal_count = 4,
-            show_virtual_text = true,
-            add_cmp_source = true,
-            -- Only active in stylesheet filetypes
-            filetypes = { "css", "scss", "less", "astro" },
-        },
-    },
-
-    -- -------------------------------------------------------------------------
-    -- nvim-lightbulb: shows a virtual-text lightbulb icon when code actions
-    -- are available at the cursor position. Disabled for Dart (flutter-tools
-    -- handles code actions separately for that filetype).
-    -- -------------------------------------------------------------------------
-    nvim_lightbulb = {
-        opts = {
-            sign = {
-                -- Use virtual text instead of sign column to avoid layout shifts
-                enabled = false,
-            },
-            virtual_text = {
-                text = " " .. icons.common.light_bulb .. " ",
-                enabled = true,
-            },
-            autocmd = {
-                enabled = true,
-                -- Update the lightbulb 1 ms after the cursor stops moving
-                updatetime = 1,
-            },
-            ignore = {
-                -- flutter-tools provides its own code-action UI for Dart
-                ft = { "dart" },
-            },
-        },
-    },
-
-    -- -------------------------------------------------------------------------
-    -- nvim-treesitter: syntax parsing, folding, and indentation.
-    -- Installs tree-sitter-cli via Mason, then installs all available parsers
-    -- and activates treesitter folding + indentation per filetype.
-    -- -------------------------------------------------------------------------
-    nvim_treesitter = {
+    lvim_pkg = {
         ---@return nil
         config = function()
-            -- Ensure the tree-sitter CLI is available before installing parsers
-            -- require("lvim-lsp").ensure_mason_tools({ "tree-sitter-cli" }, function()
-            --     local ts = require("nvim-treesitter")
-            --     ---@type string[]  All parsers available for the current nvim-treesitter version
-            --     local all_parsers = ts.get_available()
-            --     ts.install(all_parsers)
-            --     -- Enable treesitter features per-buffer when the filetype is known
-            --     vim.api.nvim_create_autocmd("FileType", {
-            --         desc = "Start treesitter",
-            --         group = vim.api.nvim_create_augroup("start_treesitter", { clear = true }),
-            --         pattern = all_parsers,
-            --         callback = function()
-            --             vim.treesitter.start()
-            --             -- Use treesitter-based fold expressions
-            --             vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-            --             -- Use nvim-treesitter indent for = operator
-            --             vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-            --         end,
-            --     })
-            -- end)
-        end,
-    },
-
-    -- -------------------------------------------------------------------------
-    -- nvim-treesitter-context: shows the current function / class in a sticky
-    -- header at the top of the window. Disabled for markdown and org files.
-    -- -------------------------------------------------------------------------
-    nvim_treesitter_context = {
-        opts = {
-            enable = true,
-            -- Show at most 3 context lines in the sticky header
-            max_lines = 3,
-            trim_scope = "outer",
-            min_window_height = 0,
-            -- Per-language node patterns that qualify as "context" scope boundaries
-            patterns = {
-                default = {
-                    "class",
-                    "function",
-                    "method",
-                    "for",
-                    "while",
-                    "if",
-                    "switch",
-                    "case",
-                },
-                tex = { "chapter", "section", "subsection", "subsubsection" },
-                rust = { "impl_item", "struct", "enum" },
-                scala = { "object_definition" },
-                vhdl = { "process_statement", "architecture_body", "entity_declaration" },
-                markdown = { "section" },
-                elixir = {
-                    "anonymous_function",
-                    "arguments",
-                    "block",
-                    "do_block",
-                    "list",
-                    "map",
-                    "tuple",
-                    "quoted_content",
-                },
-                json = { "pair" },
-                yaml = { "block_mapping_pair" },
-            },
-            -- Disable context for prose filetypes where it adds no value
-            ---@param bufnr integer  Buffer number being evaluated
-            ---@return boolean       true to enable context for this buffer
-            on_attach = function(bufnr)
-                if vim.bo[bufnr].filetype == "markdown" or vim.bo[bufnr].filetype == "org" then
-                    return false
-                end
-                return true
-            end,
-            exact_patterns = {},
-            zindex = 20,
-            mode = "cursor",
-            separator = nil,
-        },
-    },
-
-    -- -------------------------------------------------------------------------
-    -- Fidget: LSP progress notifications shown in the bottom-right corner.
-    -- -------------------------------------------------------------------------
-
-    -- -------------------------------------------------------------------------
-    -- nvim-navic: breadcrumb trail showing the symbol under the cursor.
-    -- Used by the winbar to display the current code context.
-    -- -------------------------------------------------------------------------
-    nvim_navic = {
-        ---@return table  nvim-navic options
-        opts = function()
-            -- Suppress "server not supported" warnings for non-navic LSP clients
-            vim.g.navic_silence = true
-            return {
-                icons = icons.lsp,
-                highlight = true,
-                separator = " " .. icons.common.separator,
-            }
-        end,
-    },
-
-    -- -------------------------------------------------------------------------
-    -- Outline: symbol tree sidebar (replaces aerial / vista for navigation).
-    -- -------------------------------------------------------------------------
-    outline = {
-        cmd = { "Outline" },
-        keys = {
-            {
-                "<Leader>lo",
-                function()
-                    vim.cmd("Outline")
-                end,
-                desc = "Outline",
-            },
-        },
-        opts = {
-            outline_window = {
-                winhl = "Normal:SideBar,NormalNC:SideBarNC",
-            },
-            preview_window = {
-                -- Invisible border to blend with the sidebar background
-                border = { " ", " ", " ", " ", " ", " ", " ", " " },
-                winhl = "Normal:SideBar,NormalNC:SideBarNC",
-            },
-            symbols = {
-                icons = icons.outline,
-            },
-        },
-    },
-
-    -- -------------------------------------------------------------------------
-    -- nvim-dap: Debug Adapter Protocol client.
-    -- Registers all DAP user commands, sets up sign column icons, wires DAP
-    -- events to dap-view for the UI, and handles the Lua debugger (osv) as a
-    -- special case when debugging Lua files.
-    -- -------------------------------------------------------------------------
-    nvim_dap = {
-        -- Lazy-load commands so DAP is only initialised when first used
-        cmd = {
-            "LuaDapLaunch",
-            "DapToggleBreakpoint",
-            "DapClearBreakpoints",
-            "DapRunToCursor",
-            "DapContinue",
-            "DapStepInto",
-            "DapStepOver",
-            "DapStepOut",
-            "DapUp",
-            "DapDown",
-            "DapPause",
-            "DapClose",
-            "DapDisconnect",
-            "DapRestart",
-            "DapToggleRepl",
-            "DapGetSession",
-            "DapUIClose",
-        },
-        keys = {
-            {
-                "<A-1>",
-                function()
-                    local dap = require("dap")
-                    dap.toggle_breakpoint()
-                end,
-                desc = "Dap Toggle Breakpoint",
-            },
-            {
-                "<A-2>",
-                function()
-                    local dap = require("dap")
-                    local ft = vim.bo.filetype
-                    if ft == "lua" then
-                        -- For Lua files, start a new osv (one-small-step) session
-                        -- if no DAP session is active; otherwise continue existing one.
-                        if not dap.session() then
-                            local ok, err = pcall(function()
-                                require("osv").run_this()
-                            end)
-                            if not ok then
-                                vim.notify("Could not start Lua debug session: " .. tostring(err), vim.log.levels.ERROR)
-                            end
-                        else
-                            dap.continue()
-                        end
-                    else
-                        dap.continue()
-                    end
-                end,
-                desc = "Debug Start/Continue",
-            },
-            {
-                "<A-3>",
-                function()
-                    local dap = require("dap")
-                    dap.step_into()
-                end,
-                desc = "Dap Step Into",
-            },
-            {
-                "<A-4>",
-                function()
-                    local dap = require("dap")
-                    dap.step_over()
-                end,
-                desc = "Dap Step Over",
-            },
-            {
-                "<A-5>",
-                function()
-                    local dap = require("dap")
-                    dap.step_out()
-                end,
-                desc = "Dap Step Out",
-            },
-            {
-                "<A-6>",
-                function()
-                    local dap = require("dap")
-                    dap.up()
-                end,
-                desc = "Dap Up",
-            },
-            {
-                "<A-7>",
-                function()
-                    local dap = require("dap")
-                    dap.down()
-                end,
-                desc = "Dap Down",
-            },
-            {
-                "<A-8>",
-                function()
-                    local dap = require("dap")
-                    local dapui = require("dapui")
-                    dap.close()
-                    dap.disconnect()
-                    dapui.close()
-                end,
-                desc = "Dap UI Close",
-            },
-            {
-                "<A-9>",
-                function()
-                    local dap = require("dap")
-                    dap.restart()
-                end,
-                desc = "Dap Restart",
-            },
-            {
-                "<A-0>",
-                function()
-                    local dap = require("dap")
-                    dap.repl.toggle()
-                end,
-                desc = "Dap Toggle Repl",
-            },
-        },
-        ---@return nil
-        config = function()
-            local dap = require("dap")
-            local dap_view = require("dap-view")
-
-            -- Define sign column icons for DAP breakpoint states
-            vim.fn.sign_define(
-                "DapBreakpoint",
-                { text = icons.dap_ui.sign.breakpoint, texthl = "DapBreakpoint", linehl = "", numhl = "" }
-            )
-            vim.fn.sign_define(
-                "DapBreakpointRejected",
-                { text = icons.dap_ui.sign.reject, texthl = "DapBreakpointRejected", linehl = "", numhl = "" }
-            )
-            vim.fn.sign_define(
-                "DapBreakpointCondition",
-                { text = icons.dap_ui.sign.condition, texthl = "DapBreakpointCondition", linehl = "", numhl = "" }
-            )
-            vim.fn.sign_define(
-                "DapStopped",
-                { text = icons.dap_ui.sign.stopped, texthl = "DapStopped", linehl = "", numhl = "" }
-            )
-            vim.fn.sign_define(
-                "DapLogPoint",
-                { text = icons.dap_ui.sign.log_point, texthl = "DapLogPoint", linehl = "", numhl = "" }
-            )
-
-            -- Register user commands so they are available in the command line
-            vim.api.nvim_create_user_command("LuaDapLaunch", 'lua require"osv".run_this()', {})
-            vim.api.nvim_create_user_command("DapToggleBreakpoint", 'lua require("dap").toggle_breakpoint()', {})
-            vim.api.nvim_create_user_command("DapClearBreakpoints", 'lua require("dap").clear_breakpoints()', {})
-            vim.api.nvim_create_user_command("DapRunToCursor", 'lua require("dap").run_to_cursor()', {})
-            vim.api.nvim_create_user_command("DapContinue", 'lua require"dap".continue()', {})
-            vim.api.nvim_create_user_command("DapStepInto", 'lua require"dap".step_into()', {})
-            vim.api.nvim_create_user_command("DapStepOver", 'lua require"dap".step_over()', {})
-            vim.api.nvim_create_user_command("DapStepOut", 'lua require"dap".step_out()', {})
-            vim.api.nvim_create_user_command("DapUp", 'lua require"dap".up()', {})
-            vim.api.nvim_create_user_command("DapDown", 'lua require"dap".down()', {})
-            vim.api.nvim_create_user_command("DapPause", 'lua require"dap".pause()', {})
-            vim.api.nvim_create_user_command("DapClose", 'lua require"dap".close()', {})
-            vim.api.nvim_create_user_command("DapDisconnect", 'lua require"dap".disconnect()', {})
-            vim.api.nvim_create_user_command("DapRestart", 'lua require"dap".restart()', {})
-            vim.api.nvim_create_user_command("DapToggleRepl", 'lua require"dap".repl.toggle()', {})
-            vim.api.nvim_create_user_command("DapGetSession", 'lua require"dap".session()', {})
-            vim.api.nvim_create_user_command(
-                "DapUIClose",
-                'lua require"dap".close(); require"dap".disconnect(); require"dapui".close()',
-                {}
-            )
-
-            -- Open dap-view automatically when the debug session initialises,
-            -- and close it when the session terminates or exits.
-            dap.listeners.after.event_initialized["dapui_config"] = function()
-                -- Small delay lets the adapter fully initialise before opening the UI
-                vim.defer_fn(function()
-                    dap_view.open()
-                end, 200)
-            end
-            dap.listeners.before.event_terminated["dapui_config"] = function()
-                dap_view.close()
-            end
-            dap.listeners.before.event_exited["dapui_config"] = function()
-                dap_view.close()
-            end
-        end,
-    },
-
-    -- -------------------------------------------------------------------------
-    -- vim-dadbod-ui: database UI for SQL queries.
-    -- Configures icons, key maps, window layout, and colour highlights that
-    -- match the LVIM palette.
-    -- -------------------------------------------------------------------------
-    vim_dadbod_ui = {
-        cmd = {
-            "DBUIToggle",
-            "DBUIAddConnection",
-            "DBUI",
-            "DBUIFindBuffer",
-            "DBUIRenameBuffer",
-        },
-        keys = {
-            { "<Leader>dd", "<cmd>DBUIToggle<cr>", desc = "Dadbod toggle" },
-        },
-        ---@return nil
-        init = function()
-            vim.g.db_ui_use_nerd_fonts = 1
-            -- Nerd-font icon set for the DBUI tree nodes
-            vim.g.db_ui_icons = {
-                expanded = {
-                    db = " 󰆼",
-                    buffers = " 󰧮",
-                    saved_queries = " 󰛮",
-                    schemas = " 󰯂",
-                    schema = " 󰙅",
-                    tables = " 󰓱",
-                    table = " 󰓫",
-                },
-                collapsed = {
-                    db = " 󰆼",
-                    buffers = " 󰧮",
-                    saved_queries = " 󰛮",
-                    schemas = " 󰯂",
-                    schema = " 󰙅",
-                    tables = " 󰓱",
-                    table = " 󰓫",
-                },
-                saved_queries = " 󰛮",
-                new_query = " 󰓰",
-                tables = " 󰓫",
-                buffers = " 󰧮",
-                add_connection = "  󰆺",
-                connection_ok = "",
-                connection_error = "",
-            }
-            -- Do not auto-execute queries on buffer save
-            vim.g.db_ui_execute_on_save = 0
-            vim.g.db_ui_disable_info_notifications = 1
-            vim.g.db_ui_show_help = 0
-            vim.g.db_ui_win_position = "left"
-            vim.g.db_ui_winwidth = 35
-            -- Additional buffer-level key maps for DBUI operations
-            vim.api.nvim_set_keymap("n", "<leader>db", ":DBUIFindBuffer<CR>", { noremap = true, silent = true })
-            vim.api.nvim_set_keymap("n", "<leader>dr", ":DBUIRenameBuffer<CR>", { noremap = true })
-            vim.api.nvim_set_keymap("n", "<leader>dl", ":DBUILastQueryInfo<CR>", { noremap = true, silent = true })
-            vim.g.db_ui_auto_execute_table_helpers = 1
-            -- Apply LVIM palette colours to DBUI connection status highlights
-            vim.api.nvim_create_autocmd("FileType", {
-                pattern = "dbui",
-                callback = function()
-                    vim.schedule(function()
-                        vim.api.nvim_set_hl(0, "dbui_connection_ok", { fg = _G.LVIM.colors.green })
-                        vim.api.nvim_set_hl(0, "dbui_connection_error", { fg = _G.LVIM.colors.red })
-                        vim.api.nvim_set_hl(0, "dbui_saved_query", { fg = _G.LVIM.colors.orange })
-                    end)
-                end,
-                group = "LvimIDE",
+            require("lvim-pkg").setup({
+                -- Same snapshots directory the config's get_commit reads, so the installer
+                -- and the loader share one active version set.
+                snapshot_dir = _G.LVIM.global.lvim_path .. "/.snapshots",
             })
         end,
     },
 
     -- -------------------------------------------------------------------------
-    -- nvim-dbee: alternative database client with a richer query UI.
+    -- lvim-ts: buffer-side treesitter runtime over the built-in vim.treesitter.
+    -- Parsers + their queries are compiled/installed by lvim-pkg's self-contained
+    -- parser backend; lvim-ts enables highlighting and a query-based indent on
+    -- first open. Folds use the global treesitter foldexpr set in
+    -- configs.base.options.
     -- -------------------------------------------------------------------------
-    nvim_dbee = {
-        cmd = { "Dbee" },
-        keys = {
-            { "<Leader>do", "<cmd>Dbee open<cr>", desc = "Dbee open" },
-            { "<Leader>dc", "<cmd>Dbee close<cr>", desc = "Dbee close" },
-        },
-        opts = {},
+    lvim_ts = {
+        ---@return nil
+        config = function()
+            -- auto_install is off: lvim-installer offers parsers through the unified
+            -- prompt instead of installing them silently.
+            require("lvim-ts").setup({
+                auto_install = false,
+                -- Node-based incremental selection: gnn start, grn grow, grm shrink, grc scope.
+                incremental_selection = { enable = true },
+                -- Generic node-type text objects: af/if function, ac/ic class, aa/ia parameter.
+                textobjects = { enable = true },
+            })
+        end,
+    },
+
+    -- -------------------------------------------------------------------------
+    -- lvim-installer: the UI layer — unified on-open install prompt (LSP tools +
+    -- treesitter parsers, sourced from lvim-pkg) and the control-center tab.
+    -- -------------------------------------------------------------------------
+    lvim_installer = {
+        ---@return nil
+        config = function()
+            -- Manifest overrides for the browser's row-action keys (defaults stay in the plugin).
+            require("lvim-installer").setup({ browser = { keys = require("modules.base.keys_apply").plugin("lvim-installer") } })
+        end,
     },
 
     lvim_dependencies = {
@@ -1028,246 +98,212 @@ return {
     },
 
     -- -------------------------------------------------------------------------
-    -- package-info.nvim: shows npm package version info inline in package.json.
-    -- Registers user commands so the UI can be triggered from the command line.
+    -- lvim-dap: the DAP client (debug engine). Signs are engine-owned and
+    -- self-theming; the per-language adapters/configurations come from the
+    -- lvim-ls server configs (their declarative `dap` tables register through
+    -- lvim-ls.core.dap into this engine). The historical <A-N> debug keys drive
+    -- the engine's public API.
     -- -------------------------------------------------------------------------
-    package_info_nvim = {
-        ---@return table  Empty opts (commands registered as side-effect)
-        opts = function()
-            vim.api.nvim_create_user_command("PackageInfoToggle", "lua require('package-info').toggle()", {})
-            vim.api.nvim_create_user_command("PackageInfoDelete", "lua require('package-info').delete()", {})
-            vim.api.nvim_create_user_command(
-                "PackageInfoChangeVersion",
-                "lua require('package-info').change_version()",
-                {}
-            )
-            vim.api.nvim_create_user_command("PackageInfoInstall", "lua require('package-info').install()", {})
-            return {}
+    -- lvim-keyring: the credential wallet behind one master password. No options are set — the
+    -- entry exists so the setup lives with the rest of its group's, not inline in the manifest.
+    lvim_keyring = {
+        config = function()
+            require("lvim-keyring").setup({})
         end,
     },
 
-    -- -------------------------------------------------------------------------
-    -- crates.nvim: Rust crate version info and management in Cargo.toml.
-    -- Registers user commands for all crate operations and enables LSP + hover.
-    -- -------------------------------------------------------------------------
-    crates_nvim = {
-        ---@return table|nil  crates.nvim options with LSP and completion config
-        opts = function()
-            local crates_status_ok, crates = pcall(require, "crates")
-            if not crates_status_ok then
-                return
-            end
-
-            -- Register user commands for common crate management actions
-            vim.api.nvim_create_user_command("CratesUpdate", crates.update, { desc = "Update crate dependencies" })
-            vim.api.nvim_create_user_command("CratesReload", crates.reload, { desc = "Reload crates cache" })
-            vim.api.nvim_create_user_command("CratesHide", crates.hide, { desc = "Hide crates UI" })
-            vim.api.nvim_create_user_command("CratesToggle", crates.toggle, { desc = "Toggle crates UI" })
-            vim.api.nvim_create_user_command(
-                "CratesUpdateCrate",
-                crates.update_crate,
-                { desc = "Update a single crate" }
-            )
-            vim.api.nvim_create_user_command(
-                "CratesUpdateCrates",
-                crates.update_crates,
-                { desc = "Update selected crates" }
-            )
-            vim.api.nvim_create_user_command(
-                "CratesUpdateAllCrates",
-                crates.update_all_crates,
-                { desc = "Update all crates" }
-            )
-            vim.api.nvim_create_user_command(
-                "CratesUpgradeCrate",
-                crates.upgrade_crate,
-                { desc = "Upgrade a single crate" }
-            )
-            vim.api.nvim_create_user_command(
-                "CratesUpgradeCrates",
-                crates.upgrade_crates,
-                { desc = "Upgrade selected crates" }
-            )
-            vim.api.nvim_create_user_command(
-                "CratesUpgradeAllCrates",
-                crates.upgrade_all_crates,
-                { desc = "Upgrade all crates" }
-            )
-            -- Popup commands show the popup and immediately move focus to it
-            vim.api.nvim_create_user_command("CratesShowPopup", function()
-                crates.show_popup()
-                crates.focus_popup()
-            end, { desc = "Show and focus main popup" })
-            vim.api.nvim_create_user_command("CratesShowVersionsPopup", function()
-                crates.show_versions_popup()
-                crates.focus_popup()
-            end, { desc = "Show and focus versions popup" })
-            vim.api.nvim_create_user_command("CratesShowFeaturesPopup", function()
-                crates.show_features_popup()
-                crates.focus_popup()
-            end, { desc = "Show and focus features popup" })
-            vim.api.nvim_create_user_command(
-                "CratesFocusPopup",
-                crates.focus_popup,
-                { desc = "Focus the active popup" }
-            )
-            vim.api.nvim_create_user_command("CratesHidePopup", crates.hide_popup, { desc = "Hide the active popup" })
-
-            return {
-                lsp = {
-                    enabled = true,
-                    ---@param _client table   LSP client object
-                    ---@param _bufnr  integer Buffer number
-                    on_attach = function(_client, _bufnr)
-                        -- the same on_attach function as for your other language servers
-                        -- can be ommited if you're using the `LspAttach` autocmd
-                    end,
-                    actions = true,
-                    completion = true,
-                    hover = true,
-                },
-                completion = {
-                    crates = {
-                        enabled = true, -- Disabled by default
-                        max_results = 8, -- The maximum number of search results to display
-                        min_chars = 3, -- The minimum number of charaters to type before completions begin appearing
-                    },
-                },
-            }
-        end,
-    },
-
-    -- -------------------------------------------------------------------------
-    -- pubspec-assist: adds Flutter/Dart packages from pub.dev to pubspec.yaml.
-    -- Key maps are registered only when pubspec.yaml is the active buffer.
-    -- -------------------------------------------------------------------------
-    pubspec_assist_nvim = {
-        ---@return table  pubspec-assist highlight group configuration
-        opts = function()
-            -- Set up buffer-local key maps only when editing pubspec.yaml
-            vim.api.nvim_create_autocmd("BufEnter", {
-                group = vim.api.nvim_create_augroup("pubspec_keymaps", { clear = true }),
-                pattern = "pubspec.yaml",
-                callback = function()
-                    local opts_buffer = { buffer = 0, silent = true, desc = "Pubspec: Add Package" }
-                    local opts_buffer_dev = { buffer = 0, silent = true, desc = "Pubspec: Add Dev Package" }
-                    local opts_buffer_pick = { buffer = 0, silent = true, desc = "Pubspec: Pick Version" }
-                    vim.keymap.set("n", "<leader>pa", "<cmd>PubspecAssistAddPackage<cr>", opts_buffer)
-                    vim.keymap.set("n", "<leader>pd", "<cmd>PubspecAssistAddDevPackage<cr>", opts_buffer_dev)
-                    vim.keymap.set("n", "<leader>pv", "<cmd>PubspecAssistPickVersion<cr>", opts_buffer_pick)
-                end,
-            })
-            return {
-                -- Map dependency freshness states to LVIM highlight groups
-                highlights = {
-                    up_to_date = "PubspecDependencyUpToDate",
-                    outdated = "PubspecDependencyOutdated",
-                    unknown = "PubspecDependencyUnknown",
-                },
-            }
-        end,
-    },
-
-    -- -------------------------------------------------------------------------
-    -- live-preview.nvim: browser live-preview for Markdown / HTML files.
-    -- -------------------------------------------------------------------------
-    live_preview_nvim = {
-        keys = {
-            { "<leader>pp", "<cmd>LivePreview pick<CR>", desc = "LivePreview Pick" },
-        },
-        opts = {
-            picker = "fzf-lua",
-            address = "127.0.0.1",
-            port = 5500,
-            browser = "qutebrowser",
-            -- Do not change root based on open files
-            dynamic_root = false,
-            sync_scroll = true,
-        },
-    },
-
-    -- -------------------------------------------------------------------------
-    -- markview.nvim: rich Markdown / Typst / HTML / YAML rendering inside Neovim.
-    -- Loads per-format render configs from sibling modules and sets up the
-    -- markview extras (editor float, interactive checkboxes).
-    -- -------------------------------------------------------------------------
-    markview_nvim = {
-        ---@return table  markview options (preview + per-format configs)
-        opts = function()
-            -- Load per-format rendering tables from sibling config modules
-            local markdown = require("modules.base.configs.languages.markview.markdown")
-            local markdown_inline = require("modules.base.configs.languages.markview.markdown_inline")
-            local html = require("modules.base.configs.languages.markview.html")
-            local yaml = require("modules.base.configs.languages.markview.yaml")
-            local typst = require("modules.base.configs.languages.markview.typst")
-
-            -- Set up the split-window Markdown editor extra
-            require("markview.extras.editor").setup({
-                width = { 10, 0.75 },
-                height = { 3, 0.75 },
-                debounce = 50,
-            })
-            -- Enable the interactive checkbox extra
-            require("markview.extras.checkboxes").setup()
-
-            vim.keymap.set("n", "<Leader>cb", function()
-                vim.cmd("Checkbox interactive")
-            end, { noremap = true, silent = true, desc = "Checkbox choice" })
-
-            return {
-                preview = { enable = true },
-                markdown = markdown,
-                markdown_inline = markdown_inline,
-                html = html,
-                yaml = yaml,
-                typst = typst,
-            }
-        end,
-    },
-
-    -- -------------------------------------------------------------------------
-    -- helpview.nvim: renders vimdoc help files with extra highlights.
-    -- -------------------------------------------------------------------------
-    helpview_nvim = {
-        opts = {},
-    },
-
-    -- -------------------------------------------------------------------------
-    -- vimtex: LaTeX integration with zathura as the PDF viewer.
-    -- -------------------------------------------------------------------------
-    vimtex = {
+    lvim_dap = {
         ---@return nil
         config = function()
-            vim.g.vimtex_mappings_prefix = "'"
-            vim.g.vimtex_view_method = "zathura"
-            vim.g.latex_view_general_viewer = "zathura"
-            vim.g.vimtex_compiler_progname = "nvr"
-            vim.g.vimtex_compiler_callback_compiling = "nvr"
-            -- Suppress the quickfix window on compiler warnings (only show errors)
-            vim.g.vimtex_quickfix_open_on_warning = 0
+            local dap = require("lvim-dap")
+            dap.setup({})
+            local map = vim.keymap.set
+            map("n", "<A-1>", function()
+                dap.toggle_breakpoint()
+            end, { desc = "Dap Toggle Breakpoint" })
+            map("n", "<A-2>", function()
+                -- A session is LIVE but the UI was closed → just REOPEN it (don't relaunch or resume /
+                -- terminate the session). Otherwise: no session → start (picks a config); panel open +
+                -- stopped → continue (resume). So closing the panel and pressing this again brings the
+                -- panel back instead of ending the run.
+                local ok_view, view = pcall(require, "lvim-dap-view")
+                if dap.session() and ok_view and not view.is_open() then
+                    view.open()
+                    vim.notify("lvim-dap: session active — reopened the debug view", vim.log.levels.INFO)
+                else
+                    dap.continue()
+                end
+            end, { desc = "Debug Start/Continue (reopen the view if a session is live but hidden)" })
+            map("n", "<A-3>", function()
+                dap.step_into()
+            end, { desc = "Dap Step Into" })
+            map("n", "<A-4>", function()
+                dap.step_over()
+            end, { desc = "Dap Step Over" })
+            map("n", "<A-5>", function()
+                dap.step_out()
+            end, { desc = "Dap Step Out" })
+            map("n", "<A-6>", function()
+                dap.up()
+            end, { desc = "Dap Up" })
+            map("n", "<A-7>", function()
+                dap.down()
+            end, { desc = "Dap Down" })
+            map("n", "<A-8>", function()
+                dap.terminate()
+                dap.close()
+                pcall(function()
+                    require("lvim-dap-view").close()
+                end)
+            end, { desc = "Dap Close" })
+            map("n", "<A-9>", function()
+                dap.restart()
+            end, { desc = "Dap Restart" })
+            map("n", "<A-0>", "<Cmd>LvimDapView repl<CR>", { desc = "Dap Repl" })
         end,
     },
 
     -- -------------------------------------------------------------------------
-    -- orgmode: Org-mode integration for Neovim.
+    -- lvim-dap-view: the debugger UI dock (watches / scopes / stack / breakpoints
+    -- / exceptions / repl / console / sessions). auto_open/auto_close (defaults)
+    -- follow the session lifecycle over the engine's listener bus — no manual
+    -- event wiring needed.
     -- -------------------------------------------------------------------------
-    orgmode = {
-        opts = {
-            emacs_config = {
-                -- Path to Emacs early-init for shared config compatibility
-                config_path = "~/.emacs.d/early-init.el",
-            },
-            org_agenda_files = { "~/Org/**/*" },
-            org_default_notes_file = "~/Org/refile.org",
-        },
+    lvim_dap_view = {
+        ---@return nil
+        config = function()
+            require("lvim-dap-view").setup({})
+            -- Dap-view toggle lives in the central keymap manifest: modules/base/keys.lua → <Leader>dv.
+        end,
     },
 
     -- -------------------------------------------------------------------------
-    -- lvim-org-utils: LVIM-specific utilities that extend orgmode integration.
+    -- lvim-db: the database client — connections drawer, result dock, per-
+    -- connection notes, saved connections + query history in its own store.
+    -- The daemon backend is built once with `sh native/build.sh` (see
+    -- :checkhealth lvim-db).
     -- -------------------------------------------------------------------------
-    lvim_org_utils = {
-        opts = {},
+    lvim_db = {
+        ---@return nil
+        config = function()
+            require("lvim-db").setup({})
+            -- Db keys live in the central keymap manifest: modules/base/keys.lua → <Leader>od (Open / Tools).
+        end,
+    },
+
+    -- -------------------------------------------------------------------------
+    -- lvim-breadcrumbs: the symbol path from the document root to the cursor.
+    -- setup() auto-attaches every documentSymbol-capable client (LspAttach);
+    -- the trail renders as a SEGMENT inside the lvim-hud chrome winbar (see
+    -- modules.base.configs.ui.chrome.winbar).
+    -- -------------------------------------------------------------------------
+    -- lvim-lang: the lvim-tech per-language dev-tooling base (replaces flutter-tools.nvim). Its Dart
+    -- provider owns dartls (registered through lvim-lsp/lvim-ls, so features/keymaps/breadcrumbs follow
+    -- from LspAttach like any other server), the run lifecycle (flutter run --machine, hot reload/
+    -- restart), device/emulator selection, closing labels, the Flutter Outline, DAP, DevTools, the VM
+    -- service, pub commands and run configs — all through the ecosystem, no third-party deps.
+    lvim_lang = {
+        ---@return nil
+        config = function()
+            require("lvim-lang").setup({})
+        end,
+    },
+
+    -- -------------------------------------------------------------------------
+    -- lvim-tex: LaTeX integration — which file IS the document, how it is built,
+    -- what its log means, and where a position in the PDF maps back to in the
+    -- source. Replaces vimtex; the keys are the same letters off <localleader>
+    -- (`,ll` build, `,lv` view, `,lt` toc …), so nothing has to be relearned.
+    --
+    -- Everything else is already owned elsewhere and is NOT configured here:
+    -- texlab and latexindent by lvim-lang, the grammars by lvim-ts, the snippet
+    -- engine by lvim-snippets, the PDF page by lvim-preview.
+    --
+    -- The defaults are deliberate: `viewer.name = "auto"` takes lvim-preview's
+    -- PDF page first (nothing to install, and the only viewer that can show the
+    -- build state), and `quickfix = "on_error"` keeps warnings — near-constant in
+    -- LaTeX — from stealing the screen on every save. Inverse search from that
+    -- page additionally needs lvim-preview's own `artifact.allow_client_messages`.
+    -- -------------------------------------------------------------------------
+    lvim_tex = {
+        ---@return nil
+        config = function()
+            require("lvim-tex").setup({
+                -- Artefacts BESIDE the source, as vimtex built them and as the projects here are
+                -- laid out (their .gitignore ignores *.aux/*.log/main.pdf at the project root, and
+                -- every existing main.pdf sits next to its main.tex). The plugin's own default is a
+                -- `build/` directory; this is the one place that choice belongs to the user.
+                out_dir = false,
+                -- vimtex had its maths abbreviations ON (backtick + a mnemonic, inside maths only),
+                -- so they stay on here — the point of the swap is that nothing has to be relearned.
+                imaps = { enabled = true },
+                -- Rebuild on save from the moment a project opens, which is what `\ll` did in
+                -- vimtex: there it started latexmk's own watch mode and every save recompiled. Here
+                -- the loop is ours (one build in flight, one rerun queued), and `,la` still toggles
+                -- it per project when a particular document should NOT rebuild.
+                continuous = { auto_start = true },
+                -- ── SyncTeX: every direction zathura can do ───────────────────────────────
+                synctex = {
+                    -- The viewer follows the CURSOR: after `follow_debounce` ms of stillness it is
+                    -- moved to the paragraph the cursor sits in. vimtex has no such thing at all —
+                    -- its only cursor-driven sync is for TeXpresso, its own live renderer.
+                    follow_cursor = true,
+                    -- …and the SCROLL, which is the half that matters for reading: a wheel, CTRL-E
+                    -- or `zz` moves the view while the cursor stays put, and a viewer that only ever
+                    -- answers the cursor sits still through all of it. A scroll is answered with the
+                    -- window centre, since the cursor is no longer where you are looking.
+                    follow_scroll = true,
+                    follow_debounce = 400,
+                    -- One more sync after every successful build, so the page lands on what you were
+                    -- writing without waiting for the cursor to move again.
+                    forward_on_build = true,
+                    -- Ctrl-click in the PDF moves the cursor here. zathura runs the callback through
+                    -- a shell; lvim-tex builds it from `v:servername`, so neovim-remote is not
+                    -- involved (the `nvr` line in ~/.config/zathura/zathurarc is a leftover).
+                    inverse = true,
+                    -- THE OTHER WAY ROUND. zathura cannot report a POSITION — only which PAGE it is
+                    -- showing, and it announces nothing when that changes (its entire D-Bus
+                    -- interface carries one signal, and that one is for ctrl-click). So this is a
+                    -- poll: a read costs ~3 ms, and the source moves a page's worth when you flip a
+                    -- page, nothing in between. That is all the granularity zathura exposes.
+                    --
+                    -- `,lr` does the same thing on demand and does not need this switch — that one
+                    -- is about whether the editor should follow BY ITSELF.
+                    follow_back = {
+                        enabled = true,
+                        poll = { enabled = true, interval = 1000 },
+                    },
+                },
+                viewer = {
+                    name = "zathura",
+                    zathura = {
+                        -- WITHOUT THIS ZATHURA TAKES THE KEYBOARD ON EVERY SYNC. Each D-Bus command
+                        -- it serves — `SynctexView`, which is what `--synctex-forward` becomes —
+                        -- ends in `gtk_window_present`, guarded by one runtime option:
+                        -- `dbus-raise-window` (zathurarc(5), default true). "quiet" makes lvim-tex
+                        -- turn that option off in the window IT opened, over zathura's own
+                        -- `ExecuteCommand` — the single method exempt from the raise — so your
+                        -- zathurarc is never touched.
+                        --
+                        -- The trade is all-or-nothing: afterwards NO sync raises zathura, the
+                        -- explicit `,lv` included. Drop this line and zathura stops following the
+                        -- cursor altogether (the automatic follow only ever drives quiet viewers).
+                        forward = "quiet",
+                        -- How persistently that is asked for after a launch: zathura's bus name
+                        -- appears a few hundred ms after the process and is not activatable, so the
+                        -- request is retried rather than awaited.
+                        raise_retries = 16,
+                        raise_retry_ms = 250,
+                    },
+                },
+            })
+        end,
+    },
+
+    lvim_breadcrumbs = {
+        ---@return nil
+        config = function()
+            require("lvim-breadcrumbs").setup({})
+        end,
     },
 }
-
--- vim: foldmethod=indent foldlevel=1

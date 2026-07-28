@@ -1,18 +1,36 @@
 local modules = {}
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- DEV OVERRIDES (local plugin development) ----------------------
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- Point every lvim-tech plugin that has a local clone under ~/lvim-tech at that clone, so edits are picked up
+-- directly and vim.pack cannot overwrite them (dir= plugins are added to the runtimepath directly, not managed
+-- by vim.pack). `dir` is deep-merged into the base spec, so each plugin's config/opts are preserved. This also
+-- covers the plugins the lvim-nvim umbrella pulls in via its pack.lua distribution manifest — they resolve to
+-- the local dev checkout instead of being cloned from GitHub. Remove a plugin's ~/lvim-tech clone to switch it
+-- back to its published git version.
+-- local dev_root = vim.fn.expand("~/lvim-tech")
+-- if vim.fn.isdirectory(dev_root) == 1 then
+--     for _, name in ipairs(vim.fn.readdir(dev_root)) do
+--         if name:match("^lvim%-") and vim.fn.isdirectory(dev_root .. "/" .. name) == 1 then
+--             modules["lvim-tech/" .. name] = { dir = dev_root .. "/" .. name }
+--         end
+--     end
+-- end
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- HELP ---------------------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 -- Disable of default Module (Plug-in) (from lua/modules/base/init.lua)
 
 -- You can disable of any default Module (Plug-in)
--- modules["folke/noice.nvim"] = false
+-- modules["lvim-tech/lvim-calendar"] = false
 
 -- Rewrite of settings of default Module (Plug-in) (from lua/modules/base/init.lua)
 
 -- You can rewrite of settings of any of default Module (Plug-in)
--- modules["folke/noice.nvim"] = {
+-- modules["lvim-tech/lvim-calendar"] = {
 --     -- your code
 -- }
 

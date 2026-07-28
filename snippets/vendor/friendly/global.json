@@ -1,0 +1,53 @@
+{
+    "copyright": {
+        "prefix": "copyright",
+        "body": [
+            "Copyright (c) ${CURRENT_YEAR} ${0:Author}. All Rights Reserved."
+        ],
+        "description": "Snippet to put copyright"
+    },
+    "diso": {
+        "prefix": "diso",
+        "body": [
+            "${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}T${CURRENT_HOUR}:${CURRENT_MINUTE}:${CURRENT_SECOND}"
+        ],
+        "description": "ISO date time stamp"
+    },
+    "date": {
+        "prefix": "date",
+        "body": ["${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}"],
+        "description": "Put the date in (Y-m-D) format"
+    },
+    "dateDMY": {
+      "prefix": "dateDMY",
+      "body": ["${CURRENT_DATE}/${CURRENT_MONTH}/${CURRENT_YEAR}"],
+      "description": "Put date in (DD/MM/YY) format"
+    },
+    "dateMDY": {
+        "prefix": "dateMDY",
+        "body": ["${CURRENT_MONTH}/${CURRENT_DATE}/${CURRENT_YEAR}"],
+        "description": "Put the date in (m/D/Y) format"
+    },
+    "time": {
+        "prefix": "time",
+        "body": ["${CURRENT_HOUR}:${CURRENT_MINUTE}"],
+        "description": "I give you back the time (H:M)"
+    },
+    "timeHMS": {
+        "prefix": "timeHMS",
+        "body": ["${CURRENT_HOUR}:${CURRENT_MINUTE}:${CURRENT_SECOND}"],
+        "description": "I give you back the time (H:M:S)"
+    },
+    "datetime": {
+        "prefix": "datetime",
+        "body": [
+            "${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE}"
+        ],
+        "description": "I give you back the time and date (Y-m-d H:M)"
+    },
+    "uuid": {
+        "prefix": "uuid",
+        "body": "${UUID}",
+        "description": "A Version 4 UUID"
+    }
+}

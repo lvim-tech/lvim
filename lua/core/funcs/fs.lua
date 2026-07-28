@@ -2,20 +2,6 @@
 ---@module "core.funcs.fs"
 local M = {}
 
--- Tests whether a path exists (file or directory) via libuv fs_stat.
----@param name string   Absolute path to test
----@return boolean       True if the path exists
-M.file_exists = function(name)
-    return (vim.uv or vim.loop).fs_stat(name) ~= nil
-end
-
--- Alias for file_exists — fs_stat resolves both files and directories.
----@param path string   Absolute path to test
----@return boolean       True if the path exists
-M.dir_exists = function(path)
-    return M.file_exists(path)
-end
-
 -- Reads a file and attempts to decode its content:
 --   1. JSON  → returns decoded Lua value
 --   2. "true" / "false" → returns boolean
@@ -63,18 +49,6 @@ end
 M.copy_file = function(file, dest)
     local uv = vim.uv or vim.loop
     uv.fs_copyfile(file, dest)
-end
-
--- Deletes a single file.
----@param f string  Absolute path to delete
-M.delete_file = function(f)
-    os.remove(f)
-end
-
--- Removes the cached packages manifest so it is rebuilt on next startup.
-M.delete_packages_file = function()
-    local lvim_packages_file = _G.LVIM.global.cache_path .. "/.lvim_packages"
-    os.remove(lvim_packages_file)
 end
 
 -- Prompts the user to enter a path, pre-filled with the current working directory.
