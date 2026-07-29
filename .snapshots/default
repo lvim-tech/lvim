@@ -132,7 +132,8 @@
       "commit": "c70726f9488f2ff746104648172870a7656495c2"
     },
     "lvim-render": {
-      "commit": "438ee2f0b66dd945a3e1b3a68db5a12fb0ef646a"
+      "commit": "a549a3d6a7a29d08cf13de2fdd877f87d8281dc0",
+      "pin": true
     },
     "lvim-replace": {
       "commit": "5ffbce5dd94f2949079b98e94ab6c291fd956a10"

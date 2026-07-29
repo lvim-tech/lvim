@@ -2,22 +2,72 @@
 
 ![LVIM IDE](/assets/lvim-ide-logo.png)
 
-> A modular Neovim configuration written in Lua, built around a first-party plugin ecosystem — `lvim-tech/*` — that provides LSP management, settings persistence, project/workspace handling, colorschemes, and more. Fully customizable without touching core files.
+> A modular Neovim configuration written in Lua, built entirely on a first-party plugin ecosystem —
+> `lvim-tech/*`. LSP and language tooling, debugging, building and testing, git, database and REST
+> clients, the whole UI: one set, one style, one place to configure it.
 
 > Current version — **10.0.0**
 
 ---
 
-## Table of Contents
+## At a glance
 
-- [Requirements](#requirements)
-- [Install](#install)
-- [Architecture](#architecture)
-- [Language support](#language-support)
-- [Debug (DAP)](#debug-dap)
-- [The set](#the-set)
-- [User Customization](#user-customization)
-- [Changelog](#changelog)
+Measured on this machine, on the revisions the active snapshot pins — the editor answers the same
+questions live, and the commands that ask are in the last column.
+
+| What | Measured | Ask the editor |
+|---|---|---|
+| **Plugins** | **64**, all but one first-party | `:LvimInstaller` |
+| **Startup** | **~110 ms** to a usable editor (98–115 ms over five runs) | the dashboard, or `require("lvim-pack").stats()` |
+| **Languages** | **92 providers** over **150 filetypes** | `:LvimLang providers` |
+| **LSP** | **94 distinct language servers**, attached per project root | `:LvimLsp info` |
+| **Run / Build** | **49** languages run, **47** build | `:LvimBuild`, `:LvimLang status` |
+| **Test** | **44** languages, with treesitter discovery | `:LvimTest` |
+| **Debug** | **17** languages with a real adapter — nothing stubbed to pad the number | `:LvimDap adapters` |
+| **Commands** | **60** `:Lvim*` commands | `:LvimPicker commands` |
+
+Nothing on that list is installed up front: a language server, parser, formatter, linter or debug
+adapter is fetched the first time you open a file that needs it, and you are asked before it is.
+
+---
+
+## Documentation
+
+The detail lives in its own file — this page is the overview.
+
+| Page | What is in it |
+|---|---|
+| [docs/plugins.md](docs/plugins.md) | every plugin: what it is, when it loads, what it depends on |
+| [docs/languages.md](docs/languages.md) | the language model, all 92 providers, per-project overrides |
+| [docs/keys.md](docs/keys.md) | the whole keymap manifest, group by group |
+| [docs/commands.md](docs/commands.md) | every command and its subcommands |
+
+---
+
+## Philosophy
+
+**One ecosystem, not a collection.** Every plugin is written for this set: they share a palette, a
+highlight factory, a storage layer, a UI toolkit and a cursor manager. A theme change repaints all of
+them; a panel opened by one behaves like a panel opened by another. The single third-party entry left
+is a runtime *library* (`sqlite.lua`), not a plugin.
+
+**No external plugin manager.** `lvim-pack` drives Neovim's own `vim.pack` — dependencies, version
+pins, eager order, lazy triggers, build hooks. One clone, no bootstrap script to trust.
+
+**Nothing loads that is not needed.** Plugins that must be listening at the first keystroke load at
+startup by priority; the rest wait on a filetype, a command, a key or an event. Where a plugin waits
+on a command, its keymap calls that command — so it arrives exactly when you first ask for it.
+
+**One place per question.** Keymaps live in one manifest, not scattered across plugin configs.
+A language declares everything about itself in one provider. A setting has one live home
+(`config.lua` inside the plugin), which `setup()` merges into — so what you read is what is running.
+
+**Canonical UI only.** Every popup, picker, prompt and panel goes through `lvim-ui` / `lvim-hud`.
+There is no hand-rolled float in the configuration and no `vim.ui.select` left to look out of place.
+
+**Your layer is separate.** `configs/user/`, `modules/user/` and `keys/user/` sit beside the base
+ones and are merged over them. Core files are never edited, so an update never collides with your
+changes.
 
 ---
 
@@ -57,7 +107,9 @@ Verified against what the set actually spawns — `:checkhealth lvim-pkg` report
 git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim
 ```
 
-Plugins are loaded by **lvim-pack** on top of Neovim's built-in `vim.pack` and installed on first launch by **lvim-installer** — no external plugin manager is involved. LSP servers, treesitter parsers, linters, formatters and debug adapters are installed on demand by **lvim-pkg** when you first open a file of the matching type.
+Start Neovim. `lvim-pack` clones what the install itself needs, then `lvim-installer` shows a panel
+that installs the rest and runs the build hooks; the editor is usable when it closes. Language
+tooling is not part of that — it arrives per language, on the first file that needs it.
 
 ---
 
@@ -68,243 +120,92 @@ Plugins are loaded by **lvim-pack** on top of Neovim's built-in `vim.pack` and i
 ├── init.lua                ← version guard → require("core")
 ├── lua/
 │   ├── core/
-│   │   ├── init.lua        ← bootstrap: OS detection, globals, the lvim-pack clone + setup
-│   │   ├── keys.lua        ← the keymap manifest's applier (merge + apply per section)
-│   │   ├── funcs/          ← shared utility functions (editor, fs, plugins, system, table, ui)
-│   │   └── types.lua       ← LuaLS type annotations for the config
+│   │   ├── init.lua        ← bootstrap: globals, the lvim-pack clone + setup, the snapshot pin
+│   │   ├── keys.lua        ← the keymap manifest's applier (merge user over base, apply per section)
+│   │   ├── funcs/          ← shared helpers (editor, fs, plugins, system, table, ui)
+│   │   └── types.lua       ← LuaLS annotations for the config
 │   ├── configs/            ← the editor itself
-│   │   ├── base/           ← options, native search/completion, fold/icons
-│   │   └── user/           ← user overrides for base configs
+│   │   ├── base/           ← options, native search/completion, fold, icons
+│   │   └── user/           ← your editor overrides            ← edit here
 │   ├── keys/               ← the keymap MANIFEST
-│   │   ├── base.lua        ← groups, global maps, LSP verbs, per-filetype leaves
-│   │   └── user.lua        ← user keymap overrides, merged over the base
+│   │   ├── base/           ← groups, global, lsp, filetype, plugins
+│   │   └── user/           ← your keymap overrides            ← edit here
 │   └── modules/            ← the plugins
 │       ├── base/
-│       │   ├── init.lua    ← THE PLUGIN SPEC (every plugin, its trigger and its deps)
-│       │   └── configs/    ← per-plugin wiring (dependencies, editor, languages, ui, …)
-│       └── user/           ← user plugin additions/overrides
-├── .snapshots/             ← plugin pin sets (`active` names the live one)
-└── nvim-pack-lock.json     ← vim.pack's lockfile: what is actually installed
+│       │   ├── init.lua    ← THE PLUGIN SPEC (every plugin, its trigger, its deps)
+│       │   └── configs/    ← per-plugin wiring, by area
+│       └── user/           ← your plugin additions/overrides  ← edit here
+├── .snapshots/             ← the version pin sets (`active` names the live one)
+└── nvim-pack-lock.json     ← vim.pack's own record of what is installed (machine-local)
 ```
 
-The `base/user` separation means all customization lives in `modules/user/` and `configs/user/` — core files are never modified.
+The load order is the design, not an accident: built-ins off → bootstrap clone → local checkouts on
+the runtimepath → bundle, resolve, pin → the install UI → eager loads by priority → the lazy triggers
+→ `UIEnter` freezes the startup stat and fires `VeryLazy`.
 
 ---
 
-## Language support
+## Customization
 
-Languages are owned by **lvim-lang**, not by a table in this repository. Each language is a
-PROVIDER that declares everything about it in one place — its language server(s), how the project
-root is found, the formatter/linter wiring, and, where such a thing genuinely exists, the debug
-adapter, the test runner and the build recipe. `lvim-lsp` attaches the servers those providers
-declare, and `lvim-pkg` installs the tools on first use.
+Everything user-facing is a merge over the base, in three parallel places. Core files stay untouched.
 
-Providers come in two shapes: a directory per language for the ones with real toolchain behaviour
-(run / test / debug / SDK management), and a single declarative file for the ones that are "a
-language server and its root markers". Both are registered the same way.
-
-The live set is the authority, so ask the editor rather than a list that ages:
-
-| Command | Answers |
-|---|---|
-| `:LvimLang providers` | every registered provider and the filetypes it claims |
-| `:LvimLang status` | what is active for the current buffer — provider, servers, tools |
-| `:checkhealth lvim-lang` | the same, plus which of its tools are actually installed |
-| `:LvimLsp info` | the attached clients, their capabilities and diagnostics for this buffer |
-
-Opening a file whose tools are missing offers to install them (Space toggles, Enter installs,
-`q`/`Esc` skips for five minutes). A per-project override goes in `.lvim-lsp/config.lua` at the
-project root; per-project server settings in `.lvim-ls/servers/<name>.lua`.
-
----
-
-## Debug (DAP)
-
-Debugging is `lvim-dap` (the client) + `lvim-dap-view` (the panel). Debug adapters are installed by lvim-pkg alongside the LSP servers.
-
-Which languages can be debugged is a provider question, not a list kept here: a provider declares
-its adapter (and only where one really exists — nothing is stubbed to pad a count). `:LvimLang
-status` on a buffer says whether that language brings a debug adapter, and `:checkhealth lvim-lang`
-says whether it is installed.
-
-**Project-local DAP config:** `dap_utils.lua` loads a project-local `nvim-dap.lua` file from the project root when present, allowing per-project adapter/configuration overrides without touching the global config.
-
-Keys are not listed here — they live in the keymap manifest (`lua/keys/base.lua`), and the
-editor shows the live set: press a prefix and the hint panel names what follows it, `<Leader>uh`
-opens the full cheatsheet, `<Leader>sk` searches every mapping.
-
----
-
-## The set
-
-Everything the configuration loads, from `lua/modules/base/init.lua`. Each plugin documents itself
-in its own repository and its own `:help`; this is the map, not the manual. The live view is
-`:LvimInstaller` (installed / pinned / outdated per plugin).
-
-**Foundation**
-
-| Plugin | What it is |
-|---|---|
-| [lvim-pack](https://github.com/lvim-tech/lvim-pack) | the loader: `vim.pack` underneath, dependency resolution, pins, eager order and the lazy triggers |
-| [lvim-pkg](https://github.com/lvim-tech/lvim-pkg) | the data + operations hub for everything installable — packages, parsers, plugins |
-| [lvim-installer](https://github.com/lvim-tech/lvim-installer) | the install UI: the first-start panel and the package browser |
-| [lvim-nvim](https://github.com/lvim-tech/lvim-nvim) | the umbrella that forwards one option table to every plugin in the right order |
-| [lvim-utils](https://github.com/lvim-tech/lvim-utils) | the shared base — palette, highlight factory, cursor, store, dock geometry, merge |
-| [lvim-common](https://github.com/lvim-tech/lvim-common) | small editor quality-of-life modules (the universal `gx` opener among them) |
-| [lvim-fuzzy](https://github.com/lvim-tech/lvim-fuzzy) | the native fuzzy matcher the picker and completion both rank through |
-| [lvim-icons](https://github.com/lvim-tech/lvim-icons) | the icon provider and its highlight groups |
-| [lvim-colorscheme](https://github.com/lvim-tech/lvim-colorscheme) | the theme engine — every family in soft / dark / darker / light, switched live |
-
-**Interface**
-
-| Plugin | What it is |
-|---|---|
-| [lvim-ui](https://github.com/lvim-tech/lvim-ui) | the floating UI toolkit: the surface/frame chassis and the select / tabs / input / info presenters |
-| [lvim-hud](https://github.com/lvim-tech/lvim-hud) | everything on screen that is not text — statusline, winbar, tabline, statuscolumn, cmdline, messages |
-| [lvim-msgarea](https://github.com/lvim-tech/lvim-msgarea) | the docked message zone (an Emacs-minibuffer-style area) |
-| [lvim-dashboard](https://github.com/lvim-tech/lvim-dashboard) | the start screen |
-| [lvim-picker](https://github.com/lvim-tech/lvim-picker) | the finders — files, grep, buffers, git, LSP locations — over fzf or its own list |
-| [lvim-files](https://github.com/lvim-tech/lvim-files) | the file manager: a tree panel and an editable directory buffer over one model |
-| [lvim-term](https://github.com/lvim-tech/lvim-term) | named, toggleable terminals with a tab bar |
-| [lvim-shell](https://github.com/lvim-tech/lvim-shell) | TUI programs in a themed float, with presets for the common ones |
-| [lvim-image](https://github.com/lvim-tech/lvim-image) | images inside the editor, across the terminal graphics protocols |
-| [lvim-winpick](https://github.com/lvim-tech/lvim-winpick) | label a window and jump to it |
-| [lvim-winmove](https://github.com/lvim-tech/lvim-winmove) | move and swap windows within a tab |
-| [lvim-winnav](https://github.com/lvim-tech/lvim-winnav) | directional window navigation and resizing, handing off to the multiplexer at the edge |
-| [lvim-keys-helper](https://github.com/lvim-tech/lvim-keys-helper) | the key-hint panel and the cheatsheet |
-| [lvim-indent](https://github.com/lvim-tech/lvim-indent) | indent guides and the enclosing-scope guide |
-| [lvim-context](https://github.com/lvim-tech/lvim-context) | the sticky header of the scopes that have scrolled off the top |
-| [lvim-control-center](https://github.com/lvim-tech/lvim-control-center) | the settings panel, persisted |
-
-**Editing**
-
-| Plugin | What it is |
-|---|---|
-| [lvim-space](https://github.com/lvim-tech/lvim-space) | projects, workspaces, tabs and their files |
-| [lvim-vault](https://github.com/lvim-tech/lvim-vault) | marks, jumps and a persistent macro bank in one panel |
-| [lvim-undo](https://github.com/lvim-tech/lvim-undo) | the branching undo history as a timeline, with named checkpoints |
-| [lvim-buf-history](https://github.com/lvim-tech/lvim-buf-history) | per-window buffer history, browser-style |
-| [lvim-search](https://github.com/lvim-tech/lvim-search) | a counter beside every visible match, the nearest one painted |
-| [lvim-replace](https://github.com/lvim-tech/lvim-replace) | project-wide find and replace with per-result marking |
-| [lvim-qf-loc](https://github.com/lvim-tech/lvim-qf-loc) | the quickfix / location workflow: preview, editable list, context, browser |
-| [lvim-jump](https://github.com/lvim-tech/lvim-jump) | label motions — enhanced `f`/`t`, live-search jump, treesitter targets |
-| [lvim-move](https://github.com/lvim-tech/lvim-move) | move lines and selections in any direction |
-| [lvim-comment](https://github.com/lvim-tech/lvim-comment) | line and block commenting, commentstring-aware |
-| [lvim-pairs](https://github.com/lvim-tech/lvim-pairs) | autopairs, surround and autotag over one pair table |
-| [lvim-cycle](https://github.com/lvim-tech/lvim-cycle) | smart increment/decrement — numbers, dates, booleans, operators |
-| [lvim-table](https://github.com/lvim-tech/lvim-table) | table mode: realign as you type, row and column operations |
-| [lvim-color-picker](https://github.com/lvim-tech/lvim-color-picker) | a slider picker, converter and inline highlighter |
-| [lvim-render](https://github.com/lvim-tech/lvim-render) | in-buffer rendering of markdown, typst, org and latex |
-| [lvim-linguistics](https://github.com/lvim-tech/lvim-linguistics) | per-mode keyboard layout and spelling |
-| [lvim-calendar](https://github.com/lvim-tech/lvim-calendar) | calendar and agenda with pluggable day sources |
-| [lvim-snippets](https://github.com/lvim-tech/lvim-snippets) | the snippet engine and its collections |
-| [lvim-cmp](https://github.com/lvim-tech/lvim-cmp) | the completion engine |
-
-**Languages, tools and data**
-
-| Plugin | What it is |
-|---|---|
-| [lvim-lang](https://github.com/lvim-tech/lvim-lang) | the per-language providers: servers, roots, run / test / debug / SDK behaviour |
-| [lvim-ls](https://github.com/lvim-tech/lvim-ls) | the language-server core — server configs, EFM tools, the attach lifecycle |
-| [lvim-lsp](https://github.com/lvim-tech/lvim-lsp) | the LSP surface: diagnostics, outline, peek, hover, code actions |
-| [lvim-ts](https://github.com/lvim-tech/lvim-ts) | the treesitter runtime over Neovim's own, with parser installation |
-| [lvim-breadcrumbs](https://github.com/lvim-tech/lvim-breadcrumbs) | the symbol path to the cursor |
-| [lvim-dap](https://github.com/lvim-tech/lvim-dap) | the debug client |
-| [lvim-dap-view](https://github.com/lvim-tech/lvim-dap-view) | the debugger panels — watches, scopes, stack, breakpoints, REPL |
-| [lvim-test](https://github.com/lvim-tech/lvim-test) | a granular test runner with treesitter discovery and streaming results |
-| [lvim-build](https://github.com/lvim-tech/lvim-build) | build / run / test / lint recipes detected per project and file |
-| [lvim-tasks](https://github.com/lvim-tech/lvim-tasks) | the task runner panel, with live output and history |
-| [lvim-tex](https://github.com/lvim-tech/lvim-tex) | LaTeX as a build pipeline — compile, log-as-diagnostics, viewer, SyncTeX both ways |
-| [lvim-git](https://github.com/lvim-tech/lvim-git) | the full git client — status, diff, log, blame, refs, and jj alongside it |
-| [lvim-forge](https://github.com/lvim-tech/lvim-forge) | pull requests, issues and reviews from inside the editor |
-| [lvim-db](https://github.com/lvim-tech/lvim-db) | the database client — connections, results, notes |
-| [lvim-rest](https://github.com/lvim-tech/lvim-rest) | the REST client — `.http` documents, environments, chaining |
-| [lvim-preview](https://github.com/lvim-tech/lvim-preview) | live browser preview with hot reload |
-| [lvim-remote](https://github.com/lvim-tech/lvim-remote) | project file transfer over ssh/rsync |
-| [lvim-keyring](https://github.com/lvim-tech/lvim-keyring) | the encrypted secrets wallet the others ask for credentials |
-| [lvim-dependencies](https://github.com/lvim-tech/lvim-dependencies) | project dependency management across package managers |
-
-The only plugin here that is not `lvim-tech`'s own is `sqlite.lua`, the storage library behind the
-panels that keep real relational data.
-
-## User Customization
-
-All user customization goes in `lua/configs/user/` and `lua/modules/user/`. Core files are never modified.
-
-### Editor Config
+### The editor
 
 ```lua
 -- lua/configs/user/init.lua
-
--- Disable a base config function
-configs["base_vim"] = false
-
--- Rewrite a base config function
-configs["base_vim"] = {
-    -- your code
-}
-
--- Add a new config function
-configs["user_vim"] = {
-    -- your code
-}
+configs["base_options"] = false     -- disable a base phase
+configs["base_options"] = { … }     -- rewrite one
+configs["user_thing"] = { … }       -- add your own
 ```
 
 ### Plugins
 
 ```lua
 -- lua/modules/user/init.lua
-
--- Disable a base plugin
-modules["lvim-tech/lvim-calendar"] = false
-
--- Override a base plugin's settings
-modules["lvim-tech/lvim-calendar"] = {
-    -- the spec fields lvim-pack reads: event / ft / cmd / keys, dependencies,
+modules["lvim-tech/lvim-calendar"] = false   -- disable
+modules["lvim-tech/lvim-calendar"] = {       -- override the spec
+    -- the fields lvim-pack reads: event / ft / cmd / keys, dependencies,
     -- priority, opts or config, build …
 }
-
--- Add a new plugin
-modules["author/new-plugin"] = {
+modules["author/new-plugin"] = {             -- add one
     config = function()
         require("new-plugin").setup({})
     end,
 }
 ```
 
-### LSP — Language Server Config
-
-Servers are declared by their lvim-lang provider, not by a file in this repository — see
-[Language support](#language-support). Add a language by writing a provider (a declarative file is
-often enough); adjust an existing one per project with `.lvim-ls/servers/<name>.lua` in the project
-root, or globally through `lvim-ls`'s own options in `modules/base/configs/languages/init.lua`.
-
-### LSP — Global Feature Flags
-
-Change at runtime via `:LvimControlCenter` → LSP tab, or programmatically:
+### Keys
 
 ```lua
--- Apply for session only (memory)
-require("lvim-lsp.state").config.features.auto_format = false
-
--- Apply permanently (survives restarts)
-require("lvim-lsp.core.globals").save({ auto_format = false })
-```
-
-### LSP — Per-Project Override
-
-Create `.lvim-lsp/config.lua` in any project root:
-
-```lua
--- .lvim-lsp/config.lua
+-- lua/keys/user/init.lua — merged over the manifest
 return {
-    auto_format = false,
-    inlay_hints = true,
-    code_lens = { enabled = false },
+    global = {
+        normal = {
+            { "<Leader>zz", "<Cmd>LvimGit status<CR>", "Git: status" },
+        },
+    },
 }
 ```
 
-Run `:LvimLsp reattach` to apply immediately without restarting.
+See [docs/keys.md](docs/keys.md) for the sections and what each is applied to.
+
+### Settings, live
+
+`:LvimControlCenter` is the same surface as a panel — general editor options, appearance, LSP
+features, commands and projects, persisted across restarts. Per-project overrides go in the project
+root: `.lvim-lsp/config.lua`, `.lvim-ls/servers/<name>.lua`, `.lvim/lang/run.lua`, `nvim-dap.lua`.
+
+---
+
+## Versions and pinning
+
+`.snapshots/` holds the pin sets and `active` names the live one. That pin is the **declared intent**
+and outranks `nvim-pack-lock.json` — vim.pack's own, machine-local record of what happens to be
+installed. A fresh machine therefore installs what the snapshot says; where the snapshot is silent,
+the lockfile decides; where neither has an answer, the plugin tracks its branch.
+
+Switching `active` governs what a fresh install gets. Moving plugins already on disk to another
+snapshot is the installer's snapshot tab (diff → restore), which checks them out explicitly.
 
 ---
 
@@ -315,13 +216,21 @@ Run `:LvimLsp reattach` to apply immediately without restarting.
 **The distribution is now first-party.** Every borrowed plugin has been replaced by an `lvim-tech`
 one; what remains from outside the set is a single runtime library (`sqlite.lua`).
 
-- **Loading** — no external plugin manager. `lvim-pack` drives Neovim's built-in `vim.pack`:
-  it resolves dependencies, applies the version pins, loads eagerly by priority and wires the
-  `event` / `ft` / `cmd` / `keys` triggers. Minimum Neovim is **0.12**, where `vim.pack` arrived.
+- **Loading** — no external plugin manager. `lvim-pack` drives Neovim's built-in `vim.pack`: it
+  resolves dependencies, applies the version pins, loads eagerly by priority and wires the `event` /
+  `ft` / `cmd` / `keys` triggers. Minimum Neovim is **0.12**, where `vim.pack` arrived.
 - **Installing** — `lvim-installer` owns the first-start panel and the package browser; `lvim-pkg`
   installs and tracks LSP servers, treesitter parsers, linters, formatters and debug adapters.
-- **Keys** — one manifest, `lua/keys/base.lua`: group labels, global maps, capability-guarded
-  LSP verbs applied on `LspAttach`, per-filetype leaves, and overrides forwarded into a plugin's own
-  key table. User overrides live in `lua/keys/user.lua`.
+- **Languages** — owned by `lvim-lang`: one provider per language declares its servers, roots, tools
+  and its run / build / test / debug behaviour, and fans them out to the plugins that use them.
+- **Keys** — one manifest, `lua/keys/base/`: group labels, global maps, capability-guarded LSP verbs
+  applied on `LspAttach`, per-filetype leaves, and overrides forwarded into a plugin's own key table.
+  Your layer is `lua/keys/user/`.
 - **UI** — every popup, picker and prompt goes through `lvim-ui` / `lvim-hud`; there is no
   hand-rolled float left in the configuration.
+
+---
+
+## License
+
+BSD 3-Clause. See [LICENSE](LICENSE).
