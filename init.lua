@@ -14,8 +14,8 @@ _G.LVIM.start_time = vim.uv.hrtime()
 -- MINIMUM 0.12: the whole plugin set is loaded through `vim.pack`, which is where it was
 -- introduced — 0.11 has no plugin manager at all, so the previous 0.11.4 floor could not have
 -- started this config. vim.pack's LOCKFILE (`nvim-pack-lock.json`) is newer, but nothing here
--- REQUIRES it: lvim-pack only rewrites it to unpin a plugin that tracks latest, and that pass
--- returns early when the file is not there. Development happens on 0.13.
+-- REQUIRES it: lvim-pack only rewrites it so an active snapshot's pin outranks a stale locked
+-- revision, and that pass returns early when the file is not there. Development happens on 0.13.
 --
 -- `vim.fn.has`, NOT `vim.version.ge`: a development build calls itself `0.13.0-dev`, and by semver
 -- a pre-release sorts BELOW its release — so `vim.version.ge(v, { 0, 13, 0 })` is false on exactly

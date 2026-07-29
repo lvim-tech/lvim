@@ -80,167 +80,18 @@ return {
             -- key is forwarded to that plugin's own setup() in a dependency-safe order (see lvim-nvim). The
             -- unified `:LvimPicker <finder> [area|float|bottom]` command is registered by lvim-picker; the
             -- finder functions stay public for keymaps: require("lvim-picker").files(...).
-            require("lvim-nvim").setup({
-                ["lvim-utils"] = {
-                    cursor = { ft = { "lvim-utils-ui" } }, -- lvim-lsp / lvim-files self-register their panels
-                },
-                ["lvim-common"] = {
-                    gx = {},
-                    -- Drop 'colorcolumn' on windows narrower than the column while 'wrap' is on (it would
-                    -- otherwise render as a stray cell on a wrapped continuation row). Reads the global value
-                    -- control-center keeps in sync. Same exclusions as the control-center colorcolumn option.
-                    colorcolumn = { enabled = true, exclude_ft = { "lvim-files" } },
-                },
-                ["lvim-hud"] = {
-                    notify = {
-                        -- print() is captured via msg_show (lua_print) + ext_kinds routing, so do not also wrap
-                        -- print (that would double-handle it).
-                        override_print = false,
-                        -- :Messages + live messages both render IN the msgarea zone (one styled panel; the
-                        -- coloured filter bar shows only when focused). Descend with <C-w>j, <C-w>k / q to leave.
-                        history = { statusline = false },
-                        ext_kinds = {
-                            [""] = "zone",
-                            ["echomsg"] = "zone",
-                            ["echoerr"] = "zone",
-                            ["lua_print"] = "zone",
-                            ["return_prompt"] = "toast",
-                        },
-                    },
-                    -- Self-rendered command-line (own float) with per-mode icon badges.
-                    -- statusline = false: keep the mode badge IN the float, publish nothing to the statusline.
-                    cmdline = { enable = true, statusline = false },
-                    -- vim.ui.input dispatcher; default to the command-line, per-call via opts.ui or
-                    -- require("lvim-hud.input").route_next("popup"|"cmdline").
-                    input = { enable = true, default = "cmdline" },
-                    -- Editor chrome: native statusline / winbar / tabline / statuscolumn. The statusline is the
-                    -- GLOBAL line (laststatus=3) so it has no per-buffer exclude; winbar / tabline / statuscolumn
-                    -- keep their own lvim-hud default blacklists (dashboard / panels / terminals / qf / ...).
-                    -- Each `segments` is a LAZY function (resolved at render, after the plugin loads); the
-                    -- DEFINITIONS live in our config (modules.base.configs.ui.chrome.*) — edit those to restyle.
-                    -- No `enabled = true` per chrome part: that is the plugin's default. Only the
-                    -- `segments` DEFINITIONS are ours (modules.base.configs.ui.chrome.*) — each is a LAZY
-                    -- function resolved at render, after the plugin loads. Edit those to restyle.
-                    chrome = {
-                        statusline = {
-                            segments = function()
-                                return require("modules.base.configs.ui.chrome.statusline")
-                            end,
-                        },
-                        winbar = {
-                            segments = function()
-                                return require("modules.base.configs.ui.chrome.winbar")
-                            end,
-                        },
-                        tabline = {
-                            segments = function()
-                                return require("modules.base.configs.ui.chrome.tabline")
-                            end,
-                        },
-                        statuscolumn = {
-                            segments = function()
-                                return require("modules.base.configs.ui.chrome.statuscolumn")
-                            end,
-                        },
-                    },
-                },
-                ["lvim-picker"] = {
-                    -- statusline = false: NO finder publishes its title/counter to the statusline.
-                    statusline = false,
-                    -- Every finder (files / grep / … included) uses the themed tint list matched by the native
-                    -- lvim-fuzzy engine — no fzf terminal panel. Proven at 1.5M (viewport-virtualized render +
-                    -- prepared-context match). Set true to fall back to the fzf-TUI for the heavy finders.
-                    fzf_tui = false,
-                    -- Finder prompt: a nerd search glyph + "Search" label.
-                    prompt = { icon = "", label = "Search" },
-                    -- Fuzzy result ordering (picker + native completion): dirs first, then by best match.
-                    fuzzy = { sort = { "dirs_first", "score" } },
-                },
-                ["lvim-msgarea"] = {
-                    -- Persistent message area (docked float) — routed kinds land here instead of toasts.
-                    -- Toggle live with :LvimMsgArea. max_height is the hard cap; auto_resize fits content.
-                    enable = true,
-                    max_height = 12,
-                    unified = true,
-                    integrations = { native = true }, -- native cmdline completion -> msgarea
-                    completion_columns = 3, -- grid: 3 columns (1 = list)
-                },
-                -- Snippet collections (VS Code / SnipMate / LuaSnip syntax, all read by the plugin
-                -- itself — the LuaSnip PLUGIN is no longer a peer) + the :LvimSnippets picker; its
-                -- setup() registers the "snippets" completion source into lvim-cmp (register_source)
-                -- and installs the postfix watcher.
-                ["lvim-snippets"] = {
-                    -- `paths` is a clean array REPLACE, so listing your own folder is required, not
-                    -- optional. ORDER IS PRIORITY: the first root wins an equal fuzzy score, which is
-                    -- why `custom` comes first — a few hundred packaged snippets must not outrank the
-                    -- handful written for this setup. `custom` and `vendor` are siblings so neither
-                    -- contains the other; a vendored pack is then removable (or replaceable) without
-                    -- touching anything hand-written.
-                    paths = {
-                        vim.fn.stdpath("config") .. "/snippets/custom",
-                        vim.fn.stdpath("config") .. "/snippets/vendor/friendly",
-                        vim.fn.stdpath("config") .. "/snippets/vendor/vim-snippets",
-                    },
-                },
-                ["lvim-image"] = {
-                    -- Terminal graphics: :LvimImage viewer, `nvim picture.png`, :LvimImageInline for inline
-                    -- document images (markdown / html / latex). Non-PNG decoded in memory via libvips.
-                    -- Anchor images to TEXT CELLS inside tmux (kitty's unicode-placeholder grid), which is
-                    -- the mechanism kitty added for multiplexers: the cells are ordinary text, so tmux owns
-                    -- and clears them like any other content. Without it the only path left is drawing at
-                    -- the outer terminal's cursor — measured here to land in the window's top-left corner
-                    -- regardless of where it belongs, AND to survive tmux window switches, because tmux
-                    -- never learns the image is there.
-                    tmux_placeholders = true,
-                },
-                -- Start dashboard (greeter). Engine-only like chrome — the banner/menu/layout DEFINITION lives
-                -- in our config (modules.base.configs.ui.dashboard). Auto-opens on a bare `nvim`.
-                ["lvim-dashboard"] = require("modules.base.configs.ui.dashboard"),
-            })
+            -- The set is no longer configured THROUGH the umbrella: every plugin's options live in its own
+            -- spec entry (`opts = dependencies_config.lvim_<name>.opts`), like the other fifty. The order the
+            -- forwarder guaranteed — lvim-hud before lvim-msgarea — is the dependency graph's job and it
+            -- already states it, so the ORDER list was a second copy of that knowledge. What remains here is
+            -- host WIRING that belongs to no single plugin.
 
             -- Finder keys (files/grep/buffers/oldfiles/marks) live in the central keymap
-            -- manifest: modules/base/keys.lua → <Leader>s* (Search / Navigate).
+            -- manifest: keys/base.lua → <Leader>s* (Search / Navigate).
 
-            local ui = require("lvim-ui")
-            local ui_auto = ui.new({ width = false })
-
-            local function clean_title(prompt, default_prompt)
-                local t = (prompt and prompt:gsub("\n", "")) or default_prompt
-                if t:sub(-1) == ":" then
-                    t = " " .. t:sub(1, -2) .. " "
-                end
-                return t
-            end
-
-            vim.ui.select = function(items, opts, on_choice)
-                assert(type(on_choice) == "function", "missing on_choice function")
-                local format_item = opts.format_item or tostring
-                local display = {}
-                for _, item in ipairs(items) do
-                    table.insert(display, format_item(item))
-                end
-                local is_code_action = opts.prompt and opts.prompt:find("[Cc]ode [Aa]ction")
-                local sel = is_code_action and ui_auto or ui
-                local icon = is_code_action and require("lvim-ui.rows").icons().action or nil
-                local display_items = {}
-                for _, label in ipairs(display) do
-                    table.insert(display_items, icon and { label = label, icon = icon } or label)
-                end
-                sel.select({
-                    title = clean_title(opts.prompt, " Select "),
-                    items = display_items,
-                    position = "cursor",
-                    max_width = vim.api.nvim_win_get_width(0) - 4,
-                    max_items = vim.api.nvim_win_get_height(0),
-                    callback = function(confirmed, index)
-                        if confirmed and index then
-                            on_choice(items[index], index)
-                        else
-                            on_choice(nil, nil)
-                        end
-                    end,
-                })
-            end
+            -- `vim.ui.select` is handed to lvim-ui by its own bridge — see the `lvim-ui` entry
+            -- below (`bridge = { ui_select = true }`). It used to be re-implemented here, in a
+            -- distribution config, although every consumer of the toolkit wants the same thing.
         end,
     },
 
@@ -253,6 +104,146 @@ return {
         -- color_mode defaults to "brand" (real per-type brand colours, independent of the theme).
         -- Set opts.color_mode = "theme" to follow the colorscheme, or "theme_brand" for a blend.
         opts = {},
+    },
+
+    lvim_utils = {
+        opts = {
+                cursor = { ft = { "lvim-utils-ui" } }, -- lvim-lsp / lvim-files self-register their panels
+            },
+    },
+    lvim_common = {
+        opts = {
+                gx = {},
+                -- Drop 'colorcolumn' on windows narrower than the column while 'wrap' is on (it would
+                -- otherwise render as a stray cell on a wrapped continuation row). Reads the global value
+                -- control-center keeps in sync. Same exclusions as the control-center colorcolumn option.
+                colorcolumn = { enabled = true, exclude_ft = { "lvim-files" } },
+            },
+    },
+    lvim_hud = {
+        opts = {
+                notify = {
+                    -- print() is captured via msg_show (lua_print) + ext_kinds routing, so do not also wrap
+                    -- print (that would double-handle it).
+                    override_print = false,
+                    -- :Messages + live messages both render IN the msgarea zone (one styled panel; the
+                    -- coloured filter bar shows only when focused). Descend with <C-w>j, <C-w>k / q to leave.
+                    history = { statusline = false },
+                    ext_kinds = {
+                        [""] = "zone",
+                        ["echomsg"] = "zone",
+                        ["echoerr"] = "zone",
+                        ["lua_print"] = "zone",
+                        ["return_prompt"] = "toast",
+                    },
+                },
+                -- Self-rendered command-line (own float) with per-mode icon badges.
+                -- statusline = false: keep the mode badge IN the float, publish nothing to the statusline.
+                cmdline = { enable = true, statusline = false },
+                -- vim.ui.input dispatcher; default to the command-line, per-call via opts.ui or
+                -- require("lvim-hud.input").route_next("popup"|"cmdline").
+                input = { enable = true, default = "cmdline" },
+                -- Editor chrome: native statusline / winbar / tabline / statuscolumn. The statusline is the
+                -- GLOBAL line (laststatus=3) so it has no per-buffer exclude; winbar / tabline / statuscolumn
+                -- keep their own lvim-hud default blacklists (dashboard / panels / terminals / qf / ...).
+                -- Each `segments` is a LAZY function (resolved at render, after the plugin loads); the
+                -- DEFINITIONS live in our config (modules.base.configs.ui.chrome.*) — edit those to restyle.
+                -- No `enabled = true` per chrome part: that is the plugin's default. Only the
+                -- `segments` DEFINITIONS are ours (modules.base.configs.ui.chrome.*) — each is a LAZY
+                -- function resolved at render, after the plugin loads. Edit those to restyle.
+                chrome = {
+                    statusline = {
+                        segments = function()
+                            return require("modules.base.configs.ui.chrome.statusline")
+                        end,
+                    },
+                    winbar = {
+                        segments = function()
+                            return require("modules.base.configs.ui.chrome.winbar")
+                        end,
+                    },
+                    tabline = {
+                        segments = function()
+                            return require("modules.base.configs.ui.chrome.tabline")
+                        end,
+                    },
+                    statuscolumn = {
+                        segments = function()
+                            return require("modules.base.configs.ui.chrome.statuscolumn")
+                        end,
+                    },
+                },
+            },
+    },
+    lvim_ui = {
+        opts = {
+            -- Hand `vim.ui.select` to the toolkit: every chooser in the editor (a plugin's list, an
+            -- LSP code-action menu) opens as the same themed popup at the cursor. Opt-in by design,
+            -- because it is a global another plugin could own.
+            bridge = { ui_select = true },
+        },
+    },
+    lvim_picker = {
+        opts = {
+                -- statusline = false: NO finder publishes its title/counter to the statusline.
+                statusline = false,
+                -- Every finder (files / grep / … included) uses the themed tint list matched by the native
+                -- lvim-fuzzy engine — no fzf terminal panel. Proven at 1.5M (viewport-virtualized render +
+                -- prepared-context match). Set true to fall back to the fzf-TUI for the heavy finders.
+                fzf_tui = false,
+                -- Finder prompt: a nerd search glyph + "Search" label.
+                prompt = { icon = "", label = "Search" },
+                -- Fuzzy result ordering (picker + native completion): dirs first, then by best match.
+                fuzzy = { sort = { "dirs_first", "score" } },
+            },
+    },
+    lvim_msgarea = {
+        opts = {
+                -- Persistent message area (docked float) — routed kinds land here instead of toasts.
+                -- Toggle live with :LvimMsgArea. max_height is the hard cap; auto_resize fits content.
+                enable = true,
+                max_height = 12,
+                unified = true,
+                integrations = { native = true }, -- native cmdline completion -> msgarea
+                completion_columns = 3, -- grid: 3 columns (1 = list)
+            },
+    },
+    lvim_snippets = {
+                -- Snippet collections (VS Code / SnipMate / LuaSnip syntax, all read by the plugin
+                -- itself — the LuaSnip PLUGIN is no longer a peer) + the :LvimSnippets picker; its
+                -- setup() registers the "snippets" completion source into lvim-cmp (register_source)
+                -- and installs the postfix watcher.
+        opts = {
+                -- `paths` is a clean array REPLACE, so listing your own folder is required, not
+                -- optional. ORDER IS PRIORITY: the first root wins an equal fuzzy score, which is
+                -- why `custom` comes first — a few hundred packaged snippets must not outrank the
+                -- handful written for this setup. `custom` and `vendor` are siblings so neither
+                -- contains the other; a vendored pack is then removable (or replaceable) without
+                -- touching anything hand-written.
+                paths = {
+                    vim.fn.stdpath("config") .. "/snippets/custom",
+                    vim.fn.stdpath("config") .. "/snippets/vendor/friendly",
+                    vim.fn.stdpath("config") .. "/snippets/vendor/vim-snippets",
+                },
+            },
+    },
+    lvim_image = {
+        opts = {
+                -- Terminal graphics: :LvimImage viewer, `nvim picture.png`, :LvimImageInline for inline
+                -- document images (markdown / html / latex). Non-PNG decoded in memory via libvips.
+                -- Anchor images to TEXT CELLS inside tmux (kitty's unicode-placeholder grid), which is
+                -- the mechanism kitty added for multiplexers: the cells are ordinary text, so tmux owns
+                -- and clears them like any other content. Without it the only path left is drawing at
+                -- the outer terminal's cursor — measured here to land in the window's top-left corner
+                -- regardless of where it belongs, AND to survive tmux window switches, because tmux
+                -- never learns the image is there.
+                tmux_placeholders = true,
+            },
+    },
+    lvim_dashboard = {
+                -- Start dashboard (greeter). Engine-only like chrome — the banner/menu/layout DEFINITION lives
+                -- in our config (modules.base.configs.ui.dashboard). Auto-opens on a bare `nvim`.
+        opts = require("modules.base.configs.ui.dashboard"),
     },
 }
 

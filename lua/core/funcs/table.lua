@@ -23,23 +23,4 @@ M.merge = function(tbl1, tbl2)
     return tbl1
 end
 
--- Sorts bracket-key lines (e.g. `["foo"] = ...`) in the current buffer
--- alphabetically, placing all other lines after them. Useful for keeping
--- plugin module tables tidy. Bound to :SortLuaTable.
-M.sort_lua_table = function()
-    local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-    local sorted_lines = {}
-    local inner_lines = {}
-    for _, line in ipairs(lines) do
-        if line:match('%[".*"%]') then
-            table.insert(sorted_lines, line)
-        else
-            table.insert(inner_lines, line)
-        end
-    end
-    table.sort(sorted_lines)
-    vim.api.nvim_buf_set_lines(0, 0, -1, false, sorted_lines)
-    vim.api.nvim_buf_set_lines(0, #sorted_lines, -1, false, inner_lines)
-end
-
 return M

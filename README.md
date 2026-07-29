@@ -69,28 +69,20 @@ Plugins are loaded by **lvim-pack** on top of Neovim's built-in `vim.pack` and i
 ├── lua/
 │   ├── core/
 │   │   ├── init.lua        ← bootstrap: OS detection, globals, the lvim-pack clone + setup
+│   │   ├── keys.lua        ← the keymap manifest's applier (merge + apply per section)
 │   │   ├── funcs/          ← shared utility functions (editor, fs, plugins, system, table, ui)
 │   │   └── types.lua       ← LuaLS type annotations for the config
-│   ├── configs/
-│   │   ├── base/           ← the editor itself: options, native search/completion, fold/icons
+│   ├── configs/            ← the editor itself
+│   │   ├── base/           ← options, native search/completion, fold/icons
 │   │   └── user/           ← user overrides for base configs
-│   ├── modules/
-│   │   ├── base/
-│   │   │   ├── init.lua        ← THE PLUGIN SPEC (every plugin, its trigger and its deps)
-│   │   │   ├── keys.lua        ← the keymap MANIFEST (groups, global, LSP, per-filetype)
-│   │   │   ├── keys_apply.lua  ← merges the user manifest over it and applies each section
-│   │   │   └── configs/        ← per-plugin wiring
-│   │   │       ├── dependencies/
-│   │   │       ├── editor/
-│   │   │       │   └── control_center/   ← lvim-control-center groups
-│   │   │       ├── languages/
-│   │   │       ├── ui/
-│   │   │       │   └── chrome/           ← statusline, winbar, tabline, statuscolumn
-│   │   │       ├── version_control/
-│   │   │       └── completion/
-│   │   └── user/           ← user plugin additions/overrides
-│   └── user/
-│       └── keys.lua        ← user keymap overrides, merged over the manifest
+│   ├── keys/               ← the keymap MANIFEST
+│   │   ├── base.lua        ← groups, global maps, LSP verbs, per-filetype leaves
+│   │   └── user.lua        ← user keymap overrides, merged over the base
+│   └── modules/            ← the plugins
+│       ├── base/
+│       │   ├── init.lua    ← THE PLUGIN SPEC (every plugin, its trigger and its deps)
+│       │   └── configs/    ← per-plugin wiring (dependencies, editor, languages, ui, …)
+│       └── user/           ← user plugin additions/overrides
 ├── .snapshots/             ← plugin pin sets (`active` names the live one)
 └── nvim-pack-lock.json     ← vim.pack's lockfile: what is actually installed
 ```
@@ -137,7 +129,7 @@ says whether it is installed.
 
 **Project-local DAP config:** `dap_utils.lua` loads a project-local `nvim-dap.lua` file from the project root when present, allowing per-project adapter/configuration overrides without touching the global config.
 
-Keys are not listed here — they live in the keymap manifest (`lua/modules/base/keys.lua`), and the
+Keys are not listed here — they live in the keymap manifest (`lua/keys/base.lua`), and the
 editor shows the live set: press a prefix and the hint panel names what follows it, `<Leader>uh`
 opens the full cheatsheet, `<Leader>sk` searches every mapping.
 
@@ -328,8 +320,8 @@ one; what remains from outside the set is a single runtime library (`sqlite.lua`
   `event` / `ft` / `cmd` / `keys` triggers. Minimum Neovim is **0.12**, where `vim.pack` arrived.
 - **Installing** — `lvim-installer` owns the first-start panel and the package browser; `lvim-pkg`
   installs and tracks LSP servers, treesitter parsers, linters, formatters and debug adapters.
-- **Keys** — one manifest, `lua/modules/base/keys.lua`: group labels, global maps, capability-guarded
+- **Keys** — one manifest, `lua/keys/base.lua`: group labels, global maps, capability-guarded
   LSP verbs applied on `LspAttach`, per-filetype leaves, and overrides forwarded into a plugin's own
-  key table. User overrides live in `lua/user/keys.lua`.
+  key table. User overrides live in `lua/keys/user.lua`.
 - **UI** — every popup, picker and prompt goes through `lvim-ui` / `lvim-hud`; there is no
   hand-rolled float left in the configuration.

@@ -11,10 +11,7 @@
 -- and merges a `dir=` over whichever plugins are cloned there. That block is a no-op for anyone without
 -- that directory, so this config clones and runs the published plugins for them.
 
-local funcs = require("core.funcs")
-
 local modules = {}
-local plugins_snapshot = funcs.read_snapshot()
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- DEPENDENCIES -------------------------------------------------
@@ -39,6 +36,7 @@ modules["lvim-tech/lvim-colorscheme"] = {
 -- lvim-utils is the BASE (utils / colors / highlight / cursor / store + the central highlight
 -- factory). No config here — the whole lvim-tech set is configured through lvim-nvim below.
 modules["lvim-tech/lvim-utils"] = {
+    opts = dependencies_config.lvim_utils.opts,
     priority = 100,
 }
 
@@ -83,16 +81,19 @@ modules["lvim-tech/lvim-nvim"] = {
 -- forwarder above (see modules.base.configs.dependencies lvim_nvim.config); declared here so
 -- each one is explicitly present from its dev checkout.
 modules["lvim-tech/lvim-common"] = {
+    opts = dependencies_config.lvim_common.opts,
     dependencies = {
         "lvim-tech/lvim-utils",
     },
 }
 modules["lvim-tech/lvim-ui"] = {
+    opts = dependencies_config.lvim_ui.opts,
     dependencies = {
         "lvim-tech/lvim-utils",
     },
 }
 modules["lvim-tech/lvim-picker"] = {
+    opts = dependencies_config.lvim_picker.opts,
     dependencies = {
         "lvim-tech/lvim-fuzzy",
         "lvim-tech/lvim-ui",
@@ -100,12 +101,14 @@ modules["lvim-tech/lvim-picker"] = {
     },
 }
 modules["lvim-tech/lvim-hud"] = {
+    opts = dependencies_config.lvim_hud.opts,
     dependencies = {
         "lvim-tech/lvim-ui",
         "lvim-tech/lvim-utils",
     },
 }
 modules["lvim-tech/lvim-msgarea"] = {
+    opts = dependencies_config.lvim_msgarea.opts,
     dependencies = {
         "lvim-tech/lvim-hud",
         "lvim-tech/lvim-picker",
@@ -114,12 +117,14 @@ modules["lvim-tech/lvim-msgarea"] = {
     },
 }
 modules["lvim-tech/lvim-image"] = {
+    opts = dependencies_config.lvim_image.opts,
     dependencies = {
         "lvim-tech/lvim-ui",
         "lvim-tech/lvim-utils",
     },
 }
 modules["lvim-tech/lvim-dashboard"] = {
+    opts = dependencies_config.lvim_dashboard.opts,
     dependencies = {
         "lvim-tech/lvim-utils",
     },
@@ -165,7 +170,7 @@ modules["lvim-tech/lvim-winmove"] = {
 -- lvim-keys-helper: the self-contained key-hint panel. Always loaded; enable/disable, popup
 -- delay and mini/full style are all switched live from the control center (no restart).
 modules["lvim-tech/lvim-keys-helper"] = {
-    config = ui_config.lvim_keys_helper.config,
+    opts = ui_config.lvim_keys_helper.opts,
 }
 
 -- lvim-files: the file manager — a persistent tree side panel + an editable-buffer
@@ -186,7 +191,7 @@ modules["lvim-tech/lvim-files"] = {
 -- favour of the plugin's own addon presets.
 modules["lvim-tech/lvim-shell"] = {
     cmd = { "LvimShell" },
-    -- Launcher keys (<Leader>o{s,g,D,y,n}) live in the manifest (modules/base/keys.lua) and
+    -- Launcher keys (<Leader>o{s,g,D,y,n}) live in the manifest (keys/base.lua) and
     -- lazy-load via the cmd above — no lazy `keys` here, so they don't shadow the <Leader>s* finders.
     config = ui_config.lvim_shell.config,
 }
@@ -227,7 +232,7 @@ modules["lvim-tech/lvim-winnav"] = {
         "lvim-tech/lvim-winmove",
         "lvim-tech/lvim-utils",
     },
-    config = ui_config.lvim_winnav.config,
+    opts = ui_config.lvim_winnav.opts,
 }
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -376,7 +381,7 @@ modules["lvim-tech/lvim-render"] = {
         "lvim-tech/lvim-ts",
         "lvim-tech/lvim-utils",
     },
-    config = editor_config.lvim_render.config,
+    opts = editor_config.lvim_render.opts,
 }
 
 -- lvim-calendar: month/quarter/year/agenda calendar with pluggable day sources.
@@ -387,7 +392,7 @@ modules["lvim-tech/lvim-calendar"] = {
         "lvim-tech/lvim-ui",
         "lvim-tech/lvim-utils",
     },
-    config = editor_config.lvim_calendar.config,
+    opts = editor_config.lvim_calendar.opts,
 }
 
 -- lvim-table: per-buffer table mode — realign as you edit, row/column operations, cell
@@ -835,6 +840,7 @@ modules["lvim-tech/lvim-cmp"] = {
 -- the :LvimSnippets picker. Its setup() (forwarded through lvim-nvim above) registers
 -- the "snippets" completion source via lvim-cmp's public register_source.
 modules["lvim-tech/lvim-snippets"] = {
+    opts = dependencies_config.lvim_snippets.opts,
     -- No `cmd` trigger: it is a DEPENDENCY of lvim-nvim (the forwarder configures it), so it is
     -- loaded with the umbrella and a command trigger could never defer anything.
     dependencies = {
@@ -867,7 +873,6 @@ modules["lvim-tech/lvim-tex"] = {
     config = languages_config.lvim_tex.config,
 }
 
-
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- THIRD-PARTY --------------------------------------------------
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -884,7 +889,6 @@ modules["lvim-tech/lvim-tex"] = {
 -- projects, lvim-db store, build/tasks history…). Loaded early (high priority) so it is on the
 -- runtimepath before any consumer's config runs.
 modules["kkharji/sqlite.lua"] = {
-    commit = funcs.get_commit("sqlite.lua", plugins_snapshot),
     priority = 900,
 }
 

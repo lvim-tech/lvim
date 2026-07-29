@@ -6,7 +6,7 @@
 ---@module "configs.base.init"
 
 local options = require("configs.base.options")
-local keys_apply = require("modules.base.keys_apply")
+local keys = require("core.keys")
 local native = require("configs.base.native")
 
 ---@type integer  Shared autocommand group used by all LvimIDE autocmds.
@@ -29,9 +29,8 @@ configs["base_options"] = function()
     options.global()
 end
 
--- Wire LVIM-specific global behaviour: suppress deprecation noise and register
--- utility user commands (EditorConfigCreate, RemoveComments, SortLuaTable,
--- CommandOutput).
+-- Wire LVIM-specific global behaviour: the utility user commands this config owns
+-- (EditorConfigCreate).
 configs["base_lvim"] = function()
     -- (`vim.deprecate` used to be replaced with an empty function here, to silence warnings coming
     -- from third-party plugins. There are none left — every plugin in this config is first-party —
@@ -43,14 +42,9 @@ configs["base_lvim"] = function()
         "lua require'core.funcs'.copy_file(_G.LVIM.global.lvim_path .. '/.configs/templates/.editorconfig', vim.fn.getcwd() .. '/.editorconfig')",
         { desc = "Create .editorconfig file from template" }
     )
-    vim.api.nvim_create_user_command("RemoveComments", "lua require'core.funcs'.remove_comments()", {})
-
-    vim.api.nvim_create_user_command("SortLuaTable", funcs.sort_lua_table, {})
-    vim.api.nvim_create_user_command("CommandOutput", funcs.command_output, {
-        desc = "Execute command and show output in window",
-    })
-    -- `gcd` and `<Leader>co` are declared in the central manifest (modules/base/keys.lua); this
-    -- phase only defines the COMMANDS they call.
+    -- :LvimComments (strip), :LvimLuaTable (sort) and :LvimEval come from lvim-common's own
+    -- setup() — the three utilities behind them live there now, with the rest of that plugin's
+    -- editor quality-of-life modules. The manifest's `gcd` and `<Leader>co` call those commands.
 end
 
 -- Register filetype-specific autocommands:
@@ -144,11 +138,11 @@ configs["base_commands"] = function()
     end, { desc = "Save the current buffer (safe :w)" })
 end
 
--- The central keymap manifest (modules/base/keys.lua): launcher/group keys applied at startup,
+-- The central keymap manifest (keys/base.lua): launcher/group keys applied at startup,
 -- LSP verbs on LspAttach, filetype leaves on FileType, and lvim-keys-helper group labels.
 -- Runs after base_keymaps (alphabetical order), so the manifest wins on any overlap.
 configs["base_keys"] = function()
-    keys_apply.apply()
+    keys.apply()
 end
 
 return configs

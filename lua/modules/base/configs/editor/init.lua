@@ -18,7 +18,7 @@ return {
     lvim_control_center = {
         opts = function()
             -- Control-center + installer keys live in the central keymap manifest:
-            -- modules/base/keys.lua → <Leader>u* (UI / Toggles / Settings).
+            -- keys/base.lua → <Leader>u* (UI / Toggles / Settings).
             -- Load each settings group module and register them in order. (The snapshot
             -- selector moved to lvim-installer — :LvimInstaller snapshot.)
             local general = require("modules.base.configs.editor.control_center.general")
@@ -55,7 +55,7 @@ return {
     -- lvim-linguistics: per-mode keyboard layout switching and spell checking
     lvim_linguistics = {
         opts = function()
-            -- <C-c>l / <C-c>k linguistics toggles live in the central manifest (modules/base/keys.lua).
+            -- <C-c>l / <C-c>k linguistics toggles live in the central manifest (keys/base.lua).
             return {
                 base_config = {
                     mode_language = {
@@ -96,9 +96,9 @@ return {
     lvim_vault = {
         config = function()
             -- Manifest overrides for the panel's own keys (defaults stay in the plugin).
-            require("lvim-vault").setup({ keys = require("modules.base.keys_apply").plugin("lvim-vault") })
+            require("lvim-vault").setup({ keys = require("core.keys").plugin("lvim-vault") })
             -- The whole `m` prefix (mv* panels + m<verb><scope> mark verbs) lives in the central
-            -- manifest (modules/base/keys.lua) — `marks.disable_native = true` is what frees `m`.
+            -- manifest (keys/base.lua) — `marks.disable_native = true` is what frees `m`.
         end,
     },
     -- lvim-undo: the undo history as a navigable, branching TIMELINE — diff preview beside it,
@@ -121,7 +121,7 @@ return {
                 -- Named checkpoints on the operations worth rewinding to ("the version before the rename"), through the plugin's public checkpoint() seam.
                 checkpoints = { auto = { format = true, lsp_rename = true, build = true } },
             })
-            -- The <Leader>u* keys live in the central manifest (modules/base/keys.lua → the
+            -- The <Leader>u* keys live in the central manifest (keys/base.lua → the
             -- "UI / Toggles / Settings" group). They were set here as well, and because a plugin
             -- config runs AFTER the manifest, `<Leader>up` (control-center projects) was silently
             -- replaced by "purge this buffer".
@@ -168,7 +168,7 @@ return {
     lvim_buf_history = {
         config = function()
             require("lvim-buf-history").setup({})
-            -- <C-n> / <C-p> buffer-history keys live in the central manifest (modules/base/keys.lua).
+            -- <C-n> / <C-p> buffer-history keys live in the central manifest (keys/base.lua).
         end,
     },
     -- lvim-color-picker: slider picker + converter + inline highlighter, on <C-c>r.
@@ -204,7 +204,7 @@ return {
                     -- (`remote = "r"` is the plugin's default — not restated here.)
                 },
             })
-            -- <C-c>. / <C-c>; / <C-c>, jump keys (n/x/o) live in the central manifest (modules/base/keys.lua).
+            -- <C-c>. / <C-c>; / <C-c>, jump keys (n/x/o) live in the central manifest (keys/base.lua).
         end,
     },
     -- lvim-search: a counter beside every visible search match — [1/12] on the one the cursor is
@@ -219,68 +219,13 @@ return {
     -- plugs in as a SOURCE: existing entries decorate their days and show in the agenda;
     -- `i` on a day opens (creates) that day's file.
     lvim_calendar = {
-        config = function()
-            local calendar = require("lvim-calendar")
-            calendar.setup({
-                -- Monday-first is the plugin's default; only the ISO week column is ours.
-                week_numbers = true,
-            })
-            -- The diary is a YEAR/MONTH/DAY tree — `~/Org/diary/2026/01/16.org`, the orgmode layout — so the
-            -- date comes from the PATH, not from the file name. (A flat `YYYY-MM-DD.org` glob found nothing.)
-            local diary_dir = vim.fn.expand("~/Org/diary")
-            --- The file for a date, and the date for a file — the one place the layout is spelled out.
-            local function diary_file(date) -- "2026-01-16" → ~/Org/diary/2026/01/16.org
-                local y, m, d = date:match("^(%d%d%d%d)-(%d%d)-(%d%d)$")
-                return y and ("%s/%s/%s/%s.org"):format(diary_dir, y, m, d) or nil
-            end
-            local function diary_date(file) -- the reverse, from the path's last three components
-                local y, m, d = file:match("(%d%d%d%d)/(%d%d)/(%d%d)%.org$")
-                return y and ("%s-%s-%s"):format(y, m, d) or nil
-            end
-            calendar.register_source({
-                name = "org-diary",
-                icon = "\u{f00ba}", -- nf-md-book_open_variant (verified single width; it was an EMPTY string)
-                accent = "green",
-                get = function(range)
-                    local entries = {}
-                    for _, file in ipairs(vim.fn.glob(diary_dir .. "/**/*.org", false, true)) do
-                        local date = diary_date(file)
-                        if date and date >= range.from and date <= range.to then
-                            -- The entry's title is the file's first org heading, when it has one.
-                            local title = "Diary"
-                            local ok, lines = pcall(vim.fn.readfile, file, "", 20)
-                            if ok then
-                                for _, l in ipairs(lines) do
-                                    local head = l:match("^%*+%s+(.+)$")
-                                    if head then
-                                        title = head
-                                        break
-                                    end
-                                end
-                            end
-                            entries[#entries + 1] = { date = date, title = title, file = file, line = 1 }
-                        end
-                    end
-                    return entries
-                end,
-                on_create = function(date)
-                    local file = diary_file(date)
-                    if not file then
-                        return
-                    end
-                    vim.fn.mkdir(vim.fn.fnamemodify(file, ":h"), "p") -- the YEAR/MONTH dirs may not exist yet
-                    vim.cmd.edit(file)
-                end,
-            })
-            -- A saved diary file must invalidate the source cache so its day decorates.
-            vim.api.nvim_create_autocmd("BufWritePost", {
-                pattern = diary_dir .. "/*/*/*.org",
-                callback = function()
-                    calendar.refresh("org-diary")
-                end,
-            })
-            -- Calendar keys live in the central keymap manifest: modules/base/keys.lua → <Leader>oc / <Leader>oC.
-        end,
+        opts = {
+            -- Monday-first is the plugin's default; only the ISO week column is ours.
+            week_numbers = true,
+            -- The org diary is a SHIPPED source now (lvim-calendar.sources): the orgmode
+            -- YEAR/MONTH/DAY layout it reads is not a preference, so only the directory is.
+            org_diary = { enabled = true, dir = "~/Org/diary" },
+        },
     },
     -- lvim-table: per-buffer table mode — realign as you edit, row/column operations,
     -- cell text objects/motions, tableize and formulas.
@@ -291,7 +236,7 @@ return {
                 -- (mode-scoped maps).
                 map_default_keys = true,
             })
-            -- Table toggle lives in the central keymap manifest: modules/base/keys.lua → <Leader>ct.
+            -- Table toggle lives in the central keymap manifest: keys/base.lua → <Leader>ct.
         end,
     },
     -- lvim-tasks: the task runner (panel + preview + filters + history). The old task
@@ -300,7 +245,7 @@ return {
     lvim_tasks = {
         config = function()
             require("lvim-tasks").setup({})
-            -- Tasks keys live in the central keymap manifest: modules/base/keys.lua → <Leader>r* (Run / Test / Tasks).
+            -- Tasks keys live in the central keymap manifest: keys/base.lua → <Leader>r* (Run / Test / Tasks).
         end,
     },
     -- lvim-build: detected project/file actions (Build/Run/Test/Bench/Lint), running
@@ -309,7 +254,7 @@ return {
     lvim_build = {
         config = function()
             require("lvim-build").setup({})
-            -- Build keys live in the central keymap manifest: modules/base/keys.lua → <Leader>r* (Run / Test / Tasks).
+            -- Build keys live in the central keymap manifest: keys/base.lua → <Leader>r* (Run / Test / Tasks).
         end,
     },
     -- lvim-test: granular test runner — discovers tests via treesitter and runs
@@ -317,7 +262,7 @@ return {
     lvim_test = {
         config = function()
             require("lvim-test").setup({})
-            -- Test keys live in the central keymap manifest: modules/base/keys.lua → <Leader>r* (Run / Test / Tasks).
+            -- Test keys live in the central keymap manifest: keys/base.lua → <Leader>r* (Run / Test / Tasks).
         end,
     },
     -- lvim-remote: upload/download/diff/sync project files over ssh/rsync (targets in
@@ -325,7 +270,7 @@ return {
     lvim_remote = {
         config = function()
             require("lvim-remote").setup({})
-            -- Remote keys live in the central keymap manifest: modules/base/keys.lua → <Leader>f* (Files / Remote).
+            -- Remote keys live in the central keymap manifest: keys/base.lua → <Leader>f* (Files / Remote).
         end,
     },
     -- lvim-rest: the in-editor REST/HTTP client — `.http` / `.rest` documents, environments, the
@@ -336,7 +281,7 @@ return {
     lvim_rest = {
         config = function()
             require("lvim-rest").setup({})
-            -- Launcher keys live in the central keymap manifest: modules/base/keys.lua → <Leader>o*.
+            -- Launcher keys live in the central keymap manifest: keys/base.lua → <Leader>o*.
         end,
     },
     -- lvim-preview: live browser preview of Markdown / org with hot reload as you type, served by the
@@ -393,20 +338,27 @@ return {
                 -- so a phone opens the preview without typing an IP. :LvimPreview qr shows it any time.
                 lan = { warn = true, qr = true },
             })
-            -- Launcher keys live in the central keymap manifest: modules/base/keys.lua → <Leader>o*.
+            -- Launcher keys live in the central keymap manifest: keys/base.lua → <Leader>o*.
         end,
     },
-    -- lvim-render: in-buffer decorated rendering of markdown (and org, once its grammar is
-    -- reachable) — heading bands, list glyphs, code-block bands with the block's own language
-    -- highlighted, tables, folding by heading. UNDER CONSTRUCTION: wired now so it takes effect as
-    -- each phase lands; a pcall keeps a half-built state from breaking startup.
+    -- lvim-render: in-buffer decorated rendering of markdown, typst, org and latex — heading
+    -- bands, list glyphs, code-block bands with the block's own language highlighted, tables drawn
+    -- as boxes, folding by heading.
     lvim_render = {
-        config = function()
-            local ok, render = pcall(require, "lvim-render")
-            if ok then
-                pcall(render.setup, {})
-            end
-        end,
+        opts = {
+            -- Window chrome for a RENDERED document, window-local and owned by the plugin: it
+            -- records what was there, asserts these while the buffer renders, and hands the
+            -- originals back when it stops. The rulers and gutters that earn their place in code
+            -- are noise across a heading band or a table box — a rendered document is a page, not
+            -- a source file. `["*"]` covers every filetype lvim-render draws (markdown, typst,
+            -- org, tex, latex, plaintex); add a filetype key to single one out.
+            win_options = {
+                ["*"] = {
+                    colorcolumn = "",
+                    cursorcolumn = false,
+                },
+            },
+        },
     },
 }
 

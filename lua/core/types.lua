@@ -78,8 +78,3 @@
 ---@field bg string|nil   Background color in #rrggbb format, or nil if unset
 ---@field fg string|nil   Foreground color in #rrggbb format, or nil if unset
 
----@class LvimCommentEdit  Internal structure used during remove_comments
----@field row       integer   Zero-based buffer row of the edit
----@field start_col integer   Start column of the comment token
----@field end_col   integer   End column of the comment token
----@field type      "partial" Always "partial" for inline comments

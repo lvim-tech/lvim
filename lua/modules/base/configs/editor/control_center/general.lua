@@ -239,14 +239,16 @@ return {
             label = "Keys helper style",
             type = "select",
             options = { "mini", "full" },
-            default = "mini",
+            -- The same value the plugin setup falls back to (configs/ui/init.lua): the panel's
+            -- "default" and the value actually applied at startup have to be one statement.
+            default = "full",
             -- Inert while the keys helper itself is disabled.
             disabled = function()
                 return _G.LVIM.keyshelper == false
             end,
             ---@return string  Current panel style
             get = function()
-                return (_G.LVIM.settings and _G.LVIM.settings["keyshelperstyle"]) or "mini"
+                return (_G.LVIM.settings and _G.LVIM.settings["keyshelperstyle"]) or "full"
             end,
             ---@param val     string   New style ("mini" | "full")
             ---@param on_init boolean  True during startup; skip persistence (apply is always done)

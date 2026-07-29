@@ -1,54 +1,12 @@
--- modules/base/keys.lua — the single keymap MANIFEST.
+-- keys/base/global.lua — the keymaps applied ONCE at startup, per mode.
 --
--- One source of truth for every launcher/global keymap, grouped by <Leader> prefix.
--- Sections are keyed by WHEN/WHERE they apply (appliers in keys_apply.lua read each one):
---   groups   → lvim-keys-helper `register_groups` (menu labels for each prefix)
---   global   → applied once at startup (normal/visual/insert/terminal)
---   lsp      → applied buffer-local on LspAttach (only where a server is attached)
---   filetype → applied buffer-local on FileType (this is what makes menus ft-accurate)
---   plugins  → forwarded into each plugin's setup(opts.keys); DEFAULTS live in the plugin
---
--- Tuple format: { lhs, rhs, desc, opts? }   (rhs = string command / <Plug> / Lua function)
---
--- WHAT IS NOT HERE, AND WHY. A key that drives a plugin's LIVE API (not a command) is set by that
--- plugin's own config, because it needs the module in hand: lvim-winnav's <C-h/j/k/l> + <C-Arrows>
--- (edge-aware move/resize), lvim-dap's <A-1>…<A-0> (the debug control surface), and lvim-term's
--- <C-c>1…9 (spawn-then-show, a generated loop). Everything that can be expressed as a command
--- belongs here.
----@type table
-local keys = {}
+-- Tuple format: { lhs, rhs, desc, opts? } (rhs = a string command / <Plug> / a Lua function).
+-- A 4th element may carry per-entry options, including `mode` for a map that spans modes.
+---@module "keys.base.global"
 
--- Guard for the workspace-folder maps (nested capability, not a top-level server_capabilities key).
----@param caps table  client.server_capabilities
----@return boolean
-local function has_ws(caps)
-    return caps.workspace ~= nil and caps.workspace.workspaceFolders ~= nil
-end
+local global = {}
 
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- GROUP LABELS  (→ lvim-keys-helper register_groups)
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-keys.groups = {
-    ["<Leader>d"] = "Debug",
-    ["<Leader>r"] = "Run / Test / Tasks",
-    ["<Leader>g"] = "Git / Review",
-    ["<Leader>f"] = "Files / Remote",
-    ["<Leader>s"] = "Search / Navigate",
-    ["<Leader>b"] = "Buffers",
-    ["<Leader>w"] = "Windows",
-    ["<Leader>wm"] = "Move window",
-    ["<Leader>p"] = "Project / Space",
-    ["<Leader>c"] = "Code / Edit",
-    ["<Leader>o"] = "Open / Tools",
-    ["<Leader>u"] = "UI / Toggles / Settings",
-}
-
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- GLOBAL  (applied at startup)
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-keys.global = {}
-
-keys.global.normal = {
+global.normal = {
     -- <Leader>s — Search / Navigate  (lvim-picker finders + lvim-replace + lvim-search)
     { "<Leader>sf", "<Cmd>LvimPicker files<CR>", "Search: files" },
     { "<Leader>sg", "<Cmd>LvimPicker grep<CR>", "Search: live grep" },
@@ -139,47 +97,16 @@ keys.global.normal = {
 
     -- <Leader>p — Project / Space  (lvim-space: sessions/projects/tabs)
     { "<Leader>pp", "<Cmd>LvimSpace<CR>", "Space: projects / workspaces" },
-    -- `vim.ui.input`, never `vim.fn.input`: the raw one is a cmdline prompt that ignores the
-    -- editor's own input surface (lvim-hud serves vim.ui.input in the message zone) and blocks the
-    -- loop while it waits.
-    {
-        "<Leader>pt",
-        function()
-            vim.ui.input({ prompt = "New tab name (optional): " }, function(name)
-                if name ~= nil then
-                    vim.cmd("LvimSpaceTabNew " .. name)
-                end
-            end)
-        end,
-        "Space: new tab",
-    },
-    { "<Leader>px", "<Cmd>LvimSpaceTabClose<CR>", "Space: close tab" },
-    { "<Leader>pn", "<Cmd>LvimSpaceTabNext<CR>", "Space: next tab" },
-    { "<Leader>pP", "<Cmd>LvimSpaceTabPrev<CR>", "Space: prev tab" },
-    { "<Leader>pl", "<Cmd>LvimSpaceTabMoveNext<CR>", "Space: move tab right" },
-    { "<Leader>ph", "<Cmd>LvimSpaceTabMovePrev<CR>", "Space: move tab left" },
-    {
-        "<Leader>pj",
-        function()
-            vim.ui.input({ prompt = "Tab index: " }, function(idx)
-                if idx ~= nil and idx ~= "" then
-                    vim.cmd("LvimSpaceTab " .. idx)
-                end
-            end)
-        end,
-        "Space: jump to tab by index",
-    },
-    {
-        "<Leader>pr",
-        function()
-            vim.ui.input({ prompt = "New tab name: " }, function(name)
-                if name ~= nil and name ~= "" then
-                    vim.cmd("LvimSpaceTabRename " .. name)
-                end
-            end)
-        end,
-        "Space: rename tab",
-    },
+    -- No prompts here: an operation that needs a value asks for it ITSELF (lvim-space's tab ops
+    -- do, through vim.ui.input), so these stay plain commands.
+    { "<Leader>pt", "<Cmd>LvimSpace tab new<CR>", "Space: new tab" },
+    { "<Leader>px", "<Cmd>LvimSpace tab close<CR>", "Space: close tab" },
+    { "<Leader>pn", "<Cmd>LvimSpace tab next<CR>", "Space: next tab" },
+    { "<Leader>pP", "<Cmd>LvimSpace tab prev<CR>", "Space: prev tab" },
+    { "<Leader>pl", "<Cmd>LvimSpace tab move-next<CR>", "Space: move tab right" },
+    { "<Leader>ph", "<Cmd>LvimSpace tab move-prev<CR>", "Space: move tab left" },
+    { "<Leader>pj", "<Cmd>LvimSpace tab goto<CR>", "Space: jump to tab by index" },
+    { "<Leader>pr", "<Cmd>LvimSpace tab rename<CR>", "Space: rename tab" },
 
     -- <Leader>c — Code / Edit  (lvim-comment / lvim-table / lvim-color-picker)
     { "<Leader>cc", "<Cmd>LvimComment line<CR>", "Code: comment line" },
@@ -255,8 +182,8 @@ keys.global.normal = {
     { "m[", "<Cmd>LvimVault mark prev<CR>", "Vault mark: prev (buffer)" },
 
     -- Editor utility commands defined by this config (configs/base/init.lua).
-    { "gcd", "<Cmd>RemoveComments<CR>", "Delete all comments" },
-    { "<Leader>co", "<Cmd>CommandOutput<CR>", "Code: run a command into a window" },
+    { "gcd", "<Cmd>LvimComments strip<CR>", "Delete all comments" },
+    { "<Leader>co", "<Cmd>LvimEval<CR>", "Code: run a command into a window" },
 
     -- Core editor + window/buffer chords (NOT launchers; the <C-c> muscle-memory layer).
     { "<Esc>", "<Esc>:noh<CR>", "Clear search highlight" },
@@ -302,7 +229,7 @@ keys.global.normal = {
     { "<C-c>,", "<Plug>(lvim-jump-ts)", "Treesitter select", { mode = { "n", "x" } } },
 }
 
-keys.global.visual = {
+global.visual = {
     { "<Leader>cc", "<Cmd>LvimComment line<CR>", "Code: comment selection" },
     { "<Leader>cp", "<Cmd>LvimColorPicker pick<CR>", "Code: pick colour" },
     -- Search only within the visual selection using the \%V atom
@@ -310,128 +237,13 @@ keys.global.visual = {
     { "#", "<Esc>?\\%V", "Search backward in selection" },
 }
 
-keys.global.insert = {
+global.insert = {
     { "<C-j>", "<C-o>gj", "Move down by visual line" },
     { "<C-k>", "<C-o>gk", "Move up by visual line" },
 }
 
-keys.global.terminal = {
+global.terminal = {
     { "<Esc>", "<C-\\><C-n>", "Terminal: normal mode" },
 }
 
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- LSP  (applied buffer-local on LspAttach; each key TESTS the server capability via `cap`,
--- so it is NEVER bound where the server has no such action — the g* interface, centralised here).
--- Entry opts: { mode? = "n"|"i"|"v", cap? = "<serverCapabilityKey>" | fun(caps): boolean }.
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-keys.lsp = {
-    -- Navigation
-    { "gd", "<Cmd>LvimLsp definition<CR>", "Go to definition", { cap = "definitionProvider" } },
-    { "gD", "<Cmd>LvimLsp declaration<CR>", "Go to declaration", { cap = "declarationProvider" } },
-    { "gt", "<Cmd>LvimLsp type_definition<CR>", "Go to type definition", { cap = "typeDefinitionProvider" } },
-    { "gi", "<Cmd>LvimLsp implementation<CR>", "Go to implementation", { cap = "implementationProvider" } },
-    { "gr", "<Cmd>LvimLsp references<CR>", "Find references", { cap = "referencesProvider" } },
-    -- Information
-    { "K", "<Cmd>LvimLsp hover<CR>", "Hover information", { cap = "hoverProvider" } },
-    { "<C-k>", "<Cmd>LvimLsp signature_help<CR>", "Signature help", { mode = "i", cap = "signatureHelpProvider" } },
-    -- Edit
-    { "ge", "<Cmd>LvimLsp rename<CR>", "Rename symbol", { cap = "renameProvider" } },
-    {
-        "ga",
-        function()
-            vim.lsp.buf.code_action()
-        end,
-        "Code action",
-        { cap = "codeActionProvider" },
-    },
-    { "gf", "<Cmd>LvimLsp format<CR>", "Format document", { cap = "documentFormattingProvider" } },
-    {
-        "gF",
-        "<Cmd>LvimLsp range_format<CR>",
-        "Format selection",
-        { mode = "v", cap = "documentRangeFormattingProvider" },
-    },
-    -- Symbols
-    { "gs", "<Cmd>LvimLsp document_symbol<CR>", "Document symbols", { cap = "documentSymbolProvider" } },
-    { "gS", "<Cmd>LvimLsp workspace_symbol<CR>", "Workspace symbols", { cap = "workspaceSymbolProvider" } },
-    -- Diagnostics (no capability required). NOT on `d*`: a buffer-local `dn`/`dp`/`dc` makes the
-    -- DELETE OPERATOR wait out `timeoutlen` on every LSP buffer and shadows `dp` (diffput) in a
-    -- diff view. `]d`/`[d` are the motions Neovim itself defines for this, and the float joins the
-    -- `gl` (LSP list/lens) prefix.
-    { "gld", "<Cmd>LvimLsp diagnostic_current<CR>", "Show line diagnostics" },
-    { "]d", "<Cmd>LvimLsp diagnostic_next<CR>", "Next diagnostic" },
-    { "[d", "<Cmd>LvimLsp diagnostic_prev<CR>", "Previous diagnostic" },
-    -- CodeLens
-    { "gL", "<Cmd>LspCodeLensRun<CR>", "Run CodeLens", { cap = "codeLensProvider" } },
-    -- Call hierarchy
-    { "glc", "<Cmd>LvimLsp incoming_calls<CR>", "Incoming calls", { cap = "callHierarchyProvider" } },
-    { "glC", "<Cmd>LvimLsp outgoing_calls<CR>", "Outgoing calls", { cap = "callHierarchyProvider" } },
-    -- Document highlight
-    { "ghr", "<Cmd>LvimLsp document_highlight<CR>", "Highlight references", { cap = "documentHighlightProvider" } },
-    { "ghc", "<Cmd>LvimLsp clear_references<CR>", "Clear highlights", { cap = "documentHighlightProvider" } },
-    -- Workspace folders (nested capability)
-    { "goa", "<Cmd>LvimLsp add_workspace_folder<CR>", "Add workspace folder", { cap = has_ws } },
-    { "gor", "<Cmd>LvimLsp remove_workspace_folder<CR>", "Remove workspace folder", { cap = has_ws } },
-    { "gol", "<Cmd>LvimLsp list_workspace_folders<CR>", "List workspace folders", { cap = has_ws } },
-}
-
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- FILETYPE  (applied buffer-local on FileType — makes <Leader>r ADAPT per ft)
--- Same lhs, different action per language → the group menu is ft-accurate automatically.
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-keys.filetype = {
-    dart = {
-        -- <Leader>r run group (new taxonomy)
-        { "<Leader>rr", "<Cmd>LvimLang run<CR>", "Run (Flutter)" },
-        { "<Leader>rR", "<Cmd>LvimLang restart<CR>", "Hot restart" },
-        { "<Leader>rl", "<Cmd>LvimLang reload<CR>", "Hot reload" },
-        { "<Leader>rA", "<Cmd>LvimLang attach<CR>", "Attach" },
-        -- <C-c><C-c> Flutter chords (preserved muscle memory), driven by lvim-lang / lvim-lsp
-        { "<C-c><C-c>f", "<Cmd>LvimLang run<CR>", "Run" },
-        { "<C-c><C-c>A", "<Cmd>LvimLang attach<CR>", "Attach" },
-        { "<C-c><C-c>r", "<Cmd>LvimLang reload<CR>", "Hot reload" },
-        { "<C-c><C-c>R", "<Cmd>LvimLang restart<CR>", "Hot restart" },
-        { "<C-c><C-c>q", "<Cmd>LvimLang quit<CR>", "Quit" },
-        { "<C-c><C-c>D", "<Cmd>LvimLang detach<CR>", "Detach" },
-        { "<C-c><C-c>m", "<Cmd>LvimLang emulators<CR>", "Emulators" },
-        { "<C-c><C-c>g", "<Cmd>LvimLang log toggle<CR>", "Dev log" },
-        { "<C-c><C-c>c", "<Cmd>LvimLang config<CR>", "Run config" },
-        { "<C-c><C-c>t", "<Cmd>LvimLang devtools<CR>", "DevTools" },
-        { "<C-c><C-c>i", "<Cmd>LvimLang inspect<CR>", "Inspect widget" },
-        { "<C-c><C-c>p", "<Cmd>LvimLang paint<CR>", "Debug paint" },
-        { "<C-c><C-c>b", "<Cmd>LvimLang brightness<CR>", "Brightness" },
-        { "<C-c><C-c>P", "<Cmd>LvimLang platform<CR>", "Target platform" },
-        { "<C-c><C-c>L", "<Cmd>LvimLang labels<CR>", "Closing labels" },
-        { "<C-c><C-c>u", "<Cmd>LvimLang pub get<CR>", "Pub get" },
-        { "<C-c><C-c>U", "<Cmd>LvimLang pub upgrade<CR>", "Pub upgrade" },
-        { "<C-c><C-c>s", "<Cmd>LvimLang super<CR>", "Go to super" },
-        { "<C-c><C-c>a", "<Cmd>LvimLang reanalyze<CR>", "Reanalyze" },
-        { "<C-c><C-c>l", "<Cmd>LvimLang lsp restart<CR>", "Restart dartls" },
-        { "<C-c><C-c>I", "<Cmd>LvimLang install<CR>", "Install SDK" },
-        { "<C-c><C-c>o", "<Cmd>LvimLsp outline<CR>", "Outline" },
-        { "<C-c><C-c>e", "<Cmd>LvimLsp rename<CR>", "Rename" },
-    },
-    rust = {
-        { "<Leader>rr", "<Cmd>LvimBuild run<CR>", "Run (cargo)" },
-    },
-    go = {
-        { "<Leader>rr", "<Cmd>LvimBuild run<CR>", "Run (go)" },
-    },
-    -- tex has NO section here on purpose: lvim-tex owns its own `,l*` localleader set, and a
-    -- plugin's internal keys live in the plugin. (This used to hold 25 `<C-c><C-c>*` chords calling
-    -- `Vimtex*` commands — vimtex was replaced by lvim-tex, so every one of them was an E492.)
-}
-
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- PLUGINS  (forwarded into each plugin's setup(opts.keys) — DEFAULTS live in the plugin repo;
--- these are OVERRIDES only; internal UI keys stay buffer-local + guarded by the helper opt-out)
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- WIRED, not decorative: `keys_apply.plugin("<name>")` is forwarded into the setup() of
--- lvim-files, lvim-term, lvim-vault and lvim-installer (their key tables), so an entry written
--- here really rebinds that plugin's internal key. An empty table changes nothing.
-keys.plugins = {
-    -- ["lvim-files"] = { open_split = "s", open_vsplit = "v", delete = "d" },
-    -- ["lvim-installer"] = { update = "U" },
-}
-
-return keys
+return global

@@ -1,15 +1,15 @@
--- modules/base/keys_apply.lua — appliers for the keymap MANIFEST (modules/base/keys.lua).
+-- core/keys.lua — appliers for the keymap MANIFEST (keys/base.lua).
 --
 -- Reads the sectioned manifest, merges the user overrides over it (by lhs; a `false`
 -- entry disables a base binding), then applies each section at the right lifecycle point:
 --   groups   → lvim-keys-helper.register_groups (menu labels)          [once]
---   global   → funcs.keymaps per mode                                  [startup]
+--   global   → applied once at startup, per mode                       [startup]
 --   lsp      → buffer-local on LspAttach                               [per attached buffer]
 --   filetype → buffer-local on FileType                                [per matching buffer]
 --
 -- The `plugins` section is NOT applied here — those override tables are forwarded into each
 -- plugin's setup(opts.keys) by the module configs; defaults live in the plugin repo.
----@module "modules.base.keys_apply"
+---@module "core.keys"
 
 local M = {}
 
@@ -55,8 +55,8 @@ end
 --- Load base + user manifests (both optional) and return the merged sections.
 ---@return { groups: table, global: table<string, LvimKeymap[]>, lsp: LvimKeymap[], filetype: table<string, LvimKeymap[]>, plugins: table }
 function M.resolve()
-    local base = require("modules.base.keys")
-    local ok, user = pcall(require, "user.keys")
+    local base = require("keys.base")
+    local ok, user = pcall(require, "keys.user")
     if not ok or type(user) ~= "table" then
         user = {}
     end
@@ -107,7 +107,7 @@ end
 ---@param plugin string
 ---@return table|nil
 function M.plugin(plugin)
-    local overrides = (require("modules.base.keys").plugins or {})[plugin]
+    local overrides = (require("keys.base").plugins or {})[plugin]
     if type(overrides) ~= "table" or next(overrides) == nil then
         return nil
     end

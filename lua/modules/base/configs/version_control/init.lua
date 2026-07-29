@@ -17,7 +17,7 @@ return {
                 signs = { gutter = false },
                 blame = { inline = { delay = 10 } }, -- near-instant inline blame (default 700ms)
             })
-            -- Git keys live in the central keymap manifest: modules/base/keys.lua → <Leader>g*.
+            -- Git keys live in the central keymap manifest: keys/base.lua → <Leader>g*.
         end,
     },
     -- lvim-forge — the in-house Magit Forge (forge.el) replica: PR/issue/review across
@@ -28,7 +28,7 @@ return {
     lvim_forge = {
         config = function()
             require("lvim-forge").setup({})
-            -- Forge keys live in the central keymap manifest: modules/base/keys.lua → <Leader>g*.
+            -- Forge keys live in the central keymap manifest: keys/base.lua → <Leader>g*.
         end,
     },
 }

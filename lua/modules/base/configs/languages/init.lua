@@ -37,7 +37,7 @@ return {
             },
             dap_local_fn = require("modules.base.configs.languages.lsp.dap_utils").dap_local,
 
-            -- LSP buffer keymaps are applied by the central manifest (modules/base/keys.lua →
+            -- LSP buffer keymaps are applied by the central manifest (keys/base.lua →
             -- keys.lsp) via its own capability-guarded LspAttach autocmd — no on_attach needed here.
         },
     },
@@ -89,7 +89,7 @@ return {
         ---@return nil
         config = function()
             -- Manifest overrides for the browser's row-action keys (defaults stay in the plugin).
-            require("lvim-installer").setup({ browser = { keys = require("modules.base.keys_apply").plugin("lvim-installer") } })
+            require("lvim-installer").setup({ browser = { keys = require("core.keys").plugin("lvim-installer") } })
         end,
     },
 
@@ -122,17 +122,9 @@ return {
                 dap.toggle_breakpoint()
             end, { desc = "Dap Toggle Breakpoint" })
             map("n", "<A-2>", function()
-                -- A session is LIVE but the UI was closed → just REOPEN it (don't relaunch or resume /
-                -- terminate the session). Otherwise: no session → start (picks a config); panel open +
-                -- stopped → continue (resume). So closing the panel and pressing this again brings the
-                -- panel back instead of ending the run.
-                local ok_view, view = pcall(require, "lvim-dap-view")
-                if dap.session() and ok_view and not view.is_open() then
-                    view.open()
-                    vim.notify("lvim-dap: session active — reopened the debug view", vim.log.levels.INFO)
-                else
-                    dap.continue()
-                end
+                -- The decision "continue, or bring the closed dock back" belongs to the dock, not to
+                -- this keymap — see lvim-dap-view.continue_or_reopen().
+                require("lvim-dap-view").continue_or_reopen()
             end, { desc = "Debug Start/Continue (reopen the view if a session is live but hidden)" })
             map("n", "<A-3>", function()
                 dap.step_into()
@@ -173,7 +165,7 @@ return {
         ---@return nil
         config = function()
             require("lvim-dap-view").setup({})
-            -- Dap-view toggle lives in the central keymap manifest: modules/base/keys.lua → <Leader>dv.
+            -- Dap-view toggle lives in the central keymap manifest: keys/base.lua → <Leader>dv.
         end,
     },
 
@@ -187,7 +179,7 @@ return {
         ---@return nil
         config = function()
             require("lvim-db").setup({})
-            -- Db keys live in the central keymap manifest: modules/base/keys.lua → <Leader>od (Open / Tools).
+            -- Db keys live in the central keymap manifest: keys/base.lua → <Leader>od (Open / Tools).
         end,
     },
 
