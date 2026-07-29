@@ -53,7 +53,8 @@
       "commit": "0bc7f2132095a2ce40ffd0614607cba7bf6cf45e"
     },
     "lvim-files": {
-      "commit": "f707e9acd0f5a9b2a5decb99639529e87280af11"
+      "commit": "ec0ed10c092517a79d1526bdf00497ade1e20410",
+      "pin": true
     },
     "lvim-forge": {
       "commit": "366a627845735b7f2f7ca57755f989522f01bb8c"
@@ -110,7 +111,7 @@
       "commit": "fc317eba0ddd965928fced02eb6e1196adc4925b"
     },
     "lvim-pack": {
-      "commit": "ee994ab4938cba49b9341e78521776f62af0f7e6"
+      "commit": "62d8adeed4ecf217f30a1c4059b182405a8ebe3a"
     },
     "lvim-pairs": {
       "commit": "fd0b5497d32befb62cdf69273b3d2982b61029c0"
