@@ -33,7 +33,7 @@ What the distribution stands on: the loader, the data hub, the shared base. Ever
 | [lvim-fuzzy](https://github.com/lvim-tech/lvim-fuzzy) | The native fuzzy matcher the picker and the completion rank through; falls back to a pure-Lua twin. *(has a build step)* | startup |
 | [lvim-icons](https://github.com/lvim-tech/lvim-icons) | The icon provider and its highlight groups. | startup · priority 100 |
 | [lvim-colorscheme](https://github.com/lvim-tech/lvim-colorscheme) | The theme engine — every family in soft / dark / darker / light, switched live. | startup · priority 100 |
-| `sqlite.lua` | The one third-party runtime **library** the set requires: the storage behind the panels that keep real relational data. | startup · priority 900 |
+| [sqlite.lua](https://github.com/kkharji/sqlite.lua) | The one third-party runtime **library** the set requires: the storage behind the panels that keep real relational data. | startup · priority 900 |
 
 ## Interface
 
@@ -116,56 +116,56 @@ What each plugin declares as a hard dependency — the loader installs and loads
 
 | Plugin | Depends on |
 |---|---|
-| `lvim-breadcrumbs` | lvim-utils |
-| `lvim-build` | lvim-tasks |
-| `lvim-calendar` | lvim-ui, lvim-utils |
-| `lvim-cmp` | lvim-fuzzy, lvim-ui, lvim-utils |
-| `lvim-color-picker` | lvim-ui, lvim-utils |
-| `lvim-colorscheme` | lvim-utils, lvim-control-center |
-| `lvim-common` | lvim-utils |
-| `lvim-context` | lvim-ts, lvim-utils |
-| `lvim-control-center` | lvim-utils |
-| `lvim-cycle` | lvim-utils |
-| `lvim-dap-view` | lvim-dap |
-| `lvim-dashboard` | lvim-utils |
-| `lvim-db` | lvim-ui, lvim-utils |
-| `lvim-dependencies` | lvim-utils |
-| `lvim-files` | lvim-ui, lvim-utils |
-| `lvim-forge` | sqlite.lua, lvim-git |
-| `lvim-git` | lvim-ui, lvim-utils |
-| `lvim-hud` | lvim-ui, lvim-utils |
-| `lvim-icons` | lvim-utils |
-| `lvim-image` | lvim-ui, lvim-utils |
-| `lvim-indent` | lvim-utils |
-| `lvim-installer` | lvim-pkg, lvim-utils |
-| `lvim-keyring` | lvim-ui, lvim-utils |
-| `lvim-lang` | lvim-lsp, lvim-ui, lvim-utils |
-| `lvim-linguistics` | lvim-utils, lvim-control-center |
-| `lvim-lsp` | lvim-ls, lvim-utils |
-| `lvim-msgarea` | lvim-hud, lvim-picker, lvim-ui, lvim-utils |
-| `lvim-nvim` | lvim-utils, lvim-common, lvim-hud, lvim-msgarea, lvim-picker, lvim-image, lvim-snippets |
-| `lvim-pairs` | lvim-utils |
-| `lvim-picker` | lvim-fuzzy, lvim-ui, lvim-utils |
-| `lvim-preview` | lvim-ui, lvim-utils |
-| `lvim-remote` | lvim-ui, lvim-utils |
-| `lvim-render` | lvim-ts, lvim-utils |
-| `lvim-replace` | lvim-utils, lvim-ui |
-| `lvim-rest` | lvim-ui, lvim-utils |
-| `lvim-search` | lvim-utils |
-| `lvim-snippets` | lvim-utils |
-| `lvim-space` | lvim-utils |
-| `lvim-table` | lvim-utils |
-| `lvim-tasks` | lvim-ui, lvim-utils |
-| `lvim-term` | lvim-ui, lvim-utils |
-| `lvim-test` | lvim-tasks, lvim-ui, lvim-utils, lvim-ts |
-| `lvim-tex` | lvim-utils, lvim-ui, lvim-preview, lvim-snippets |
-| `lvim-ts` | lvim-pkg |
-| `lvim-ui` | lvim-utils |
-| `lvim-undo` | lvim-utils, lvim-ui |
-| `lvim-vault` | lvim-ui, lvim-utils |
-| `lvim-winmove` | lvim-utils |
-| `lvim-winnav` | lvim-winmove, lvim-utils |
-| `lvim-winpick` | lvim-utils |
+| [lvim-breadcrumbs](https://github.com/lvim-tech/lvim-breadcrumbs) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-build](https://github.com/lvim-tech/lvim-build) | [lvim-tasks](https://github.com/lvim-tech/lvim-tasks) |
+| [lvim-calendar](https://github.com/lvim-tech/lvim-calendar) | [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-cmp](https://github.com/lvim-tech/lvim-cmp) | [lvim-fuzzy](https://github.com/lvim-tech/lvim-fuzzy), [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-color-picker](https://github.com/lvim-tech/lvim-color-picker) | [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-colorscheme](https://github.com/lvim-tech/lvim-colorscheme) | [lvim-utils](https://github.com/lvim-tech/lvim-utils), [lvim-control-center](https://github.com/lvim-tech/lvim-control-center) |
+| [lvim-common](https://github.com/lvim-tech/lvim-common) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-context](https://github.com/lvim-tech/lvim-context) | [lvim-ts](https://github.com/lvim-tech/lvim-ts), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-control-center](https://github.com/lvim-tech/lvim-control-center) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-cycle](https://github.com/lvim-tech/lvim-cycle) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-dap-view](https://github.com/lvim-tech/lvim-dap-view) | [lvim-dap](https://github.com/lvim-tech/lvim-dap) |
+| [lvim-dashboard](https://github.com/lvim-tech/lvim-dashboard) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-db](https://github.com/lvim-tech/lvim-db) | [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-dependencies](https://github.com/lvim-tech/lvim-dependencies) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-files](https://github.com/lvim-tech/lvim-files) | [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-forge](https://github.com/lvim-tech/lvim-forge) | [sqlite.lua](https://github.com/kkharji/sqlite.lua), [lvim-git](https://github.com/lvim-tech/lvim-git) |
+| [lvim-git](https://github.com/lvim-tech/lvim-git) | [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-hud](https://github.com/lvim-tech/lvim-hud) | [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-icons](https://github.com/lvim-tech/lvim-icons) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-image](https://github.com/lvim-tech/lvim-image) | [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-indent](https://github.com/lvim-tech/lvim-indent) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-installer](https://github.com/lvim-tech/lvim-installer) | [lvim-pkg](https://github.com/lvim-tech/lvim-pkg), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-keyring](https://github.com/lvim-tech/lvim-keyring) | [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-lang](https://github.com/lvim-tech/lvim-lang) | [lvim-lsp](https://github.com/lvim-tech/lvim-lsp), [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-linguistics](https://github.com/lvim-tech/lvim-linguistics) | [lvim-utils](https://github.com/lvim-tech/lvim-utils), [lvim-control-center](https://github.com/lvim-tech/lvim-control-center) |
+| [lvim-lsp](https://github.com/lvim-tech/lvim-lsp) | [lvim-ls](https://github.com/lvim-tech/lvim-ls), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-msgarea](https://github.com/lvim-tech/lvim-msgarea) | [lvim-hud](https://github.com/lvim-tech/lvim-hud), [lvim-picker](https://github.com/lvim-tech/lvim-picker), [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-nvim](https://github.com/lvim-tech/lvim-nvim) | [lvim-utils](https://github.com/lvim-tech/lvim-utils), [lvim-common](https://github.com/lvim-tech/lvim-common), [lvim-hud](https://github.com/lvim-tech/lvim-hud), [lvim-msgarea](https://github.com/lvim-tech/lvim-msgarea), [lvim-picker](https://github.com/lvim-tech/lvim-picker), [lvim-image](https://github.com/lvim-tech/lvim-image), [lvim-snippets](https://github.com/lvim-tech/lvim-snippets) |
+| [lvim-pairs](https://github.com/lvim-tech/lvim-pairs) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-picker](https://github.com/lvim-tech/lvim-picker) | [lvim-fuzzy](https://github.com/lvim-tech/lvim-fuzzy), [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-preview](https://github.com/lvim-tech/lvim-preview) | [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-remote](https://github.com/lvim-tech/lvim-remote) | [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-render](https://github.com/lvim-tech/lvim-render) | [lvim-ts](https://github.com/lvim-tech/lvim-ts), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-replace](https://github.com/lvim-tech/lvim-replace) | [lvim-utils](https://github.com/lvim-tech/lvim-utils), [lvim-ui](https://github.com/lvim-tech/lvim-ui) |
+| [lvim-rest](https://github.com/lvim-tech/lvim-rest) | [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-search](https://github.com/lvim-tech/lvim-search) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-snippets](https://github.com/lvim-tech/lvim-snippets) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-space](https://github.com/lvim-tech/lvim-space) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-table](https://github.com/lvim-tech/lvim-table) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-tasks](https://github.com/lvim-tech/lvim-tasks) | [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-term](https://github.com/lvim-tech/lvim-term) | [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-test](https://github.com/lvim-tech/lvim-test) | [lvim-tasks](https://github.com/lvim-tech/lvim-tasks), [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils), [lvim-ts](https://github.com/lvim-tech/lvim-ts) |
+| [lvim-tex](https://github.com/lvim-tech/lvim-tex) | [lvim-utils](https://github.com/lvim-tech/lvim-utils), [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-preview](https://github.com/lvim-tech/lvim-preview), [lvim-snippets](https://github.com/lvim-tech/lvim-snippets) |
+| [lvim-ts](https://github.com/lvim-tech/lvim-ts) | [lvim-pkg](https://github.com/lvim-tech/lvim-pkg) |
+| [lvim-ui](https://github.com/lvim-tech/lvim-ui) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-undo](https://github.com/lvim-tech/lvim-undo) | [lvim-utils](https://github.com/lvim-tech/lvim-utils), [lvim-ui](https://github.com/lvim-tech/lvim-ui) |
+| [lvim-vault](https://github.com/lvim-tech/lvim-vault) | [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-winmove](https://github.com/lvim-tech/lvim-winmove) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-winnav](https://github.com/lvim-tech/lvim-winnav) | [lvim-winmove](https://github.com/lvim-tech/lvim-winmove), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+| [lvim-winpick](https://github.com/lvim-tech/lvim-winpick) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
 
 ## Third party
 
