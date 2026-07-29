@@ -57,7 +57,8 @@
       "pin": true
     },
     "lvim-forge": {
-      "commit": "366a627845735b7f2f7ca57755f989522f01bb8c"
+      "commit": "824feface8523f6491248f067df181484f82f47d",
+      "pin": true
     },
     "lvim-fuzzy": {
       "commit": "11363de9092df9a1f71cf1cd82a534256d68804a"
@@ -96,10 +97,12 @@
       "commit": "443ad4bdbe2dea251ed23a9a7b323569f40e7759"
     },
     "lvim-ls": {
-      "commit": "1696129bd11bfbf0605c753ed586a110104a8022"
+      "commit": "e3c4e961055204d4d33635137fda05d50b4e9e19",
+      "pin": true
     },
     "lvim-lsp": {
-      "commit": "2c94499a13cf7fe5ba4bb07d4a42451bfe514538"
+      "commit": "63897143661af8b3c5a2761bfc1a4a8c81241d0d",
+      "pin": true
     },
     "lvim-move": {
       "commit": "876beeb4e6f9eb0100059b0cd9b14a37290a83d2"
@@ -139,7 +142,8 @@
       "commit": "5ffbce5dd94f2949079b98e94ab6c291fd956a10"
     },
     "lvim-rest": {
-      "commit": "935a39bfede801bdbe616d5ef0514c9b34df0fc5"
+      "commit": "f3878db6abfd21c216e37e3029d0f64c0fa853b9",
+      "pin": true
     },
     "lvim-search": {
       "commit": "022187a5d03e23eb3714481a91e10b9ed37a6686"
