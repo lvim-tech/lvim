@@ -22,12 +22,11 @@ local dependencies_config = require("modules.base.configs.dependencies")
 modules["lvim-tech/lvim-colorscheme"] = {
     dependencies = {
         "lvim-tech/lvim-utils",
-        -- Its settings panel is BUILT from control-center at setup() time, so this is a load-order
-        -- fact, not a preference: without it the panel silently does not exist (the plugin warns
-        -- and carries on). Declared here rather than packadd-ed from inside the plugin — a plugin
-        -- reaching for the package manager assumes how it was installed, and overrides the lazy
-        -- rules the reader set.
-        "lvim-tech/lvim-control-center",
+        -- Its theme picker AND its settings panel render through lvim-ui, so this is a load-order
+        -- fact, not a preference. Declared here rather than packadd-ed from inside the plugin — a
+        -- plugin reaching for the package manager assumes how it was installed, and overrides the
+        -- lazy rules the reader set.
+        "lvim-tech/lvim-ui",
     },
     priority = 100,
     opts = dependencies_config.lvim_colorscheme.opts,
@@ -262,8 +261,9 @@ modules["lvim-tech/lvim-linguistics"] = {
     event = "VeryLazy",
     dependencies = {
         "lvim-tech/lvim-utils",
-        -- Same as lvim-colorscheme: its settings panel is built from control-center at setup().
-        "lvim-tech/lvim-control-center",
+        -- Its settings panel is built straight on lvim-ui (two layer tabs). It does NOT go through
+        -- control-center: that host stores one value per name, and these settings are per-directory.
+        "lvim-tech/lvim-ui",
     },
     opts = editor_config.lvim_linguistics.opts,
 }

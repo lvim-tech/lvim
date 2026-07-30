@@ -9,6 +9,11 @@
 ---@diagnostic disable: undefined-field
 
 local funcs = require("core.funcs")
+-- The GLOBAL half of lvim-linguistics (spelling + insert-mode keyboard layout), spliced in at the end
+-- of this group's settings. It is a LIST, not a group of its own: these are editor-wide preferences,
+-- which is exactly what General collects. (Its per-directory counterpart cannot live in this panel's
+-- one-value-per-name database and stays in the plugin's own `:LvimLinguistics`.)
+local linguistics = require("modules.base.configs.editor.control_center.linguistics")
 local utils = require("modules.base.configs.editor.control_center.utils")
 local icons = require("configs.base.ui.icons")
 
@@ -266,5 +271,8 @@ return {
                 end
             end,
         },
+        -- `unpack` as the LAST element of a constructor expands the list in place — the one form that
+        -- splices a required list into a table literal without restructuring the literal around it.
+        unpack(linguistics),
     },
 }

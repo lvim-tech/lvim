@@ -1,5 +1,45 @@
 {
-  "mason": [],
+  "mason": {
+    "angular-language-server": {
+      "version": "22.0.8"
+    },
+    "astro-language-server": {
+      "version": "2.16.13"
+    },
+    "basedpyright": {
+      "version": "1.39.9"
+    },
+    "debugpy": {
+      "version": "1.8.21"
+    },
+    "efm": {
+      "version": "v0.0.57"
+    },
+    "json-lsp": {
+      "version": "4.10.0"
+    },
+    "lua-language-server": {
+      "version": "3.18.2"
+    },
+    "luacheck": {
+      "version": "1.1.0"
+    },
+    "marksman": {
+      "version": "2026-02-08"
+    },
+    "ruff": {
+      "version": "0.16.0"
+    },
+    "stylua": {
+      "version": "v2.5.2"
+    },
+    "texlab": {
+      "version": "v5.26.0"
+    },
+    "vue-language-server": {
+      "version": "3.3.8"
+    }
+  },
   "plugins": {
     "lvim-breadcrumbs": {
       "commit": "a3fc6851884179fd05ed95f190bbb84784819759"
@@ -20,7 +60,7 @@
       "commit": "f169d95ba67c87321f20d8fd78ac0e35e3c4654e"
     },
     "lvim-colorscheme": {
-      "commit": "dab6bb8ffd5b34bdb1db78e07f2594471e5b26c6"
+      "commit": "b1228eb8155eb0b39438f26c27661a788c35bf24"
     },
     "lvim-comment": {
       "commit": "214ba1418e36c465eb0d19fcc884d88f26b587f9"
@@ -32,7 +72,7 @@
       "commit": "67b880e22f42c3ec9c86fc4482016c417fdda43d"
     },
     "lvim-control-center": {
-      "commit": "91c5608533c76159e3ac5227a9f76964c63d3276"
+      "commit": "bbc2e3fe5e57058512988088ac3827bf3b52bea6"
     },
     "lvim-cycle": {
       "commit": "5ce4fb491cfd5e15478e40bd025986864b492c60"
@@ -101,7 +141,7 @@
       "pin": true
     },
     "lvim-linguistics": {
-      "commit": "79736abfc2eea54a0594349cc9ca5f8caaa0eccd",
+      "commit": "cc4e10d87db1f898d7498322da0940e1de9a67f8",
       "pin": true
     },
     "lvim-ls": {
@@ -189,7 +229,7 @@
       "pin": true
     },
     "lvim-ui": {
-      "commit": "b0eefdb2c5a67127e68db2c4dcf22ca71aea539c"
+      "commit": "c75edeea4fbc1e5ccb3fae5b18eca39cdcc6154f"
     },
     "lvim-undo": {
       "commit": "330c17d324e2eb3f580b54cfdb689e88045eb31e"

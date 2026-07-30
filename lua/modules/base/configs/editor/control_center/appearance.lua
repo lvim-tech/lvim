@@ -62,10 +62,13 @@ local function lcs_settings()
             -- value preserved): "transparent" sidebar/float while global transparency is off,
             -- darken-active while transparency is on, and either strength select while its own
             -- feature toggle is off. Evaluated live, so it tracks the parent toggles.
-            ---@param value any
+            -- The predicate is handed the ROW, not the value — passing the row straight into
+            -- `value_disabled` (which compares against a VALUE) silently never matched, so none
+            -- of these ever rendered inert.
+            ---@param row table
             ---@return boolean
-            disabled = function(value)
-                return S.value_disabled(spec, value)
+            disabled = function(row)
+                return S.value_disabled(spec, row.value)
             end,
         }
     end
