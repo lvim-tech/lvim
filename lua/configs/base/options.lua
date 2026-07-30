@@ -6,7 +6,6 @@
 
 ---@module "configs.base.options"
 
-require("configs.base.ui.fold")
 
 local M = {}
 
@@ -59,7 +58,10 @@ M.global = function()
     -- Use the system clipboard for all yank/put operations.
     vim.opt.clipboard = "unnamedplus"
     vim.opt.wildignorecase = true
-    -- (Native wildmenu / search / LSP completion options live in configs/base/native.lua.)
+    vim.opt.wildmenu = true
+    -- Complete the longest common prefix first, then cycle the full list, shown in a popup menu.
+    vim.opt.wildmode = "longest:full,full"
+    vim.opt.wildoptions = "pum,tagfile"
     -- Exclude generated files, binaries and dependency trees from wildmenu.
     vim.opt.wildignore =
         ".git,.hg,.svn,*.pyc,*.o,*.out,*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store,**/node_modules/**,**/bower_modules/**"
@@ -82,9 +84,13 @@ M.global = function()
     -- Fast CursorHold events and plugin refresh (100 ms).
     vim.opt.updatetime = 100
     vim.opt.redrawtime = 1500
-    -- Search behaviour (ignorecase/smartcase/incsearch/wrapscan) is set ONCE, in native.lua,
-    -- which owns the native search/completion/diff layer. `infercase` belongs to completion
-    -- and stays here.
+    -- Search: live preview while typing, matches stay lit after <CR>, case-insensitive unless the
+    -- pattern carries an uppercase letter, and wrapping at the end of the file.
+    vim.opt.incsearch = true
+    vim.opt.hlsearch = true
+    vim.opt.ignorecase = true
+    vim.opt.smartcase = true
+    vim.opt.wrapscan = true
     vim.opt.infercase = true
     vim.opt.complete = ".,w,b,k"
     -- Show substitution results live without a split window.
@@ -102,8 +108,6 @@ M.global = function()
     vim.opt.switchbuf = "useopen"
     vim.opt.backspace = "indent,eol,start"
     -- vim.opt.diffopt = "internal,filler,closeoff,indent-heuristic,linematch:60,algorithm:histogram"
-    -- (`completeopt` is NOT set here — it belongs to the completion layer and has exactly one owner:
-    --  configs/base/native.lua, where it stays off while lvim-cmp is the engine.)
     -- Use a stack-based jump list so <C-o>/<C-i> behave like a browser.
     vim.opt.jumpoptions = "stack"
     -- Hide the mode indicator (shown by the status line instead).
@@ -174,15 +178,9 @@ M.global = function()
     vim.opt.colorcolumn = "80"
     -- Conceal level 2: replace concealed text with cchar, hides markup in Markdown etc.
     vim.opt.conceallevel = 2
-    -- Use Tree-sitter expressions for fold detection.
-    vim.opt.foldmethod = "expr"
-    vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-    -- Custom fold text renderer defined in configs.base.ui.fold.
-    vim.opt.foldtext = "v:lua.fold_text()"
     vim.opt.fillchars = {
         diff = "╱", -- diagonal slash for removed diff regions
         eob = " ", -- hide the ~ end-of-buffer markers
-        fold = "─", -- horizontal bar for fold fill
         -- Window separators: a space instead of the box-drawing glyph, so each separator cell is a SOLID
         -- bar of the WinSeparator background with no thin line rendered inside it.
         vert = " ",

@@ -44,13 +44,15 @@
       "commit": "cad5e29df0c3c4fac89c2d1de70a0e383353a3c5"
     },
     "lvim-dashboard": {
-      "commit": "0a4b01d323e1cfae1df75e87b278c6210d500a83"
+      "commit": "4067ab3917ec059f664289d437b6ad50d81288ad",
+      "pin": true
     },
     "lvim-db": {
       "commit": "d89ab23ac5d5e4d56855a974c0921b813717d219"
     },
     "lvim-dependencies": {
-      "commit": "0bc7f2132095a2ce40ffd0614607cba7bf6cf45e"
+      "commit": "1fc5d4a07c0b798a85281bac751b425b99933248",
+      "pin": true
     },
     "lvim-files": {
       "commit": "ec0ed10c092517a79d1526bdf00497ade1e20410",
@@ -67,13 +69,16 @@
       "commit": "925cdb0c4cadd88002bd3bc94a05c56df59244c9"
     },
     "lvim-hud": {
-      "commit": "d6a444cae594873845102c67399e525b0cae2b8b"
+      "commit": "c1bccc34daefdb5c4c388766d526dd0b6d6997f8",
+      "pin": true
     },
     "lvim-icons": {
-      "commit": "866c8a3534ebb49ee7bf79c8c11794cf5ad6b464"
+      "commit": "9c4534fe1fd38a43495d087c14ee03e7fc1cf027",
+      "pin": true
     },
     "lvim-image": {
-      "commit": "efe3289ae5d2cdf5b8afabcb4a2c7592f06b18fd"
+      "commit": "d891ed0d711b3e6394223e28e455696cbc3a8345",
+      "pin": true
     },
     "lvim-indent": {
       "commit": "710ad61174c847479d70641518a7d749f3ab1082"
@@ -88,24 +93,27 @@
       "commit": "8fca93cb4536f9311905cd3d469b15572c517302"
     },
     "lvim-keys-helper": {
-      "commit": "da12d3ba5cf777dca3ef7eea9c1b76d73f58238a"
+      "commit": "bff302bcb4695c38e7c0e5a19fba07ac6f6e1994",
+      "pin": true
     },
     "lvim-lang": {
       "commit": "1e2924ec3935f47288f0ba2ad629dea03d815853"
     },
     "lvim-linguistics": {
-      "commit": "443ad4bdbe2dea251ed23a9a7b323569f40e7759"
+      "commit": "ca16a6a82972fd656ef17b481f06606a9000f6db",
+      "pin": true
     },
     "lvim-ls": {
-      "commit": "e3c4e961055204d4d33635137fda05d50b4e9e19",
+      "commit": "a948ab22e59c101024554329cb862ea98c50a0b2",
       "pin": true
     },
     "lvim-lsp": {
-      "commit": "63897143661af8b3c5a2761bfc1a4a8c81241d0d",
+      "commit": "3d7b050c9036d23f36604ed4313d34871e2d7208",
       "pin": true
     },
     "lvim-move": {
-      "commit": "876beeb4e6f9eb0100059b0cd9b14a37290a83d2"
+      "commit": "e0811a6baca39f51ea92d40b8dc06afc09853e22",
+      "pin": true
     },
     "lvim-msgarea": {
       "commit": "b0a6132c1b92a844972e3d2eb545ac8a3bbcb581"
@@ -120,7 +128,8 @@
       "commit": "fd0b5497d32befb62cdf69273b3d2982b61029c0"
     },
     "lvim-picker": {
-      "commit": "6df0470f011cb7456dad3fdd3ed4c96dc9f2e087"
+      "commit": "4583c3af9fc4fe312c881dd9ed3333eb746044bd",
+      "pin": true
     },
     "lvim-pkg": {
       "commit": "62de1ad9a6ab2c39049169a41350e6f4e3aee101"
@@ -129,13 +138,14 @@
       "commit": "fd5a3b00d0be269bfc540587753fa4a347c6a8ca"
     },
     "lvim-qf-loc": {
-      "commit": "513ac2c56a322014f9fcad1741dbb47b78da35b0"
+      "commit": "75e0058e852a59c099a73d5e32479e10419dfbb9",
+      "pin": true
     },
     "lvim-remote": {
       "commit": "c70726f9488f2ff746104648172870a7656495c2"
     },
     "lvim-render": {
-      "commit": "a549a3d6a7a29d08cf13de2fdd877f87d8281dc0",
+      "commit": "f22372bdf0b39969a25f199a33c9c8c365b9ec57",
       "pin": true
     },
     "lvim-replace": {
@@ -173,7 +183,8 @@
       "commit": "85780819a59cc69c8fa7bd3c7337889710c9fd28"
     },
     "lvim-ts": {
-      "commit": "0e84211be97401a97d73a5394fe6362e8a056554"
+      "commit": "a9e2f865d4d16bcb00f2f000a103fc90b2c6e2b5",
+      "pin": true
     },
     "lvim-ui": {
       "commit": "51ea403a431eb16a44ad7baa51b42f685c7de6ed"
@@ -188,13 +199,15 @@
       "commit": "9fae8e16446fd8f1d733562a7627091cd889c81e"
     },
     "lvim-winmove": {
-      "commit": "4681e1dafe8f689955ac339c8fb6bc749a5b08da"
+      "commit": "6e22a8921920dd8bc899a100df203778eac8768b",
+      "pin": true
     },
     "lvim-winnav": {
       "commit": "9f8397bd9e23efdcca9eb31a74c09dd347226ac6"
     },
     "lvim-winpick": {
-      "commit": "112e34ab4ab5d80aa11717535f2a1d2027ceae36"
+      "commit": "f00f3d9425dd227bc4ca5cecd01049ad4dc0513a",
+      "pin": true
     },
     "sqlite.lua": {
       "commit": "50092d60feb242602d7578398c6eb53b4a8ffe7b"

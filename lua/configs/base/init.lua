@@ -7,7 +7,6 @@
 
 local options = require("configs.base.options")
 local keys = require("core.keys")
-local native = require("configs.base.native")
 
 ---@type integer  Shared autocommand group used by all LvimIDE autocmds.
 local group = vim.api.nvim_create_augroup("LvimIDE", {
@@ -20,11 +19,6 @@ local funcs = require("core.funcs")
 local configs = {}
 
 -- Apply global vim.g / vim.opt settings (delegates to configs.base.options).
--- Native search + completion (used while blink is off). Own file: configs/base/native.lua.
-configs["base_native"] = function()
-    native.setup()
-end
-
 configs["base_options"] = function()
     options.global()
 end

@@ -6,7 +6,6 @@
 
 ---@module "modules.base.configs.languages"
 
-local icons = require("configs.base.ui.icons")
 local lsp_config = require("modules.base.configs.languages.lsp")
 -- NO CATALOG HERE. lvim-lang's providers own their languages and fan their own servers (from
 -- `lvim-lang.servers`) out to lvim-lsp, so this setup ships an empty one. A language that has no
@@ -18,12 +17,6 @@ return {
         opts = {
             diagnostics = {
                 severity_sort = true,
-                signs = {
-                    error = icons.diagnostics.error,
-                    warn = icons.diagnostics.warn,
-                    hint = icons.diagnostics.hint,
-                    info = icons.diagnostics.info,
-                },
             },
             features = {
                 -- Only the one that differs: auto_format and inlay_hints are on by default.
@@ -73,6 +66,9 @@ return {
             -- prompt instead of installing them silently.
             require("lvim-ts").setup({
                 auto_install = false,
+                -- Folding is treesitter's, end to end: the expression AND the collapsed line (its
+                -- glyphs, counter, rule and colours all come from the plugin's own config).
+                fold = { expr = true },
                 -- Node-based incremental selection: gnn start, grn grow, grm shrink, grc scope.
                 incremental_selection = { enable = true },
                 -- Generic node-type text objects: af/if function, ac/ic class, aa/ia parameter.

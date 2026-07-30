@@ -125,7 +125,7 @@ tooling is not part of that — it arrives per language, on the first file that 
 │   │   ├── funcs/          ← shared helpers (editor, fs, plugins, system, table, ui)
 │   │   └── types.lua       ← LuaLS annotations for the config
 │   ├── configs/            ← the editor itself
-│   │   ├── base/           ← options, native search/completion, fold, icons
+│   │   ├── base/           ← options, fold, icons
 │   │   └── user/           ← your editor overrides            ← edit here
 │   ├── keys/               ← the keymap MANIFEST
 │   │   ├── base/           ← groups, global, lsp, filetype, plugins
