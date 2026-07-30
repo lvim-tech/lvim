@@ -88,10 +88,15 @@ function M.resolve()
         filetype[ft] = merge_list((base.filetype or {})[ft], (user.filetype or {})[ft])
     end
 
+    -- The language layer is a LIST of `{ chord, command, desc }`, merged by chord the same way the
+    -- other sections merge by lhs — a user entry rebinds a chord, `["<chord>"] = false` drops it.
+    local lang = merge_list(base.lang, user.lang)
+
     return {
         groups = groups,
         global = global,
         lsp = lsp,
+        lang = lang,
         filetype = filetype,
         plugins = base.plugins or {},
     }
@@ -176,6 +181,49 @@ function M.apply()
                         })
                     end
                 end
+            end,
+        })
+    end
+
+    -- THE LANGUAGE LAYER, buffer-local on FileType — but bound per PROVIDER, not per filetype: the
+    -- pattern is `*` and the decision is made from what lvim-lang answers for this buffer, so a
+    -- language gets exactly the keys its provider implements and a new provider is covered the day
+    -- it is written, with no edit here. Asked at FileType time, which is also when lvim-lang loads
+    -- for that language, so the registry is populated by the time the question is put.
+    if #m.lang > 0 then
+        vim.api.nvim_create_autocmd("FileType", {
+            group = AUGROUP,
+            pattern = "*",
+            callback = function(args)
+                -- ONE TICK LATER, and that is the whole trick: lvim-lang is loaded BY this same
+                -- FileType event (it is the plugin's `ft` trigger), so asking its registry from
+                -- inside the event answers "no provider" for every language — measured: rust and
+                -- python resolved a provider a moment afterwards but bound nothing here. By the
+                -- next tick the plugin is on the runtimepath and its providers are registered.
+                vim.schedule(function()
+                    if not vim.api.nvim_buf_is_valid(args.buf) then
+                        return
+                    end
+                    local ok, reg = pcall(require, "lvim-lang.registry")
+                    if not ok then
+                        return
+                    end
+                    local ok_p, provider = pcall(reg.for_buffer, args.buf)
+                    if not ok_p or type(provider) ~= "table" then
+                        return
+                    end
+                    local commands = provider.commands or {}
+                    for _, t in ipairs(m.lang) do
+                        if commands[t[2]] ~= nil then
+                            vim.keymap.set("n", t[1], ("<Cmd>LvimLang %s<CR>"):format(t[2]), {
+                                noremap = true,
+                                silent = true,
+                                buffer = args.buf,
+                                desc = t[3],
+                            })
+                        end
+                    end
+                end)
             end,
         })
     end

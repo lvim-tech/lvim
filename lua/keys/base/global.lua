@@ -48,6 +48,12 @@ global.normal = {
     { "<Leader>ra", "<Cmd>LvimTasks toggle<CR>", "Tasks: panel" },
     { "<Leader>rh", "<Cmd>LvimTasks history<CR>", "Tasks: history" },
     { "<Leader>rx", "<Cmd>LvimTasks stop<CR>", "Tasks: stop" },
+    -- `rr` is GLOBAL because `LvimBuild run` is: it detects the project and the file and runs the
+    -- recipe that fits, whatever the language. It used to be declared per filetype for rust and go
+    -- alone, which left every other language without it for no reason. A language whose run is
+    -- something else entirely overrides it in keys/base/filetype.lua — dart does, because there
+    -- `run` means a Flutter session, not a build recipe.
+    { "<Leader>rr", "<Cmd>LvimBuild run<CR>", "Run: build recipe" },
     { "<Leader>rb", "<Cmd>LvimBuild<CR>", "Build: action chooser" },
     { "<Leader>rl", "<Cmd>LvimBuild last<CR>", "Build: show redo target" },
     { "<Leader>rd", "<Cmd>LvimBuild redo<CR>", "Build: redo last action" },

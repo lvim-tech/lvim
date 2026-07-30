@@ -9,12 +9,17 @@ section at the right moment:
 | groups | `keys/base/groups.lua` | once, as the prefix labels the hint panel shows |
 | global | `keys/base/global.lua` | at startup, per mode |
 | lsp | `keys/base/lsp.lua` | buffer-local on `LspAttach`, guarded by the server's capability |
+| lang | `keys/base/lang.lua` | buffer-local on `FileType`, per the provider's own command list |
 | filetype | `keys/base/filetype.lua` | buffer-local on `FileType` |
 | plugins | `keys/base/plugins.lua` | forwarded into a plugin's own `setup(opts.keys)` |
 
 **Add a key there, not in a plugin's config.** The documented exception is a key that drives a
 plugin's live API rather than a command — lvim-winnav's `<C-h/j/k/l>` and `<C-Arrows>`, lvim-dap's
 `<A-1>`…`<A-0>`, lvim-term's generated `<C-c>1`…`9` — because it needs the module in hand.
+
+The `lang` section is the odd one out, deliberately: it is bound per PROVIDER rather than per
+filetype, so a language gets exactly the keys its own provider implements — and a language written
+tomorrow is covered the day its provider is, with no edit here.
 
 Nothing here has to be memorised: press a prefix and the hint panel names what follows it,
 `<Leader>uh` opens the cheatsheet, and `<Leader>sk` searches every live mapping.
@@ -92,6 +97,7 @@ Nothing here has to be memorised: press a prefix and the hint panel names what f
 | `<Leader>ra` | Tasks: panel | `:LvimTasks toggle` |
 | `<Leader>rh` | Tasks: history | `:LvimTasks history` |
 | `<Leader>rx` | Tasks: stop | `:LvimTasks stop` |
+| `<Leader>rr` | Run: build recipe | `:LvimBuild run` |
 | `<Leader>rb` | Build: action chooser | `:LvimBuild` |
 | `<Leader>rl` | Build: show redo target | `:LvimBuild last` |
 | `<Leader>rd` | Build: redo last action | `:LvimBuild redo` |
@@ -302,8 +308,8 @@ Nothing here has to be memorised: press a prefix and the hint panel names what f
 
 Applied buffer-local when a server attaches, and **only where that server can answer**: each entry
 names the capability it needs, so `gi` is simply not bound on a server without an implementation
-provider. Diagnostics deliberately live on `]d` / `[d` / `gld` rather than `d*`, which would make the
-delete operator wait out `timeoutlen` on every LSP buffer.
+provider. Diagnostics deliberately live on `]d` / `[d` / `gld` rather than `d*`, which would make
+the delete operator wait out `timeoutlen` on every LSP buffer.
 
 | Key | Action | Runs | Needs capability |
 |---|---|---|---|
@@ -315,7 +321,7 @@ delete operator wait out `timeoutlen` on every LSP buffer.
 | `K` | Hover information | `:LvimLsp hover` | `hoverProvider` |
 | `<C-k>` *(i)* | Signature help | `:LvimLsp signature_help` | `signatureHelpProvider` |
 | `ge` | Rename symbol | `:LvimLsp rename` | `renameProvider` |
-| `ga` | Code action | `<lua function>` | `codeActionProvider` |
+| `ga` | Code action | `<lua>` | `codeActionProvider` |
 | `gf` | Format document | `:LvimLsp format` | `documentFormattingProvider` |
 | `gF` *(v)* | Format selection | `:LvimLsp range_format` | `documentRangeFormattingProvider` |
 | `gs` | Document symbols | `:LvimLsp document_symbol` | `documentSymbolProvider` |
@@ -331,33 +337,121 @@ delete operator wait out `timeoutlen` on every LSP buffer.
 | `goa` | Add workspace folder | `:LvimLsp add_workspace_folder` | `(predicate)` |
 | `gor` | Remove workspace folder | `:LvimLsp remove_workspace_folder` | `(predicate)` |
 | `gol` | List workspace folders | `:LvimLsp list_workspace_folders` | `(predicate)` |
+## The language layer
 
-## Per filetype
+Nine chords, one meaning, every language: `:LvimLang <cmd>` dispatches to the provider of the
+buffer you are in, so the same key runs a Go file with `go run`, a Rust one with `cargo run` and a
+Python one with the interpreter its project resolves to.
 
-The same key means *the language's own action*: `<Leader>rr` runs a Go file through lvim-build and a
-Flutter app through lvim-lang. That is what keeps the hint panel accurate per buffer.
+A chord is bound **only where the provider really implements it** — a language without a debug
+command never gets a debug key that would answer "no such command". Across the live registry:
+`config` 91 providers, `run` 49, `build` 47, `test` 43, `test-func` 19, `debug` 17, `deps` 16,
+`test-file` 14, `debug-test` 10.
+
+They live on `<C-c><C-c>` rather than `<Leader>r`, because that group is the CROSS-language tooling
+(tasks, build, test) and putting the language layer there would shadow it.
+
+| Chord | Command | Action |
+|---|---|---|
+| `<C-c><C-c>r` | `:LvimLang run` | Run |
+| `<C-c><C-c>b` | `:LvimLang build` | Build |
+| `<C-c><C-c>t` | `:LvimLang test` | Test: all |
+| `<C-c><C-c>f` | `:LvimLang test-func` | Test: function under the cursor |
+| `<C-c><C-c>F` | `:LvimLang test-file` | Test: this file |
+| `<C-c><C-c>d` | `:LvimLang debug` | Debug |
+| `<C-c><C-c>D` | `:LvimLang debug-test` | Debug: the test under the cursor |
+| `<C-c><C-c>p` | `:LvimLang deps` | Dependencies |
+| `<C-c><C-c>c` | `:LvimLang config` | Run configuration |
+
+## Per language
+
+What each provider offers BEYOND the shared nine — its own tools, one chord each. The letter is
+derived, never invented: the command's first letter when the shared layer has not taken it, its
+uppercase next, then a consonant from the word. `r b t f F d D p c` are the shared nine and are
+never reused, so nothing here can shadow "run" or "test".
+
+Dart is the one hand-tuned section: a Flutter dev session (hot reload, restart, the device, the
+inspector) has no counterpart in other languages, and its chords predate this layer.
+
+### `ansible`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>l` | ansible-lint | `:LvimLang lint` |
+
+### `astro`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>v` | npm run dev | `:LvimLang dev` |
+
+### `bash`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>C` | shellcheck <file> | `:LvimLang check` |
+
+### `bib`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>C` | latexmk -c | `:LvimLang clean` |
+
+### `c`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>C` | compile-commands | `:LvimLang compile-commands` |
+| `<C-c><C-c>n` | configure | `:LvimLang configure` |
+| `<C-c><C-c>s` | switch-header | `:LvimLang switch-header` |
+| `<C-c><C-c>S` | symbol-info | `:LvimLang symbol-info` |
+
+### `cmake`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>C` | cmake -B build | `:LvimLang configure` |
+
+### `cpp`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>C` | compile-commands | `:LvimLang compile-commands` |
+| `<C-c><C-c>n` | configure | `:LvimLang configure` |
+| `<C-c><C-c>s` | switch-header | `:LvimLang switch-header` |
+| `<C-c><C-c>S` | symbol-info | `:LvimLang symbol-info` |
+
+### `cs`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>a` | add | `:LvimLang add` |
+| `<C-c><C-c>C` | dotnet clean [args] | `:LvimLang clean` |
+| `<C-c><C-c>R` | dotnet remove package <package> | `:LvimLang remove` |
+| `<C-c><C-c>s` | dotnet restore [args] | `:LvimLang restore` |
+
+### `cue`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>e` | cue eval <file> | `:LvimLang eval` |
+| `<C-c><C-c>v` | cue vet | `:LvimLang vet` |
 
 ### `dart`
 
-| Key | Action | Runs |
+| Chord | Action | Runs |
 |---|---|---|
-| `<Leader>rr` | Run (Flutter) | `:LvimLang run` |
-| `<Leader>rR` | Hot restart | `:LvimLang restart` |
-| `<Leader>rl` | Hot reload | `:LvimLang reload` |
-| `<Leader>rA` | Attach | `:LvimLang attach` |
-| `<C-c><C-c>f` | Run | `:LvimLang run` |
-| `<C-c><C-c>A` | Attach | `:LvimLang attach` |
-| `<C-c><C-c>r` | Hot reload | `:LvimLang reload` |
+| `<C-c><C-c>h` | Hot reload | `:LvimLang reload` |
 | `<C-c><C-c>R` | Hot restart | `:LvimLang restart` |
+| `<C-c><C-c>A` | Attach | `:LvimLang attach` |
+| `<C-c><C-c>x` | Detach | `:LvimLang detach` |
 | `<C-c><C-c>q` | Quit | `:LvimLang quit` |
-| `<C-c><C-c>D` | Detach | `:LvimLang detach` |
 | `<C-c><C-c>m` | Emulators | `:LvimLang emulators` |
 | `<C-c><C-c>g` | Dev log | `:LvimLang log toggle` |
-| `<C-c><C-c>c` | Run config | `:LvimLang config` |
-| `<C-c><C-c>t` | DevTools | `:LvimLang devtools` |
+| `<C-c><C-c>v` | DevTools | `:LvimLang devtools` |
 | `<C-c><C-c>i` | Inspect widget | `:LvimLang inspect` |
-| `<C-c><C-c>p` | Debug paint | `:LvimLang paint` |
-| `<C-c><C-c>b` | Brightness | `:LvimLang brightness` |
+| `<C-c><C-c>y` | Debug paint | `:LvimLang paint` |
+| `<C-c><C-c>B` | Brightness | `:LvimLang brightness` |
 | `<C-c><C-c>P` | Target platform | `:LvimLang platform` |
 | `<C-c><C-c>L` | Closing labels | `:LvimLang labels` |
 | `<C-c><C-c>u` | Pub get | `:LvimLang pub get` |
@@ -369,17 +463,429 @@ Flutter app through lvim-lang. That is what keeps the hint panel accurate per bu
 | `<C-c><C-c>o` | Outline | `:LvimLsp outline` |
 | `<C-c><C-c>e` | Rename | `:LvimLsp rename` |
 
+### `dune`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>e` | exec | `:LvimLang exec` |
+| `<C-c><C-c>m` | dune build @fmt --auto-promote (ocamlformat) | `:LvimLang fmt` |
+| `<C-c><C-c>u` | dune utop [dir] | `:LvimLang utop` |
+
+### `eelixir`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>C` | mix compile [args] | `:LvimLang compile` |
+| `<C-c><C-c>R` | mix credo [args] | `:LvimLang credo` |
+| `<C-c><C-c>m` | mix format [args] | `:LvimLang format` |
+| `<C-c><C-c>i` | iex -S mix [args] | `:LvimLang iex` |
+
+### `elixir`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>C` | mix compile [args] | `:LvimLang compile` |
+| `<C-c><C-c>R` | mix credo [args] | `:LvimLang credo` |
+| `<C-c><C-c>m` | mix format [args] | `:LvimLang format` |
+| `<C-c><C-c>i` | iex -S mix [args] | `:LvimLang iex` |
+
+### `erlang`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>C` | rebar3 compile [args] | `:LvimLang compile` |
+| `<C-c><C-c>T` | rebar3 ct [args] | `:LvimLang ct` |
+| `<C-c><C-c>S` | ct-suite | `:LvimLang ct-suite` |
+| `<C-c><C-c>e` | rebar3 eunit [args] | `:LvimLang eunit` |
+| `<C-c><C-c>m` | erlfmt --write <current file> | `:LvimLang fmt` |
+| `<C-c><C-c>s` | rebar3 shell [args] (+ active run config) | `:LvimLang shell` |
+
+### `eruby`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>a` | bundle add <gem> [--version …] | `:LvimLang add` |
+| `<C-c><C-c>R` | rake | `:LvimLang rake` |
+| `<C-c><C-c>m` | bundle remove <gem…> | `:LvimLang remove` |
+| `<C-c><C-c>B` | rubocop [args] | `:LvimLang rubocop` |
+| `<C-c><C-c>x` | rubocop -A [args] | `:LvimLang rubocop-fix` |
+| `<C-c><C-c>u` | bundle update [gem…] | `:LvimLang update` |
+
+### `fsharp`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>a` | add | `:LvimLang add` |
+| `<C-c><C-c>C` | dotnet clean [args] | `:LvimLang clean` |
+| `<C-c><C-c>m` | fantomas [paths…] | `:LvimLang format` |
+| `<C-c><C-c>R` | dotnet remove package <package> | `:LvimLang remove` |
+| `<C-c><C-c>s` | dotnet restore [args] | `:LvimLang restore` |
+
 ### `go`
 
-| Key | Action | Runs |
+| Chord | Action | Runs |
 |---|---|---|
-| `<Leader>rr` | Run (go) | `:LvimBuild run` |
+| `<C-c><C-c>C` | coverage [clear] | `:LvimLang coverage` |
+| `<C-c><C-c>g` | go generate ./... [args] | `:LvimLang generate` |
+| `<C-c><C-c>G` | go get <module[@version]> \| -u ./... | `:LvimLang get` |
+| `<C-c><C-c>s` | gotests | `:LvimLang gotests` |
+| `<C-c><C-c>S` | gotestsum | `:LvimLang gotestsum` |
+| `<C-c><C-c>i` | impl <receiver…> <interface> | `:LvimLang impl` |
+| `<C-c><C-c>m` | mod tidy\|download\|verify\|graph\|why | `:LvimLang mod` |
+| `<C-c><C-c>T` | tags <add\|remove> [json\|xml\|…] | `:LvimLang tags` |
+| `<C-c><C-c>v` | go vet ./... [args] | `:LvimLang vet` |
+
+### `gomod`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>C` | coverage [clear] | `:LvimLang coverage` |
+| `<C-c><C-c>g` | go generate ./... [args] | `:LvimLang generate` |
+| `<C-c><C-c>G` | go get <module[@version]> \| -u ./... | `:LvimLang get` |
+| `<C-c><C-c>s` | gotests | `:LvimLang gotests` |
+| `<C-c><C-c>S` | gotestsum | `:LvimLang gotestsum` |
+| `<C-c><C-c>i` | impl <receiver…> <interface> | `:LvimLang impl` |
+| `<C-c><C-c>m` | mod tidy\|download\|verify\|graph\|why | `:LvimLang mod` |
+| `<C-c><C-c>T` | tags <add\|remove> [json\|xml\|…] | `:LvimLang tags` |
+| `<C-c><C-c>v` | go vet ./... [args] | `:LvimLang vet` |
+
+### `gotmpl`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>C` | coverage [clear] | `:LvimLang coverage` |
+| `<C-c><C-c>g` | go generate ./... [args] | `:LvimLang generate` |
+| `<C-c><C-c>G` | go get <module[@version]> \| -u ./... | `:LvimLang get` |
+| `<C-c><C-c>s` | gotests | `:LvimLang gotests` |
+| `<C-c><C-c>S` | gotestsum | `:LvimLang gotestsum` |
+| `<C-c><C-c>i` | impl <receiver…> <interface> | `:LvimLang impl` |
+| `<C-c><C-c>m` | mod tidy\|download\|verify\|graph\|why | `:LvimLang mod` |
+| `<C-c><C-c>T` | tags <add\|remove> [json\|xml\|…] | `:LvimLang tags` |
+| `<C-c><C-c>v` | go vet ./... [args] | `:LvimLang vet` |
+
+### `gowork`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>C` | coverage [clear] | `:LvimLang coverage` |
+| `<C-c><C-c>g` | go generate ./... [args] | `:LvimLang generate` |
+| `<C-c><C-c>G` | go get <module[@version]> \| -u ./... | `:LvimLang get` |
+| `<C-c><C-c>s` | gotests | `:LvimLang gotests` |
+| `<C-c><C-c>S` | gotestsum | `:LvimLang gotestsum` |
+| `<C-c><C-c>i` | impl <receiver…> <interface> | `:LvimLang impl` |
+| `<C-c><C-c>m` | mod tidy\|download\|verify\|graph\|why | `:LvimLang mod` |
+| `<C-c><C-c>T` | tags <add\|remove> [json\|xml\|…] | `:LvimLang tags` |
+| `<C-c><C-c>v` | go vet ./... [args] | `:LvimLang vet` |
+
+### `haskell`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>C` | stack clean / cabal clean [args] | `:LvimLang clean` |
+
+### `hcl`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>P` | terraform plan | `:LvimLang plan` |
+| `<C-c><C-c>v` | terraform validate | `:LvimLang validate` |
+
+### `heex`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>C` | mix compile [args] | `:LvimLang compile` |
+| `<C-c><C-c>R` | mix credo [args] | `:LvimLang credo` |
+| `<C-c><C-c>m` | mix format [args] | `:LvimLang format` |
+| `<C-c><C-c>i` | iex -S mix [args] | `:LvimLang iex` |
+
+### `helm`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>l` | helm lint . | `:LvimLang lint` |
+| `<C-c><C-c>T` | helm template . | `:LvimLang template` |
+
+### `java`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>e` | extract-constant | `:LvimLang extract-constant` |
+| `<C-c><C-c>E` | extract-method | `:LvimLang extract-method` |
+| `<C-c><C-c>x` | extract-variable | `:LvimLang extract-variable` |
+| `<C-c><C-c>o` | jdtls: remove unused + order imports | `:LvimLang organize-imports` |
+
+### `javascript`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>a` | add <package…> | `:LvimLang add` |
+| `<C-c><C-c>C` | coverage [clear] | `:LvimLang coverage` |
+| `<C-c><C-c>v` | run the `dev` script | `:LvimLang dev` |
+| `<C-c><C-c>i` | install | `:LvimLang install` |
+| `<C-c><C-c>R` | remove <package…> | `:LvimLang remove` |
+| `<C-c><C-c>s` | script [name] | `:LvimLang script` |
+| `<C-c><C-c>T` | emit .d.ts declarations (tsc --declaration) | `:LvimLang types` |
+| `<C-c><C-c>u` | update [package…] | `:LvimLang update` |
+
+### `javascriptreact`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>a` | add <package…> | `:LvimLang add` |
+| `<C-c><C-c>C` | coverage [clear] | `:LvimLang coverage` |
+| `<C-c><C-c>v` | run the `dev` script | `:LvimLang dev` |
+| `<C-c><C-c>i` | install | `:LvimLang install` |
+| `<C-c><C-c>R` | remove <package…> | `:LvimLang remove` |
+| `<C-c><C-c>s` | script [name] | `:LvimLang script` |
+| `<C-c><C-c>T` | emit .d.ts declarations (tsc --declaration) | `:LvimLang types` |
+| `<C-c><C-c>u` | update [package…] | `:LvimLang update` |
+
+### `lhaskell`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>C` | stack clean / cabal clean [args] | `:LvimLang clean` |
+
+### `menhir`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>e` | exec | `:LvimLang exec` |
+| `<C-c><C-c>m` | dune build @fmt --auto-promote (ocamlformat) | `:LvimLang fmt` |
+| `<C-c><C-c>u` | dune utop [dir] | `:LvimLang utop` |
+
+### `mysql`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>l` | sqlfluff lint <file> | `:LvimLang lint` |
+
+### `objc`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>C` | compile-commands | `:LvimLang compile-commands` |
+| `<C-c><C-c>n` | configure | `:LvimLang configure` |
+| `<C-c><C-c>s` | switch-header | `:LvimLang switch-header` |
+| `<C-c><C-c>S` | symbol-info | `:LvimLang symbol-info` |
+
+### `objcpp`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>C` | compile-commands | `:LvimLang compile-commands` |
+| `<C-c><C-c>n` | configure | `:LvimLang configure` |
+| `<C-c><C-c>s` | switch-header | `:LvimLang switch-header` |
+| `<C-c><C-c>S` | symbol-info | `:LvimLang symbol-info` |
+
+### `ocaml`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>e` | exec | `:LvimLang exec` |
+| `<C-c><C-c>m` | dune build @fmt --auto-promote (ocamlformat) | `:LvimLang fmt` |
+| `<C-c><C-c>u` | dune utop [dir] | `:LvimLang utop` |
+
+### `ocaml.interface`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>e` | exec | `:LvimLang exec` |
+| `<C-c><C-c>m` | dune build @fmt --auto-promote (ocamlformat) | `:LvimLang fmt` |
+| `<C-c><C-c>u` | dune utop [dir] | `:LvimLang utop` |
+
+### `ocamllex`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>e` | exec | `:LvimLang exec` |
+| `<C-c><C-c>m` | dune build @fmt --auto-promote (ocamlformat) | `:LvimLang fmt` |
+| `<C-c><C-c>u` | dune utop [dir] | `:LvimLang utop` |
+
+### `php`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>a` | phpstan analyse | `:LvimLang analyse` |
+| `<C-c><C-c>C` | php-cs-fixer fix | `:LvimLang cs-fix` |
+| `<C-c><C-c>R` | composer remove <package> | `:LvimLang remove` |
+| `<C-c><C-c>q` | require | `:LvimLang require` |
+| `<C-c><C-c>s` | php -S host:port | `:LvimLang serve` |
+
+### `plaintex`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>C` | latexmk -c | `:LvimLang clean` |
+
+### `plsql`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>l` | sqlfluff lint <file> | `:LvimLang lint` |
+
+### `proto`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>g` | buf generate | `:LvimLang generate` |
+| `<C-c><C-c>l` | buf lint | `:LvimLang lint` |
+
+### `python`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>a` | add <package…> | `:LvimLang add` |
+| `<C-c><C-c>C` | python -m compileall | `:LvimLang check` |
+| `<C-c><C-c>g` | coverage [clear] | `:LvimLang coverage` |
+| `<C-c><C-c>R` | remove <package…> | `:LvimLang remove` |
+| `<C-c><C-c>n` | python -m <module> [args] | `:LvimLang run-module` |
+| `<C-c><C-c>s` | stub <import> | `:LvimLang stub` |
+| `<C-c><C-c>u` | unittest | `:LvimLang unittest` |
+| `<C-c><C-c>U` | update [package…] | `:LvimLang update` |
+| `<C-c><C-c>v` | venv [create [name]] | `:LvimLang venv` |
+
+### `ruby`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>a` | bundle add <gem> [--version …] | `:LvimLang add` |
+| `<C-c><C-c>R` | rake | `:LvimLang rake` |
+| `<C-c><C-c>m` | bundle remove <gem…> | `:LvimLang remove` |
+| `<C-c><C-c>B` | rubocop [args] | `:LvimLang rubocop` |
+| `<C-c><C-c>x` | rubocop -A [args] | `:LvimLang rubocop-fix` |
+| `<C-c><C-c>u` | bundle update [gem…] | `:LvimLang update` |
 
 ### `rust`
 
-| Key | Action | Runs |
+| Chord | Action | Runs |
 |---|---|---|
-| `<Leader>rr` | Run (cargo) | `:LvimBuild run` |
+| `<C-c><C-c>a` | cargo add <crate[@version]> [--features …] | `:LvimLang add` |
+| `<C-c><C-c>C` | cargo check [args] | `:LvimLang check` |
+| `<C-c><C-c>l` | cargo clippy [args] | `:LvimLang clippy` |
+| `<C-c><C-c>e` | expand [item] | `:LvimLang expand` |
+| `<C-c><C-c>m` | cargo fmt [args] | `:LvimLang fmt` |
+| `<C-c><C-c>n` | cargo nextest run [args] | `:LvimLang nextest` |
+| `<C-c><C-c>R` | cargo remove <crate…> | `:LvimLang remove` |
+| `<C-c><C-c>u` | cargo update [crate] | `:LvimLang update` |
+
+### `sh`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>C` | shellcheck <file> | `:LvimLang check` |
+
+### `sql`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>l` | sqlfluff lint <file> | `:LvimLang lint` |
+
+### `svelte`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>v` | npm run dev | `:LvimLang dev` |
+
+### `swift`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>C` | swift package clean [args] | `:LvimLang clean` |
+| `<C-c><C-c>m` | swiftformat [args] | `:LvimLang fmt` |
+| `<C-c><C-c>u` | swift package update | `:LvimLang update` |
+
+### `terraform`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>P` | terraform plan | `:LvimLang plan` |
+| `<C-c><C-c>v` | terraform validate | `:LvimLang validate` |
+
+### `tex`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>C` | latexmk -c | `:LvimLang clean` |
+
+### `tf`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>P` | terraform plan | `:LvimLang plan` |
+| `<C-c><C-c>v` | terraform validate | `:LvimLang validate` |
+
+### `twig`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>l` | djlint <file> | `:LvimLang lint` |
+
+### `typescript`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>a` | add <package…> | `:LvimLang add` |
+| `<C-c><C-c>C` | coverage [clear] | `:LvimLang coverage` |
+| `<C-c><C-c>v` | run the `dev` script | `:LvimLang dev` |
+| `<C-c><C-c>i` | install | `:LvimLang install` |
+| `<C-c><C-c>R` | remove <package…> | `:LvimLang remove` |
+| `<C-c><C-c>s` | script [name] | `:LvimLang script` |
+| `<C-c><C-c>T` | emit .d.ts declarations (tsc --declaration) | `:LvimLang types` |
+| `<C-c><C-c>u` | update [package…] | `:LvimLang update` |
+
+### `typescriptreact`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>a` | add <package…> | `:LvimLang add` |
+| `<C-c><C-c>C` | coverage [clear] | `:LvimLang coverage` |
+| `<C-c><C-c>v` | run the `dev` script | `:LvimLang dev` |
+| `<C-c><C-c>i` | install | `:LvimLang install` |
+| `<C-c><C-c>R` | remove <package…> | `:LvimLang remove` |
+| `<C-c><C-c>s` | script [name] | `:LvimLang script` |
+| `<C-c><C-c>T` | emit .d.ts declarations (tsc --declaration) | `:LvimLang types` |
+| `<C-c><C-c>u` | update [package…] | `:LvimLang update` |
+
+### `typst`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>w` | typst watch ${file} | `:LvimLang watch` |
+
+### `unison`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>R` | run-file [main] | `:LvimLang run-file` |
+| `<C-c><C-c>T` | transcript [file.md] | `:LvimLang transcript` |
+
+### `vue`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>v` | npm run dev | `:LvimLang dev` |
+
+### `yaml.ansible`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>l` | ansible-lint | `:LvimLang lint` |
+
+### `zig`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>h` | zig fetch --save <url\|path> | `:LvimLang fetch` |
+| `<C-c><C-c>m` | zig fmt [path] | `:LvimLang fmt` |
+
+### `zir`
+
+| Chord | Action | Runs |
+|---|---|---|
+| `<C-c><C-c>h` | zig fetch --save <url\|path> | `:LvimLang fetch` |
+| `<C-c><C-c>m` | zig fmt [path] | `:LvimLang fmt` |
 
 ## Keys a plugin owns
 

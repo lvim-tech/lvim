@@ -5,6 +5,7 @@
 --   groups   → lvim-keys-helper's prefix labels                        [once, at its setup]
 --   global   → applied at startup, per mode                            [startup]
 --   lsp      → buffer-local on LspAttach, capability-guarded           [per attached buffer]
+--   lang     → buffer-local on FileType, per the PROVIDER's own commands  [per language]
 --   filetype → buffer-local on FileType                                [per matching buffer]
 --   plugins  → forwarded into each plugin's own setup(opts.keys)       [at that plugin's load]
 --
@@ -17,6 +18,7 @@ return {
     groups = require("keys.base.groups"),
     global = require("keys.base.global"),
     lsp = require("keys.base.lsp"),
+    lang = require("keys.base.lang"),
     filetype = require("keys.base.filetype"),
     plugins = require("keys.base.plugins"),
 }

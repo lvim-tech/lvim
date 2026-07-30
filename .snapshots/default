@@ -97,7 +97,8 @@
       "pin": true
     },
     "lvim-lang": {
-      "commit": "1e2924ec3935f47288f0ba2ad629dea03d815853"
+      "commit": "fec5e1218b7818cb578f364a13b9fd42767740e7",
+      "pin": true
     },
     "lvim-linguistics": {
       "commit": "ca16a6a82972fd656ef17b481f06606a9000f6db",
@@ -132,7 +133,8 @@
       "pin": true
     },
     "lvim-pkg": {
-      "commit": "62de1ad9a6ab2c39049169a41350e6f4e3aee101"
+      "commit": "cd754711a29a81ec3e6958b9df1ad78ccd86fbc4",
+      "pin": true
     },
     "lvim-preview": {
       "commit": "fd5a3b00d0be269bfc540587753fa4a347c6a8ca"
