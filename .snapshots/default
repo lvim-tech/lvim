@@ -32,7 +32,7 @@
       "commit": "67b880e22f42c3ec9c86fc4482016c417fdda43d"
     },
     "lvim-control-center": {
-      "commit": "c26f85b723fb67a6a1cebad46185b68118a0cbb4"
+      "commit": "91c5608533c76159e3ac5227a9f76964c63d3276"
     },
     "lvim-cycle": {
       "commit": "5ce4fb491cfd5e15478e40bd025986864b492c60"
@@ -55,7 +55,7 @@
       "pin": true
     },
     "lvim-files": {
-      "commit": "ec0ed10c092517a79d1526bdf00497ade1e20410",
+      "commit": "6ae93b0008a03628b7d807cfec16472a2091a426",
       "pin": true
     },
     "lvim-forge": {
@@ -97,15 +97,15 @@
       "pin": true
     },
     "lvim-lang": {
-      "commit": "71f87687276624cb2de0a49eccb0cddd2fc5c10f",
+      "commit": "5a142fcf245fdd5c7e6eb5c55b698f7e20d2fe92",
       "pin": true
     },
     "lvim-linguistics": {
-      "commit": "ca16a6a82972fd656ef17b481f06606a9000f6db",
+      "commit": "79736abfc2eea54a0594349cc9ca5f8caaa0eccd",
       "pin": true
     },
     "lvim-ls": {
-      "commit": "a948ab22e59c101024554329cb862ea98c50a0b2",
+      "commit": "0c10b694cbe7c137bbe7609a95265b661f8eaf50",
       "pin": true
     },
     "lvim-lsp": {
@@ -117,7 +117,7 @@
       "pin": true
     },
     "lvim-msgarea": {
-      "commit": "6283a912d982240ea94666b79e65ac7b1f27c86a"
+      "commit": "63ca8db211909cdcdafbd0da4ef8c9c7bcba1c8f"
     },
     "lvim-nvim": {
       "commit": "fc317eba0ddd965928fced02eb6e1196adc4925b"
