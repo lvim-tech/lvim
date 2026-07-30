@@ -1,45 +1,5 @@
 {
-  "mason": {
-    "angular-language-server": {
-      "version": "22.0.8"
-    },
-    "astro-language-server": {
-      "version": "2.16.13"
-    },
-    "basedpyright": {
-      "version": "1.39.9"
-    },
-    "debugpy": {
-      "version": "1.8.21"
-    },
-    "efm": {
-      "version": "v0.0.57"
-    },
-    "json-lsp": {
-      "version": "4.10.0"
-    },
-    "lua-language-server": {
-      "version": "3.18.2"
-    },
-    "luacheck": {
-      "version": "1.1.0"
-    },
-    "marksman": {
-      "version": "2026-02-08"
-    },
-    "ruff": {
-      "version": "0.16.0"
-    },
-    "stylua": {
-      "version": "v2.5.2"
-    },
-    "texlab": {
-      "version": "v5.26.0"
-    },
-    "vue-language-server": {
-      "version": "3.3.8"
-    }
-  },
+  "mason": [],
   "plugins": {
     "lvim-breadcrumbs": {
       "commit": "a3fc6851884179fd05ed95f190bbb84784819759"
@@ -173,7 +133,7 @@
       "pin": true
     },
     "lvim-pkg": {
-      "commit": "cd754711a29a81ec3e6958b9df1ad78ccd86fbc4",
+      "commit": "62f01cbbbd3ea81dd9f51ff11769b16749207d27",
       "pin": true
     },
     "lvim-preview": {

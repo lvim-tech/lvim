@@ -48,6 +48,11 @@ return {
                 -- Same snapshots directory the config's get_commit reads, so the installer
                 -- and the loader share one active version set.
                 snapshot_dir = _G.LVIM.global.lvim_path .. "/.snapshots",
+                -- A snapshot pins the CONFIGURATION — the plugin commits — and nothing else.
+                -- The installed servers / formatters / linters are a property of the machine,
+                -- not of this repository: recording them makes every snapshot differ per host
+                -- and turns a config restore into a tooling reinstall.
+                snapshot_packages = false,
             })
         end,
     },
