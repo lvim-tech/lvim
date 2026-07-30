@@ -133,7 +133,7 @@
       "pin": true
     },
     "lvim-pkg": {
-      "commit": "62f01cbbbd3ea81dd9f51ff11769b16749207d27",
+      "commit": "cd754711a29a81ec3e6958b9df1ad78ccd86fbc4",
       "pin": true
     },
     "lvim-preview": {
