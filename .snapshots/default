@@ -117,7 +117,7 @@
       "pin": true
     },
     "lvim-msgarea": {
-      "commit": "b0a6132c1b92a844972e3d2eb545ac8a3bbcb581"
+      "commit": "6283a912d982240ea94666b79e65ac7b1f27c86a"
     },
     "lvim-nvim": {
       "commit": "fc317eba0ddd965928fced02eb6e1196adc4925b"
@@ -167,7 +167,7 @@
       "commit": "6ab3340491ef136f33ee91a835c0a6fcf575f4ea"
     },
     "lvim-space": {
-      "commit": "40c4eacafaf34bdcf840ff29f9645afe41975c8e"
+      "commit": "ff0ba19bde0bf5271aa1c05117c50749b43d0bbe"
     },
     "lvim-table": {
       "commit": "7329e871899fc78ac2500b468262fa2f308487e6"
