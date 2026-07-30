@@ -66,7 +66,7 @@
       "commit": "11363de9092df9a1f71cf1cd82a534256d68804a"
     },
     "lvim-git": {
-      "commit": "925cdb0c4cadd88002bd3bc94a05c56df59244c9"
+      "commit": "0e90ea144b5bbbd01cf9c53d41c3f180052dae3f"
     },
     "lvim-hud": {
       "commit": "c1bccc34daefdb5c4c388766d526dd0b6d6997f8",
@@ -167,7 +167,7 @@
       "commit": "6ab3340491ef136f33ee91a835c0a6fcf575f4ea"
     },
     "lvim-space": {
-      "commit": "fc5cf00a68421d89fbace1b827669e766a4975e3"
+      "commit": "40c4eacafaf34bdcf840ff29f9645afe41975c8e"
     },
     "lvim-table": {
       "commit": "7329e871899fc78ac2500b468262fa2f308487e6"
