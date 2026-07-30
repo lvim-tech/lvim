@@ -77,7 +77,7 @@
       "pin": true
     },
     "lvim-image": {
-      "commit": "d891ed0d711b3e6394223e28e455696cbc3a8345",
+      "commit": "3fc8450c0556a06ff46fc827112adea912a1e825",
       "pin": true
     },
     "lvim-indent": {
@@ -97,7 +97,7 @@
       "pin": true
     },
     "lvim-lang": {
-      "commit": "fec5e1218b7818cb578f364a13b9fd42767740e7",
+      "commit": "71f87687276624cb2de0a49eccb0cddd2fc5c10f",
       "pin": true
     },
     "lvim-linguistics": {
@@ -173,7 +173,7 @@
       "commit": "7329e871899fc78ac2500b468262fa2f308487e6"
     },
     "lvim-tasks": {
-      "commit": "5d781df632f64aa253a31be7a446d246e16c52ee"
+      "commit": "e436b63efdd7e645dad5c0ba8556ada86c615a51"
     },
     "lvim-term": {
       "commit": "d4fb867a93b45fe37a005c4ece031ffc3b84f21b"
@@ -189,7 +189,7 @@
       "pin": true
     },
     "lvim-ui": {
-      "commit": "51ea403a431eb16a44ad7baa51b42f685c7de6ed"
+      "commit": "b0eefdb2c5a67127e68db2c4dcf22ca71aea539c"
     },
     "lvim-undo": {
       "commit": "330c17d324e2eb3f580b54cfdb689e88045eb31e"
