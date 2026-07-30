@@ -1,12 +1,12 @@
-# LVIM IDE
+# LVIM
 
-![LVIM IDE](/assets/lvim-logo.png)
+![LVIM](/assets/lvim-logo.png)
 
 > A modular Neovim configuration written in Lua, built entirely on a first-party plugin ecosystem —
 > `lvim-tech/*`. LSP and language tooling, debugging, building and testing, git, database and REST
 > clients, the whole UI: one set, one style, one place to configure it.
 
-> Current version — **10.0.0**
+> Current version — **10.0.3**
 
 ---
 
