@@ -1,6 +1,6 @@
 # LVIM IDE
 
-![LVIM IDE](/assets/lvim-ide-logo.png)
+![LVIM IDE](/assets/lvim-logo.png)
 
 > A modular Neovim configuration written in Lua, built entirely on a first-party plugin ecosystem —
 > `lvim-tech/*`. LSP and language tooling, debugging, building and testing, git, database and REST
@@ -122,22 +122,33 @@ tooling is not part of that — it arrives per language, on the first file that 
 │   ├── core/
 │   │   ├── init.lua        ← bootstrap: globals, the lvim-pack clone + setup, the snapshot pin
 │   │   ├── keys.lua        ← the keymap manifest's applier (merge user over base, apply per section)
+│   │   ├── funcs.lua       ← the helper API: resolves each name from funcs/ on first use, cached
 │   │   ├── funcs/          ← shared helpers (editor, fs, plugins, system, table, ui)
 │   │   └── types.lua       ← LuaLS annotations for the config
 │   ├── configs/            ← the editor itself
-│   │   ├── base/           ← options, fold, icons
+│   │   ├── base/           ← options.lua (settings + folding), init.lua, ui/icons.lua
 │   │   └── user/           ← your editor overrides            ← edit here
 │   ├── keys/               ← the keymap MANIFEST
-│   │   ├── base/           ← groups, global, lsp, filetype, plugins
+│   │   ├── base/           ← groups, global, lsp, lang, filetype, plugins
 │   │   └── user/           ← your keymap overrides            ← edit here
 │   └── modules/            ← the plugins
 │       ├── base/
 │       │   ├── init.lua    ← THE PLUGIN SPEC (every plugin, its trigger, its deps)
-│       │   └── configs/    ← per-plugin wiring, by area
+│       │   └── configs/    ← per-plugin wiring, by area: completion, dependencies,
+│       │                     editor, languages, ui, version_control
 │       └── user/           ← your plugin additions/overrides  ← edit here
+├── docs/                   ← commands, keys, languages, plugins (the long-form reference)
+├── snippets/               ← custom/ (yours) + vendor/
+├── assets/                 ← the image this README shows (the dashboard's own banner is
+│                             ASCII art, in lua/modules/base/configs/ui/logo.lua)
+├── .configs/               ← templates handed to projects + per-plugin state written at runtime
 ├── .snapshots/             ← the version pin sets (`active` names the live one)
+├── .version                ← this config's own version
 └── nvim-pack-lock.json     ← vim.pack's own record of what is installed (machine-local)
 ```
+
+`stylua.toml`, `.cbfmt.toml`, `.editorconfig` and `.luarc.json` at the root are the formatter / linter
+settings for editing this repository itself.
 
 The load order is the design, not an accident: built-ins off → bootstrap clone → local checkouts on
 the runtimepath → bundle, resolve, pin → the install UI → eager loads by priority → the lazy triggers
