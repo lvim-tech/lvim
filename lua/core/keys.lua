@@ -53,7 +53,7 @@ local function merge_list(base_list, user_list)
 end
 
 --- Load base + user manifests (both optional) and return the merged sections.
----@return { groups: table, global: table<string, LvimKeymap[]>, lsp: LvimKeymap[], filetype: table<string, LvimKeymap[]>, plugins: table }
+---@return { groups: table, global: table<string, LvimKeymap[]>, lsp: LvimKeymap[], lang: LvimKeymap[], filetype: table<string, LvimKeymap[]>, plugins: table }
 function M.resolve()
     local base = require("keys.base")
     local ok, user = pcall(require, "keys.user")
