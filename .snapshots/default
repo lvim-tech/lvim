@@ -69,7 +69,7 @@
       "commit": "0e90ea144b5bbbd01cf9c53d41c3f180052dae3f"
     },
     "lvim-hud": {
-      "commit": "c1bccc34daefdb5c4c388766d526dd0b6d6997f8",
+      "commit": "138a2728edd8643f6334244e187b58211318a5df",
       "pin": true
     },
     "lvim-icons": {
@@ -117,7 +117,7 @@
       "pin": true
     },
     "lvim-msgarea": {
-      "commit": "63ca8db211909cdcdafbd0da4ef8c9c7bcba1c8f"
+      "commit": "7d20d530a5821c09d39e16cf0b8e2101589a32c0"
     },
     "lvim-nvim": {
       "commit": "fc317eba0ddd965928fced02eb6e1196adc4925b"
@@ -189,13 +189,13 @@
       "pin": true
     },
     "lvim-ui": {
-      "commit": "1f72eda44c64f6e23c00b3de342f4dbbfc9166bd"
+      "commit": "d53d31421d67b3736807bec1378cc5c13bdb0297"
     },
     "lvim-undo": {
       "commit": "330c17d324e2eb3f580b54cfdb689e88045eb31e"
     },
     "lvim-utils": {
-      "commit": "5e5b61a1a90f6c23da9ca7bb4e26f192bbbc9404"
+      "commit": "0a7c683f6f1d059dc237c5d7f50d734f7e696d33"
     },
     "lvim-vault": {
       "commit": "9fae8e16446fd8f1d733562a7627091cd889c81e"
