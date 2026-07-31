@@ -234,7 +234,7 @@
       "pin": true
     },
     "lvim-utils": {
-      "commit": "5d29ed704df9876e67dc88fd725ed9659ba914f6",
+      "commit": "d3ecb711d0fcdeb6be03abd9d677aad1814beb8f",
       "pin": true
     },
     "lvim-vault": {
