@@ -34,7 +34,7 @@
       "pin": true
     },
     "lvim-common": {
-      "commit": "9db6693e2802f2d0c08cd800cb8be89829b50089",
+      "commit": "2c11170cdbeb6ffb1ced93c0bf1b89529bdd522e",
       "pin": true
     },
     "lvim-context": {
@@ -102,7 +102,7 @@
       "pin": true
     },
     "lvim-installer": {
-      "commit": "036caa1468a444d03c33ceefa3b361954c96f588",
+      "commit": "43be455a08983613ece5007904af841a99a69b4e",
       "pin": true
     },
     "lvim-jump": {
