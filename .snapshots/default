@@ -26,7 +26,7 @@
       "pin": true
     },
     "lvim-colorscheme": {
-      "commit": "2385a8c4c625a8ee0751da2ffb4b29558c3e8d71",
+      "commit": "e9ed6f7baecc55dd87f55721b1142f416f28af2b",
       "pin": true
     },
     "lvim-comment": {
@@ -66,7 +66,7 @@
       "pin": true
     },
     "lvim-dependencies": {
-      "commit": "1fc5d4a07c0b798a85281bac751b425b99933248",
+      "commit": "3f720791a2a1af50d04c8ebdcfec3e68e749b5e6",
       "pin": true
     },
     "lvim-files": {
@@ -122,7 +122,7 @@
       "pin": true
     },
     "lvim-linguistics": {
-      "commit": "cc4e10d87db1f898d7498322da0940e1de9a67f8",
+      "commit": "17596852097518357ae749b4c79d200dbac2a34b",
       "pin": true
     },
     "lvim-ls": {
@@ -198,7 +198,7 @@
       "pin": true
     },
     "lvim-space": {
-      "commit": "ff0ba19bde0bf5271aa1c05117c50749b43d0bbe",
+      "commit": "51a7abf90b127585aac50e94e97e40e34da853a1",
       "pin": true
     },
     "lvim-table": {
@@ -226,7 +226,7 @@
       "pin": true
     },
     "lvim-ui": {
-      "commit": "1186835203a5214206247538b30c9b559db23037",
+      "commit": "31aaab07688333f18088ede6496789af9e23b858",
       "pin": true
     },
     "lvim-undo": {
@@ -234,7 +234,7 @@
       "pin": true
     },
     "lvim-utils": {
-      "commit": "d3ecb711d0fcdeb6be03abd9d677aad1814beb8f",
+      "commit": "48efab15c2d26b9116bd9c7f6335718e242b4955",
       "pin": true
     },
     "lvim-vault": {
