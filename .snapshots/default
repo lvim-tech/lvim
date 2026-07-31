@@ -48,7 +48,7 @@
       "pin": true
     },
     "lvim-db": {
-      "commit": "d89ab23ac5d5e4d56855a974c0921b813717d219"
+      "commit": "9cfcb4ab772edbe5752947a8df2804ad31cf7518"
     },
     "lvim-dependencies": {
       "commit": "1fc5d4a07c0b798a85281bac751b425b99933248",
@@ -140,7 +140,7 @@
       "commit": "fd5a3b00d0be269bfc540587753fa4a347c6a8ca"
     },
     "lvim-qf-loc": {
-      "commit": "75e0058e852a59c099a73d5e32479e10419dfbb9",
+      "commit": "3ffaed5ab49b3a5bc728f57da8de545e653d86bb",
       "pin": true
     },
     "lvim-remote": {
@@ -154,7 +154,7 @@
       "commit": "5ffbce5dd94f2949079b98e94ab6c291fd956a10"
     },
     "lvim-rest": {
-      "commit": "f3878db6abfd21c216e37e3029d0f64c0fa853b9",
+      "commit": "bba3f17b565c92eb741011093fa273adc95f50c2",
       "pin": true
     },
     "lvim-search": {
@@ -189,13 +189,13 @@
       "pin": true
     },
     "lvim-ui": {
-      "commit": "c75edeea4fbc1e5ccb3fae5b18eca39cdcc6154f"
+      "commit": "1f72eda44c64f6e23c00b3de342f4dbbfc9166bd"
     },
     "lvim-undo": {
       "commit": "330c17d324e2eb3f580b54cfdb689e88045eb31e"
     },
     "lvim-utils": {
-      "commit": "60fe010a33bc0488c43297ad2543cbf4e10f8d74"
+      "commit": "5e5b61a1a90f6c23da9ca7bb4e26f192bbbc9404"
     },
     "lvim-vault": {
       "commit": "9fae8e16446fd8f1d733562a7627091cd889c81e"
@@ -205,7 +205,7 @@
       "pin": true
     },
     "lvim-winnav": {
-      "commit": "9f8397bd9e23efdcca9eb31a74c09dd347226ac6"
+      "commit": "9de0f4ff009713163b6653cdc5d986186b6b3ea4"
     },
     "lvim-winpick": {
       "commit": "f00f3d9425dd227bc4ca5cecd01049ad4dc0513a",
