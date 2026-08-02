@@ -6,7 +6,6 @@
 
 ---@module "configs.base.options"
 
-
 local M = {}
 
 --- Apply all global vim.g and vim.opt settings.
@@ -41,7 +40,11 @@ M.global = function()
     vim.opt.guicursor = "n-v-c:block-Cursor/lCursor,i-ci-ve:ver25-Cursor/lCursor,r-cr:hor20,o:hor50"
     -- Suppress common informational messages to reduce noise.
     vim.opt.shortmess = "ltToOCFI"
-    vim.opt.termguicolors = true
+    -- NO `termguicolors` HERE — lvim-colorscheme owns it (theme.lua turns it on as part of applying
+    -- the theme). Setting it this early puts the TUI into RGB mode ~70ms before any highlight group
+    -- exists, and in that window the statusline (whose built-in default is `reverse`) has no `Normal`
+    -- to reverse against, so nvim emits an explicit fg/bg of #000000: a black band across the bottom
+    -- rows that flashes until the colorscheme lands. Leave it to the colorscheme.
     -- Enable mouse in normal and visual modes only.
     vim.opt.mouse = "nv"
     vim.opt.mousemodel = "extend"
