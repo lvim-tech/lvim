@@ -26,7 +26,7 @@
       "pin": true
     },
     "lvim-colorscheme": {
-      "commit": "e9ed6f7baecc55dd87f55721b1142f416f28af2b",
+      "commit": "339b13ecde07b9b9e192c77a38033af7fd3ddabc",
       "pin": true
     },
     "lvim-comment": {
@@ -84,6 +84,9 @@
     "lvim-git": {
       "commit": "0e90ea144b5bbbd01cf9c53d41c3f180052dae3f",
       "pin": true
+    },
+    "lvim-gtk": {
+      "commit": "84aeda58621a3fe41f2e3e1b3ca8e14d0437f42a"
     },
     "lvim-hud": {
       "commit": "04796fae296221257bfdced37aa52c4ff4769714",
@@ -158,7 +161,7 @@
       "pin": true
     },
     "lvim-pkg": {
-      "commit": "cd754711a29a81ec3e6958b9df1ad78ccd86fbc4",
+      "commit": "c8fecd984c4314fd8fc3af0a85953c36908b0b35",
       "pin": true
     },
     "lvim-preview": {
