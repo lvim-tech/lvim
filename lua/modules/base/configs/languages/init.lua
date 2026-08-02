@@ -85,7 +85,12 @@ return {
         ---@return nil
         config = function()
             -- Manifest overrides for the browser's row-action keys (defaults stay in the plugin).
-            require("lvim-installer").setup({ browser = { keys = require("core.keys").plugin("lvim-installer") } })
+            -- Wrap the `browser` table ONLY when there ARE overrides: `plugin()` returns nil for none,
+            -- and `{ browser = { keys = nil } }` IS `{ browser = {} }` — an empty table the shared merge
+            -- treats as a LIST, replacing the plugin's whole `browser` config (keys AND layout) with
+            -- nothing. That killed every r/u/d/b row action in the Package Manager.
+            local keys = require("core.keys").plugin("lvim-installer")
+            require("lvim-installer").setup(keys and { browser = { keys = keys } } or {})
         end,
     },
 
