@@ -178,6 +178,10 @@ M.global = function()
     vim.opt.cursorcolumn = true
     -- Hide the sign column; diagnostics/git signs use extmarks instead.
     vim.opt.signcolumn = "no"
+    -- Stays 80. lvim-indent's `column` block draws the ruler as a CHARACTER and blanks the
+    -- window-local option itself (`own_option`), so this value keeps saying WHERE the ruler is
+    -- while Neovim's background band never appears. Set `column.enabled = false` there to get the
+    -- built-in band back — nothing here has to change for that.
     vim.opt.colorcolumn = "80"
     -- Conceal level 2: replace concealed text with cchar, hides markup in Markdown etc.
     vim.opt.conceallevel = 2

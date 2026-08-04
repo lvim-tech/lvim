@@ -74,6 +74,8 @@ return {
             name = "colorcolumn",
             label = "Color column",
             type = "string",
+            -- Still the source of WHERE the ruler is; lvim-indent draws it and suppresses the
+            -- background band, so a value here moves the drawn line rather than painting a cell.
             default = "80",
             exclude_ft = { "lvim-files" },
         }),

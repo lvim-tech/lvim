@@ -146,6 +146,35 @@ return {
         config = function()
             require("lvim-indent").setup({
                 scope = { debounce = 5 },
+                -- The 'colorcolumn' ruler, drawn OVER Neovim's own rather than instead of it. The
+                -- built-in is a background cell and any group with a bg wins over it, so the ruler
+                -- kept vanishing on the cursor line; this draws a glyph where the line stops short
+                -- of the column and a wash under the character where the text crosses it, at a
+                -- priority the cursor line cannot take.
+                --
+                -- 'colorcolumn' is deliberately LEFT ALONE — the control center owns that value,
+                -- and leaving it set is what makes the switches below free: `enabled = false`
+                -- falls straight back to the built-in, with no state to restore. Measured, cell
+                -- attributes at the ruler: built-in alone 59, glyph 71, our wash 69 — ours
+                -- overrides rather than adding to it, so nothing doubles up.
+                column = {
+                    enabled = true,
+                    -- A LINE, nothing else: no wash under the character where the text crosses
+                    -- the ruler, so the ruler simply stops there and picks up after the line
+                    -- ends. This is what virt-column.nvim does too, and it is the reason the
+                    -- built-in 'colorcolumn' is off below — that one is a background band, which
+                    -- is exactly what is not wanted here.
+                    crossing = false,
+                    -- The plugin takes 'colorcolumn' over: the option keeps its value — the
+                    -- control center is still where 80 is set — and only Neovim's background band
+                    -- is suppressed. That is why `columns` stays nil here: there is one source of
+                    -- truth for WHERE the ruler is, and it is not this file.
+                    own_option = true,
+                    columns = nil,
+                    -- The eighth-block bar, the same glyph the indent guides use: thinner than
+                    -- "│", and it sits at the cell's left edge rather than its middle.
+                    char = "▏",
+                },
                 -- REPLACES the plugin's list (arrays replace, they don't concatenate), so this must
                 -- be the whole set: the plugin's own defaults plus json. The old list was mostly
                 -- third-party/panel filetypes — panels are excluded by CONSTRUCTION (buftype ~= ""),
