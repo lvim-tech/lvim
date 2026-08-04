@@ -694,6 +694,10 @@ modules["lvim-tech/lvim-lang"] = {
         "cairo",
         "lean",
         "coq",
+        -- org (formatter-only provider: cbfmt over efm) + the markdown provider's mdx filetypes
+        "org",
+        "markdown.mdx",
+        "mdx",
     },
     dependencies = {
         "lvim-tech/lvim-lsp",
