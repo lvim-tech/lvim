@@ -779,6 +779,13 @@ modules["lvim-tech/lvim-db"] = {
         "lvim-tech/lvim-utils",
     },
     config = languages_config.lvim_db.config,
+    -- The DB client's daemon is a post-install Rust build; the loader
+    -- (lua/lvim-db/daemon.lua) probes native/build/lvim-db-daemon. Declaring the
+    -- hook is what makes the build sweep produce it (and rebuild on change).
+    build = "sh native/build.sh",
+    built = function(ctx)
+        return vim.fn.filereadable(ctx.dir .. "/native/build/lvim-db-daemon") == 1
+    end,
 }
 
 -- lvim-keyring: the password wallet / secrets agent — an encrypted (Argon2id + XChaCha20-Poly1305) store
@@ -801,6 +808,14 @@ modules["lvim-tech/lvim-keyring"] = {
         "lvim-tech/lvim-utils",
     },
     config = languages_config.lvim_keyring.config,
+    -- The wallet's secrets daemon is a post-install Rust build; the loader
+    -- (lua/lvim-keyring/daemon.lua) probes native/build/lvim-keyring-daemon and
+    -- reports "daemon binary not found" without it. Declaring the hook is what
+    -- makes the build sweep produce it (and rebuild when the plugin changes).
+    build = "sh native/build.sh",
+    built = function(ctx)
+        return vim.fn.filereadable(ctx.dir .. "/native/build/lvim-keyring-daemon") == 1
+    end,
 }
 
 -- lvim-breadcrumbs: the symbol path to the cursor (LSP documentSymbol + treesitter
