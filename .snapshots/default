@@ -85,9 +85,6 @@
       "commit": "1ed75e68fce631f2eb8fb02ca76f3504bd6c8e86",
       "pin": true
     },
-    "lvim-gtk": {
-      "commit": "6776e023d830dedbcc0f518b37b4c64e6d556dcd"
-    },
     "lvim-hud": {
       "commit": "a23008ee3a3c58b6c2f3792fdc18c28b4c938ae4",
       "pin": true
