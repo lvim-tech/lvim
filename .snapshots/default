@@ -26,7 +26,7 @@
       "pin": true
     },
     "lvim-colorscheme": {
-      "commit": "008e41b274be976f2297ffd698f876cf0a047f33",
+      "commit": "f7bd33f24f1d320b46c138b3fa6f9fca26ea545f",
       "pin": true
     },
     "lvim-comment": {
@@ -62,11 +62,11 @@
       "pin": true
     },
     "lvim-db": {
-      "commit": "ada881116e3b776c43dcd83f4c1515a7de40454f",
+      "commit": "8c3daeca932122e1a43a6c0c963101d02b7a23c5",
       "pin": true
     },
     "lvim-dependencies": {
-      "commit": "537fb5b7386f4eae67a8f0229cff6f79450cc9eb",
+      "commit": "d53b010ac2a7c549bf28e20a9bfdbddf3a482b6d",
       "pin": true
     },
     "lvim-files": {
@@ -86,7 +86,7 @@
       "pin": true
     },
     "lvim-gtk": {
-      "commit": "02e36ea96659328ab6c68903e3984f506d857096"
+      "commit": "6776e023d830dedbcc0f518b37b4c64e6d556dcd"
     },
     "lvim-hud": {
       "commit": "a23008ee3a3c58b6c2f3792fdc18c28b4c938ae4",
@@ -101,7 +101,7 @@
       "pin": true
     },
     "lvim-indent": {
-      "commit": "3b37899ed2f0fff820899ea4d83c1586bcf0d19c",
+      "commit": "9520b31fa11948b65664b7513b16dd597c1734ad",
       "pin": true
     },
     "lvim-installer": {
@@ -149,7 +149,7 @@
       "pin": true
     },
     "lvim-pack": {
-      "commit": "968ac4a557024abf0a5c83db86ac2cea02c9993e",
+      "commit": "361191303c2f0cc27c2eec9b44ae543089a8d06b",
       "pin": true
     },
     "lvim-pairs": {
