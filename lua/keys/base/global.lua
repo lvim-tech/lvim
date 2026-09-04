@@ -215,6 +215,10 @@ global.normal = {
     -- silently stole `Q` everywhere; that binding is gone. The panel still closes with its own
     -- buffer-local `q` and toggles with `<S-x>`, so no global `Q` is needed. Closing every float
     -- keeps its own chord below, which is where it was already reachable.
+    -- `<C-c>q` clears all native multicursors (the `Q` pair). Neovim's built-in clear is `<C-L>`,
+    -- but lvim-winnav owns `<C-l>` (seamless window nav), so the clear is relocated here — it runs
+    -- the same namespace clear the `<C-L>` default does.
+    { "<C-c>q", "<Cmd>call nvim_buf_clear_namespace(0, nvim_create_namespace('nvim.multicursor'), 0, -1)<Bar>redraw<CR>", "Multicursor: clear all" },
     { "<C-c>fc", ":CloseFloatWindows<CR>", "Close all floats" },
     { "<C-c>ff", ":FocusFloatWindow<CR>", "Cycle focus to next float" },
     { "<C-c>c", ":Inspect<CR>", "Inspect highlight under cursor" },
