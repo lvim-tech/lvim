@@ -72,7 +72,6 @@ global.normal = {
     -- this manifest, which is what `<Leader>sk` / the hint panel read).
     { "<S-x>", "<Cmd>LvimFiles toggle<CR>", "Files: toggle panel" },
     { "<C-c><C-f>", "<Cmd>LvimFiles toggle<CR>", "Files: toggle panel" },
-    { "<S-q>", "<Cmd>LvimFiles close<CR>", "Files: close panel" },
     { "<Leader>fx", "<Cmd>GxOpen<CR>", "Files: open under cursor (OS)" },
     { "<Leader>fi", "<Cmd>LvimRemote init<CR>", "Remote: init project config" },
     { "<Leader>fu", "<Cmd>LvimRemote upload<CR>", "Remote: upload buffer" },
@@ -211,9 +210,10 @@ global.normal = {
     -- lied about who owns the key. See modules/base/configs/ui/init.lua → lvim_winnav.
     { "<C-c>n", ":tabn<CR>", "Next tab" },
     { "<C-c>p", ":tabp<CR>", "Previous tab" },
-    -- `Q` is NOT here: it is the same key as `<S-q>`, which closes the file panel (see the Files
-    -- group). Both were declared — the file-panel one from inside the plugin's config, so it ran
-    -- last and quietly won; bringing it into this file made the clash visible. Closing every float
+    -- `Q` (= `<S-q>`) is deliberately left UNMAPPED — globally and in the Files group: Neovim's
+    -- native multi-cursor uses it to add a cursor. The files panel used to bind it to close, which
+    -- silently stole `Q` everywhere; that binding is gone. The panel still closes with its own
+    -- buffer-local `q` and toggles with `<S-x>`, so no global `Q` is needed. Closing every float
     -- keeps its own chord below, which is where it was already reachable.
     { "<C-c>fc", ":CloseFloatWindows<CR>", "Close all floats" },
     { "<C-c>ff", ":FocusFloatWindow<CR>", "Cycle focus to next float" },
