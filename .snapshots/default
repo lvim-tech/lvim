@@ -26,7 +26,7 @@
       "pin": true
     },
     "lvim-colorscheme": {
-      "commit": "f7bd33f24f1d320b46c138b3fa6f9fca26ea545f",
+      "commit": "f8bcaffe7f9a94e5a64fea985291602fca759796",
       "pin": true
     },
     "lvim-comment": {
@@ -246,7 +246,7 @@
       "pin": true
     },
     "lvim-winnav": {
-      "commit": "dba93856a2185f1ba92add6523f46fc5cdab173e",
+      "commit": "4bddac09360d69aba8bc1875a1446f1cebd35031",
       "pin": true
     },
     "lvim-winpick": {
