@@ -64,7 +64,14 @@ M.get_commit = function(plugin, plugins_snapshot)
     end
     -- A snapshot is `{ plugins = {…}, mason = {…} }`. (The flat lazy-lock shape it used to also
     -- accept is gone with the lockfile that had it — no backward compatibility.)
+    -- A missing `plugins` key is NOT an error: `read_snapshot` returns `{}` when the snapshot file
+    -- is absent, and every plugin then legitimately tracks HEAD. Indexing it unguarded threw
+    -- `attempt to index a nil value` for the FIRST plugin the loader asked about, which aborted
+    -- `lvim-pack.setup` and left the editor with no plugins at all.
     local plugins = plugins_snapshot.plugins
+    if type(plugins) ~= "table" then
+        return nil
+    end
     local entry = plugins[plugin]
     if type(entry) ~= "table" then
         return nil

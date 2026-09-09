@@ -23,11 +23,16 @@ else
     os = "other"
 end
 
+-- Paths come from `vim.fn.stdpath`, NOT from `$HOME .. "/.config/nvim"`: stdpath is the only
+-- resolver that honours NVIM_APPNAME (`NVIM_APPNAME=nvim-lvim nvim` → `~/.config/nvim-lvim`) as
+-- well as XDG_CONFIG_HOME / XDG_CACHE_HOME. With the path hardcoded, an install in any directory
+-- other than `~/.config/nvim` read its `.snapshots`, `.version` and `.configs` from a foreign
+-- directory — the snapshot came back empty and the plugin loader never started.
 ---@type LvimGlobal
 local global = {
     os = os,
-    lvim_path = home .. "/.config/nvim",
-    cache_path = home .. "/.cache/nvim",
+    lvim_path = vim.fn.stdpath("config"),
+    cache_path = vim.fn.stdpath("cache"),
     home = home,
 }
 

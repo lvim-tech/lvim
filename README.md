@@ -111,6 +111,24 @@ Start Neovim. `lvim-pack` clones what the install itself needs, then `lvim-insta
 that installs the rest and runs the build hooks; the editor is usable when it closes. Language
 tooling is not part of that — it arrives per language, on the first file that needs it.
 
+### Side by side with another config
+
+Any other directory works through Neovim's `NVIM_APPNAME`, so LVIM can sit next to a config you
+already use instead of replacing it:
+
+```sh
+git clone https://github.com/lvim-tech/lvim.git ~/.config/nvim-lvim
+NVIM_APPNAME=nvim-lvim nvim
+```
+
+The name after `NVIM_APPNAME` is the directory name under `~/.config`, and it also selects the data
+and cache directories (`~/.local/share/nvim-lvim`, `~/.cache/nvim-lvim`) — so plugins, snapshots and
+undo history stay separate from the other install. An alias keeps it to one word:
+
+```sh
+alias lvim='NVIM_APPNAME=nvim-lvim nvim'
+```
+
 ---
 
 ## Architecture

@@ -15,8 +15,8 @@
 
 ---@class LvimGlobal
 ---@field os           "mac"|"linux"|"unsupported"|"other"
----@field lvim_path    string   Absolute path to the nvim config directory
----@field cache_path   string   Absolute path to the nvim cache directory
+---@field lvim_path    string   Absolute path to the nvim config directory (stdpath("config"), NVIM_APPNAME-aware)
+---@field cache_path   string   Absolute path to the nvim cache directory (stdpath("cache"), NVIM_APPNAME-aware)
 ---@field home         string   User home directory
 
 -- ---------------------------------------------------------------------------
