@@ -17,14 +17,14 @@ questions live, and the commands that ask are in the last column.
 
 | What | Measured | Ask the editor |
 |---|---|---|
-| **Plugins** | **64**, all but one first-party | `:LvimInstaller` |
+| **Plugins** | **65**, all but one first-party | `:LvimInstaller` |
 | **Startup** | **~110 ms** to a usable editor (98–115 ms over five runs) | the dashboard, or `require("lvim-pack").stats()` |
 | **Languages** | **92 providers** over **150 filetypes** | `:LvimLang providers` |
 | **LSP** | **94 distinct language servers**, attached per project root | `:LvimLsp info` |
 | **Run / Build** | **49** languages run, **47** build | `:LvimBuild`, `:LvimLang status` |
 | **Test** | **44** languages, with treesitter discovery | `:LvimTest` |
 | **Debug** | **17** languages with a real adapter — nothing stubbed to pad the number | `:LvimDap adapters` |
-| **Commands** | **60** `:Lvim*` commands | `:LvimPicker commands` |
+| **Commands** | **61** `:Lvim*` commands | `:LvimPicker commands` |
 
 Nothing on that list is installed up front: a language server, parser, formatter, linter or debug
 adapter is fetched the first time you open a file that needs it, and you are asked before it is.
