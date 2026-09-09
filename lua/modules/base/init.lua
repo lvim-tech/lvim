@@ -384,6 +384,18 @@ modules["lvim-tech/lvim-render"] = {
     opts = editor_config.lvim_render.opts,
 }
 
+-- lvim-ansi: terminal colour in a Neovim buffer, with the escapes out of the text. Paints from
+-- the .spans sidecar lvim-zcopy writes beside a zellij scrollback, or parses the escapes still in
+-- a buffer (:LvimAnsi colorize). Loaded eagerly, and that is deliberate: the usual entry point is
+-- `nvim <dump> -c "lua require('lvim-ansi').attach(0, ...)"` from lvim-zcopy, and a lazy plugin is
+-- not on the runtimepath yet, so that require would fail with nothing to trigger it first.
+modules["lvim-tech/lvim-ansi"] = {
+    dependencies = {
+        "lvim-tech/lvim-utils",
+    },
+    config = editor_config.lvim_ansi.config,
+}
+
 -- lvim-calendar: month/quarter/year/agenda calendar with pluggable day sources.
 modules["lvim-tech/lvim-calendar"] = {
     cmd = "LvimCalendar",

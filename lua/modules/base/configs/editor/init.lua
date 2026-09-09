@@ -360,6 +360,24 @@ return {
             },
         },
     },
+    -- lvim-ansi: what a terminal drew in colour, shown in colour — foreground and background,
+    -- bold, italic, underline, reverse — while the buffer text stays PLAIN, so search matches what
+    -- is on screen and `yank` puts text in the register instead of escape codes. The colour lives
+    -- in extmarks beside the text, not in it.
+    lvim_ansi = {
+        config = function()
+            require("lvim-ansi").setup({
+                -- Defaults left alone: they are the ones a 100k-line scrollback needs.
+                -- `eager_limit` switches to a decoration provider past 20k ranges, and
+                -- `max_groups` keeps a truecolour dump under nvim's ~19,600 highlight-group
+                -- ceiling by quantising past 8,192 rather than erroring out.
+                --
+                -- `auto.enabled` stays false on purpose: colorize() REWRITES the buffer text
+                -- (the escapes come out), which is too much to do unasked to every buffer that
+                -- happens to hold one. :LvimAnsi colorize asks for it explicitly.
+            })
+        end,
+    },
 }
 
 -- vim: foldmethod=indent foldlevel=15
