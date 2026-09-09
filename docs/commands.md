@@ -16,6 +16,7 @@ command with none takes an argument instead (a path, a name) or takes nothing at
 
 | Command | What it does |
 |---|---|
+| **:LvimAnsi** | Paint terminal colour in this buffer — from a `.spans` file, or from the escapes in it. |
 | **:LvimBufHistory** | Per-window buffer history — back, forward, the list. |
 | **:LvimBuild** | Detected build / run / test / bench / lint actions for this project and file. |
 | **:LvimCalendar** | The calendar and agenda, in any of the dock modes. |
@@ -82,6 +83,7 @@ command with none takes an argument instead (a path, a name) or takes nothing at
 Completion knows all of these: type the command, press `Tab`. The dock modes `float`,
 `area` and `bottom` say where the panel opens.
 
+- **:LvimAnsi** — `colorize` `attach` `detach` `status`
 - **:LvimBufHistory** — `back` `forward` `list` `clear` `status`
 - **:LvimBuild** — `redo` `last` `Build` `Run` `Test` `Bench` `Lint` `float` `area` `bottom`
 - **:LvimCalendar** — `month` `quarter` `year` `agenda` `float` `area` `bottom`

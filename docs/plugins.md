@@ -79,6 +79,7 @@ The verbs — what you do to a buffer.
 | [lvim-table](https://github.com/lvim-tech/lvim-table) | Table mode: realign as you type, row and column operations, formulas. | `:LvimTable` |
 | [lvim-color-picker](https://github.com/lvim-tech/lvim-color-picker) | A slider picker, a converter and an inline highlighter. | `:LvimColorPicker`, its keys |
 | [lvim-render](https://github.com/lvim-tech/lvim-render) | In-buffer rendering of markdown, typst, org and latex. | a matching filetype |
+| [lvim-ansi](https://github.com/lvim-tech/lvim-ansi) | Terminal colour in a buffer — painted from a `.spans` sidecar or from the escapes themselves, with the text left plain. | startup |
 | [lvim-linguistics](https://github.com/lvim-tech/lvim-linguistics) | Per-mode keyboard layout and spelling. | `VeryLazy` |
 | [lvim-calendar](https://github.com/lvim-tech/lvim-calendar) | Calendar and agenda with pluggable day sources. | `:LvimCalendar` |
 | [lvim-snippets](https://github.com/lvim-tech/lvim-snippets) | The snippet engine and its collections. | startup |
@@ -116,6 +117,7 @@ What each plugin declares as a hard dependency — the loader installs and loads
 
 | Plugin | Depends on |
 |---|---|
+| [lvim-ansi](https://github.com/lvim-tech/lvim-ansi) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
 | [lvim-breadcrumbs](https://github.com/lvim-tech/lvim-breadcrumbs) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
 | [lvim-build](https://github.com/lvim-tech/lvim-build) | [lvim-tasks](https://github.com/lvim-tech/lvim-tasks) |
 | [lvim-calendar](https://github.com/lvim-tech/lvim-calendar) | [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
