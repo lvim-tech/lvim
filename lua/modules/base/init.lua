@@ -194,8 +194,8 @@ modules["lvim-tech/lvim-files"] = {
 -- favour of the plugin's own addon presets.
 modules["lvim-tech/lvim-shell"] = {
     cmd = { "LvimShell" },
-    -- Launcher keys (<Leader>o{s,g,D,y,n}) live in the manifest (keys/base.lua) and
-    -- lazy-load via the cmd above — no lazy `keys` here, so they don't shadow the <Leader>s* finders.
+    -- Launcher keys (<Leader>o{s,g,D,y,n}) live in the manifest (keys/base/global.lua) and
+    -- lazy-load via the cmd above: a manifest key that calls the command is all a cmd-lazy plugin needs.
     config = ui_config.lvim_shell.config,
 }
 
@@ -502,7 +502,8 @@ modules["lvim-tech/lvim-preview"] = {
 -- lvim-git: the in-house Magit/fugitive/neogit/vgit/diffview replica (+ jj + colocated git↔jj sync). Eager
 -- (like lvim-files): setup() registers :LvimGit + binds highlights + auto-attaches the gutter signs at
 -- startup, then each component (status/diffview/log/blame/refs/oplog/rebase/stash/…) bootstraps lazily on its
--- opener. Keymaps under <Leader>g*. LazyGit (<Leader>sg / :LazyGit) stays as the terminal-based alternative.
+-- opener. Keymaps under <Leader>g*. LazyGit (<Leader>og / :LvimShell lazygit) stays as the terminal-
+-- based alternative.
 modules["lvim-tech/lvim-git"] = {
     dependencies = {
         "lvim-tech/lvim-ui",

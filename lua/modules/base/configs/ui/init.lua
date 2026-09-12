@@ -18,14 +18,14 @@ return {
             -- Defaults: include_current = false + autoselect_one = true, so with exactly two
             -- windows the current one is excluded → one candidate → it jumps with no keystroke.
             require("lvim-winpick").setup({})
-            -- `gpp` window-picker key lives in the central manifest (keys/base.lua).
+            -- `gp` window-picker key lives in the central manifest (keys/base/global.lua).
         end,
     },
     -- lvim-winmove: interactively move and swap windows within a tab.
     lvim_winmove = {
         config = function()
             require("lvim-winmove").setup({})
-            -- `<C-c>w` win-move key lives in the central manifest (keys/base.lua).
+            -- `<C-c>w` win-move key lives in the central manifest (keys/base/global.lua).
         end,
     },
     -- lvim-keys-helper: the self-contained key-hint panel. The initial enabled / delay /
@@ -57,9 +57,9 @@ return {
     -- diagnostics are decorations INSIDE the tree; the edit view is reached from the
     -- panel's `e` key or `:LvimFiles edit`.
     lvim_files = {
-        -- Eager (like lvim-winpick/winmove/term): setup() registers the :LvimFiles command + highlight
-        -- bind at startup, then the keymaps are set with vim.keymap.set (the framework's lazy `keys`/`cmd`
-        -- fields do NOT reliably register standard keymaps here).
+        -- Eager: setup() registers the :LvimFiles command + highlight bind at startup. Its launcher keys
+        -- are manifest keys: a spec `keys` field would do nothing here — lvim-pack reads `keys` only as a
+        -- lazy-load trigger, and an eager plugin gets no triggers.
         config = function()
             -- `keys` forwards the manifest's `plugins["lvim-files"]` overrides into the plugin's own
             -- panel keys: the DEFAULTS stay in the plugin, the manifest is where a rebind is written.
@@ -67,8 +67,8 @@ return {
                 panel = { auto_collapse = true },
                 keys = require("core.keys").plugin("lvim-files"),
             })
-            -- Its keys (<S-x>, <C-c><C-f>, <S-q>) live in the central manifest
-            -- (keys/base.lua) with every other launcher.
+            -- Its keys (<S-x>, <C-c><C-f>) live in the central manifest
+            -- (keys/base/global.lua) with every other launcher.
         end,
     },
     -- lvim-shell: integrations for TUI apps launched inside a full-screen terminal
@@ -81,7 +81,7 @@ return {
             -- they duplicated the addon presets (yazi's chooser-file included), `:Vifm` called a
             -- function that did not exist, `:Yazi` was registered twice, and the LazyGit wrapper
             -- shelled out to `xrdb` to repaint a terminal colour. Shell/TUI launcher keys live in
-            -- the central manifest: keys/base.lua → <Leader>o* (Open / Tools).
+            -- the central manifest: keys/base/global.lua → <Leader>o* (Open / Tools).
             -- Overrides go here (neomutt needs kitty's direct-colour TERM for real colours).
             local addons = require("lvim-shell.addons")
             addons.setup({
@@ -113,7 +113,7 @@ return {
                     ui.show(ids[i])
                 end, { desc = "Terminal " .. i, silent = true })
             end
-            -- Terminal-mode <Esc> lives in the central manifest (keys/base.lua → keys.global.terminal).
+            -- Terminal-mode <Esc> lives in the central manifest (keys/base/global.lua → global.terminal).
         end,
     },
     -- lvim-context: the sticky context header. The old settings (max_lines 3, trim_scope "outer",

@@ -1,4 +1,4 @@
--- keys/base.lua — the keymap MANIFEST, assembled from its sections.
+-- keys/base/init.lua — the keymap MANIFEST, assembled from its sections.
 --
 -- One source of truth for every launcher and global keymap. Each section is keyed by WHEN and
 -- WHERE it applies, and `core.keys` (the applier) reads them:

@@ -9,7 +9,7 @@
 
 local M = {}
 
--- LSP buffer keymaps are defined in the central manifest (keys/base.lua → keys.lsp)
+-- LSP buffer keymaps are defined in the central manifest (keys/base/lsp.lua)
 -- and applied capability-guarded on LspAttach by core/keys.lua. No keymap
 -- literals live in this module any more.
 

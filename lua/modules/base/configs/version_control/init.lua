@@ -1,9 +1,10 @@
 -- Plugin configuration for version-control plugins.
 -- lvim-git — the in-house Magit/fugitive/neogit/vgit/diffview replica (+ jj + colocated sync) that runs the
 -- whole git workflow inside the editor. setup() registers :LvimGit + binds highlights at startup, the gutter
--- signs auto-attach, and every component bootstraps lazily on its opener/subcommand. Keymaps are set here with
--- vim.keymap.set (the framework's lazy keys/cmd fields do not reliably register plain keymaps — same as
--- lvim-files). LazyGit (<Leader>sg) stays as a second, terminal-based option.
+-- signs auto-attach, and every component bootstraps lazily on its opener/subcommand. Its keys are manifest keys
+-- (keys/base/global.lua → <Leader>g*): a spec `keys` field would do nothing for an eager plugin — lvim-pack reads
+-- `keys` only as a lazy-load trigger (same as lvim-files). LazyGit (<Leader>og) stays as a second, terminal-based
+-- option.
 
 ---@module "modules.base.configs.version_control"
 
@@ -17,7 +18,7 @@ return {
                 signs = { gutter = false },
                 blame = { inline = { delay = 10 } }, -- near-instant inline blame (default 700ms)
             })
-            -- Git keys live in the central keymap manifest: keys/base.lua → <Leader>g*.
+            -- Git keys live in the central keymap manifest: keys/base/global.lua → <Leader>g*.
         end,
     },
     -- lvim-forge — the in-house Magit Forge (forge.el) replica: PR/issue/review across
@@ -28,7 +29,7 @@ return {
     lvim_forge = {
         config = function()
             require("lvim-forge").setup({})
-            -- Forge keys live in the central keymap manifest: keys/base.lua → <Leader>g*.
+            -- Forge keys live in the central keymap manifest: keys/base/global.lua → <Leader>g*.
         end,
     },
 }

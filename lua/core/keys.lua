@@ -1,4 +1,4 @@
--- core/keys.lua — appliers for the keymap MANIFEST (keys/base.lua).
+-- core/keys.lua — appliers for the keymap MANIFEST (keys/base/).
 --
 -- Reads the sectioned manifest, merges the user overrides over it (by lhs; a `false`
 -- entry disables a base binding), then applies each section at the right lifecycle point:

@@ -132,7 +132,7 @@ configs["base_commands"] = function()
     end, { desc = "Save the current buffer (safe :w)" })
 end
 
--- The central keymap manifest (keys/base.lua): launcher/group keys applied at startup,
+-- The central keymap manifest (keys/base/): launcher/group keys applied at startup,
 -- LSP verbs on LspAttach, filetype leaves on FileType, and lvim-keys-helper group labels.
 -- Runs after base_keymaps (alphabetical order), so the manifest wins on any overlap.
 configs["base_keys"] = function()

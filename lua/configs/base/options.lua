@@ -167,11 +167,12 @@ M.global = function()
     vim.opt.linebreak = true
     vim.opt.number = true
     vim.opt.relativenumber = true
-    -- Minimum number-column width = 1. With a custom 'statuscolumn' (heirline) that draws and
-    -- pads the numbers itself, the default numberwidth (4) would still reserve 4 cells whenever
-    -- 'relativenumber' is on — and the column's `%=` align fills that reservation, leaving an
-    -- empty gap before the git bar even when "Show line numbers" is off. numberwidth=1 removes
-    -- the reservation so the gutter is identical regardless of 'relativenumber'.
+    -- Minimum number-column width = 1. With a custom 'statuscolumn' (lvim-hud's chrome, segments in
+    -- modules/base/configs/ui/chrome/statuscolumn.lua) that draws and pads the numbers itself, the
+    -- default numberwidth (4) would still reserve 4 cells whenever 'relativenumber' is on — and the
+    -- column's `%=` align fills that reservation, leaving an empty gap before the git bar even when
+    -- "Show line numbers" is off. numberwidth=1 removes the reservation so the gutter is identical
+    -- regardless of 'relativenumber'.
     vim.opt.numberwidth = 1
     vim.opt.foldenable = true
     vim.opt.cursorline = true

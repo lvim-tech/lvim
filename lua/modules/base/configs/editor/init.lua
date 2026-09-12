@@ -18,7 +18,7 @@ return {
     lvim_control_center = {
         opts = function()
             -- Control-center + installer keys live in the central keymap manifest:
-            -- keys/base.lua → <Leader>u* (UI / Toggles / Settings).
+            -- keys/base/global.lua → <Leader>u* (UI / Toggles / Settings).
             -- Load each settings group module and register them in order. (The snapshot
             -- selector moved to lvim-installer — :LvimInstaller snapshot.)
             local general = require("modules.base.configs.editor.control_center.general")
@@ -55,7 +55,7 @@ return {
     -- lvim-linguistics: per-mode keyboard layout switching and spell checking
     lvim_linguistics = {
         opts = function()
-            -- <C-c>l / <C-c>k linguistics toggles live in the central manifest (keys/base.lua).
+            -- <C-c>l / <C-c>k linguistics toggles live in the central manifest (keys/base/global.lua).
             return {
                 base_config = {
                     mode_language = {
@@ -98,7 +98,7 @@ return {
             -- Manifest overrides for the panel's own keys (defaults stay in the plugin).
             require("lvim-vault").setup({ keys = require("core.keys").plugin("lvim-vault") })
             -- The whole `m` prefix (mv* panels + m<verb><scope> mark verbs) lives in the central
-            -- manifest (keys/base.lua) — `marks.disable_native = true` is what frees `m`.
+            -- manifest (keys/base/global.lua) — `marks.disable_native = true` is what frees `m`.
         end,
     },
     -- lvim-undo: the undo history as a navigable, branching TIMELINE — diff preview beside it,
@@ -121,7 +121,7 @@ return {
                 -- Named checkpoints on the operations worth rewinding to ("the version before the rename"), through the plugin's public checkpoint() seam.
                 checkpoints = { auto = { format = true, lsp_rename = true, build = true } },
             })
-            -- The <Leader>u* keys live in the central manifest (keys/base.lua → the
+            -- The <Leader>u* keys live in the central manifest (keys/base/global.lua → the
             -- "UI / Toggles / Settings" group). They were set here as well, and because a plugin
             -- config runs AFTER the manifest, `<Leader>up` (control-center projects) was silently
             -- replaced by "purge this buffer".
@@ -168,7 +168,7 @@ return {
     lvim_buf_history = {
         config = function()
             require("lvim-buf-history").setup({})
-            -- <C-n> / <C-p> buffer-history keys live in the central manifest (keys/base.lua).
+            -- <C-n> / <C-p> buffer-history keys live in the central manifest (keys/base/global.lua).
         end,
     },
     -- lvim-color-picker: slider picker + converter + inline highlighter, on <C-c>r.
@@ -204,7 +204,7 @@ return {
                     -- (`remote = "r"` is the plugin's default — not restated here.)
                 },
             })
-            -- <C-c>. / <C-c>; / <C-c>, jump keys (n/x/o) live in the central manifest (keys/base.lua).
+            -- <C-c>. / <C-c>; / <C-c>, jump keys (n/x/o) live in the central manifest (keys/base/global.lua).
         end,
     },
     -- lvim-search: a counter beside every visible search match — [1/12] on the one the cursor is
@@ -236,7 +236,7 @@ return {
                 -- (mode-scoped maps).
                 map_default_keys = true,
             })
-            -- Table toggle lives in the central keymap manifest: keys/base.lua → <Leader>ct.
+            -- Table toggle lives in the central keymap manifest: keys/base/global.lua → <Leader>ct.
         end,
     },
     -- lvim-tasks: the task runner (panel + preview + filters + history). The old task
@@ -245,7 +245,7 @@ return {
     lvim_tasks = {
         config = function()
             require("lvim-tasks").setup({})
-            -- Tasks keys live in the central keymap manifest: keys/base.lua → <Leader>r* (Run / Test / Tasks).
+            -- Tasks keys live in the central keymap manifest: keys/base/global.lua → <Leader>r* (Run / Test / Tasks).
         end,
     },
     -- lvim-build: detected project/file actions (Build/Run/Test/Bench/Lint), running
@@ -254,7 +254,7 @@ return {
     lvim_build = {
         config = function()
             require("lvim-build").setup({})
-            -- Build keys live in the central keymap manifest: keys/base.lua → <Leader>r* (Run / Test / Tasks).
+            -- Build keys live in the central keymap manifest: keys/base/global.lua → <Leader>r* (Run / Test / Tasks).
         end,
     },
     -- lvim-test: granular test runner — discovers tests via treesitter and runs
@@ -262,15 +262,15 @@ return {
     lvim_test = {
         config = function()
             require("lvim-test").setup({})
-            -- Test keys live in the central keymap manifest: keys/base.lua → <Leader>r* (Run / Test / Tasks).
+            -- Test keys live in the central keymap manifest: keys/base/global.lua → <Leader>r* (Run / Test / Tasks).
         end,
     },
     -- lvim-remote: upload/download/diff/sync project files over ssh/rsync (targets in
-    -- .lvim/remote.lua). The old transfer keys live on under <Leader>t*.
+    -- .lvim/remote.lua).
     lvim_remote = {
         config = function()
             require("lvim-remote").setup({})
-            -- Remote keys live in the central keymap manifest: keys/base.lua → <Leader>f* (Files / Remote).
+            -- Remote keys live in the central keymap manifest: keys/base/global.lua → <Leader>f* (Files / Remote).
         end,
     },
     -- lvim-rest: the in-editor REST/HTTP client — `.http` / `.rest` documents, environments, the
@@ -281,7 +281,7 @@ return {
     lvim_rest = {
         config = function()
             require("lvim-rest").setup({})
-            -- Launcher keys live in the central keymap manifest: keys/base.lua → <Leader>o*.
+            -- Launcher keys live in the central keymap manifest: keys/base/global.lua → <Leader>o*.
         end,
     },
     -- lvim-preview: live browser preview of Markdown / org with hot reload as you type, served by the
@@ -338,7 +338,7 @@ return {
                 -- so a phone opens the preview without typing an IP. :LvimPreview qr shows it any time.
                 lan = { warn = true, qr = true },
             })
-            -- Launcher keys live in the central keymap manifest: keys/base.lua → <Leader>o*.
+            -- Launcher keys live in the central keymap manifest: keys/base/global.lua → <Leader>o*.
         end,
     },
     -- lvim-render: in-buffer decorated rendering of markdown, typst, org and latex — heading

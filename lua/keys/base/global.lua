@@ -192,7 +192,7 @@ global.normal = {
     { "m]", "<Cmd>LvimVault mark next<CR>", "Vault mark: next (buffer)" },
     { "m[", "<Cmd>LvimVault mark prev<CR>", "Vault mark: prev (buffer)" },
 
-    -- Editor utility commands defined by this config (configs/base/init.lua).
+    -- Editor utility commands from lvim-common (its setup() registers them).
     { "gcd", "<Cmd>LvimComments strip<CR>", "Delete all comments" },
     { "<Leader>co", "<Cmd>LvimEval<CR>", "Code: run a command into a window" },
 

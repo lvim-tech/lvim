@@ -31,7 +31,7 @@ end
 --- Build a Control Center setting bound to a WINDOW-LOCAL vim option.
 --- Both `get` and `set` use the GLOBAL value of the option, so the panel shows (and changes)
 --- the same thing no matter which window it is opened from — a file window or a special
---- buffer such as the dashboard / neo-tree, whose window-local values intentionally differ.
+--- buffer such as the dashboard / the lvim-files panel, whose window-local values intentionally differ.
 --- `set` also pushes the new value to the currently-open non-excluded windows for an
 --- immediate effect, then persists.
 -- The last-applied value of every window-local display option, keyed by option name. Populated

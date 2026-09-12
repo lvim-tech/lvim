@@ -26,7 +26,7 @@ end
 -- Build control-center rows for EVERY lvim-colorscheme config-panel setting, grouped with a
 -- text-separator spacer per section (Background / Focus / Syntax). Each row reads and writes
 -- through `lvim-colorscheme.settings`, which applies live AND persists to the shared store
--- (this control-center's database) — so this tab and `:LvimColorscheme config` stay in sync.
+-- (this control-center's database) — so this tab and `:LvimColorschemeConfig` stay in sync.
 ---@return table[]
 local function lcs_settings()
     local ok, S = pcall(require, "lvim-colorscheme.settings")

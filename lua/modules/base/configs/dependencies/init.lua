@@ -40,7 +40,7 @@ return {
                     floats = "dark",
                     sidebars = "dark",
                 },
-                -- Sidebar background (Normal:NormalSB) only for the panels we actually run. neo-tree and the
+                -- Sidebar background (Normal:NormalSB) only for the panels we actually run. lvim-files and the
                 -- LvimLsp outline theme themselves (they already wear bg_sidebar), so they stay OUT of this list;
                 -- these are the helper/side windows that don't.
                 sidebar_filetypes = {
@@ -57,8 +57,6 @@ return {
                         bg = c.bg_float,
                         fg = c.bg_float,
                     }
-                    -- (neo-tree no longer overridden — its background follows the theme's
-                    -- "Sidebar style" / `styles.sidebars` like the other sidebars.)
                 end,
             }
         end,
@@ -87,7 +85,7 @@ return {
             -- host WIRING that belongs to no single plugin.
 
             -- Finder keys (files/grep/buffers/oldfiles/marks) live in the central keymap
-            -- manifest: keys/base.lua → <Leader>s* (Search / Navigate).
+            -- manifest: keys/base/global.lua → <Leader>s* (Search / Navigate).
 
             -- `vim.ui.select` is handed to lvim-ui by its own bridge — see the `lvim-ui` entry
             -- below (`bridge = { ui_select = true }`). It used to be re-implemented here, in a

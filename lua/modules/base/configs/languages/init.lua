@@ -30,8 +30,8 @@ return {
             },
             dap_local_fn = require("modules.base.configs.languages.lsp.dap_utils").dap_local,
 
-            -- LSP buffer keymaps are applied by the central manifest (keys/base.lua →
-            -- keys.lsp) via its own capability-guarded LspAttach autocmd — no on_attach needed here.
+            -- LSP buffer keymaps are applied by the central manifest (keys/base/lsp.lua)
+            -- via its own capability-guarded LspAttach autocmd — no on_attach needed here.
         },
     },
 
@@ -166,7 +166,7 @@ return {
         ---@return nil
         config = function()
             require("lvim-dap-view").setup({})
-            -- Dap-view toggle lives in the central keymap manifest: keys/base.lua → <Leader>dv.
+            -- Dap-view toggle lives in the central keymap manifest: keys/base/global.lua → <Leader>dv.
         end,
     },
 
@@ -180,7 +180,7 @@ return {
         ---@return nil
         config = function()
             require("lvim-db").setup({})
-            -- Db keys live in the central keymap manifest: keys/base.lua → <Leader>od (Open / Tools).
+            -- Db keys live in the central keymap manifest: keys/base/global.lua → <Leader>od (Open / Tools).
         end,
     },
 
