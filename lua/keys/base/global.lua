@@ -98,10 +98,10 @@ global.normal = {
     { "<Leader>w=", "<Cmd>wincmd =<CR>", "Window: equalise" },
     { "<Leader>wp", "<Cmd>LvimWinPick<CR>", "Window: pick" },
     { "<Leader>ws", "<Cmd>LvimWinMove swap<CR>", "Window: swap" },
-    { "<Leader>wmh", "<Cmd>LvimWinMove left<CR>", "Move window left" },
-    { "<Leader>wmj", "<Cmd>LvimWinMove down<CR>", "Move window down" },
-    { "<Leader>wmk", "<Cmd>LvimWinMove up<CR>", "Move window up" },
-    { "<Leader>wml", "<Cmd>LvimWinMove right<CR>", "Move window right" },
+    -- The interactive MOVE MODE (the plugin's main interface: focus tint + "WIN MOVE" HUD title) — the
+    -- same as <C-c>w. Not four one-shot `<Leader>wm{h,j,k,l}` moves: those bypass the mode, and they made
+    -- `<Leader>wm` a strict prefix that waited out 'timeoutlen'.
+    { "<Leader>wm", "<Cmd>LvimWinMove<CR>", "Window: move mode (h/j/k/l · H/J/K/L edge · s swap · q quit)" },
 
     -- <Leader>p — Project / Space  (lvim-space: sessions/projects/tabs)
     { "<Leader>pp", "<Cmd>LvimSpace<CR>", "Space: projects / workspaces" },
@@ -229,7 +229,9 @@ global.normal = {
     { "<C-c>O", ":lua vim.ui.open(vim.fn.expand('%'))<CR>", "Open current file in OS handler" },
     { "<Leader>N", ":ene | startinsert<CR>", "New file in insert mode" },
     -- alternate window bindings (were in the winpick / winmove plugin configs)
-    { "gpp", "<Cmd>LvimWinPick<CR>", "Window: pick" },
+    -- `gp`, not `gpp`: no other map starts with `gp`, so the two-key form fires at once. It shadows
+    -- Vim's own `gp` (put, cursor after the text).
+    { "gp", "<Cmd>LvimWinPick<CR>", "Window: pick" },
     { "<C-c>w", "<Cmd>LvimWinMove<CR>", "Window: move mode" },
     -- linguistics toggles (were in the plugin config)
     -- The toggles are :LvimLinguistics subcommands; the old `:LvimLinguisticsTOGGLE…` commands no longer exist.

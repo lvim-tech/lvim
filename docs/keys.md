@@ -41,7 +41,6 @@ Nothing here has to be memorised: press a prefix and the hint panel names what f
 | `<Leader>s` | Search / Navigate |
 | `<Leader>u` | UI / Toggles / Settings |
 | `<Leader>w` | Windows |
-| `<Leader>wm` | Move window |
 
 ## Global — normal mode
 
@@ -143,15 +142,7 @@ Nothing here has to be memorised: press a prefix and the hint panel names what f
 | `<Leader>w=` | Window: equalise | `:wincmd =` |
 | `<Leader>wp` | Window: pick | `:LvimWinPick` |
 | `<Leader>ws` | Window: swap | `:LvimWinMove swap` |
-
-### `<Leader>wm` — Move window
-
-| Key | Action | Runs |
-|---|---|---|
-| `<Leader>wmh` | Move window left | `:LvimWinMove left` |
-| `<Leader>wmj` | Move window down | `:LvimWinMove down` |
-| `<Leader>wmk` | Move window up | `:LvimWinMove up` |
-| `<Leader>wml` | Move window right | `:LvimWinMove right` |
+| `<Leader>wm` | Window: move mode (h/j/k/l · H/J/K/L edge · s swap · q quit) | `:LvimWinMove` |
 
 ### `<Leader>p` — Project / Space
 
@@ -249,7 +240,9 @@ Nothing here has to be memorised: press a prefix and the hint panel names what f
 | `<C-c>c` | Inspect highlight under cursor | `:Inspect` |
 | `<C-c>O` | Open current file in OS handler | `:lua vim.ui.open(vim.fn.expand('%'))` |
 | `<Leader>N` | New file in insert mode | `:ene \| startinsert` |
-| `gpp` | Window: pick | `:LvimWinPick` |
+| `<Leader>n` / `<Leader>P` | Dock: next / previous consumer in the current layout (lvim-utils dock; `P`, not `p` — `<Leader>p` is the Space group prefix) | `:LvimDock <layout> next\|prev` |
+| `<Leader>x` / `<Leader>m` | Dock: kill the visible consumer / the dock menu | `:LvimDock menu` |
+| `gp` | Window: pick | `:LvimWinPick` |
 | `<C-c>w` | Window: move mode | `:LvimWinMove` |
 | `<C-c>l` | Linguistics: toggle insert language | `:LvimLinguistics toggle-insert-mode` |
 | `<C-c>k` | Linguistics: toggle spelling | `:LvimLinguistics toggle-spelling` |

@@ -12,7 +12,6 @@ return {
     ["<Leader>s"] = "Search / Navigate",
     ["<Leader>b"] = "Buffers",
     ["<Leader>w"] = "Windows",
-    ["<Leader>wm"] = "Move window",
     ["<Leader>p"] = "Project / Space",
     ["<Leader>c"] = "Code / Edit",
     ["<Leader>o"] = "Open / Tools",

@@ -109,6 +109,11 @@ return {
     lvim_utils = {
         opts = {
                 cursor = { ft = { "lvim-utils-ui" } }, -- lvim-lsp / lvim-files self-register their panels
+                -- The dock cycle keys. The default `<Leader>p` (previous consumer) is a PREFIX of the whole
+                -- `<Leader>p*` Space group, so it waited out 'timeoutlen' on every press; `<Leader>P` is free
+                -- and not a prefix of anything. `<Leader>n` / `<Leader>x` / `<Leader>m` (next / kill / menu)
+                -- keep their defaults — nothing starts with them.
+                dock = { keys = { cycle_prev = "<Leader>P" } },
             },
     },
     lvim_common = {
