@@ -69,8 +69,10 @@ global.normal = {
     { "<Leader>ro", "<Cmd>LvimTest output<CR>", "Test: output" },
     { "<Leader>rw", "<Cmd>LvimTest watch<CR>", "Test: watch" },
 
-    -- <Leader>f — Files / Remote  (lvim-files + gx + lvim-remote)
+    -- <Leader>f — Files / Remote  (lvim-files + gx + lvim-remote + lvim-common print)
     { "<Leader>ff", "<Cmd>LvimFiles<CR>", "Files: explorer" },
+    -- The print dialog (a PDF or a CUPS printer); the visual map prints only the selection.
+    { "<Leader>fp", "<Cmd>LvimPrint<CR>", "Files: print (printer / PDF)" },
     -- The file panel's own chords (they were set inside the plugin's config, out of sight of
     -- this manifest, which is what `<Leader>sk` / the hint panel read).
     { "<S-x>", "<Cmd>LvimFiles toggle<CR>", "Files: toggle panel" },
@@ -249,6 +251,8 @@ global.normal = {
 global.visual = {
     { "<Leader>cc", "<Cmd>LvimComment line<CR>", "Code: comment selection" },
     { "<Leader>cp", "<Cmd>LvimColorPicker pick<CR>", "Code: pick colour" },
+    -- Through `:`, not <Cmd>: the selection has to reach :LvimPrint as its '<,'> range.
+    { "<Leader>fp", ":LvimPrint<CR>", "Files: print the selection (printer / PDF)" },
     -- Search only within the visual selection using the \%V atom
     { "*", "<Esc>/\\%V", "Search forward in selection" },
     { "#", "<Esc>?\\%V", "Search backward in selection" },

@@ -114,6 +114,7 @@ Nothing here has to be memorised: press a prefix and the hint panel names what f
 |---|---|---|
 | `<Leader>ff` | Files: explorer | `:LvimFiles` |
 | `<Leader>fx` | Files: open under cursor (OS) | `:GxOpen` |
+| `<Leader>fp` | Files: print (printer / PDF) — in visual mode, the selection | `:LvimPrint` |
 | `<Leader>fi` | Remote: init project config | `:LvimRemote init` |
 | `<Leader>fu` | Remote: upload buffer | `:LvimRemote upload` |
 | `<Leader>fd` | Remote: download buffer | `:LvimRemote download` |
