@@ -104,9 +104,8 @@ Nothing here has to be memorised: press a prefix and the hint panel names what f
 | `<Leader>rt` | Test: nearest | `:LvimTest run` |
 | `<Leader>rF` | Test: file | `:LvimTest file` |
 | `<Leader>rs` | Test: suite | `:LvimTest suite` |
-| `<Leader>rf` | Test: rerun failed | `:LvimTest run_failed` |
-| `<Leader>rm` | Test: mark | `:LvimTest mark` |
-| `<Leader>rM` | Test: run marked | `:LvimTest run_marked` |
+| `<Leader>rf` | Test: rerun failed | `:LvimTest failed` |
+| `<Leader>rS` | Test: summary panel (m marks, R runs marked) | `:LvimTest summary` |
 | `<Leader>ro` | Test: output | `:LvimTest output` |
 | `<Leader>rw` | Test: watch | `:LvimTest watch` |
 
@@ -185,7 +184,7 @@ Nothing here has to be memorised: press a prefix and the hint panel names what f
 |---|---|---|
 | `<Leader>ot` | Open: terminal | `:LvimTerm toggle` |
 | `<Leader>os` | Open: shell launcher | `:LvimShell` |
-| `<Leader>od` | Open: database client | `:LvimDb open` |
+| `<Leader>od` | Open: database client | `:LvimDb` |
 | `<Leader>oa` | Open: REST scratchpad | `:LvimRest scratch` |
 | `<Leader>oA` | Open: REST history | `:LvimRest history` |
 | `<Leader>op` | Open: live preview | `:LvimPreview start` |
@@ -252,8 +251,8 @@ Nothing here has to be memorised: press a prefix and the hint panel names what f
 | `<Leader>N` | New file in insert mode | `:ene \| startinsert` |
 | `gpp` | Window: pick | `:LvimWinPick` |
 | `<C-c>w` | Window: move mode | `:LvimWinMove` |
-| `<C-c>l` | Linguistics: toggle insert language | `:LvimLinguisticsTOGGLEInsertModeLanguage` |
-| `<C-c>k` | Linguistics: toggle spelling | `:LvimLinguisticsTOGGLESpelling` |
+| `<C-c>l` | Linguistics: toggle insert language | `:LvimLinguistics toggle-insert-mode` |
+| `<C-c>k` | Linguistics: toggle spelling | `:LvimLinguistics toggle-spelling` |
 | `<C-n>` | Buffer history forward | `<Plug>(LvimBufHistoryForward)` |
 | `<C-p>` | Buffer history back | `<Plug>(LvimBufHistoryBack)` |
 | `<C-c>.` *(n/x/o)* | Jump | `<Plug>(lvim-jump)` |

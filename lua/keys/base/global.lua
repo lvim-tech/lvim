@@ -60,9 +60,12 @@ global.normal = {
     { "<Leader>rt", "<Cmd>LvimTest run<CR>", "Test: nearest" },
     { "<Leader>rF", "<Cmd>LvimTest file<CR>", "Test: file" },
     { "<Leader>rs", "<Cmd>LvimTest suite<CR>", "Test: suite" },
-    { "<Leader>rf", "<Cmd>LvimTest run_failed<CR>", "Test: rerun failed" },
-    { "<Leader>rm", "<Cmd>LvimTest mark<CR>", "Test: mark" },
-    { "<Leader>rM", "<Cmd>LvimTest run_marked<CR>", "Test: run marked" },
+    -- `failed` is the subcommand's real name (`run_failed` was rejected by :LvimTest). Marking a test
+    -- and running the marked set are keys INSIDE the summary panel (`m` / `R` / `M`, lvim-test's
+    -- `keys.summary`) — there is no :LvimTest subcommand for them, so the two global keys that named
+    -- `mark` / `run_marked` did nothing; they are replaced by one that opens the panel.
+    { "<Leader>rf", "<Cmd>LvimTest failed<CR>", "Test: rerun failed" },
+    { "<Leader>rS", "<Cmd>LvimTest summary<CR>", "Test: summary panel (m marks, R runs marked)" },
     { "<Leader>ro", "<Cmd>LvimTest output<CR>", "Test: output" },
     { "<Leader>rw", "<Cmd>LvimTest watch<CR>", "Test: watch" },
 
@@ -123,7 +126,8 @@ global.normal = {
     -- <Leader>o — Open / Tools  (launch a panel / TUI)
     { "<Leader>ot", "<Cmd>LvimTerm toggle<CR>", "Open: terminal" },
     { "<Leader>os", "<Cmd>LvimShell<CR>", "Open: shell launcher" },
-    { "<Leader>od", "<Cmd>LvimDb open<CR>", "Open: database client" },
+    -- A bare `:LvimDb` opens the workspace; `open` is not a subcommand (it raised "unknown subcommand").
+    { "<Leader>od", "<Cmd>LvimDb<CR>", "Open: database client" },
     -- lvim-rest: `scratch` opens the persistent ad-hoc `.http` buffer (the natural entry point —
     -- a bare `:LvimRest` only prints engine status); `history` re-opens a past request.
     { "<Leader>oa", "<Cmd>LvimRest scratch<CR>", "Open: REST scratchpad" },
@@ -228,8 +232,9 @@ global.normal = {
     { "gpp", "<Cmd>LvimWinPick<CR>", "Window: pick" },
     { "<C-c>w", "<Cmd>LvimWinMove<CR>", "Window: move mode" },
     -- linguistics toggles (were in the plugin config)
-    { "<C-c>l", "<Cmd>LvimLinguisticsTOGGLEInsertModeLanguage<CR>", "Linguistics: toggle insert language" },
-    { "<C-c>k", "<Cmd>LvimLinguisticsTOGGLESpelling<CR>", "Linguistics: toggle spelling" },
+    -- The toggles are :LvimLinguistics subcommands; the old `:LvimLinguisticsTOGGLE…` commands no longer exist.
+    { "<C-c>l", "<Cmd>LvimLinguistics toggle-insert-mode<CR>", "Linguistics: toggle insert language" },
+    { "<C-c>k", "<Cmd>LvimLinguistics toggle-spelling<CR>", "Linguistics: toggle spelling" },
     -- buffer history (were in the plugin config)
     { "<C-n>", "<Plug>(LvimBufHistoryForward)", "Buffer history forward" },
     { "<C-p>", "<Plug>(LvimBufHistoryBack)", "Buffer history back" },
