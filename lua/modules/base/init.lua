@@ -147,8 +147,8 @@ modules["lvim-tech/lvim-icons"] = {
 local ui_config = require("modules.base.configs.ui")
 local version_control_config = require("modules.base.configs.version_control")
 
--- lvim-winpick: label each window so you can jump to it by key. Eager; also the
--- swap-target API for lvim-winmove.
+-- lvim-winpick: label each window so you can jump to it by key. Lazy, on :LvimWinPick — but a dependency of
+-- lvim-winmove (the swap target), so in practice it is loaded at startup along with winmove/winnav.
 modules["lvim-tech/lvim-winpick"] = {
     cmd = "LvimWinPick",
     dependencies = {
@@ -157,10 +157,14 @@ modules["lvim-tech/lvim-winpick"] = {
     config = ui_config.lvim_winpick.config,
 }
 
--- lvim-winmove: interactively move and swap windows within a tab.
+-- lvim-winmove: interactively move and swap windows within a tab. Loaded at startup as a dependency of
+-- lvim-winnav (its cmd trigger is then moot). lvim-winpick is a declared dependency: swap picks its target
+-- through `require("lvim-winpick")`, which on a published install is not on the runtimepath until
+-- :LvimWinPick has run — without the dependency, swap silently fell back to "the first other window".
 modules["lvim-tech/lvim-winmove"] = {
     cmd = "LvimWinMove",
     dependencies = {
+        "lvim-tech/lvim-winpick",
         "lvim-tech/lvim-utils",
     },
     config = ui_config.lvim_winmove.config,
