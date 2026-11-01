@@ -70,3 +70,5 @@ M.set_window_path = function()
 end
 
 return M
+
+-- vim: foldmethod=indent foldlevel=1

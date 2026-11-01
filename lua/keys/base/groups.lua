@@ -18,3 +18,4 @@ return {
     ["<Leader>u"] = "UI / Toggles / Settings",
 }
 
+-- vim: foldmethod=indent foldlevel=1

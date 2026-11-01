@@ -5,3 +5,5 @@
 local config = {}
 
 return config
+
+-- vim: foldmethod=indent foldlevel=1

@@ -18,3 +18,4 @@ return {
     -- ["lvim-installer"] = { update = "U" },
 }
 
+-- vim: foldmethod=indent foldlevel=1

@@ -24,3 +24,5 @@ M.merge = function(tbl1, tbl2)
 end
 
 return M
+
+-- vim: foldmethod=indent foldlevel=1

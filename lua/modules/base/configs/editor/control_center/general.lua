@@ -278,3 +278,5 @@ return {
         unpack(linguistics),
     },
 }
+
+-- vim: foldmethod=indent foldlevel=1

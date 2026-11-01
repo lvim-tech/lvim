@@ -86,3 +86,5 @@ M.dap_local = function()
 end
 
 return M
+
+-- vim: foldmethod=indent foldlevel=1

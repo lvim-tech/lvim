@@ -224,7 +224,11 @@ global.normal = {
     -- `<C-c>q` clears all native multicursors (the `Q` pair). Neovim's built-in clear is `<C-L>`,
     -- but lvim-winnav owns `<C-l>` (seamless window nav), so the clear is relocated here — it runs
     -- the same namespace clear the `<C-L>` default does.
-    { "<C-c>q", "<Cmd>call nvim_buf_clear_namespace(0, nvim_create_namespace('nvim.multicursor'), 0, -1)<Bar>redraw<CR>", "Multicursor: clear all" },
+    {
+        "<C-c>q",
+        "<Cmd>call nvim_buf_clear_namespace(0, nvim_create_namespace('nvim.multicursor'), 0, -1)<Bar>redraw<CR>",
+        "Multicursor: clear all",
+    },
     { "<C-c>fc", ":CloseFloatWindows<CR>", "Close all floats" },
     { "<C-c>ff", ":FocusFloatWindow<CR>", "Cycle focus to next float" },
     { "<C-c>c", ":Inspect<CR>", "Inspect highlight under cursor" },
@@ -268,3 +272,5 @@ global.terminal = {
 }
 
 return global
+
+-- vim: foldmethod=indent foldlevel=1

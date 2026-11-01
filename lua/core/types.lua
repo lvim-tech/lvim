@@ -78,3 +78,4 @@
 ---@field bg string|nil   Background color in #rrggbb format, or nil if unset
 ---@field fg string|nil   Foreground color in #rrggbb format, or nil if unset
 
+-- vim: foldmethod=indent foldlevel=1

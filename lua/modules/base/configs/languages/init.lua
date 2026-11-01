@@ -300,3 +300,5 @@ return {
         end,
     },
 }
+
+-- vim: foldmethod=indent foldlevel=1

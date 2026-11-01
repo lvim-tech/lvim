@@ -124,3 +124,5 @@ else
 end
 
 return global
+
+-- vim: foldmethod=indent foldlevel=1

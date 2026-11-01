@@ -26,3 +26,5 @@ if vim.fn.has("nvim-0.12") == 1 then
 else
     print("LVIM IDE requires Neovim >= 0.12 (vim.pack)")
 end
+
+-- vim: foldmethod=indent foldlevel=1

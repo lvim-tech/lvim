@@ -68,3 +68,4 @@ return {
     { "gol", "<Cmd>LvimLsp list_workspace_folders<CR>", "List workspace folders", { cap = has_ws } },
 }
 
+-- vim: foldmethod=indent foldlevel=1

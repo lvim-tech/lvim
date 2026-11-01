@@ -140,7 +140,6 @@ local function run(command_template, opts)
     end)
 end
 
-
 return {
     name = "projects",
     label = "New project",
@@ -327,3 +326,5 @@ return {
         },
     },
 }
+
+-- vim: foldmethod=indent foldlevel=1

@@ -152,3 +152,5 @@ return {
     icon = icons.common.palette,
     settings = settings,
 }
+
+-- vim: foldmethod=indent foldlevel=1

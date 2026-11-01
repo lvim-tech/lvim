@@ -16,3 +16,5 @@
 ---@module "keys.user"
 
 return {}
+
+-- vim: foldmethod=indent foldlevel=1

@@ -213,3 +213,5 @@ M.global = function()
 end
 
 return M
+
+-- vim: foldmethod=indent foldlevel=1

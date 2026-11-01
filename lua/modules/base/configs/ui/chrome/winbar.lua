@@ -65,3 +65,5 @@ if ok_bc then
 end
 
 return segments
+
+-- vim: foldmethod=indent foldlevel=1

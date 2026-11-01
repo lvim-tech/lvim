@@ -33,3 +33,5 @@ return {
     { "<C-c><C-c>p", "deps", "Dependencies" },
     { "<C-c><C-c>c", "config", "Run configuration" },
 }
+
+-- vim: foldmethod=indent foldlevel=1

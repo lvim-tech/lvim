@@ -5,3 +5,5 @@
 local M = {}
 
 return M
+
+-- vim: foldmethod=indent foldlevel=1

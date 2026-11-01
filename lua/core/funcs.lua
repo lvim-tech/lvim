@@ -27,3 +27,5 @@ return setmetatable({}, {
         return nil
     end,
 })
+
+-- vim: foldmethod=indent foldlevel=1

@@ -380,4 +380,4 @@ return {
     },
 }
 
--- vim: foldmethod=indent foldlevel=15
+-- vim: foldmethod=indent foldlevel=1

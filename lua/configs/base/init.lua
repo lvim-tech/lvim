@@ -140,3 +140,5 @@ configs["base_keys"] = function()
 end
 
 return configs
+
+-- vim: foldmethod=indent foldlevel=1

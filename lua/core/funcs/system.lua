@@ -56,3 +56,5 @@ M.sudo_write = function(tmpfile, filepath)
 end
 
 return M
+
+-- vim: foldmethod=indent foldlevel=1

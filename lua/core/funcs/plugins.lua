@@ -80,3 +80,5 @@ M.get_commit = function(plugin, plugins_snapshot)
 end
 
 return M
+
+-- vim: foldmethod=indent foldlevel=1

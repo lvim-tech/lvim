@@ -197,3 +197,5 @@ M.is_excluded = function(buf, extra_bt, extra_ft)
 end
 
 return M
+
+-- vim: foldmethod=indent foldlevel=1

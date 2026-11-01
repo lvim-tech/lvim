@@ -80,3 +80,5 @@ return {
         },
     },
 }
+
+-- vim: foldmethod=indent foldlevel=1

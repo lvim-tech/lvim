@@ -321,3 +321,5 @@ return {
     icon = "󰒓",
     settings = settings,
 }
+
+-- vim: foldmethod=indent foldlevel=1

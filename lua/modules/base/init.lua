@@ -936,3 +936,5 @@ modules["kkharji/sqlite.lua"] = {
 -- itself). The former standalone nvim-metals plugin is removed — superseded.
 
 return modules
+
+-- vim: foldmethod=indent foldlevel=1

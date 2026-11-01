@@ -106,3 +106,5 @@ local modules = {}
 -- }
 
 return modules
+
+-- vim: foldmethod=indent foldlevel=1

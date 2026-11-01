@@ -22,3 +22,5 @@ return {
     filetype = require("keys.base.filetype"),
     plugins = require("keys.base.plugins"),
 }
+
+-- vim: foldmethod=indent foldlevel=1

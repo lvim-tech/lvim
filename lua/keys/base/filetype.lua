@@ -414,3 +414,4 @@ return {
     -- `Vimtex*` commands — vimtex was replaced by lvim-tex, so every one of them was an E492.)
 }
 
+-- vim: foldmethod=indent foldlevel=1

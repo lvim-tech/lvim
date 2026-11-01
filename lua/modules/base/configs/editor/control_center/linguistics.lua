@@ -151,3 +151,5 @@ return {
         set = setter("insert_mode_language"),
     },
 }
+
+-- vim: foldmethod=indent foldlevel=1

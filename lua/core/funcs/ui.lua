@@ -63,3 +63,5 @@ M.focus_float_window = function()
 end
 
 return M
+
+-- vim: foldmethod=indent foldlevel=1
