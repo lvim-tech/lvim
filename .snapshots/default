@@ -66,11 +66,11 @@
       "pin": true
     },
     "lvim-db": {
-      "commit": "7dadd2e0d9e0d92d32921a9829fbc60f6ba2e092",
+      "commit": "751fb6ee2d8f1d3dc3c5b7eb0f21e7c6d3cb0370",
       "pin": true
     },
     "lvim-dependencies": {
-      "commit": "5fb8567b2a2245971dafd687a0383328b3c96256",
+      "commit": "e4a006145390e48d84a27994c38a0c0035ab2a73",
       "pin": true
     },
     "lvim-files": {
@@ -230,7 +230,7 @@
       "pin": true
     },
     "lvim-ui": {
-      "commit": "9961358315c37c9f234b3a745dc8f7cac4b84ff5",
+      "commit": "994997b6d594ea6f983ac65737422d1b3529d41c",
       "pin": true
     },
     "lvim-undo": {
