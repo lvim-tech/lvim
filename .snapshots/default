@@ -122,7 +122,7 @@
       "pin": true
     },
     "lvim-lang": {
-      "commit": "b13ea53000ee7fe267e1e0d5ff533bce76c5bcca",
+      "commit": "de780bcdba08179a789c6e1d6a9944faa4616989",
       "pin": true
     },
     "lvim-linguistics": {
@@ -178,7 +178,7 @@
       "pin": true
     },
     "lvim-render": {
-      "commit": "19407df538093c4fd3c5ef24312321f5c248c4b7",
+      "commit": "9bbfa27e4e0da9c7b9fc4484eb523f6f65c659a5",
       "pin": true
     },
     "lvim-replace": {
@@ -250,7 +250,7 @@
       "pin": true
     },
     "lvim-winnav": {
-      "commit": "97d1948ee046670edf28199d08abd211c7bbb44b",
+      "commit": "0a75f3c2a00d04b69aab15df9b9e4960ac633239",
       "pin": true
     },
     "lvim-winpick": {
