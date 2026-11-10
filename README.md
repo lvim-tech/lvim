@@ -6,7 +6,7 @@
 > `lvim-tech/*`. LSP and language tooling, debugging, building and testing, git, database and REST
 > clients, the whole UI: one set, one style, one place to configure it.
 
-> Current version — **10.2.3**
+> Current version — **10.3.0**
 
 ---
 
@@ -98,6 +98,14 @@ Verified against what the set actually spawns — `:checkhealth lvim-pkg` report
 | [cargo](https://www.rust-lang.org) | cargo-sourced tools, and the native fuzzy matcher's build — without it the matcher falls back to its pure-Lua twin |
 
 `tree-sitter` (the CLI) is fetched automatically when a grammar needs generating.
+
+**For remote projects** (see [Remote projects](#remote-projects-over-ssh))
+
+| Tool | Why |
+|---|---|
+| Neovim **nightly** (0.13-dev) | `:connect ssh://` — the remote-ssh support the projects are built on |
+| `ssh` (OpenSSH 7.6+) | the connection, shared by everything through one `ControlMaster` |
+| `rsync`, here and on the server | mirrors the plugin checkouts and copies built files |
 
 ---
 
@@ -226,6 +234,32 @@ root: `.lvim-lsp/config.lua`, `.lvim-ls/servers/<name>.lua`, `.lvim/lang/run.lua
 
 ---
 
+## Remote projects over SSH
+
+`lvim-space` keeps `ssh://[user@]host[:port]/path` projects next to local ones. Opening one hands the UI
+to a Neovim on the server through Neovim's own `:connect ssh://` — the same editor, the same plugins,
+the files where they live.
+
+- **Sign-in** — by key, or by password typed once into a shared connection that every later step reuses.
+- **The server's environment** — what a remote Neovim needs and the server lacks (a runtime directory,
+  `node` / `python` on `PATH`) is written to its shell rc **after you agree**, inside a marked block.
+- **Plugins** — `lvim-pack` mirrors the local plugin checkouts to the server (rsync, source only, the
+  same paths), uncommitted work included, so both sides run the same code. Unchanged since the last
+  connect, the mirror is skipped. Built artefacts go along when the server can run them (same platform,
+  new enough glibc); `lvim-db`'s daemon is built portable (glibc 2.28) for that.
+- **Tools** — language servers, linters, formatters and parsers are **installed on the server**, one at
+  a time and with small thread pools, so shared hosting with process limits keeps up. What the server
+  has **no toolchain to build** (a parser without a C compiler, a Go or Rust tool without `go` / `cargo`)
+  is built on your machine and copied: parsers at connect, anything else the moment the server asks —
+  you are asked, and it arrives in the running session.
+- **Clipboard** — yank goes through OSC 52 to the terminal you sit at; put from your clipboard needs
+  the terminal (and a multiplexer, if any) to allow OSC 52 reads.
+- **Quit** — returns you to the local editor you connected from instead of closing everything.
+- **Update Nvim** — the `u` action on a remote project reconnects with Neovim's "Update Nvim", for
+  that server only. "Connect?" is asked only the first time per server.
+
+---
+
 ## Versions and pinning
 
 `.snapshots/` holds the pin sets and `active` names the live one. That pin is the **declared intent**
@@ -239,6 +273,20 @@ snapshot is the installer's snapshot tab (diff → restore), which checks them o
 ---
 
 ## Changelog
+
+### v10.3.0
+
+**Remote projects.** `ssh://` projects in `lvim-space`, opened over Neovim's `:connect ssh://` (nightly):
+key or password sign-in, the server's environment prepared with consent, the plugin checkouts mirrored
+by `lvim-pack`, tools installed on the server and built on the client when the server cannot, OSC 52
+clipboard, and Quit back to the local editor — see [Remote projects](#remote-projects-over-ssh).
+
+- **Installs** — a hung install is stopped; an npm install that produced none of its executables is a
+  failure, not a success; installs still running when the editor exits are stopped with it.
+- **Installer** — every tab is checked on the first open, and what needs updating is listed first; dev
+  checkouts show how they stand against their remote (behind, ahead, uncommitted).
+- **Builds** — compile caches live outside the plugins (`stdpath("cache")` by default).
+- **Projects** — a project's path can be changed along with its name.
 
 ### v10.0.0
 
