@@ -6,7 +6,7 @@
 > `lvim-tech/*`. LSP and language tooling, debugging, building and testing, git, database and REST
 > clients, the whole UI: one set, one style, one place to configure it.
 
-> Current version — **10.3.0**
+> Current version — **11.0.0**
 
 ---
 
@@ -269,42 +269,6 @@ the lockfile decides; where neither has an answer, the plugin tracks its branch.
 
 Switching `active` governs what a fresh install gets. Moving plugins already on disk to another
 snapshot is the installer's snapshot tab (diff → restore), which checks them out explicitly.
-
----
-
-## Changelog
-
-### v10.3.0
-
-**Remote projects.** `ssh://` projects in `lvim-space`, opened over Neovim's `:connect ssh://` (nightly):
-key or password sign-in, the server's environment prepared with consent, the plugin checkouts mirrored
-by `lvim-pack`, tools installed on the server and built on the client when the server cannot, OSC 52
-clipboard, and Quit back to the local editor — see [Remote projects](#remote-projects-over-ssh).
-
-- **Installs** — a hung install is stopped; an npm install that produced none of its executables is a
-  failure, not a success; installs still running when the editor exits are stopped with it.
-- **Installer** — every tab is checked on the first open, and what needs updating is listed first; dev
-  checkouts show how they stand against their remote (behind, ahead, uncommitted).
-- **Builds** — compile caches live outside the plugins (`stdpath("cache")` by default).
-- **Projects** — a project's path can be changed along with its name.
-
-### v10.0.0
-
-**The distribution is now first-party.** Every borrowed plugin has been replaced by an `lvim-tech`
-one; what remains from outside the set is a single runtime library (`sqlite.lua`).
-
-- **Loading** — no external plugin manager. `lvim-pack` drives Neovim's built-in `vim.pack`: it
-  resolves dependencies, applies the version pins, loads eagerly by priority and wires the `event` /
-  `ft` / `cmd` / `keys` triggers. Minimum Neovim is **0.12**, where `vim.pack` arrived.
-- **Installing** — `lvim-installer` owns the first-start panel and the package browser; `lvim-pkg`
-  installs and tracks LSP servers, treesitter parsers, linters, formatters and debug adapters.
-- **Languages** — owned by `lvim-lang`: one provider per language declares its servers, roots, tools
-  and its run / build / test / debug behaviour, and fans them out to the plugins that use them.
-- **Keys** — one manifest, `lua/keys/base/`: group labels, global maps, capability-guarded LSP verbs
-  applied on `LspAttach`, per-filetype leaves, and overrides forwarded into a plugin's own key table.
-  Your layer is `lua/keys/user/`.
-- **UI** — every popup, picker and prompt goes through `lvim-ui` / `lvim-hud`; there is no
-  hand-rolled float left in the configuration.
 
 ---
 

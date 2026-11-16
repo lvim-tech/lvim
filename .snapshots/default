@@ -22,7 +22,7 @@
       "pin": true
     },
     "lvim-cmp": {
-      "commit": "161a585dfb434b21dd783774f2027fcc246f0ec5",
+      "commit": "123e9a60f45f12c216752c271a5d3acf44b6b36d",
       "pin": true
     },
     "lvim-color-picker": {
@@ -30,7 +30,7 @@
       "pin": true
     },
     "lvim-colorscheme": {
-      "commit": "c32b285e45695015ca1e42c827069b61ffed75ce",
+      "commit": "85e453687c0232a464fecf9e1d2a1b193301437b",
       "pin": true
     },
     "lvim-comment": {
@@ -38,7 +38,7 @@
       "pin": true
     },
     "lvim-common": {
-      "commit": "4b7ddfd6bcb405c4bc50a389c30d4fcdeb9c0847",
+      "commit": "574bf0e7092a3405d655f09146b97acd1ceeddf1",
       "pin": true
     },
     "lvim-context": {
@@ -82,7 +82,7 @@
       "pin": true
     },
     "lvim-fuzzy": {
-      "commit": "7d69dface2d7431f9849528f81b774d43e30ebd7",
+      "commit": "9d6d9e8536e9b6bf01ec4b6fe7037ebd5eda944a",
       "pin": true
     },
     "lvim-git": {
@@ -90,7 +90,7 @@
       "pin": true
     },
     "lvim-hud": {
-      "commit": "44e48abdbf97a16f946329dfa8aa2f02cec930f8",
+      "commit": "ba5d982e9b28b759a694b80efc21515b0766acea",
       "pin": true
     },
     "lvim-icons": {
@@ -106,7 +106,7 @@
       "pin": true
     },
     "lvim-installer": {
-      "commit": "93a49e5a876e2246fb3a8fe0f446f5e8f8946ad8",
+      "commit": "1500d2756cf0821bb93cb8228fa169b43f501a5e",
       "pin": true
     },
     "lvim-jump": {
@@ -130,7 +130,7 @@
       "pin": true
     },
     "lvim-ls": {
-      "commit": "e7f914617d1d4dd838eb57957a0e7ffeb644bdf1",
+      "commit": "c90c0c9ced84f1289a432b003cdb673e9ba9017d",
       "pin": true
     },
     "lvim-lsp": {
@@ -142,7 +142,7 @@
       "pin": true
     },
     "lvim-msgarea": {
-      "commit": "9f7b05c566a8b1dac57d565b20a2b7cdb9620ac6",
+      "commit": "a1d387ab2d7aec8125ee2a9dba907ac885275645",
       "pin": true
     },
     "lvim-nvim": {
@@ -150,7 +150,7 @@
       "pin": true
     },
     "lvim-pack": {
-      "commit": "d1c118bd512749aaa0b4c3149a331a21ac153bd6",
+      "commit": "5f1da8326b328c79920fdf4402a1336603d44781",
       "pin": true
     },
     "lvim-pairs": {
@@ -158,7 +158,7 @@
       "pin": true
     },
     "lvim-picker": {
-      "commit": "e1ddd2a31c5adc17f86bdc2404a21b143404c2a4",
+      "commit": "6da5b7a667663dc29198e745c242dcbd6aab89ad",
       "pin": true
     },
     "lvim-pkg": {
