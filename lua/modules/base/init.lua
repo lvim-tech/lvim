@@ -39,14 +39,14 @@ modules["lvim-tech/lvim-utils"] = {
     priority = 100,
 }
 
--- lvim-fuzzy: the shared native fuzzy-matching engine (lvim-picker + lvim-cmp rank through it). The
+-- lvim-fuzzy: the fuzzy search engine (lvim-fuzzy-core; lvim-picker + lvim-cmp rank through it). The
 -- compiled native library (native/build/, gitignored) lives only in the dev checkout, so the dir entry
--- keeps the fast backend live; no config (the defaults work; options would go through lvim-nvim below).
+-- keeps it loadable; no config (the defaults work; options would go through lvim-nvim below).
 modules["lvim-tech/lvim-fuzzy"] = {
-    -- The native matcher is a post-install BUILD, not something the plugin can do at runtime: the
-    -- FFI loader probes `native/build/liblvimfuzzy.so` and falls back to the byte-identical
-    -- pure-Lua matcher when it is absent. Declaring the hook is what makes the loader run it (and
-    -- re-run it whenever the plugin changes).
+    -- The native library is a post-install BUILD (cargo; the first build fetches lvim-fuzzy-core
+    -- from GitHub). The FFI loader probes `native/build/liblvimfuzzy.so`; without it lvim-fuzzy
+    -- does not work — there is no pure-Lua matcher. Declaring the hook is what makes the loader
+    -- run it (and re-run it whenever the plugin changes).
     build = "sh native/build.sh",
     -- Self-healing: the marker records the commit a build ran for, but a build that succeeded
     -- without producing a usable artefact would still look current. This says what "built" means.
