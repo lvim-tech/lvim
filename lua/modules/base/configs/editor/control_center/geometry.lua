@@ -238,6 +238,18 @@ local function size_specs(layout)
             options = SIZE_OPTIONS,
         },
     }
+    -- A docked surface can show its preview as a FLOAT above the dock (the picker's `dynamic` preview
+    -- position); this caps that float's height. A float surface has no such position.
+    if layout ~= "float" then
+        rows[#rows + 1] = {
+            name = "ui_size_" .. layout .. "_height_peek",
+            root = "size",
+            path = { layout, "height_peek" },
+            label = cap .. " dynamic preview height",
+            type = "select",
+            options = SIZE_OPTIONS,
+        }
+    end
     -- The float is free-floating in BOTH axes; the docked area/bottom are always full-width, so they
     -- carry NO width row (width lives only on float in config.dock.geometry).
     if layout == "float" then
@@ -314,6 +326,43 @@ for _, layout in ipairs({ "float", "area", "bottom" }) do
         settings[#settings + 1] = to_setting(spec)
     end
 end
+
+-- ── Picker ────────────────────────────────────────────────────────────────────
+-- Where every finder's preview sits (lvim-picker `preview_side`; the quickfix browser follows it too):
+-- beside the list, or `dynamic` — a float above a docked list. `<C-n>` / `<C-p>` still move it for the open
+-- finder. Applies to the next finder opened.
+local PREVIEW_SIDES = { "right", "left", "dynamic" }
+settings[#settings + 1] = { name = "sep_picker", type = "spacer", label = "Picker" }
+settings[#settings + 1] = {
+    name = "picker_preview_side",
+    label = "Preview position",
+    type = "select",
+    options = PREVIEW_SIDES,
+    default = "right",
+    get = function()
+        local ok, pc = pcall(require, "lvim-picker.config")
+        return ok and pc.preview_side or "right"
+    end,
+    set = function(value, is_load, ctx)
+        if not vim.tbl_contains(PREVIEW_SIDES, value) then
+            value = "right"
+        end
+        local function put()
+            local ok, pc = pcall(require, "lvim-picker.config")
+            if ok then
+                pc.preview_side = value
+            end
+            return ok
+        end
+        -- the saved value is restored at startup, possibly before lvim-picker is on the runtimepath
+        if not put() then
+            vim.api.nvim_create_autocmd("VimEnter", { once = true, callback = put })
+        end
+        if not is_load and ctx and ctx.data then
+            ctx.data:save("picker_preview_side", value)
+        end
+    end,
+}
 
 return {
     name = "Utils",
