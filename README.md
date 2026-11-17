@@ -6,7 +6,7 @@
 > `lvim-tech/*`. LSP and language tooling, debugging, building and testing, git, database and REST
 > clients, the whole UI: one set, one style, one place to configure it.
 
-> Current version — **11.0.0**
+> Current version — **11.1.0**
 
 ---
 
