@@ -190,10 +190,6 @@ return {
         opts = {
             -- statusline = false: NO finder publishes its title/counter to the statusline.
             statusline = false,
-            -- Every finder (files / grep / … included) uses the themed tint list matched by the native
-            -- lvim-fuzzy engine — no fzf terminal panel. Proven at 1.5M (viewport-virtualized render +
-            -- prepared-context match). Set true to fall back to the fzf-TUI for the heavy finders.
-            fzf_tui = false,
             -- Finder prompt: a nerd search glyph + "Search" label.
             prompt = { icon = "", label = "Search" },
             -- Fuzzy result ordering (picker + native completion): dirs first, then by best match.
