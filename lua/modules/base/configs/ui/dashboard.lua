@@ -4,7 +4,6 @@
 -- panes (menu + a meta line / recent files / projects), the same startup stat. Referenced by
 -- lvim-utils.setup({ dashboard = require("modules.base.configs.ui.dashboard") }).
 
-local icons = require("configs.base.ui.icons")
 local logo = require("modules.base.configs.ui.logo")
 
 return {
@@ -23,20 +22,24 @@ return {
         return true
     end,
 
+    -- the Projects folders: open folders, in the theme's yellow like the meta-line icons
+    icons = { directory = "\u{f0770}" }, -- nf-md-folder_open
+    hl = { dir_icon = "LvimIconYellow" },
+
     preset = {
         -- The banner: the ASCII logo + the version string.
         header = logo.logo_1 .. "v" .. (_G.LVIM.version or "v9.0.0"),
         -- The menu. `key` is both the shown shortcut and a buffer keymap; `action` is a :Cmd / function.
         keys = {
-            { icon = "󰋱 ", key = "<Leader>uc", desc = "Lvim Control Center", action = ":LvimControlCenter" },
-            { icon = " ", key = "<Leader>pp", desc = "Lvim Space", action = ":LvimSpace" },
-            { icon = " ", key = "<Leader>oy", desc = "File Explorer", action = ":LvimShell yazi" },
-            { icon = " ", key = "<Leader>sf", desc = "Find File", action = ":LvimPicker files" },
-            { icon = " ", key = "<Leader>N", desc = "New File", action = ":ene | startinsert" },
-            { icon = " ", key = "<Leader>sg", desc = "Find Text", action = ":LvimPicker grep" },
-            { icon = " ", key = "<Leader>so", desc = "Recent Files", action = ":LvimPicker oldfiles" },
+            { icon = "󰘮 ", key = "<Leader>uc", desc = "Lvim Control Center", action = ":LvimControlCenter" },
+            { icon = "󰡃 ", key = "<Leader>pp", desc = "Lvim Space", action = ":LvimSpace" },
+            { icon = "󰙅 ", key = "<Leader>oy", desc = "File Explorer", action = ":LvimShell yazi" },
+            { icon = "󰱽 ", key = "<Leader>sf", desc = "Find File", action = ":LvimPicker files" },
+            { icon = "󰻭 ", key = "<Leader>N", desc = "New File", action = ":ene | startinsert" },
+            { icon = "󰺯 ", key = "<Leader>sg", desc = "Find Text", action = ":LvimPicker grep" },
+            { icon = "󱋢 ", key = "<Leader>so", desc = "Recent Files", action = ":LvimPicker oldfiles" },
             {
-                icon = " ",
+                icon = "󰢻 ",
                 key = "<Leader>vc",
                 desc = "Config",
                 action = ":LvimDashboard pick files " .. vim.fn.stdpath("config"),
@@ -54,38 +57,40 @@ return {
         { pane = 2 },
         function()
             local v = vim.version()
-            local datetime = os.date(" %d-%m-%Y")
-            ---@type string
-            local platform
+            -- Each icon is its own chunk, in the theme's yellow (lvim-icons' self-themed palette group): in
+            -- lvim-icons' "material" mode a chunk that is one glyph is drawn as an image, the size of every other
+            -- icon on the dashboard.
+            ---@type string, string
+            local os_icon, os_name
             if _G.LVIM.global.os == "linux" then
-                platform = " Linux"
+                os_icon, os_name = "\u{f033d}", "Linux" -- nf-md-linux
             elseif _G.LVIM.global.os == "mac" then
-                platform = " macOS"
+                os_icon, os_name = "\u{f0035}", "macOS" -- nf-md-apple
             else
-                platform = ""
+                os_icon, os_name = "\u{f05b3}", "" -- nf-md-microsoft_windows
             end
             local build = ""
             if v.build ~= vim.NIL then
                 build = " build " .. v.build
             end
-            local str = platform
-                .. " "
-                .. datetime
-                .. " "
-                .. icons.common.vim
-                .. "v"
-                .. v.major
-                .. "."
-                .. v.minor
-                .. "."
-                .. v.patch
-                .. build
-            return { pane = 2, text = { str, hl = "desc" }, align = "center" }
+            local version = ("%d.%d.%d%s"):format(v.major, v.minor, v.patch, build)
+            return {
+                pane = 2,
+                text = {
+                    { os_icon .. " ", hl = "LvimIconYellow" },
+                    { os_name ~= "" and (os_name .. "  ") or " ", hl = "desc" },
+                    { "\u{f0e18} ", hl = "LvimIconYellow" }, -- nf-md-calendar_month_outline
+                    { os.date("%d-%m-%Y") .. "  ", hl = "desc" },
+                    { "\u{e7c5} ", hl = "LvimIconYellow" }, -- nf-dev-vim
+                    { version, hl = "desc" },
+                },
+                align = "center",
+            }
         end,
         { pane = 2 },
         {
             pane = 2,
-            icon = " ",
+            icon = "󰋚 ",
             title = "Recent Files",
             section = "recent_files",
             indent = 2,
@@ -94,7 +99,7 @@ return {
         },
         {
             pane = 2,
-            icon = " ",
+            icon = "󰉕 ",
             title = "Projects",
             section = "projects",
             indent = 2,
@@ -111,8 +116,16 @@ return {
             local ok_pack, pack = pcall(require, "lvim-pack")
             local ms = (ok_pack and pack.stats().startup_ms)
                 or (vim.uv.hrtime() - (_G.LVIM.start_time or vim.uv.hrtime())) / 1e6
-            local str = string.format("⚡ Loaded %d/%d plugins in %.0f ms", s.loaded, s.total, ms)
-            return { text = { str, hl = "special" }, align = "center", padding = 1 }
+            -- the icon is its own chunk (an image in "material", the size of the others), in the theme's yellow
+            -- (lvim-icons' self-themed palette group, so it follows the colorscheme)
+            return {
+                text = {
+                    { "\u{f14df} ", hl = "LvimIconYellow" }, -- nf-md-rocket_launch_outline
+                    { string.format("Loaded %d/%d plugins in %.0f ms", s.loaded, s.total, ms), hl = "special" },
+                },
+                align = "center",
+                padding = 1,
+            }
         end,
     },
 }
