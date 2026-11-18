@@ -18,6 +18,33 @@ local glyphs = parts.icons -- () -> the icon table
 local human_size = chrome_util.size_str -- bytes -> "12.3 KB"
 local device_icon = parts.devicon -- (buf, bg) -> icon, group
 local bar_dark = chrome_util.bar_bg -- the bar background hex
+local ui = parts.ui -- (glyph, seg suffix) -> the glyph, or its "material"-mode image fragment
+
+--- An lvim-icons IMAGE for `name` / `opts`, ready for the bar: "%#group#cells%*", the image id kept
+--- in the foreground on the bar background. nil where no images are shown, or when only a catch-all file icon
+--- resolves — the segment then keeps its own glyph and colour.
+---@param name string
+---@param opts table  lvim-utils.icons options (filetype / kind)
+---@return string?
+local function image_icon(name, opts)
+    local ok, iconlib = pcall(require, "lvim-utils.icons")
+    if not (ok and iconlib.on_bg) then
+        return nil
+    end
+    local cfg = parts.cfg()
+    local r = iconlib.get(
+        name,
+        vim.tbl_extend("force", { provider = cfg.icon_provider, color_mode = cfg.icon_color_mode }, opts)
+    )
+    -- nothing more specific than the plain glyph the segment already has: Material's catch-all "file", or
+    -- (Nerd source, no Material id) lvim-icons' own default icon
+    if not r.image or r.id == "file" or (r.id == nil and r.name == "default") then
+        return nil
+    end
+    -- the bar's fill group carries the bar background: named after it, re-derived on every theme change
+    local group = iconlib.on_bg(r, "LvimUiChromeFill")
+    return group and ("%#" .. group .. "#" .. r.glyph .. "%*") or nil
+end
 
 -- the git User event the poller fires when branch/HEAD changes (so git/hunks rebuild)
 local GIT_PULSE = "User:LvimUiChromeGit"
@@ -76,7 +103,7 @@ local function lsp_tools(buf)
     if #pieces == 0 then
         return ""
     end
-    return paint("Blue", (" %s  %s"):format(glyphs().lsp, table.concat(pieces, " | ")))
+    return paint("Blue", (" %s  %s"):format(ui(glyphs().lsp, "Blue"), table.concat(pieces, " | ")))
 end
 
 --- Run a command later (so the picker/float closes first), used by several `click`s.
@@ -99,7 +126,7 @@ return {
             parts.mode = m:sub(1, 1) -- shared with the file accent + word count
             local label = parts.MODE_LABEL[m] or m
             local group = parts.MODE_GROUP[parts.mode] or "ModeN"
-            return paint(group, (" %s  %%(%s%%)  "):format(glyphs().vim, label))
+            return paint(group, (" %s  %%(%s%%)  "):format(ui(glyphs().vim, group), label))
         end,
     },
     -- lvim-table: table-mode chip. A persistent state belongs in a SEGMENT — the lvim-hud
@@ -120,7 +147,7 @@ return {
             if okc and tconf.icons ~= nil and tconf.icons.table ~= nil then
                 icon = tconf.icons.table
             end
-            return paint("Yellow", (" %s TABLE "):format(icon))
+            return paint("Yellow", (" %s TABLE "):format(ui(icon, "Yellow")))
         end,
     },
     -- working directory (folder icon + ~-collapsed path) — click to open the file tree
@@ -139,6 +166,11 @@ return {
                 cwd = vim.fn.pathshorten(cwd)
             end
             local trail = cwd:sub(-1) == "/" and "" or "/"
+            -- an image: the working directory's own folder icon (Material: folder-config, folder-lua, …)
+            local img = image_icon(vim.fn.getcwd(0), { kind = "directory" })
+            if img then
+                return paint("Blue", " ") .. img .. paint("Blue", (" %s%s"):format(cwd, trail))
+            end
             return paint("Blue", (" %s %s%s"):format(glyphs().folder, cwd, trail))
         end,
     },
@@ -169,10 +201,10 @@ return {
                 out[#out + 1] = paint("Blue", " " .. human_size(fsize) .. " ")
             end
             if not vim.bo[ctx.buf].modifiable or vim.bo[ctx.buf].readonly then
-                out[#out + 1] = paint("Red", " " .. ic.lock .. " ")
+                out[#out + 1] = paint("Red", " " .. ui(ic.lock, "Red") .. " ")
             end
             if vim.bo[ctx.buf].modified then
-                out[#out + 1] = paint("Red", " " .. ic.save .. " ")
+                out[#out + 1] = paint("Red", " " .. ui(ic.save, "Red") .. " ")
             end
             out[#out + 1] = "%<"
             return table.concat(out)
@@ -195,7 +227,7 @@ return {
                 return ""
             end
             local ic = glyphs()
-            return paint("Orange", (" %s %s (%s) "):format(ic.git, g.head.branch, g.head.abbrev))
+            return paint("Orange", (" %s %s (%s) "):format(ui(ic.git, "Orange"), g.head.branch, g.head.abbrev))
         end,
     },
     -- macro recording register ([q]) — only when the command line is hidden
@@ -233,16 +265,16 @@ return {
             local di = glyphs().diagnostics
             local out = {}
             if e > 0 then
-                out[#out + 1] = paint("DiagError", ("%s %d "):format(di.error, e))
+                out[#out + 1] = paint("DiagError", ("%s %d "):format(ui(di.error, "DiagError"), e))
             end
             if w > 0 then
-                out[#out + 1] = paint("DiagWarn", ("%s %d "):format(di.warn, w))
+                out[#out + 1] = paint("DiagWarn", ("%s %d "):format(ui(di.warn, "DiagWarn"), w))
             end
             if i > 0 then
-                out[#out + 1] = paint("DiagInfo", ("%s %d "):format(di.info, i))
+                out[#out + 1] = paint("DiagInfo", ("%s %d "):format(ui(di.info, "DiagInfo"), i))
             end
             if h > 0 then
-                out[#out + 1] = paint("DiagHint", ("%s %d "):format(di.hint, h))
+                out[#out + 1] = paint("DiagHint", ("%s %d "):format(ui(di.hint, "DiagHint"), h))
             end
             return table.concat(out)
         end,
@@ -277,7 +309,8 @@ return {
         },
         content = function(ctx)
             local ok, seg = pcall(function()
-                return require("lvim-lang").status(ctx.buf)
+                -- without the provider's own icon: the filetype segment next to it already shows it
+                return require("lvim-lang").status(ctx.buf, { icon = false })
             end)
             return (ok and type(seg) == "string" and seg ~= "") and paint("Blue", " " .. seg) or ""
         end,
@@ -310,7 +343,15 @@ return {
         events = { "FileType" },
         content = function(ctx)
             local ft = vim.bo[ctx.buf].filetype
-            return ft ~= "" and paint("Green", "  " .. ft:upper()) or ""
+            if ft == "" then
+                return ""
+            end
+            -- an image: the filetype's own icon (markdown, lua, …); the plain glyph otherwise
+            local img = image_icon("", { filetype = ft })
+            if img then
+                return paint("Green", " ") .. img .. paint("Green", " " .. ft:upper())
+            end
+            return paint("Green", "  " .. ft:upper())
         end,
     },
     -- file encoding
@@ -334,7 +375,11 @@ return {
                 return ""
             end
             local ic = glyphs()
-            local sym = { unix = ic.unix, dos = ic.dos, mac = ic.mac }
+            local sym = {
+                unix = ui(ic.unix, "Orange"),
+                dos = ui(ic.dos, "Orange"),
+                mac = ui(ic.mac, "Orange"),
+            }
             return paint("Orange", " " .. (sym[f] or f) .. " ")
         end,
     },

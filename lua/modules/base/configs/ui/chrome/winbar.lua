@@ -30,7 +30,7 @@ local segments = {
             local ft = vim.bo[ctx.buf].filetype
             local label = ft ~= "" and parts.seg("Blue", "  " .. ft:upper() .. " ") or ""
             local pname = api.nvim_buf_get_name(ctx.buf):gsub(".*:", "")
-            return label .. parts.seg("Red", ic.terminal .. " " .. pname)
+            return label .. parts.seg("Red", parts.ui(ic.terminal, "Red") .. " " .. pname)
         end,
     },
     -- file: devicon + unique filename (every non-terminal window)

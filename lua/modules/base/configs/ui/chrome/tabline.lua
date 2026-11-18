@@ -15,7 +15,7 @@ return {
     {
         name = "tl_logo",
         content = function()
-            return parts.seg("TabLogo", " " .. parts.icons().vim .. " ")
+            return parts.seg("TabLogo", " " .. parts.ui(parts.icons().vim, "TabLogo") .. " ")
         end,
     },
     -- current-tab windows (skip floats + excluded fts) — CLICKABLE: a click focuses the window (tabby win)
