@@ -51,7 +51,7 @@ local segments = {
     },
 }
 
--- lvim-breadcrumbs: the symbol trail (module ➤ class ➤ method) as a ready-made hud winbar segment —
+-- lvim-breadcrumbs: the symbol trail (module 󰅂 class 󰅂 method) as a ready-made hud winbar segment —
 -- per-kind coloured (the lvim-lsp outline accent set), clickable (jumps to the symbol), rendered in
 -- active windows only. No file_prefix — the wb_file section above already leads with the file.
 --
