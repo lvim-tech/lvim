@@ -126,6 +126,33 @@ local fixed = {
             end
         end,
     },
+    {
+        name = "icons_mode",
+        label = "Icons",
+        desc = "How lvim-icons draws icons: nerd glyphs, Material images for files, or images everywhere",
+        type = "select",
+        options = { "nerd", "mix", "material" },
+        default = "nerd",
+        ---@return string  the live lvim-icons mode
+        get = function()
+            local ok, li = pcall(require, "lvim-icons")
+            return (ok and li.mode and li.mode()) or "nerd"
+        end,
+        --- Switch live (no restart): lvim-icons tells every view to draw its icons again. The choice is saved
+        --- here, and applied again on startup.
+        ---@param val string
+        ---@param is_load boolean
+        ---@param ctx table?
+        set = function(val, is_load, ctx)
+            local ok, li = pcall(require, "lvim-icons")
+            if ok and li.set_mode then
+                li.set_mode(val)
+            end
+            if not is_load and ctx and ctx.data then
+                ctx.data:save("icons_mode", val)
+            end
+        end,
+    },
     -- (The old "Float height" select moved to the control center's "Utils" tab — the centralized dock geometry
     -- (float/area/bottom sizes + backdrop) in lvim-utils.config.dock.geometry, defined in control_center/geometry.lua.)
 }
