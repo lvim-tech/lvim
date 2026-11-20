@@ -22,6 +22,57 @@ global.normal = {
     { "<Leader>se", "<Cmd>LvimSearchExport<CR>", "Search: matches to quickfix" },
     { "<Leader>sE", "<Cmd>LvimSearchExport all<CR>", "Search: matches to quickfix (all buffers)" },
 
+    -- <Leader>q — Quickfix  (lvim-qf-loc; the list opens in the view chosen in the Control Center)
+    { "<Leader>qo", "<Cmd>LvimQf open<CR>", "Quickfix: open (the current list, else the first)" },
+    { "<Leader>qc", "<Cmd>LvimQf close<CR>", "Quickfix: close" },
+    { "<Leader>qm", "<Cmd>LvimQf<CR>", "Quickfix: menu (stored lists)" },
+    { "<Leader>qn", "<Cmd>LvimQf next<CR>", "Quickfix: newer list" },
+    { "<Leader>qp", "<Cmd>LvimQf prev<CR>", "Quickfix: older list" },
+    {
+        "<Leader>qj",
+        function()
+            require("lvim-qf-loc.qf.jump").step("qf", 1)
+        end,
+        "Quickfix: next entry",
+    },
+    {
+        "<Leader>qk",
+        function()
+            require("lvim-qf-loc.qf.jump").step("qf", -1)
+        end,
+        "Quickfix: previous entry",
+    },
+    { "<Leader>qs", "<Cmd>LvimQf switch<CR>", "Quickfix: switch view (native ⇄ area)" },
+    { "<Leader>qa", "<Cmd>LvimQf area<CR>", "Quickfix: browser" },
+    { "<Leader>qd", "<Cmd>LvimQf diagnostics<CR>", "Quickfix: diagnostics" },
+    { "<Leader>qx", "<Cmd>LvimQf delete<CR>", "Quickfix: delete a stored list" },
+    { "<Leader>qS", "<Cmd>LvimQf storage<CR>", "Quickfix: save / load the lists" },
+
+    -- <Leader>l — Location list  (lvim-qf-loc, the current window's list)
+    { "<Leader>lo", "<Cmd>LvimLoc open<CR>", "Location: open (the current list, else the first)" },
+    { "<Leader>lc", "<Cmd>LvimLoc close<CR>", "Location: close" },
+    { "<Leader>lm", "<Cmd>LvimLoc<CR>", "Location: menu (stored lists)" },
+    { "<Leader>ln", "<Cmd>LvimLoc next<CR>", "Location: newer list" },
+    { "<Leader>lp", "<Cmd>LvimLoc prev<CR>", "Location: older list" },
+    {
+        "<Leader>lj",
+        function()
+            require("lvim-qf-loc.qf.jump").step("loc", 1)
+        end,
+        "Location: next entry",
+    },
+    {
+        "<Leader>lk",
+        function()
+            require("lvim-qf-loc.qf.jump").step("loc", -1)
+        end,
+        "Location: previous entry",
+    },
+    { "<Leader>ls", "<Cmd>LvimLoc switch<CR>", "Location: switch view (native ⇄ area)" },
+    { "<Leader>la", "<Cmd>LvimLoc area<CR>", "Location: browser" },
+    { "<Leader>lx", "<Cmd>LvimLoc delete<CR>", "Location: delete a stored list" },
+    { "<Leader>lS", "<Cmd>LvimLoc storage<CR>", "Location: save / load the lists" },
+
     -- <Leader>g — Git / Review  (lvim-git + lvim-forge)
     { "<Leader>gg", "<Cmd>LvimGit status<CR>", "Git: status" },
     { "<Leader>gd", "<Cmd>LvimGit diffview<CR>", "Git: diffview" },

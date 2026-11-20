@@ -273,6 +273,35 @@ return {
                 end
             end,
         },
+        -- ── quickfix (lvim-qf-loc) ────────────────────────────────────────────
+        { name = "sep_quickfix", type = "spacer", label = "Quickfix" },
+        {
+            name = "qf_view",
+            label = "Quickfix view",
+            desc = "Where :copen shows a list: the editable native window or the area browser (<C-o> switches)",
+            type = "select",
+            options = { "native", "area" },
+            -- the plugin's own default: the panel's default and the view used before any choice are one value
+            default = "native",
+            ---@return string  The view the next :copen uses
+            get = function()
+                local ok, cfg = pcall(require, "lvim-qf-loc.config")
+                return (ok and cfg.view) or "native"
+            end,
+            ---@param val     string   New view ("native" | "area")
+            ---@param on_init boolean  True during startup; skip persistence (apply is always done)
+            ---@param ctx     LvimControlCenterCtx  the owning instance's context
+            set = function(val, on_init, ctx)
+                -- Apply ALWAYS (also on init): lvim-qf-loc merges its setup options INTO this same table, so
+                -- the value holds whichever runs first. The next :copen opens in it; <C-o> still switches.
+                pcall(function()
+                    require("lvim-qf-loc.config").view = val
+                end)
+                if not on_init and ctx and ctx.data then
+                    ctx.data:save("qf_view", val)
+                end
+            end,
+        },
         -- `unpack` as the LAST element of a constructor expands the list in place — the one form that
         -- splices a required list into a table literal without restructuring the literal around it.
         unpack(linguistics),

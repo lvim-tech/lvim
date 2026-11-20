@@ -302,7 +302,7 @@ modules["lvim-tech/lvim-qf-loc"] = {
     -- VeryLazy rather than `ft = "qf"`: it OWNS 'quickfixtextfunc', which has to be set before a
     -- list renders — waiting for the qf filetype would let the first list draw natively.
     event = "VeryLazy",
-    opts = editor_config.lvim_qf_loc.opts,
+    config = editor_config.lvim_qf_loc.config,
 }
 
 -- lvim-replace: project-wide find & replace (ripgrep) with selective per-result marking.

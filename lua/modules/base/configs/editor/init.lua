@@ -129,8 +129,14 @@ return {
     },
     -- lvim-qf-loc: LVIM wrappers for quickfix and location list management
     lvim_qf_loc = {
-        -- "native" is the plugin's default view.
-        opts = {},
+        -- "native" is the plugin's default view. The list-step keys are off: no ]q / [q / ]l / [l from the
+        -- plugin, and Neovim's own ]q [q ]Q [Q ]l [l ]L [L (:cnext / :cfirst / :lnext …) are removed too.
+        config = function()
+            require("lvim-qf-loc").setup({ jump = { enabled = false } })
+            for _, lhs in ipairs({ "]q", "[q", "]Q", "[Q", "]l", "[l", "]L", "[L" }) do
+                pcall(vim.keymap.del, "n", lhs)
+            end
+        end,
     },
     -- lvim-cycle: smart increment/decrement for numbers, dates, booleans, and operators.
     -- Default keys: <C-a>/<C-x> (normal + visual) plus g<C-a>/g<C-x> (visual sequential renumbering).

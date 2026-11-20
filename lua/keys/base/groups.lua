@@ -10,6 +10,8 @@ return {
     ["<Leader>g"] = "Git / Review",
     ["<Leader>f"] = "Files / Remote",
     ["<Leader>s"] = "Search / Navigate",
+    ["<Leader>q"] = "Quickfix",
+    ["<Leader>l"] = "Location list",
     ["<Leader>b"] = "Buffers",
     ["<Leader>w"] = "Windows",
     ["<Leader>p"] = "Project / Space",
