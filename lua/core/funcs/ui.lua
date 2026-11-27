@@ -28,6 +28,13 @@ M.focus_float_window = function()
     -- Scheduled (like close_float_windows): the trigger key arrives via lvim-keys-helper, which is still
     -- unwinding its sequence (feedkeys / SafeState) when this fires — defer to the next tick so focus sticks.
     vim.schedule(function()
+        -- First the dock manager: a docked / float shell or panel is a frame, and the frame wants focus to arrive
+        -- the way it expects (its sectors and veil follow it) — `descend` does that, and is a no-op (false) when the
+        -- cursor is already inside a frame or nothing is docked; the plain cycle below takes over then.
+        local ok_dock, dock = pcall(require, "lvim-utils.dock")
+        if ok_dock and dock.descend() then
+            return
+        end
         local floats = {}
         local cur_win = vim.api.nvim_get_current_win()
         for _, win in ipairs(vim.api.nvim_list_wins()) do
