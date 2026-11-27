@@ -47,6 +47,7 @@ Everything drawn on screen that is not the text you are editing.
 | [lvim-dashboard](https://github.com/lvim-tech/lvim-dashboard) | The start screen. | startup |
 | [lvim-picker](https://github.com/lvim-tech/lvim-picker) | The finders — files, grep, buffers, git, LSP locations — over fzf or its own list. | startup |
 | [lvim-files](https://github.com/lvim-tech/lvim-files) | The file manager: a tree side panel and an editable directory buffer over one filesystem model. | startup |
+| [lvim-commander](https://github.com/lvim-tech/lvim-commander) | The two-panel file commander, the counterpart of the terminal `lvc`: marks, trash, archives, remotes, devices, git state, previews. *(builds its helper programs on first use)* | `:LvimCommander` |
 | [lvim-term](https://github.com/lvim-tech/lvim-term) | Named, toggleable terminals with a tab bar. | `:LvimTerm` |
 | [lvim-shell](https://github.com/lvim-tech/lvim-shell) | TUI programs in a themed float, with presets for the common ones. | `:LvimShell` |
 | [lvim-image](https://github.com/lvim-tech/lvim-image) | Images inside the editor, across the terminal graphics protocols. | startup |
@@ -124,6 +125,7 @@ What each plugin declares as a hard dependency — the loader installs and loads
 | [lvim-cmp](https://github.com/lvim-tech/lvim-cmp) | [lvim-fuzzy](https://github.com/lvim-tech/lvim-fuzzy), [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
 | [lvim-color-picker](https://github.com/lvim-tech/lvim-color-picker) | [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
 | [lvim-colorscheme](https://github.com/lvim-tech/lvim-colorscheme) | [lvim-utils](https://github.com/lvim-tech/lvim-utils), [lvim-control-center](https://github.com/lvim-tech/lvim-control-center) |
+| [lvim-commander](https://github.com/lvim-tech/lvim-commander) | [lvim-picker](https://github.com/lvim-tech/lvim-picker), [lvim-ui](https://github.com/lvim-tech/lvim-ui), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
 | [lvim-common](https://github.com/lvim-tech/lvim-common) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
 | [lvim-context](https://github.com/lvim-tech/lvim-context) | [lvim-ts](https://github.com/lvim-tech/lvim-ts), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
 | [lvim-control-center](https://github.com/lvim-tech/lvim-control-center) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
@@ -168,6 +170,51 @@ What each plugin declares as a hard dependency — the loader installs and loads
 | [lvim-winmove](https://github.com/lvim-tech/lvim-winmove) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
 | [lvim-winnav](https://github.com/lvim-tech/lvim-winnav) | [lvim-winmove](https://github.com/lvim-tech/lvim-winmove), [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
 | [lvim-winpick](https://github.com/lvim-tech/lvim-winpick) | [lvim-utils](https://github.com/lvim-tech/lvim-utils) |
+
+## Helper programs
+
+`lvim-commander` (and the `lvim-picker` menus it opens) lean on a few small Rust programs. They are **not**
+plugins and `lvim-pack` does not manage them: they are built from source, once, and nothing has to be
+installed first except `git` and `cargo`. Without them the rest of the configuration is unaffected.
+
+| Program | From | What it does |
+|---|---|---|
+| `lvim-commander-host` | [lvim-fuzzy-commander-core](https://github.com/lvim-tech/lvim-fuzzy-commander-core) | The filesystem side of the commander: listing, sorting, copy / move / delete, the trash, archives. The same crate backs the terminal `lvc`, so both behave alike. |
+| `lvim-plugin` | [lvim-fuzzy-plugin](https://github.com/lvim-tech/lvim-fuzzy-plugin) | The plugin host: starts a plugin program, speaks JSON lines to it. Neovim talks to it through `lvim-utils.pluginhost`. |
+| `lvim-fuzzy-plugin-git` | [lvim-fuzzy-plugin-git](https://github.com/lvim-tech/lvim-fuzzy-plugin-git) | The git marks column and the git bar (branch, ahead / behind, counts), also for a previewed folder; tags, submodules, move. |
+| `lvim-fuzzy-plugin-remote` | [lvim-fuzzy-plugin-remote](https://github.com/lvim-tech/lvim-fuzzy-plugin-remote) | Remote locations (ssh): add, edit, delete, connect. |
+| `lvim-fuzzy-plugin-devices` | [lvim-fuzzy-plugin-devices](https://github.com/lvim-tech/lvim-fuzzy-plugin-devices) | The devices menu: mount, unmount, open. |
+| `lvim-fuzzy-plugin-preview` | [lvim-fuzzy-plugin-preview](https://github.com/lvim-tech/lvim-fuzzy-plugin-preview) | Previews for files the commander cannot show as text. |
+| `lvim-fuzzy-plugin-open` | [lvim-fuzzy-plugin-open](https://github.com/lvim-tech/lvim-fuzzy-plugin-open) | "Open with": the program for a file type. |
+
+**How they are resolved.**
+
+- Every crate depends on the others through `git` dependencies on `github.com/lvim-tech/…`, so a lone
+  clone builds without any sibling folder. A developer with all repositories side by side adds a
+  `[patch]` in a `.cargo/config.toml` above them and builds against the local checkouts instead.
+- One bootstrap script, `lvim-fuzzy-plugin/scripts/bootstrap.sh`, fetches, builds and installs a chosen set of
+  parts (`commander-host host git remote devices preview open`; `cli` adds `lvim-fuzzy-cli`, which takes minutes).
+  It uses a sibling checkout when there is one, otherwise clones into `~/.local/share/lvim-tech/src`.
+  Programs go to `${XDG_BIN_HOME:-~/.local/bin}`; each plugin's `plugin.toml` to `~/.config/lvim-plugins/<name>/`.
+- From Neovim: the first `:LvimCommander` builds what is missing, `:LvimCommanderInstall` does it on demand, and a
+  `build = "sh scripts/install.sh"` hook (present in `lvim-commander` and `lvim-picker`) does it from `lvim-pack`.
+  Programs are looked up on `PATH` and in `~/.local/bin` (`lvim-utils.pluginhost.which`), so a Neovim started
+  from a launcher still finds them. `:checkhealth lvim-commander` and `:checkhealth lvim-picker` say what is missing.
+- From the terminal: `scripts/install.sh` of `lvc` and `lfz` fetches the same host and plugins. The terminal tools
+  need none of the Neovim plugins, and the Neovim plugins need neither `lvc` nor `lfz`.
+
+**What the latest versions of the plugins expect from each other.**
+
+| Plugin | Needs from | For |
+|---|---|---|
+| lvim-commander | lvim-ui | The surface chassis (header tabs, panels, bars, footer); `close_keys = {}` so that `q` and `<Esc>` are the commander's own keys. |
+| lvim-commander | lvim-utils | `pluginhost` (client of `lvim-plugin`, `which`, keepalive handling) and the highlight factory for the palette-coloured bars. |
+| lvim-commander | lvim-picker | The menus opened by plugin instructions (devices, remotes): the `hints`, `placeholder` and `start_in_list` options, `layout = "float"`. |
+| lvim-calendar | lvim-ui | The `moves` flag on a keymap, which lets the day cursor keep `j` / `k` (otherwise lvim-ui refuses a keymap on the navigation keys). |
+| lvim-picker | lvim-utils | `pluginhost.which` for the engine lookup and the `LvimUiPickerPrompt` highlight. |
+
+The pins in `.snapshots/default` are a consistent set: updating one of lvim-ui, lvim-utils, lvim-picker or
+lvim-commander on its own may break the others.
 
 ## Third party
 

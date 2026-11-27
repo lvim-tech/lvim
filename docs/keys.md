@@ -175,6 +175,7 @@ Nothing here has to be memorised: press a prefix and the hint panel names what f
 | Key | Action | Runs |
 |---|---|---|
 | `<Leader>ot` | Open: terminal | `:LvimTerm toggle` |
+| `<Leader>of` | Open: file commander (area) | `:LvimCommander area` |
 | `<Leader>os` | Open: shell launcher | `:LvimShell` |
 | `<Leader>od` | Open: database client | `:LvimDb` |
 | `<Leader>oa` | Open: REST scratchpad | `:LvimRest scratch` |
@@ -187,9 +188,6 @@ Nothing here has to be memorised: press a prefix and the hint panel names what f
 | `<Leader>oh` | Open: dashboard | `:LvimDashboard` |
 | `<Leader>ov` | Open: vault (macros/marks) | `:LvimVault` |
 | `<Leader>oI` | Open: icon picker | `:LvimIcons` |
-| `<Leader>og` | Open: LazyGit | `:LvimShell lazygit` |
-| `<Leader>oD` | Open: LazyDocker | `:LvimShell lazydocker` |
-| `<Leader>oy` | Open: Yazi (files) | `:LvimShell yazi` |
 | `<Leader>on` | Open: Neomutt (mail) | `:LvimShell neomutt` |
 
 ### `<Leader>u` — UI / Toggles / Settings
@@ -219,6 +217,7 @@ Nothing here has to be memorised: press a prefix and the hint panel names what f
 
 | Key | Action | Runs |
 |---|---|---|
+| `<C-,>` | Commander: toggle (area) | `:LvimCommander toggle area` |
 | `<S-x>` | Files: toggle panel | `:LvimFiles toggle` |
 | `<C-c><C-f>` | Files: toggle panel | `:LvimFiles toggle` |
 | `<S-q>` | Files: close panel | `:LvimFiles close` |

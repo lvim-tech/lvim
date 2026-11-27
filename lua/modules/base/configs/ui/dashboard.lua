@@ -33,7 +33,7 @@ return {
         keys = {
             { icon = "󰘮 ", key = "<Leader>uc", desc = "Lvim Control Center", action = ":LvimControlCenter" },
             { icon = "󰡃 ", key = "<Leader>pp", desc = "Lvim Space", action = ":LvimSpace" },
-            { icon = "󰙅 ", key = "<Leader>oy", desc = "File Explorer", action = ":LvimShell yazi" },
+            { icon = "󰙅 ", key = "<Leader>of", desc = "File Explorer", action = ":LvimCommander area" },
             { icon = "󰱽 ", key = "<Leader>sf", desc = "Find File", action = ":LvimPicker files" },
             { icon = "󰻭 ", key = "<Leader>N", desc = "New File", action = ":ene | startinsert" },
             { icon = "󰺯 ", key = "<Leader>sg", desc = "Find Text", action = ":LvimPicker grep" },

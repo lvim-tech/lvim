@@ -210,14 +210,14 @@ return {
             return table.concat(out)
         end,
     },
-    -- git branch + (abbrev) — click to open LazyGit (through lvim-shell)
+    -- git branch + (abbrev) — click to open LvimGit
     {
         name = "git",
         buf = true,
         events = { GIT_PULSE },
         click = {
             run = function()
-                defer_cmd("LvimShell lazygit")
+                defer_cmd("LvimGit")
             end,
             name = "git",
         },

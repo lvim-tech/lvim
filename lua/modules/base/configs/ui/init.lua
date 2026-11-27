@@ -72,7 +72,7 @@ return {
         end,
     },
     -- lvim-shell: integrations for TUI apps launched inside a full-screen terminal
-    -- buffer — Yazi, Vifm, Neomutt, LazyGit, and LazyDocker.
+    -- buffer (Neomutt and the ~55 presets).
     lvim_shell = {
         config = function()
             -- ONE LAUNCHER: `:LvimShell <name> [dir]` over ~55 preset TUI programs (only those on

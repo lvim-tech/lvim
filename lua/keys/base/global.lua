@@ -178,6 +178,8 @@ global.normal = {
 
     -- <Leader>o — Open / Tools  (launch a panel / TUI)
     { "<Leader>ot", "<Cmd>LvimTerm toggle<CR>", "Open: terminal" },
+    { "<Leader>of", "<Cmd>LvimCommander area<CR>", "Open: file commander (area)" },
+    { "<C-,>", "<Cmd>LvimCommander toggle area<CR>", "Commander: toggle (area)" },
     { "<Leader>os", "<Cmd>LvimShell<CR>", "Open: shell launcher" },
     -- A bare `:LvimDb` opens the workspace; `open` is not a subcommand (it raised "unknown subcommand").
     { "<Leader>od", "<Cmd>LvimDb<CR>", "Open: database client" },
@@ -195,9 +197,6 @@ global.normal = {
     { "<Leader>ov", "<Cmd>LvimVault<CR>", "Open: vault (macros/marks)" },
     { "<Leader>oI", "<Cmd>LvimIcons<CR>", "Open: icon picker" },
     -- shell TUIs (lvim-shell presets)
-    { "<Leader>og", "<Cmd>LvimShell lazygit<CR>", "Open: LazyGit" },
-    { "<Leader>oD", "<Cmd>LvimShell lazydocker<CR>", "Open: LazyDocker" },
-    { "<Leader>oy", "<Cmd>LvimShell yazi<CR>", "Open: Yazi (files)" },
     { "<Leader>on", "<Cmd>LvimShell neomutt<CR>", "Open: Neomutt (mail)" },
 
     -- <Leader>u — UI / Toggles / Settings

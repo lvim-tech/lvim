@@ -3,8 +3,7 @@
 -- whole git workflow inside the editor. setup() registers :LvimGit + binds highlights at startup, the gutter
 -- signs auto-attach, and every component bootstraps lazily on its opener/subcommand. Its keys are manifest keys
 -- (keys/base/global.lua → <Leader>g*): a spec `keys` field would do nothing for an eager plugin — lvim-pack reads
--- `keys` only as a lazy-load trigger (same as lvim-files). LazyGit (<Leader>og) stays as a second, terminal-based
--- option.
+-- `keys` only as a lazy-load trigger (same as lvim-files).
 
 ---@module "modules.base.configs.version_control"
 

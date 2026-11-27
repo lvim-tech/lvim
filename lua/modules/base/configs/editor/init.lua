@@ -255,8 +255,7 @@ return {
         end,
     },
     -- lvim-build: detected project/file actions (Build/Run/Test/Bench/Lint), running
-    -- through lvim-tasks. The old compile keys live on: <Leader>oo chooser,
-    -- <Leader>og show the redo target, <Leader>od redo.
+    -- through lvim-tasks. Keys: <Leader>rr runs the build recipe, <Leader>rb opens the action chooser.
     lvim_build = {
         config = function()
             require("lvim-build").setup({})

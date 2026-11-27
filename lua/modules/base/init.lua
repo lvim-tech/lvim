@@ -186,8 +186,21 @@ modules["lvim-tech/lvim-files"] = {
     config = ui_config.lvim_files.config,
 }
 
--- lvim-shell: full-screen terminal integrations for TUI apps (Yazi, Vifm, LazyGit,
--- LazyDocker, Neomutt + the ~55 preset addons of :LvimShell).
+-- lvim-commander: the two-panel file commander, the counterpart of the terminal lvc. Lazy on its commands.
+-- It needs nothing installed by hand: its helper programs (the core host, the plugin host and its plugins)
+-- are built on the first `:LvimCommander` (or by `:LvimCommanderInstall`), and need only git and cargo.
+-- See docs/plugins.md, "Helper programs".
+modules["lvim-tech/lvim-commander"] = {
+    cmd = { "LvimCommander", "LvimCommanderInstall", "LvimCommanderWhy" },
+    dependencies = {
+        "lvim-tech/lvim-picker",
+        "lvim-tech/lvim-ui",
+        "lvim-tech/lvim-utils",
+    },
+}
+
+-- lvim-shell: full-screen terminal integrations for TUI apps (Neomutt + the ~55 preset addons of
+-- :LvimShell).
 -- Every command its config registers has to be listed here: a lazy plugin's config has not run yet,
 -- so anything it would define does not exist until a declared trigger loads it. There is now
 -- exactly ONE — `:LvimShell <name> [dir]` — since the per-program wrapper commands were removed in
@@ -502,8 +515,7 @@ modules["lvim-tech/lvim-preview"] = {
 -- lvim-git: the in-house Magit/fugitive/neogit/vgit/diffview replica (+ jj + colocated git↔jj sync). Eager
 -- (like lvim-files): setup() registers :LvimGit + binds highlights + auto-attaches the gutter signs at
 -- startup, then each component (status/diffview/log/blame/refs/oplog/rebase/stash/…) bootstraps lazily on its
--- opener. Keymaps under <Leader>g*. LazyGit (<Leader>og / :LvimShell lazygit) stays as the terminal-
--- based alternative.
+-- opener. Keymaps under <Leader>g*.
 modules["lvim-tech/lvim-git"] = {
     dependencies = {
         "lvim-tech/lvim-ui",
