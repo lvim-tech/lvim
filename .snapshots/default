@@ -18,7 +18,7 @@
       "pin": true
     },
     "lvim-calendar": {
-      "commit": "7af017619e6e21672ca2d28c1a8d1628a3f9a0d7",
+      "commit": "44cbee406207d9e8e8963ce3418801458f3577a0",
       "pin": true
     },
     "lvim-cmp": {
@@ -31,6 +31,10 @@
     },
     "lvim-colorscheme": {
       "commit": "0bfac31793f31ec6510b8c5250b5ef417168c860",
+      "pin": true
+    },
+    "lvim-commander": {
+      "commit": "8e90a837cb33b060b84766a2955c21666c68bb6a",
       "pin": true
     },
     "lvim-comment": {
@@ -50,7 +54,7 @@
       "pin": true
     },
     "lvim-cycle": {
-      "commit": "4e6bc853377a4916f5fd2ecc593668d765a1e6b1",
+      "commit": "08100c96edab7e9f4b641688fc9ccacd6ea3d4d6",
       "pin": true
     },
     "lvim-dap": {
@@ -158,7 +162,7 @@
       "pin": true
     },
     "lvim-picker": {
-      "commit": "7cb1fae23d0ab2aa1cbb7fc190ffcfa4fad3b78e",
+      "commit": "666befd1c0e5898251eda693b93ddea3ad029939",
       "pin": true
     },
     "lvim-pkg": {
@@ -194,7 +198,7 @@
       "pin": true
     },
     "lvim-shell": {
-      "commit": "c5d117d3ec06a2e44fcc8afa6480aaabafb02f94",
+      "commit": "510d5a843664c5b39a93507db90062dda2c75775",
       "pin": true
     },
     "lvim-snippets": {
@@ -202,7 +206,7 @@
       "pin": true
     },
     "lvim-space": {
-      "commit": "69df444546288cc1bfba6f6b4aee15a372e76105",
+      "commit": "001ecb9e8dcd3105cc76e971c7075e77c696d4d0",
       "pin": true
     },
     "lvim-table": {
@@ -230,7 +234,7 @@
       "pin": true
     },
     "lvim-ui": {
-      "commit": "46299bc87d2d7e782b18872fd912e55ca9e2581e",
+      "commit": "4c46a552cd831a7a5937afc0d9e9f545747608ce",
       "pin": true
     },
     "lvim-undo": {
@@ -238,7 +242,7 @@
       "pin": true
     },
     "lvim-utils": {
-      "commit": "0a4d3d7940e6278415f8724b1c0720985309c21d",
+      "commit": "f94828ba15e61b4e18ec30eaf2e9a88b04f8b79e",
       "pin": true
     },
     "lvim-vault": {
@@ -250,7 +254,7 @@
       "pin": true
     },
     "lvim-winnav": {
-      "commit": "3fc63dbf5ef4be5ee853489592f57296002f0cd6",
+      "commit": "aea796abbfba438a76d04a29e609e0a19c57d074",
       "pin": true
     },
     "lvim-winpick": {
