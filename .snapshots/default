@@ -34,7 +34,7 @@
       "pin": true
     },
     "lvim-commander": {
-      "commit": "965c9d7329488bc83c56a3c42ddbc5e0162f0701",
+      "commit": "b92b5fefbd85dc0c33087eeef41bb3956c886d9d",
       "pin": true
     },
     "lvim-comment": {
@@ -162,7 +162,7 @@
       "pin": true
     },
     "lvim-picker": {
-      "commit": "666befd1c0e5898251eda693b93ddea3ad029939",
+      "commit": "e091a8f5a297494c520571fc665a12aea328c7c4",
       "pin": true
     },
     "lvim-pkg": {
