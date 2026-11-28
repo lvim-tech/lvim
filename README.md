@@ -6,7 +6,7 @@
 > `lvim-tech/*`. LSP and language tooling, debugging, building and testing, git, database and REST
 > clients, the whole UI: one set, one style, one place to configure it.
 
-> Current version — **11.5.0**
+> Current version — **11.6.0**
 
 ![LVIM — lvim-files, the editor, lvim-space and the messages panel](/assets/lvim-screenshot.png)
 

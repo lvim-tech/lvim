@@ -34,7 +34,7 @@
       "pin": true
     },
     "lvim-commander": {
-      "commit": "8e90a837cb33b060b84766a2955c21666c68bb6a",
+      "commit": "965c9d7329488bc83c56a3c42ddbc5e0162f0701",
       "pin": true
     },
     "lvim-comment": {
@@ -86,7 +86,7 @@
       "pin": true
     },
     "lvim-fuzzy": {
-      "commit": "7cad3295ebb3dbc8ad95faa148d98fdf02c6b639",
+      "commit": "b8639f90ddcc524df69fef7ae57ba74f86154c34",
       "pin": true
     },
     "lvim-git": {
@@ -94,7 +94,7 @@
       "pin": true
     },
     "lvim-hud": {
-      "commit": "f1be10e158564d7926d242939322dff0b9e7f8f4",
+      "commit": "3f449398780c027cf2a77ac0f7f7f96e14572b7c",
       "pin": true
     },
     "lvim-icons": {
@@ -234,7 +234,7 @@
       "pin": true
     },
     "lvim-ui": {
-      "commit": "4c46a552cd831a7a5937afc0d9e9f545747608ce",
+      "commit": "8e6e8db39ee944c44d7b34fea13d800bdde23068",
       "pin": true
     },
     "lvim-undo": {
